@@ -77,22 +77,10 @@ describe('one vocabulary', () => {
 })
 
 describe('elevation', () => {
-	// Tailwind's stock shadows are black at roughly 10%, tuned for a white
-	// page. On the #171717 dark surfaces they are invisible, which is why
-	// elevation.css carries a heavier ladder per theme.
-	//
-	// Migrating the existing 148 would visibly change dark-theme rendering, so
-	// this is a ratchet rather than a ban: it holds the line for new code and
-	// the number walks down as call sites move over. It only ever goes down.
-	const BASELINE = 148
-
-	it('does not add new raw Tailwind shadows', () => {
-		const pattern = /(?<![\w-])shadow-(xs|sm|md|lg|xl|2xl|inner)(?![\w-])/g
-		const total = sourceFiles().reduce(
-			(n, p) => n + (readFileSync(p, 'utf8').match(pattern)?.length ?? 0),
-			0
-		)
-		expect(total).toBeLessThanOrEqual(BASELINE)
+	it('uses only the four shadow steps elevation.css defines', () => {
+		const pattern =
+			/(?<![\w-])(?:[a-z0-9\/-]+:)*!?(shadow-(2xs|xs|2xl|inner)|elevation-[a-z]+)(?![\w-])/
+		expect(offenders(pattern)).toEqual([])
 	})
 })
 

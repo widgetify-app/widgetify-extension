@@ -188,7 +188,7 @@ export function VipTab() {
 							loading={isPending}
 							loadingText="در حال انتقال..."
 							onClick={handlePurchase}
-							className="font-bold transition-all px-6 h-10 shadow-xs"
+							className="font-bold transition-all px-6 h-10 shadow-sm"
 							color="vip"
 						>
 							<Icon name="diamond" size={14} />

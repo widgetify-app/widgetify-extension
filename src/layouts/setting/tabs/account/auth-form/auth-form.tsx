@@ -280,7 +280,7 @@ const AuthForm = () => {
 							rounded="xl"
 							loading={isOtpSending}
 							disabled={isOtpSending || !identifier.trim()}
-							className="w-full text-sm font-semibold transition-all shadow-xs h-11 hover:brightness-105"
+							className="w-full text-sm font-semibold transition-all shadow-sm h-11 hover:brightness-105"
 						>
 							{isOtpSending ? 'درحال بررسی...' : 'ادامه'}
 						</Button>
@@ -357,7 +357,7 @@ const AuthForm = () => {
 							color="primary"
 							size="md"
 							rounded="xl"
-							className="w-full text-sm font-semibold transition-all shadow-xs h-11 hover:brightness-105"
+							className="w-full text-sm font-semibold transition-all shadow-sm h-11 hover:brightness-105"
 						>
 							{isSigningIn ? 'درحال ورود...' : 'ورود به حساب'}
 						</Button>
@@ -366,7 +366,7 @@ const AuthForm = () => {
 							type="button"
 							onClick={() => handleSendOtp()}
 							disabled={isOtpSending}
-							className="w-full mt-1 h-10 px-3 rounded-xl border border-surface-3 bg-surface hover:bg-fill-2 text-xs font-medium text-fg flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.99] shadow-xs"
+							className="w-full mt-1 h-10 px-3 rounded-xl border border-surface-3 bg-surface hover:bg-fill-2 text-xs font-medium text-fg flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.99] shadow-sm"
 						>
 							<Icon name="mail" className="w-4 h-4 text-fg-muted" />
 							<span>
@@ -472,7 +472,7 @@ const AuthForm = () => {
 							rounded="xl"
 							loading={isOtpVerifying}
 							disabled={otp.length !== 6 || isOtpVerifying}
-							className="w-full mt-1 text-sm font-semibold transition-all shadow-xs h-11 hover:brightness-105"
+							className="w-full mt-1 text-sm font-semibold transition-all shadow-sm h-11 hover:brightness-105"
 						>
 							{isOtpVerifying ? 'درحال بررسی...' : 'تایید و ورود'}
 						</Button>

@@ -67,7 +67,7 @@ export const CurrencyModalComponent = ({
 				<img
 					src={currency?.icon}
 					alt=""
-					className="object-cover rounded-full shadow w-14 h-14"
+					className="object-cover rounded-full shadow-sm w-14 h-14"
 				/>
 
 				<header className="mt-2 space-y-1 text-center">

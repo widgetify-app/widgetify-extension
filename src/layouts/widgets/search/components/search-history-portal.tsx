@@ -124,7 +124,7 @@ export function SearchHistoryPortal({
 							animate={{ opacity: 1, y: 0 }}
 							exit={{ opacity: 0, y: -8 }}
 							transition={{ duration: 0.18, ease: 'easeOut' }}
-							className="z-20 overflow-y-auto shadow-2xl bg-surface-2 bg-glass max-h-60 rounded-2xl"
+							className="z-20 overflow-y-auto shadow-xl bg-surface-2 bg-glass max-h-60 rounded-2xl"
 						>
 							{isLoadingSuggestions ? (
 								<SuggestionSkeleton />

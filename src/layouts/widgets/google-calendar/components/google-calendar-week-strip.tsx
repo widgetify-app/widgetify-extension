@@ -47,7 +47,7 @@ export const GoogleCalendarWeekStrip: React.FC<GoogleCalendarWeekStripProps> = (
 								'relative flex flex-col items-center justify-center w-full py-1.5',
 								'rounded-xl transition-all cursor-pointer focus-visible:focus-ring',
 								isDaySelected &&
-									'bg-brand text-on-brand shadow-xs font-bold',
+									'bg-brand text-on-brand shadow-sm font-bold',
 								!isDaySelected &&
 									isDayToday &&
 									'bg-brand-fill text-brand font-bold hover:bg-brand-fill-2',

@@ -47,7 +47,7 @@ export const BookmarkItem = memo(function BookmarkItem({
 				}}
 				style={customStyles}
 				className={cn(
-					'relative flex flex-col items-center justify-between px-2 py-1.5 h-20 md:h-[5.9rem] w-full duration-300 border border-surface-3 cursor-pointer group rounded-widget shadow-xs transition-transform ease-in-out group-hover:scale-102',
+					'relative flex flex-col items-center justify-between px-2 py-1.5 h-20 md:h-[5.9rem] w-full duration-300 border border-surface-3 cursor-pointer group rounded-widget shadow-sm transition-transform ease-in-out group-hover:scale-102',
 					!bookmark.customBackground
 						? 'bg-surface-2 hover:bg-surface-3 text-fg bg-glass'
 						: ''

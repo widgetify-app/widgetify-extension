@@ -112,7 +112,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 								className={cn(
 									'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition-all cursor-pointer font-medium',
 									isCurrent
-										? 'bg-brand text-on-brand font-bold shadow-xs'
+										? 'bg-brand text-on-brand font-bold shadow-sm'
 										: 'bg-fill-2 hover:bg-surface-3 text-fg-muted'
 								)}
 							>
@@ -134,7 +134,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 						playsInline
 						className="object-cover w-full h-full"
 					/>
-					<div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-surface-veil backdrop-blur-md border border-line text-[11px] font-bold text-fg shadow-xs">
+					<div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-surface-veil backdrop-blur-md border border-line text-[11px] font-bold text-fg shadow-sm">
 						{activeTab.badge}
 					</div>
 				</div>

@@ -100,7 +100,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 								<li key={preset.id} className="flex">
 									<article
 										className={cn(
-											'group flex flex-col w-full gap-3 p-3.5 text-right border rounded-2xl bg-fill shadow-2xs transition-ui hover:shadow-md',
+											'group flex flex-col w-full gap-3 p-3.5 text-right border rounded-2xl bg-fill shadow-sm transition-ui hover:shadow-md',
 											preset.isVip
 												? 'border-vip-fill-2 hover:border-vip'
 												: 'border-line hover:border-brand-muted'
@@ -190,7 +190,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 													size="sm"
 													rounded="xl"
 													color="primary"
-													className="font-bold shadow-xs"
+													className="font-bold shadow-sm"
 													aria-label={`اعمال چیدمان ${preset.title}`}
 												>
 													<span>اعمال چیدمان</span>

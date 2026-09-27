@@ -154,7 +154,7 @@ function SearchFullContent() {
 				<form onSubmit={handleSubmit}>
 					<div
 						ref={searchRowRef}
-						className="relative flex items-center px-3 py-1.5 overflow-hidden transition-all duration-300 shadow-xs rounded-2xl bg-surface-2 group"
+						className="relative flex items-center px-3 py-1.5 overflow-hidden transition-all duration-300 shadow-sm rounded-2xl bg-surface-2 group"
 					>
 						<EngineSelector onSelected={onEngineSelected} />
 

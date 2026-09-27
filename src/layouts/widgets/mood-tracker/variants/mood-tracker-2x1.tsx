@@ -59,7 +59,7 @@ export function Mood2x1({
 								'flex flex-col items-center justify-center py-[4cqh] px-0.5 rounded-xl border transition-ui cursor-pointer',
 								'disabled:cursor-not-allowed disabled:opacity-60 focus-visible:focus-ring',
 								isSelected
-									? 'bg-brand-fill border-brand shadow-xs font-black'
+									? 'bg-brand-fill border-brand shadow-sm font-black'
 									: 'bg-surface-2 hover:bg-fill-2 border-transparent'
 							)}
 						>

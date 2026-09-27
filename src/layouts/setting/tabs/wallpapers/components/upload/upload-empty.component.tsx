@@ -34,7 +34,7 @@ export function UploadEmpty({
 			onDragLeave={onDragLeave}
 			onDrop={onDrop}
 			className={cn(
-				'relative p-3 overflow-hidden transition-all border shadow-xs rounded-2xl border-surface-3 bg-surface-2',
+				'relative p-3 overflow-hidden transition-all border shadow-sm rounded-2xl border-surface-3 bg-surface-2',
 				isDragging && 'border-brand bg-brand-fill'
 			)}
 		>

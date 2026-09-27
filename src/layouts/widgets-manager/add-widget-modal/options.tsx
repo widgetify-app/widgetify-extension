@@ -51,7 +51,7 @@ export function AddWidgetOptions({
 								className={cn(
 									'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs transition-all duration-150 cursor-pointer font-medium',
 									isCurrent
-										? 'bg-brand text-on-brand font-bold shadow-xs'
+										? 'bg-brand text-on-brand font-bold shadow-sm'
 										: 'bg-fill-2 hover:bg-surface-3 text-fg border border-line'
 								)}
 							>

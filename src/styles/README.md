@@ -20,8 +20,8 @@ a raw daisyUI base class (`bg-base-200`) and on a hex literal in a class.
 | `theme.css` | primitives: the palette ban, fonts, radius, motion, z-index, the vip brand colour. |
 | `theme/<name>.css` | one theme's daisyUI values, plus its channel block. |
 | `theme-colors.css` | the theme imports and the brand constants shared by every theme. |
-| `utilities.css` | utilities that are not colours: `elevation-*`, `rounded-card`, `rounded-widget`, `transition-ui`, `focus-ring`, `z-*`. |
-| `elevation.css` | the shadow ladder, heavier on dark themes. |
+| `utilities.css` | utilities `@theme` cannot generate: `transition-ui`, `focus-ring` and the `z-*` layers. |
+| `elevation.css` | the shadow scale `shadow-sm` … `shadow-xl`, and its colour per theme. |
 | `typography.css`, `legacy.css` | line heights; Chrome 109 fallbacks. |
 
 ## The vocabulary
@@ -114,7 +114,11 @@ declare the full channel set, and none may put a channel back inside the
 
 ## Shadows
 
-`elevation-sm|md|lg|xl` follow the theme; Tailwind's stock `shadow-*` are black
-at ~10% and are invisible on the dark surfaces. 148 raw `shadow-*` remain from
-before the ladder existed — the test ratchets that number so it can only go
-down. Prefer `elevation-*` in new code.
+`shadow-sm`, `shadow-md`, `shadow-lg` and `shadow-xl` are the only steps.
+`elevation.css` replaces Tailwind's scale with them, so the class names are the
+familiar ones but the values follow the theme: a light wash on light themes and
+a much heavier one on dark themes, where Tailwind's stock 10% black is
+invisible. They stay real Tailwind shadows, so they combine with `ring-*` on
+the same element and take a colour: `shadow-md shadow-brand-fill-2` is a brand
+glow. `shadow-xs`, `shadow-2xl` and `shadow-inner` compile to nothing, and a
+test rejects them.

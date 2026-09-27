@@ -42,7 +42,7 @@ export function UserCard({ user, className = '' }: UserCardProps) {
 		<div className={`${className}`}>
 			<div
 				className={
-					'flex flex-col overflow-hidden border border-surface-3 rounded-widget elevation-lg bg-surface-2 bg-glass'
+					'flex flex-col overflow-hidden border border-surface-3 rounded-widget shadow-lg bg-surface-2 bg-glass'
 				}
 			>
 				<div className="w-full h-16 bg-surface-3"></div>

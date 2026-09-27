@@ -183,12 +183,12 @@ export function NetworkCompactRow({
 						<img
 							src={countryIcon}
 							alt=""
-							className="object-cover w-8 h-8 rounded-full shadow-xs ring-2 ring-line"
+							className="object-cover w-8 h-8 rounded-full shadow-sm ring-2 ring-line"
 						/>
 					) : (
 						<div
 							aria-hidden="true"
-							className="flex items-center justify-center w-8 h-8 text-sm border rounded-full shadow-xs bg-fill-2 border-line"
+							className="flex items-center justify-center w-8 h-8 text-sm border rounded-full shadow-sm bg-fill-2 border-line"
 						>
 							🌐
 						</div>
@@ -196,7 +196,7 @@ export function NetworkCompactRow({
 
 					<span
 						className={cn(
-							'absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full ring-2 ring-surface shadow-xs',
+							'absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full ring-2 ring-surface shadow-sm',
 							isOnline ? 'bg-success' : 'bg-danger'
 						)}
 					/>
@@ -210,7 +210,7 @@ export function NetworkCompactRow({
 							onRefresh()
 						}}
 						aria-label="بارگذاری مجدد"
-						className="absolute flex items-center justify-center w-5 h-5 min-h-0 p-0 rounded-full shadow-xs cursor-pointer transition-ui opacity-0 group-hover:opacity-100 -top-1 -left-1 bg-surface-2 focus-visible:focus-ring"
+						className="absolute flex items-center justify-center w-5 h-5 min-h-0 p-0 rounded-full shadow-sm cursor-pointer transition-ui opacity-0 group-hover:opacity-100 -top-1 -left-1 bg-surface-2 focus-visible:focus-ring"
 						variant={'ghost'}
 					>
 						<Icon name="refresh" size={10} aria-hidden="true" />

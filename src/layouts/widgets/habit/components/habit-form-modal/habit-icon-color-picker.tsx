@@ -29,7 +29,7 @@ const EmojiItem = React.memo<EmojiItemProps>(({ emoji, isSelected, onSelect }) =
 			className={cn(
 				'w-7.5 h-7.5 flex items-center justify-center rounded-xl text-base transition-colors cursor-pointer select-none',
 				isSelected
-					? 'bg-brand text-on-brand shadow-xs'
+					? 'bg-brand text-on-brand shadow-sm'
 					: 'bg-transparent text-fg hover:bg-fill-2'
 			)}
 		>

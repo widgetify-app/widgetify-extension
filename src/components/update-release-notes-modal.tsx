@@ -170,7 +170,7 @@ export const UpdateReleaseNotesModal = ({
 						playsInline
 						className="object-cover w-full h-full"
 					/>
-					<div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-surface-veil backdrop-blur-md border border-line text-[11px] font-bold text-fg shadow-xs">
+					<div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-surface-veil backdrop-blur-md border border-line text-[11px] font-bold text-fg shadow-sm">
 						{currentStep.badge}
 					</div>
 				</div>

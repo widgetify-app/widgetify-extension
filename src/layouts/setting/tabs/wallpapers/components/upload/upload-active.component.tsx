@@ -21,14 +21,14 @@ export function UploadActive({
 	const isCloudWallpaper = Boolean(customWallpaper.src?.startsWith('http'))
 
 	return (
-		<div className="relative p-3 overflow-hidden transition-all border shadow-xs rounded-2xl border-surface-3 bg-surface-2">
+		<div className="relative p-3 overflow-hidden transition-all border shadow-sm rounded-2xl border-surface-3 bg-surface-2">
 			<div className="flex items-center justify-between gap-3">
 				<div className="flex items-center min-w-0 gap-3">
-					<div className="relative w-24 h-16 overflow-hidden shadow-xs rounded-xl shrink-0 bg-surface-2">
+					<div className="relative w-24 h-16 overflow-hidden shadow-sm rounded-xl shrink-0 bg-surface-2">
 						<MediaPreview customWallpaper={customWallpaper} />
 						<div className="absolute inset-0 bg-scrim-soft" />
 
-						<span className="absolute top-1.5 right-1.5 px-1.5 py-0.5 text-[10px] font-bold text-on-brand rounded-md bg-brand-hover backdrop-blur-xs shadow-xs">
+						<span className="absolute top-1.5 right-1.5 px-1.5 py-0.5 text-[10px] font-bold text-on-brand rounded-md bg-brand-hover backdrop-blur-xs shadow-sm">
 							{customWallpaper.type === 'IMAGE' ? 'عکس' : 'ویدیو'}
 						</span>
 

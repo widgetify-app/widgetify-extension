@@ -16,7 +16,7 @@ export function TourTooltip({
 		<div
 			{...tooltipProps}
 			dir="rtl"
-			className="w-[340px] max-w-[calc(100vw-32px)] bg-surface-2 backdrop-blur-md rounded-2xl shadow-2xl border border-line p-4 flex flex-col gap-3.5 text-right select-none"
+			className="w-[340px] max-w-[calc(100vw-32px)] bg-surface-2 backdrop-blur-md rounded-2xl shadow-xl border border-line p-4 flex flex-col gap-3.5 text-right select-none"
 		>
 			<div className="flex items-center justify-between gap-2 border-b border-line pb-2.5">
 				<div className="flex items-center gap-2">

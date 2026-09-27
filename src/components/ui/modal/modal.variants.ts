@@ -9,7 +9,7 @@ export const modalBoxVariants = cva(
 		'rounded-widget',
 		'p-3',
 		'md:p-4',
-		'elevation-lg',
+		'shadow-lg',
 	],
 	{
 		variants: {

@@ -77,7 +77,7 @@ export function Mood1x1({
 								'text-[13cqh] transition-ui cursor-pointer',
 								'disabled:cursor-not-allowed disabled:opacity-60 focus-visible:focus-ring',
 								isSelected
-									? 'bg-brand text-on-brand scale-110 shadow-xs'
+									? 'bg-brand text-on-brand scale-110 shadow-sm'
 									: 'hover:bg-fill-2 hover:scale-105 opacity-70 hover:opacity-100'
 							)}
 						>

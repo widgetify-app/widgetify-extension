@@ -1,22 +1,6 @@
 /* --------------------------------------------
    NOT COLOURS
    -------------------------------------------- */
-@utility elevation-sm {
-	box-shadow: var(--elevation-sm);
-}
-
-@utility elevation-md {
-	box-shadow: var(--elevation-md);
-}
-
-@utility elevation-lg {
-	box-shadow: var(--elevation-lg);
-}
-
-@utility elevation-xl {
-	box-shadow: var(--elevation-xl);
-}
-
 @utility transition-ui {
 	transition-property:
 		color, background-color, border-color, outline-color, box-shadow, opacity,

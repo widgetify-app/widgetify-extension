@@ -104,7 +104,7 @@ export function ManageActivityBottomSheet({
 							size="xs"
 							color="danger"
 							rounded="xl"
-							className="shadow left-1 group shadow-danger-fill-2"
+							className="shadow-sm left-1 group shadow-danger-fill-2"
 							loading={isRemoving}
 						>
 							<div className="flex items-center justify-center gap-1 text-on-danger leading-1">
@@ -157,7 +157,7 @@ export function ManageActivityBottomSheet({
 									</div>
 
 									<div className="flex items-center gap-2 mr-1 shrink-0">
-										<span className="w-5 h-5 text-sm leading-6 rounded-full shadow bg-brand-fill">
+										<span className="w-5 h-5 text-sm leading-6 rounded-full shadow-sm bg-brand-fill">
 											{RenderReactionContent(
 												GetContentFromReactions(
 													r.reaction,

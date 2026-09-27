@@ -52,7 +52,7 @@ export function VoiceSearchPortal({
 				style={portalStyles}
 				role="dialog"
 				aria-label="جستجوی صوتی"
-				className="z-20 p-5 overflow-hidden duration-300 shadow-2xl -mt-26 bg-surface-2 bg-glass rounded-2xl animate-in fade-in slide-in-from-top-2"
+				className="z-20 p-5 overflow-hidden duration-300 shadow-xl -mt-26 bg-surface-2 bg-glass rounded-2xl animate-in fade-in slide-in-from-top-2"
 			>
 				<div className="flex items-center justify-between px-1 mb-6">
 					<div className="flex items-center gap-2">

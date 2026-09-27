@@ -164,7 +164,7 @@ export function showToast(
 			<div
 				dir="rtl"
 				className={cn(
-					'w-full max-w-97.5 min-w-[320px] rounded-2xl p-3.5 flex items-center justify-between gap-3 shadow-2xl backdrop-blur-xl border select-none transition-all duration-200 pointer-events-auto',
+					'w-full max-w-97.5 min-w-[320px] rounded-2xl p-3.5 flex items-center justify-between gap-3 shadow-xl backdrop-blur-xl border select-none transition-all duration-200 pointer-events-auto',
 					theme.container,
 					t.visible
 						? 'opacity-100 translate-y-0 scale-100'
@@ -215,7 +215,7 @@ export function showPreviewToast(itemName: string, onCancel: () => void): string
 		(t) => (
 			<div
 				className={cn(
-					'pointer-events-auto rounded-2xl p-2.5 flex items-center justify-between gap-3 shadow-2xl backdrop-blur-xl border border-[rgba(255,255,255,0.1)] bg-[#18181b]/95 text-white select-none transition-all duration-200',
+					'pointer-events-auto rounded-2xl p-2.5 flex items-center justify-between gap-3 shadow-xl backdrop-blur-xl border border-[rgba(255,255,255,0.1)] bg-[#18181b]/95 text-white select-none transition-all duration-200',
 					t.visible
 						? 'opacity-100 translate-y-0 scale-100'
 						: 'opacity-0 -translate-y-2 scale-95'

@@ -161,7 +161,7 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 													}
 													className={cn(
 														'flex flex-col items-center justify-center w-full gap-1 p-3',
-														'border shadow-xs cursor-pointer rounded-2xl',
+														'border shadow-sm cursor-pointer rounded-2xl',
 														'transition-ui active:scale-98 hover:scale-95',
 														'focus-visible:focus-ring',
 														isSelected

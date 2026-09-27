@@ -7,7 +7,6 @@ const twMerge = extendTailwindMerge<'wg-backdrop'>({
 			'wg-backdrop': ['bg-glass'],
 
 			rounded: ['rounded-widget', 'rounded-card'],
-			shadow: ['elevation-sm', 'elevation-lg'],
 			transition: ['transition-ui'],
 			'outline-style': ['focus-ring'],
 			z: [

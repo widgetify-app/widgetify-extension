@@ -157,7 +157,7 @@ export function DatePicker({
 				onClick={() => handleDateClick(day, isCurrentMonth, isPrevMonth)}
 				className={`
 					relative p-0 rounded-2xl text-xs transition-all cursor-pointer
-					h-6 w-6 mx-auto flex items-center justify-center hover:scale-110 hover:shadow
+					h-6 w-6 mx-auto flex items-center justify-center hover:scale-110 hover:shadow-sm
 					${getDayTextStyle()}
 					${getHoverStyle()}
 					${isDayToday ? `${getTodayRingStyle()} scale-110 shadow-lg` : ''}

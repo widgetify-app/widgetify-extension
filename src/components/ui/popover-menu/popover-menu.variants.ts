@@ -4,7 +4,7 @@ export const popoverMenuVariants = cva([
 	'bg-surface-2',
 	'bg-glass',
 	'rounded-3xl',
-	'shadow-2xl',
+	'shadow-xl',
 	'border',
 	'border-line',
 	'p-2',

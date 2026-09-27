@@ -320,7 +320,7 @@ function CanvasWidgetOuterImpl({
 				className={cn(
 					'widget-outer absolute top-0 left-0 select-none rounded-widget',
 					isDragging
-						? 'z-50 shadow-2xl cursor-grabbing'
+						? 'z-50 shadow-xl cursor-grabbing'
 						: 'z-10 cursor-default',
 					!isDragging && 'widget-canvas-item-transition'
 				)}
