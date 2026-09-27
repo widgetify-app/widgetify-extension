@@ -17,7 +17,7 @@ a raw daisyUI base class (`bg-base-200`) and on a hex literal in a class.
 | file | holds |
 |---|---|
 | `tokens.css` | the colour vocabulary. Nothing else declares a colour name. |
-| `theme.css` | primitives: the palette ban, fonts, the small type steps, radius, motion, z-index, the vip brand colour. |
+| `theme.css` | primitives: the palette ban, fonts, the small type steps, radius, motion, the page-wide layers, the vip brand colour. |
 | `theme/<name>.css` | one theme's daisyUI values, plus its channel block. |
 | `theme-colors.css` | the theme imports and the brand constants shared by every theme. |
 | `utilities.css` | utilities `@theme` cannot generate: `transition-ui`, `focus-ring` and the `z-*` layers. |
@@ -130,3 +130,21 @@ Text below `text-xs` has three steps: `text-2xs` 11px · `text-3xs` 10px ·
 it exactly as the pixel values they replaced did. A test rejects `text-[10px]`
 and the other pixel sizes they cover. Widgets that scale with their container
 keep `cqh`/`cqw` sizes.
+
+## Layers
+
+Stacking inside a component uses plain `z-10`, `z-20` and so on.
+Anything that floats over the whole page takes a named layer:
+
+| layer | value | for |
+|---|---|---|
+| `z-float` | 50 | the bottom sheet, the navbar handle |
+| `z-nav` | 60 | the navbar |
+| `z-toolbar` | 70 | the canvas edit toolbar |
+| `z-popover` | 9999 | tooltips, context menus, select lists |
+| `z-dropdown` | 99999 | dropdowns, popover menus, the colour picker |
+
+Modals (from 1000, twenty per open modal) and toasts stack themselves in
+JavaScript and are not on this list. A portal that sets its z-index inline reads
+the same value with `zIndex: 'var(--z-dropdown)'`. A test rejects arbitrary
+page-wide values like `z-[9999]`.

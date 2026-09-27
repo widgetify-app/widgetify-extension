@@ -52,7 +52,7 @@ export function BottomSheet({
 				{isOpen && (
 					<motion.div
 						key="bottom-sheet-backdrop"
-						className={`fixed inset-0 z-50 ${isDragging ? '' : 'bg-scrim'}`}
+						className={`fixed inset-0 z-float ${isDragging ? '' : 'bg-scrim'}`}
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
@@ -64,7 +64,7 @@ export function BottomSheet({
 				{isOpen && (
 					<motion.div
 						key="bottom-sheet-panel"
-						className={`fixed left-0 right-0 ${isDragging ? 'z-10' : 'z-50'} bottom-16 min-w-2xl bg-surface-2 bg-glass rounded-t-3xl`}
+						className={`fixed left-0 right-0 ${isDragging ? 'z-10' : 'z-float'} bottom-16 min-w-2xl bg-surface-2 bg-glass rounded-t-3xl`}
 						style={{
 							height: sizes[size],
 							maxWidth: '390px',

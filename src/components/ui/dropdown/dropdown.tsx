@@ -222,7 +222,7 @@ export function Dropdown({
 						topLayer
 						key="dropdown-layer"
 						id={id}
-						style={{ zIndex: 99999 }}
+						style={{ zIndex: 'var(--z-dropdown)' }}
 					>
 						<Motion.div
 							ref={dropdownContentRef}
@@ -246,7 +246,7 @@ export function Dropdown({
 								top: dropdownPosition.top,
 								left: dropdownPosition.left,
 								visibility: isReady ? 'visible' : 'hidden',
-								zIndex: 99999,
+								zIndex: 'var(--z-dropdown)',
 							}}
 						>
 							<div

@@ -60,6 +60,11 @@ describe('one vocabulary', () => {
 		expect(offenders(pattern)).toEqual([])
 	})
 
+	it('puts page-wide layers on a named z-index', () => {
+		const pattern = /(?<![\w-])(?:[a-z0-9\/-]+:)*!?z-\[\d{3,}\]/
+		expect(offenders(pattern)).toEqual([])
+	})
+
 	it('never uses the OS-keyed dark:/light: variants', () => {
 		expect(offenders(/["'`\s](dark|light):[a-z]/)).toEqual([])
 	})

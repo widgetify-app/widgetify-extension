@@ -129,7 +129,7 @@ export function PopoverMenu({
 					top: coords.top,
 					left: coords.left,
 					width: typeof width === 'number' ? `${width}px` : width,
-					zIndex: 99999,
+					zIndex: 'var(--z-dropdown)',
 					pointerEvents: 'auto',
 				}}
 				className={cn(popoverMenuVariants(), className)}

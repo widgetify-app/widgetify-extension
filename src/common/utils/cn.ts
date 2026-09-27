@@ -9,17 +9,7 @@ const twMerge = extendTailwindMerge<'wg-backdrop'>({
 			rounded: ['rounded-widget', 'rounded-card'],
 			transition: ['transition-ui'],
 			'outline-style': ['focus-ring'],
-			z: [
-				'z-raised',
-				'z-sticky',
-				'z-drag',
-				'z-nav',
-				'z-backdrop',
-				'z-sheet',
-				'z-modal',
-				'z-popover',
-				'z-toast',
-			],
+			z: ['z-float', 'z-nav', 'z-toolbar', 'z-popover', 'z-dropdown'],
 		},
 	},
 })

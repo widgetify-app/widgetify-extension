@@ -146,7 +146,7 @@ export function NavbarLayout(): JSX.Element {
 				onClick={() => onToggleNavbar()}
 				aria-hidden={showHandle ? undefined : true}
 				tabIndex={showHandle ? 0 : -1}
-				className={`fixed z-50 bottom-0 left-1/2 -translate-x-1/2 w-28 py-2.5 bg-surface-2 bg-glass border-t border-x border-line rounded-t-3xl shadow-[0_-0px_30px_rgba(0,0,0,0.3)] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] hover:bg-fill-2 cursor-pointer group ${
+				className={`fixed z-float bottom-0 left-1/2 -translate-x-1/2 w-28 py-2.5 bg-surface-2 bg-glass border-t border-x border-line rounded-t-3xl shadow-[0_-0px_30px_rgba(0,0,0,0.3)] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] hover:bg-fill-2 cursor-pointer group ${
 					showHandle
 						? 'translate-y-0 opacity-100'
 						: 'translate-y-full opacity-0 pointer-events-none'
@@ -157,7 +157,7 @@ export function NavbarLayout(): JSX.Element {
 			</button>
 
 			<div
-				className={`fixed z-60  -translate-x-1/2 left-1/2 w-full px-2 md:px-8 lg:px-4 max-w-[1080px] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] 
+				className={`fixed z-nav  -translate-x-1/2 left-1/2 w-full px-2 md:px-8 lg:px-4 max-w-[1080px] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] 
 					${
 						showNavbar
 							? 'bottom-2 scale-100'
