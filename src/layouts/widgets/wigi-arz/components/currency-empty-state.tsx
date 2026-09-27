@@ -44,7 +44,7 @@ export const CurrencyEmptyState: React.FC<CurrencyEmptyStateProps> = ({
 			/>
 			<div className="flex flex-col shrink-0 gap-0.5">
 				<p className="text-xs font-bold text-fg">هنوز ارزی اضافه نکردی</p>
-				<p className="text-[11px] text-fg-muted">
+				<p className="text-2xs text-fg-muted">
 					برای مشاهده قیمت لحظه‌ای، ارزهای دلخواهت رو انتخاب کن
 				</p>
 			</div>

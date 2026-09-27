@@ -134,7 +134,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 						playsInline
 						className="object-cover w-full h-full"
 					/>
-					<div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-surface-veil backdrop-blur-md border border-line text-[11px] font-bold text-fg shadow-sm">
+					<div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-surface-veil backdrop-blur-md border border-line text-2xs font-bold text-fg shadow-sm">
 						{activeTab.badge}
 					</div>
 				</div>
@@ -148,7 +148,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 						<span className="text-xs font-bold text-fg">
 							{activeTab.title}
 						</span>
-						<p className="text-[11px] leading-relaxed text-fg-muted">
+						<p className="text-2xs leading-relaxed text-fg-muted">
 							{activeTab.description}
 						</p>
 					</div>
@@ -158,7 +158,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 				<div className="flex flex-col gap-2 p-3 border bg-fill rounded-2xl border-line">
 					{activeTab.tips.map((tip, idx) => (
 						<div key={tip} className="flex items-start gap-2.5">
-							<span className="w-5 h-5 rounded-full bg-brand-fill text-brand flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">
+							<span className="w-5 h-5 rounded-full bg-brand-fill text-brand flex items-center justify-center text-3xs font-bold shrink-0 mt-0.5">
 								{idx + 1}
 							</span>
 							<p className="text-xs leading-relaxed text-fg">{tip}</p>

@@ -47,7 +47,7 @@ export function PopoverMenuDivider() {
 
 export function PopoverMenuHeader({ children }: { children: React.ReactNode }) {
 	return (
-		<div className="px-2.5 py-1 text-[11px] font-semibold text-fg-muted flex items-center justify-between">
+		<div className="px-2.5 py-1 text-2xs font-semibold text-fg-muted flex items-center justify-between">
 			{children}
 		</div>
 	)

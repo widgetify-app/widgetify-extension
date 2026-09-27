@@ -96,14 +96,14 @@ export function CoinPackagePurchaseModal({
 						</div>
 					</div>
 					<div className="px-3 py-2.5">
-						<p className="text-[11px] text-center text-fg-muted">
+						<p className="text-2xs text-center text-fg-muted">
 							پس از تایید، به درگاه پرداخت منتقل می‌شوید
 						</p>
 					</div>
 				</div>
 
 				<div className="px-3 py-2.5 rounded-2xl border border-info-fill-2 bg-info-fill">
-					<p className="text-[11px] text-info">
+					<p className="text-2xs text-info">
 						💡 سکه‌های خریداری شده بلافاصله پس از پرداخت موفق به حساب شما اضافه
 						می‌شوند.
 					</p>

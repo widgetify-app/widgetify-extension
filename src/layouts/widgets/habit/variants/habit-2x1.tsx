@@ -96,7 +96,7 @@ export function HabitCompactWide({
 					<span className="block text-xs font-bold truncate text-fg">
 						عادت‌های خوب
 					</span>
-					<span className="block text-[10px] font-medium truncate text-brand">
+					<span className="block text-3xs font-medium truncate text-brand">
 						افزودن عادت +
 					</span>
 				</span>
@@ -197,7 +197,7 @@ export function HabitCompactWide({
 					<span className="block text-xs font-bold truncate transition-colors text-fg group-hover/title:text-brand">
 						{selectedHabit.title}
 					</span>
-					<span className="block text-[9px] font-medium truncate text-fg-muted">
+					<span className="block text-4xs font-medium truncate text-fg-muted">
 						{value} از {target} امروز
 					</span>
 				</button>
@@ -232,7 +232,7 @@ export function HabitCompactWide({
 							aria-label={habit.title}
 							title={habit.title}
 							className={cn(
-								'flex items-center justify-center text-[9px] rounded-full w-[18px] h-[18px] shrink-0 transition-ui cursor-pointer',
+								'flex items-center justify-center text-4xs rounded-full w-[18px] h-[18px] shrink-0 transition-ui cursor-pointer',
 								'focus-visible:focus-ring',
 								isSelected && 'scale-125'
 							)}

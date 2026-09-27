@@ -87,7 +87,7 @@ export const HabitIconColorPicker: React.FC<HabitIconColorPickerProps> = React.m
 									onClick={() => setActiveCategory(cat.id)}
 									key={cat.id}
 									selected={activeCategory === cat.id}
-									className="py-1! px-1.5! border-none text-[11px]"
+									className="py-1! px-1.5! border-none text-2xs"
 								>
 									{cat.label}
 								</Chip>

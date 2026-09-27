@@ -50,7 +50,7 @@ export function BookmarkSuggestions({ onSelect }: BookmarkSuggestionsProps) {
 									/>
 								)}
 							</div>
-							<p className="w-full text-[11px] font-medium truncate text-fg">
+							<p className="w-full text-2xs font-medium truncate text-fg">
 								{suggestion.title}
 							</p>
 						</button>

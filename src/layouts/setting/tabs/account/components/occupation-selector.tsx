@@ -43,7 +43,7 @@ export const OccupationSelector = ({
 						return (
 							<Chip
 								selected={isActive}
-								className="text-[11px]"
+								className="text-2xs"
 								key={occupation.id}
 								onClick={() => handleSelect(occupation.id)}
 							>

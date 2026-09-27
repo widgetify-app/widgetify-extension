@@ -85,13 +85,13 @@ export function ReligiousTime({ currentDate }: ReligiousTimeProps) {
 						className="text-fg-muted"
 						aria-hidden="true"
 					/>
-					<p className="text-[11px] leading-tight text-fg-muted">
+					<p className="text-2xs leading-tight text-fg-muted">
 						اوقات شرعی دریافت نشد
 					</p>
 					<button
 						type="button"
 						onClick={() => refetch()}
-						className="px-2.5 py-1 text-[11px] font-bold rounded-lg cursor-pointer text-fg bg-fill-2 transition-ui hover:bg-fill-3 focus-visible:focus-ring"
+						className="px-2.5 py-1 text-2xs font-bold rounded-lg cursor-pointer text-fg bg-fill-2 transition-ui hover:bg-fill-3 focus-visible:focus-ring"
 					>
 						تلاش دوباره
 					</button>
@@ -107,7 +107,7 @@ export function ReligiousTime({ currentDate }: ReligiousTimeProps) {
 								<div className="mb-1 text-brand">
 									<Icon name={box.icon} size={18} aria-hidden="true" />
 								</div>
-								<span className="text-[8px] font-black opacity-60 mb-0.5 whitespace-nowrap uppercase">
+								<span className="text-4xs font-black opacity-60 mb-0.5 whitespace-nowrap uppercase">
 									{box.title}
 								</span>
 								<span className="text-[12px] font-black text-fg">
@@ -121,14 +121,14 @@ export function ReligiousTime({ currentDate }: ReligiousTimeProps) {
 						<div className="flex flex-col items-center gap-1 p-1 bg-surface-2 hover:bg-fill-2 border border-surface-3  rounded-2xl">
 							<div className="flex items-center gap-1.5 mb-0.5">
 								<div className="w-1.5 h-1.5 rounded-full bg-brand-fill-2" />
-								<span className="text-[9px] font-black text-fg">
+								<span className="text-4xs font-black text-fg">
 									ذکر روز {weekDay}
 								</span>
 							</div>
-							<div className="text-[14px] font-black text-fg text-center leading-tight">
+							<div className="text-sm font-black text-fg text-center leading-tight">
 								{dailyZikr.zikr}
 							</div>
-							<div className="text-[10px] font-bold text-fg-muted text-center truncate w-full px-2">
+							<div className="text-3xs font-bold text-fg-muted text-center truncate w-full px-2">
 								{dailyZikr.meaning}
 							</div>
 						</div>

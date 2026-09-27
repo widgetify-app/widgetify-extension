@@ -56,10 +56,10 @@ export const NewsItem = ({
 			)}
 
 			<span className="flex flex-col justify-center flex-1 min-w-0 py-0.5">
-				<span className="text-[11.5px] font-medium leading-[1.4] text-fg group-hover:text-brand transition-colors line-clamp-2">
+				<span className="text-2xs font-medium leading-[1.4] text-fg group-hover:text-brand transition-colors line-clamp-2">
 					{title}
 				</span>
-				<span className="flex items-center gap-1 mt-0.5 text-[10px] text-fg-muted">
+				<span className="flex items-center gap-1 mt-0.5 text-3xs text-fg-muted">
 					<span className="truncate max-w-[100px]">{source.name}</span>
 					<span aria-hidden="true" className="opacity-50">
 						·

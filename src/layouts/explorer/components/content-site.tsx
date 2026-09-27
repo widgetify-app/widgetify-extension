@@ -36,7 +36,7 @@ export function RenderContentSite({ link }: SiteProp) {
 
 			{badge && (
 				<span
-					className="absolute top-1 -left-1 rounded-r-md text-center z-20 truncate px-1.5 py-0.2 text-[9px] font-medium max-w-20 border border-image-line shadow-sm"
+					className="absolute top-1 -left-1 rounded-r-md text-center z-20 truncate px-1.5 py-0.2 text-4xs font-medium max-w-20 border border-image-line shadow-sm"
 					style={{
 						backgroundColor: link.badgeColor || 'var(--color-primary)',
 						color: '#fff',
@@ -54,7 +54,7 @@ export function RenderContentSite({ link }: SiteProp) {
 				/>
 			</div>
 
-			<span className="text-[11px] font-medium text-center truncate max-w-full text-fg-muted transition-colors duration-200 group-hover:text-fg-strong">
+			<span className="text-2xs font-medium text-center truncate max-w-full text-fg-muted transition-colors duration-200 group-hover:text-fg-strong">
 				{link.name}
 			</span>
 		</a>

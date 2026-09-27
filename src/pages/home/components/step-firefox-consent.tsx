@@ -38,7 +38,7 @@ export const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) =>
 			<div className="space-y-1">
 				<div className="flex items-center justify-between">
 					<h3 className="text-xl font-bold text-fg">حریم خصوصی</h3>
-					<span className="text-[11px] font-medium px-2 py-0.5 rounded-lg bg-fill-2 text-fg-muted">
+					<span className="text-2xs font-medium px-2 py-0.5 rounded-lg bg-fill-2 text-fg-muted">
 						Privacy Notice
 					</span>
 				</div>
@@ -63,7 +63,7 @@ export const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) =>
 				/>
 			</div>
 
-			<div className="flex items-center justify-between text-[11px] text-fg-muted pt-1">
+			<div className="flex items-center justify-between text-2xs text-fg-muted pt-1">
 				<span>می‌تونی بعداً توی تنظیمات این موارد رو تغییر بدی</span>
 				<a
 					href="https://widgetify.ir/privacy"

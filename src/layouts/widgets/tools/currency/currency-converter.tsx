@@ -100,7 +100,7 @@ export const CurrencyConverter: React.FC = () => {
 			</div>
 
 			<div className="flex flex-col gap-2 px-1 mt-1">
-				<div className="flex justify-between items-center text-[11px] font-bold opacity-50">
+				<div className="flex justify-between items-center text-2xs font-bold opacity-50">
 					<span>ارزش به تومان:</span>
 					<span className="text-[12px] font-black text-fg">
 						{fromCurrencyData
@@ -113,27 +113,27 @@ export const CurrencyConverter: React.FC = () => {
 				<div className="flex items-center justify-between p-3.5 bg-surface-2 rounded-2xl border border-surface-3">
 					<div className="flex gap-5">
 						<div className="flex flex-col gap-0.5">
-							<span className="text-[8px] font-black opacity-30 uppercase">
+							<span className="text-4xs font-black opacity-30 uppercase">
 								{fromCurrency}
 							</span>
-							<span className="text-[11px] font-black opacity-70">
+							<span className="text-2xs font-black opacity-70">
 								{fromCurrencyData
 									? formatNumber(fromCurrencyData.rialPrice)
 									: 0}
 							</span>
 						</div>
 						<div className="flex flex-col gap-0.5">
-							<span className="text-[8px] font-black opacity-30 uppercase">
+							<span className="text-4xs font-black opacity-30 uppercase">
 								{toCurrency}
 							</span>
-							<span className="text-[11px] font-black opacity-70">
+							<span className="text-2xs font-black opacity-70">
 								{toCurrencyData
 									? formatNumber(toCurrencyData.rialPrice)
 									: 0}
 							</span>
 						</div>
 					</div>
-					<div className="flex items-center gap-1.5 text-[11px] font-black text-brand bg-fill px-2 py-1 rounded-lg">
+					<div className="flex items-center gap-1.5 text-2xs font-black text-brand bg-fill px-2 py-1 rounded-lg">
 						<Icon
 							name="info"
 							size={14}

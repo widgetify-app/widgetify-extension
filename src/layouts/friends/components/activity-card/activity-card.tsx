@@ -44,7 +44,7 @@ export const ActivityCard = ({
 				<div className="relative w-24 h-16">
 					<div
 						className={`
-							w-full h-full text-[10px] px-2 py-1 rounded-2xl 
+							w-full h-full text-3xs px-2 py-1 rounded-2xl 
 							leading-tight text-center overflow-hidden transition-all
 							bg-surface-2 border border-line shadow-sm text-fg-muted
 							${onClick ? 'group-hover:scale-95 cursor-pointer z-10' : ''}

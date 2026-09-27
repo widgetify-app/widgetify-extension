@@ -45,7 +45,7 @@ export const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }) => {
 						<Icon name="calendarDays" size={10} aria-hidden="true" />
 						<time
 							dateTime={createdAt.clone().locale('en').format('YYYY-MM-DD')}
-							className="text-[10px]"
+							className="text-3xs"
 						>
 							{createdAt.format('jD jMMM')}
 						</time>
@@ -55,7 +55,7 @@ export const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }) => {
 				<span className="block px-2.5 pb-2.5 pt-0 w-full">
 					<span
 						className={cn(
-							'block text-[11.5px] leading-relaxed text-shadow-2xs whitespace-pre-wrap wrap-break-word font-medium',
+							'block text-2xs leading-relaxed text-shadow-2xs whitespace-pre-wrap wrap-break-word font-medium',
 							!isExpanded && shouldShowReadMore && 'line-clamp-3'
 						)}
 					>

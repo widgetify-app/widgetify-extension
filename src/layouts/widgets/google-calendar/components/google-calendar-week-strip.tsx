@@ -59,7 +59,7 @@ export const GoogleCalendarWeekStrip: React.FC<GoogleCalendarWeekStripProps> = (
 							<span
 								aria-hidden="true"
 								className={cn(
-									'text-[9px] leading-none mb-1',
+									'text-4xs leading-none mb-1',
 									isDaySelected
 										? 'opacity-80'
 										: isDayToday

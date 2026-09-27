@@ -13,7 +13,7 @@ export function TodosEmpty() {
 				اینجا فعلا خیلی آرومه...
 			</p>
 
-			<p className="text-center text-[.65rem] leading-5 text-fg opacity-75">
+			<p className="text-center text-3xs leading-5 text-fg opacity-75">
 				هنوز هیچ تسکی نداری
 				<br />
 				وقتشه یه چیزی اضافه کنی، مثلا:

@@ -15,7 +15,7 @@ export const textInputVariants = cva(
 	{
 		variants: {
 			size: {
-				xs: 'h-6 px-2 text-[0.6875rem]',
+				xs: 'h-6 px-2 text-2xs',
 				sm: 'h-8 px-3 text-xs',
 				md: 'h-10 px-3 text-sm',
 				lg: 'h-12 px-4 text-lg',

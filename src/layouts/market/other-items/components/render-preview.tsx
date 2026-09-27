@@ -45,7 +45,7 @@ export function RenderPreview({ item }: RenderPreviewProps) {
 						نمونه متن
 					</p>
 					<p
-						className="text-[10px] text-fg-muted mt-0.5"
+						className="text-3xs text-fg-muted mt-0.5"
 						style={{ fontFamily: item.itemValue }}
 					>
 						{item.itemValue}

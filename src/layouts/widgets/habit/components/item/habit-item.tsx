@@ -76,7 +76,7 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 						<span className="block text-xs font-bold truncate text-fg">
 							{habit.title}
 						</span>
-						<span className="mt-0.5 block text-[9px] truncate text-fg-muted">
+						<span className="mt-0.5 block text-4xs truncate text-fg-muted">
 							{formatHabitGoal(habit)}
 						</span>
 					</span>

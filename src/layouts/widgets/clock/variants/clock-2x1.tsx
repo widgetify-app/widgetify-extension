@@ -22,10 +22,10 @@ export function Clock2x1({ time, timezoneLabel, hours, minutes }: Clock2x1Props)
 			</div>
 
 			<div className="flex flex-col items-end justify-center text-left pl-1">
-				<div className="px-2 py-0.5 rounded-lg bg-fill text-[11px] text-fg font-bold">
+				<div className="px-2 py-0.5 rounded-lg bg-fill text-2xs text-fg font-bold">
 					{timezoneLabel}
 				</div>
-				<span className="text-[10px] text-fg-muted mt-1">
+				<span className="text-3xs text-fg-muted mt-1">
 					{time.toLocaleDateString('fa-IR', {
 						weekday: 'short',
 						month: 'short',

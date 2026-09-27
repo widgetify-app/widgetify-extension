@@ -48,10 +48,10 @@ export function CurrencyCompactSquare({
 						draggable={false}
 					/>
 				</span>
-				<span className="mt-1.5 text-[11px] font-bold text-fg leading-tight transition-colors duration-200 group-hover:text-brand">
+				<span className="mt-1.5 text-2xs font-bold text-fg leading-tight transition-colors duration-200 group-hover:text-brand">
 					انتخاب ارز
 				</span>
-				<span className="mt-0.5 text-[9px] text-fg-muted leading-tight font-medium">
+				<span className="mt-0.5 text-4xs text-fg-muted leading-tight font-medium">
 					کلیک کن
 				</span>
 			</button>

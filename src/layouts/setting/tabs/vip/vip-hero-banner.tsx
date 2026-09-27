@@ -74,7 +74,7 @@ export function VipHeroBanner() {
 								<h4 className="text-xs font-bold text-fg leading-tight">
 									{feature.title}
 								</h4>
-								<p className="text-[11px] text-fg-muted leading-relaxed">
+								<p className="text-2xs text-fg-muted leading-relaxed">
 									{feature.description}
 								</p>
 							</div>

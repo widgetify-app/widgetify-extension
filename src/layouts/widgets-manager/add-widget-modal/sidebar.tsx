@@ -111,7 +111,7 @@ export function AddWidgetSidebar({
 								{def.canDuplicate ? (
 									<span
 										className={cn(
-											'text-[10px] px-1.5 py-0.5 rounded-lg font-medium flex items-center gap-1',
+											'text-3xs px-1.5 py-0.5 rounded-lg font-medium flex items-center gap-1',
 											isActive
 												? 'bg-brand-fill text-brand'
 												: 'bg-surface-3 text-fg-muted'
@@ -122,7 +122,7 @@ export function AddWidgetSidebar({
 										</span>
 									</span>
 								) : isActive ? (
-									<span className="text-[10px] px-1.5 py-0.5 rounded-lg bg-surface-3 text-fg-muted font-medium">
+									<span className="text-3xs px-1.5 py-0.5 rounded-lg bg-surface-3 text-fg-muted font-medium">
 										فعال
 									</span>
 								) : null}

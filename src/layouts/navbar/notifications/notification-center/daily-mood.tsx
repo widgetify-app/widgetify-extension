@@ -81,7 +81,7 @@ export function DailyMoodNotification({ className }: Prop) {
 		>
 			<div className="flex-1 min-w-0 ">
 				<div className="flex items-center justify-between">
-					<h4 className="text-[10px] font-medium truncate text-fg">
+					<h4 className="text-3xs font-medium truncate text-fg">
 						{GetUserFirstName(user?.name || '')}، امروز حالت چطوره؟
 					</h4>
 					<button
@@ -118,7 +118,7 @@ export function DailyMoodNotification({ className }: Prop) {
 										<div className="text-lg leading-none">
 											{option.emoji}
 										</div>
-										<div className="text-[10px] leading-tight">
+										<div className="text-3xs leading-tight">
 											{option.label}
 										</div>
 									</div>

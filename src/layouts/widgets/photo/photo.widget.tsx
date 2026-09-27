@@ -163,7 +163,7 @@ export function PhotoWidget({
 								className="text-fg-muted"
 								aria-hidden="true"
 							/>
-							<span className="text-[11px] leading-tight text-fg-muted">
+							<span className="text-2xs leading-tight text-fg-muted">
 								عکس بارگذاری نشد، یکی دیگه انتخاب کن
 							</span>
 						</span>

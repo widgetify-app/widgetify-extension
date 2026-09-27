@@ -233,13 +233,13 @@ export const ProfileDisplay = () => {
 										onClick={() => {}}
 										selected={true}
 										key={i.id}
-										className="p-0! px-1.5! h-6 text-[10px]"
+										className="p-0! px-1.5! h-6 text-3xs"
 									>
 										{i.label}
 									</Chip>
 								))}
 								{user.interests.length > 2 && (
-									<span className="flex items-center justify-center px-1.5 h-6 text-[10px] font-medium rounded-full bg-surface-3 text-fg-muted">
+									<span className="flex items-center justify-center px-1.5 h-6 text-3xs font-medium rounded-full bg-surface-3 text-fg-muted">
 										+{user.interests.length - 2}
 									</span>
 								)}
@@ -342,7 +342,7 @@ const DisplayRow = ({
 						<span className="absolute w-2 h-2 rounded-full left-0.5 -top-0.5 bg-danger animate-pulse"></span>
 					)}
 				</div>
-				<span className="text-[10px] font-medium opacity-60">{label}</span>
+				<span className="text-3xs font-medium opacity-60">{label}</span>
 			</div>
 			<div
 				className={`relative flex justify-end text-xs w-fit pr-1 font-semibold text-fg ${isLtr ? 'dir-ltr' : 'dir-rtl'}`}

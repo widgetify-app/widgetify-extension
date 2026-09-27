@@ -46,16 +46,16 @@ export const GoogleCalendarNowCard: React.FC<GoogleCalendarNowCardProps> = ({
 						<span className="absolute inline-flex w-full h-full rounded-full opacity-70 animate-ping bg-brand" />
 						<span className="relative inline-flex w-2 h-2 rounded-full bg-brand" />
 					</span>
-					<span className="text-[10px] font-bold text-brand">
+					<span className="text-3xs font-bold text-brand">
 						در حال برگزاری
 					</span>
-					<span className="text-[10px] text-fg-muted tabular-nums">
+					<span className="text-3xs text-fg-muted tabular-nums">
 						· {minsRemaining} دقیقه مانده
 					</span>
 				</div>
 
 				{event.hangoutLink && (
-					<span className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-brand text-on-brand text-[9px] font-bold shrink-0">
+					<span className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-brand text-on-brand text-4xs font-bold shrink-0">
 						<Icon name="videoCamera" size={10} aria-hidden="true" />
 						<span>ورود به جلسه</span>
 					</span>
@@ -64,7 +64,7 @@ export const GoogleCalendarNowCard: React.FC<GoogleCalendarNowCardProps> = ({
 
 			<p className="text-xs font-bold truncate text-fg">{title}</p>
 
-			<div className="flex items-center justify-between text-[10px] text-fg-muted tabular-nums">
+			<div className="flex items-center justify-between text-3xs text-fg-muted tabular-nums">
 				<span>
 					<time dateTime={toDateTimeAttr(start)}>{startTimeStr}</time> -{' '}
 					<time dateTime={toDateTimeAttr(end)}>{endTimeStr}</time>

@@ -55,7 +55,7 @@ export function MarketItemCard({
 
 				{/* Type badge */}
 				<div className="absolute top-2 right-2">
-					<span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-surface-veil backdrop-blur-sm border border-line text-[9px] text-fg-faint font-medium">
+					<span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-surface-veil backdrop-blur-sm border border-line text-4xs text-fg-faint font-medium">
 						{getItemTypeEmoji(item.type)}{' '}
 						{TYPE_LABELS[item.type] || item.type}
 					</span>
@@ -64,7 +64,7 @@ export function MarketItemCard({
 				{!canPreview && (
 					<button
 						onClick={handlePreview}
-						className="absolute bottom-1.5 left-1.5 flex items-center gap-1 px-2 py-1 rounded-lg bg-surface-veil border border-line text-fg-muted hover:text-brand transition-colors text-[10px] font-medium backdrop-blur-sm cursor-pointer opacity-0 group-hover:opacity-100"
+						className="absolute bottom-1.5 left-1.5 flex items-center gap-1 px-2 py-1 rounded-lg bg-surface-veil border border-line text-fg-muted hover:text-brand transition-colors text-3xs font-medium backdrop-blur-sm cursor-pointer opacity-0 group-hover:opacity-100"
 					>
 						<Icon name="outlineEye" size={10} />
 						<span>پیش‌نمایش</span>
@@ -74,7 +74,7 @@ export function MarketItemCard({
 
 			{/* Card body */}
 			<div className="flex flex-col flex-1 px-3 py-2.5 gap-2">
-				<p className="text-[12px] font-semibold text-fg-strong leading-snug truncate">
+				<p className="text-xs font-semibold text-fg-strong leading-snug truncate">
 					{item.name}
 				</p>
 
@@ -82,7 +82,7 @@ export function MarketItemCard({
 					<ItemPrice price={item.price} />
 
 					{isOwned ? (
-						<span className="text-[10px] text-success font-medium flex items-center gap-1">
+						<span className="text-3xs text-success font-medium flex items-center gap-1">
 							<Icon name="check" size={10} />
 							خریداری‌شده
 						</span>
@@ -92,7 +92,7 @@ export function MarketItemCard({
 							onClick={handleBuy}
 							rounded={'lg'}
 							color={'primary'}
-							className="h-6 px-2.5 rounded-lg text-[11px] active:scale-95 transition-all"
+							className="h-6 px-2.5 rounded-lg text-2xs active:scale-95 transition-all"
 						>
 							<div className="flex items-center gap-1">
 								<Icon name="shoppingCart" size={10} />

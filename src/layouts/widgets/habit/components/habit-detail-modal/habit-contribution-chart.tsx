@@ -203,7 +203,7 @@ export function HabitContributionChart({
 									className="relative w-3.5 md:w-4 shrink-0"
 								>
 									{week.monthLabel && (
-										<span className="absolute top-0 right-0 text-[9px] font-medium leading-4 whitespace-nowrap text-fg-muted">
+										<span className="absolute top-0 right-0 text-4xs font-medium leading-4 whitespace-nowrap text-fg-muted">
 											{week.monthLabel}
 										</span>
 									)}
@@ -212,7 +212,7 @@ export function HabitContributionChart({
 						</div>
 
 						<div className="flex gap-1.5 items-start">
-							<div className="flex flex-col gap-1 shrink-0 text-[10px] text-fg-muted font-medium">
+							<div className="flex flex-col gap-1 shrink-0 text-3xs text-fg-muted font-medium">
 								{DISPLAY_WEEKDAYS.map((dayName) => (
 									<div
 										key={dayName}
@@ -285,7 +285,7 @@ export function HabitContributionChart({
 				</div>
 
 				<div className="flex flex-wrap items-center justify-between gap-2 mt-3 pt-2.5 border-t border-line text-xs">
-					<div className="min-h-5 flex items-center gap-1.5 text-fg-muted text-[11px]">
+					<div className="min-h-5 flex items-center gap-1.5 text-fg-muted text-2xs">
 						{hoveredDay ? (
 							<>
 								<span className="font-semibold text-fg">
@@ -308,7 +308,7 @@ export function HabitContributionChart({
 						)}
 					</div>
 
-					<div className="flex items-center gap-1 text-[10px] text-fg-muted shrink-0">
+					<div className="flex items-center gap-1 text-3xs text-fg-muted shrink-0">
 						<span>کمتر</span>
 						<div className="w-2.5 h-2.5 rounded-[2px] bg-fill-2" />
 						<div

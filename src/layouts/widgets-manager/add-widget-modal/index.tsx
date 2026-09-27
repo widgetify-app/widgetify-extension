@@ -267,7 +267,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 												<h3 className="text-sm font-bold text-fg">
 													{selectedDef.label}
 												</h3>
-												<p className="text-[11px] text-fg-muted">
+												<p className="text-2xs text-fg-muted">
 													{selectedDef.canDuplicate
 														? 'امکان افزودن چندین نمونه از این ویجت وجود دارد'
 														: 'ویجت تکی صفحه اصلی'}

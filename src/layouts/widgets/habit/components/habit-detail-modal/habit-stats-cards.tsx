@@ -79,9 +79,9 @@ function StatCard({ label, value, suffix, hint }: StatCardProps) {
 			<div className="mb-1 text-xs font-medium text-fg-muted">{label}</div>
 			<div className="flex items-baseline gap-1">
 				<span className="text-lg font-bold text-fg">{value}</span>
-				{suffix && <span className="text-[11px] text-fg-muted">{suffix}</span>}
+				{suffix && <span className="text-2xs text-fg-muted">{suffix}</span>}
 			</div>
-			{hint && <div className="text-[10px] text-fg-muted truncate">{hint}</div>}
+			{hint && <div className="text-3xs text-fg-muted truncate">{hint}</div>}
 		</div>
 	)
 }

@@ -49,13 +49,13 @@ export const WeatherCompactRow: React.FC<WeatherCompactRowProps> = ({
 						</span>
 						<span className="text-xs font-bold text-fg">{cityName}</span>
 					</div>
-					<span className="text-[11px] text-fg-muted font-medium mt-0.5 truncate max-w-36">
+					<span className="text-2xs text-fg-muted font-medium mt-0.5 truncate max-w-36">
 						{description}
 					</span>
 				</div>
 			</div>
 
-			<dl className="flex flex-col items-end gap-1 text-[10px] text-fg-muted">
+			<dl className="flex flex-col items-end gap-1 text-3xs text-fg-muted">
 				<div className="flex items-center gap-1">
 					<dt className="flex items-center">
 						<Icon name="wind" className="w-3 h-3" aria-hidden="true" />

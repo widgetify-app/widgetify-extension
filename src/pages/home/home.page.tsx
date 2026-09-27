@@ -18,7 +18,7 @@ const steps: Step[] = [
 					خلوت کردن فضای مرورگر
 				</h4>
 
-				<p className="text-[12px] leading-5 text-fg-muted font-medium">
+				<p className="text-xs leading-5 text-fg-muted font-medium">
 					برای مخفی کردن این نوار، کافیه روش{' '}
 					<span className="font-black text-danger">راست‌کلیک</span> کنی و این
 					گزینه رو بزنی:
@@ -33,7 +33,7 @@ const steps: Step[] = [
 				</div>
 
 				<div className="p-1.5 border border-dashed rounded-lg bg-fill border-line">
-					<code className="text-[11px] font-bold text-fg-muted">
+					<code className="text-2xs font-bold text-fg-muted">
 						"Hide footer on New Tab page"
 					</code>
 				</div>
@@ -54,7 +54,7 @@ const steps: Step[] = [
 						className="object-cover w-full h-full"
 					/>
 				</div>
-				<p className="text-[12px] leading-relaxed text-fg font-medium">
+				<p className="text-xs leading-relaxed text-fg font-medium">
 					برای تغییر اندازه، جابه‌جایی، تغییر استایل، کپی یا حذف هر ویجت، کافیه
 					کافیه روش راست‌کلیک کنی تا منوی اختصاصی اون باز بشه
 				</p>

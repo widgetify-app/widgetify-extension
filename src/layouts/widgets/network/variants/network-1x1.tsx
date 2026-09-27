@@ -64,7 +64,7 @@ export function NetworkCompactSquare({
 					className="text-fg-muted"
 					aria-hidden="true"
 				/>
-				<span className="text-[10px] leading-tight text-fg-muted">
+				<span className="text-3xs leading-tight text-fg-muted">
 					برای دیدن وضعیت شبکه وارد حسابت شو
 				</span>
 			</div>
@@ -99,7 +99,7 @@ export function NetworkCompactSquare({
 					</Button>
 				)}
 				<div className="flex items-center min-w-0 gap-1 ms-auto">
-					<span className="text-[10px] font-bold text-fg truncate max-w-11.25">
+					<span className="text-3xs font-bold text-fg truncate max-w-11.25">
 						{city || 'شبکه'}
 					</span>
 					{countryIcon ? (
@@ -134,7 +134,7 @@ export function NetworkCompactSquare({
 						>
 							{ping !== null ? <data value={ping}>{ping}</data> : '--'}
 						</span>
-						<span className="text-[11px] font-bold text-fg-muted">ms</span>
+						<span className="text-2xs font-bold text-fg-muted">ms</span>
 					</div>
 				)}
 			</div>
@@ -152,7 +152,7 @@ export function NetworkCompactSquare({
 						disabled={!ip}
 						aria-label={ip ? `کپی آدرس ${ip}` : undefined}
 						className={cn(
-							'text-[10px] font-medium text-fg-muted truncate max-w-full',
+							'text-3xs font-medium text-fg-muted truncate max-w-full',
 							ip
 								? 'hover:text-brand active:scale-95 cursor-pointer transition-ui focus-visible:focus-ring'
 								: 'cursor-default'
@@ -162,7 +162,7 @@ export function NetworkCompactSquare({
 						{ip || isp || 'آنلاین'}
 					</button>
 				) : (
-					<span className="text-[10px] font-medium text-danger truncate max-w-full">
+					<span className="text-3xs font-medium text-danger truncate max-w-full">
 						عدم دسترسی
 					</span>
 				)}

@@ -103,7 +103,7 @@ export function AddWidgetOptions({
 								/>
 							)}
 							{isDefault && !isCurrentSize && !isVipBadge && (
-								<span className="text-[9px] text-fg-muted mr-1">
+								<span className="text-4xs text-fg-muted mr-1">
 									(پیش‌فرض)
 								</span>
 							)}

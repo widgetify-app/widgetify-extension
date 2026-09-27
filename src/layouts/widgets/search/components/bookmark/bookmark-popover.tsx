@@ -129,7 +129,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 											size="sm"
 											onClick={handleGoBack}
 											rounded="xl"
-											className="text-[10px] flex items-center gap-1!"
+											className="text-3xs flex items-center gap-1!"
 										>
 											<Icon
 												name="chevronRight"

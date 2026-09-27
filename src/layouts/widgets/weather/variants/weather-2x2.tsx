@@ -61,7 +61,7 @@ export const Weather2x2: React.FC<Weather2x2Props> = ({
 								{description || 'صاف'}
 							</span>
 
-							<dl className="flex items-center gap-2 text-[10px] font-medium text-fg-muted">
+							<dl className="flex items-center gap-2 text-3xs font-medium text-fg-muted">
 								<div className="flex items-center gap-0.5">
 									<dt className="flex items-center">
 										<Icon
@@ -110,7 +110,7 @@ export const Weather2x2: React.FC<Weather2x2Props> = ({
 						>
 							<time
 								dateTime={at.clone().locale('en').format()}
-								className="text-[11px] font-medium text-fg-muted w-full"
+								className="text-2xs font-medium text-fg-muted w-full"
 							>
 								{at.format('HH:mm')}
 							</time>

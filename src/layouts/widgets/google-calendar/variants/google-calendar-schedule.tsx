@@ -68,7 +68,7 @@ export const GoogleCalendarSchedule: React.FC<GoogleCalendarScheduleProps> = ({
 						<button
 							type="button"
 							onClick={handleResetToday}
-							className="px-2 py-0.5 text-[10px] font-bold text-brand bg-brand-fill hover:bg-brand-fill-2 rounded-lg transition-ui cursor-pointer ml-1 focus-visible:focus-ring"
+							className="px-2 py-0.5 text-3xs font-bold text-brand bg-brand-fill hover:bg-brand-fill-2 rounded-lg transition-ui cursor-pointer ml-1 focus-visible:focus-ring"
 						>
 							امروز
 						</button>
@@ -105,13 +105,13 @@ export const GoogleCalendarSchedule: React.FC<GoogleCalendarScheduleProps> = ({
 			<div className="flex items-center justify-between px-1 pb-1.5 shrink-0">
 				<time
 					dateTime={toIsoDateKey(selectedDay)}
-					className="text-[11px] font-bold text-fg"
+					className="text-2xs font-bold text-fg"
 				>
 					{isSelectedToday
 						? `امروز، ${selectedDay.format('dddd')}`
 						: selectedDay.format('dddd jD jMMMM')}
 				</time>
-				<span className="text-[10px] text-fg-muted tabular-nums">
+				<span className="text-3xs text-fg-muted tabular-nums">
 					{classifiedEvents.length > 0
 						? `${classifiedEvents.length} برنامه`
 						: 'بدون برنامه'}

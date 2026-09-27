@@ -169,7 +169,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 						<legend className="sr-only">{moodTitle}</legend>
 						<span
 							aria-hidden="true"
-							className="block mb-1.5 px-0.5 text-[10px] font-medium text-fg"
+							className="block mb-1.5 px-0.5 text-3xs font-medium text-fg"
 						>
 							{moodTitle}
 						</span>
@@ -194,7 +194,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 									<span className="block text-lg leading-none mb-0.5">
 										{option.emoji}
 									</span>
-									<span className="block text-[10px] leading-tight">
+									<span className="block text-3xs leading-tight">
 										{option.label}
 									</span>
 								</button>
@@ -215,7 +215,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 										: 'text-fg outline-surface-3 bg-fill'
 								)}
 							>
-								<span className="flex-1 min-w-0 text-[11px]">
+								<span className="flex-1 min-w-0 text-2xs">
 									{event.title}
 								</span>
 							</li>

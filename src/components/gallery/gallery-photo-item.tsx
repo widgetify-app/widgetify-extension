@@ -42,7 +42,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 			{error && (
 				<div className="flex flex-col items-center justify-center w-full min-h-28 bg-danger-fill">
 					<Icon name="alert" className="text-danger" />
-					<p className="mt-1 text-[10px] text-fg-muted">خطا در بارگذاری</p>
+					<p className="mt-1 text-3xs text-fg-muted">خطا در بارگذاری</p>
 				</div>
 			)}
 
@@ -64,7 +64,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 			{loaded && !error && (
 				<>
 					<div className="absolute inset-x-0 bottom-0 p-2.5 rounded-b-2xl bg-linear-to-t from-scrim via-[rgba(0,0,0,0.4)] to-transparent flex items-center justify-between pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-						<span className="text-[11px] font-medium text-image-fg truncate max-w-[60%]">
+						<span className="text-2xs font-medium text-image-fg truncate max-w-[60%]">
 							{asset.title || ''}
 						</span>
 
@@ -90,7 +90,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 									: 'رایگان برای کاربران پرو'
 							}
 						>
-							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip-hover backdrop-blur-xs text-on-vip text-[10px] font-bold shadow-sm border border-image-line">
+							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip-hover backdrop-blur-xs text-on-vip text-3xs font-bold shadow-sm border border-image-line">
 								<Icon name="diamond" size={10} />
 								<span>رایگان با پرو</span>
 							</span>
@@ -98,7 +98,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 					)}
 
 					{asset.isOwned && !isSelected && (
-						<div className="absolute flex gap-0.5 px-1.5 rounded-tl-2xl rounded-br-md bg-success text-on-success shadow-sm items-center top-0 left-0 text-[10px] h-4.5">
+						<div className="absolute flex gap-0.5 px-1.5 rounded-tl-2xl rounded-br-md bg-success text-on-success shadow-sm items-center top-0 left-0 text-3xs h-4.5">
 							<Icon name="shoppingBag" size={10} />
 							<span>خریداری شده</span>
 						</div>

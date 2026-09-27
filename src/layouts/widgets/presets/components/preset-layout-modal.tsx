@@ -78,7 +78,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 				}
 			>
 				<div className="flex flex-col flex-1 min-h-0 gap-3 text-right">
-					<p className="text-[11px] leading-relaxed text-fg-muted shrink-0">
+					<p className="text-2xs leading-relaxed text-fg-muted shrink-0">
 						یکی از این قالب‌ها رو انتخاب کن تا ویجت‌های صفحه‌ی اصلی با همون
 						چیدمان جایگزین بشن.
 					</p>
@@ -121,13 +121,13 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 														className="mt-0.5"
 													/>
 												) : (
-													<span className="mt-0.5 shrink-0 rounded-full border border-success-fill-2 bg-success-fill px-2 py-0.5 text-[9px] font-bold text-success">
+													<span className="mt-0.5 shrink-0 rounded-full border border-success-fill-2 bg-success-fill px-2 py-0.5 text-4xs font-bold text-success">
 														رایگان
 													</span>
 												)}
 											</div>
 
-											<p className="text-[11px] leading-relaxed text-fg-muted line-clamp-2 min-h-8">
+											<p className="text-2xs leading-relaxed text-fg-muted line-clamp-2 min-h-8">
 												{preset.description}
 											</p>
 
@@ -140,7 +140,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 													return (
 														<li
 															key={widgetId}
-															className="inline-flex items-center gap-1 rounded-lg border border-line bg-fill px-1.5 py-0.5 text-[10px] font-medium text-fg-muted"
+															className="inline-flex items-center gap-1 rounded-lg border border-line bg-fill px-1.5 py-0.5 text-3xs font-medium text-fg-muted"
 														>
 															<Icon
 																name={definition.icon}
@@ -156,7 +156,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 												{hiddenWidgetCount > 0 && (
 													<li
 														dir="ltr"
-														className="rounded-lg border border-line px-1.5 py-0.5 text-[10px] font-medium text-fg-muted"
+														className="rounded-lg border border-line px-1.5 py-0.5 text-3xs font-medium text-fg-muted"
 													>
 														{`+${hiddenWidgetCount.toLocaleString('fa-IR')}`}
 													</li>

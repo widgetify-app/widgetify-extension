@@ -419,7 +419,7 @@ const AuthForm = () => {
 										{Math.floor(resendCooldown / 60)}:
 										{String(resendCooldown % 60).padStart(2, '0')}
 									</span>
-									<span className="font-sans text-[11px] mr-1">
+									<span className="font-sans text-2xs mr-1">
 										تا امکان ارسال دوباره
 									</span>
 								</div>

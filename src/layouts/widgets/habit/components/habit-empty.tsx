@@ -13,7 +13,7 @@ export function HabitEmpty() {
 				عادت‌های خوب رو از اینجا شروع کن 🌱
 			</p>
 
-			<p className="text-center text-[.65rem] leading-5 text-fg opacity-75">
+			<p className="text-center text-3xs leading-5 text-fg opacity-75">
 				اولین عادتت رو اضافه کن
 				<br />
 				مثلا:

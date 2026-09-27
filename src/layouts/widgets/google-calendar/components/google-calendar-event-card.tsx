@@ -47,18 +47,18 @@ export const GoogleCalendarEventCard: React.FC<GoogleCalendarEventCardProps> = (
 		>
 			<div className="flex flex-col items-center justify-center w-11 shrink-0 py-0.5 border-l border-line">
 				{isAllDay ? (
-					<span className="text-[10px] font-bold text-brand">همه‌روز</span>
+					<span className="text-3xs font-bold text-brand">همه‌روز</span>
 				) : (
 					<>
 						<time
 							dateTime={toDateTimeAttr(start)}
-							className="text-[11px] font-bold text-fg tabular-nums leading-tight"
+							className="text-2xs font-bold text-fg tabular-nums leading-tight"
 						>
 							{startTimeStr}
 						</time>
 						<time
 							dateTime={toDateTimeAttr(end)}
-							className="text-[9px] text-fg-muted tabular-nums leading-tight"
+							className="text-4xs text-fg-muted tabular-nums leading-tight"
 						>
 							{endTimeStr}
 						</time>
@@ -68,7 +68,7 @@ export const GoogleCalendarEventCard: React.FC<GoogleCalendarEventCardProps> = (
 
 			<div className="flex-1 min-w-0">
 				<p className="text-xs font-bold truncate text-fg">{title}</p>
-				<div className="flex items-center gap-2 text-[10px] text-fg-muted mt-0.5">
+				<div className="flex items-center gap-2 text-3xs text-fg-muted mt-0.5">
 					<span className="tabular-nums">{durationLabel}</span>
 					{event.location && (
 						<span className="truncate max-w-22.5">

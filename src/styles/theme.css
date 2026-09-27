@@ -44,6 +44,10 @@
 	--font-sans: "Vazir", ui-sans-serif, system-ui, sans-serif;
 	--font-latin: "Segoe UI", ui-sans-serif, system-ui, sans-serif;
 
+	--text-2xs: 0.6875rem;
+	--text-3xs: 0.625rem;
+	--text-4xs: 0.5625rem;
+
 	/* --------------------------------------------
      RADIUS
      -------------------------------------------- */

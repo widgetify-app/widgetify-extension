@@ -204,7 +204,7 @@ export function ImageSearchPortal({
 													? 'در حال ارسال تصویر...'
 													: 'در حال جستجو در گوگل...'}
 											</span>
-											<span className="text-[10px] font-bold text-fg-faint tracking-widest">
+											<span className="text-3xs font-bold text-fg-faint tracking-widest">
 												{uploadProgress}%
 											</span>
 										</div>

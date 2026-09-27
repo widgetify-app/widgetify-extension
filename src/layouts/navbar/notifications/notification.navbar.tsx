@@ -56,7 +56,7 @@ export function NotificationNavbar() {
 							<span className="text-xs font-bold text-fg">
 								اعلان جدیدی نداری
 							</span>
-							<span className="text-[10px] text-fg-muted mt-0.5">
+							<span className="text-3xs text-fg-muted mt-0.5">
 								همه چیز به‌روز و مرتبه
 							</span>
 						</div>

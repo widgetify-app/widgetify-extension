@@ -400,7 +400,7 @@ function CanvasWidgetOuterImpl({
 									rounded="full"
 								/>
 								{!isCompactSize && (
-									<span className="text-[11px] font-medium text-fg-muted transition-colors duration-200 group-hover:text-fg">
+									<span className="text-2xs font-medium text-fg-muted transition-colors duration-200 group-hover:text-fg">
 										ارتقا به اشتراک پرو
 									</span>
 								)}

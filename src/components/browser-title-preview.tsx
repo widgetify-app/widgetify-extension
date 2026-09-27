@@ -13,12 +13,12 @@ export function renderBrowserTitlePreview(item: Prop) {
 			<div className="flex items-center gap-1">
 				<Icon name="close" />
 				{isPersian && (
-					<span className="text-[10px] truncate">{item.template}</span>
+					<span className="text-3xs truncate">{item.template}</span>
 				)}
 			</div>
 			<div className="flex items-center gap-1">
 				{!isPersian && (
-					<span className="text-[10px] truncate" dir="ltr">
+					<span className="text-3xs truncate" dir="ltr">
 						{item.template}
 					</span>
 				)}

@@ -54,6 +54,12 @@ describe('one vocabulary', () => {
 		expect(offenders(pattern)).toEqual([])
 	})
 
+	it('sizes text below text-xs from the scale, not by pixel', () => {
+		const pattern =
+			/(?<![\w-])(?:[a-z0-9\/-]+:)*!?text-\[((8|9|10|11|11\.5)px|0?\.(5625|625|65|6875|7)rem)\]/
+		expect(offenders(pattern)).toEqual([])
+	})
+
 	it('never uses the OS-keyed dark:/light: variants', () => {
 		expect(offenders(/["'`\s](dark|light):[a-z]/)).toEqual([])
 	})

@@ -340,7 +340,7 @@ export function ExpandableTodoInput({
 											trigger={
 												<Button
 													size="sm"
-													className={`p-2 border rounded-xl  text-[10px]  text-fg-faint shrink-0 active:scale-95`}
+													className={`p-2 border rounded-xl  text-3xs  text-fg-faint shrink-0 active:scale-95`}
 												>
 													<Icon name="tags" size={16} />
 													<p className="truncate max-w-14 min-w-5">

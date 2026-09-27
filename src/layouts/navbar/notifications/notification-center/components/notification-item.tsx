@@ -135,7 +135,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 				{description && (
 					<div className="relative">
 						<p
-							className={`mt-0.5 text-[9px] font-medium  text-fg-muted  leading-relaxed whitespace-pre-wrap wrap-break-word transition-all duration-300 ${!isExpanded && shouldShowReadMore ? 'line-clamp-2' : ''}`}
+							className={`mt-0.5 text-4xs font-medium  text-fg-muted  leading-relaxed whitespace-pre-wrap wrap-break-word transition-all duration-300 ${!isExpanded && shouldShowReadMore ? 'line-clamp-2' : ''}`}
 						>
 							{description}
 						</p>
@@ -143,7 +143,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 						{shouldShowReadMore && (
 							<button
 								onClick={toggleExpand}
-								className="mt-1 flex items-center gap-1 border border-line rounded-xl px-1 hover:border-brand-muted text-[10px] font-light text-fg-muted hover:underline cursor-pointer"
+								className="mt-1 flex items-center gap-1 border border-line rounded-xl px-1 hover:border-brand-muted text-3xs font-light text-fg-muted hover:underline cursor-pointer"
 							>
 								{isExpanded ? 'نمایش کمتر' : 'مشاهده بیشتر'}
 								<Icon
@@ -158,7 +158,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 
 				{formattedJalaliDate && (
 					<div className="flex justify-start mt-0.5">
-						<span className="text-[10px] font-light text-fg-faint">
+						<span className="text-3xs font-light text-fg-faint">
 							{formattedJalaliDate}
 						</span>
 					</div>

@@ -26,7 +26,7 @@ export function ProfileProgressNotification({ className }: Prop) {
 		>
 			<div className="flex flex-row items-center w-full gap-2 rounded-xl ">
 				<RadialProgressSmall percentage={profilePercentage} size={15} />
-				<p className="text-[11px] w-fit font-normal text-fg-muted">
+				<p className="text-2xs w-fit font-normal text-fg-muted">
 					پروفایلت رو کامل کن و پاداش بگیر!
 				</p>
 			</div>

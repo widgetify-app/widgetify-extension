@@ -28,18 +28,18 @@ export function CoinPackageCard({ package: pkg, onPurchase }: CoinPackageCardPro
 					<p className="text-2xl font-bold leading-none text-brand tabular-nums">
 						{fmt(pkg.coin)}
 					</p>
-					<p className="text-[10px] text-fg-faint font-medium">ویج‌کوین</p>
+					<p className="text-3xs text-fg-faint font-medium">ویج‌کوین</p>
 				</div>
 			</div>
 
 			{/* Info */}
 			<div className="flex flex-col gap-2.5 px-3 py-2.5 border-t border-line">
 				<div>
-					<p className="text-[12px] font-semibold text-fg-strong leading-snug truncate">
+					<p className="text-xs font-semibold text-fg-strong leading-snug truncate">
 						{pkg.title}
 					</p>
 					{pkg.description && (
-						<p className="text-[10px] text-fg-faint mt-0.5 line-clamp-1">
+						<p className="text-3xs text-fg-faint mt-0.5 line-clamp-1">
 							{pkg.description}
 						</p>
 					)}
@@ -50,7 +50,7 @@ export function CoinPackageCard({ package: pkg, onPurchase }: CoinPackageCardPro
 						<span className="text-sm font-bold text-fg-strong tabular-nums">
 							{fmt(pkg.price)}
 						</span>
-						<span className="text-[10px] text-fg-faint mr-0.5">تومان</span>
+						<span className="text-3xs text-fg-faint mr-0.5">تومان</span>
 					</div>
 
 					<Button

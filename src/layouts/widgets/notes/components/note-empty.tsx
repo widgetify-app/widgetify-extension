@@ -11,7 +11,7 @@ export function NoteEmpty() {
 
 			<p className="mt-2 text-sm font-bold text-fg">اینجا هنوز سفیده...</p>
 
-			<p className="text-center text-[.65rem] leading-5 text-fg opacity-75">
+			<p className="text-center text-3xs leading-5 text-fg opacity-75">
 				اولین یادداشتت رو بنویس.
 				<br />
 				مثلا:

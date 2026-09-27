@@ -70,13 +70,13 @@ export const GoogleCalendarTimeline: React.FC<GoogleCalendarTimelineProps> = ({
 				>
 					<time
 						dateTime={toIsoDateKey(selectedDay)}
-						className="text-[12px] font-black leading-tight text-fg"
+						className="text-xs font-black leading-tight text-fg"
 					>
 						{isSelectedToday
 							? `امروز، ${selectedDay.format('dddd')}`
 							: selectedDay.format('dddd')}
 					</time>
-					<span className="text-[9px] leading-none mt-0.5 text-fg-muted">
+					<span className="text-4xs leading-none mt-0.5 text-fg-muted">
 						{selectedDay.format('jD jMMMM jYYYY')}
 					</span>
 				</button>

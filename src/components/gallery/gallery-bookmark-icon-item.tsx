@@ -54,7 +54,7 @@ export function GalleryBookmarkIconItem({
 			{error && (
 				<div className="flex flex-col items-center justify-center w-full h-full text-danger">
 					<Icon name="alert" size={20} />
-					<p className="mt-1 text-[10px] text-fg-muted">خطا در بارگذاری</p>
+					<p className="mt-1 text-3xs text-fg-muted">خطا در بارگذاری</p>
 				</div>
 			)}
 			<div className="relative z-10 flex items-center justify-center w-full h-full p-2">
@@ -77,7 +77,7 @@ export function GalleryBookmarkIconItem({
 				<>
 					{asset.title && (
 						<div className="absolute inset-x-1 bottom-1 px-1 py-0.5 rounded-lg bg-surface text-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-30 shadow-sm border border-line">
-							<span className="text-[10px] font-medium text-fg truncate block">
+							<span className="text-3xs font-medium text-fg truncate block">
 								{asset.title}
 							</span>
 						</div>
@@ -95,14 +95,14 @@ export function GalleryBookmarkIconItem({
 					)}
 					{asset.accessVip && !asset.isOwned && (
 						<div className="absolute top-1.5 left-1.5 z-20">
-							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip-hover backdrop-blur-xs text-on-vip text-[9px] font-bold shadow-sm border border-image-line">
+							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip-hover backdrop-blur-xs text-on-vip text-4xs font-bold shadow-sm border border-image-line">
 								<Icon name="diamond" size={9} />
 								<span>رایگان با پرو</span>
 							</span>
 						</div>
 					)}
 					{asset.isOwned && !isSelected && (
-						<div className="absolute flex gap-0.5 px-1.5 rounded-tl-xl rounded-br-md bg-success text-on-success shadow-sm items-center top-0 left-0 text-[10px] h-4 z-20">
+						<div className="absolute flex gap-0.5 px-1.5 rounded-tl-xl rounded-br-md bg-success text-on-success shadow-sm items-center top-0 left-0 text-3xs h-4 z-20">
 							<Icon name="shoppingBag" size={9} />
 							<span>خریداری شده</span>
 						</div>

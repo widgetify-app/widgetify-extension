@@ -129,7 +129,7 @@ export function Connections() {
 										{platform.name}
 									</h3>
 									<p
-										className={`text-[10px]  font-medium truncate ${platform.connected ? 'text-success' : 'text-fg-muted'}`}
+										className={`text-3xs  font-medium truncate ${platform.connected ? 'text-success' : 'text-fg-muted'}`}
 									>
 										{platform.connected ? 'متصل شده' : 'عدم اتصال'}
 									</p>
@@ -137,7 +137,7 @@ export function Connections() {
 							</div>
 
 							<div
-								className={`h-7 px-3 flex items-center justify-center rounded-lg text-[10px] font-black shrink-0 transition-all
+								className={`h-7 px-3 flex items-center justify-center rounded-lg text-3xs font-black shrink-0 transition-all
                     ${
 						platform.connected
 							? 'bg-danger-fill text-danger'

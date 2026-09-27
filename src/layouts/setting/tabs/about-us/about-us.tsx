@@ -43,7 +43,7 @@ export function AboutUsTab() {
 								<h3 className="text-xs font-bold text-fg-strong">
 									وب‌سایت رسمی
 								</h3>
-								<p className="text-[10px] text-fg-faint mt-0.5">
+								<p className="text-3xs text-fg-faint mt-0.5">
 									widgetify.ir
 								</p>
 							</div>
@@ -69,7 +69,7 @@ export function AboutUsTab() {
 								<h3 className="text-xs font-bold text-fg-strong">
 									وبلاگ رسمی
 								</h3>
-								<p className="text-[10px] text-fg-faint mt-0.5">
+								<p className="text-3xs text-fg-faint mt-0.5">
 									blog.widgetify.ir
 								</p>
 							</div>
@@ -95,7 +95,7 @@ export function AboutUsTab() {
 								<h3 className="text-xs font-bold text-fg-strong">
 									کانال تلگرام
 								</h3>
-								<p className="text-[10px] text-fg-faint mt-0.5">
+								<p className="text-3xs text-fg-faint mt-0.5">
 									t.me/widgetify
 								</p>
 							</div>
@@ -132,7 +132,7 @@ export function AboutUsTab() {
 								<h3 className="text-xs font-bold text-fg-strong">
 									پیام‌رسان بله
 								</h3>
-								<p className="text-[10px] text-fg-faint mt-0.5">
+								<p className="text-3xs text-fg-faint mt-0.5">
 									ble.ir/widgetify
 								</p>
 							</div>

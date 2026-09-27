@@ -226,7 +226,7 @@ export function showPreviewToast(itemName: string, onCancel: () => void): string
 						<Icon name="info" size={16} />
 					</div>
 					<div className="flex-1 min-w-0">
-						<p className="text-[10px] text-[rgba(255,255,255,0.5)] leading-none m-0 mb-0.5">
+						<p className="text-3xs text-[rgba(255,255,255,0.5)] leading-none m-0 mb-0.5">
 							حالت پیش‌نمایش
 						</p>
 						<p className="m-0 text-sm font-bold text-white truncate">

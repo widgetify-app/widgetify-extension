@@ -144,7 +144,7 @@ export function TodoItem({
 				>
 					<p
 						className={`truncate font-medium transition-ui ${
-							comfortable ? 'text-[11.5px]' : 'text-[10px]'
+							comfortable ? 'text-2xs' : 'text-3xs'
 						} ${
 							isDone
 								? 'text-fg-muted opacity-60 line-through font-normal'
@@ -155,7 +155,7 @@ export function TodoItem({
 					</p>
 
 					{comfortable && !expanded && (
-						<span className="flex items-center gap-1.5 mt-1 text-[9px] text-fg-muted">
+						<span className="flex items-center gap-1.5 mt-1 text-4xs text-fg-muted">
 							<span className="flex items-center gap-1 shrink-0">
 								<Icon name="calendar" size={10} aria-hidden="true" />
 								<time dateTime={isoDate}>
@@ -228,7 +228,7 @@ export function TodoItem({
 
 			{expanded && (
 				<div className="border-t border-line bg-fill px-2.5 py-2">
-					<p className="mb-0 text-[11px] leading-snug text-fg-muted whitespace-pre-wrap">
+					<p className="mb-0 text-2xs leading-snug text-fg-muted whitespace-pre-wrap">
 						{currentTodo.text}
 					</p>
 					{hasFriends && (
@@ -240,9 +240,9 @@ export function TodoItem({
 							/>
 						</div>
 					)}
-					<div className="flex items-center gap-2 text-[10px]">
+					<div className="flex items-center gap-2 text-3xs">
 						{currentTodo.category && (
-							<span className="flex text-[10px] items-center gap-1 rounded-lg border border-dashed border-line px-1.5 text-fg-muted">
+							<span className="flex text-3xs items-center gap-1 rounded-lg border border-dashed border-line px-1.5 text-fg-muted">
 								<Icon name="tags" size={9} aria-hidden="true" />
 								{currentTodo.category}
 							</span>
@@ -267,7 +267,7 @@ export function TodoItem({
 					</div>
 
 					{currentTodo.description && (
-						<div className="mt-2 leading-relaxed whitespace-break-spaces rounded-xl border border-line bg-fill p-1.5 text-[11px] font-black">
+						<div className="mt-2 leading-relaxed whitespace-break-spaces rounded-xl border border-line bg-fill p-1.5 text-2xs font-black">
 							<NoteLinkRenderer note={currentTodo.description} />
 						</div>
 					)}

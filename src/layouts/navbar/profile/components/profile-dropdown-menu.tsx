@@ -52,7 +52,7 @@ export function ProfileDropdownMenu({
 								<VipBadge size="xs" variant="indigo-subtle" iconOnly />
 							)}
 						</div>
-						<span className="text-[11px] text-fg-muted truncate leading-normal">
+						<span className="text-2xs text-fg-muted truncate leading-normal">
 							مشاهده پروفایل
 						</span>
 					</div>
@@ -69,7 +69,7 @@ export function ProfileDropdownMenu({
 						<span className="text-xs font-bold text-fg">
 							ورود یا ثبت‌نام
 						</span>
-						<span className="text-[10px] text-fg-muted">
+						<span className="text-3xs text-fg-muted">
 							همگام‌سازی و دسترسی به امکانات
 						</span>
 					</div>

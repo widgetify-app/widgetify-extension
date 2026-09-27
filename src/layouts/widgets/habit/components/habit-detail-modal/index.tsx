@@ -125,7 +125,7 @@ export function HabitDetailModal({
 							</div>
 						</Dropdown>
 					</div>
-					<p className="text-[10px] truncate text-fg-muted">
+					<p className="text-3xs truncate text-fg-muted">
 						{formatHabitGoal(habit)}
 					</p>
 				</div>

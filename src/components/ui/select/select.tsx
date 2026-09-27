@@ -13,13 +13,13 @@ const PANEL_OFFSET = 6
 const TYPE_AHEAD_RESET_MS = 600
 
 const triggerClass =
-	'flex items-center justify-between gap-2 w-fit min-w-[5.5rem] max-w-full px-2.5 py-1.5 rounded-xl cursor-pointer select-none text-[10px] text-fg bg-surface-3 border border-line transition-ui hover:bg-fill-2 focus-visible:focus-ring disabled:cursor-not-allowed disabled:opacity-50'
+	'flex items-center justify-between gap-2 w-fit min-w-[5.5rem] max-w-full px-2.5 py-1.5 rounded-xl cursor-pointer select-none text-3xs text-fg bg-surface-3 border border-line transition-ui hover:bg-fill-2 focus-visible:focus-ring disabled:cursor-not-allowed disabled:opacity-50'
 
 const panelClass =
 	'fixed z-[9999] flex flex-col gap-0.5 p-1.5 overflow-y-auto rounded-2xl shadow-xl bg-surface-2 bg-glass border border-line scrollbar-thin scrollbar-thumb'
 
 const optionClass =
-	'flex items-center justify-between w-full gap-2 px-2.5 py-1.5 text-[11px] text-right rounded-xl cursor-pointer transition-ui text-fg disabled:cursor-not-allowed disabled:opacity-40'
+	'flex items-center justify-between w-full gap-2 px-2.5 py-1.5 text-2xs text-right rounded-xl cursor-pointer transition-ui text-fg disabled:cursor-not-allowed disabled:opacity-40'
 
 export interface SelectBoxProps {
 	options: Array<{ value: string; label: string; disabled?: boolean }>

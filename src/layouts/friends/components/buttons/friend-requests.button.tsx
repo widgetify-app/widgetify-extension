@@ -20,7 +20,7 @@ export function FriendRequestsButton({ size, pendingCount }: Prop) {
 					<Icon name="inbox" size={14} />
 					<span>درخواست‌ها</span>
 					{pendingCount ? (
-						<div className="flex items-center justify-center min-w-4 h-4 px-1 text-[10px] font-bold text-on-danger bg-danger rounded-full text-center">
+						<div className="flex items-center justify-center min-w-4 h-4 px-1 text-3xs font-bold text-on-danger bg-danger rounded-full text-center">
 							{pendingCount}
 						</div>
 					) : null}

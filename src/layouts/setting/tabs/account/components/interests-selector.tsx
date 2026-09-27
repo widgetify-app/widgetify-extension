@@ -33,7 +33,7 @@ export const InterestsSelector = ({
 	const content = (
 		<div className="p-2 border w-82 bg-surface-2  rounded-2xl border-surface-3">
 			{isLoading ? (
-				<div className="py-3 text-[10px] italic font-medium text-center animate-pulse text-fg-muted">
+				<div className="py-3 text-3xs italic font-medium text-center animate-pulse text-fg-muted">
 					صبر کنید...
 				</div>
 			) : (
@@ -45,7 +45,7 @@ export const InterestsSelector = ({
 							<Chip
 								key={interest.id}
 								selected={isSelected}
-								className="w-fit! text-[11px]"
+								className="w-fit! text-2xs"
 								onClick={() => handleInterestToggle(interest.id)}
 							>
 								{interest.title}

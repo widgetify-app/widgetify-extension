@@ -149,7 +149,7 @@ export function VipTab() {
 						<span className="text-xs font-bold text-fg">
 							{selectedPlan?.title || 'اشتراک'} {VIP_LABEL}
 						</span>
-						<span className="text-[11px] text-fg-muted">
+						<span className="text-2xs text-fg-muted">
 							دسترسی کامل به تمام امکانات {VIP_LABEL}
 						</span>
 					</div>
@@ -157,7 +157,7 @@ export function VipTab() {
 
 				<div className="flex items-center justify-between w-full gap-4 sm:justify-end sm:w-auto">
 					<div className="flex flex-col items-start sm:items-end">
-						<span className="text-[11px] text-fg-muted">مبلغ قابل پرداخت</span>
+						<span className="text-2xs text-fg-muted">مبلغ قابل پرداخت</span>
 						<div className="flex items-baseline gap-1">
 							{selectedPlan?.price === 0 ? (
 								<span className="text-base font-black sm:text-lg text-success">

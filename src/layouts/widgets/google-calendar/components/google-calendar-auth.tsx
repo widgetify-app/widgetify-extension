@@ -62,7 +62,7 @@ export const GoogleCalendarAuth: React.FC<GoogleCalendarAuthProps> = ({
 						<span className="text-xs font-bold leading-tight text-fg">
 							تقویم گوگل
 						</span>
-						<span className="text-[10px] text-fg-muted truncate mt-0.5">
+						<span className="text-3xs text-fg-muted truncate mt-0.5">
 							{isAuthenticated
 								? 'برای مشاهده برنامه‌ها، تقویم رو متصل کن'
 								: 'برای مشاهده رویدادها، اول وارد حسابت شو'}
@@ -72,7 +72,7 @@ export const GoogleCalendarAuth: React.FC<GoogleCalendarAuthProps> = ({
 
 				<Button
 					size="sm"
-					className="text-[10px] font-bold rounded-xl px-3 py-1 shrink-0"
+					className="text-3xs font-bold rounded-xl px-3 py-1 shrink-0"
 					onClick={handleAction}
 				>
 					{isAuthenticated ? 'اتصال تقویم' : 'ورود'}
@@ -87,7 +87,7 @@ export const GoogleCalendarAuth: React.FC<GoogleCalendarAuthProps> = ({
 				<Icon name="googleCalendar" size={26} aria-hidden="true" />
 			</span>
 			<p className="mb-1 text-xs font-bold text-fg">تقویم گوگل</p>
-			<p className="text-[11px] text-fg-muted leading-relaxed max-w-50 mb-4">
+			<p className="text-2xs text-fg-muted leading-relaxed max-w-50 mb-4">
 				{isAuthenticated
 					? 'برای مشاهده جلسات و برنامه‌هات، تقویم گوگل رو متصل کن'
 					: 'برای دسترسی به تقویم گوگل، اول وارد حسابت شو'}

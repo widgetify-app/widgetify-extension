@@ -49,7 +49,7 @@ export function VipBannerCard({
 							{title || 'فراتر از یک تب ساده؛ با نسخه پرو'}
 						</h3>
 					</div>
-					<p className="text-[11px] text-fg-muted truncate mt-0.5 max-w-xs sm:max-w-md">
+					<p className="text-2xs text-fg-muted truncate mt-0.5 max-w-xs sm:max-w-md">
 						{description ||
 							'والپیپرهای ویدیویی، ابعاد و مدل‌های اختصاصی ویجت‌ها و امکانات ویژه گالری'}
 					</p>

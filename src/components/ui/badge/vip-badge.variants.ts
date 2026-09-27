@@ -10,8 +10,8 @@ export const vipBadgeVariants = cva(
 				white: 'bg-image-fill text-image-fg backdrop-blur-md border border-image-line shadow-sm',
 			},
 			size: {
-				xs: 'text-[9px] px-2 py-0.5 gap-1',
-				sm: 'text-[10px] px-2 py-1 gap-1',
+				xs: 'text-4xs px-2 py-0.5 gap-1',
+				sm: 'text-3xs px-2 py-1 gap-1',
 				md: 'text-xs px-2.5 py-1 gap-1.5',
 				lg: 'text-sm px-3 py-1.5 gap-1.5',
 			},

@@ -25,7 +25,7 @@ export function ToolsCompactRow({ onSelectTab }: ToolsCompactRowProps) {
 						className="w-4 h-4 text-brand"
 						aria-hidden="true"
 					/>
-					<span className="text-[10px] font-medium text-fg">
+					<span className="text-3xs font-medium text-fg">
 						{tab.compactLabel}
 					</span>
 				</button>

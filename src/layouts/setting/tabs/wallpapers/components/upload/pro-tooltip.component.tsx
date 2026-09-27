@@ -13,7 +13,7 @@ export function ProTooltipContent({ vipMaxSize }: ProTooltipProps) {
 				</span>
 				<span className="text-xs font-bold text-fg">امکانات نسخه پرو</span>
 			</div>
-			<div className="flex flex-col gap-1.5 text-[11px] text-fg-muted">
+			<div className="flex flex-col gap-1.5 text-2xs text-fg-muted">
 				<div className="flex items-center gap-1.5">
 					<Icon name="check" size={12} className="text-success shrink-0" />
 					<span>عکس، گیف و ویدیو تا {vipMaxSize} مگابایت</span>

@@ -82,7 +82,7 @@ export function BookmarkIcon({ bookmark }: { bookmark: Bookmark }) {
 				/>
 			) : typeof displayIcon === 'string' && imageError ? (
 				<div
-					className={`flex items-center justify-center w-full h-full rounded-xl font-semibold text-[10px] sm:text-xs md:text-sm ${colorClass}`}
+					className={`flex items-center justify-center w-full h-full rounded-xl font-semibold text-3xs sm:text-xs md:text-sm ${colorClass}`}
 					style={
 						hasCustomColors
 							? {

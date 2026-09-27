@@ -86,7 +86,7 @@ export function Calendar2x1() {
 							>
 								<span
 									className={cn(
-										'text-[9px] font-medium leading-none',
+										'text-4xs font-medium leading-none',
 										isSelected
 											? 'opacity-90'
 											: isHoliday

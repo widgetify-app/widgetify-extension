@@ -254,7 +254,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 					{notes.length > 1 && (
 						<div
 							className={cn(
-								'flex items-center gap-0.5 rounded-lg h-5 px-1 py-0.5 text-[10px]',
+								'flex items-center gap-0.5 rounded-lg h-5 px-1 py-0.5 text-3xs',
 								colorTheme.headerBg
 							)}
 						>
@@ -346,7 +346,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 							className="mb-1 opacity-60"
 						/>
 						<span className="text-xs font-bold">ایجاد اولین یادداشت</span>
-						<span className="text-[10px] opacity-70 mt-0.5">
+						<span className="text-3xs opacity-70 mt-0.5">
 							برای شروع اینجا کلیک کن
 						</span>
 					</button>
@@ -355,7 +355,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 
 			<footer
 				className={cn(
-					'flex items-center justify-between pt-1.5 border-t text-[10px]',
+					'flex items-center justify-between pt-1.5 border-t text-3xs',
 					colorTheme.divider
 				)}
 			>
@@ -400,7 +400,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 					{isSaving ? (
 						<div className="flex items-center gap-1 text-brand">
 							<IconLoading />
-							<span className="text-[9px]">درحال ذخیره</span>
+							<span className="text-4xs">درحال ذخیره</span>
 						</div>
 					) : currentNote ? (
 						<time

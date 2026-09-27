@@ -71,7 +71,7 @@ export function TodoBoard({
 					<h3 className="text-sm font-bold leading-tight truncate text-fg">
 						تسک‌ها
 					</h3>
-					<p className="text-[10px] leading-tight truncate text-fg-muted">
+					<p className="text-3xs leading-tight truncate text-fg-muted">
 						{total > 0
 							? `${completed} از ${total} انجام شده`
 							: 'برنامه‌ی امروزت'}
@@ -87,7 +87,7 @@ export function TodoBoard({
 							key={option.value}
 							selected={dateFilter === option.value}
 							onClick={() => onDateFilterChange(option.value)}
-							className="px-2.5! py-1! text-[11px] shrink-0"
+							className="px-2.5! py-1! text-2xs shrink-0"
 						>
 							{option.label}
 						</Chip>
@@ -302,8 +302,8 @@ interface StatRowProps {
 function StatRow({ label, value, className }: StatRowProps) {
 	return (
 		<div className="flex items-center justify-between gap-1 px-2 py-0.5 rounded-lg bg-fill">
-			<dt className="text-[10px] font-medium truncate text-fg-muted">{label}</dt>
-			<dd className={cn('text-[11px] font-black tabular-nums', className)}>
+			<dt className="text-3xs font-medium truncate text-fg-muted">{label}</dt>
+			<dd className={cn('text-2xs font-black tabular-nums', className)}>
 				<data value={value}>{value}</data>
 			</dd>
 		</div>

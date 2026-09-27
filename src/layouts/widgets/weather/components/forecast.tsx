@@ -24,7 +24,7 @@ export const Forecast: React.FC<ForecastProps> = ({ forecast, temperatureUnit })
 					>
 						<time
 							dateTime={at.clone().locale('en').format()}
-							className="text-[10px] font-medium text-fg-muted"
+							className="text-3xs font-medium text-fg-muted"
 						>
 							{at.format('HH:mm')}
 						</time>
@@ -33,7 +33,7 @@ export const Forecast: React.FC<ForecastProps> = ({ forecast, temperatureUnit })
 
 						<span className="text-sm font-bold text-fg">
 							<data value={temp.value}>{temp.value}</data>
-							<span className="text-[10px] font-medium text-fg-muted">
+							<span className="text-3xs font-medium text-fg-muted">
 								{temp.symbol}
 							</span>
 						</span>

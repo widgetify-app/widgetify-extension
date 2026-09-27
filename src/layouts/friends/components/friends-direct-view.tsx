@@ -123,7 +123,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 						<button
 							type="button"
 							onClick={() => setIsAddFriendOpen(true)}
-							className="mt-1.5 text-[11px] font-medium text-brand hover:underline cursor-pointer"
+							className="mt-1.5 text-2xs font-medium text-brand hover:underline cursor-pointer"
 						>
 							اولین دوستت رو اضافه کن
 						</button>
@@ -153,7 +153,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 											{friend.user.name}
 										</div>
 										<div
-											className="text-[10px] truncate text-fg-faint"
+											className="text-3xs truncate text-fg-faint"
 											dir="ltr"
 										>
 											@{friend.user.username}

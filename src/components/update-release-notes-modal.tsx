@@ -170,7 +170,7 @@ export const UpdateReleaseNotesModal = ({
 						playsInline
 						className="object-cover w-full h-full"
 					/>
-					<div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-surface-veil backdrop-blur-md border border-line text-[11px] font-bold text-fg shadow-sm">
+					<div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-surface-veil backdrop-blur-md border border-line text-2xs font-bold text-fg shadow-sm">
 						{currentStep.badge}
 					</div>
 				</div>
@@ -194,13 +194,13 @@ export const UpdateReleaseNotesModal = ({
 									<span className="text-xs font-bold text-fg">
 										{currentStep.title}
 									</span>
-									<span className="text-[11px] leading-relaxed text-fg-muted">
+									<span className="text-2xs leading-relaxed text-fg-muted">
 										{currentStep.description}
 									</span>
 								</div>
 							</div>
 
-							<div className="flex items-center gap-1.5 px-2 text-[11px] font-medium text-fg-muted">
+							<div className="flex items-center gap-1.5 px-2 text-2xs font-medium text-fg-muted">
 								<span>
 									دیگه خبری از محدودیت ستون‌های ثابت نیست؛ صفحه تماما در
 									اختیارته!
@@ -233,12 +233,12 @@ export const UpdateReleaseNotesModal = ({
 											مشتاقیم چیدمان‌های خلاقانه‌ت رو ببینیم!
 										</span>
 									</div>
-									<span className="text-[11px] font-medium text-fg-muted">
+									<span className="text-2xs font-medium text-fg-muted">
 										عکس تب قشنگت رو با ما به اشتراک بذار
 									</span>
 								</div>
 							) : (
-								<div className="flex items-center gap-1.5 px-2 text-[11px] font-medium text-fg-muted">
+								<div className="flex items-center gap-1.5 px-2 text-2xs font-medium text-fg-muted">
 									<span>
 										{activeStepIndex === 1
 											? 'هر ویجت رو می‌تونی با اندازه و مدل اختصاصی تنظیم کنی'

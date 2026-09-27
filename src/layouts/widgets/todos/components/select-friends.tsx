@@ -17,7 +17,7 @@ export function TodoSelectFriends({ selectedFriends, setSelectedFriends }: Prop)
 					size="sm"
 					rounded={'xl'}
 					variant="ghost"
-					className="p-2 border-surface-3 text-[10px] shrink-0 active:scale-95"
+					className="p-2 border-surface-3 text-3xs shrink-0 active:scale-95"
 				>
 					{selectedFriends.length > 0 ? (
 						<div className="flex gap-0.5 text-fg-faint">

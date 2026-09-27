@@ -17,7 +17,7 @@ a raw daisyUI base class (`bg-base-200`) and on a hex literal in a class.
 | file | holds |
 |---|---|
 | `tokens.css` | the colour vocabulary. Nothing else declares a colour name. |
-| `theme.css` | primitives: the palette ban, fonts, radius, motion, z-index, the vip brand colour. |
+| `theme.css` | primitives: the palette ban, fonts, the small type steps, radius, motion, z-index, the vip brand colour. |
 | `theme/<name>.css` | one theme's daisyUI values, plus its channel block. |
 | `theme-colors.css` | the theme imports and the brand constants shared by every theme. |
 | `utilities.css` | utilities `@theme` cannot generate: `transition-ui`, `focus-ring` and the `z-*` layers. |
@@ -122,3 +122,11 @@ invisible. They stay real Tailwind shadows, so they combine with `ring-*` on
 the same element and take a colour: `shadow-md shadow-brand-fill-2` is a brand
 glow. `shadow-xs`, `shadow-2xl` and `shadow-inner` compile to nothing, and a
 test rejects them.
+
+## Type
+
+Text below `text-xs` has three steps: `text-2xs` 11px · `text-3xs` 10px ·
+`text-4xs` 9px. Unlike `text-xs` and up they set no line height, so they inherit
+it exactly as the pixel values they replaced did. A test rejects `text-[10px]`
+and the other pixel sizes they cover. Widgets that scale with their container
+keep `cqh`/`cqw` sizes.

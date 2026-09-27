@@ -34,7 +34,7 @@ export function TourTooltip({
 							/>
 						))}
 					</div>
-					<span className="text-[11px] font-bold text-fg-muted">
+					<span className="text-2xs font-bold text-fg-muted">
 						{index + 1} از {size}
 					</span>
 				</div>
@@ -59,7 +59,7 @@ export function TourTooltip({
 						<button
 							type="button"
 							{...skipProps}
-							className="text-[11px] font-bold text-fg-faint hover:text-fg-strong px-2 py-1.5 rounded-lg hover:bg-fill-2 transition-colors cursor-pointer"
+							className="text-2xs font-bold text-fg-faint hover:text-fg-strong px-2 py-1.5 rounded-lg hover:bg-fill-2 transition-colors cursor-pointer"
 						>
 							رد کردن
 						</button>

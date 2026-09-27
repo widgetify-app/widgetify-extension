@@ -58,7 +58,7 @@ export function UploadEmpty({
 									size={18}
 									className="transition-transform group-hover:scale-110"
 								/>
-								<span className="text-[10px] font-medium">
+								<span className="text-3xs font-medium">
 									{isDragging ? 'رهاش کن' : 'آپلود'}
 								</span>
 							</div>
@@ -80,7 +80,7 @@ export function UploadEmpty({
 										content={`عکس، گیف و ویدیو تا سقف ${vipMaxSize} مگابایت`}
 										position="top"
 									>
-										<span className="inline-flex items-center gap-1 text-[11px] font-medium text-fg-muted bg-fill px-2 py-0.5 rounded-xl cursor-default">
+										<span className="inline-flex items-center gap-1 text-2xs font-medium text-fg-muted bg-fill px-2 py-0.5 rounded-xl cursor-default">
 											<span>تا {vipMaxSize} مگابایت</span>
 										</span>
 									</Tooltip>
@@ -88,7 +88,7 @@ export function UploadEmpty({
 										content="روی سرور ذخیره می‌شه و روی اکانتت ذخیره می‌مونه"
 										position="top"
 									>
-										<span className="inline-flex items-center gap-1 text-[11px] font-medium text-fg-muted bg-fill px-2 py-0.5 rounded-xl cursor-default">
+										<span className="inline-flex items-center gap-1 text-2xs font-medium text-fg-muted bg-fill px-2 py-0.5 rounded-xl cursor-default">
 											<span>همگام سازی با اکانت</span>
 										</span>
 									</Tooltip>
@@ -99,7 +99,7 @@ export function UploadEmpty({
 										content={`عکس تا ${freeMaxSize} مگابایت روی همین مرورگرت ذخیره می‌شه`}
 										position="top"
 									>
-										<span className="inline-flex items-center gap-1 text-[11px] font-medium text-fg-muted bg-fill px-2 py-0.5 rounded-xl cursor-default">
+										<span className="inline-flex items-center gap-1 text-2xs font-medium text-fg-muted bg-fill px-2 py-0.5 rounded-xl cursor-default">
 											فقط عکس (تا {freeMaxSize} مگابایت)
 										</span>
 									</Tooltip>
@@ -115,7 +115,7 @@ export function UploadEmpty({
 												e.stopPropagation()
 												callEvent('openSettings', 'vip')
 											}}
-											className="inline-flex items-center gap-1 text-[11px] font-bold text-vip bg-vip-fill border border-vip-fill-2 px-2.5 py-0.5 rounded-xl hover:bg-vip-fill-2 active:scale-95 transition-all cursor-pointer"
+											className="inline-flex items-center gap-1 text-2xs font-bold text-vip bg-vip-fill border border-vip-fill-2 px-2.5 py-0.5 rounded-xl hover:bg-vip-fill-2 active:scale-95 transition-all cursor-pointer"
 										>
 											<Icon name="diamond" size={11} />
 											<span>ارتقا به پرو</span>

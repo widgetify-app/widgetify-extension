@@ -42,7 +42,7 @@ export const FolderBookmarkItem = memo(function FolderBookmarkItem({
 					{folderItems.map((child, index) => (
 						<div
 							key={index}
-							className="flex items-center justify-center w-5.5 h-5.5 overflow-hidden rounded-md [&>div]:!w-5.5 [&>div]:!h-5.5 [&>div_img]:!w-5.5 [&>div_img]:!h-5.5 [&>div_img]:!rounded-md [&>div_div]:!text-[8px] [&>div_div]:!rounded-md"
+							className="flex items-center justify-center w-5.5 h-5.5 overflow-hidden rounded-md [&>div]:!w-5.5 [&>div]:!h-5.5 [&>div_img]:!w-5.5 [&>div_img]:!h-5.5 [&>div_img]:!rounded-md [&>div_div]:!text-4xs [&>div_div]:!rounded-md"
 						>
 							<BookmarkIcon bookmark={child} />
 						</div>

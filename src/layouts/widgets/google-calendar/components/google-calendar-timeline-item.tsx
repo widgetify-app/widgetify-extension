@@ -58,7 +58,7 @@ export const GoogleCalendarTimelineItem = ({
 		>
 			<div className="flex flex-col items-end justify-center shrink-0 w-10 gap-0.5 pl-1">
 				{isAllDay ? (
-					<span className="text-[9px] font-bold leading-tight text-fg-muted">
+					<span className="text-4xs font-bold leading-tight text-fg-muted">
 						{durationLabel}
 					</span>
 				) : (
@@ -66,7 +66,7 @@ export const GoogleCalendarTimelineItem = ({
 						<time
 							dateTime={isoTime(start)}
 							className={cn(
-								'text-[11px] font-bold leading-none tabular-nums',
+								'text-2xs font-bold leading-none tabular-nums',
 								isNow
 									? 'text-brand'
 									: isNext
@@ -79,7 +79,7 @@ export const GoogleCalendarTimelineItem = ({
 						<time
 							dateTime={isoTime(end)}
 							className={cn(
-								'text-[9px] leading-none tabular-nums',
+								'text-4xs leading-none tabular-nums',
 								isNow ? 'text-brand-muted' : 'text-fg-muted'
 							)}
 						>
@@ -100,7 +100,7 @@ export const GoogleCalendarTimelineItem = ({
 				<div className="flex items-center min-w-0 gap-1">
 					<span
 						className={cn(
-							'flex-1 text-[11px] leading-snug truncate',
+							'flex-1 text-2xs leading-snug truncate',
 							isNow ? 'font-bold text-fg' : 'font-semibold',
 							isPast ? 'line-through text-fg-muted' : 'text-fg'
 						)}
@@ -109,7 +109,7 @@ export const GoogleCalendarTimelineItem = ({
 					</span>
 
 					{isNow && event.hangoutLink ? (
-						<span className="flex items-center gap-1 px-2 py-0.5 mb-1 rounded-lg bg-brand text-on-brand text-[9px] font-medium shrink-0">
+						<span className="flex items-center gap-1 px-2 py-0.5 mb-1 rounded-lg bg-brand text-on-brand text-4xs font-medium shrink-0">
 							<Icon name="videoCamera" size={9} aria-hidden="true" />
 							ورود به جلسه
 						</span>
@@ -136,22 +136,22 @@ export const GoogleCalendarTimelineItem = ({
 							<span className="absolute inline-flex w-full h-full rounded-full opacity-60 animate-ping bg-brand" />
 							<span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-brand" />
 						</span>
-						<span className="text-[9px] font-bold text-brand">
+						<span className="text-4xs font-bold text-brand">
 							در حال برگزاری
 						</span>
-						<span className="text-[9px] text-fg-muted tabular-nums">
+						<span className="text-4xs text-fg-muted tabular-nums">
 							· {minsRemaining} دقیقه مانده
 						</span>
 					</div>
 				) : (
 					<div className="flex items-center min-w-0 gap-2">
 						{isNext && (
-							<span className="text-[9px] font-bold text-warning shrink-0">
+							<span className="text-4xs font-bold text-warning shrink-0">
 								بعدی
 							</span>
 						)}
 						{event.location && (
-							<span className="text-[9px] text-fg-muted truncate max-w-[70px]">
+							<span className="text-4xs text-fg-muted truncate max-w-[70px]">
 								{event.location}
 							</span>
 						)}
@@ -171,7 +171,7 @@ export const GoogleCalendarTimelineItem = ({
 									))}
 								</div>
 								{event.attendees.length > 3 && (
-									<span className="text-[8px] text-fg-muted">
+									<span className="text-4xs text-fg-muted">
 										+{event.attendees.length - 3}
 									</span>
 								)}

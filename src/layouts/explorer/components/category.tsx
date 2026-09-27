@@ -110,7 +110,7 @@ function HandleCatalogs({ category }: HandleCatalogsProp) {
 					<RenderContentBanner key={link.url} link={link} />
 				) : (
 					<div
-						className="flex items-center justify-center w-full h-full text-[10px] border blur-sm hover:blur-none transition-all duration-200  border-dashed border-surface-3 rounded-2xl text-fg-muted"
+						className="flex items-center justify-center w-full h-full text-3xs border blur-sm hover:blur-none transition-all duration-200  border-dashed border-surface-3 rounded-2xl text-fg-muted"
 						key=""
 					>
 						نیازمند بروزرسانی

@@ -148,7 +148,7 @@ export function SearchHistoryPortal({
 										<p className="text-xs font-medium text-fg-muted">
 											پیشنهادهای جستجو
 										</p>
-										<p className="text-[11px] text-fg-faint leading-relaxed">
+										<p className="text-2xs text-fg-faint leading-relaxed">
 											با فعال‌سازی، هنگام تایپ پیشنهادهای هوشمندی
 											داده میشه!
 										</p>

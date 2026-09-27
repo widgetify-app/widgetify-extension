@@ -53,7 +53,7 @@ export function PhotoEmptyState({ size }: PhotoEmptyStateProps) {
 				/>
 			</span>
 
-			<span className="text-[10px] shrink-0 text-fg-muted">
+			<span className="text-3xs shrink-0 text-fg-muted">
 				برای انتخاب یا آپلود کلیک کن
 			</span>
 		</span>

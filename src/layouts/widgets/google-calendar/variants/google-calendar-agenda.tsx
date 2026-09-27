@@ -94,7 +94,7 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 					/>
 					<span>برنامه‌های پیش‌رو</span>
 				</h3>
-				<time dateTime={toIsoDateKey(today)} className="text-[10px] text-fg-muted">
+				<time dateTime={toIsoDateKey(today)} className="text-3xs text-fg-muted">
 					{today.format('jD jMMMM')}
 				</time>
 			</header>
@@ -126,7 +126,7 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 									<time
 										dateTime={dateStr}
 										className={cn(
-											'text-[10px] font-bold px-2 py-0.5 rounded-lg',
+											'text-3xs font-bold px-2 py-0.5 rounded-lg',
 											isToday
 												? 'bg-brand text-on-brand'
 												: 'bg-surface-2 text-fg-muted'
@@ -197,7 +197,7 @@ const AgendaItem: React.FC<AgendaItemProps> = ({ classified, onEventClick }) => 
 					className="w-1.5 h-1.5 rounded-full bg-brand shrink-0"
 				/>
 				<span className="flex-1 text-xs font-bold truncate">{title}</span>
-				<span className="text-[10px] font-medium opacity-75 shrink-0">
+				<span className="text-3xs font-medium opacity-75 shrink-0">
 					تمام روز
 				</span>
 			</button>
@@ -231,12 +231,12 @@ const AgendaItem: React.FC<AgendaItemProps> = ({ classified, onEventClick }) => 
 						{title}
 					</span>
 					{isNow && (
-						<span className="text-[9px] font-bold text-brand shrink-0">
+						<span className="text-4xs font-bold text-brand shrink-0">
 							در حال برگزاری
 						</span>
 					)}
 				</span>
-				<span className="flex items-center gap-2 text-[10px] text-fg-muted mt-0.5">
+				<span className="flex items-center gap-2 text-3xs text-fg-muted mt-0.5">
 					<span className="tabular-nums">
 						<time dateTime={toDateTimeAttr(start)}>{startTimeStr}</time> -{' '}
 						<time dateTime={toDateTimeAttr(end)}>{endTimeStr}</time>

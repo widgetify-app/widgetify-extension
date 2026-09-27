@@ -106,7 +106,7 @@ export function NetworkCompactRow({
 					{isOnline ? (
 						<div
 							className={cn(
-								'flex items-center gap-1 text-[11px] font-bold shrink-0',
+								'flex items-center gap-1 text-2xs font-bold shrink-0',
 								getPingTextClass(ping)
 							)}
 							dir="ltr"
@@ -120,10 +120,10 @@ export function NetworkCompactRow({
 							<span>
 								{ping !== null ? <data value={ping}>{ping}</data> : '--'}
 							</span>
-							<span className="text-[9px] font-medium opacity-70">ms</span>
+							<span className="text-4xs font-medium opacity-70">ms</span>
 						</div>
 					) : (
-						<div className="flex items-center gap-1 text-[11px] font-bold text-danger shrink-0">
+						<div className="flex items-center gap-1 text-2xs font-bold text-danger shrink-0">
 							<Icon
 								name="wifiOff"
 								size={13}
@@ -155,7 +155,7 @@ export function NetworkCompactRow({
 					</button>
 				</div>
 
-				<div className="flex items-center gap-1.5 text-[11px] text-fg-muted truncate">
+				<div className="flex items-center gap-1.5 text-2xs text-fg-muted truncate">
 					<span
 						className={cn(
 							'font-medium shrink-0',
@@ -168,7 +168,7 @@ export function NetworkCompactRow({
 					<span className="opacity-30">•</span>
 
 					<span
-						className="truncate text-fg-muted text-[10px]"
+						className="truncate text-fg-muted text-3xs"
 						title={isp || undefined}
 					>
 						{city ? `${city}، ` : ''}

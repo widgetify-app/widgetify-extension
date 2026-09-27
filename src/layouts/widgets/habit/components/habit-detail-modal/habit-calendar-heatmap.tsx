@@ -126,7 +126,7 @@ export function HabitCalendar({ habit, color, today }: HabitCalendarProps) {
 		} else if (value >= 4) {
 			indicator = (
 				<span className="flex items-center justify-center gap-0.5 absolute right-2 -bottom-0.5 w-6 h-3 rounded-t-sm font-bold text-fg-muted bg-surface-2">
-					<span className="text-[8px] mt-0.5">{value}</span>
+					<span className="text-4xs mt-0.5">{value}</span>
 					<span
 						className="w-1 h-1 rounded-full"
 						style={{ background: color }}

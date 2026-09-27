@@ -52,7 +52,7 @@ export function WallpaperSidebar({
 						</div>
 						{totalCount !== undefined && totalCount > 0 && (
 							<span
-								className={`text-[10px] px-1.5 py-0.5 rounded-md ${
+								className={`text-3xs px-1.5 py-0.5 rounded-md ${
 									selectedCategoryId === null
 										? 'bg-image-fill text-on-brand'
 										: 'bg-fill-2 text-fg-muted'
@@ -110,7 +110,7 @@ export function WallpaperSidebar({
 				{isFilterOpen && (
 					<div className="space-y-2.5 pt-1">
 						<div className="space-y-1">
-							<span className="text-[11px] text-fg-muted block px-1">
+							<span className="text-2xs text-fg-muted block px-1">
 								نوع تصویر
 							</span>
 							<TabNavigation
@@ -137,7 +137,7 @@ export function WallpaperSidebar({
 						</div>
 
 						<div className="space-y-1">
-							<span className="text-[11px] text-fg-muted block px-1">
+							<span className="text-2xs text-fg-muted block px-1">
 								دسترسی
 							</span>
 							<TabNavigation

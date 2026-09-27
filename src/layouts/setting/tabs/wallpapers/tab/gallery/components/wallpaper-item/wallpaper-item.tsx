@@ -133,7 +133,7 @@ function WallpaperItemFu({
 							className={`absolute flex  justify-between inset-x-0 bottom-0 p-2 rounded-xl transition-opacity duration-300 bg-linear-to-t from-scrim to-transparent items-center`}
 						>
 							{wallpaper.name ? (
-								<div className="flex-1 text-[10px] font-medium text-image-fg">
+								<div className="flex-1 text-3xs font-medium text-image-fg">
 									{wallpaper.name}
 								</div>
 							) : null}
@@ -162,14 +162,14 @@ function WallpaperItemFu({
 						{!isSelected && wallpaper.isOwned && (
 							<div className="absolute flex gap-0.5 px-1 rounded-tl-xl rounded-r-md bg-success text-on-success shadow-sm  items-center top-0 left-0 w-max h-4">
 								<Icon name="shoppingBag" size={10} />
-								<span className="text-[10px]! font-normal">باز شده</span>
+								<span className="text-3xs! font-normal">باز شده</span>
 							</div>
 						)}
 
 						{isAnimated && (
 							<div className="absolute flex gap-0.5 px-1 rounded-t-none rounded-b-lg bg-info text-on-info shadow-sm  items-center top-0 right-0 m- inset-x-0 m-auto w-max h-4">
 								<Icon name="play" size={12} />
-								<span className="text-[10px]! font-normal">متحرک</span>
+								<span className="text-3xs! font-normal">متحرک</span>
 							</div>
 						)}
 
@@ -181,7 +181,7 @@ function WallpaperItemFu({
 									e.stopPropagation()
 									onPreviewBackground(wallpaper)
 								}}
-								className="absolute bottom-1.5 right-1.5 flex items-center gap-1 px-2 py-1 rounded-lg bg-scrim border border-image-line text-[rgba(255,255,255,0.8)] hover:text-image-fg transition-colors text-[10px] font-medium backdrop-blur-sm cursor-pointer opacity-0 group-hover:opacity-100"
+								className="absolute bottom-1.5 right-1.5 flex items-center gap-1 px-2 py-1 rounded-lg bg-scrim border border-image-line text-[rgba(255,255,255,0.8)] hover:text-image-fg transition-colors text-3xs font-medium backdrop-blur-sm cursor-pointer opacity-0 group-hover:opacity-100"
 							>
 								<Icon name="outlineEye" size={10} />
 								<span>پیش‌نمایش</span>

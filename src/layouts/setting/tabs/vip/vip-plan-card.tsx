@@ -39,7 +39,7 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 							: undefined
 					}
 					className={cn(
-						'absolute -top-2.5 left-1/2 -translate-x-1/2 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-sm',
+						'absolute -top-2.5 left-1/2 -translate-x-1/2 text-3xs font-bold px-2.5 py-0.5 rounded-full shadow-sm',
 						!badgeColor && 'bg-brand text-on-brand'
 					)}
 				>
@@ -48,7 +48,7 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 			)}
 
 			{isClaimed && (
-				<div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-surface text-fg-muted text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+				<div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-surface text-fg-muted text-3xs font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
 					<span>استفاده شده</span>
 				</div>
 			)}
@@ -63,7 +63,7 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 					>
 						{plan.title}
 					</h5>
-					<span className="text-[10px] text-fg-muted">
+					<span className="text-3xs text-fg-muted">
 						{fmt(plan.days)} روز اعتبار
 					</span>
 				</div>
@@ -102,7 +102,7 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 							<span className="text-base font-black text-fg tabular-nums">
 								{fmt(plan.price)}
 							</span>
-							<span className="text-[11px] text-fg-muted">تومان</span>
+							<span className="text-2xs text-fg-muted">تومان</span>
 						</>
 					)}
 				</div>
