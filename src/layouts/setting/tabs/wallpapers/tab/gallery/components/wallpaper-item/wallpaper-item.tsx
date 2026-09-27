@@ -160,7 +160,7 @@ function WallpaperItemFu({
 						)}
 
 						{!isSelected && wallpaper.isOwned && (
-							<div className="absolute flex gap-0.5 px-1 rounded-tl-xl rounded-r-md bg-success text-on-success shadow-sm  items-center top-0 left-0 w-max h-4">
+							<div className="absolute flex gap-0.5 px-1 rounded-tl-xl rounded-r-lg bg-success text-on-success shadow-sm  items-center top-0 left-0 w-max h-4">
 								<Icon name="shoppingBag" size={10} />
 								<span className="text-3xs! font-normal">باز شده</span>
 							</div>

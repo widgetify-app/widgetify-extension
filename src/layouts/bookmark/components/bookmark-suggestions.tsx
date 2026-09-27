@@ -36,7 +36,7 @@ export function BookmarkSuggestions({ onSelect }: BookmarkSuggestionsProps) {
 									<img
 										src={suggestion.icon}
 										alt={suggestion.title}
-										className="object-contain w-6 h-6 rounded-md"
+										className="object-contain w-6 h-6 rounded-lg"
 										onError={(e) => {
 											const target = e.target as HTMLImageElement
 											target.style.display = 'none'

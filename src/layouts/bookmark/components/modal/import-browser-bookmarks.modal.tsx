@@ -123,7 +123,7 @@ function TreeNode({
 				)}
 
 				<span
-					className={`flex items-center justify-center w-4 h-4 rounded-md border shrink-0 transition-colors ${
+					className={`flex items-center justify-center w-4 h-4 rounded-lg border shrink-0 transition-colors ${
 						isChecked
 							? 'bg-brand border-brand'
 							: isIndeterminate

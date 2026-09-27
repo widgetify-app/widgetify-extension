@@ -53,7 +53,7 @@ export function TodoCompactRow({
 		return (
 			<div className="flex items-center justify-between w-full h-full px-3 py-2 select-none">
 				<div className="flex items-center gap-2">
-					<div className="w-5 h-5 rounded-md skeleton" />
+					<div className="w-5 h-5 rounded-lg skeleton" />
 					<div className="w-32 h-4 rounded skeleton" />
 				</div>
 				<div className="w-12 h-4 rounded skeleton" />
@@ -81,7 +81,7 @@ export function TodoCompactRow({
 							aria-pressed={nextPending.completed}
 							aria-label={`${nextPending.text} را ${nextPending.completed ? 'ناتمام' : 'انجام‌شده'} کن`}
 							className={cn(
-								'w-5 h-5 rounded-md border flex items-center justify-center transition-colors shrink-0 cursor-pointer',
+								'w-5 h-5 rounded-lg border flex items-center justify-center transition-colors shrink-0 cursor-pointer',
 								'disabled:cursor-not-allowed disabled:opacity-60 focus-visible:focus-ring',
 								nextPending.completed
 									? 'bg-success-fill-2 border-success text-success'

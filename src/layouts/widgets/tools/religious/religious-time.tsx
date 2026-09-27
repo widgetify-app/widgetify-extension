@@ -74,7 +74,7 @@ export function ReligiousTime({ currentDate }: ReligiousTimeProps) {
 			{loading ? (
 				<div aria-hidden="true" className="grid grid-cols-3 gap-2">
 					{prayerTimeBoxes.map((box) => (
-						<div key={box.title} className="h-20 skeleton rounded-[1.5rem]" />
+						<div key={box.title} className="h-20 skeleton rounded-3xl" />
 					))}
 				</div>
 			) : isError ? (

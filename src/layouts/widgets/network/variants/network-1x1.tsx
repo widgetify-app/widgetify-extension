@@ -84,7 +84,7 @@ export function NetworkCompactSquare({
 						size="xs"
 						onClick={onRefresh}
 						disabled={isRefreshing}
-						className="flex items-center justify-center w-5 h-5 p-0 border-none rounded-md cursor-pointer text-fg-muted transition-ui opacity-0 hover:text-fg-strong hover:bg-fill-2 group-hover:opacity-100 focus-visible:focus-ring"
+						className="flex items-center justify-center w-5 h-5 p-0 border-none rounded-lg cursor-pointer text-fg-muted transition-ui opacity-0 hover:text-fg-strong hover:bg-fill-2 group-hover:opacity-100 focus-visible:focus-ring"
 						aria-label="بارگذاری مجدد"
 					>
 						<Icon

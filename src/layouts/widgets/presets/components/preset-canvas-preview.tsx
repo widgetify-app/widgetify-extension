@@ -68,7 +68,7 @@ export const PresetCanvasPreview: React.FC<PresetCanvasPreviewProps> = ({
 								gridRowStart: widget.position.row + 1,
 								gridRowEnd: widget.position.row + widget.size.h + 1,
 							}}
-							className="flex items-center justify-center overflow-hidden rounded-md bg-fill-2 text-fg-muted group-hover:bg-brand-fill group-hover:text-brand transition-ui"
+							className="flex items-center justify-center overflow-hidden rounded-lg bg-fill-2 text-fg-muted group-hover:bg-brand-fill group-hover:text-brand transition-ui"
 						>
 							<Icon
 								name={definition.icon}

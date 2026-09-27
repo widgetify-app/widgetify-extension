@@ -55,7 +55,7 @@ export function MarketItemCard({
 
 				{/* Type badge */}
 				<div className="absolute top-2 right-2">
-					<span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-surface-veil backdrop-blur-sm border border-line text-4xs text-fg-faint font-medium">
+					<span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-lg bg-surface-veil backdrop-blur-sm border border-line text-4xs text-fg-faint font-medium">
 						{getItemTypeEmoji(item.type)}{' '}
 						{TYPE_LABELS[item.type] || item.type}
 					</span>

@@ -52,7 +52,7 @@ export function WallpaperSidebar({
 						</div>
 						{totalCount !== undefined && totalCount > 0 && (
 							<span
-								className={`text-3xs px-1.5 py-0.5 rounded-md ${
+								className={`text-3xs px-1.5 py-0.5 rounded-lg ${
 									selectedCategoryId === null
 										? 'bg-image-fill text-on-brand'
 										: 'bg-fill-2 text-fg-muted'

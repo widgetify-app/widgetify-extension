@@ -60,7 +60,7 @@ export const RequireVerification = ({
 				initial={{ opacity: 0, y: 10 }}
 				animate={{ opacity: 1, y: 0 }}
 				className={
-					'flex h-full flex-col items-center justify-center p-4 text-center rounded-md text-fg'
+					'flex h-full flex-col items-center justify-center p-4 text-center rounded-lg text-fg'
 				}
 			>
 				<h3 className="mb-2 text-xl font-semibold">نیاز به تأیید حساب</h3>

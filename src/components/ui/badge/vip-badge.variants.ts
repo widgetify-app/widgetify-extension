@@ -17,7 +17,7 @@ export const vipBadgeVariants = cva(
 			},
 			rounded: {
 				sm: 'rounded-sm',
-				md: 'rounded-md',
+				md: 'rounded-lg',
 				lg: 'rounded-lg',
 				xl: 'rounded-xl',
 				full: 'rounded-full',

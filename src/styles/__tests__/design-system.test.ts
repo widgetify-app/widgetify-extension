@@ -65,6 +65,12 @@ describe('one vocabulary', () => {
 		expect(offenders(pattern)).toEqual([])
 	})
 
+	it('rounds corners from the radius scale', () => {
+		const pattern =
+			/(?<![\w-])(?:[a-z0-9\/&>\[\]-]+:)*!?rounded(-[tblrxyse]{1,2})?-(md|4xl|card|\[[^\]]+\])(?![\w-])/
+		expect(offenders(pattern)).toEqual([])
+	})
+
 	it('never uses the OS-keyed dark:/light: variants', () => {
 		expect(offenders(/["'`\s](dark|light):[a-z]/)).toEqual([])
 	})

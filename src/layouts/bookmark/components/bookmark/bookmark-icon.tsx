@@ -74,7 +74,7 @@ export function BookmarkIcon({ bookmark }: { bookmark: Bookmark }) {
 			{typeof displayIcon === 'string' && !imageError ? (
 				<img
 					src={displayIcon}
-					className="object-contain max-w-full max-h-full transition-transform duration-300 rounded-md group-hover:scale-105"
+					className="object-contain max-w-full max-h-full transition-transform duration-300 rounded-lg group-hover:scale-105"
 					alt={bookmark.title}
 					loading="lazy"
 					onLoad={handleImageAnalysis}

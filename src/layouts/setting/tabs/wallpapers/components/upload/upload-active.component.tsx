@@ -28,7 +28,7 @@ export function UploadActive({
 						<MediaPreview customWallpaper={customWallpaper} />
 						<div className="absolute inset-0 bg-scrim-soft" />
 
-						<span className="absolute top-1.5 right-1.5 px-1.5 py-0.5 text-3xs font-bold text-on-brand rounded-md bg-brand-hover backdrop-blur-xs shadow-sm">
+						<span className="absolute top-1.5 right-1.5 px-1.5 py-0.5 text-3xs font-bold text-on-brand rounded-lg bg-brand-hover backdrop-blur-xs shadow-sm">
 							{customWallpaper.type === 'IMAGE' ? 'عکس' : 'ویدیو'}
 						</span>
 

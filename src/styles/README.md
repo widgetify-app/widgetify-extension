@@ -131,6 +131,13 @@ it exactly as the pixel values they replaced did. A test rejects `text-[10px]`
 and the other pixel sizes they cover. Widgets that scale with their container
 keep `cqh`/`cqw` sizes.
 
+## Radius
+
+`rounded-xs` 2 · `sm` 4 · `lg` 8 · `xl` 12 · `2xl` 16 · `3xl` 24 ·
+`full`, and `rounded-widget` for a widget's own frame so every widget can change
+together. `rounded-md`, `rounded-4xl` and arbitrary radii are removed from the
+scale and rejected by a test.
+
 ## Layers
 
 Stacking inside a component uses plain `z-10`, `z-20` and so on.

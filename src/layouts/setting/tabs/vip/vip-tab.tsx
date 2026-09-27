@@ -108,9 +108,9 @@ export function VipTab() {
 								key={i}
 								className="border rounded-2xl border-line bg-fill p-4 space-y-2.5 min-h-27.5"
 							>
-								<div className="w-2/3 h-4 rounded-md skeleton opacity-40" />
-								<div className="w-full h-5 mt-3 rounded-md skeleton opacity-20" />
-								<div className="w-1/2 h-3 rounded-md skeleton opacity-30" />
+								<div className="w-2/3 h-4 rounded-lg skeleton opacity-40" />
+								<div className="w-full h-5 mt-3 rounded-lg skeleton opacity-20" />
+								<div className="w-1/2 h-3 rounded-lg skeleton opacity-30" />
 							</div>
 						))}
 					</div>

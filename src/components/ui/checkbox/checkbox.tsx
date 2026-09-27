@@ -59,7 +59,7 @@ const CheckboxBase = ({
 					onClick={onClickEvent}
 				/>
 				<div
-					className={`w-5 h-5 border rounded-md flex items-center justify-center transition-colors duration-200 ${getCheckboxStyle()} ${className}`}
+					className={`w-5 h-5 border rounded-lg flex items-center justify-center transition-colors duration-200 ${getCheckboxStyle()} ${className}`}
 				>
 					<svg
 						className={`transition-all duration-150 ${checked ? 'scale-100' : 'scale-0'}`}

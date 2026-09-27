@@ -164,7 +164,7 @@ const NextEventSummary: React.FC<NextEventSummaryProps> = ({
 				</span>
 
 				{event.hangoutLink && (
-					<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-brand text-on-brand text-[8.3cqh] font-bold shrink-0">
+					<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-brand text-on-brand text-[8.3cqh] font-bold shrink-0">
 						<Icon name="videoCamera" size={9} aria-hidden="true" />
 						<span>ورود</span>
 					</span>

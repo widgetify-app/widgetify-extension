@@ -86,7 +86,7 @@ export function DailyMoodNotification({ className }: Prop) {
 					</h4>
 					<button
 						type="button"
-						className="flex p-0.5 transition-opacity rounded-md cursor-pointer top-2 left-2 bg-fill text-fg-faint hover:bg-danger-fill hover:text-danger"
+						className="flex p-0.5 transition-opacity rounded-lg cursor-pointer top-2 left-2 bg-fill text-fg-faint hover:bg-danger-fill hover:text-danger"
 						onClick={(e) => {
 							e.preventDefault()
 							e.stopPropagation()

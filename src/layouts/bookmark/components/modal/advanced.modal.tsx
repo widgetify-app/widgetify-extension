@@ -264,7 +264,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 								type="button"
 								onClick={() => handleEmojiSelect(sticker)}
 								className={
-									'px-3 py-1.5 cursor-pointer text-xs rounded-md text-danger hover:bg-danger-fill'
+									'px-3 py-1.5 cursor-pointer text-xs rounded-lg text-danger hover:bg-danger-fill'
 								}
 							>
 								حذف

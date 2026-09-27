@@ -102,7 +102,7 @@ export function GalleryBookmarkIconItem({
 						</div>
 					)}
 					{asset.isOwned && !isSelected && (
-						<div className="absolute flex gap-0.5 px-1.5 rounded-tl-xl rounded-br-md bg-success text-on-success shadow-sm items-center top-0 left-0 text-3xs h-4 z-20">
+						<div className="absolute flex gap-0.5 px-1.5 rounded-tl-xl rounded-br-lg bg-success text-on-success shadow-sm items-center top-0 left-0 text-3xs h-4 z-20">
 							<Icon name="shoppingBag" size={9} />
 							<span>خریداری شده</span>
 						</div>

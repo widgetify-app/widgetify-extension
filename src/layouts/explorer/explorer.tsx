@@ -13,7 +13,7 @@ function ExplorerSkeleton() {
 					className="flex flex-col gap-4 p-5 rounded-2xl bg-surface-2 bg-glass"
 				>
 					<div className="flex items-center gap-3">
-						<div className="w-5 h-5 rounded-md skeleton opacity-40"></div>
+						<div className="w-5 h-5 rounded-lg skeleton opacity-40"></div>
 						<div className="h-3 skeleton w-28 opacity-40"></div>
 					</div>
 					<div className="grid grid-cols-4 gap-4 mt-2">

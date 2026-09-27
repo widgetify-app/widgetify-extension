@@ -260,7 +260,7 @@ export function HabitContributionChart({
 														setHoveredDay(null)
 													}
 													className={cn(
-														'w-3.5 h-3.5 md:w-4 md:h-4 rounded-[4px] transition-ui cursor-pointer select-none',
+														'w-3.5 h-3.5 md:w-4 md:h-4 rounded-sm transition-ui cursor-pointer select-none',
 														'focus-visible:focus-ring',
 														day.isFuture
 															? 'opacity-20 cursor-not-allowed bg-fill'
@@ -310,21 +310,21 @@ export function HabitContributionChart({
 
 					<div className="flex items-center gap-1 text-3xs text-fg-muted shrink-0">
 						<span>کمتر</span>
-						<div className="w-2.5 h-2.5 rounded-[2px] bg-fill-2" />
+						<div className="w-2.5 h-2.5 rounded-xs bg-fill-2" />
 						<div
-							className="w-2.5 h-2.5 rounded-[2px]"
+							className="w-2.5 h-2.5 rounded-xs"
 							style={{ backgroundColor: `${color}33` }}
 						/>
 						<div
-							className="w-2.5 h-2.5 rounded-[2px]"
+							className="w-2.5 h-2.5 rounded-xs"
 							style={{ backgroundColor: `${color}66` }}
 						/>
 						<div
-							className="w-2.5 h-2.5 rounded-[2px]"
+							className="w-2.5 h-2.5 rounded-xs"
 							style={{ backgroundColor: `${color}aa` }}
 						/>
 						<div
-							className="w-2.5 h-2.5 rounded-[2px]"
+							className="w-2.5 h-2.5 rounded-xs"
 							style={{ backgroundColor: color }}
 						/>
 						<span>بیشتر</span>

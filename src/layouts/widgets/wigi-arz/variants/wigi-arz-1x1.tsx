@@ -107,7 +107,7 @@ export function CurrencyCompactSquare({
 						<img
 							src={currency.icon}
 							alt=""
-							className="object-cover rounded-md w-4.5 h-4.5 shrink-0"
+							className="object-cover rounded-lg w-4.5 h-4.5 shrink-0"
 						/>
 						<span className="flex flex-col items-start min-w-0 text-right">
 							<span className="text-[11.5cqh] font-bold text-fg truncate leading-tight">

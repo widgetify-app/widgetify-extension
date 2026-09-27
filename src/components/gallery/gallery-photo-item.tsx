@@ -98,7 +98,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 					)}
 
 					{asset.isOwned && !isSelected && (
-						<div className="absolute flex gap-0.5 px-1.5 rounded-tl-2xl rounded-br-md bg-success text-on-success shadow-sm items-center top-0 left-0 text-3xs h-4.5">
+						<div className="absolute flex gap-0.5 px-1.5 rounded-tl-2xl rounded-br-lg bg-success text-on-success shadow-sm items-center top-0 left-0 text-3xs h-4.5">
 							<Icon name="shoppingBag" size={10} />
 							<span>خریداری شده</span>
 						</div>

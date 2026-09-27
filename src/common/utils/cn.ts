@@ -6,7 +6,7 @@ const twMerge = extendTailwindMerge<'wg-backdrop'>({
 		classGroups: {
 			'wg-backdrop': ['bg-glass'],
 
-			rounded: ['rounded-widget', 'rounded-card'],
+			rounded: ['rounded-widget'],
 			transition: ['transition-ui'],
 			'outline-style': ['focus-ring'],
 			z: ['z-float', 'z-nav', 'z-toolbar', 'z-popover', 'z-dropdown'],
