@@ -1,7 +1,7 @@
 import { memo, useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { useZonedClock } from '@/hooks/use-zoned-clock'
+import { useZonedClock } from '@/features/widgets/hooks/use-zoned-clock'
 
 const FLIP_DURATION = 400
 

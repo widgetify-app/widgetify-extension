@@ -5,3 +5,9 @@ export enum ToolsTab {
 }
 
 export type ToolsTabType = keyof typeof ToolsTab
+
+declare module '@/common/constants/store-keys' {
+	interface StorageKV {
+		toolsTab: ToolsTabType
+	}
+}

@@ -1,8 +1,8 @@
 import { Button, Modal } from '@/components/ui'
 import { TextInput } from '@/components/ui'
-import { isEmpty, isLessThan } from '@/common/utils/validators'
-import InputTextError from '../../auth-form/components/input-text-error'
-import OtpInput from '../../auth-form/components/otp-input'
+import { isEmpty, isLessThan } from '@/features/setting/account/utils/validators'
+import InputTextError from '../input-text-error'
+import OtpInput from '../otp-input'
 import {
 	useChangePhoneRequest,
 	useChangePhoneVerify,

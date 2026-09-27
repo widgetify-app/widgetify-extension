@@ -2,16 +2,13 @@ import type React from 'react'
 import Analytics from '@/analytics'
 import { Icon } from '@/icons'
 import type { GoogleCalendarEvent } from '@/services/hooks/date/get-google-calendar-events.hook'
-import type { WidgetifyDate } from '@/features/widgets/calendar/utils/date-events'
+import type { WidgetifyDate } from '@/common/utils/date-events'
 import { GoogleCalendarEmpty } from '../components/google-calendar-empty'
 import { GoogleCalendarEventCard } from '../components/google-calendar-event-card'
 import { GoogleCalendarNowCard } from '../components/google-calendar-now-card'
 import { GoogleCalendarWeekStrip } from '../components/google-calendar-week-strip'
 import type { ClassifiedCalendarEvent } from '../types'
-import {
-	isSameJalaliDay,
-	toIsoDateKey,
-} from '@/features/widgets/calendar/utils/jalali-date'
+import { isSameJalaliDay, toIsoDateKey } from '@/features/widgets/utils/jalali-date'
 
 const navButtonClass =
 	'flex items-center justify-center w-6 h-6 rounded-lg cursor-pointer transition-ui text-fg-muted opacity-70 hover:opacity-100 hover:bg-fill-2 focus-visible:focus-ring'

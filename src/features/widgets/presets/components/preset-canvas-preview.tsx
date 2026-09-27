@@ -2,7 +2,7 @@ import type React from 'react'
 import { useMemo } from 'react'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
-import { WIDGET_DEFINITIONS } from '../../constants'
+import { WIDGET_DEFINITIONS } from '../../registry'
 import type { PresetLayout } from '../types'
 import { resolvePresetWidgetsForViewport } from '../utils/viewport'
 

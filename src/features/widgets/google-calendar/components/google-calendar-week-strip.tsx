@@ -1,12 +1,9 @@
 import type React from 'react'
-import { PERSIAN_WEEKDAYS } from '@/common/constants/weekdays'
+import { PERSIAN_WEEKDAYS } from '@/features/widgets/constants'
 import { cn } from '@/common/utils/cn'
-import type { WidgetifyDate } from '@/features/widgets/calendar/utils/date-events'
+import type { WidgetifyDate } from '@/common/utils/date-events'
 import type { GoogleCalendarEvent } from '@/services/hooks/date/get-google-calendar-events.hook'
-import {
-	isSameJalaliDay,
-	toIsoDateKey,
-} from '@/features/widgets/calendar/utils/jalali-date'
+import { isSameJalaliDay, toIsoDateKey } from '@/features/widgets/utils/jalali-date'
 
 interface GoogleCalendarWeekStripProps {
 	weekDays: WidgetifyDate[]

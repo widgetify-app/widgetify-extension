@@ -1,7 +1,7 @@
 import type React from 'react'
 import { callEvent } from '@/common/utils/call-event'
 import { Button } from '@/components/ui'
-import { WidgetTabKeys } from '@/features/widgets/widget-settings/constants'
+import { WidgetTabKeys } from '@/features/widgets/types'
 
 interface CurrencyEmptyStateProps {
 	compact?: boolean

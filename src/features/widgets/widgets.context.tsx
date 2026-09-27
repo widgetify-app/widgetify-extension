@@ -19,12 +19,12 @@ import {
 	type StoredWidget,
 	WidgetKeys,
 } from '@/features/widgets/utils/layout-engine/types'
-import { useAppearance } from '../appearance.context'
-import { useAuth } from '../auth.context'
-import { reflowForColumns } from './widget-layout-helpers'
-import { useWidgetSync } from './use-widget-sync'
-import { useWidgetOperations } from './use-widget-operations'
-import { useWidgetDrag } from './use-widget-drag'
+import { useAppearance } from '@/context/appearance.context'
+import { useAuth } from '@/context/auth.context'
+import { reflowForColumns } from './utils/widget-layout-helpers'
+import { useWidgetSync } from './hooks/use-widget-sync'
+import { useWidgetOperations } from './hooks/use-widget-operations'
+import { useWidgetDrag } from './hooks/use-widget-drag'
 import type {
 	FreeWidgetActions,
 	FreeWidgetContextType,

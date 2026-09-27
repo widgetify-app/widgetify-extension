@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getZonedNow, msUntilNextMinute } from '@/common/utils/zoned-now'
+import { getZonedNow, msUntilNextMinute } from '@/features/widgets/utils/zoned-now'
 
 const SECOND_MS = 1000
 

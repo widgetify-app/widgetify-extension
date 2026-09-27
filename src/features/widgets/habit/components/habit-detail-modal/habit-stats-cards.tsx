@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import moment from 'moment'
-import type { WidgetifyDate } from '@/features/widgets/calendar/utils/date-events'
+import type { WidgetifyDate } from '@/common/utils/date-events'
 import type { Habit } from '@/services/hooks/habit/habit.interface'
 import { computeHabitStats, type HabitDay } from '../../utils/habit-stats'
 

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Analytics from '@/analytics'
 import { Pagination } from '@/components/ui'
-import { WallpaperItem } from '@/features/setting/wallpapers/gallery/components/wallpaper-item/wallpaper-item'
+import { WallpaperItem } from '@/components/wallpaper/wallpaper-item'
 import { useGetWallpapers } from '@/services/hooks/wallpapers/get-wallpaper-categories.hook'
 import { useWallpaperContext } from '@/context/wallpaper.context'
 import { usePreviewHandler } from '@/hooks/use-preview-handler'

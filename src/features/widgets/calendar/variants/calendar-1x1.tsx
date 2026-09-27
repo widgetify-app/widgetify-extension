@@ -1,6 +1,6 @@
-import { useDate } from '@/context/date.context'
+import { useDate } from '@/features/widgets/date.context'
 import { cn } from '@/common/utils/cn'
-import { toIsoDateKey } from '../utils/jalali-date'
+import { toIsoDateKey } from '@/features/widgets/utils/jalali-date'
 
 export function Calendar1x1() {
 	const { today, todayIsHoliday } = useDate()

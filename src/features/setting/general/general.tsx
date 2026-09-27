@@ -1,5 +1,5 @@
 import { ToggleSwitch } from '@/components/ui'
-import { SelectCity } from './components/select-city'
+import { SelectCity } from '@/components/select-city'
 import { TimezoneSettings } from './components/timezone-settings'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { SectionPanel } from '@/components/ui'

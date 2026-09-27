@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import ms from 'ms'
 import { getMainClient } from '@/services/api'
-import type { FetchedWeather } from '@/features/widgets/weather/types'
+import type { FetchedWeather } from '@/services/hooks/weather/weather.interface'
 
 async function fetchWeatherByLatLon(addForecast: boolean): Promise<FetchedWeather> {
 	const client = getMainClient()

@@ -2,10 +2,10 @@ import Analytics from '@/analytics'
 import { moodOptions } from '@/common/constants/moods'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { callEvent } from '@/common/utils/call-event'
-import { GetUserFirstName } from '@/common/utils/get-firstname'
+import { GetUserFirstName } from '@/features/navbar/utils/get-firstname'
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { getCurrentDate } from '@/features/widgets/calendar/utils/date-events'
+import { getCurrentDate } from '@/common/utils/date-events'
 import { safeAwait } from '@/services/api'
 import {
 	type MoodType,

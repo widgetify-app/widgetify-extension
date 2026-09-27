@@ -1,7 +1,7 @@
 import Analytics from '@/analytics'
 import { cn } from '@/common/utils/cn'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { useNotes } from '@/context/notes.context'
+import { useNotes } from '@/features/widgets/notes/notes.context'
 import { NoteEditor } from '../components/note-editor'
 import { NoteEmpty } from '../components/note-empty'
 import { NoteError } from '../components/note-error'

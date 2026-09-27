@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useAuth } from '@/context/auth.context'
 import { Icon } from '@/icons'
 import type { IconName } from '@/icons'
-import type { WidgetifyDate } from '@/features/widgets/calendar/utils/date-events'
+import type { WidgetifyDate } from '@/common/utils/date-events'
 import { useReligiousTime } from '@/services/hooks/date/get-religious-time.hook'
 
 const DAILY_LIST = [

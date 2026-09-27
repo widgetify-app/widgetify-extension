@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Motion, Presence } from '@/common/motion'
-import { getFaviconFromUrl } from '@/common/utils/icon'
+import { getFaviconFromUrl } from '@/features/widgets/utils/icon'
 import { Button, Portal } from '@/components/ui'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { Icon } from '@/icons'
 import {
 	type FetchedBrowserBookmark,
 	getBrowserBookmarks,
-} from '@/features/widgets/bookmark/utils/browser-bookmarks'
+} from '@/features/widgets/utils/browser-bookmarks'
 import Analytics from '@/analytics'
 
 interface BookmarkPopoverProps {

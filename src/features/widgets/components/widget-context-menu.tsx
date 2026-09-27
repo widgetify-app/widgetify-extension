@@ -12,7 +12,7 @@ import {
 	VipBadge,
 } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
-import { useWidgetVipResolver } from '@/services/hooks/widgets/widget-catalog.hook'
+import { useWidgetVipResolver } from '@/features/widgets/hooks/use-widget-vip-resolver'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
 

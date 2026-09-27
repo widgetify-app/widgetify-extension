@@ -6,10 +6,10 @@ import {
 	TextInput,
 	Tooltip,
 } from '@/components/ui'
-import { useNotes } from '@/context/notes.context'
+import { useNotes } from '@/features/widgets/notes/notes.context'
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { useFreeWidgetActions } from '@/context/free-widget/free-widget.context'
+import { useFreeWidgetActions } from '@/features/widgets/widgets.context'
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'

@@ -1,5 +1,5 @@
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { useZonedClock } from '@/hooks/use-zoned-clock'
+import { useZonedClock } from '@/features/widgets/hooks/use-zoned-clock'
 import { WidgetContainer } from '../components/widget-container'
 import type { TransparentClockVariant } from './types'
 import { normalizeTransparentClockVariant } from './utils/normalize-variant'

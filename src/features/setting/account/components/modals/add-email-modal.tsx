@@ -1,6 +1,6 @@
 import { Button, Modal } from '@/components/ui'
 import { TextInput } from '@/components/ui'
-import { isEmpty, isLessThan } from '@/common/utils/validators'
+import { isEmpty, isLessThan } from '@/features/setting/account/utils/validators'
 import {
 	useChangeEmailRequest,
 	useChangeEmailVerify,
@@ -8,8 +8,8 @@ import {
 import { safeAwait } from '@/services/api'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
-import InputTextError from '../../auth-form/components/input-text-error'
-import OtpInput from '../../auth-form/components/otp-input'
+import InputTextError from '../input-text-error'
+import OtpInput from '../otp-input'
 
 interface AddPhoneProp {
 	show: boolean

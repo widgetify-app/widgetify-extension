@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Analytics from '@/analytics'
-import { getFaviconFromUrl } from '@/common/utils/icon'
+import { getFaviconFromUrl } from '@/features/widgets/utils/icon'
 import { NewBadge, Tooltip } from '@/components/ui'
 import { Page, usePage } from '@/context/page.context'
 import { Icon } from '@/icons'

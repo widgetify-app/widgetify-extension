@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useGetWallpaperCategories } from '@/services/hooks/wallpapers/get-wallpaper-categories.hook'
 import { WallpaperSidebar } from '../components/wallpaper-sidebar'
 import { WallpaperHeader } from '../components/wallpaper-header'
-import { WallpaperView } from './components/wallpaper-item/wallpaper-view'
+import { WallpaperView } from './components/wallpaper-view'
 
 export function GalleryTab() {
 	const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null)

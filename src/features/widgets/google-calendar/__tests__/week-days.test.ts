@@ -1,11 +1,8 @@
 import { describe, expect, it } from 'bun:test'
 import jalaliMoment from 'jalali-moment'
-import { DAYS_IN_WEEK } from '@/common/constants/weekdays'
+import { DAYS_IN_WEEK } from '@/features/widgets/constants'
 import { getWeekDays } from '../utils/week-days'
-import {
-	isSameJalaliDay,
-	toIsoDateKey,
-} from '@/features/widgets/calendar/utils/jalali-date'
+import { isSameJalaliDay, toIsoDateKey } from '@/features/widgets/utils/jalali-date'
 
 function day(iso: string) {
 	return jalaliMoment(iso, 'YYYY-MM-DD').locale('fa')

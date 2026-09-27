@@ -156,9 +156,17 @@ src/features/ src/pages/                            features, and the pages that
 ```
 
 Imports point upward through that list and never downward. **Nothing at or above
-`src/components/` may import from `src/features/**` or `src/pages/**`.** If it needs to,
-it is not global: either it belongs inside that one feature, or the thing it reaches
-for belongs further up.
+`src/components/` may import from `src/features/**` or `src/pages/**`,** type imports
+included. If it needs to, it is not global: either it belongs inside that one feature, or
+the thing it reaches for belongs further up. `src/components/ui` also never reaches
+`src/services` — a primitive does not fetch.
+
+**A feature reaches another feature only through its public files:** the entry (and what
+the entry re-exports), the `-setting.tsx` panel, and `*.context.tsx`. A feature may use
+anything in its own folder or in an ancestor's root and role folders — that is what the
+nearest common parent is for. When a sibling needs an internal piece, either the owner
+re-exports it from its entry (`friends.tsx` exports `SelectFriendLayout` for the todos
+widget) or the piece moves up to the common parent.
 
 ### Where a new file goes
 
@@ -172,7 +180,10 @@ import it:
 | Two or more unrelated areas | The matching global layer |
 
 Run the same count backwards before leaving something in a global folder. A global file
-with a single consumer is misplaced, not reusable.
+used from a single area is misplaced, not reusable — the test counts a feature, a page, a
+group under `src/components`, or a global folder as one area. `src/services` is the
+exception by design: everything that talks to the server lives there, however many
+features use it.
 
 **Then which folder inside that owner** — that is settled by the file's role, under
 "Shape of a feature folder" below, and never by the import count. A helper used once and
@@ -197,8 +208,9 @@ Every feature folder looks like this, at every depth:
 ```
 
 **Nothing else sits at a feature's root** — no helper, no second component, no
-`index.tsx`. `src/features/` holds only feature folders; `src/pages/` holds only page
-folders and `root.tsx`, the shell that switches between them.
+`index.tsx`. `src/features/` holds only feature folders. `src/pages/` holds page folders
+and `root.tsx`, the shell that switches between them, with the shell's own role folders
+beside it (`src/pages/hooks/use-wallpaper-apply.ts`).
 
 **Every file sits in the folder for its role,** whether the feature has one of them or
 twenty. A helper goes in `utils/`, a hook in `hooks/`, a sub component in `components/`,
@@ -225,11 +237,15 @@ there, not a folder standing in for a single file's role.
 singular included: `habit/` holds `habit.widget.tsx`. This does not reach role folders or
 a named group inside them — those hold a set of files and have no entry to match.
 
-**`src/features/widgets/` is itself a feature.** `widgets.tsx` is the canvas,
-`constants.tsx` registers every widget, and its `components/`, `hooks/` and `utils/` hold
-what the widget platform shares — the container, the layout engine, migration. Each widget
-is a sub feature with a `<name>.widget.tsx` entry. The canvas's other sub features —
-`catalog/` (adding a widget), `widget-settings/`, `presets/` — take the plain `<name>.tsx`.
+**`src/features/widgets/` is itself a feature.** `widgets.tsx` is the canvas and
+`widgets.context.tsx` its state; `registry.tsx` registers every widget — the one root
+file beyond the list above, because only a feature that hosts sub features has one, and
+it cannot live in `constants.ts` without every widget importing a file that imports every
+widget. `types.ts`, `constants.ts`, `date.context.tsx` and `currency.context.tsx` hold what
+several widgets share, and `components/`, `hooks/` and `utils/` hold the platform — the
+container, the layout engine, migration, the VIP resolver. Each widget is a sub feature
+with a `<name>.widget.tsx` entry. The canvas's other sub features — `catalog/` (adding a
+widget), `widget-settings/`, `presets/` — take the plain `<name>.tsx`.
 
 ### Naming
 
@@ -310,9 +326,24 @@ keeps those in sync and they go stale without anyone noticing.
 
 **Animation** uses `Motion` and `Presence` from `@/common/motion`, never raw `framer-motion`. The wrappers are what make optimisation mode work.
 
-**Storage** goes through `@/common/storage`. Every key is typed in `src/common/constants/store-keys.ts`. Deprecated keys get purged via `purgeDeprecatedStorageKeys`.
+**Storage** goes through `@/common/storage`, and every key is typed on the `StorageKV`
+interface. App-wide keys are declared in `src/common/constants/store-keys.ts`; a key whose
+value only one feature understands is declared by that feature, in its `types.ts`, by
+augmenting the interface:
 
-**Cross component messaging** uses `callEvent` / `listenEvent` from `@/common/utils/call-event`, typed in the same file.
+```ts
+declare module '@/common/constants/store-keys' {
+	interface StorageKV {
+		pets: PetSettings
+	}
+}
+```
+
+That keeps the global layer from importing feature types, and the compiler still rejects a
+key nobody declared. Grep `interface StorageKV` to see every key. Deprecated keys get
+purged via `purgeDeprecatedStorageKeys`.
+
+**Cross component messaging** uses `callEvent` / `listenEvent` from `@/common/utils/call-event`, typed on the `EventName` interface — app-wide events in that file, a feature's own events in its `types.ts`, the same way as storage keys. A file that augments must stay a module (keep at least one export): a `declare module` in a file with no import or export replaces the module instead of extending it.
 
 **Icons** come from `Icon` in `@/icons`.
 
@@ -480,7 +511,7 @@ When logic is worth covering, extract it into a dependency free module and test 
 
 - `src/features/widgets/utils/layout-engine/` — grid collision maths
 - `src/features/widgets/pet/utils/pet-movement.ts` — pet movement maths
-- `src/common/utils/animation-timing.ts` — shared timing plus the retain predicate
+- `src/components/ui/modal/animation-timing.ts` — shared timing plus the retain predicate
 
 A test file must not transitively import `@/services/api`; it reads `browser.runtime.getManifest()` at module scope and bun has no `browser` global. That is why timing constants live in their own module rather than next to the hook that uses them.
 

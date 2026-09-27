@@ -57,7 +57,7 @@ export interface GridBreakpoint {
 	gap: number
 }
 
-import type { WidgetTabKeys } from '@/features/widgets/widget-settings/constants'
+import type { WidgetTabKeys } from '@/features/widgets/types'
 import type { IconName } from '@/icons'
 
 export type WidgetCategory = 'all' | 'time' | 'productivity' | 'info' | 'lifestyle'
@@ -112,4 +112,11 @@ export interface LayoutEngineOptions {
 	cols: number
 	allowedSizes?: WidgetSize[]
 	registry?: Record<string, WidgetDefinition>
+}
+
+declare module '@/common/constants/store-keys' {
+	interface StorageKV {
+		activeWidgets: WidgetItem[]
+		storedWidgets: StoredWidget[]
+	}
 }

@@ -5,7 +5,7 @@ import type {
 	WidgetCategory,
 	WidgetDefinition,
 } from '@/features/widgets/utils/layout-engine/types'
-import type { WidgetTabKeys } from '@/features/widgets/widget-settings/constants'
+import type { WidgetTabKeys } from '@/features/widgets/types'
 import { Icon } from '@/icons'
 import { CATEGORIES } from '../types'
 

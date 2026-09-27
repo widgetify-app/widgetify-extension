@@ -50,3 +50,22 @@ export type FreeWidgetContextType = FreeWidgetLayoutState & FreeWidgetActions
 export interface FreeWidgetDerivedState {
 	primaryBookmarkInstanceId: string | null
 }
+
+export enum WidgetTabKeys {
+	widget_management = 'widget_management',
+	wigiArz = 'wigiArz',
+	news_settings = 'news_settings',
+	weather_settings = 'weather_settings',
+	combo_settings = 'combo_settings',
+	Pet = 'pet_settings',
+}
+
+declare module '@/common/utils/call-event' {
+	interface EventName {
+		openWidgetsSettings: {
+			tab: WidgetTabKeys | null
+			instanceId?: string
+			size?: { w: number; h: number }
+		}
+	}
+}

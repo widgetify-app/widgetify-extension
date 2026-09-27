@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { cn } from '@/common/utils/cn'
 import { Button, Chip, type FilterOption, FilterTooltip, Tooltip } from '@/components/ui'
-import { useHorizontalWheelScroll } from '@/hooks/use-horizontal-wheel-scroll'
+import { useHorizontalWheelScroll } from '@/features/widgets/todos/hooks/use-horizontal-wheel-scroll'
 import { Icon } from '@/icons'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
 import { ExpandableTodoInput } from '../components/expandable-todo-input'

@@ -1,11 +1,13 @@
 import type React from 'react'
+import { useEffect, useState } from 'react'
+import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { Modal } from '@/components/ui'
 import { PetSettings } from '@/features/widgets/pet/pet-setting'
 import { RssFeedSetting } from '@/features/widgets/news/news-setting'
 import { WeatherSetting } from '@/features/widgets/weather/weather-setting'
 import { WigiArzSetting } from '@/features/widgets/wigi-arz/wigi-arz-setting'
 import { ComboSetting } from '@/features/widgets/combo-widget/combo-widget-setting'
-import { WidgetTabKeys } from './constants'
+import { WidgetTabKeys } from '../types'
 
 interface WidgetSettingModalConfig {
 	title: string
@@ -41,43 +43,42 @@ const WIDGET_SETTING_MODALS: Record<string, WidgetSettingModalConfig> = {
 	},
 }
 
-interface WidgetSettingsModalProps {
-	onClose: () => void
-	selectedTab: WidgetTabKeys | null
-	activeSettingTab?: WidgetTabKeys | null
+interface WidgetSettingsRequest {
+	tab: WidgetTabKeys | null
 	instanceId?: string
 	size?: { w: number; h: number }
-	onCloseSetting?: () => void
 }
 
-export function WidgetSettingsModal({
-	onClose,
-	selectedTab,
-	activeSettingTab,
-	instanceId,
-	size,
-	onCloseSetting,
-}: WidgetSettingsModalProps) {
-	const settingKey =
-		activeSettingTab ||
-		(selectedTab && selectedTab !== WidgetTabKeys.widget_management
-			? selectedTab
-			: null)
+export function WidgetSettings() {
+	const [request, setRequest] = useState<WidgetSettingsRequest | null>(null)
 
-	const activeSettingConfig = settingKey ? WIDGET_SETTING_MODALS[settingKey] : null
-	const handleCloseSetting = onCloseSetting || onClose
+	useEffect(
+		() =>
+			listenEvent('openWidgetsSettings', (data) => {
+				if (!data.tab || data.tab === WidgetTabKeys.widget_management) {
+					callEvent('openAddCustomWidgetModal')
+				} else {
+					setRequest(data)
+				}
+			}),
+		[]
+	)
+
+	const activeSettingConfig = request?.tab ? WIDGET_SETTING_MODALS[request.tab] : null
 
 	return (
 		<Modal
 			isOpen={!!activeSettingConfig}
-			onClose={handleCloseSetting}
+			onClose={() => setRequest(null)}
 			title={activeSettingConfig?.title}
 			size={activeSettingConfig?.size}
 			direction="rtl"
 			closeOnBackdropClick
 		>
 			{activeSettingConfig && (
-				<activeSettingConfig.Component {...({ instanceId, size } as any)} />
+				<activeSettingConfig.Component
+					{...({ instanceId: request?.instanceId, size: request?.size } as any)}
+				/>
 			)}
 		</Modal>
 	)

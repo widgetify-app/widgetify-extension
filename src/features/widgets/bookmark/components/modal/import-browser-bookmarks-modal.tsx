@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import Analytics from '@/analytics'
 import { showToast } from '@/common/toast'
-import { getFaviconFromUrl } from '@/common/utils/icon'
+import { getFaviconFromUrl } from '@/features/widgets/utils/icon'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { Icon } from '@/icons'
 import { Button, Modal } from '@/components/ui'
@@ -11,7 +11,7 @@ import type { BrowserImportNode } from '../../types'
 import {
 	type FetchedBrowserBookmark,
 	getBrowserBookmarks,
-} from '../../utils/browser-bookmarks'
+} from '../../../utils/browser-bookmarks'
 
 interface ImportBrowserBookmarksModalProps {
 	isOpen: boolean

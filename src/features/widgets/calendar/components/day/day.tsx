@@ -10,8 +10,8 @@ import {
 	getGregorianEvents,
 	getHijriEvents,
 	getShamsiEvents,
-} from '../../utils/date-events'
-import { isSameJalaliDay, toIsoDateKey } from '../../utils/jalali-date'
+} from '@/common/utils/date-events'
+import { isSameJalaliDay, toIsoDateKey } from '@/features/widgets/utils/jalali-date'
 
 interface DayItemProps {
 	day: number

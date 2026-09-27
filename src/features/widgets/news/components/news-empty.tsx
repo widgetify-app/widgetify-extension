@@ -1,6 +1,6 @@
 import { callEvent } from '@/common/utils/call-event'
 import { Icon } from '@/icons'
-import { WidgetTabKeys } from '@/features/widgets/widget-settings/constants'
+import { WidgetTabKeys } from '@/features/widgets/types'
 
 export function NewsEmpty() {
 	return (

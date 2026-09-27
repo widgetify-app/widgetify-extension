@@ -3,7 +3,7 @@ import Analytics from '@/analytics'
 import {
 	HABIT_COLOR_PRESETS,
 	HABIT_EMOJI_PRESETS,
-} from '@/common/constants/habit-options'
+} from '@/features/widgets/habit/constants'
 import { showToast } from '@/common/toast'
 import { Modal, TextInput } from '@/components/ui'
 import {

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Button, Modal } from '@/components/ui'
 import { Icon } from '@/icons'
-import { useFreeWidgets } from '@/context/free-widget/free-widget.context'
+import { useFreeWidgets } from '@/features/widgets/widgets.context'
 
 type UpdateReleaseNotesModalProps = {
 	isOpen: boolean

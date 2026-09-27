@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
-import type { BookmarkType } from '@/features/widgets/bookmark/types'
+import type { BookmarkType } from '@/services/hooks/bookmark/bookmark.interface'
 
 export interface BulkImportBookmarkNode {
 	title: string

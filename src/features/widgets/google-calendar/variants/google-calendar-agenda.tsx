@@ -4,11 +4,11 @@ import jalaliMoment from 'jalali-moment'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
 import type { GoogleCalendarEvent } from '@/services/hooks/date/get-google-calendar-events.hook'
-import type { WidgetifyDate } from '@/features/widgets/calendar/utils/date-events'
+import type { WidgetifyDate } from '@/common/utils/date-events'
 import { GoogleCalendarEmpty } from '../components/google-calendar-empty'
 import type { ClassifiedCalendarEvent } from '../types'
 import { classifyEvent, toDateTimeAttr } from '../utils/classify-event'
-import { toIsoDateKey } from '@/features/widgets/calendar/utils/jalali-date'
+import { toIsoDateKey } from '@/features/widgets/utils/jalali-date'
 
 interface GoogleCalendarAgendaProps {
 	rawEvents: GoogleCalendarEvent[] | undefined

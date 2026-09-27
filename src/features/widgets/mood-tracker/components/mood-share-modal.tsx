@@ -2,7 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 import { Button, Modal } from '@/components/ui'
 import { Icon } from '@/icons'
 import { useAuth } from '@/context/auth.context'
-import { copyCanvasToClipboard, downloadCanvasAsImage } from '@/common/utils/canvas'
+import {
+	copyCanvasToClipboard,
+	downloadCanvasAsImage,
+} from '@/features/widgets/utils/canvas'
 import { useGetMoodStats } from '@/services/hooks/mood-log/get-mood-stats.hook'
 import { renderMoodShareCanvas } from '../utils/render-mood-share-canvas'
 

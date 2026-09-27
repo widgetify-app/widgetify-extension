@@ -15,10 +15,10 @@ import { BlurModeButton } from './components/blur-mode-button'
 import type { UserProfile } from '@/services/hooks/user/user-service.hook'
 import { NewBadge } from '@/components/ui'
 import { useSyncAccount } from './hooks/use-sync-account'
-import { getCurrentDate } from '@/features/widgets/calendar/utils/date-events'
-import { useBirthdayConfetti } from '@/hooks/use-birthday-confetti'
+import { getCurrentDate } from '@/common/utils/date-events'
+import { useBirthdayConfetti } from '@/features/navbar/hooks/use-birthday-confetti'
 import { Icon } from '@/icons'
-import { GetUserFirstName } from '@/common/utils/get-firstname'
+import { GetUserFirstName } from '@/features/navbar/utils/get-firstname'
 import { useGetNotifications } from '@/services/hooks/extension/get-notifications.hook'
 
 const WIDGETIFY_URLS = {

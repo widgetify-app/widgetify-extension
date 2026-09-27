@@ -1,4 +1,4 @@
-import { DAYS_IN_WEEK } from '@/common/constants/weekdays'
+import { DAYS_IN_WEEK } from '@/features/widgets/constants'
 
 export const WEEKS_IN_GRID = 6
 

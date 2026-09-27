@@ -1,6 +1,6 @@
 import { useId, useMemo } from 'react'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { useZonedClock } from '@/hooks/use-zoned-clock'
+import { useZonedClock } from '@/features/widgets/hooks/use-zoned-clock'
 
 interface ClockAnalogProps {
 	size?: number

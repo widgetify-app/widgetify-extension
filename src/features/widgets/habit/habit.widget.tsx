@@ -1,4 +1,4 @@
-import { getCurrentDate } from '@/features/widgets/calendar/utils/date-events'
+import { getCurrentDate } from '@/common/utils/date-events'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import type { WidgetSize } from '../utils/layout-engine/types'
 import { WidgetContainer } from '../components/widget-container'

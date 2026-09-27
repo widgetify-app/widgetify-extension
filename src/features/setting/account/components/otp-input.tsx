@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from 'react'
-import { isNumber } from '@/common/utils/validators'
+import { isNumber } from '@/features/setting/account/utils/validators'
 
 type OtpInputProps = {
 	otp: string

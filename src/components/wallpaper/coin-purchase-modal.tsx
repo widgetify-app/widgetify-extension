@@ -3,7 +3,7 @@ import type { Wallpaper } from '@/common/wallpaper.interface'
 import { Button, Modal } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { UserCoin } from '@/components/user-coin'
-import { HoverPlayVideo } from '../gallery/components/hover-play-video'
+import { HoverPlayVideo } from './hover-play-video'
 
 interface CoinPurchaseModalProps {
 	isOpen: boolean

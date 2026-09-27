@@ -1,19 +1,16 @@
 import { useEffect, useMemo, useState } from 'react'
 import Analytics from '@/analytics'
 import { useAuth } from '@/context/auth.context'
-import { useDate } from '@/context/date.context'
+import { useDate } from '@/features/widgets/date.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import type { WidgetifyDate } from '@/features/widgets/calendar/utils/date-events'
+import type { WidgetifyDate } from '@/common/utils/date-events'
 import type { GoogleCalendarEvent } from '@/services/hooks/date/get-google-calendar-events.hook'
 import { useGetGoogleCalendarEvents } from '@/services/hooks/date/get-google-calendar-events.hook'
 import type { ClassifiedCalendarEvent } from '../types'
 import { classifyEvent } from '../utils/classify-event'
 import { toZonedDayEnd, toZonedDayStart } from '../utils/day-range'
 import { getWeekDays } from '../utils/week-days'
-import {
-	isSameJalaliDay,
-	toIsoDateKey,
-} from '@/features/widgets/calendar/utils/jalali-date'
+import { isSameJalaliDay, toIsoDateKey } from '@/features/widgets/utils/jalali-date'
 
 const REFRESH_INTERVAL_MS = 30_000 // 30 seconds
 

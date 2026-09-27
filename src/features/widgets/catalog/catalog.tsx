@@ -3,17 +3,17 @@ import { useEffect, useMemo, useState } from 'react'
 import { Button, Modal } from '@/components/ui'
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
-import { useOptionalFreeWidgets } from '@/context/free-widget/free-widget.context'
+import { useOptionalFreeWidgets } from '@/features/widgets/widgets.context'
 import type {
 	WidgetCategory,
 	WidgetSize,
 	WidgetVariantOption,
 } from '@/features/widgets/utils/layout-engine/types'
-import { WIDGET_DEFINITIONS } from '@/features/widgets/constants'
+import { WIDGET_DEFINITIONS } from '@/features/widgets/registry'
 import { Icon } from '@/icons'
-import type { WidgetTabKeys } from '@/features/widgets/widget-settings/constants'
+import type { WidgetTabKeys } from '@/features/widgets/types'
 import { WidgetHelpModal } from '../components/widget-help-modal'
-import { useWidgetVipResolver } from '@/services/hooks/widgets/widget-catalog.hook'
+import { useWidgetVipResolver } from '@/features/widgets/hooks/use-widget-vip-resolver'
 import type { AddWidgetModalProps } from './types'
 import { AddWidgetSidebar } from './components/sidebar'
 import { AddWidgetOptions } from './components/options'

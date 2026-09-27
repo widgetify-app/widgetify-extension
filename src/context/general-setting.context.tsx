@@ -2,7 +2,7 @@ import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { shouldReduceMotion } from '@/common/utils/reduced-motion'
+import { shouldReduceMotion } from '@/context/utils/reduced-motion'
 import { useUpdateExtensionSettings } from '@/services/hooks/extension/update-setting.hook'
 import {
 	type FetchedTimezone,

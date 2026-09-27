@@ -3,7 +3,7 @@ import { addOpacityToColor } from '@/common/color'
 import {
 	HABIT_FREQUENCY_OPTIONS,
 	HABIT_UNIT_OPTIONS,
-} from '@/common/constants/habit-options'
+} from '@/features/widgets/habit/constants'
 import { type HabitFrequency, HabitUnit } from '@/services/hooks/habit/habit.interface'
 import { Icon } from '@/icons'
 

@@ -16,3 +16,10 @@ export interface PomodoroSession {
 	cycles: number
 	isRunning: boolean
 }
+
+declare module '@/common/constants/store-keys' {
+	interface StorageKV {
+		pomodoro_session: PomodoroSession | null
+		pomodoro_settings: PomodoroSettings | null
+	}
+}

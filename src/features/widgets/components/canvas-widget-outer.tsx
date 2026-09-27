@@ -1,7 +1,7 @@
 import type React from 'react'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
-import { useFreeWidgetActions } from '@/context/free-widget/free-widget.context'
+import { useFreeWidgetActions } from '@/features/widgets/widgets.context'
 import { getWidgetPixelRect } from '../utils/grid-geometry'
 import {
 	type StoredWidget,
@@ -13,7 +13,7 @@ import {
 import { cn } from '@/common/utils/cn'
 import { useAuth } from '@/context/auth.context'
 import { ProBadge } from '@/components/ui'
-import { useWidgetVipResolver } from '@/services/hooks/widgets/widget-catalog.hook'
+import { useWidgetVipResolver } from '@/features/widgets/hooks/use-widget-vip-resolver'
 import { WidgetContextMenu } from './widget-context-menu'
 import { BookmarkDeleteModal } from './bookmark-delete-modal'
 import { WidgetSlot } from './widget-slot'

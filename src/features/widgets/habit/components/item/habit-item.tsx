@@ -1,7 +1,7 @@
 import Analytics from '@/analytics'
 import { playAlarm } from '@/common/play-alarm'
 import { showToast } from '@/common/toast'
-import type { WidgetifyDate } from '@/features/widgets/calendar/utils/date-events'
+import type { WidgetifyDate } from '@/common/utils/date-events'
 import { safeAwait } from '@/services/api'
 import type { Habit } from '@/services/hooks/habit/habit.interface'
 import { useLogHabitProgress } from '@/services/hooks/habit/log-habit-progress.hook'

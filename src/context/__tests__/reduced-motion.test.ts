@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import { shouldReduceMotion } from '../reduced-motion'
+import { shouldReduceMotion } from '../utils/reduced-motion'
 
 describe('shouldReduceMotion', () => {
 	it('returns false when both app setting and OS prefers-reduced-motion are false', () => {

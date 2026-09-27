@@ -9,6 +9,8 @@ import { GoogleCalendarAgenda } from './variants/google-calendar-agenda'
 import { GoogleCalendarSchedule } from './variants/google-calendar-schedule'
 import { GoogleCalendarTimeline } from './variants/google-calendar-timeline'
 
+export { GoogleCalendarTab } from './components/google-calendar-tab'
+
 interface GoogleCalendarWidgetProps {
 	size?: WidgetSize
 	meta?: { variant?: GoogleCalendarVariant | string }

@@ -2,15 +2,12 @@ import type React from 'react'
 import Analytics from '@/analytics'
 import { Icon } from '@/icons'
 import type { GoogleCalendarEvent } from '@/services/hooks/date/get-google-calendar-events.hook'
-import type { WidgetifyDate } from '@/features/widgets/calendar/utils/date-events'
+import type { WidgetifyDate } from '@/common/utils/date-events'
 import { GoogleCalendarEmpty } from '../components/google-calendar-empty'
 import { GoogleCalendarTimelineItem } from '../components/google-calendar-timeline-item'
 import { GoogleCalendarTimelineItemSkeleton } from '../components/google-calendar-timeline-item-skeleton'
 import type { ClassifiedCalendarEvent } from '../types'
-import {
-	isSameJalaliDay,
-	toIsoDateKey,
-} from '@/features/widgets/calendar/utils/jalali-date'
+import { isSameJalaliDay, toIsoDateKey } from '@/features/widgets/utils/jalali-date'
 
 const SKELETON_ROWS = 4
 

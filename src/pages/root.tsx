@@ -1,16 +1,15 @@
 import { useState } from 'react'
 import Analytics from '@/analytics'
 import { purgeDeprecatedStorageKeys } from '@/common/storage'
-import { callEvent, listenEvent } from '@/common/utils/call-event'
+import { listenEvent } from '@/common/utils/call-event'
 import { StackedToaster } from '@/components/ui'
 import {
 	GeneralSettingProvider,
 	useGeneralSetting,
 } from '@/context/general-setting.context'
-import { FreeWidgetProvider } from '@/context/free-widget/free-widget.context'
+import { FreeWidgetProvider } from '@/features/widgets/widgets.context'
 import { NavbarLayout } from '@/features/navbar/navbar'
-import { WidgetTabKeys } from '@/features/widgets/widget-settings/constants'
-import { WidgetSettingsModal } from '@/features/widgets/widget-settings/widget-settings'
+import { WidgetSettings } from '@/features/widgets/widget-settings/widget-settings'
 import { Page, usePage } from '@/context/page.context'
 import { MotionConfig } from 'framer-motion'
 import { Motion as motion, Presence } from '@/common/motion'
@@ -19,7 +18,7 @@ import { MiniAppPage } from '@/pages/mini-apps/mini-apps.page'
 import { ExplorerPage } from '@/pages/explorer/explorer.page'
 import { HomePage } from '@/pages/home/home.page'
 import { useEffect } from 'react'
-import { useWallpaperApply } from '@/features/setting/wallpapers/hooks/use-wallpaper-apply'
+import { useWallpaperApply } from '@/pages/hooks/use-wallpaper-apply'
 import { WallpaperProvider } from '@/context/wallpaper.context'
 import { IconProvider } from '@/icons'
 
@@ -45,31 +44,11 @@ export function RootLayout() {
 }
 
 function Main() {
-	const [activeSettingPayload, setActiveSettingPayload] = useState<{
-		tab: WidgetTabKeys | null
-		instanceId?: string
-		size?: { w: number; h: number }
-	} | null>(null)
 	const [showAuthRequired, setAuthRequired] = useState(false)
 	const { page } = usePage()
 	const { isOptimalMode } = useGeneralSetting()
 
 	useEffect(() => {
-		const openWidgetsSettingsEvent = listenEvent(
-			'openWidgetsSettings',
-			(data: {
-				tab: WidgetTabKeys | null
-				instanceId?: string
-				size?: { w: number; h: number }
-			}) => {
-				if (!data.tab || data.tab === WidgetTabKeys.widget_management) {
-					callEvent('openAddCustomWidgetModal')
-				} else {
-					setActiveSettingPayload(data)
-				}
-			}
-		)
-
 		const openAuthRequireModal = listenEvent('open_require_auth_modal', () => {
 			setAuthRequired(true)
 		})
@@ -77,7 +56,6 @@ function Main() {
 		Analytics.pageView('Home', '/')
 
 		return () => {
-			openWidgetsSettingsEvent()
 			openAuthRequireModal()
 		}
 	}, [])
@@ -108,14 +86,7 @@ function Main() {
 						)}
 					</motion.div>
 				</Presence>
-				<WidgetSettingsModal
-					onClose={() => setActiveSettingPayload(null)}
-					selectedTab={null}
-					activeSettingTab={activeSettingPayload?.tab}
-					instanceId={activeSettingPayload?.instanceId}
-					size={activeSettingPayload?.size}
-					onCloseSetting={() => setActiveSettingPayload(null)}
-				/>
+				<WidgetSettings />
 			</FreeWidgetProvider>
 
 			<AuthRequiredModal

@@ -1,5 +1,5 @@
 import type { MoodStatsResponse } from '@/services/hooks/mood-log/get-mood-stats.hook'
-import { drawRoundedRect, fitText } from '@/common/utils/canvas'
+import { drawRoundedRect, fitText } from '@/features/widgets/utils/canvas'
 
 const W = 1080
 const H = 1350

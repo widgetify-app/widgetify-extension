@@ -14,14 +14,14 @@ import {
 	type WidgetSize,
 } from '@/features/widgets/utils/layout-engine/types'
 import { isServerInstanceId } from '@/features/widgets/utils/instance-id'
-import { WIDGET_DEFINITIONS } from '@/features/widgets/constants'
+import { WIDGET_DEFINITIONS } from '@/features/widgets/registry'
 import {
 	createUserWidgetApi,
 	deleteUserWidgetApi,
 	updateUserWidgetApi,
 } from '@/services/hooks/widgets/widget-sync.hook'
-import { reflowForColumns, sanitizeLayout } from './widget-layout-helpers'
-import { createNoteForDuplicatedWidget } from './widget-note-helpers'
+import { reflowForColumns, sanitizeLayout } from '../utils/widget-layout-helpers'
+import { createNoteForDuplicatedWidget } from '../utils/widget-note-helpers'
 
 type ApplyRuntimeLayout = (
 	next: StoredWidget[] | ((prev: StoredWidget[]) => StoredWidget[])

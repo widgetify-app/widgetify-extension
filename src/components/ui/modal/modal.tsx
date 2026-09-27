@@ -4,7 +4,10 @@ import { createPortal } from 'react-dom'
 import { cn } from '@/common/utils/cn'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { Icon } from '@/icons'
-import { EXIT_ANIMATION_MS, useDelayedUnmount } from '@/hooks/use-delayed-unmount'
+import {
+	EXIT_ANIMATION_MS,
+	useDelayedUnmount,
+} from '@/components/ui/modal/use-delayed-unmount'
 import {
 	modalBoxVariants,
 	modalDialogVariants,

@@ -1,6 +1,6 @@
 import { memo, useMemo, useState } from 'react'
 import { addOpacityToColor } from '@/common/color'
-import type { Bookmark } from '../types'
+import type { Bookmark } from '@/services/hooks/bookmark/bookmark.interface'
 import { RenderStickerPattern } from './bookmark/bookmark-sticker'
 import { BookmarkTitle } from './bookmark/bookmark-title'
 import { useBookmarkStore } from '../bookmark.context'

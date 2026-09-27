@@ -4,7 +4,7 @@ import {
 	MINUTE_MS,
 	MINUTE_TICK_GUARD_MS,
 	msUntilNextMinute,
-} from '../zoned-now'
+} from '../utils/zoned-now'
 
 function hourIn(timeZone: string): number {
 	return Number(

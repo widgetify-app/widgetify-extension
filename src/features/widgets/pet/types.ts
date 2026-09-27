@@ -100,3 +100,20 @@ export interface PetAssets {
 	collectibleSize: number
 	collectibleFallSpeed: number
 }
+
+declare module '@/common/constants/store-keys' {
+	interface StorageKV {
+		pets: PetSettings
+	}
+}
+
+declare module '@/common/utils/call-event' {
+	interface EventName {
+		updatedPetSettings: {
+			instanceId?: string
+			petName?: string
+			petType: PetTypes
+			background?: PetBackgroundId
+		}
+	}
+}

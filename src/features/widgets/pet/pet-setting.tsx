@@ -3,7 +3,7 @@ import { getFromStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import { TextInput, Tooltip } from '@/components/ui'
 import { Icon } from '@/icons'
-import { useFreeWidgets } from '@/context/free-widget/free-widget.context'
+import { useFreeWidgets } from '@/features/widgets/widgets.context'
 import { PetOptionTile } from './components/pet-option-tile'
 import {
 	BASE_PET_OPTIONS,

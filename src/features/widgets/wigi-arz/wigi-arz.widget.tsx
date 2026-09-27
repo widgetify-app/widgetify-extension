@@ -1,5 +1,5 @@
-import { useCurrencyStore } from '@/context/currency.context'
-import { useOptionalFreeWidgets } from '@/context/free-widget/free-widget.context'
+import { useCurrencyStore } from '@/features/widgets/currency.context'
+import { useOptionalFreeWidgets } from '@/features/widgets/widgets.context'
 import type { WidgetSize } from '../utils/layout-engine/types'
 import { WidgetContainer } from '../components/widget-container'
 import { CurrencyEmptyState } from './components/currency-empty-state'

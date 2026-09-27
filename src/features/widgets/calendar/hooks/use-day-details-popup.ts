@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Analytics from '@/analytics'
-import { useDate } from '@/context/date.context'
-import type { WidgetifyDate } from '../utils/date-events'
+import { useDate } from '@/features/widgets/date.context'
+import type { WidgetifyDate } from '@/common/utils/date-events'
 
 export function useDayDetailsPopup() {
 	const { today, setSelectedDate } = useDate()

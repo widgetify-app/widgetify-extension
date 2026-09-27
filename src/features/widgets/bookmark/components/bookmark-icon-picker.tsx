@@ -1,5 +1,5 @@
 import { showToast } from '@/common/toast'
-import { getFaviconFromUrl } from '@/common/utils/icon'
+import { getFaviconFromUrl } from '@/features/widgets/utils/icon'
 import { Icon } from '@/icons'
 import type React from 'react'
 import { useRef, useState } from 'react'

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button, ConfirmationModal, Tooltip } from '@/components/ui'
-import { useNotes } from '@/context/notes.context'
+import { useNotes } from '@/features/widgets/notes/notes.context'
 import { useAuth } from '@/context/auth.context'
 import Analytics from '@/analytics'
 import { IconLoading } from '@/components/ui'

@@ -1,5 +1,5 @@
-import { DAYS_IN_WEEK } from '@/common/constants/weekdays'
-import type { WidgetifyDate } from '@/features/widgets/calendar/utils/date-events'
+import { DAYS_IN_WEEK } from '@/features/widgets/constants'
+import type { WidgetifyDate } from '@/common/utils/date-events'
 
 export function getWeekDays(referenceDate: WidgetifyDate): WidgetifyDate[] {
 	const dayOfWeek = (referenceDate.day() + 1) % DAYS_IN_WEEK

@@ -1,20 +1,8 @@
-import type { WidgetItem } from '@/features/widgets/utils/layout-engine/types'
-import type { Bookmark } from '@/features/widgets/bookmark/types'
-import type { PetSettings } from '@/features/widgets/pet/types'
-import type { ComboTabType } from '@/features/widgets/combo-widget/types'
-import type { YadkarTab } from '@/features/widgets/yadkar/types'
-import type { WigiNewsSetting } from '@/features/widgets/news/types'
-import type {
-	PomodoroSession,
-	PomodoroSettings,
-} from '@/features/widgets/tools/pomodoro/types'
-import type { ToolsTabType } from '@/features/widgets/tools/types'
+import type { Bookmark } from '@/services/hooks/bookmark/bookmark.interface'
 import type {
 	FetchedForecast,
 	FetchedWeather,
-	WeatherSettings,
-} from '@/features/widgets/weather/types'
-import type { ClockSettings } from '@/features/widgets/clock/types'
+} from '@/services/hooks/weather/weather.interface'
 import type { ExtensionConfigResponse } from '@/services/config-data/config-data.interface'
 import type { FetchedCurrency } from '@/services/hooks/currency/get-currency-by-code.hook'
 import type { RecommendedSite, TrendItem } from '@/services/hooks/trends/get-trends.hook'
@@ -32,7 +20,6 @@ export interface StorageKV {
 	bookmarks: Bookmark[]
 	deletedBookmarkIds: string[]
 	showWelcomeModal: boolean
-	weatherSettings: WeatherSettings
 	hasSeenTour: boolean
 	[key: `currency:${string}`]: FetchedCurrency
 	gaClientId: { ga_client_id: string }
@@ -42,8 +29,6 @@ export interface StorageKV {
 	auth_token: string | undefined
 	refresh_token: string | null
 	profile: UserProfile
-	activeWidgets: WidgetItem[]
-	storedWidgets: import('@/features/widgets/utils/layout-engine/types').StoredWidget[]
 	widgetLayoutMigrationVersion: number
 	search_trends: TrendItem[]
 	recommended_sites: RecommendedSite[]
@@ -56,16 +41,9 @@ export interface StorageKV {
 		updatedAt: number
 	}[]
 	recent_searches: any
-	pets: PetSettings
-	clock: ClockSettings
 	configData: ExtensionConfigResponse
-	toolsTab: ToolsTabType
-	comboTabs: ComboTabType
-	pomodoro_session: PomodoroSession | null
-	pomodoro_settings: PomodoroSettings | null
 	seenWidgetSettings_1: boolean
 	hasSeenFooterDisableHint: boolean
-	rssOptions: WigiNewsSetting
 	browserTitle: {
 		id: string
 		template: string
@@ -79,6 +57,5 @@ export interface StorageKV {
 	[key: `removed_notification_${string}`]: string
 	selected_engine: string | null
 	widget_tab: string
-	yadkar_tab: YadkarTab
 	notifications: any
 }

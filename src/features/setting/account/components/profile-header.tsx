@@ -11,7 +11,10 @@ import {
 import { UserCoin } from '@/components/user-coin'
 import { Icon } from '@/icons'
 import { useAuth } from '@/context/auth.context'
-import { formatVipExpiryDate, formatVipRemaining } from '@/common/utils/vip-expiry'
+import {
+	formatVipExpiryDate,
+	formatVipRemaining,
+} from '@/features/setting/account/utils/vip-expiry'
 import { callEvent } from '@/common/utils/call-event'
 
 interface ProfileHeaderProps {

@@ -13,6 +13,9 @@ import { FriendRequestsButton } from './components/friend-requests-button'
 import { useAuth } from '@/context/auth.context'
 import { Icon } from '@/icons'
 
+export { FriendsDirectView } from './components/friends-direct-view'
+export { SelectFriendLayout } from './components/select-friend'
+
 export const FriendsLayout = () => {
 	const { user } = useAuth()
 	const [isAddFriendOpen, setIsAddFriendOpen] = useState(false)

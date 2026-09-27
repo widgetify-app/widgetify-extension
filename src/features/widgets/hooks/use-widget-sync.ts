@@ -20,7 +20,7 @@ import {
 	reflowForColumns,
 	sanitizeLayout,
 	storedWidgetToApiPayload,
-} from './widget-layout-helpers'
+} from '../utils/widget-layout-helpers'
 
 interface UseWidgetSyncParams {
 	isAuthenticated: boolean

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { callEvent } from '@/common/utils/call-event'
 import { Icon } from '@/icons'
-import { WidgetTabKeys } from '@/features/widgets/widget-settings/constants'
+import { WidgetTabKeys } from '@/features/widgets/types'
 import { CurrencyModalComponent } from '../components/currency-modal'
 import { useCurrencyPrice } from '../hooks/use-currency-price'
 import type { WigiArzMeta } from '../types'

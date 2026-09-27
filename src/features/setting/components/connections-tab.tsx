@@ -1,5 +1,5 @@
 import { SectionPanel } from '@/components/ui'
-import { Connections } from '../user-profile/connections/connections'
+import { Connections } from '../account/user-profile/connections/connections'
 import { Icon } from '@/icons'
 
 export const ConnectionPlatformsTab = () => {

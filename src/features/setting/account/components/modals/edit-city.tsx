@@ -1,5 +1,5 @@
 import { Modal } from '@/components/ui'
-import { SelectCity } from '../../../general/components/select-city'
+import { SelectCity } from '@/components/select-city'
 import { FooterButtons } from './footer-buttons'
 
 interface Prop {

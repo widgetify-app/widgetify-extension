@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { WidgetContainer } from '../components/widget-container'
 import type { WidgetSize } from '../utils/layout-engine/types'
-import { useFreeWidgets } from '@/context/free-widget/free-widget.context'
+import { useFreeWidgets } from '@/features/widgets/widgets.context'
 import { useAppearance } from '@/context/appearance.context'
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'

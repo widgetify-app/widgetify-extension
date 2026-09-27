@@ -7,7 +7,7 @@ import {
 	dedupeInstanceIds,
 	isServerInstanceId,
 } from '@/features/widgets/utils/instance-id'
-import { WIDGET_DEFINITIONS } from '@/features/widgets/constants'
+import { WIDGET_DEFINITIONS } from '@/features/widgets/registry'
 
 function normalizeWidgetSizes(layout: StoredWidget[], cols: number): StoredWidget[] {
 	let changed = false

@@ -98,6 +98,21 @@ const imports = new Map(
 	])
 )
 
+function augmentations(file: ts.SourceFile): ts.ModuleDeclaration[] {
+	return file.statements.filter(
+		(statement): statement is ts.ModuleDeclaration =>
+			ts.isModuleDeclaration(statement) && ts.isStringLiteral(statement.name)
+	)
+}
+
+const augmentedBy = new Map<string, string[]>()
+for (const path of projectFiles) {
+	for (const declaration of augmentations(sourceFile(path))) {
+		const target = resolveInProject((declaration.name as ts.StringLiteral).text, path)
+		if (target) augmentedBy.set(target, [...(augmentedBy.get(target) ?? []), path])
+	}
+}
+
 function entrypoints(): string[] {
 	const scripts = walk('entrypoints')
 		.filter((path) => path.endsWith('.html'))
@@ -151,6 +166,24 @@ function importedSymbols(): Set<ts.Symbol> {
 				)
 			}
 		})
+		for (const declaration of augmentations(sourceFile(path))) {
+			const module = checker.getSymbolAtLocation(declaration.name)
+			if (!module || !declaration.body || !ts.isModuleBlock(declaration.body))
+				continue
+			const exported = checker.getExportsOfModule(module)
+			for (const statement of declaration.body.statements) {
+				if (!ts.isInterfaceDeclaration(statement)) continue
+				const match = exported.find(
+					(symbol) => symbol.name === statement.name.text
+				)
+				if (match) used.add(aliasTarget(match))
+			}
+			const markStoredTypes = (node: ts.Node) => {
+				if (ts.isTypeReferenceNode(node)) markImported(node.typeName)
+				ts.forEachChild(node, markStoredTypes)
+			}
+			markStoredTypes(declaration.body)
+		}
 	}
 	return used
 }
@@ -168,7 +201,7 @@ describe('dead code', () => {
 			const path = pending.pop() as string
 			if (reached.has(path)) continue
 			reached.add(path)
-			pending.push(...(imports.get(path) ?? []))
+			pending.push(...(imports.get(path) ?? []), ...(augmentedBy.get(path) ?? []))
 		}
 		const unreached = projectFiles.filter(
 			(path) => !isTest(path) && !reached.has(path)
@@ -317,7 +350,12 @@ describe('feature folders', () => {
 				const fits =
 					allowed.includes(file) ||
 					file.endsWith('.context.tsx') ||
-					['types.ts', 'constants.ts', 'constants.tsx'].includes(file)
+					[
+						'types.ts',
+						'constants.ts',
+						'constants.tsx',
+						'registry.tsx',
+					].includes(file)
 				if (!fits) stray.push(`${dir}/${file}`)
 			}
 		}
@@ -464,5 +502,106 @@ describe('imports', () => {
 			}
 		}
 		expect(crossing).toEqual([])
+	})
+})
+
+const MAY_IMPORT: Record<string, string[]> = {
+	ui: ['ui', 'shared'],
+	components: ['ui', 'components', 'shared', 'services'],
+	shared: ['shared', 'services'],
+	services: ['shared', 'services'],
+	features: ['ui', 'components', 'shared', 'services', 'features'],
+	pages: ['ui', 'components', 'shared', 'services', 'features', 'pages'],
+	app: ['ui', 'components', 'shared', 'services', 'features', 'pages', 'app'],
+}
+
+function layerOf(path: string): string {
+	const parts = path.split('/')
+	if (parts[1] === 'components') return parts[2] === 'ui' ? 'ui' : 'components'
+	if (parts[1] === 'services') return 'services'
+	if (parts[1] === 'features' || parts[1] === 'pages') return parts[1]
+	if (['common', 'hooks', 'context', 'icons'].includes(parts[1])) return 'shared'
+	if (path === 'src/analytics.ts') return 'shared'
+	return 'app'
+}
+
+function featureFolderOf(path: string): string {
+	const parts = path.split('/')
+	const role = parts.findIndex(
+		(part, index) => index > 1 && ROLE_FOLDERS.includes(part)
+	)
+	return (role >= 0 ? parts.slice(0, role) : parts.slice(0, -1)).join('/')
+}
+
+function isPublicFile(target: string, feature: string): boolean {
+	if (parentOf(target) !== feature) return false
+	const file = nameOf(target)
+	return (
+		entryNames(feature).includes(file) ||
+		file === `${nameOf(feature)}-setting.tsx` ||
+		file.endsWith('.context.tsx')
+	)
+}
+
+function ownerUnitOf(path: string): string {
+	const parts = path.split('/')
+	if (parts[1] === 'components' && parts[2] === 'ui') return 'src/components/ui'
+	if (parts[1] === 'components' && parts.length > 3) return parts.slice(0, 3).join('/')
+	return unitOf(path)
+}
+
+const productEdges = [...imports]
+	.filter(([importer]) => importer.startsWith('src/') && !isTest(importer))
+	.flatMap(([importer, targets]) =>
+		targets.map((target) => [importer, target] as const)
+	)
+
+describe('layers', () => {
+	it('import only from their own layer or the layers below it', () => {
+		const upward = productEdges
+			.filter(
+				([importer, target]) =>
+					!MAY_IMPORT[layerOf(importer)].includes(layerOf(target))
+			)
+			.map(([importer, target]) => `${importer} -> ${target}`)
+		expect(upward).toEqual([])
+	})
+
+	it('reach another feature only through its entry, settings panel or context', () => {
+		const reachingIn = productEdges
+			.filter(([importer, target]) => {
+				if (!target.startsWith('src/features/')) return false
+				if (
+					!importer.startsWith('src/features/') &&
+					!importer.startsWith('src/pages/')
+				) {
+					return false
+				}
+				const own = featureFolderOf(importer)
+				const other = featureFolderOf(target)
+				if (own === other || own.startsWith(`${other}/`)) return false
+				return !isPublicFile(target, other)
+			})
+			.map(([importer, target]) => `${importer} -> ${target}`)
+		expect(reachingIn).toEqual([])
+	})
+
+	it('keep a global file only while two areas use it', () => {
+		const users = new Map<string, string[]>()
+		for (const [importer, target] of productEdges) {
+			users.set(target, [...(users.get(target) ?? []), importer])
+		}
+		const misplaced = projectFiles.filter((path) => {
+			const layer = layerOf(path)
+			if (layer !== 'shared' && layer !== 'components') return false
+			const unit = ownerUnitOf(path)
+			const importers = users.get(path) ?? []
+			const outside = new Set(
+				importers.map(ownerUnitOf).filter((importerUnit) => importerUnit !== unit)
+			)
+			const inside = importers.some((importer) => ownerUnitOf(importer) === unit)
+			return !inside && outside.size === 1
+		})
+		expect(misplaced).toEqual([])
 	})
 })

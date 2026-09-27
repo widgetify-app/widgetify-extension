@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { HABIT_EMOJI_CATEGORIES } from './constants'
-import { HABIT_COLOR_PRESETS } from '@/common/constants/habit-options'
+import { HABIT_COLOR_PRESETS } from '@/features/widgets/habit/constants'
 import { Chip, ColorPicker } from '@/components/ui'
 import { cn } from '@/common/utils/cn'
 

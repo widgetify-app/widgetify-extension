@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import { DAYS_IN_WEEK } from '@/common/constants/weekdays'
+import { DAYS_IN_WEEK } from '@/features/widgets/constants'
 import { buildMonthGrid, WEEKS_IN_GRID } from '../utils/month-grid'
 
 const LEADING_RANGE = [0, 1, 2, 3, 4, 5, 6]

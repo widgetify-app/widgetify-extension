@@ -1,4 +1,4 @@
-import { HABIT_UNIT_STEP } from '@/common/constants/habit-options'
+import { HABIT_UNIT_STEP } from '@/features/widgets/habit/constants'
 import { HabitComparison, type Habit } from '@/services/hooks/habit/habit.interface'
 
 interface HabitStep {

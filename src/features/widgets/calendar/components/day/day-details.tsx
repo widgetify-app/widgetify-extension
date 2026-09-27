@@ -7,7 +7,7 @@ import { moodOptions } from '@/common/constants/moods'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { cn } from '@/common/utils/cn'
 import { useAuth } from '@/context/auth.context'
-import { useDate } from '@/context/date.context'
+import { useDate } from '@/features/widgets/date.context'
 import { Icon } from '@/icons'
 import { safeAwait } from '@/services/api'
 import type { FetchedAllEvents } from '@/services/hooks/date/get-events.hook'
@@ -22,7 +22,7 @@ import {
 	getShamsiEvents,
 	hijriMonthNames,
 	type WidgetifyDate,
-} from '../../utils/date-events'
+} from '@/common/utils/date-events'
 
 const MOOD_BACKLOG_DAYS = 7
 

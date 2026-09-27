@@ -1,5 +1,5 @@
-import { getFaviconFromUrl } from '@/common/utils/icon'
-import type { Bookmark } from '../../types'
+import { getFaviconFromUrl } from '@/features/widgets/utils/icon'
+import type { Bookmark } from '@/services/hooks/bookmark/bookmark.interface'
 import { useState } from 'react'
 import { Icon } from '@/icons'
 const colors = [

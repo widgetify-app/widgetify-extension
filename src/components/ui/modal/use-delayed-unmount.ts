@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { EXIT_ANIMATION_MS } from '@/common/utils/animation-timing'
+import { EXIT_ANIMATION_MS } from '@/components/ui/modal/animation-timing'
 
 export { EXIT_ANIMATION_MS }
 

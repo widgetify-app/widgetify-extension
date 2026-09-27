@@ -3,7 +3,8 @@ import type React from 'react'
 import { Icon } from '@/icons'
 import { cleanCityName } from '../utils/clean-city-name'
 import { formatTemperature } from '../utils/format-temperature'
-import type { FetchedWeather, TemperatureUnit } from '../types'
+import type { FetchedWeather } from '@/services/hooks/weather/weather.interface'
+import type { TemperatureUnit } from '../types'
 
 const FORECAST_SLOTS = 4
 
