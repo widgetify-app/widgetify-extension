@@ -1,12 +1,13 @@
+import { getBestAllowedSizeForColumns } from '@/features/widgets/utils/layout-engine/placement'
+import { DEFAULT_COLS } from '@/features/widgets/utils/layout-engine/constants'
+import { resolveLayoutChange } from '@/features/widgets/utils/layout-engine/layout-engine'
+import { validateLayout } from '@/features/widgets/utils/layout-engine/validation'
+import type { StoredWidget } from '@/features/widgets/utils/layout-engine/types'
 import {
-	getBestAllowedSizeForColumns,
-	DEFAULT_COLS,
-	resolveLayoutChange,
-	validateLayout,
-} from '@widget/layout-engine'
-import type { StoredWidget } from '@widget/layout-engine/types'
-import { dedupeInstanceIds, isServerInstanceId } from '@widget/instance-id'
-import { WIDGET_DEFINITIONS } from '@widget/widget-registry'
+	dedupeInstanceIds,
+	isServerInstanceId,
+} from '@/features/widgets/utils/instance-id'
+import { WIDGET_DEFINITIONS } from '@/features/widgets/constants'
 
 function normalizeWidgetSizes(layout: StoredWidget[], cols: number): StoredWidget[] {
 	let changed = false

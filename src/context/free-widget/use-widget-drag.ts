@@ -1,8 +1,12 @@
 import { startTransition, useCallback, useRef } from 'react'
 import type React from 'react'
-import { reconcileIdentity, resolveLayoutChange } from '@widget/layout-engine'
-import type { StoredWidget, WidgetPosition } from '@widget/layout-engine/types'
-import { WIDGET_DEFINITIONS } from '@widget/widget-registry'
+import { reconcileIdentity } from '@/features/widgets/utils/layout-engine/identity'
+import { resolveLayoutChange } from '@/features/widgets/utils/layout-engine/layout-engine'
+import type {
+	StoredWidget,
+	WidgetPosition,
+} from '@/features/widgets/utils/layout-engine/types'
+import { WIDGET_DEFINITIONS } from '@/features/widgets/constants'
 
 type ApplyRuntimeLayout = (
 	next: StoredWidget[] | ((prev: StoredWidget[]) => StoredWidget[])

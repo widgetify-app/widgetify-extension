@@ -6,8 +6,8 @@ import {
 	getHijriEvents,
 	getShamsiEvents,
 	type WidgetifyDate,
-} from '@widget/calendar/utils/date-events'
-import { isSameJalaliDay } from '@widget/calendar/utils/jalali-date'
+} from '@/features/widgets/calendar/utils/date-events'
+import { isSameJalaliDay } from '@/features/widgets/calendar/utils/jalali-date'
 import { useGetEvents } from '@/services/hooks/date/get-events.hook'
 import { useGeneralSetting } from './general-setting.context'
 

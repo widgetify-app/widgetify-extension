@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
-import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
+import type { Bookmark } from '@/features/widgets/bookmark/types'
 
 interface BookmarkUpdatePayload {
 	id: string

@@ -109,7 +109,7 @@ export enum Theme {
 }
 ```
 
-`src/layouts/setting/tabs/appearance/components/theme-selector.tsx` — add an
+`src/features/setting/appearance/components/theme-selector.tsx` — add an
 entry. The shape is `{ id, name, description? }`; the id must match the CSS
 `name`:
 

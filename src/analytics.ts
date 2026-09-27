@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
-import { getFromStorage, setToStorage } from './common/storage'
+import { getFromStorage, setToStorage } from '@/common/storage'
 
 const GA_MEASUREMENT_ID = 'G-7Z0R61E5BZ'
 const GA_API_SECRET = 'mqy2svrEQOu-qC-K4yxJdw'

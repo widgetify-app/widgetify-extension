@@ -43,7 +43,9 @@ export * from './offline-indicator/offline-indicator'
 
 export * from './pagination/pagination'
 
-export * from './popover-menu'
+export * from './popover-menu/popover-menu'
+export * from './popover-menu/popover-menu-item'
+export * from './popover-menu/popover-menu.variants'
 
 export * from './portal/portal'
 

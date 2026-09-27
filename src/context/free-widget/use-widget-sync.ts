@@ -2,10 +2,16 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useCallback, useEffect, useRef } from 'react'
 import type React from 'react'
 import { setToStorage, watchStorage } from '@/common/storage'
-import { DEFAULT_COLS, DEFAULT_WIDGET_LAYOUT } from '@widget/layout-engine'
-import type { StoredWidget } from '@widget/layout-engine/types'
-import { applyInstanceIdMap, buildInstanceIdMap } from '@widget/instance-id'
-import { migrateWidgetLayoutIfNeeded } from '@widget/migration'
+import {
+	DEFAULT_COLS,
+	DEFAULT_WIDGET_LAYOUT,
+} from '@/features/widgets/utils/layout-engine/constants'
+import type { StoredWidget } from '@/features/widgets/utils/layout-engine/types'
+import {
+	applyInstanceIdMap,
+	buildInstanceIdMap,
+} from '@/features/widgets/utils/instance-id'
+import { migrateWidgetLayoutIfNeeded } from '@/features/widgets/utils/migration'
 import {
 	getUserWidgetsApi,
 	syncUserWidgetsApi,

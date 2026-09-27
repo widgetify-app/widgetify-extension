@@ -2,8 +2,8 @@ import { useQuery } from '@tanstack/react-query'
 import { useCallback, useMemo } from 'react'
 import { getMainClient, safeAwait } from '@/services/api'
 import type { AxiosError, AxiosResponse } from 'axios'
-import { WIDGET_DEFINITIONS } from '@widget/widget-registry'
-import type { WidgetSize } from '@widget/layout-engine/types'
+import { WIDGET_DEFINITIONS } from '@/features/widgets/constants'
+import type { WidgetSize } from '@/features/widgets/utils/layout-engine/types'
 
 const DEFAULT_MAX_FREE_WIDGETS = 5
 

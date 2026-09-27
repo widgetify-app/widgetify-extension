@@ -4,15 +4,17 @@ import Analytics from '@/analytics'
 import { playNativeToastSound, showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
 import { callEvent } from '@/common/utils/call-event'
-import { DEFAULT_COLS, resolveLayoutChange, validateLayout } from '@widget/layout-engine'
+import { DEFAULT_COLS } from '@/features/widgets/utils/layout-engine/constants'
+import { resolveLayoutChange } from '@/features/widgets/utils/layout-engine/layout-engine'
+import { validateLayout } from '@/features/widgets/utils/layout-engine/validation'
 import {
 	type StoredWidget,
 	WidgetKeys,
 	type WidgetPosition,
 	type WidgetSize,
-} from '@widget/layout-engine/types'
-import { isServerInstanceId } from '@widget/instance-id'
-import { WIDGET_DEFINITIONS } from '@widget/widget-registry'
+} from '@/features/widgets/utils/layout-engine/types'
+import { isServerInstanceId } from '@/features/widgets/utils/instance-id'
+import { WIDGET_DEFINITIONS } from '@/features/widgets/constants'
 import {
 	createUserWidgetApi,
 	deleteUserWidgetApi,

@@ -1,0 +1,141 @@
+import { useEffect, useRef } from 'react'
+import { getMultipleFromStorage, setToStorage } from '@/common/storage'
+import { callEvent } from '@/common/utils/call-event'
+import type { StoredWallpaper, Wallpaper } from '@/common/wallpaper.interface'
+import { useAuth } from '@/context/auth.context'
+import type { Theme } from '@/context/theme.context'
+import { getMainClient } from '@/services/api'
+import type { UserInventoryItem } from '@/services/hooks/market/market.interface'
+
+export function useSyncAccount() {
+	const { isAuthenticated } = useAuth()
+	const initialSyncDoneRef = useRef(false)
+
+	useEffect(() => {
+		async function initialSync() {
+			if (!isAuthenticated || initialSyncDoneRef.current) {
+				return
+			}
+
+			initialSyncDoneRef.current = true
+
+			setTimeout(async () => {
+				await getAll()
+			}, 1000)
+		}
+
+		initialSync()
+	}, [isAuthenticated])
+}
+
+async function getAll() {
+	try {
+		const client = getMainClient()
+		const response = await client.get<{
+			wallpaper: Wallpaper
+			theme: Theme | null
+			browserTitle: UserInventoryItem
+			font: string | null
+			ui: string | null
+		}>('/extension/@me/sync')
+
+		const { wallpaper, theme, browserTitle, font, ui } = response.data
+		const store = await getMultipleFromStorage(['wallpaper', 'theme', 'appearance'])
+
+		await Promise.all([
+			processWallpaper(wallpaper, store?.wallpaper),
+			processBrowserTitle(browserTitle),
+		])
+
+		processFont(font, store?.appearance)
+		processTheme(theme, store?.theme as any)
+		processUI(ui, store?.appearance)
+	} catch {}
+}
+
+async function processWallpaper(
+	wallpaper: Wallpaper,
+	wallpaperStore: StoredWallpaper | undefined
+) {
+	try {
+		if (!wallpaper) return
+
+		if (wallpaper.id === 'custom-wallpaper' || wallpaper.isCustom) {
+			const isSame =
+				wallpaperStore?.id === 'custom-wallpaper' &&
+				wallpaperStore?.src === wallpaper.src &&
+				wallpaperStore?.type === wallpaper.type
+
+			if (!isSame) {
+				await setToStorage('customWallpaper', wallpaper)
+				await setToStorage('wallpaper', wallpaper)
+				callEvent('custom_wallpaper_sync', wallpaper)
+				callEvent('wallpaper_change', wallpaper)
+			}
+			return
+		}
+
+		if (
+			(wallpaper && wallpaperStore?.id !== wallpaper?.id) ||
+			wallpaper?.src !== wallpaperStore?.src
+		) {
+			if (wallpaperStore?.id === 'custom-wallpaper') {
+				return
+			}
+
+			await setToStorage('wallpaper', {
+				...wallpaper,
+			})
+			callEvent('wallpaper_change', wallpaper)
+		}
+	} catch {}
+}
+
+async function processBrowserTitle(browserTitle: UserInventoryItem | null) {
+	try {
+		if (!browserTitle) return console.log('not found title')
+
+		if (browserTitle.value === document.title) return
+
+		await setToStorage('browserTitle', {
+			id: browserTitle.id,
+			name: browserTitle.name || 'بدون نام',
+			template: browserTitle.value,
+		})
+
+		document.title = browserTitle.value
+	} catch {}
+}
+
+function processTheme(theme: string | null, themeStore: string | undefined) {
+	try {
+		if (!theme) return
+		if (theme !== themeStore) {
+			callEvent('theme_change', {
+				theme,
+				sync: true,
+			})
+		}
+	} catch {}
+}
+function processFont(font: string | null, appearanceStore?: Record<string, any>) {
+	try {
+		if (!font) return
+		const fontStore = appearanceStore?.fontFamily as string | undefined
+		if (font !== fontStore) {
+			callEvent('font_change', {
+				font,
+				sync: true,
+			})
+		}
+	} catch {}
+}
+function processUI(ui: string | null, appearanceStore?: Record<string, any>) {
+	try {
+		if (!ui) return
+		const uiStore = appearanceStore?.ui as string | undefined
+		if (ui !== uiStore) {
+			callEvent('ui_change', ui)
+		}
+	} catch {}
+}

@@ -14,8 +14,11 @@ import {
 	DEFAULT_GAP,
 	GRID_BREAKPOINTS,
 	MIN_CELL_WIDTH,
-} from '@widget/layout-engine'
-import { type StoredWidget, WidgetKeys } from '@widget/layout-engine/types'
+} from '@/features/widgets/utils/layout-engine/constants'
+import {
+	type StoredWidget,
+	WidgetKeys,
+} from '@/features/widgets/utils/layout-engine/types'
 import { useAppearance } from '../appearance.context'
 import { useAuth } from '../auth.context'
 import { reflowForColumns } from './widget-layout-helpers'
@@ -27,7 +30,7 @@ import type {
 	FreeWidgetContextType,
 	FreeWidgetDerivedState,
 	FreeWidgetLayoutState,
-} from './free-widget.types'
+} from './types'
 
 export type {
 	FreeWidgetActions,

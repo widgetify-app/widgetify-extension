@@ -8,7 +8,7 @@ import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storag
 import type { Wallpaper } from '@/common/wallpaper.interface'
 import type { Theme } from '@/context/theme.context'
 import { getMainClient } from '@/services/api'
-import { CacheName, type SwEvent, SwEventType } from '../../../common/types/sw-events'
+import { CacheName, type SwEvent, SwEventType } from '@/common/types/sw-events'
 
 interface Badge {
 	id: string

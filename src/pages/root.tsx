@@ -8,20 +8,20 @@ import {
 	useGeneralSetting,
 } from '@/context/general-setting.context'
 import { FreeWidgetProvider } from '@/context/free-widget/free-widget.context'
-import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
-import { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
-import { WidgetSettingsModal } from '@/layouts/widgets-settings/widget-settings-modal'
+import { NavbarLayout } from '@/features/navbar/navbar'
+import { WidgetTabKeys } from '@/features/widgets/widget-settings/constants'
+import { WidgetSettingsModal } from '@/features/widgets/widget-settings/widget-settings'
 import { Page, usePage } from '@/context/page.context'
 import { MotionConfig } from 'framer-motion'
 import { Motion as motion, Presence } from '@/common/motion'
 import { AuthRequiredModal } from '@/components/auth/auth-required-modal'
-import { MiniAppPage } from './mini-apps/mini-app.page'
-import { ExplorerPage } from './explorer/explorer.page'
-import { HomePage } from './home/home.page'
+import { MiniAppPage } from '@/pages/mini-apps/mini-apps.page'
+import { ExplorerPage } from '@/pages/explorer/explorer.page'
+import { HomePage } from '@/pages/home/home.page'
 import { useEffect } from 'react'
-import { useWallpaperApply } from '@/layouts/setting/tabs/wallpapers/hooks/use-wallpaper-apply'
+import { useWallpaperApply } from '@/features/setting/wallpapers/hooks/use-wallpaper-apply'
 import { WallpaperProvider } from '@/context/wallpaper.context'
-import { IconProvider } from '../icons/icons.context'
+import { IconProvider } from '@/icons'
 
 export function RootLayout() {
 	useWallpaperApply()

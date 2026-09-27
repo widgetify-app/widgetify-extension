@@ -82,8 +82,8 @@ describe('one vocabulary', () => {
 		const pattern =
 			/(?<![\w-])(bg|text|border|ring|from|to|via|fill|stroke|outline|divide)-\[#[0-9a-fA-F]{3,8}\]/
 		const paintsContent = [
-			'src/layouts/bookmark/components/bookmark/bookmark-icon.tsx',
-			'src/layouts/widgets/tools/pomodoro/top-users/top-user-item.tsx',
+			'src/features/widgets/bookmark/components/bookmark/bookmark-icon.tsx',
+			'src/features/widgets/tools/pomodoro/top-users/components/top-user-item.tsx',
 		]
 		const allowed = ['src/common/toast.tsx', ...paintsContent]
 		const bad = offenders(pattern).filter(

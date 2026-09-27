@@ -88,7 +88,10 @@ Source file names do not reach the published extension. Everything under `src/` 
 and minified into `background.js` and a couple of chunks, `sourcemap` is off in
 `wxt.config.ts`, and grepping the built output for any source file name returns nothing. A
 rename that only moves files and rewrites imports produces a byte identical bundle, down to
-the content hash in the chunk filename.
+the content hash in the chunk filename. Two exceptions, both harmless and both explainable: a
+lazily imported module names its own chunk (`habit-share-modal-<hash>.js`), and replacing a
+barrel import with direct imports changes the order modules are evaluated in, which moves
+code around in the bundle without changing a single statement.
 
 Four things genuinely can break a published build, and none of them is a file name:
 
@@ -139,8 +142,9 @@ stays unexported.
 
 ## Project structure
 
-One structure, applied to everything. A new file that does not fit it means the
-structure is being worked around, not extended.
+One structure, applied to everything, and `src/__tests__/architecture.test.ts` checks it. A
+file that does not fit means the structure is being worked around, not extended: move the
+file, or change the rule here and the test together.
 
 ### Layers
 
@@ -148,11 +152,11 @@ structure is being worked around, not extended.
 src/components/ui/                                  presentational primitives, no app knowledge
 src/components/                                     cross cutting components that do know the app
 src/common/ src/hooks/ src/context/ src/services/   non component globals
-src/layouts/ src/pages/                             features
+src/features/ src/pages/                            features, and the pages that compose them
 ```
 
 Imports point upward through that list and never downward. **Nothing at or above
-`src/components/` may import from `src/layouts/**` or `src/pages/**`.** If it needs to,
+`src/components/` may import from `src/features/**` or `src/pages/**`.** If it needs to,
 it is not global: either it belongs inside that one feature, or the thing it reaches
 for belongs further up.
 
@@ -181,9 +185,9 @@ Every feature folder looks like this, at every depth:
 
 ```
 <feature>/
-  <feature>.<role>.tsx      entry
+  <feature>.tsx             entry — <feature>.widget.tsx for a widget, <feature>.page.tsx for a page
   <feature>-setting.tsx     settings panel, when it has one
-  <feature>.context.tsx     provider, when it has one
+  <name>.context.tsx        provider, when it has one
   types.ts constants.ts     this feature's own types and constants, flat
   components/               sub components of this feature
   variants/                 alternate renderers this feature registers
@@ -192,9 +196,9 @@ Every feature folder looks like this, at every depth:
   <sub-feature>/            only when it has its own entry file; same shape, recursively
 ```
 
-**Sub components go in `components/`,** never a folder named after what they happen to
-be. One level of nesting inside `components/` is fine for a named group that belongs to
-one sub feature.
+**Nothing else sits at a feature's root** — no helper, no second component, no
+`index.tsx`. `src/features/` holds only feature folders; `src/pages/` holds only page
+folders and `root.tsx`, the shell that switches between them.
 
 **Every file sits in the folder for its role,** whether the feature has one of them or
 twenty. A helper goes in `utils/`, a hook in `hooks/`, a sub component in `components/`,
@@ -203,37 +207,49 @@ expected; a role folder that would be empty is simply absent. The point is that 
 feature folder can be read without opening it, and that the same kind of file is always
 found in the same place.
 
+**`components/` and `utils/` may hold one level of named group** — `components/modal/`,
+`utils/layout-engine/` — and a group holds files only. `hooks/`, `variants/` and
+`__tests__/` never nest. A hook is `use-<name>.ts` and lives in `hooks/`, and nothing else
+lives there.
+
 **Types and constants are the exception: inside a feature they stay flat** as `types.ts`
-and `constants.ts` in the feature root, because they describe the feature itself rather
-than being a collection of like things. They take a folder only in the global layer,
-where many unrelated features' shapes and values live side by side.
+and `constants.ts` in the feature root (`constants.tsx` when the values hold JSX), because
+they describe the feature itself rather than being a collection of like things. They take
+a folder only in the global layer, where many unrelated features' shapes and values live
+side by side.
 
 **No folder name outside that list.** Not a second word for something already named
 there, not a folder standing in for a single file's role.
 
 **A feature or sub feature folder's name matches its entry file's name,** plural or
 singular included: `habit/` holds `habit.widget.tsx`. This does not reach role folders or
-a named group inside `components/` — those hold a set of files and have no entry to match.
+a named group inside them — those hold a set of files and have no entry to match.
+
+**`src/features/widgets/` is itself a feature.** `widgets.tsx` is the canvas,
+`constants.tsx` registers every widget, and its `components/`, `hooks/` and `utils/` hold
+what the widget platform shares — the container, the layout engine, migration. Each widget
+is a sub feature with a `<name>.widget.tsx` entry. The canvas's other sub features —
+`catalog/` (adding a widget), `widget-settings/`, `presets/` — take the plain `<name>.tsx`.
 
 ### Naming
 
-kebab-case for every file and folder. A file that exports no JSX is `.ts`, never `.tsx`.
+kebab-case for every file and folder. A file is `.tsx` exactly when it contains JSX.
 
 | Role | Pattern |
 |---|---|
-| Widget entry | `<name>.widget.tsx` |
-| Non widget area entry | `<name>.layout.tsx` |
-| Routed page | `<name>.page.tsx` |
+| Feature entry | `<name>.tsx` in the folder of the same name |
+| Widget entry | `<name>.widget.tsx`, directly under `src/features/widgets/<name>/` |
+| Routed page | `<name>.page.tsx`, directly under `src/pages/<name>/` |
 | Settings panel | `<name>-setting.tsx` |
 | Context provider | `<name>.context.tsx` |
-| Server state hook | `<verb>-<noun>.hook.ts` |
-| Local React hook | `use-<name>.ts` |
-| cva class variants | `<component>.variants.ts`, beside the component |
+| Server state hook | `<verb>-<noun>.hook.ts`, only in `src/services` |
+| Local React hook | `hooks/use-<name>.ts` |
+| cva class variants | `<component>.variants.ts`, beside the component in `src/components/ui` |
 | Alternate size or display renderer | `variants/<name>-<WxH>.tsx` |
-| Domain shape | `<name>.interface.ts`, or `types.ts` for a folder's own types |
+| Domain shape | `<name>.interface.ts` in a global layer; `types.ts` inside a feature |
 | Constants | `constants.ts` |
 | Helpers | `utils/<name>.ts`, named for what the helper does |
-| Test | `__tests__/<name>.test.ts` |
+| Test | `__tests__/<name>.test.ts`; `__tests__/` holds nothing else |
 
 Take the suffix from that table rather than inventing one. `variants` is the single word
 carrying two meanings, and they do not mix: as a file suffix it is cva classes beside a
@@ -245,6 +261,24 @@ component, as a folder it is the alternate renderers a feature registers.
 is closed — `.item`, `.badge`, `.modal`, `.dropdown`, `.skeleton` and the rest are not
 suffixes, they are the last word of the name.
 
+### Imports
+
+**One alias per top-level folder,** declared in `wxt.config.ts`: `@/common`,
+`@/components`, `@/context`, `@/hooks`, `@/icons`, `@/services`, `@/styles`, `@/assets`,
+`@/features`, `@/pages`, `@/analytics`. WXT also answers `@/src/...` and `~/...`; those
+spellings are a missing alias, not a convention, and the test rejects them.
+
+**A relative import stays inside the unit it starts in** — one feature
+(`src/features/<name>`), one page (`src/pages/<name>`), or one top-level folder under
+`src`. Anything that crosses goes through an alias, so a moved file never leaves a
+`../../..` pointing somewhere else.
+
+**There are exactly three barrels:** `@/components/ui`, `@/components/gallery` and
+`@/icons`. Import from the folder, never from the file behind it. The one exception is a
+file inside that same folder importing a sibling: `popover-menu.tsx` reaches
+`@/components/ui/portal/portal` directly because going through its own barrel would be a
+circular import. No other folder gets an `index.ts`.
+
 ### Before adding a file
 
 1. Does it already exist? Check `src/components/ui`, `@/common/utils`, the feature folder.
@@ -255,7 +289,7 @@ suffixes, they are the last word of the name.
 4. Take the suffix from the naming table.
 5. Does the feature already have the role folder this file belongs in? Create it if
    not; a single file in it is fine.
-6. Re-read the import direction rule before calling it done.
+6. Run `npm test` — the architecture test names the rule a misplaced file breaks.
 
 Documentation lives in this file, not in a README beside the code it describes. Nothing
 keeps those in sync and they go stale without anyone noticing.
@@ -265,13 +299,6 @@ keeps those in sync and they go stale without anyone noticing.
 ## Conventions
 
 **Check `src/components/ui` first.** Before implementing any UI, look in `src/components/ui` for something that already covers it and import from `@/components/ui`. Do not hand roll a dialog or a popover. If the task genuinely needs a component that other parts of the app would reasonably reuse and it isn't in `src/components/ui` yet, build it there and use it from that location — don't leave a reusable component sitting in a feature folder.
-
-**Import through a barrel, not past it.** Where a folder has an `index.ts` —
-`@/components/ui`, `@/components/gallery` — import from the folder, never from the file
-behind it. The one exception is a file inside that same folder importing a sibling:
-`popover-menu.tsx` reaches `@/components/ui/portal/portal` directly because going through
-its own barrel would be a circular import. A deep path from outside is drift; a deep path
-from inside the barrel's own folder is deliberate, so leave it.
 
 **Responsiveness matters, down to 500px wide.** This is a desktop browser extension: it renders in a new tab on a computer, never on a phone. 500px is the narrowest width worth supporting, so a layout that holds from 500px up is done — do not spend effort on narrower breakpoints or phone specific behaviour.
 
@@ -283,13 +310,11 @@ from inside the barrel's own folder is deliberate, so leave it.
 
 **Animation** uses `Motion` and `Presence` from `@/common/motion`, never raw `framer-motion`. The wrappers are what make optimisation mode work.
 
-**Storage** goes through `@/common/storage`. Every key is typed in `src/common/constants/store.key.ts`. Deprecated keys get purged via `purgeDeprecatedStorageKeys`.
+**Storage** goes through `@/common/storage`. Every key is typed in `src/common/constants/store-keys.ts`. Deprecated keys get purged via `purgeDeprecatedStorageKeys`.
 
 **Cross component messaging** uses `callEvent` / `listenEvent` from `@/common/utils/call-event`, typed in the same file.
 
 **Icons** come from `Icon` in `@/icons`.
-
-**Path aliases are declared one per folder** in `wxt.config.ts`, and `@` on its own resolves to the repo root, not to `src`. A folder with no alias there can only be reached as `@/src/<folder>` through WXT's generic `@/*` fallback. That spelling is a missing alias, not a convention — add the folder to the alias map instead of writing it.
 
 **Analytics** via `@/analytics`.
 
@@ -453,8 +478,8 @@ do not merge them.
 
 When logic is worth covering, extract it into a dependency free module and test that. Precedents:
 
-- `src/layouts/widgets/layout-engine/` — grid collision maths
-- `src/layouts/widgets/pet/utils/pet-movement.ts` — pet movement maths
+- `src/features/widgets/utils/layout-engine/` — grid collision maths
+- `src/features/widgets/pet/utils/pet-movement.ts` — pet movement maths
 - `src/common/utils/animation-timing.ts` — shared timing plus the retain predicate
 
 A test file must not transitively import `@/services/api`; it reads `browser.runtime.getManifest()` at module scope and bun has no `browser` global. That is why timing constants live in their own module rather than next to the hook that uses them.
@@ -501,7 +526,7 @@ Deliberate solutions that look wrong until you know why. Changing them reintrodu
 
 **Optimisation mode has two independent paths.** framer is handled by the `Motion` and `Presence` wrappers; CSS transitions are handled by the `html.optimal-mode` class and one rule in `index.css`. A new animation needs whichever path it belongs to. Keyframe animations are deliberately left running so spinners and the notification ping still work.
 
-**`voice-search.portal.tsx` starts the microphone in a mount effect.** Never convert it to always mounted, however tempting it is for animation consistency.
+**`voice-search-portal.tsx` starts the microphone in a mount effect.** Never convert it to always mounted, however tempting it is for animation consistency.
 
 **`containerType: 'size'`** on widget containers is load bearing. Widgets size themselves in `cqh` and `cqw` units, which resolve against that container, so removing it collapses their type and spacing. It also makes those widgets a real hot spot — see "Never animate a container-query sized element".
 

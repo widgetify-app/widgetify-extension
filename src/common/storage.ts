@@ -1,5 +1,5 @@
 import { storage } from 'wxt/utils/storage'
-import type { StorageKV } from './constants/store.key'
+import type { StorageKV } from './constants/store-keys'
 
 export async function setToStorage<K extends keyof StorageKV>(
 	key: K,

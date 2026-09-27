@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import toast from 'react-hot-toast'
 import { translateError } from '@/common/utils/translate-error'
-import { Icon } from '../icons'
+import { Icon } from '@/icons'
 import { cn } from '@/common/utils/cn'
 
 type ToastType = 'success' | 'error' | 'info' | 'warning'
