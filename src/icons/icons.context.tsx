@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo, useState, type ReactNode } from 'react'
 
-export type IconPackName = 'default' //| 'pack_name'
+type IconPackName = 'default' //| 'pack_name'
 
 interface IconContextValue {
 	pack: IconPackName

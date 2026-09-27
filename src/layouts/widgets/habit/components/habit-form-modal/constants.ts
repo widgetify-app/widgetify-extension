@@ -81,7 +81,7 @@ export const HABIT_QUICK_PRESETS: HabitPresetItem[] = [
 	},
 ]
 
-export interface EmojiCategory {
+interface EmojiCategory {
 	id: string
 	label: string
 	emojis: string[]

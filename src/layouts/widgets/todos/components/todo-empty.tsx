@@ -9,9 +9,7 @@ export function TodosEmpty() {
 				/>
 			</div>
 
-			<p className="mt-1 font-bold text-center text-fg">
-				اینجا فعلا خیلی آرومه...
-			</p>
+			<p className="mt-1 font-bold text-center text-fg">اینجا فعلا خیلی آرومه...</p>
 
 			<p className="text-center text-3xs leading-5 text-fg opacity-75">
 				هنوز هیچ تسکی نداری

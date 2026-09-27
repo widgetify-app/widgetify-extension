@@ -3,7 +3,7 @@ import { getFromStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper } from '@/common/wallpaper.interface'
 
-export interface WallpaperClockTheme {
+interface WallpaperClockTheme {
 	primaryColor: string
 	secondaryColor: string
 	accentGlow: string
@@ -11,7 +11,7 @@ export interface WallpaperClockTheme {
 	isDerivedFromWallpaper: boolean
 }
 
-export const CLOCK_SHADOW_SETTINGS = {
+const CLOCK_SHADOW_SETTINGS = {
 	darkBgShadow: '0 2px 6px rgba(0, 0, 0, 0.22)',
 	lightBgShadow: '0 1px 6px rgba(255, 255, 255, 0.35)',
 	defaultShadow: '0 2px 6px rgba(0, 0, 0, 0.22)',

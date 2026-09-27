@@ -3,7 +3,7 @@ import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
 import { type ButtonVariantProps, buttonVariants } from './button.variants'
 
-export interface ButtonProps
+interface ButtonProps
 	extends Omit<React.ComponentPropsWithRef<'button'>, 'color'>,
 		ButtonVariantProps {
 	loading?: boolean

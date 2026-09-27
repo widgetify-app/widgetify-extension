@@ -19,7 +19,7 @@ export interface FetchedCurrency {
 	partnershipLogo: string
 }
 
-export interface PriceHistory {
+interface PriceHistory {
 	price: number
 	createdAt: string
 }

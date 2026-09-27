@@ -1,7 +1,7 @@
 import { hasAnyCollision } from './collision'
 import type { StoredWidget, WidgetDefinition } from './types'
 
-export function isWithinHorizontalBounds(
+function isWithinHorizontalBounds(
 	widget: StoredWidget,
 	cols: number
 ): boolean {
@@ -12,7 +12,7 @@ export function isWithinHorizontalBounds(
 	)
 }
 
-export function isValidVerticalPosition(widget: StoredWidget): boolean {
+function isValidVerticalPosition(widget: StoredWidget): boolean {
 	return widget.position.row >= 0 && widget.size.h > 0
 }
 

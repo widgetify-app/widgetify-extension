@@ -67,9 +67,7 @@ export function MarketItemPurchaseModal({
 
 				<div className="space-y-2">
 					<div className="flex items-center justify-between">
-						<h3 className="text-base font-semibold text-fg">
-							{item.name}
-						</h3>
+						<h3 className="text-base font-semibold text-fg">{item.name}</h3>
 						{item.price > 0 && (
 							<UserCoin coins={item.price} title="قیمت خرید دائمی" />
 						)}

@@ -278,11 +278,7 @@ const FeedsList = ({ feeds, onToggleFeed, onRemoveFeed }: FeedsListProps) => {
 						'flex flex-col items-center justify-center p-2 text-center border border-dashed rounded-lg border-surface-3'
 					}
 				>
-					<Icon
-						name="rss"
-						className={'mb-3 opacity-50 text-fg'}
-						size={32}
-					/>
+					<Icon name="rss" className={'mb-3 opacity-50 text-fg'} size={32} />
 					<p className={'mb-1 text-sm font-medium opacity-70 text-fg'}>
 						هیچ فید RSS اضافه نشده است
 					</p>

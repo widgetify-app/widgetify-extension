@@ -197,9 +197,7 @@ const AgendaItem: React.FC<AgendaItemProps> = ({ classified, onEventClick }) => 
 					className="w-1.5 h-1.5 rounded-full bg-brand shrink-0"
 				/>
 				<span className="flex-1 text-xs font-bold truncate">{title}</span>
-				<span className="text-3xs font-medium opacity-75 shrink-0">
-					تمام روز
-				</span>
+				<span className="text-3xs font-medium opacity-75 shrink-0">تمام روز</span>
 			</button>
 		)
 	}
@@ -227,9 +225,7 @@ const AgendaItem: React.FC<AgendaItemProps> = ({ classified, onEventClick }) => 
 
 			<span className="flex flex-col flex-1 min-w-0">
 				<span className="flex items-center justify-between gap-1.5">
-					<span className="text-xs font-bold truncate text-fg">
-						{title}
-					</span>
+					<span className="text-xs font-bold truncate text-fg">{title}</span>
 					{isNow && (
 						<span className="text-4xs font-bold text-brand shrink-0">
 							در حال برگزاری

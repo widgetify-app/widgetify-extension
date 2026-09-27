@@ -76,19 +76,6 @@ input[type="color"]::-moz-color-swatch {
 	border-radius: 4px;
 }
 
-/* Hide scrollbar for webkit browsers */
-.hide-scrollbar::-webkit-scrollbar {
-	display: none;
-}
-
-/* Hide scrollbar for Firefox and other browsers */
-.hide-scrollbar {
-	-ms-overflow-style: none;
-	/* IE and Edge */
-	scrollbar-width: none;
-	/* Firefox */
-}
-
 /* Custom scrollbar styles */
 ::-webkit-scrollbar {
 	width: 8px;

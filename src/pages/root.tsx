@@ -2,12 +2,11 @@ import { useState } from 'react'
 import Analytics from '@/analytics'
 import { purgeDeprecatedStorageKeys } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
-import { Portal, StackedToaster } from '@/components/ui'
+import { StackedToaster } from '@/components/ui'
 import {
 	GeneralSettingProvider,
 	useGeneralSetting,
 } from '@/context/general-setting.context'
-import { WidgetVisibilityProvider } from '@/context/widget-visibility.context'
 import { FreeWidgetProvider } from '@/context/free-widget/free-widget.context'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
 import { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
@@ -86,40 +85,38 @@ function Main() {
 	return (
 		<MotionConfig reducedMotion={isOptimalMode ? 'always' : 'never'}>
 			<FreeWidgetProvider>
-				<WidgetVisibilityProvider>
-					<NavbarLayout />
+				<NavbarLayout />
 
-					<Presence mode="wait">
-						<motion.div
-							key={page}
-							initial={{ y: 10 }}
-							animate={{ y: 0 }}
-							exit={{ y: 10 }}
-							transition={{
-								duration: 0.2,
-								ease: [0.22, 1, 0.36, 1],
-							}}
-							className="flex w-full h-full"
-						>
-							{page === Page.Home ? (
-								<HomePage />
-							) : page === Page.Explorer ? (
-								<ExplorerPage />
-							) : (
-								<MiniAppPage />
-							)}
-						</motion.div>
-					</Presence>
-					<WidgetSettingsModal
-						isOpen={!!activeSettingPayload}
-						onClose={() => setActiveSettingPayload(null)}
-						selectedTab={null}
-						activeSettingTab={activeSettingPayload?.tab}
-						instanceId={activeSettingPayload?.instanceId}
-						size={activeSettingPayload?.size}
-						onCloseSetting={() => setActiveSettingPayload(null)}
-					/>
-				</WidgetVisibilityProvider>
+				<Presence mode="wait">
+					<motion.div
+						key={page}
+						initial={{ y: 10 }}
+						animate={{ y: 0 }}
+						exit={{ y: 10 }}
+						transition={{
+							duration: 0.2,
+							ease: [0.22, 1, 0.36, 1],
+						}}
+						className="flex w-full h-full"
+					>
+						{page === Page.Home ? (
+							<HomePage />
+						) : page === Page.Explorer ? (
+							<ExplorerPage />
+						) : (
+							<MiniAppPage />
+						)}
+					</motion.div>
+				</Presence>
+				<WidgetSettingsModal
+					isOpen={!!activeSettingPayload}
+					onClose={() => setActiveSettingPayload(null)}
+					selectedTab={null}
+					activeSettingTab={activeSettingPayload?.tab}
+					instanceId={activeSettingPayload?.instanceId}
+					size={activeSettingPayload?.size}
+					onCloseSetting={() => setActiveSettingPayload(null)}
+				/>
 			</FreeWidgetProvider>
 
 			<AuthRequiredModal

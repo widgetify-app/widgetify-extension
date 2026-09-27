@@ -1,6 +1,5 @@
 import type React from 'react'
 import { cn } from '@/common/utils/cn'
-import { RequireAuth } from '@/components/auth/require-auth'
 import {
 	Button,
 	type FilterOption,

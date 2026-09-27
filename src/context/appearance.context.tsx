@@ -12,13 +12,13 @@ import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
 import { listenEvent } from '@/common/utils/call-event'
 
-export enum UI {
+enum UI {
 	DEFAULT = 'CUSTOM',
 	ADVANCED = 'ADVANCED',
 	SIMPLE = 'SIMPLE',
 	CUSTOM = 'CUSTOM',
 }
-export interface AppearanceData {
+interface AppearanceData {
 	fontFamily: string
 	contentAlignment: 'center' | 'top'
 	ui: UI
@@ -48,7 +48,7 @@ const DEFAULT_SETTINGS: AppearanceData = {
 	contentAlignment: 'top',
 }
 
-export const AppearanceContext = createContext<AppearanceContextContextType | null>(null)
+const AppearanceContext = createContext<AppearanceContextContextType | null>(null)
 
 export function AppearanceProvider({ children }: { children: React.ReactNode }) {
 	const [settings, setSettings] = useState<AppearanceData>(DEFAULT_SETTINGS)

@@ -9,7 +9,7 @@ import {
 	sectionPanelVariants,
 } from './section-panel.variants'
 
-export interface SectionPanelProps extends VariantProps<typeof sectionPanelVariants> {
+interface SectionPanelProps extends VariantProps<typeof sectionPanelVariants> {
 	title: ReactNode
 	children: ReactNode
 	delay?: number

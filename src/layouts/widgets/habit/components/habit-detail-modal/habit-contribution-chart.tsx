@@ -265,8 +265,7 @@ export function HabitContributionChart({
 														day.isFuture
 															? 'opacity-20 cursor-not-allowed bg-fill'
 															: 'hover:scale-125 hover:z-10',
-														day.isToday &&
-															'ring-2 ring-line',
+														day.isToday && 'ring-2 ring-line',
 														!cellBg &&
 															!day.isFuture &&
 															'bg-fill-2'

@@ -5,7 +5,6 @@ import { Tooltip } from '@/components/ui'
 import { useNotes } from '@/context/notes.context'
 import type { FetchedNote } from '@/services/hooks/note/note.interface'
 import { PRIORITY_BG_COLORS, PRIORITY_OPTIONS } from '../constants'
-import type { NotePriority } from '../types'
 import { Icon } from '@/icons'
 import { useEffect, useRef, useState } from 'react'
 

@@ -46,9 +46,7 @@ export const GoogleCalendarNowCard: React.FC<GoogleCalendarNowCardProps> = ({
 						<span className="absolute inline-flex w-full h-full rounded-full opacity-70 animate-ping bg-brand" />
 						<span className="relative inline-flex w-2 h-2 rounded-full bg-brand" />
 					</span>
-					<span className="text-3xs font-bold text-brand">
-						در حال برگزاری
-					</span>
+					<span className="text-3xs font-bold text-brand">در حال برگزاری</span>
 					<span className="text-3xs text-fg-muted tabular-nums">
 						· {minsRemaining} دقیقه مانده
 					</span>

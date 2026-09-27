@@ -1,12 +1,5 @@
 import moment from 'jalali-moment'
 
-export function getVipRemainingDays(vipExpiresAt?: string | null): number {
-	if (!vipExpiresAt) return 0
-	const target = moment(vipExpiresAt)
-	const now = moment()
-	return Math.max(0, target.diff(now, 'days'))
-}
-
 export function formatVipRemaining(vipExpiresAt?: string | null): string {
 	if (!vipExpiresAt) return ''
 	const target = moment(vipExpiresAt)

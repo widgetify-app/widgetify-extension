@@ -8,10 +8,7 @@ import type { StoredWidget } from '@widget/layout-engine/types'
 import { dedupeInstanceIds, isServerInstanceId } from '@widget/instance-id'
 import { WIDGET_DEFINITIONS } from '@widget/widget-registry'
 
-export function normalizeWidgetSizes(
-	layout: StoredWidget[],
-	cols: number
-): StoredWidget[] {
+function normalizeWidgetSizes(layout: StoredWidget[], cols: number): StoredWidget[] {
 	let changed = false
 
 	const normalized = layout.map((widget) => {

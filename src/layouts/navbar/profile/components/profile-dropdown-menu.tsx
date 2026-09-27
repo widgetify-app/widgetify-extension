@@ -66,9 +66,7 @@ export function ProfileDropdownMenu({
 						<Icon name="user" size={15} />
 					</div>
 					<div className="flex flex-col flex-1">
-						<span className="text-xs font-bold text-fg">
-							ورود یا ثبت‌نام
-						</span>
+						<span className="text-xs font-bold text-fg">ورود یا ثبت‌نام</span>
 						<span className="text-3xs text-fg-muted">
 							همگام‌سازی و دسترسی به امکانات
 						</span>

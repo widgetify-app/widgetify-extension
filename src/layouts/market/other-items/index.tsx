@@ -164,7 +164,9 @@ export function MarketOtherItems() {
 					<div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-fill-2">
 						<Icon name="shoppingBag" size={20} className="text-fg-faint" />
 					</div>
-					<p className="text-xs text-fg-faint">آیتمی در این دسته‌بندی وجود ندارد</p>
+					<p className="text-xs text-fg-faint">
+						آیتمی در این دسته‌بندی وجود ندارد
+					</p>
 				</div>
 			)}
 

@@ -64,10 +64,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 
 	return (
 		<div className="flex flex-col h-full overflow-hidden text-right" dir="rtl">
-			<section
-				aria-label="وضعیت‌ها"
-				className="shrink-0 pb-2 border-b border-line"
-			>
+			<section aria-label="وضعیت‌ها" className="shrink-0 pb-2 border-b border-line">
 				<ActiveFriendsHorizontal />
 			</section>
 
@@ -119,7 +116,9 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 						<div className="flex items-center justify-center w-10 h-10 mb-1.5 rounded-xl bg-surface-2 text-fg-faint">
 							<Icon name="users" size={18} />
 						</div>
-						<p className="text-xs font-normal text-fg-muted">هنوز دوستی نداری</p>
+						<p className="text-xs font-normal text-fg-muted">
+							هنوز دوستی نداری
+						</p>
 						<button
 							type="button"
 							onClick={() => setIsAddFriendOpen(true)}

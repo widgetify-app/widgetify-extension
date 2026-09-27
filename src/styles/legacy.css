@@ -12,9 +12,6 @@
    dialog opens with no dimming at all. Restated here in rgb, same colour.
    ============================================ */
 
-.modal.modal-open,
-.modal[open],
-.modal:target,
-.modal-toggle:checked + .modal {
+.modal[open] {
 	background-color: rgba(0, 0, 0, 0.4);
 }

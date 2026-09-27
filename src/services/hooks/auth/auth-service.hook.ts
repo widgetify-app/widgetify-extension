@@ -7,15 +7,7 @@ interface LoginCredentials {
 	email: string
 }
 
-export type ReferralSource = 'social' | 'youtube' | 'friends' | 'search_other'
-
-interface SignUpCredentials {
-	name: string
-	email: string
-	password: string
-	referralSource?: ReferralSource | null
-	referralCode?: string
-}
+type ReferralSource = 'social' | 'youtube' | 'friends' | 'search_other'
 
 export interface AuthResponse {
 	statusCode: number
@@ -52,17 +44,6 @@ interface WizardPayload {
 async function signIn(credentials: LoginCredentials): Promise<AuthResponse> {
 	const client = getMainClient()
 	const response = await client.post<AuthResponse>('/auth/signin', credentials)
-
-	if (response.headers?.refresh_token) {
-		await setToStorage('refresh_token', response.headers.refresh_token)
-	}
-
-	return response.data
-}
-
-async function signUp(credentials: SignUpCredentials): Promise<AuthResponse> {
-	const client = getMainClient()
-	const response = await client.post<AuthResponse>('/auth/signup', credentials)
 
 	if (response.headers?.refresh_token) {
 		await setToStorage('refresh_token', response.headers.refresh_token)
@@ -137,12 +118,6 @@ async function setupWizard(data: WizardPayload): Promise<any> {
 export function useSignIn() {
 	return useMutation({
 		mutationFn: (credentials: LoginCredentials) => signIn(credentials),
-	})
-}
-
-export function useSignUp() {
-	return useMutation({
-		mutationFn: (credentials: SignUpCredentials) => signUp(credentials),
 	})
 }
 

@@ -16,16 +16,7 @@ interface FriendRequestResponse {
 	message: string
 }
 
-export interface FriendRequestError {
-	success: false
-	message:
-		| 'CANT_REQUEST_YOURSELF'
-		| 'USER_NOT_FOUND'
-		| 'FRIEND_REQUEST_ALREADY_SENT'
-		| 'FRIEND_REQUEST_ALREADY_EXISTS'
-}
-
-export interface FriendUser {
+interface FriendUser {
 	name: string
 	avatar: string
 	username: string
@@ -43,14 +34,14 @@ export interface Friend {
 	status: 'PENDING' | 'ACCEPTED'
 }
 
-export interface FriendsResponse {
+interface FriendsResponse {
 	data: {
 		friends: Friend[]
 		totalPages: number
 	}
 }
 
-export interface UserActivity {
+interface UserActivity {
 	name: string
 	username: string
 	avatar: string
@@ -75,7 +66,7 @@ export interface AttachmentReaction {
 	isEmoji: boolean
 	content: string //emoji
 }
-export interface ActivitiesResponse {
+interface ActivitiesResponse {
 	activities: UserActivity[]
 	currentUser: UserActivity | null
 	attachments: {
@@ -84,20 +75,20 @@ export interface ActivitiesResponse {
 	}
 }
 
-export interface ActivityReactionItem {
+interface ActivityReactionItem {
 	username: string | null
 	avatar: string | null
 	name: string
 	createdAt: string
 	reaction: string
 }
-export interface GetActivityReactionResponse {
+interface GetActivityReactionResponse {
 	reactions: ActivityReactionItem[]
 	currentUser: Pick<ActivityReactionItem, 'reaction' | 'createdAt'>
 	isOwnedActivity: boolean
 }
 
-export interface GetFriendsParams {
+interface GetFriendsParams {
 	status: 'PENDING' | 'ACCEPTED'
 	page?: number
 	limit?: number
@@ -105,7 +96,7 @@ export interface GetFriendsParams {
 	caching: boolean
 }
 
-export interface FriendActionParams {
+interface FriendActionParams {
 	friendId: string
 	state: 'accepted' | 'rejected'
 }

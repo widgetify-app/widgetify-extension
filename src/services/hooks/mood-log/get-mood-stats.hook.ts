@@ -1,9 +1,9 @@
 import { getMainClient } from '@/services/api'
 import { useQuery } from '@tanstack/react-query'
 
-export type MoodType = 'sad' | 'tired' | 'happy' | 'excited' | 'normal'
+type MoodType = 'sad' | 'tired' | 'happy' | 'excited' | 'normal'
 
-export interface MoodLogEntry {
+interface MoodLogEntry {
 	id?: string
 	userId?: string
 	mood: MoodType

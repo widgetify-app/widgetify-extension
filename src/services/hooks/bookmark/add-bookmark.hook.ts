@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
 import type { Bookmark, BookmarkType } from '@/layouts/bookmark/types/bookmark.types'
 
-export interface BookmarkCreationPayload {
+interface BookmarkCreationPayload {
 	title: string
 	type: BookmarkType
 	url: string | null
@@ -24,7 +24,7 @@ export const useAddBookmark = () => {
 	})
 }
 
-export async function AddBookmarkApi(input: BookmarkCreationPayload) {
+async function AddBookmarkApi(input: BookmarkCreationPayload) {
 	const client = getMainClient()
 
 	const formData = new FormData()

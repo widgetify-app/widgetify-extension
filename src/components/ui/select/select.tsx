@@ -21,7 +21,7 @@ const panelClass =
 const optionClass =
 	'flex items-center justify-between w-full gap-2 px-2.5 py-1.5 text-2xs text-right rounded-xl cursor-pointer transition-ui text-fg disabled:cursor-not-allowed disabled:opacity-40'
 
-export interface SelectBoxProps {
+interface SelectBoxProps {
 	options: Array<{ value: string; label: string; disabled?: boolean }>
 	optionalText?: string
 	onChange?: (value: any) => void

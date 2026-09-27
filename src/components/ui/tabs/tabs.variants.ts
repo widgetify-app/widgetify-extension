@@ -25,7 +25,7 @@ export const tabTriggerVariants = cva(
 				advanced: [],
 			},
 			active: {
-				true: ['text-fg-muted', 'font-bold', 'text-icy'],
+				true: ['text-fg-muted', 'font-bold'],
 				false: ['text-fg-faint', 'hover:bg-surface-3'],
 			},
 		},
@@ -43,5 +43,3 @@ export const tabTriggerVariants = cva(
 		},
 	}
 )
-
-export type TabTriggerVariant = typeof tabTriggerVariants

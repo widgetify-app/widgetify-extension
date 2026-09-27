@@ -8,7 +8,7 @@ import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
 import type { Todo } from '@/services/hooks/todo/todo.interface'
 import type { Page } from '@/context/page.context'
 
-export interface EventName {
+interface EventName {
 	openSettings:
 		| 'account'
 		| 'profile'

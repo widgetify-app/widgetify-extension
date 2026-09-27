@@ -45,7 +45,7 @@ const empty: BookmarkCreateFormFields = {
 	widgetId: null,
 }
 
-export type AddBookmarkUpdateFormData = <K extends keyof BookmarkCreateFormFields>(
+type AddBookmarkUpdateFormData = <K extends keyof BookmarkCreateFormFields>(
 	key: K,
 	value: BookmarkCreateFormFields[K]
 ) => void

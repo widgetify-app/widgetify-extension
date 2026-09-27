@@ -6,7 +6,7 @@ export interface MoodEntry {
 	date: string // "2025-11-20"
 }
 
-export interface GetMoodsResponse {
+interface GetMoodsResponse {
 	moods: MoodEntry[]
 }
 

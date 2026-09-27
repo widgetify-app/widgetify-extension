@@ -16,10 +16,6 @@ export interface Bookmark {
 	widgetId?: string | null
 }
 
-export interface LocalBookmark extends Bookmark {
-	file?: string // base64 encoded image
-}
-
 export interface FolderPathItem {
 	id: string
 	title: string

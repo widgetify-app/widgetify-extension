@@ -12,7 +12,6 @@ import {
 } from '../../layout-engine/types'
 import { cn } from '@/common/utils/cn'
 import { useAuth } from '@/context/auth.context'
-import { Icon } from '@/icons'
 import { ProBadge } from '@/components/ui'
 import { useWidgetVipResolver } from '@/services/hooks/widgets/widget-catalog.hook'
 import { WidgetContextMenu } from './widget-context-menu'
@@ -319,9 +318,7 @@ function CanvasWidgetOuterImpl({
 				ref={outerRef}
 				className={cn(
 					'widget-outer absolute top-0 left-0 select-none rounded-widget',
-					isDragging
-						? 'z-50 shadow-xl cursor-grabbing'
-						: 'z-10 cursor-default',
+					isDragging ? 'z-50 shadow-xl cursor-grabbing' : 'z-10 cursor-default',
 					!isDragging && 'widget-canvas-item-transition'
 				)}
 				style={{

@@ -43,14 +43,6 @@ export interface FetchedForecast {
 	description: string | null
 }
 
-export interface FetchedCity {
-	name: string
-	country: string
-	state: string | null
-	lat: number
-	lon: number
-}
-
 export type TemperatureUnit = 'standard' | 'metric' | 'imperial'
 
 export interface WeatherSettings {

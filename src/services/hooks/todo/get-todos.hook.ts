@@ -31,7 +31,7 @@ export const useGetTodos = (enabled: boolean, params?: Omit<GetTodosParams, 'pag
 	})
 }
 
-export async function getTodos(params?: GetTodosParams): Promise<GetTodosResponse> {
+async function getTodos(params?: GetTodosParams): Promise<GetTodosResponse> {
 	const client = getMainClient()
 
 	const { data } = await client.get<GetTodosResponse>('/todos/v2/@me', {

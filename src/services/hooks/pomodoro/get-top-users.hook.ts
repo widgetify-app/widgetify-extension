@@ -12,7 +12,7 @@ export interface TopUser {
 	rank: number | null
 }
 
-export interface TopUsersResponse {
+interface TopUsersResponse {
 	tops: TopUser[]
 }
 

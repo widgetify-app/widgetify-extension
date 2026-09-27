@@ -116,9 +116,7 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 							}
 							className="cursor-pointer"
 						>
-							<p className={'font-medium text-fg'}>
-								فعال‌سازی هشدار صوتی
-							</p>
+							<p className={'font-medium text-fg'}>فعال‌سازی هشدار صوتی</p>
 							<p className={'text-sm font-light text-fg-muted'}>
 								با فعال‌سازی این گزینه، در پایان هر دوره کاری، یک هشدار
 								صوتی پخش خواهد شد.

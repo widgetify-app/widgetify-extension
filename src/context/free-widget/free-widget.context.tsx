@@ -36,9 +36,9 @@ export type {
 	FreeWidgetLayoutState,
 }
 
-export const FreeWidgetLayoutContext = createContext<FreeWidgetLayoutState | null>(null)
-export const FreeWidgetActionsContext = createContext<FreeWidgetActions | null>(null)
-export const FreeWidgetDerivedContext = createContext<FreeWidgetDerivedState | null>(null)
+const FreeWidgetLayoutContext = createContext<FreeWidgetLayoutState | null>(null)
+const FreeWidgetActionsContext = createContext<FreeWidgetActions | null>(null)
+const FreeWidgetDerivedContext = createContext<FreeWidgetDerivedState | null>(null)
 
 export function FreeWidgetProvider({ children }: { children: React.ReactNode }) {
 	const { isAuthenticated, isVip, token } = useAuth()
@@ -274,7 +274,7 @@ export function useFreeWidgetActions(): FreeWidgetActions {
 	return context
 }
 
-export function useFreeWidgetLayout(): FreeWidgetLayoutState {
+function useFreeWidgetLayout(): FreeWidgetLayoutState {
 	const context = useContext(FreeWidgetLayoutContext)
 	if (!context) {
 		throw new Error('useFreeWidgetLayout must be used within a FreeWidgetProvider')

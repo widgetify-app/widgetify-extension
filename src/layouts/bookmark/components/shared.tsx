@@ -2,8 +2,6 @@ import { Button, ItemSelector } from '@/components/ui'
 import type { BookmarkType } from '../types/bookmark.types'
 import { Icon } from '@/icons'
 
-export type IconSourceType = 'auto' | 'upload' | 'url'
-
 export function TypeSelector({
 	type,
 	setType,

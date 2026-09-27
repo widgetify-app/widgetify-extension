@@ -40,7 +40,7 @@ export interface FetchedContent {
 	}
 }
 ;[]
-export interface FetchedContentsResponse {
+interface FetchedContentsResponse {
 	contents: FetchedContent[]
 }
 

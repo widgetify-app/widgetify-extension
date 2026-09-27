@@ -1,4 +1,4 @@
-export type FetchedBrowserBookmarkType = 'BOOKMARK' | 'FOLDER'
+type FetchedBrowserBookmarkType = 'BOOKMARK' | 'FOLDER'
 
 export interface FetchedBrowserBookmark {
 	id: string

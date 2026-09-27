@@ -33,7 +33,7 @@ export const textInputVariants = cva(
 	}
 )
 
-export type TextInputVariantProps = VariantProps<typeof textInputVariants>
+type TextInputVariantProps = VariantProps<typeof textInputVariants>
 
 /**
  * Replaces the old `TextInputSize` enum, which was never exported (so it could

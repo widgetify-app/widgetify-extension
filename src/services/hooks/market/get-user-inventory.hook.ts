@@ -10,7 +10,7 @@ export const useGetUserInventory = (enabled: boolean, params?: MarketQueryParams
 	})
 }
 
-export async function getUserInventory(
+async function getUserInventory(
 	params?: MarketQueryParams
 ): Promise<UserInventoryResponse> {
 	const client = getMainClient()

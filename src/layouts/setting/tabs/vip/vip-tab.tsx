@@ -97,9 +97,7 @@ export function VipTab() {
 			<VipHeroBanner />
 
 			<div className="space-y-2.5 pt-1">
-				<h4 className="text-xs font-bold text-fg">
-					پلن مناسب خودت رو انتخاب کن
-				</h4>
+				<h4 className="text-xs font-bold text-fg">پلن مناسب خودت رو انتخاب کن</h4>
 
 				{isLoading ? (
 					<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -210,5 +208,3 @@ export function VipTab() {
 		</div>
 	)
 }
-
-export const ProTab = VipTab

@@ -1,6 +1,5 @@
 import { useRef } from 'react'
 import { cn } from '@/common/utils/cn'
-import { RequireAuth } from '@/components/auth/require-auth'
 import { Button, Chip, type FilterOption, FilterTooltip, Tooltip } from '@/components/ui'
 import { useHorizontalWheelScroll } from '@/hooks/use-horizontal-wheel-scroll'
 import { Icon } from '@/icons'

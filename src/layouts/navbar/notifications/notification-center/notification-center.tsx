@@ -4,7 +4,6 @@ import { NotificationCardItem } from './components/notification-item'
 import { listenEvent } from '@/common/utils/call-event'
 import { getWithExpiry, setToStorage, setWithExpiry } from '@/common/storage'
 import {
-	type NotificationItem,
 	useGetNotifications,
 	useNotifyAsSeen,
 } from '@/services/hooks/extension/get-notifications.hook'

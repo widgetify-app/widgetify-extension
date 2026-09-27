@@ -9,7 +9,7 @@ export interface AddWidgetModalProps {
 	onClose: () => void
 }
 
-export interface CategoryItem {
+interface CategoryItem {
 	id: WidgetCategory
 	label: string
 }

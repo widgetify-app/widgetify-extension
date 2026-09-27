@@ -67,11 +67,7 @@ export const GoogleCalendarTimelineItem = ({
 							dateTime={isoTime(start)}
 							className={cn(
 								'text-2xs font-bold leading-none tabular-nums',
-								isNow
-									? 'text-brand'
-									: isNext
-										? 'text-warning'
-										: 'text-fg'
+								isNow ? 'text-brand' : isNext ? 'text-warning' : 'text-fg'
 							)}
 						>
 							{startTimeStr}

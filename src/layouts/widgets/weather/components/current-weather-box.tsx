@@ -1,5 +1,4 @@
 import type React from 'react'
-import { Tooltip } from '@/components/ui'
 import { Icon } from '@/icons'
 import { cleanCityName } from '../utils/clean-city-name'
 import { formatTemperature } from '../utils/format-temperature'

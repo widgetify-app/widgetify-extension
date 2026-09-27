@@ -3,7 +3,7 @@ export interface HabitDay {
 	hasRecord: boolean
 }
 
-export interface HabitStats {
+interface HabitStats {
 	currentStreak: number
 	longestStreak: number
 	totalCompleted: number

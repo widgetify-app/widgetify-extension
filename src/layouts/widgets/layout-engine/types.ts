@@ -41,7 +41,7 @@ export interface StoredWidget {
 	disabled?: boolean
 }
 
-export type LayoutOperation =
+type LayoutOperation =
 	| 'move'
 	| 'resize'
 	| 'add'

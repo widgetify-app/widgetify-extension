@@ -69,7 +69,7 @@ export interface UserProfile extends FetchedProfile {
 	inCache?: boolean
 }
 
-export async function fetchUserProfile(): Promise<UserProfile> {
+async function fetchUserProfile(): Promise<UserProfile> {
 	const client = getMainClient()
 	try {
 		const response = await client.get<UserProfile>('/extension/@me')
@@ -106,53 +106,11 @@ export function useGetUserProfile(options?: Partial<UseQueryOptions<UserProfile>
 	})
 }
 
-export function useGetUserMoodStatus(enabled: boolean) {
-	return useQuery({
-		queryKey: ['userMoodStatus'],
-		queryFn: async () => {
-			const client = getMainClient()
-
-			const response = await client.get('/users/@me/moods/status')
-
-			return response.data.data
-		},
-		retry: 1,
-		refetchOnWindowFocus: false,
-		enabled,
-	})
-}
-
-interface UpdateActivityParams {
-	activity: string | undefined
-}
-
 interface UpdateActivityResponse {
 	message: string
 }
 
-async function updateActivity(
-	body: UpdateActivityParams
-): Promise<UpdateActivityResponse> {
-	const client = getMainClient()
-	const response = await client.put<UpdateActivityResponse>(
-		'/extension/@me/activity',
-		body
-	)
-	return response.data
-}
-
-export function useUpdateActivity() {
-	const queryClient = useQueryClient()
-
-	return useMutation({
-		mutationFn: updateActivity,
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['userProfile'] })
-		},
-	})
-}
-
-export async function sendVerificationEmail(): Promise<void> {
+async function sendVerificationEmail(): Promise<void> {
 	const api = getMainClient()
 	const response = await api.post('/auth/email/resend-verify')
 	return response.data

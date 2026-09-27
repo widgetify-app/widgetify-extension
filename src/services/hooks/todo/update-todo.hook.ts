@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
 import type { FetchedTodo, TodoPriority } from '@/services/hooks/todo/todo.interface'
 
-export interface TodoUpdatePayload {
+interface TodoUpdatePayload {
 	text?: string
 	category?: string
 	date?: string
@@ -21,7 +21,7 @@ export const useUpdateTodo = (todoId: string | null) => {
 	})
 }
 
-export async function UpdateTodoApi(id: string, input: TodoUpdatePayload) {
+async function UpdateTodoApi(id: string, input: TodoUpdatePayload) {
 	const client = getMainClient()
 
 	const response = await client.patch<{

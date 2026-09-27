@@ -3,8 +3,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
 import { getFromStorage, setToStorage } from '@/common/storage'
 
-export type NotificationType = 'text' | 'url' | 'action' | 'page' | 'banner'
-export enum NotificationGoTo {
+type NotificationType = 'text' | 'url' | 'action' | 'page' | 'banner'
+enum NotificationGoTo {
 	Explorer = 'explorer',
 	Profile = 'openProfile',
 	Settings = 'openSettings',
@@ -30,7 +30,7 @@ export interface NotificationItem {
 	createdAt?: string
 }
 
-export interface DialogNotificationItem {
+interface DialogNotificationItem {
 	id: string
 	title: string
 	dialogTitle: string | null
@@ -44,7 +44,7 @@ export interface DialogNotificationItem {
 	buttonLabel: string
 }
 
-export interface NotificationItemResponse {
+interface NotificationItemResponse {
 	widgetifyCard: Array<NotificationItem>
 	dialog: DialogNotificationItem | null
 }

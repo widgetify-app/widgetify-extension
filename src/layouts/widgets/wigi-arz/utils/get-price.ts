@@ -1,8 +1,8 @@
 import type { FetchedCurrency } from '@/services/hooks/currency/get-currency-by-code.hook'
 
-export const DOLLAR_PRICED_CODES = ['btc']
+const DOLLAR_PRICED_CODES = ['btc']
 
-export interface CurrencyPrice {
+interface CurrencyPrice {
 	value: number
 	isDollar: boolean
 	formatted: string

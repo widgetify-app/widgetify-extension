@@ -11,9 +11,7 @@ export const useGetMarketItems = (enabled: boolean, params?: MarketQueryParams) 
 	})
 }
 
-export async function getMarketItems(
-	params?: MarketQueryParams
-): Promise<MarketResponse> {
+async function getMarketItems(params?: MarketQueryParams): Promise<MarketResponse> {
 	const client = getMainClient()
 	const searchParams = new URLSearchParams()
 

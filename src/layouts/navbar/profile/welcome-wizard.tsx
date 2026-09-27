@@ -14,7 +14,7 @@ import { safeAwait } from '@/services/api'
 import Analytics from '@/analytics'
 import { Icon } from '@/icons'
 
-export enum ReferralSource {
+enum ReferralSource {
 	Social = 'social',
 	Youtube = 'youtube',
 	Friends = 'friends',

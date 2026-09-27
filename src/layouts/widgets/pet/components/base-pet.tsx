@@ -28,7 +28,7 @@ function randomDuration({ min, max }: { min: number; max: number }): number {
 	return Math.floor(Math.random() * (max - min) + min)
 }
 
-export interface BasePetProps {
+interface BasePetProps {
 	name: string
 	animations: PetAnimations
 	dimensions: PetDimensions
@@ -44,7 +44,7 @@ interface CollectiblesRendererProps {
 	assets: PetAssets
 }
 
-export const CollectiblesRenderer: React.FC<CollectiblesRendererProps> = ({
+const CollectiblesRenderer: React.FC<CollectiblesRendererProps> = ({
 	collectibles,
 	assets,
 }) => {

@@ -33,5 +33,3 @@ export const chipVariants = cva(
 		},
 	}
 )
-
-export type ChipVariant = typeof chipVariants

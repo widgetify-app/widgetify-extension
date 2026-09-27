@@ -1,4 +1,4 @@
-import type { WidgetItem } from '@/context/widget-visibility.context'
+import type { WidgetItem } from '@widget/layout-engine/types'
 import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
 import type { PetSettings } from '@widget/pet/types'
 import type { ComboTabType } from '@widget/combo-widget/types'

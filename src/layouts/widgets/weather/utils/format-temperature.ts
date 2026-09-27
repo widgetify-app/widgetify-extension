@@ -1,9 +1,9 @@
 import { TEMPERATURE_UNIT_SYMBOLS } from '../constants'
 import type { TemperatureUnit } from '../weather.interface'
 
-export const FALLBACK_UNIT: TemperatureUnit = 'metric'
+const FALLBACK_UNIT: TemperatureUnit = 'metric'
 
-export interface FormattedTemperature {
+interface FormattedTemperature {
 	value: number
 	symbol: string
 }

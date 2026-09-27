@@ -115,10 +115,7 @@ export function ManageActivityBottomSheet({
 					</div>
 
 					<div className="p-4 border border-dashed rounded-xl bg-surface-2 border-surface-3">
-						<p
-							className="text-fg text-shadow-2xs wrap-break-word"
-							dir="auto"
-						>
+						<p className="text-fg text-shadow-2xs wrap-break-word" dir="auto">
 							{currentActivity.content}
 						</p>
 					</div>

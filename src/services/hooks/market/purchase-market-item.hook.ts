@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
 
-export interface PurchaseMarketItemParams {
+interface PurchaseMarketItemParams {
 	itemId: string
 }
 
-export interface PurchaseMarketItemResponse {
+interface PurchaseMarketItemResponse {
 	success: boolean
 	message: string
 	remainingCoins: number
@@ -24,7 +24,7 @@ export const usePurchaseMarketItem = () => {
 	})
 }
 
-export async function purchaseMarketItem(
+async function purchaseMarketItem(
 	params: PurchaseMarketItemParams
 ): Promise<PurchaseMarketItemResponse> {
 	const client = getMainClient()

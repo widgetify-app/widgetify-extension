@@ -27,7 +27,7 @@ import { HabitGoalFrequencySection } from './habit-goal-frequency-section'
 import { HabitIconColorPicker } from './habit-icon-color-picker'
 import { HabitLivePreview } from './habit-live-preview'
 
-export interface HabitFormModalProps {
+interface HabitFormModalProps {
 	isOpen: boolean
 	habit: Habit | null
 	onClose: () => void

@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { callEvent } from '@/common/utils/call-event'
-import { useCurrencyStore } from '@/context/currency.context'
 import { Icon } from '@/icons'
 import { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
 import { CurrencyModalComponent } from '../components/currency-modal'

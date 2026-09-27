@@ -46,14 +46,14 @@ export const useGetSuggestedBookmarks = () => {
 	})
 }
 
-export async function getBookmarks(id: string | null): Promise<FetchedBookmark[]> {
+async function getBookmarks(id: string | null): Promise<FetchedBookmark[]> {
 	const params = id ? { id } : {}
 	const client = getMainClient()
 	const { data } = await client.get<FetchedBookmark[]>('/bookmarks/@me', { params })
 	return data
 }
 
-export async function getSuggestedBookmarks(): Promise<BookmarkSuggestion[]> {
+async function getSuggestedBookmarks(): Promise<BookmarkSuggestion[]> {
 	const client = getMainClient()
 	const { data } = await client.get<BookmarkSuggestion[]>('/bookmarks/suggestions')
 	return data

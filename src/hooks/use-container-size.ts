@@ -1,6 +1,6 @@
 import { type RefObject, useLayoutEffect, useState } from 'react'
 
-export interface ContainerSize {
+interface ContainerSize {
 	width: number
 	height: number
 }

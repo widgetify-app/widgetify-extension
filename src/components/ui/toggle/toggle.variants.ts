@@ -51,5 +51,3 @@ export const toggleThumbVariants = cva(
 		},
 	}
 )
-
-export type ToggleTrackVariant = typeof toggleTrackVariants

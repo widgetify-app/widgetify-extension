@@ -23,7 +23,7 @@ import { NotesLayout } from './notes/notes.widget'
 import { isStickyVariant } from '@widget/notes/utils/is-sticky-variant'
 import { WidgetContainer } from './widget-container'
 import { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
-import { type WidgetDefinition, type WidgetItem, WidgetKeys } from './layout-engine/types'
+import { type WidgetDefinition, WidgetKeys } from './layout-engine/types'
 
 export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	[WidgetKeys.search]: {
@@ -482,15 +482,3 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		),
 	},
 }
-
-export const widgetItems: WidgetItem[] = Object.values(WIDGET_DEFINITIONS)
-	.filter(
-		(def): def is WidgetDefinition & { order: number } =>
-			typeof def.order === 'number'
-	)
-	.sort((a, b) => a.order - b.order)
-	.map((def) => ({
-		...def,
-		order: def.order,
-		node: def.node(def.id, def.defaultSize),
-	}))

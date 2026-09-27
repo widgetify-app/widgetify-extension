@@ -2,7 +2,7 @@ import { twMerge } from 'tailwind-merge'
 import { Icon } from '@/icons'
 import { Button } from '../button/button'
 
-export interface PaginationProps {
+interface PaginationProps {
 	currentPage: number
 	totalPages: number
 	onNextPage: () => void

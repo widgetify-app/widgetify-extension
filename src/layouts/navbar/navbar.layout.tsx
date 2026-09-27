@@ -47,7 +47,7 @@ const tabs = [
 	},
 ]
 
-export function NavbarTabs() {
+function NavbarTabs() {
 	const { page, setPage } = usePage()
 	SyncAccount()
 	const handleTabClick = (tab: Page) => {

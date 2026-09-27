@@ -19,8 +19,6 @@ export * from './chip/chip.variants'
 
 export * from './color-picker/color-picker'
 
-export * from './context-menu/context-menu'
-
 export * from './date-picker/date-picker'
 
 export * from './dropdown/dropdown'

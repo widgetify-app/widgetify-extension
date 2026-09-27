@@ -8,12 +8,6 @@ export interface PomodoroSettings {
 	alarmEnabled: boolean
 }
 
-export interface ThemeStyles {
-	getTextStyle: () => string
-	getInputStyle: () => string
-	getSettingsPanelStyle: () => string
-}
-
 export interface PomodoroSession {
 	startTime: number
 	mode: TimerMode

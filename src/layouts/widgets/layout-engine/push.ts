@@ -2,11 +2,11 @@ import { doRectanglesOverlap } from './collision'
 import { compactLayout } from './compact'
 import type { StoredWidget, WidgetPosition, WidgetSize } from './types'
 
-export interface ResolveCollisionsOptions {
+interface ResolveCollisionsOptions {
 	compact?: boolean
 }
 
-export interface PushDownwardResult {
+interface PushDownwardResult {
 	layout: StoredWidget[]
 	displacedIds: Set<string>
 }

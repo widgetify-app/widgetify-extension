@@ -76,11 +76,11 @@ export function CoinPackagePurchaseModal({
 						</div>
 					</div>
 					<div className="px-3 py-2.5">
-						<h3 className="text-sm font-semibold text-fg">
-							{pkg.title}
-						</h3>
+						<h3 className="text-sm font-semibold text-fg">{pkg.title}</h3>
 						{pkg.description && (
-							<p className="mt-0.5 text-xs text-fg-muted">{pkg.description}</p>
+							<p className="mt-0.5 text-xs text-fg-muted">
+								{pkg.description}
+							</p>
 						)}
 					</div>
 				</div>

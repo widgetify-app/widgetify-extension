@@ -2,7 +2,7 @@ import { DEFAULT_CELL_HEIGHT, DEFAULT_GAP } from '../../layout-engine/constants'
 import type { StoredWidget } from '../../layout-engine/types'
 import type { PresetLayout } from '../types'
 
-export function getViewportCanvasRows(): number {
+function getViewportCanvasRows(): number {
 	if (typeof window === 'undefined') return 6
 	const availableHeight = window.innerHeight - 80
 	const unitH = DEFAULT_CELL_HEIGHT + DEFAULT_GAP

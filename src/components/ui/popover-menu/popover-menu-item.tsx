@@ -1,7 +1,7 @@
 import { cn } from '@/common/utils/cn'
 import { popoverMenuItemVariants } from './popover-menu.variants'
 
-export interface PopoverMenuItemProps {
+interface PopoverMenuItemProps {
 	icon?: React.ReactNode
 	label: string
 	badge?: React.ReactNode

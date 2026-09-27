@@ -35,9 +35,15 @@ Run all four before reporting anything as done:
 ```
 npm run compile      # tsc --noEmit
 npm test             # bun test
-npx biome check src
+npm run lint         # biome check src
 npm run build        # wxt build, catches CSS and asset issues tsc cannot
 ```
+
+**Never run `npx biome`.** bun installs Biome's binary as `node_modules/.bin/biome.exe`, which npx
+does not look for, so npx quietly downloads an unrelated npm package that happens to be called
+`biome`, checks nothing and exits cleanly. Every Biome result in this repo was produced that way
+until it was noticed. `npm run lint` runs the pinned version; `biome --version` should say 2.5.0.
+It still reports diagnostics that predate it — a change must never add to them.
 
 Checking the built CSS at `.output/chrome-mv3/assets/newtab-*.css` is often the fastest way to prove a styling claim. Use it — several bugs in this repo were classes that compile to nothing.
 
@@ -64,6 +70,13 @@ uncommitted file compiles fine and simply renders wrong. When a commit reaches f
 an animation or an icon, check that its definition is in the same commit.
 
 **A green build is not proof that nothing changed.** To show a refactor left behaviour alone, record the byte size and content hash of `.output/chrome-mv3/background.js` and the chunks under `.output/chrome-mv3/chunks/` before the change, then rebuild and compare. The hash is derived from the content, so an unchanged hash means the emitted code is identical. A deliberate change should move those numbers by an amount you can explain — inlining one nine line component moved a chunk by exactly 38 bytes.
+
+Two builds of the same tree do not hash the same. Two pairs of pet sprites are byte for byte
+identical (`chicken/white_run_8fps` and `white_walk_fast_8fps`, `crab/red_run_8fps` and
+`red_walk_fast_8fps`), Vite emits one file per pair, and which name it keeps changes from build to
+build — and with it every chunk that references it. Compare the output with asset and chunk
+names normalised away, and build the baseline from the same commit twice to confirm it matches
+itself before trusting a difference.
 
 ---
 
@@ -110,6 +123,13 @@ Two things override that, and only these two. A single-use piece large enough th
 **Small diffs.** Changes should be traceable to the task. Do not rename variables, reformat untouched code, or restructure files you weren't asked to touch — see "No opportunistic changes" above. This only applies to unprompted changes: if the owner explicitly asks for a rename, cleanup, or broader refactor, do it, scoped to what was asked.
 
 **Flag it, don't silently fix it.** If while working you notice unrelated issues in code you touched or passed through — bad variable names, code that's harder to follow than it should be, logic that could be simplified — do not fix it as part of the current task. Mention it as a suggestion in your report instead. Only act on it if the owner then asks you to.
+
+**Dead code does not stay.** When a change leaves something unused, delete it in the same change.
+The tests enforce it: `src/__tests__/architecture.test.ts` fails on a file no entrypoint reaches,
+an export no other file imports and a runtime dependency nothing imports;
+`design-system.test.ts` fails on a CSS class no component writes; Biome fails on an unused
+import. Export a name only when another file imports it — a name used only in its own file
+stays unexported.
 
 **Say when you're unsure.** If the correct fix depends on something you don't actually understand yet, investigate or ask — don't guess and ship a plausible-looking change. If the uncertainty is about a package (an API that seems to have changed, an unfamiliar option, behaviour that doesn't match what you'd expect), check that package's official docs for the exact version pinned in this repo before implementing, rather than assuming from general knowledge.
 
@@ -346,12 +366,11 @@ No output means the class compiled to nothing. Note that the compiler merges sel
 
 ### Known debt
 
-Two shapes of debt remain. Do not treat them as fixed; do not sweep them inside an unrelated task; never add to them. Counts move every time work lands, so measure rather than quote a number from here.
+One shape of debt remains. Do not treat it as fixed; do not sweep it inside an unrelated task; never add to it. Counts move every time work lands, so measure rather than quote a number from here.
 
 - **`white`/`black` classes.** Some are content or drawn over imagery and must stay; the rest are chrome that predates the tokens.
-- **Theme stylesheets carrying rules for class names that no longer exist.** A theme file outlives the markup it was written against, so a selector living there is not evidence the class is still used. Grep `src` before trusting one.
 
-Opacity modifiers, palette classes, raw daisyUI base classes and colour names outside `tokens.css` are no longer debt: the tests reject every one of them.
+Opacity modifiers, palette classes, raw daisyUI base classes, colour names outside `tokens.css` and stylesheet rules for class names nothing writes are no longer debt: the tests reject every one of them.
 
 ---
 

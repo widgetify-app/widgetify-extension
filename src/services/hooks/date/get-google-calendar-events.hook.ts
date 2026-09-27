@@ -58,7 +58,7 @@ export interface GoogleCalendarEvent {
 	}
 }
 
-export interface GoogleCalendarResponse {
+interface GoogleCalendarResponse {
 	events: GoogleCalendarEvent[]
 }
 

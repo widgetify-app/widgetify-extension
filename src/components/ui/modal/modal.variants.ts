@@ -34,8 +34,6 @@ export const modalBoxVariants = cva(
 	}
 )
 
-export type ModalBoxVariant = typeof modalBoxVariants
-
 export const modalScrollVariants = cva(
 	['overflow-y-auto', 'overflow-x-hidden', 'px-0.5', 'md:px-1'],
 	{
@@ -70,8 +68,6 @@ export const modalScrollVariants = cva(
 	}
 )
 
-export type ModalScrollVariant = typeof modalScrollVariants
-
 export const modalDialogVariants = cva([
 	'modal',
 	'modal-middle',
@@ -79,4 +75,3 @@ export const modalDialogVariants = cva([
 	'md:p-4',
 ])
 
-export type ModalDialogVariant = typeof modalDialogVariants

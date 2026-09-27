@@ -29,5 +29,3 @@ export const avatarVariants = cva(
 		},
 	}
 )
-
-export type AvatarVariant = typeof avatarVariants

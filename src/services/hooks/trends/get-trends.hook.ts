@@ -6,7 +6,7 @@ export interface TrendItem {
 	searchCount: string
 }
 
-export interface RecommendedSubSite {
+interface RecommendedSubSite {
 	name: string
 	url: string | null
 	icon: string
@@ -27,7 +27,7 @@ export interface EngineMeta {
 	icon: any
 	prefix: string
 }
-export interface SearchBoxResponse {
+interface SearchBoxResponse {
 	search_engines: EngineMeta[]
 	recommendedSites: RecommendedSite[]
 	explorer: {

@@ -14,7 +14,7 @@ export interface DropdownOption {
 	disabled?: boolean
 }
 
-export interface DropdownProps {
+interface DropdownProps {
 	trigger: ReactNode
 	options?: DropdownOption[]
 	children?: ReactNode
@@ -192,7 +192,9 @@ export function Dropdown({
 	const dropdownContent = children || (
 		<>
 			{options.length === 0 && placeholder && (
-				<div className="px-3 py-2 text-sm italic text-fg-muted">{placeholder}</div>
+				<div className="px-3 py-2 text-sm italic text-fg-muted">
+					{placeholder}
+				</div>
 			)}
 			{options.map((option) => (
 				<button

@@ -11,9 +11,9 @@ import {
 	modalScrollVariants,
 } from './modal.variants'
 
-export const MODAL_EXIT_MS = EXIT_ANIMATION_MS
+const MODAL_EXIT_MS = EXIT_ANIMATION_MS
 
-export type ModalProps = VariantProps<typeof modalBoxVariants> & {
+type ModalProps = VariantProps<typeof modalBoxVariants> & {
 	isOpen: boolean
 	onClose: () => void
 	title?: React.ReactNode

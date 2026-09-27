@@ -2,7 +2,7 @@ import type { StoredWidget } from './layout-engine/types'
 
 const SERVER_INSTANCE_ID_PATTERN = /^[0-9a-fA-F]{24}$/
 
-export interface SyncedWidgetIdentity {
+interface SyncedWidgetIdentity {
 	instanceId: string
 	widgetKey: string
 }
@@ -11,7 +11,7 @@ export function isServerInstanceId(value: unknown): value is string {
 	return typeof value === 'string' && SERVER_INSTANCE_ID_PATTERN.test(value)
 }
 
-export function createLocalInstanceId(widgetKey: string): string {
+function createLocalInstanceId(widgetKey: string): string {
 	return `${widgetKey}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`
 }
 

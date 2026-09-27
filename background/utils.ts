@@ -1,7 +1,5 @@
 import { CacheNames, EXPECTED_CACHES, LEGACY_CACHES } from './cache-names'
 
-export const BOOKMARK_ORDER_KEY = '__root__'
-
 const MAX_CACHE_BYTES = 100 * 1024 * 1024
 
 export async function purgeStaleCaches(): Promise<void> {
@@ -52,12 +50,4 @@ export async function enforceCacheBudget(): Promise<void> {
 			if (!(await overBudget())) return
 		}
 	} catch {}
-}
-
-export function normalizeKey(folderId: string | null): string {
-	return folderId == null ? BOOKMARK_ORDER_KEY : folderId
-}
-
-export function denormalizeKey(key: string) {
-	return key === BOOKMARK_ORDER_KEY ? null : key
 }

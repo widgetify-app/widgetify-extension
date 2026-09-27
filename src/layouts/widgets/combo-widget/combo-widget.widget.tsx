@@ -48,7 +48,7 @@ export function ComboWidget() {
 
 			<section
 				aria-label={COMBO_TAB_LABELS[activeTab]}
-				className="flex-1 min-h-0 overflow-y-auto hide-scrollbar"
+				className="flex-1 min-h-0 overflow-y-auto scrollbar-none"
 			>
 				{activeTab === 'currency' ? (
 					<WigiArzLayout inComboWidget enableBackground={false} />

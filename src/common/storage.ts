@@ -58,7 +58,7 @@ export async function removeFromStorage<K extends keyof StorageKV>(key: K) {
 	await storage.removeItem(`local:${key}`)
 }
 
-export const DEPRECATED_STORAGE_KEYS = [
+const DEPRECATED_STORAGE_KEYS = [
 	'petState',
 	'calendarDrawerState',
 	'compact_currencies',

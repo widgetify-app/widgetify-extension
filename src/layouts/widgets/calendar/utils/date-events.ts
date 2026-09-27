@@ -5,8 +5,6 @@ import type {
 	FetchedAllEvents,
 	FetchedEvent,
 } from '@/services/hooks/date/get-events.hook'
-import type { GoogleCalendarEvent } from '@/services/hooks/date/get-google-calendar-events.hook'
-import { toIsoDateKey } from './jalali-date'
 export const formatDateStr = (date: jalaliMoment.Moment) => {
 	return `${date.jYear()}-${(date.jMonth() + 1).toString().padStart(2, '0')}-${date.jDate().toString().padStart(2, '0')}`
 }
@@ -176,22 +174,4 @@ export function getGregorianEvents(
 export function getCurrentDate(timeZone: string) {
 	const tzMoment = momentTz.tz(new Date(), timeZone)
 	return jalaliMoment(tzMoment.toDate()).locale('fa')
-}
-
-export function filterGoogleEventsByDate(
-	events: GoogleCalendarEvent[],
-	currentDate: WidgetifyDate
-): GoogleCalendarEvent[] {
-	const dateStr = toIsoDateKey(currentDate)
-
-	return events.filter((event) => {
-		if (!event?.start?.dateTime) {
-			return false
-		}
-
-		if (event.eventType === 'birthday') return false
-
-		const eventDateStr = event.start.dateTime.split('T')[0]
-		return eventDateStr === dateStr
-	})
 }

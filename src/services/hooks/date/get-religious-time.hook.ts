@@ -1,15 +1,7 @@
 import { getMainClient } from '@/services/api'
 import { useQuery } from '@tanstack/react-query'
 
-export interface FetchedReligiousTimeData {
-	azan_sobh: string
-	tolu_aftab: string
-	azan_zohr: string
-	ghorub_aftab: string
-	azan_maghreb: string
-	nimeshab: string
-}
-export interface FetchedReligiousTimeData {
+interface FetchedReligiousTimeData {
 	azan_sobh: string
 	tolu_aftab: string
 	azan_zohr: string

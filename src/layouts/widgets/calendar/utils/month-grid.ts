@@ -2,7 +2,7 @@ import { DAYS_IN_WEEK } from '@/common/constants/weekdays'
 
 export const WEEKS_IN_GRID = 6
 
-export interface MonthGridCell {
+interface MonthGridCell {
 	day: number
 	inMonth: boolean
 }

@@ -5,9 +5,9 @@ import type { AxiosError, AxiosResponse } from 'axios'
 import { WIDGET_DEFINITIONS } from '@widget/widget-registry'
 import type { WidgetSize } from '@widget/layout-engine/types'
 
-export const DEFAULT_MAX_FREE_WIDGETS = 5
+const DEFAULT_MAX_FREE_WIDGETS = 5
 
-export interface ServerWidgetVariant {
+interface ServerWidgetVariant {
 	id: string
 	label: string
 	size: WidgetSize
@@ -15,13 +15,13 @@ export interface ServerWidgetVariant {
 	meta?: Record<string, any>
 }
 
-export interface ServerWidgetSizeOption {
+interface ServerWidgetSizeOption {
 	w: number
 	h: number
 	isVipOnly?: boolean
 }
 
-export interface ServerWidgetCatalogItem {
+interface ServerWidgetCatalogItem {
 	widgetKey: string
 	label: string
 	emoji: string
@@ -33,7 +33,7 @@ export interface ServerWidgetCatalogItem {
 	canDuplicate: boolean
 }
 
-export interface ServerCatalogConfig {
+interface ServerCatalogConfig {
 	maxFreeWidgets?: number
 }
 
@@ -42,7 +42,7 @@ export interface ServerWidgetCatalogResponse {
 	widgets: ServerWidgetCatalogItem[]
 }
 
-export async function getWidgetCatalogApi(): Promise<ServerWidgetCatalogResponse | null> {
+async function getWidgetCatalogApi(): Promise<ServerWidgetCatalogResponse | null> {
 	const client = getMainClient()
 	const [err, response] = await safeAwait<
 		AxiosError,
@@ -56,7 +56,7 @@ export async function getWidgetCatalogApi(): Promise<ServerWidgetCatalogResponse
 	return response.data || null
 }
 
-export const useGetWidgetCatalog = (enabled = false) => {
+const useGetWidgetCatalog = (enabled = false) => {
 	return useQuery<ServerWidgetCatalogResponse | null>({
 		queryKey: ['widgetCatalog'],
 		queryFn: getWidgetCatalogApi,

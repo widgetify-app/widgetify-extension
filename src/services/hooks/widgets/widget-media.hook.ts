@@ -1,7 +1,6 @@
-import { getMainClient, safeAwait } from '@/services/api'
-import type { AxiosError } from 'axios'
+import { getMainClient } from '@/services/api'
 
-export interface UploadWidgetMediaResponse {
+interface UploadWidgetMediaResponse {
 	url: string
 }
 
@@ -24,12 +23,4 @@ export async function uploadWidgetMediaApi(
 	)
 
 	return response.data
-}
-
-export async function removeWidgetMediaApi(instanceId: string): Promise<boolean> {
-	const client = getMainClient()
-	const [error] = await safeAwait<AxiosError, { success: boolean }>(
-		client.delete(`/user-widgets/${instanceId}/media`)
-	)
-	return !error
 }

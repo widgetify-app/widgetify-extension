@@ -1,7 +1,7 @@
 import { cn } from '@/common/utils/cn'
 import { toggleThumbVariants, toggleTrackVariants } from './toggle.variants'
 
-export interface ToggleSwitchProps {
+interface ToggleSwitchProps {
 	enabled: boolean
 	disabled?: boolean
 	loading?: boolean

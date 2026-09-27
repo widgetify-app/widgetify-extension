@@ -10,7 +10,7 @@ interface VoiceSearchPortalProps {
 	portalRef: React.RefObject<HTMLDivElement | null>
 }
 
-export type Language = 'fa-IR' | 'en-US'
+type Language = 'fa-IR' | 'en-US'
 
 const languages = [
 	{ code: 'fa-IR' as Language, name: 'فارسی' },

@@ -56,18 +56,18 @@ describe('one vocabulary', () => {
 
 	it('sizes text below text-xs from the scale, not by pixel', () => {
 		const pattern =
-			/(?<![\w-])(?:[a-z0-9\/-]+:)*!?text-\[((8|9|10|11|11\.5)px|0?\.(5625|625|65|6875|7)rem)\]/
+			/(?<![\w-])(?:[a-z0-9/-]+:)*!?text-\[((8|9|10|11|11\.5)px|0?\.(5625|625|65|6875|7)rem)\]/
 		expect(offenders(pattern)).toEqual([])
 	})
 
 	it('puts page-wide layers on a named z-index', () => {
-		const pattern = /(?<![\w-])(?:[a-z0-9\/-]+:)*!?z-\[\d{3,}\]/
+		const pattern = /(?<![\w-])(?:[a-z0-9/-]+:)*!?z-\[\d{3,}\]/
 		expect(offenders(pattern)).toEqual([])
 	})
 
 	it('rounds corners from the radius scale', () => {
 		const pattern =
-			/(?<![\w-])(?:[a-z0-9\/&>\[\]-]+:)*!?rounded(-[tblrxyse]{1,2})?-(md|4xl|card|\[[^\]]+\])(?![\w-])/
+			/(?<![\w-])(?:[a-z0-9/&>[\]-]+:)*!?rounded(-[tblrxyse]{1,2})?-(md|4xl|card|\[[^\]]+\])(?![\w-])/
 		expect(offenders(pattern)).toEqual([])
 	})
 
@@ -96,7 +96,7 @@ describe('one vocabulary', () => {
 describe('elevation', () => {
 	it('uses only the four shadow steps elevation.css defines', () => {
 		const pattern =
-			/(?<![\w-])(?:[a-z0-9\/-]+:)*!?(shadow-(2xs|xs|2xl|inner)|elevation-[a-z]+)(?![\w-])/
+			/(?<![\w-])(?:[a-z0-9/-]+:)*!?(shadow-(2xs|xs|2xl|inner)|elevation-[a-z]+)(?![\w-])/
 		expect(offenders(pattern)).toEqual([])
 	})
 })
@@ -121,6 +121,38 @@ describe('stylesheets stay parseable on Chrome 109', () => {
 	})
 })
 
+describe('stylesheets define nothing dead', () => {
+	it('defines only classes a component writes', () => {
+		const written = new Set<string>()
+		for (const path of sourceFiles()) {
+			const source = readFileSync(path, 'utf8')
+			for (const literal of source.matchAll(/'([^'\n]*)'|"([^"\n]*)"|`([^`]*)`/g)) {
+				const text = literal[1] ?? literal[2] ?? literal[3]
+				for (const token of text.split(/[\s{}$]+/)) {
+					written.add(token.split(':').at(-1)?.replace(/^!|!$/g, '') ?? '')
+				}
+			}
+		}
+		const unused: string[] = []
+		for (const path of walk('src', '.css')) {
+			const css = readFileSync(path, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '')
+			for (const [, prelude] of css.matchAll(/([^{};]+)\{/g)) {
+				const utility = prelude.match(/^\s*@utility\s+([\w-]+)/)
+				const classes = utility
+					? [utility[1]]
+					: prelude.trim().startsWith('@')
+						? []
+						: [...prelude.matchAll(/\.(-?[A-Za-z_][\w-]*)/g)].map((m) => m[1])
+				for (const name of classes) {
+					if (!written.has(name))
+						unused.push(`${path.split(sep).join('/')}: .${name}`)
+				}
+			}
+		}
+		expect(unused).toEqual([])
+	})
+})
+
 describe('colour lives in one place', () => {
 	const tokens = readFileSync(join(STYLES, 'tokens.css'), 'utf8')
 
@@ -140,8 +172,9 @@ describe('colour lives in one place', () => {
 	it('builds every token in tokens.css from a theme variable', () => {
 		const drawnOverImage = /^--color-(image-|scrim)/
 		const bad = [...tokens.matchAll(/^\s*(--[a-z0-9-]+)\s*:\s*([^;]+);/gm)]
+			.map(([, name, value]) => [name, value.replace(/\s+/g, '')])
 			.filter(
-				([, name, value]) =>
+				([name, value]) =>
 					!name.startsWith('--color-') ||
 					!(
 						value.startsWith('rgba(var(--color-') ||
@@ -149,7 +182,7 @@ describe('colour lives in one place', () => {
 						drawnOverImage.test(name)
 					)
 			)
-			.map(([, name, value]) => `${name}: ${value}`)
+			.map(([name, value]) => `${name}: ${value}`)
 		expect(bad).toEqual([])
 	})
 
@@ -160,7 +193,7 @@ describe('colour lives in one place', () => {
 		const declaredByTheTheme = ['secondary', 'success', 'warning', 'info', 'vip']
 		const vocabulary = new Set([...declared, ...declaredByTheTheme])
 		const pattern =
-			/(?<![\w-])(?:[a-z0-9\/-]+:)*!?(?:bg|text|border(?:-[tblrxyse])?|ring(?:-offset)?|outline|from|to|via|divide|fill|stroke|shadow|placeholder|caret|accent|decoration)-((?:fg|surface|fill|line|on|brand|danger|success|warning|info|secondary|vip|image|scrim|primary|error|accent|neutral|widget|content|raised|subtle|hovered|strong|muted|faint|ghost|bold|over-image|medal|avatar)(?:-[a-z0-9]+)*)!?(?![\w-])/g
+			/(?<![\w-])(?:[a-z0-9/-]+:)*!?(?:bg|text|border(?:-[tblrxyse])?|ring(?:-offset)?|outline|from|to|via|divide|fill|stroke|shadow|placeholder|caret|accent|decoration)-((?:fg|surface|fill|line|on|brand|danger|success|warning|info|secondary|vip|image|scrim|primary|error|accent|neutral|widget|content|raised|subtle|hovered|strong|muted|faint|ghost|bold|over-image|medal|avatar)(?:-[a-z0-9]+)*)!?(?![\w-])/g
 		const bad: string[] = []
 		for (const path of sourceFiles()) {
 			readFileSync(path, 'utf8')
@@ -229,9 +262,7 @@ describe('themes', () => {
 
 	it('all declare the channel variables the rgba() tokens read', () => {
 		const missing = themeFiles.flatMap((t) =>
-			CHANNELS.filter((v) => !t.css.includes(`${v}:`)).map(
-				(v) => `${t.name}: ${v}`
-			)
+			CHANNELS.filter((v) => !t.css.includes(`${v}:`)).map((v) => `${t.name}: ${v}`)
 		)
 		expect(missing).toEqual([])
 	})

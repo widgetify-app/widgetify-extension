@@ -65,7 +65,6 @@
 
 
 [data-theme="glass"] .menu,
-[data-theme="glass"] .navbar,
 [data-theme="glass"] .modal-box {
 	-webkit-backdrop-filter: blur(16px) saturate(180%);
 	backdrop-filter: blur(16px) saturate(180%);
@@ -87,10 +86,6 @@
 	-webkit-backdrop-filter: blur(200px) saturate(200%);
 	backdrop-filter: blur(40px) saturate(10%);
 	background-color: #171717b3;
-}
-
-[data-theme="glass"] .portal {
-	background-color: #171717fa;
 }
 
 [data-theme="glass"] select:open {

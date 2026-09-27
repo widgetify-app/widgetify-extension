@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react'
 import { Icon } from '@/icons'
-import { VipBadge } from '@/components/ui'
 import { UserCoin } from '@/components/user-coin'
 import { useLazyLoad } from '@/hooks/use-lazy-load'
 import type { GalleryAsset } from '@/services/hooks/gallery/get-gallery-assets.hook'

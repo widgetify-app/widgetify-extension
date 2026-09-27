@@ -47,5 +47,3 @@ export const sectionPanelContentVariants = cva([], {
 	},
 	defaultVariants: { size: 'md' },
 })
-
-export type SectionPanelVariant = typeof sectionPanelVariants

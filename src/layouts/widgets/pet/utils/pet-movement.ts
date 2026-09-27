@@ -1,18 +1,18 @@
-export interface Position {
+interface Position {
 	x: number
 	y: number
 }
 
-export interface MovementBounds {
+interface MovementBounds {
 	minX: number
 	maxX: number
 	minY: number
 	maxY: number
 }
 
-export const EDGE_PADDING = 10
-export const NEAR_WALL_THRESHOLD = 5
-export const REFERENCE_FRAME_MS = 16.67
+const EDGE_PADDING = 10
+const NEAR_WALL_THRESHOLD = 5
+const REFERENCE_FRAME_MS = 16.67
 
 export function getMovementBounds(
 	containerWidth: number,

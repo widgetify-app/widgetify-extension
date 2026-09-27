@@ -8,7 +8,7 @@ export const MoodType = {
 	excited: 'excited',
 }
 export type MoodType = keyof typeof MoodType
-export interface MoodLogCreateInput {
+interface MoodLogCreateInput {
 	mood: MoodType
 	date: string // "2025-12-31", !NOTE: date can't be in the future or past more than 7 days
 }

@@ -30,9 +30,7 @@ export function AddWidgetOptions({
 	if (definition.variants && definition.variants.length > 0) {
 		return (
 			<div className="flex flex-col gap-1.5">
-				<span className="text-xs font-bold text-fg">
-					انتخاب مدل و استایل:
-				</span>
+				<span className="text-xs font-bold text-fg">انتخاب مدل و استایل:</span>
 				<div className="flex flex-wrap gap-1.5">
 					{definition.variants.map((variant) => {
 						const isCurrent =

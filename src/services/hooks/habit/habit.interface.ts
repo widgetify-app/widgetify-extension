@@ -19,7 +19,7 @@ export enum HabitFrequency {
 	MONTHLY = 'MONTHLY',
 }
 
-export interface HabitDayProgress {
+interface HabitDayProgress {
 	date: string
 	value: number
 	isDone: boolean

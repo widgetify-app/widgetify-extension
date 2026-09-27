@@ -4,9 +4,9 @@ import { translateError } from '@/common/utils/translate-error'
 import { Icon } from '../icons'
 import { cn } from '@/common/utils/cn'
 
-export type ToastType = 'success' | 'error' | 'info' | 'warning'
+type ToastType = 'success' | 'error' | 'info' | 'warning'
 
-export interface ToastOptions {
+interface ToastOptions {
 	duration?: number
 }
 

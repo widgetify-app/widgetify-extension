@@ -32,6 +32,3 @@ export const vipBadgeVariants = cva(
 )
 
 export type VipBadgeVariantProps = VariantProps<typeof vipBadgeVariants>
-
-export const proBadgeVariants = vipBadgeVariants
-export type ProBadgeVariantProps = VipBadgeVariantProps

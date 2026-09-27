@@ -218,10 +218,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 			</section>
 
 			<section className="flex flex-col gap-2">
-				<h4
-					id="pet-background-label"
-					className="text-sm font-medium text-fg"
-				>
+				<h4 id="pet-background-label" className="text-sm font-medium text-fg">
 					محیط
 				</h4>
 				<div

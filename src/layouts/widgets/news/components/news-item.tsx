@@ -1,6 +1,5 @@
 import moment from 'jalali-moment'
 import { useState } from 'react'
-import { Icon } from '@/icons'
 
 interface NewsItemProps {
 	title: string

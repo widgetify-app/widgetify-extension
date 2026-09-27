@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
 
-export interface PomodoroSession {
+interface PomodoroSession {
 	duration: number
 	mode: 'WORK' | 'SHORT_BREAK' | 'LONG_BREAK'
 	startTime: string

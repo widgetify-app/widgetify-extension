@@ -19,39 +19,6 @@ interface CategoryResponse {
 	totalPages: number
 }
 
-interface GetCategoriesQuery {
-	page?: number
-	limit?: number
-}
-
-export const useGetWallpaperCategoriesPaginated = (
-	q: GetCategoriesQuery,
-	enabled: boolean = true
-) => {
-	const queryParams = new URLSearchParams()
-
-	if (q.page) {
-		queryParams.append('page', String(q.page))
-	}
-	if (q.limit) {
-		queryParams.append('limit', String(q.limit))
-	}
-
-	const endpoint = `/wallpapers/categories${queryParams.toString() ? `?${queryParams.toString()}` : ''}`
-
-	return useQuery<CategoryResponse>({
-		queryKey: ['getWallpaperCategoriesPaginated', queryParams.toString()],
-		queryFn: async () => {
-			const client = getMainClient()
-			const { data } = await client.get<CategoryResponse>(endpoint)
-			return data
-		},
-		retry: 0,
-		enabled: enabled,
-		staleTime: 1000 * 60 * 5, // 5 minutes
-	})
-}
-
 async function getWallpaperCategories(): Promise<CategoryResponse> {
 	const client = getMainClient()
 	const { data } = await client.get<CategoryResponse>('/wallpapers/categories')

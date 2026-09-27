@@ -2,13 +2,13 @@ import React, { createContext, useEffect, useState } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 
-export interface StoreContext {
+interface StoreContext {
 	selectedCurrencies: Array<string>
 	setSelectedCurrencies: (currencies: Array<string>) => void
 	reorderCurrencies: (currencies: Array<string>) => void
 }
 
-export const currencyContext = createContext<StoreContext>({
+const currencyContext = createContext<StoreContext>({
 	selectedCurrencies: [],
 	setSelectedCurrencies: () => {},
 	reorderCurrencies: () => {},

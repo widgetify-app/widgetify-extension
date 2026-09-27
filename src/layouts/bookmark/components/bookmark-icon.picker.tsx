@@ -130,11 +130,7 @@ export function BookmarkIconPicker({ value, url, onChange, size = 'md' }: Props)
 							isLarge ? 'rounded-2xl' : 'rounded-xl'
 						}`}
 					>
-						<Icon
-							name="brush"
-							size={isLarge ? 20 : 16}
-							className="text-fg"
-						/>
+						<Icon name="brush" size={isLarge ? 20 : 16} className="text-fg" />
 					</div>
 				</button>
 

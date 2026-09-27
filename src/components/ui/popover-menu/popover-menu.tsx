@@ -3,7 +3,7 @@ import { Portal } from '@/components/ui/portal/portal'
 import { cn } from '@/common/utils/cn'
 import { popoverMenuVariants } from './popover-menu.variants'
 
-export interface PopoverMenuProps {
+interface PopoverMenuProps {
 	isOpen: boolean
 	onClose: () => void
 	position?: { x: number; y: number } | null

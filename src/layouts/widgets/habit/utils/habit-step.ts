@@ -1,7 +1,7 @@
 import { HABIT_UNIT_STEP } from '@/common/constants/habit-options'
 import { HabitComparison, type Habit } from '@/services/hooks/habit/habit.interface'
 
-export interface HabitStep {
+interface HabitStep {
 	amount: number
 	blockedMessage?: string
 }

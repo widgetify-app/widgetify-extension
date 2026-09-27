@@ -21,30 +21,28 @@ export interface GalleryAsset {
 	createdAt: string
 }
 
-export interface GalleryPagination {
+interface GalleryPagination {
 	page: number
 	limit: number
 	total: number
 	totalPages: number
 }
 
-export interface GalleryResponse {
+interface GalleryResponse {
 	data: {
 		assets: GalleryAsset[]
 		pagination: GalleryPagination
 	}
 }
 
-export interface GetGalleryParams {
+interface GetGalleryParams {
 	page?: number
 	limit?: number
 	type?: GalleryAssetType
 	category?: string
 }
 
-export async function getGalleryAssets(
-	params: GetGalleryParams = {}
-): Promise<GalleryResponse> {
+async function getGalleryAssets(params: GetGalleryParams = {}): Promise<GalleryResponse> {
 	const client = getMainClient()
 	const { data } = await client.get<GalleryResponse>('/gallery', {
 		params: {
@@ -57,7 +55,7 @@ export async function getGalleryAssets(
 	return data
 }
 
-export async function getGalleryCategories(type?: GalleryAssetType): Promise<string[]> {
+async function getGalleryCategories(type?: GalleryAssetType): Promise<string[]> {
 	const client = getMainClient()
 	const { data } = await client.get<{ data: { categories: string[] } }>(
 		'/gallery/categories',
@@ -68,7 +66,7 @@ export async function getGalleryCategories(type?: GalleryAssetType): Promise<str
 	return data.data.categories
 }
 
-export async function purchaseGalleryAsset(
+async function purchaseGalleryAsset(
 	assetId: string
 ): Promise<{ data: { success: boolean; asset: GalleryAsset } }> {
 	const client = getMainClient()

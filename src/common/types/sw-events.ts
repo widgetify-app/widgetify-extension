@@ -7,20 +7,20 @@ export enum SwEventType {
 export enum CacheName {
 	API = 'widgetify-public-api',
 }
-export type DeleteCacheEvent = {
+type DeleteCacheEvent = {
 	type: SwEventType.DeleteCache
 	cacheName: CacheName
 	path: string
 }
 
-export type UpdateCacheEvent = {
+type UpdateCacheEvent = {
 	type: SwEventType.UpdateCache
 	cacheName: CacheName
 	path: string
 	data: any
 }
 
-export type SetActiveWallpaperEvent = {
+type SetActiveWallpaperEvent = {
 	type: SwEventType.SetActiveWallpaper
 	src: string
 	wallpaperType: 'IMAGE' | 'VIDEO'

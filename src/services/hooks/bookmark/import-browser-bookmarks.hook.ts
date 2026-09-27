@@ -9,12 +9,12 @@ export interface BulkImportBookmarkNode {
 	children?: BulkImportBookmarkNode[]
 }
 
-export interface BulkImportBookmarksPayload {
+interface BulkImportBookmarksPayload {
 	parentId: string | null
 	items: BulkImportBookmarkNode[]
 }
 
-export interface BulkImportBookmarksResult {
+interface BulkImportBookmarksResult {
 	message: string
 	importedCount: number
 	createdFolders: number
@@ -31,7 +31,7 @@ export const useImportBrowserBookmarks = () => {
 	})
 }
 
-export async function ImportBrowserBookmarksApi(
+async function ImportBrowserBookmarksApi(
 	input: BulkImportBookmarksPayload
 ): Promise<BulkImportBookmarksResult> {
 	const client = getMainClient()

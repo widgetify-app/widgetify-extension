@@ -67,7 +67,6 @@
 
 
 [data-theme="icy"] .menu,
-[data-theme="icy"] .navbar,
 [data-theme="icy"] .modal-box {
 	-webkit-backdrop-filter: blur(20px) saturate(180%) brightness(110%);
 	backdrop-filter: blur(20px) saturate(180%) brightness(110%);
@@ -121,9 +120,4 @@
 [data-theme="icy"] select:open {
 	background-color: #171717b3;
 	color: white;
-}
-
-[data-theme="icy"] .portal {
-	background-color: rgba(54, 54, 54, 0.921);
-	backdrop-filter: blur(40px) saturate(160%) brightness(112%);
 }

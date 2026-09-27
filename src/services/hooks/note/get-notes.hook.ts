@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getMainClient } from '../../api'
 import type { FetchedNote, GetNotesResponse } from './note.interface'
 
-export async function getNotes(): Promise<FetchedNote[]> {
+async function getNotes(): Promise<FetchedNote[]> {
 	const api = getMainClient()
 	const response = await api.get<GetNotesResponse>('/notes')
 	return response.data.notes

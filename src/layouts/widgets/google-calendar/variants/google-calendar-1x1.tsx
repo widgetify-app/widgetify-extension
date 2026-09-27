@@ -55,9 +55,7 @@ export const GoogleCalendar1x1: React.FC<GoogleCalendar1x1Props> = ({
 							className="text-brand"
 							aria-hidden="true"
 						/>
-						<span className="text-[10.4cqh] font-bold text-fg">
-							تقویم
-						</span>
+						<span className="text-[10.4cqh] font-bold text-fg">تقویم</span>
 					</span>
 					<time
 						dateTime={todayIso}
@@ -77,7 +75,9 @@ export const GoogleCalendar1x1: React.FC<GoogleCalendar1x1Props> = ({
 					<span className="text-[10.4cqh] font-bold text-fg leading-tight">
 						بدون برنامه
 					</span>
-					<span className="text-[8.3cqh] text-fg-muted mt-0.5">امروز آزادتری</span>
+					<span className="text-[8.3cqh] text-fg-muted mt-0.5">
+						امروز آزادتری
+					</span>
 				</div>
 
 				<div className="text-center shrink-0">

@@ -2,7 +2,7 @@ import type React from 'react'
 import { modeFullLabels } from '../constants'
 import type { TimerMode } from '../types'
 
-export const modeColors = {
+const modeColors = {
 	work: 'stroke-brand',
 	'short-break': 'stroke-success',
 	'long-break': 'stroke-warning',

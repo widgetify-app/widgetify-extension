@@ -14,7 +14,7 @@ export interface Wallpaper {
 	extensionUI?: 'SIMPLE' | 'ADVANCED' | null
 }
 
-export interface GradientColors {
+interface GradientColors {
 	from: string
 	to: string
 	direction: 'to-r' | 'to-l' | 'to-t' | 'to-b' | 'to-tr' | 'to-tl' | 'to-br' | 'to-bl'

@@ -1,7 +1,7 @@
 import { doRectanglesOverlap } from './collision'
 import type { StoredWidget } from './types'
 
-export interface CompactOptions {
+interface CompactOptions {
 	fixedIds?: Set<string>
 	onlyIds?: Set<string>
 }

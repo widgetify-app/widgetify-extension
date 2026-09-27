@@ -1,6 +1,6 @@
 import type { StoredWidget, WidgetPosition, WidgetSize } from './layout-engine/types'
 
-export interface PixelRect {
+interface PixelRect {
 	left: number
 	top: number
 	width: number
@@ -22,7 +22,7 @@ export function getWidgetPixelRect(
 	return { left, top, width, height }
 }
 
-export function getCanvasRowCount(layout: StoredWidget[]): number {
+function getCanvasRowCount(layout: StoredWidget[]): number {
 	if (layout.length === 0) return 0
 	return Math.max(...layout.map((w) => w.position.row + w.size.h), 0)
 }
@@ -35,34 +35,4 @@ export function getCanvasHeight(
 	const rows = getCanvasRowCount(layout)
 	if (rows === 0) return 0
 	return rows * cellHeight + Math.max(0, rows - 1) * gap
-}
-
-export function pixelToGrid(
-	pixelX: number,
-	pixelY: number,
-	cellWidth: number,
-	cellHeight: number,
-	gap: number
-): WidgetPosition {
-	const unitW = cellWidth + gap
-	const unitH = cellHeight + gap
-	const col = unitW > 0 ? Math.round(pixelX / unitW) : 0
-	const row = unitH > 0 ? Math.round(pixelY / unitH) : 0
-	return {
-		col: Math.max(0, col),
-		row: Math.max(0, row),
-	}
-}
-
-export function gridToPixel(
-	col: number,
-	row: number,
-	cellWidth: number,
-	cellHeight: number,
-	gap: number
-): { left: number; top: number } {
-	return {
-		left: col * (cellWidth + gap),
-		top: row * (cellHeight + gap),
-	}
 }

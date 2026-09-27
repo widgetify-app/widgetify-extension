@@ -11,7 +11,7 @@ declare global {
 
 export type VoiceSearchError = 'permission-denied' | 'unsupported' | 'failed' | null
 
-export interface UseVoiceSearchReturn {
+interface UseVoiceSearchReturn {
 	isListening: boolean
 	currentTranscript: string
 	error: VoiceSearchError

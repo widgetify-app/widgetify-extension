@@ -23,7 +23,7 @@ export function drawRoundedRect(
 	ctx.closePath()
 }
 
-export function hexToRgb(hex: string) {
+function hexToRgb(hex: string) {
 	const normalized = hex.replace('#', '')
 
 	if (normalized.length !== 6) {

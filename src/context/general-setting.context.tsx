@@ -10,7 +10,7 @@ import {
 } from '@/services/hooks/timezone/get-timezones.hook'
 import { useAuth } from './auth.context'
 
-export interface GeneralData {
+interface GeneralData {
 	blurMode: boolean
 	isOptimalMode: boolean
 	analyticsEnabled: boolean
@@ -40,7 +40,7 @@ const DEFAULT_SETTINGS: GeneralData = {
 	isOptimalMode: false,
 }
 
-export const GeneralSettingContext = createContext<GeneralSettingContextType | null>(null)
+const GeneralSettingContext = createContext<GeneralSettingContextType | null>(null)
 
 export function GeneralSettingProvider({ children }: { children: React.ReactNode }) {
 	const [settings, setSettings] = useState<GeneralData>(DEFAULT_SETTINGS)

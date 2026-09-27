@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
 import type { Wallpaper } from '@/common/wallpaper.interface'
 
-export interface UpdateExtensionSettingsInput {
+interface UpdateExtensionSettingsInput {
 	pet?: string | null
 	petName?: string | null
 	font?: any

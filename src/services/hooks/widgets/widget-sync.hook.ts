@@ -1,9 +1,8 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
 import { getMainClient, safeAwait } from '@/services/api'
 import type { AxiosError, AxiosResponse } from 'axios'
 import type { ServerWidgetCatalogResponse } from './widget-catalog.hook'
 
-export interface ServerUserWidget {
+interface ServerUserWidget {
 	instanceId: string
 	widgetKey: string
 	ui: 'ADVANCED' | 'SIMPLE' | 'CUSTOM'
@@ -19,7 +18,7 @@ export interface ServerUserWidget {
 	updatedAt: string
 }
 
-export interface CreateUserWidgetPayload {
+interface CreateUserWidgetPayload {
 	widgetKey: string
 	ui?: 'ADVANCED' | 'SIMPLE' | 'CUSTOM'
 	workspace?: 'HOME'
@@ -32,7 +31,7 @@ export interface CreateUserWidgetPayload {
 	disabled?: boolean
 }
 
-export interface UpdateUserWidgetPayload {
+interface UpdateUserWidgetPayload {
 	col?: number
 	row?: number
 	width?: number
@@ -42,7 +41,7 @@ export interface UpdateUserWidgetPayload {
 	disabled?: boolean
 }
 
-export interface SyncWidgetItemPayload {
+interface SyncWidgetItemPayload {
 	instanceId?: string
 	widgetKey: string
 	col?: number
@@ -54,12 +53,12 @@ export interface SyncWidgetItemPayload {
 	disabled?: boolean
 }
 
-export interface SyncUserWidgetsPayload {
+interface SyncUserWidgetsPayload {
 	workspace?: 'HOME'
 	widgets: SyncWidgetItemPayload[]
 }
 
-export interface GetUserWidgetsApiResponse {
+interface GetUserWidgetsApiResponse {
 	widgets: ServerUserWidget[]
 	catalog?: ServerWidgetCatalogResponse
 }
@@ -149,49 +148,4 @@ export async function syncUserWidgetsApi(
 	}
 
 	return response.data?.widgets || []
-}
-
-export const useGetUserWidgets = (
-	workspace: string = 'HOME',
-	enabled: boolean = true
-) => {
-	return useQuery<GetUserWidgetsApiResponse | null>({
-		queryKey: ['getUserWidgets', workspace],
-		queryFn: () => getUserWidgetsApi(workspace),
-		enabled,
-	})
-}
-
-export const useCreateUserWidget = () => {
-	return useMutation({
-		mutationKey: ['createUserWidget'],
-		mutationFn: (payload: CreateUserWidgetPayload) => createUserWidgetApi(payload),
-	})
-}
-
-export const useUpdateUserWidget = () => {
-	return useMutation({
-		mutationKey: ['updateUserWidget'],
-		mutationFn: ({
-			instanceId,
-			payload,
-		}: {
-			instanceId: string
-			payload: UpdateUserWidgetPayload
-		}) => updateUserWidgetApi(instanceId, payload),
-	})
-}
-
-export const useDeleteUserWidget = () => {
-	return useMutation({
-		mutationKey: ['deleteUserWidget'],
-		mutationFn: (instanceId: string) => deleteUserWidgetApi(instanceId),
-	})
-}
-
-export const useSyncUserWidgets = () => {
-	return useMutation({
-		mutationKey: ['syncUserWidgets'],
-		mutationFn: (payload: SyncUserWidgetsPayload) => syncUserWidgetsApi(payload),
-	})
 }

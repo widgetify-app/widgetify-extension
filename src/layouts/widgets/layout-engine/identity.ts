@@ -1,6 +1,6 @@
 import type { StoredWidget } from './types'
 
-export function isSameWidgetState(a: StoredWidget, b: StoredWidget): boolean {
+function isSameWidgetState(a: StoredWidget, b: StoredWidget): boolean {
 	return (
 		a.instanceId === b.instanceId &&
 		a.id === b.id &&

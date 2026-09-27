@@ -8,7 +8,7 @@ export enum PetTypes {
 	CAT = 'cat',
 }
 
-export type PetSpecies = 'dog' | 'chicken' | 'crab' | 'frog' | 'cat'
+type PetSpecies = 'dog' | 'chicken' | 'crab' | 'frog' | 'cat'
 
 export type PetBackgroundId = 'none' | 'forest' | 'autumn' | 'beach'
 
@@ -30,7 +30,7 @@ export interface PetHungerState {
 	lastHungerTick: number | null
 }
 
-export interface PetOption {
+interface PetOption {
 	name: string
 	type: PetSpecies
 	hungryState: PetHungerState

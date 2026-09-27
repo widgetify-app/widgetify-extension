@@ -5,7 +5,7 @@ export interface ClockSettings {
 	useSelectedFont: boolean
 }
 
-export enum ClockType {
+enum ClockType {
 	Analog = 'analog',
 	Digital = 'digital',
 }

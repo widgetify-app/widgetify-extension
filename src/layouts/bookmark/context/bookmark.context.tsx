@@ -23,7 +23,7 @@ import {
 
 const MAX_ICON_SIZE = 250 * 1024 // 250 KB
 
-export interface BookmarkStoreContext {
+interface BookmarkStoreContext {
 	bookmarks: Bookmark[]
 	setBookmarks: (bookmarks: Bookmark[]) => void
 	getCurrentFolderItems: (

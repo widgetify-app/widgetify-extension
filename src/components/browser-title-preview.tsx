@@ -12,9 +12,7 @@ export function renderBrowserTitlePreview(item: Prop) {
 		>
 			<div className="flex items-center gap-1">
 				<Icon name="close" />
-				{isPersian && (
-					<span className="text-3xs truncate">{item.template}</span>
-				)}
+				{isPersian && <span className="text-3xs truncate">{item.template}</span>}
 			</div>
 			<div className="flex items-center gap-1">
 				{!isPersian && (

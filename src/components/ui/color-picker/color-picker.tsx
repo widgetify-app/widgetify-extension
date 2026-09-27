@@ -4,7 +4,7 @@ import { HexColorPicker, RgbaStringColorPicker } from 'react-colorful'
 import { Portal } from '../portal/portal'
 import { isAnchorInViewport } from '../utils/anchored-position'
 
-export interface ColorPickerProps {
+interface ColorPickerProps {
 	color: string
 	onChange: (color: string) => void
 	className?: string

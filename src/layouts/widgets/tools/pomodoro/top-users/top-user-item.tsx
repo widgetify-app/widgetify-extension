@@ -23,8 +23,7 @@ export function TopUserItem({
 		3: 'text-[#e17100]',
 	}
 
-	const style =
-		rank <= 3 ? 'bg-success-fill text-success' : 'bg-brand-fill text-brand'
+	const style = rank <= 3 ? 'bg-success-fill text-success' : 'bg-brand-fill text-brand'
 
 	const convertToHours = (duration: number) => {
 		const hours = Math.floor(duration / 60)
@@ -54,9 +53,7 @@ export function TopUserItem({
 					className="outline-2 outline-offset-0 outline-brand-fill-2"
 				/>
 				<div className="relative flex-1 min-w-0">
-					<p className="text-sm font-medium truncate text-fg">
-						{user.name}
-					</p>
+					<p className="text-sm font-medium truncate text-fg">{user.name}</p>
 					<p className="text-xs text-fg-muted">{duration}</p>
 				</div>
 

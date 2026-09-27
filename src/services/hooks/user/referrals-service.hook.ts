@@ -1,13 +1,13 @@
 import { useQuery } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
 
-export interface ReferralUser {
+interface ReferralUser {
 	name: string
 	avatar: string
 	username: string | null
 }
 
-export interface UserReferrals {
+interface UserReferrals {
 	referrals: ReferralUser[]
 	totalPages: number
 	totalCount: number
@@ -25,12 +25,12 @@ export interface Task {
 	}
 }
 
-export interface ReferralsResponse extends UserReferrals {
+interface ReferralsResponse extends UserReferrals {
 	code: string
 	tasks: Task[]
 }
 
-export interface GetReferralsParams {
+interface GetReferralsParams {
 	page?: number
 	limit?: number
 	enabled?: boolean

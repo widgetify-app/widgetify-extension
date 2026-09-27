@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
 
-export interface BookmarkOrderUpdatePayload {
+interface BookmarkOrderUpdatePayload {
 	folderId: string | null
 	bookmarks: { id: string; order: number | null }[]
 }

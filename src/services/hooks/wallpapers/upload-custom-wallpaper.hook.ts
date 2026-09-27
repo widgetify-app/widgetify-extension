@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
 import type { Wallpaper } from '@/common/wallpaper.interface'
 
-export async function uploadCustomWallpaperApi(file: File): Promise<Wallpaper> {
+async function uploadCustomWallpaperApi(file: File): Promise<Wallpaper> {
 	const client = getMainClient()
 	const formData = new FormData()
 	formData.append('file', file)
@@ -19,7 +19,7 @@ export async function uploadCustomWallpaperApi(file: File): Promise<Wallpaper> {
 	return response.data.data
 }
 
-export async function removeCustomWallpaperApi(): Promise<void> {
+async function removeCustomWallpaperApi(): Promise<void> {
 	const client = getMainClient()
 	await client.delete('/wallpapers/@me/custom')
 }

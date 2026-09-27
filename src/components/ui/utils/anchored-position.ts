@@ -1,4 +1,4 @@
-export type AnchoredSide =
+type AnchoredSide =
 	| 'top'
 	| 'right'
 	| 'bottom'
@@ -17,12 +17,12 @@ export interface AnchorBox {
 	height: number
 }
 
-export interface OverlaySize {
+interface OverlaySize {
 	width: number
 	height: number
 }
 
-export interface Viewport {
+interface Viewport {
 	width: number
 	height: number
 }

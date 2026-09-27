@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
 
-export interface CityResponse {
+interface CityResponse {
 	city: string
 	cityId: string
 }

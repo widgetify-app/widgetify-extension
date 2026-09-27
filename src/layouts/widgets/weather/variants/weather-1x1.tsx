@@ -48,7 +48,9 @@ export const WeatherCompactSquare: React.FC<WeatherCompactSquareProps> = ({
 				<span className="text-[31.2cqh] font-black tracking-tight text-fg">
 					<data value={temp.value}>{temp.value}</data>
 				</span>
-				<span className="text-[12.5cqh] font-bold text-fg-muted">{temp.symbol}</span>
+				<span className="text-[12.5cqh] font-bold text-fg-muted">
+					{temp.symbol}
+				</span>
 			</div>
 
 			<span className="text-[10.4cqh] font-medium text-fg-muted truncate max-w-full leading-tight">

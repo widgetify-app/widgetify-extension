@@ -8,7 +8,7 @@ export interface FilterOption {
 	label: string
 }
 
-export interface FilterTooltipProps {
+interface FilterTooltipProps {
 	options: FilterOption[]
 	value: string
 	onChange: (value: string) => void

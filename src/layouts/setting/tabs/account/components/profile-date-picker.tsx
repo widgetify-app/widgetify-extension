@@ -1,5 +1,5 @@
 import { callEvent } from '@/common/utils/call-event'
-import { Button, ClickableTooltip, Dropdown } from '@/components/ui'
+import { Button, Dropdown } from '@/components/ui'
 import { Icon } from '@/icons'
 import { useRef, useState, useEffect } from 'react'
 
@@ -102,11 +102,7 @@ export default function JalaliDatePicker({
 						className={`flex items-center justify-between w-full h-12 p-3 transition-colors border  border-surface-3 rounded-xl  ${!enable ? 'opacity-50 cursor-not-allowed' : 'hover:border-brand-muted! cursor-pointer'}`}
 					>
 						<div className="flex items-center gap-3">
-							<Icon
-								name="calendarDays"
-								size={14}
-								className="text-brand"
-							/>
+							<Icon name="calendarDays" size={14} className="text-brand" />
 							<span className={value ? 'text-fg' : 'text-fg-muted'}>
 								{value || 'انتخاب تاریخ'}
 							</span>

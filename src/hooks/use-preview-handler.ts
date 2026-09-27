@@ -8,13 +8,13 @@ import { autoFormatErrorToast, showPreviewToast } from '@/common/toast'
 import type { StoredWallpaper } from '@/common/wallpaper.interface'
 import { fetchWallpaperPreviewUrl } from '@/services/hooks/wallpapers/get-wallpaper-preview-url.hook'
 
-export interface PreviewState {
+interface PreviewState {
 	toastId: string
 	type: MarketItemType
 	oldValue: string
 }
 
-export interface CurrentValues {
+interface CurrentValues {
 	theme: string
 	font: string
 	browserTitle: string

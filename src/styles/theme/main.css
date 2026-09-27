@@ -14,9 +14,3 @@
 		color: rgba(var(--color-base-content-rgb), 0.9);
 	}
 }
-
-[data-theme="icy"] {
-	.text-icy {
-		@apply text-white/70;
-	}
-}

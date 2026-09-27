@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { cn } from '@/common/utils/cn'
 import { avatarVariants } from './avatar.variants'
 
-export interface AvatarProps extends VariantProps<typeof avatarVariants> {
+interface AvatarProps extends VariantProps<typeof avatarVariants> {
 	url?: string | null
 	file?: File | null
 	placeholder?: string
