@@ -71,54 +71,57 @@ export function useWidgetVipResolver(enabled = true) {
 	const maxFreeWidgets =
 		serverCatalog?.config?.maxFreeWidgets ?? DEFAULT_MAX_FREE_WIDGETS
 
-	const isWidgetVipOnly = useCallback((widgetKey?: string): boolean => {
-		if (!widgetKey) return false
-		const serverItem = serverCatalog?.widgets?.find((w) => w.widgetKey === widgetKey)
-		if (serverItem && typeof serverItem.isVipOnly === 'boolean') {
-			return serverItem.isVipOnly
-		}
-		const localDef = WIDGET_DEFINITIONS[widgetKey as keyof typeof WIDGET_DEFINITIONS]
-		return Boolean(localDef?.isVipOnly)
-	}, [serverCatalog])
+	const isWidgetVipOnly = useCallback(
+		(widgetKey?: string): boolean => {
+			if (!widgetKey) return false
+			const serverItem = serverCatalog?.widgets?.find((w) => w.widgetKey === widgetKey)
+			if (serverItem) {
+				return Boolean(serverItem.isVipOnly)
+			}
+			const localDef = WIDGET_DEFINITIONS[widgetKey as keyof typeof WIDGET_DEFINITIONS]
+			return Boolean(localDef?.isVipOnly)
+		},
+		[serverCatalog]
+	)
 
 	const isVariantVipOnly = useCallback(
 		(widgetKey?: string, variantId?: string): boolean => {
-		if (!widgetKey || !variantId) return false
-		const serverItem = serverCatalog?.widgets?.find((w) => w.widgetKey === widgetKey)
-		if (serverItem?.variants) {
-			const v = serverItem.variants.find(
+			if (!widgetKey || !variantId) return false
+			const serverItem = serverCatalog?.widgets?.find((w) => w.widgetKey === widgetKey)
+			if (serverItem?.variants) {
+				const v = serverItem.variants.find(
+					(item) => item.id === variantId || item.meta?.variant === variantId
+				)
+				if (v) {
+					return Boolean(v.isVipOnly)
+				}
+			}
+			const localDef = WIDGET_DEFINITIONS[widgetKey as keyof typeof WIDGET_DEFINITIONS]
+			const localVariant = localDef?.variants?.find(
 				(item) => item.id === variantId || item.meta?.variant === variantId
 			)
-			if (v && typeof v.isVipOnly === 'boolean') {
-				return v.isVipOnly
-			}
-		}
-		const localDef = WIDGET_DEFINITIONS[widgetKey as keyof typeof WIDGET_DEFINITIONS]
-		const localVariant = localDef?.variants?.find(
-			(item) => item.id === variantId || item.meta?.variant === variantId
-		)
-		return Boolean(localVariant?.isVipOnly)
+			return Boolean(localVariant?.isVipOnly)
 		},
 		[serverCatalog]
 	)
 
 	const isSizeVipOnly = useCallback(
 		(widgetKey?: string, size?: { w: number; h: number }): boolean => {
-		if (!widgetKey || !size) return false
-		const serverItem = serverCatalog?.widgets?.find((w) => w.widgetKey === widgetKey)
-		if (serverItem?.allowedSizes) {
-			const match = serverItem.allowedSizes.find(
+			if (!widgetKey || !size) return false
+			const serverItem = serverCatalog?.widgets?.find((w) => w.widgetKey === widgetKey)
+			if (serverItem?.allowedSizes) {
+				const match = serverItem.allowedSizes.find(
+					(s) => s.w === size.w && s.h === size.h
+				)
+				if (match) {
+					return Boolean(match.isVipOnly)
+				}
+			}
+			const localDef = WIDGET_DEFINITIONS[widgetKey as keyof typeof WIDGET_DEFINITIONS]
+			const localSize = localDef?.allowedSizes?.find(
 				(s) => s.w === size.w && s.h === size.h
 			)
-			if (match && typeof match.isVipOnly === 'boolean') {
-				return match.isVipOnly
-			}
-		}
-		const localDef = WIDGET_DEFINITIONS[widgetKey as keyof typeof WIDGET_DEFINITIONS]
-		const localSize = localDef?.allowedSizes?.find(
-			(s) => s.w === size.w && s.h === size.h
-		)
-		return Boolean(localSize?.isVipOnly)
+			return Boolean(localSize?.isVipOnly)
 		},
 		[serverCatalog]
 	)
