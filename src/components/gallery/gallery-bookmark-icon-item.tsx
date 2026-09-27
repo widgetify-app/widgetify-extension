@@ -30,7 +30,7 @@ export function GalleryBookmarkIconItem({
 
 	const itemOutlineStyle = isSelected
 		? 'ring-2 ring-ds-brand ring-offset-2 ring-offset-ds-surface border-ds-brand'
-		: 'border-ds-line hover:border-brand-strong hover:bg-raised-subtle'
+		: 'border-ds-line hover:border-ds-brand-muted hover:bg-ds-fill-2'
 
 	return (
 		<div

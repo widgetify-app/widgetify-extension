@@ -33,11 +33,11 @@ export const GoogleCalendar1x1: React.FC<GoogleCalendar1x1Props> = ({
 			>
 				<div className="flex items-center justify-between">
 					<div className="w-5 h-5 rounded-lg bg-ds-fill-2" />
-					<div className="w-10 h-3 rounded bg-content-muted" />
+					<div className="w-10 h-3 rounded bg-ds-fill" />
 				</div>
 				<div className="my-auto space-y-1">
 					<div className="w-3/4 h-3 rounded bg-ds-fill-2" />
-					<div className="w-1/2 h-2 rounded bg-content-muted" />
+					<div className="w-1/2 h-2 rounded bg-ds-fill" />
 				</div>
 				<div className="w-full h-2 rounded bg-ds-fill" />
 			</div>

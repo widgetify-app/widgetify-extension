@@ -89,7 +89,7 @@ export const GoogleCalendarWeekStrip: React.FC<GoogleCalendarWeekStripProps> = (
 												? 'bg-current'
 												: isDayToday
 													? 'bg-ds-brand'
-													: 'bg-brand-strong'
+													: 'bg-ds-brand-muted'
 										)}
 									/>
 								)}

@@ -130,7 +130,7 @@ function WallpaperItemFu({
 				{loaded && !error && (
 					<>
 						<div
-							className={`absolute flex  justify-between inset-x-0 bottom-0 p-2 rounded-xl transition-opacity duration-300 bg-linear-to-t from-over-image-scrim-strong to-over-image-scrim-none items-center`}
+							className={`absolute flex  justify-between inset-x-0 bottom-0 p-2 rounded-xl transition-opacity duration-300 bg-linear-to-t from-ds-scrim to-transparent items-center`}
 						>
 							{wallpaper.name ? (
 								<div className="flex-1 text-[10px] font-medium text-white">
@@ -173,7 +173,7 @@ function WallpaperItemFu({
 							</div>
 						)}
 
-						<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-over-image-scrim-soft rounded-2xl"></div>
+						<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-ds-scrim-soft rounded-2xl"></div>
 
 						{!isSelected && !wallpaper.isOwned && wallpaper.coin ? (
 							<button
@@ -181,7 +181,7 @@ function WallpaperItemFu({
 									e.stopPropagation()
 									onPreviewBackground(wallpaper)
 								}}
-								className="absolute bottom-1.5 right-1.5 flex items-center gap-1 px-2 py-1 rounded-lg bg-ds-scrim border border-over-image-subtle text-over-image-muted hover:text-white transition-colors text-[10px] font-medium backdrop-blur-sm cursor-pointer opacity-0 group-hover:opacity-100"
+								className="absolute bottom-1.5 right-1.5 flex items-center gap-1 px-2 py-1 rounded-lg bg-ds-scrim border border-ds-image-line text-[rgba(255,255,255,0.8)] hover:text-white transition-colors text-[10px] font-medium backdrop-blur-sm cursor-pointer opacity-0 group-hover:opacity-100"
 							>
 								<Icon name="outlineEye" size={10} />
 								<span>پیش‌نمایش</span>

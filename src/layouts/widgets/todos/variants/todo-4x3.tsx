@@ -217,7 +217,7 @@ export function TodoBoard({
 							viewBox="0 0 36 36"
 						>
 							<path
-								className="text-ghost"
+								className="text-ds-fg-ghost"
 								stroke="currentColor"
 								strokeWidth="3.5"
 								fill="none"

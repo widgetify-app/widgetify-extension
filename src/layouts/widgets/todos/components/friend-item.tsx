@@ -26,7 +26,7 @@ export function UserItem({ avatar, completed, isOwner, name }: UserItemProp) {
 					</div>
 
 					{completed && (
-						<div className="absolute inset-0 flex items-center justify-center rounded-full bg-success-muted">
+						<div className="absolute inset-0 flex items-center justify-center rounded-full bg-ds-success-fill-2">
 							<Icon name="check" className="text-ds-success text-[8px]" />
 						</div>
 					)}

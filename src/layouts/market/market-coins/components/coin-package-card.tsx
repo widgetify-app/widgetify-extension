@@ -13,12 +13,12 @@ const fmt = (n: number) => new Intl.NumberFormat('fa-IR').format(n)
 
 export function CoinPackageCard({ package: pkg, onPurchase }: CoinPackageCardProps) {
 	return (
-		<div className="flex flex-col overflow-hidden transition-all duration-200 border bg-widget-strong rounded-2xl border-ds-line hover:border-ds-brand-fill-2 hover:shadow-sm group">
+		<div className="flex flex-col overflow-hidden transition-all duration-200 border bg-ds-surface-veil rounded-2xl border-ds-line hover:border-ds-brand-fill-2 hover:shadow-sm group">
 			{/* Coin visual area */}
 			<div className="flex items-center justify-center py-6 bg-ds-fill">
 				<div className="flex flex-col items-center gap-2">
 					<div className="relative">
-						<div className="absolute inset-0 scale-125 rounded-full bg-warning-muted blur-md" />
+						<div className="absolute inset-0 scale-125 rounded-full bg-ds-warning-fill-2 blur-md" />
 						<img
 							src={ConfigKey.WIG_COIN_ICON}
 							alt="ویج‌کوین"

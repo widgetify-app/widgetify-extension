@@ -7,15 +7,15 @@ const priorityOptions = [
 		value: TodoPriority.Low,
 		label: 'کم اهمیت',
 		color: 'text-ds-success',
-		bg: 'bg-success-subtle',
-		border: 'border-success-muted',
+		bg: 'bg-ds-success-fill',
+		border: 'border-ds-success-fill-2',
 	},
 	{
 		value: TodoPriority.Medium,
 		label: 'متوسط',
 		color: 'text-ds-warning',
 		bg: 'bg-ds-warning-fill',
-		border: 'border-warning-muted',
+		border: 'border-ds-warning-fill-2',
 	},
 	{
 		value: TodoPriority.High,
@@ -43,7 +43,7 @@ export function PriorityDropdown({ priority, setPriority }: PriorityDropdownProp
 					className={`p-2 border shrink-0 active:scale-95 transition-colors ${
 						selected
 							? `${selected.bg} ${selected.color} ${selected.border}`
-							: 'text-ds-fg-faint hover:text-brand-strong'
+							: 'text-ds-fg-faint hover:text-ds-brand-muted'
 					}`}
 				>
 					<Icon name="filterLeft" size={18} />

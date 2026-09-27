@@ -66,7 +66,7 @@ export function NavbarTabs() {
 					<span
 						className={`
             relative z-10 transition-all duration-300 block
-            ${page === tab.id ? 'text-ds-brand scale-110' : 'nav-btn text-ghost hover:text-ds-fg-faint'}
+            ${page === tab.id ? 'text-ds-brand scale-110' : 'nav-btn text-ds-fg-ghost hover:text-ds-fg-faint'}
         `}
 					>
 						{page === tab.id && tab.activeIcon ? (
@@ -146,7 +146,7 @@ export function NavbarLayout(): JSX.Element {
 				onClick={() => onToggleNavbar()}
 				aria-hidden={showHandle ? undefined : true}
 				tabIndex={showHandle ? 0 : -1}
-				className={`fixed z-50 bottom-0 left-1/2 -translate-x-1/2 w-28 py-2.5 bg-ds-surface-2 bg-glass border-t border-x border-over-image-subtle rounded-t-3xl shadow-[0_-0px_30px_rgba(0,0,0,0.3)] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] hover:bg-over-image-subtle cursor-pointer group ${
+				className={`fixed z-50 bottom-0 left-1/2 -translate-x-1/2 w-28 py-2.5 bg-ds-surface-2 bg-glass border-t border-x border-ds-line rounded-t-3xl shadow-[0_-0px_30px_rgba(0,0,0,0.3)] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] hover:bg-ds-fill-2 cursor-pointer group ${
 					showHandle
 						? 'translate-y-0 opacity-100'
 						: 'translate-y-full opacity-0 pointer-events-none'
@@ -175,7 +175,7 @@ export function NavbarLayout(): JSX.Element {
 							href={WIDGETIFY_URLS.website}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="flex items-center justify-center border rounded-full border-over-image-subtle bg-over-image-scrim-soft outline-2 outline-ds-surface-3"
+							className="flex items-center justify-center border rounded-full border-ds-image-line bg-ds-scrim-soft outline-2 outline-ds-surface-3"
 						>
 							<img
 								src={'https://cdn.widgetify.ir/extension/logo.png'}

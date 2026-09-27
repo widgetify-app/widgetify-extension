@@ -85,7 +85,7 @@ export function CoinPackagePurchaseModal({
 					</div>
 				</div>
 
-				<div className="border divide-y rounded-2xl border-ds-surface-3 bg-ds-surface divide-content">
+				<div className="border divide-y rounded-2xl border-ds-surface-3 bg-ds-surface divide-ds-line">
 					<div className="flex items-center justify-between px-3 py-3">
 						<span className="text-xs text-ds-fg-muted">مبلغ قابل پرداخت</span>
 						<div className="flex items-baseline gap-1">
@@ -102,8 +102,8 @@ export function CoinPackagePurchaseModal({
 					</div>
 				</div>
 
-				<div className="px-3 py-2.5 rounded-2xl border border-info-muted bg-ds-info-fill">
-					<p className="text-[11px] text-info-hover">
+				<div className="px-3 py-2.5 rounded-2xl border border-ds-info-fill-2 bg-ds-info-fill">
+					<p className="text-[11px] text-ds-info">
 						💡 سکه‌های خریداری شده بلافاصله پس از پرداخت موفق به حساب شما اضافه
 						می‌شوند.
 					</p>

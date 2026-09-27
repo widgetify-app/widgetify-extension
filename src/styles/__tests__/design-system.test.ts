@@ -64,8 +64,13 @@ describe('one vocabulary', () => {
 		// six. Its palette is fixed on purpose.
 		const pattern =
 			/(?<![\w-])(bg|text|border|ring|from|to|via|fill|stroke|outline|divide)-\[#[0-9a-fA-F]{3,8}\]/
+		const paintsContent = [
+			'src/layouts/bookmark/components/bookmark/bookmark-icon.tsx',
+			'src/layouts/widgets/tools/pomodoro/top-users/top-user-item.tsx',
+		]
+		const allowed = ['src/common/toast.tsx', ...paintsContent]
 		const bad = offenders(pattern).filter(
-			(o) => !o.startsWith('src/common/toast.tsx')
+			(o) => !allowed.some((path) => o.startsWith(`${path}:`))
 		)
 		expect(bad).toEqual([])
 	})
@@ -167,23 +172,11 @@ describe('colour lives in one place', () => {
 	})
 })
 
-describe('migrated areas', () => {
-	const MIGRATED = [
-		'src/layouts/widgets/clock',
-		'src/layouts/widgets/calendar',
-		'src/layouts/widgets/combo-widget',
-		'src/layouts/widgets/news',
-		'src/layouts/widgets/wigi-arz',
-		'src/components/ui',
-	]
-
-	it('use only the ds- vocabulary', () => {
+describe('the legacy colour vocabulary', () => {
+	it('is no longer used anywhere in src', () => {
 		const legacy =
-			/(?<![\w-])(bg|text|border|border-[tblrxy]|ring|ring-offset|shadow|placeholder|from|to|via|stroke|fill|divide|outline)-(widget|content|raised|subtle|hovered|strong|muted|faint|ghost|bold|primary|secondary|brand|danger|error|success|warning|info|vip|accent|neutral|over-image|medal|avatar)(?!\w)/
-		const bad = offenders(legacy).filter((o) =>
-			MIGRATED.some((dir) => o.startsWith(`${dir}/`))
-		)
-		expect(bad).toEqual([])
+			/(?<![\w-])(bg|text|border|border-[tblrxyse]|ring|ring-offset|shadow|placeholder|from|to|via|stroke|fill|divide|outline)-(widget|content|raised|subtle|hovered|strong|muted|faint|ghost|bold|primary|secondary|brand|danger|error|success|warning|info|vip|accent|neutral|over-image|medal|avatar)(?!\w)/
+		expect(offenders(legacy)).toEqual([])
 	})
 })
 

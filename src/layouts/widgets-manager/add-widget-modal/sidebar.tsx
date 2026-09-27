@@ -41,7 +41,7 @@ export function AddWidgetSidebar({
 							'px-2.5 py-1 rounded-xl text-xs whitespace-nowrap transition-all cursor-pointer font-medium',
 							activeCategory === cat.id
 								? 'bg-ds-brand text-ds-on-brand font-bold shadow-xs'
-								: 'bg-content-muted hover:bg-ds-surface-2 text-ds-fg-muted'
+								: 'bg-ds-fill-2 hover:bg-ds-surface-2 text-ds-fg-muted'
 						)}
 					>
 						{cat.label}
@@ -63,7 +63,7 @@ export function AddWidgetSidebar({
 								'w-full flex items-center justify-between p-2.5 rounded-2xl border text-right transition-all duration-150 cursor-pointer',
 								isSelected
 									? 'bg-ds-brand-fill border-ds-brand shadow-xs'
-									: 'bg-content-muted hover:bg-ds-surface-2 border-ds-line'
+									: 'bg-ds-fill-2 hover:bg-ds-surface-2 border-ds-line'
 							)}
 						>
 							<div className="flex items-center min-w-0 gap-2">

@@ -298,7 +298,7 @@ export function ExpandableTodoInput({
 											}
 											placeholder="توضیحات بیشتر یا لینک اضافه کنید..."
 											className={twMerge(
-												'w-full px-4 py-2 text-xs leading-relaxed transition-ui outline-none resize-none rounded-2xl min-h-28 focus:placeholder:text-ghost text-ds-fg-muted',
+												'w-full px-4 py-2 text-xs leading-relaxed transition-ui outline-none resize-none rounded-2xl min-h-28 focus:placeholder:text-ds-fg-ghost text-ds-fg-muted',
 												`${transparentInput ? 'bg-transparent!' : 'bg-ds-surface-2! focus:ring-ds-brand'} border-none! shadow-none!`
 											)}
 										/>

@@ -32,7 +32,7 @@ const steps: Step[] = [
 					/>
 				</div>
 
-				<div className="p-1.5 border border-dashed rounded-lg bg-raised-subtle border-ds-line">
+				<div className="p-1.5 border border-dashed rounded-lg bg-ds-fill border-ds-line">
 					<code className="text-[11px] font-bold text-ds-fg-muted">
 						"Hide footer on New Tab page"
 					</code>
@@ -44,7 +44,7 @@ const steps: Step[] = [
 		target: '.widget-outer',
 		content: (
 			<div className="flex flex-col gap-2.5">
-				<div className="relative overflow-hidden border shadow-sm aspect-video rounded-xl border-ds-line bg-raised-subtle">
+				<div className="relative overflow-hidden border shadow-sm aspect-video rounded-xl border-ds-line bg-ds-fill">
 					<video
 						src="https://cdn.widgetify.ir/extension/help_videos/WIDGET-STYLES.webm"
 						autoPlay

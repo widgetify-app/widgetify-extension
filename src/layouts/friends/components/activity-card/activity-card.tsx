@@ -58,8 +58,8 @@ export const ActivityCard = ({
 						</div>
 					</div>
 
-					<div className="absolute w-2 h-2 -translate-x-3 rounded-full -bottom-0.5 left-7 bg-raised-subtle  z-10" />
-					<div className="absolute w-2 h-2 -translate-x-3 rounded-full  -bottom-3.5 left-8 bg-raised-subtle shadow-md  z-10" />
+					<div className="absolute w-2 h-2 -translate-x-3 rounded-full -bottom-0.5 left-7 bg-ds-fill  z-10" />
+					<div className="absolute w-2 h-2 -translate-x-3 rounded-full  -bottom-3.5 left-8 bg-ds-fill shadow-md  z-10" />
 					<div className="absolute z-10 w-2 h-2 -translate-x-3 rounded-full shadow-md bg-ds-surface-3 -bottom-6 left-10" />
 					{isSelf ? null : (
 						<ActivityReactionSelector
@@ -132,7 +132,7 @@ function ActivityReactionSelector({ reactions, activityId, index }: Prop) {
 		<Dropdown
 			trigger={
 				<div
-					className={`flex  items-center justify-center w-5 h-5 text-xs text-center transition-all duration-200 rounded-full shadow-sm active:scale-95 bg-raised-subtle ${reacted ? 'opacity-85' : 'opacity-50'}`}
+					className={`flex  items-center justify-center w-5 h-5 text-xs text-center transition-all duration-200 rounded-full shadow-sm active:scale-95 bg-ds-fill ${reacted ? 'opacity-85' : 'opacity-50'}`}
 					onClick={() => setEnable(true)}
 				>
 					{reacted

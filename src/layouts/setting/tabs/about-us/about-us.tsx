@@ -33,7 +33,7 @@ export function AboutUsTab() {
 						href="https://widgetify.ir"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-ds-line bg-content-faint hover:bg-content-muted hover:border-ds-brand-fill-2"
+						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-ds-line bg-ds-fill hover:bg-ds-fill-2 hover:border-ds-brand-fill-2"
 					>
 						<div className="flex items-center gap-3">
 							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-ds-brand-fill text-ds-brand group-hover:scale-110">
@@ -51,7 +51,7 @@ export function AboutUsTab() {
 						<Icon
 							name="externalLink"
 							size={12}
-							className="transition-colors text-ghost group-hover:text-ds-brand"
+							className="transition-colors text-ds-fg-ghost group-hover:text-ds-brand"
 						/>
 					</a>
 
@@ -59,10 +59,10 @@ export function AboutUsTab() {
 						href="https://blog.widgetify.ir"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-ds-line bg-content-faint hover:bg-content-muted hover:border-secondary-muted"
+						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-ds-line bg-ds-fill hover:bg-ds-fill-2 hover:border-[rgba(var(--color-secondary-rgb),0.2)]"
 					>
 						<div className="flex items-center gap-3">
-							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-secondary-subtle text-ds-secondary group-hover:scale-110">
+							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-ds-secondary-fill text-ds-secondary group-hover:scale-110">
 								<Icon name="externalLink" size={18} />
 							</div>
 							<div className="text-right">
@@ -77,7 +77,7 @@ export function AboutUsTab() {
 						<Icon
 							name="externalLink"
 							size={12}
-							className="transition-colors text-ghost group-hover:text-ds-secondary"
+							className="transition-colors text-ds-fg-ghost group-hover:text-ds-secondary"
 						/>
 					</a>
 
@@ -85,7 +85,7 @@ export function AboutUsTab() {
 						href="https://t.me/widgetify"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-ds-line bg-content-faint hover:bg-content-muted hover:border-info-muted"
+						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-ds-line bg-ds-fill hover:bg-ds-fill-2 hover:border-ds-info-fill-2"
 					>
 						<div className="flex items-center gap-3">
 							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-ds-info-fill text-ds-info group-hover:scale-110">
@@ -103,7 +103,7 @@ export function AboutUsTab() {
 						<Icon
 							name="externalLink"
 							size={12}
-							className="transition-colors text-ghost group-hover:text-ds-info"
+							className="transition-colors text-ds-fg-ghost group-hover:text-ds-info"
 						/>
 					</a>
 
@@ -111,10 +111,10 @@ export function AboutUsTab() {
 						href="https://ble.ir/widgetify"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-ds-line bg-content-faint hover:bg-content-muted hover:border-success-muted"
+						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-ds-line bg-ds-fill hover:bg-ds-fill-2 hover:border-ds-success-fill-2"
 					>
 						<div className="flex items-center gap-3">
-							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-success-subtle text-ds-success group-hover:scale-110">
+							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-ds-success-fill text-ds-success group-hover:scale-110">
 								<svg
 									viewBox="0 0 710.27 750"
 									xmlns="http://www.w3.org/2000/svg"
@@ -140,7 +140,7 @@ export function AboutUsTab() {
 						<Icon
 							name="externalLink"
 							size={12}
-							className="transition-colors text-ghost group-hover:text-ds-success"
+							className="transition-colors text-ds-fg-ghost group-hover:text-ds-success"
 						/>
 					</a>
 				</div>

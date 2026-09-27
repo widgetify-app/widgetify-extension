@@ -31,10 +31,10 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 		<div
 			ref={elementRef}
 			onClick={onClick}
-			className={`break-inside-avoid relative rounded-2xl cursor-pointer group overflow-hidden bg-content-muted ${itemOutlineStyle} transition-all duration-200 active:scale-98`}
+			className={`break-inside-avoid relative rounded-2xl cursor-pointer group overflow-hidden bg-ds-fill-2 ${itemOutlineStyle} transition-all duration-200 active:scale-98`}
 		>
 			{!loaded && (
-				<div className="flex items-center justify-center w-full min-h-28 bg-raised-subtle">
+				<div className="flex items-center justify-center w-full min-h-28 bg-ds-fill">
 					<div className="w-5 h-5 border-2 rounded-full border-ds-brand-fill-2 border-t-ds-brand animate-spin" />
 				</div>
 			)}
@@ -63,7 +63,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 
 			{loaded && !error && (
 				<>
-					<div className="absolute inset-x-0 bottom-0 p-2.5 rounded-b-2xl bg-linear-to-t from-over-image-scrim-strong via-over-image-scrim-mid to-over-image-scrim-none flex items-center justify-between pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+					<div className="absolute inset-x-0 bottom-0 p-2.5 rounded-b-2xl bg-linear-to-t from-ds-scrim via-[rgba(0,0,0,0.4)] to-transparent flex items-center justify-between pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200">
 						<span className="text-[11px] font-medium text-white truncate max-w-[60%]">
 							{asset.title || ''}
 						</span>

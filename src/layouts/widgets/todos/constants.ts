@@ -44,7 +44,7 @@ export const PRIORITY_CHECKED_CLASS: Record<string, string> = {
 export const PRIORITY_BADGE_CLASS: Record<string, string> = {
 	high: 'bg-ds-danger-fill text-ds-danger',
 	medium: 'bg-ds-warning-fill text-ds-warning',
-	low: 'bg-success-subtle text-ds-success',
+	low: 'bg-ds-success-fill text-ds-success',
 	default: 'bg-ds-brand-fill text-ds-brand',
 }
 

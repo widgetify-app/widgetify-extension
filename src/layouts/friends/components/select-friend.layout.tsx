@@ -62,7 +62,7 @@ export function SelectFriendLayout({
 									${
 										isSelected
 											? 'bg-ds-brand-fill border-ds-brand'
-											: 'hover:bg-ds-fill border-ds-line hover:border-strong active:scale-95'
+											: 'hover:bg-ds-fill border-ds-line hover:border-ds-brand-muted active:scale-95'
 									}
 								`}
 							>

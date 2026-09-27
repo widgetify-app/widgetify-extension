@@ -26,7 +26,7 @@ export function RenderContentSite({ link }: SiteProp) {
 			href={getUrl(link.url)}
 			target="_blank"
 			rel="noopener noreferrer"
-			className={`relative flex flex-col items-center gap-1.5 p-2 rounded-xl transition-all duration-200 group active:scale-95 ${pos} hover:bg-content-muted border border-transparent hover:border-ds-surface-3`}
+			className={`relative flex flex-col items-center gap-1.5 p-2 rounded-xl transition-all duration-200 group active:scale-95 ${pos} hover:bg-ds-fill-2 border border-transparent hover:border-ds-surface-3`}
 			style={{
 				gridColumn: col ? `span ${col} / span ${col}` : undefined,
 				gridRow: row ? `span ${row} / span ${row}` : undefined,

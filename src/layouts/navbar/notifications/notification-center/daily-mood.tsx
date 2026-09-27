@@ -108,7 +108,7 @@ export function DailyMoodNotification({ className }: Prop) {
 								className={`p-1.5 w-full shadow-xs rounded-xl transition-all cursor-pointer ${
 									mood === option.value
 										? `${option.activeClass} scale-105`
-										: `bg-ds-surface-3 hover:bg-raised-strong opacity-80 hover:opacity-100 hover:scale-95`
+										: `bg-ds-surface-3 hover:bg-ds-fill-2 opacity-80 hover:opacity-100 hover:scale-95`
 								}`}
 							>
 								{isAdding ? (

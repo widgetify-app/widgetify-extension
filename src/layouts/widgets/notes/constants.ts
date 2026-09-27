@@ -12,24 +12,24 @@ export const STICKY_COLOR_MAP: Record<string, StickyColorTheme> = {
 	},
 	low: {
 		bg: 'bg-ds-success',
-		border: 'border-success-content-muted',
+		border: 'border-[rgba(var(--color-success-content-rgb),0.2)]',
 		text: 'text-ds-on-success',
-		headerBg: 'bg-success-content-subtle',
-		divider: 'border-success-content-muted',
+		headerBg: 'bg-[rgba(var(--color-success-content-rgb),0.1)]',
+		divider: 'border-[rgba(var(--color-success-content-rgb),0.2)]',
 	},
 	medium: {
 		bg: 'bg-ds-warning',
-		border: 'border-warning-content-muted',
+		border: 'border-[rgba(var(--color-warning-content-rgb),0.2)]',
 		text: 'text-ds-on-warning',
-		headerBg: 'bg-warning-content-subtle',
-		divider: 'border-warning-content-muted',
+		headerBg: 'bg-[rgba(var(--color-warning-content-rgb),0.1)]',
+		divider: 'border-[rgba(var(--color-warning-content-rgb),0.2)]',
 	},
 	high: {
 		bg: 'bg-ds-danger',
-		border: 'border-danger-content-muted',
+		border: 'border-[rgba(var(--color-error-content-rgb),0.2)]',
 		text: 'text-ds-on-danger',
-		headerBg: 'bg-danger-content-subtle',
-		divider: 'border-danger-content-muted',
+		headerBg: 'bg-[rgba(var(--color-error-content-rgb),0.1)]',
+		divider: 'border-[rgba(var(--color-error-content-rgb),0.2)]',
 	},
 }
 

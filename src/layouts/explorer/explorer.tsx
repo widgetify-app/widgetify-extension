@@ -96,7 +96,7 @@ export function ExplorerContent() {
 		<div className="flex flex-row w-full h-screen overflow-hidden ">
 			<div className="flex flex-col w-full h-full gap-2 px-2 py-3 overflow-hidden">
 				{isLoading ? (
-					<div className="sticky top-0 z-50 flex items-center w-full max-w-6xl mx-auto gap-2 p-1.5 overflow-x-auto bg-widget-strong backdrop-blur-xl rounded-2xl border border-ds-surface-3 shadow-sm scrollbar-none flex-nowrap">
+					<div className="sticky top-0 z-50 flex items-center w-full max-w-6xl mx-auto gap-2 p-1.5 overflow-x-auto bg-ds-surface-veil backdrop-blur-xl rounded-2xl border border-ds-surface-3 shadow-sm scrollbar-none flex-nowrap">
 						{[1, 2, 3, 4, 5, 6].map((i) => (
 							<div
 								key={i}
@@ -107,7 +107,7 @@ export function ExplorerContent() {
 				) : (
 					<div className="sticky top-0 z-50 w-full max-w-6xl px-1 mx-auto">
 						<div className="relative flex items-center">
-							<div className="flex items-center w-full gap-1 p-1 overflow-x-auto border shadow-md bg-widget-strong backdrop-blur-2xl rounded-2xl border-ds-surface-3 scrollbar-none flex-nowrap">
+							<div className="flex items-center w-full gap-1 p-1 overflow-x-auto border shadow-md bg-ds-surface-veil backdrop-blur-2xl rounded-2xl border-ds-surface-3 scrollbar-none flex-nowrap">
 								{categories.map((cat: CategoryItem) => {
 									const active = activeCategory === cat.id
 
@@ -121,7 +121,7 @@ export function ExplorerContent() {
 											className={`relative flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium whitespace-nowrap rounded-xl transition-all duration-200 shrink-0 cursor-pointer ${
 												active
 													? 'bg-ds-surface-2 text-ds-fg shadow-xs font-semibold'
-													: 'text-ds-fg-muted hover:text-ds-fg hover:bg-content-muted'
+													: 'text-ds-fg-muted hover:text-ds-fg hover:bg-ds-fill-2'
 											}`}
 										>
 											{cat.icon && (

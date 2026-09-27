@@ -61,7 +61,7 @@ export const CurrentWeatherBox: React.FC<CurrentWeatherBoxProps> = ({
 				) : (
 					<div
 						aria-hidden="true"
-						className="absolute inset-0 bg-gradient-to-br from-ds-surface-2 to-content-muted"
+						className="absolute inset-0 bg-gradient-to-br from-ds-surface-2 to-ds-surface-veil"
 					/>
 				)}
 

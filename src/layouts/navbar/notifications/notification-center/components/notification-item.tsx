@@ -143,7 +143,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 						{shouldShowReadMore && (
 							<button
 								onClick={toggleExpand}
-								className="mt-1 flex items-center gap-1 border border-faint rounded-xl px-1 hover:border-subtle text-[10px] font-light text-ds-fg-muted hover:underline cursor-pointer"
+								className="mt-1 flex items-center gap-1 border border-ds-line rounded-xl px-1 hover:border-ds-brand-muted text-[10px] font-light text-ds-fg-muted hover:underline cursor-pointer"
 							>
 								{isExpanded ? 'نمایش کمتر' : 'مشاهده بیشتر'}
 								<Icon

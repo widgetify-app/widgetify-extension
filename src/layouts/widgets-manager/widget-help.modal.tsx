@@ -124,7 +124,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 				</div>
 
 				{/* Video Container */}
-				<div className="relative flex items-center justify-center w-full overflow-hidden border shadow-sm aspect-video max-h-56 rounded-2xl border-ds-line bg-raised-subtle shrink-0">
+				<div className="relative flex items-center justify-center w-full overflow-hidden border shadow-sm aspect-video max-h-56 rounded-2xl border-ds-line bg-ds-fill shrink-0">
 					<video
 						key={activeTab.videoUrl}
 						src={activeTab.videoUrl}
@@ -134,13 +134,13 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 						playsInline
 						className="object-cover w-full h-full"
 					/>
-					<div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-widget-strong backdrop-blur-md border border-ds-line text-[11px] font-bold text-ds-fg shadow-xs">
+					<div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-ds-surface-veil backdrop-blur-md border border-ds-line text-[11px] font-bold text-ds-fg shadow-xs">
 						{activeTab.badge}
 					</div>
 				</div>
 
 				{/* Tab Detail Info */}
-				<div className="flex items-start gap-3 p-3.5 rounded-2xl bg-content-muted border border-ds-line transition-all">
+				<div className="flex items-start gap-3 p-3.5 rounded-2xl bg-ds-fill-2 border border-ds-line transition-all">
 					<div className="w-9 h-9 rounded-xl bg-ds-brand-fill text-ds-brand flex items-center justify-center shrink-0 mt-0.5">
 						<Icon name={activeTab.icon} size={18} />
 					</div>

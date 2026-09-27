@@ -99,7 +99,7 @@ export default function JalaliDatePicker({
 					className="flex items-center justify-between w-full p-3 text-right transition-colors hover:bg-ds-surface-2"
 				>
 					<div
-						className={`flex items-center justify-between w-full h-12 p-3 transition-colors border  border-ds-surface-3 rounded-xl  ${!enable ? 'opacity-50 cursor-not-allowed' : 'hover:border-brand-strong! cursor-pointer'}`}
+						className={`flex items-center justify-between w-full h-12 p-3 transition-colors border  border-ds-surface-3 rounded-xl  ${!enable ? 'opacity-50 cursor-not-allowed' : 'hover:border-ds-brand-muted! cursor-pointer'}`}
 					>
 						<div className="flex items-center gap-3">
 							<Icon

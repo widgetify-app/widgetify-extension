@@ -134,7 +134,7 @@ export function NetworkCompactRow({
 						</div>
 					)}
 
-					<span className="text-xs select-none text-ghost shrink-0">•</span>
+					<span className="text-xs select-none text-ds-fg-ghost shrink-0">•</span>
 
 					<button
 						type="button"

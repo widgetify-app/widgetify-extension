@@ -3,16 +3,16 @@ import type { Bookmark } from '../../types/bookmark.types'
 import { useState } from 'react'
 import { Icon } from '@/icons'
 const colors = [
-	'bg-avatar-1',
-	'bg-avatar-2',
-	'bg-avatar-3',
-	'bg-avatar-4',
-	'bg-avatar-5',
-	'bg-avatar-6',
-	'bg-avatar-7',
-	'bg-avatar-8',
-	'bg-avatar-9',
-	'bg-avatar-10',
+	'bg-[#2b7fff99]',
+	'bg-[#ad46ff99]',
+	'bg-[#f6339a99]',
+	'bg-[#fb2c3699]',
+	'bg-[#ff690099]',
+	'bg-[#f0b10099]',
+	'bg-[#00c95099]',
+	'bg-[#00bba799]',
+	'bg-[#00b8db99]',
+	'bg-[#615fff99]',
 ]
 const DEF = 'https://cdn.widgetify.ir/system/bookmark.png'
 

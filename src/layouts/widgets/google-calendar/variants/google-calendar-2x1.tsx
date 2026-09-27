@@ -33,12 +33,12 @@ export const GoogleCalendar2x1: React.FC<GoogleCalendar2x1Props> = ({
 			>
 				<div className="w-1/3 space-y-1.5">
 					<div className="w-3/4 h-3 rounded bg-ds-fill-2" />
-					<div className="w-1/2 h-4 rounded bg-content-muted" />
+					<div className="w-1/2 h-4 rounded bg-ds-fill" />
 				</div>
 				<div className="w-px h-8 bg-ds-fill-2 shrink-0" />
 				<div className="flex-1 space-y-1.5">
 					<div className="w-2/3 h-3 rounded bg-ds-fill-2" />
-					<div className="w-1/3 h-2 rounded bg-content-muted" />
+					<div className="w-1/3 h-2 rounded bg-ds-fill" />
 				</div>
 			</div>
 		)

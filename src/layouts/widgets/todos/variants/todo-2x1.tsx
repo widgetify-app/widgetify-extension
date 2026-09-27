@@ -84,7 +84,7 @@ export function TodoCompactRow({
 								'w-5 h-5 rounded-md border flex items-center justify-center transition-colors shrink-0 cursor-pointer',
 								'disabled:cursor-not-allowed disabled:opacity-60 focus-visible:focus-ring',
 								nextPending.completed
-									? 'bg-success-muted border-ds-success text-ds-success'
+									? 'bg-ds-success-fill-2 border-ds-success text-ds-success'
 									: 'border-ds-line hover:border-ds-brand'
 							)}
 						>

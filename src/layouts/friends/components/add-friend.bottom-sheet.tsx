@@ -92,7 +92,7 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 				</div>
 
 				{!canSendRequest && (
-					<div className="flex items-start gap-3 p-4 border rounded-xl bg-ds-warning-fill border-warning-muted">
+					<div className="flex items-start gap-3 p-4 border rounded-xl bg-ds-warning-fill border-ds-warning-fill-2">
 						<Icon
 							name="alert"
 							className="w-5 h-5 text-ds-warning flex-shrink-0 mt-0.5"
@@ -141,7 +141,7 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 						rounded="xl"
 						color="success"
 						fullWidth
-						className="h-12 shadow-sm shadow-success-muted"
+						className="h-12 shadow-sm shadow-ds-success-fill-2"
 					>
 						ارسال درخواست
 					</Button>

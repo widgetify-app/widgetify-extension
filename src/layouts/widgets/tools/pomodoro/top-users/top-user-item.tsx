@@ -18,13 +18,13 @@ export function TopUserItem({
 	const containerRef = useRef<HTMLDivElement>(null)
 	const isActive = activeProfileId === user.id
 	const crownColors: Record<number, string> = {
-		1: 'text-medal-gold',
-		2: 'text-medal-silver',
-		3: 'text-medal-bronze',
+		1: 'text-[#fdc700]',
+		2: 'text-[#99a1af]',
+		3: 'text-[#e17100]',
 	}
 
 	const style =
-		rank <= 3 ? 'bg-success-subtle text-ds-success' : 'bg-ds-brand-fill text-ds-brand'
+		rank <= 3 ? 'bg-ds-success-fill text-ds-success' : 'bg-ds-brand-fill text-ds-brand'
 
 	const convertToHours = (duration: number) => {
 		const hours = Math.floor(duration / 60)

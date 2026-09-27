@@ -134,7 +134,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 							<div
 								key={`friend-direct-${friend.id}`}
 								onClick={() => onSelectFriend?.(friend)}
-								className="group flex items-center justify-between p-2 transition-colors duration-150 rounded-xl hover:bg-content-muted border border-transparent hover:border-ds-line cursor-pointer"
+								className="group flex items-center justify-between p-2 transition-colors duration-150 rounded-xl hover:bg-ds-fill-2 border border-transparent hover:border-ds-line cursor-pointer"
 							>
 								<div className="flex items-center gap-2.5 min-w-0 flex-1">
 									<div className="relative shrink-0">

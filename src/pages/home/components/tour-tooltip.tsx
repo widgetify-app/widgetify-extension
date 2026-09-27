@@ -28,7 +28,7 @@ export function TourTooltip({
 									i === index
 										? 'w-5 bg-ds-brand'
 										: i < index
-											? 'w-1.5 bg-brand-strong'
+											? 'w-1.5 bg-ds-brand-muted'
 											: 'w-1.5 bg-ds-fill-3'
 								}`}
 							/>

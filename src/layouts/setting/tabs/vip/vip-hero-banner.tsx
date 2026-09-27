@@ -38,7 +38,7 @@ const VIP_FEATURES: VipFeatureItem[] = [
 
 export function VipHeroBanner() {
 	return (
-		<div className="relative overflow-hidden rounded-3xl border border-ds-vip-fill bg-gradient-to-br from-ds-vip-fill via-raised-subtle to-raised-faint p-5 sm:p-6 shadow-sm">
+		<div className="relative overflow-hidden rounded-3xl border border-ds-vip-fill bg-gradient-to-br from-ds-vip-fill via-ds-fill to-ds-fill p-5 sm:p-6 shadow-sm">
 			<div className="absolute -top-12 -left-12 w-48 h-48 rounded-full bg-ds-vip-fill-2 blur-3xl pointer-events-none" />
 			<div className="absolute -bottom-12 -right-12 w-48 h-48 rounded-full bg-ds-vip-fill blur-3xl pointer-events-none" />
 
@@ -65,7 +65,7 @@ export function VipHeroBanner() {
 					{VIP_FEATURES.map((feature) => (
 						<div
 							key={feature.id}
-							className="flex items-start gap-3 p-3.5 rounded-2xl bg-widget-muted border border-ds-line backdrop-blur-xs hover:bg-widget-strong hover:border-ds-vip-fill-2 transition-all duration-200 shadow-2xs"
+							className="flex items-start gap-3 p-3.5 rounded-2xl bg-ds-surface-veil border border-ds-line backdrop-blur-xs hover:bg-ds-surface hover:border-ds-vip-fill-2 transition-all duration-200 shadow-2xs"
 						>
 							<div className="flex items-center justify-center w-8 h-8 rounded-xl bg-ds-vip-fill text-ds-vip shrink-0 mt-0.5">
 								<Icon name={feature.icon} size={16} />

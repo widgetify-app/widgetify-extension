@@ -128,7 +128,7 @@ export const ProfileDisplay = () => {
 				showEditBadge={showEditBadge}
 			/>
 
-			<div className="overflow-hidden border border-ds-surface-3 rounded-2xl bg-widget-subtle">
+			<div className="overflow-hidden border border-ds-surface-3 rounded-2xl bg-ds-surface-veil">
 				<DisplayRow
 					icon={<Icon name="user" className="text-ds-brand" />}
 					label="نام و نام خانوادگی"
@@ -140,7 +140,7 @@ export const ProfileDisplay = () => {
 				/>
 
 				<DisplayRow
-					icon={<Icon name="atSign" className="text-brand-strong" />}
+					icon={<Icon name="atSign" className="text-ds-brand-muted" />}
 					label="نام کاربری (یوزرنیم)"
 					value={user?.username}
 					editable
@@ -186,7 +186,7 @@ export const ProfileDisplay = () => {
 
 				<DisplayRow
 					icon={
-						<div className="text-accent">
+						<div className="text-[var(--color-accent)]">
 							<Icon name="gender" />
 						</div>
 					}
@@ -255,7 +255,7 @@ export const ProfileDisplay = () => {
 				/>
 
 				<DisplayRow
-					icon={<Icon name="treeCity" className="text-brand-strong" />}
+					icon={<Icon name="treeCity" className="text-ds-brand-muted" />}
 					label="شهر"
 					value={user?.city?.name || '-'}
 					showBadge={showEditBadge('city')}
@@ -334,9 +334,9 @@ const DisplayRow = ({
 	}
 
 	return (
-		<div className="flex items-center justify-between p-2 transition-colors border-b last:border-b-0 border-ds-surface-3 hover:bg-content-faint">
+		<div className="flex items-center justify-between p-2 transition-colors border-b last:border-b-0 border-ds-surface-3 hover:bg-ds-fill">
 			<div className="flex items-center gap-3">
-				<div className="relative flex items-center justify-center w-7 h-7 rounded-xl bg-content-muted">
+				<div className="relative flex items-center justify-center w-7 h-7 rounded-xl bg-ds-fill-2">
 					{icon}
 					{showBadge && (
 						<span className="absolute w-2 h-2 rounded-full left-0.5 -top-0.5 bg-ds-danger animate-pulse"></span>

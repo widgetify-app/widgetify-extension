@@ -24,7 +24,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 								key={index}
 								className={`relative overflow-hidden rounded-2xl transition-all duration-300 ${
 									taskItem.isDone
-										? 'bg-gradient-to-r from-success-subtle to-success-subtle border border-success-muted'
+										? 'bg-gradient-to-r from-ds-success-fill to-ds-success-fill border border-ds-success-fill-2'
 										: 'bg-gradient-to-r from-ds-surface to-ds-surface-2 border border-ds-surface-3'
 								}`}
 							>
@@ -33,7 +33,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 										<div
 											className={`relative flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 ${
 												taskItem.isDone
-													? 'bg-gradient-to-br from-ds-success to-ds-success shadow-md shadow-success-muted'
+													? 'bg-gradient-to-br from-ds-success to-ds-success shadow-md shadow-ds-success-fill-2'
 													: 'bg-gradient-to-br from-ds-brand to-ds-brand shadow-sm shadow-ds-brand-fill-2'
 											}`}
 										>
@@ -85,7 +85,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 									<div
 										className={`flex items-center flex-shrink-0 gap-1.5 px-2.5 py-1 rounded-lg ${
 											taskItem.isDone
-												? 'bg-success-subtle'
+												? 'bg-ds-success-fill'
 												: 'bg-ds-brand-fill'
 										}`}
 									>
@@ -112,7 +112,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 					<div className="py-12 text-center">
 						<div className="relative flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-ds-surface-2 to-ds-surface-3">
 							<Icon name="check" className="w-8 h-8 text-ds-fg-muted" />
-							<div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-transparent to-over-image-sheen"></div>
+							<div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-transparent to-[rgba(255,255,255,0.05)]"></div>
 						</div>
 						<p className="text-sm font-medium text-ds-fg-muted">
 							هیچ ماموریتی یافت نشد

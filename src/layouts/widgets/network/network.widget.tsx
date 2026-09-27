@@ -260,7 +260,7 @@ export function NetworkLayout({ size = { w: 2, h: 3 } }: Prop) {
 												</span>
 											)}
 											{networkInfo.country && (
-												<span className="px-2 py-1 font-medium rounded-full text-ds-secondary bg-secondary-subtle">
+												<span className="px-2 py-1 font-medium rounded-full text-ds-secondary bg-ds-secondary-fill">
 													{networkInfo.country}
 												</span>
 											)}

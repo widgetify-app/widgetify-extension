@@ -32,9 +32,9 @@ export function ExplorerCategory({ category, categoryRefs, activeCategory }: Pro
 				}),
 			}}
 			className={twJoin(
-				'relative overflow-hidden border scroll-mt-20 bg-ds-surface-2 bg-glass border-content-subtle hover:border-ds-surface-3 rounded-widget transition-all duration-300 shadow-sm hover:shadow-md break-inside-avoid mb-3.5',
+				'relative overflow-hidden border scroll-mt-20 bg-ds-surface-2 bg-glass border-ds-surface-3 hover:border-ds-line rounded-widget transition-all duration-300 shadow-sm hover:shadow-md break-inside-avoid mb-3.5',
 				category.id === activeCategory &&
-					'ring-2 ring-brand-strong border-brand-strong',
+					'ring-2 ring-ds-brand-muted border-ds-brand-muted',
 				category.banner
 					? 'before:absolute before:inset-x-0 before:top-0 before:h-16 before:bg-cover before:bg-center before:bg-no-repeat before:brightness-75 before:contrast-110 before:pointer-events-none'
 					: ''
