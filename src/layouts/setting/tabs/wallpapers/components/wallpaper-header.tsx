@@ -8,9 +8,7 @@ export function WallpaperHeader() {
 	return (
 		<header className="flex flex-col gap-3 pb-3 border-b border-line select-none">
 			<div className="flex flex-col gap-0.5">
-				<h2 className="text-lg font-bold text-fg tracking-tight">
-					تصویر سفارشی
-				</h2>
+				<h2 className="text-lg font-bold text-fg tracking-tight">تصویر سفارشی</h2>
 			</div>
 			<UploadArea
 				customWallpaper={customWallpaper}
@@ -21,7 +19,9 @@ export function WallpaperHeader() {
 				<h2 className="text-lg font-bold text-fg tracking-tight">
 					تصویر زمینه‌ها
 				</h2>
-				<p className="text-xs text-fg-muted">تصویر زمینه مورد علاقه‌ت رو انتخاب کن</p>
+				<p className="text-xs text-fg-muted">
+					تصویر زمینه مورد علاقه‌ت رو انتخاب کن
+				</p>
 			</div>
 		</header>
 	)

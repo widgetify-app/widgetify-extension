@@ -89,7 +89,9 @@ export function MiniAppsLayout() {
 								<p className="text-base font-medium text-fg">
 									هنوز برنامکی وجود ندارد
 								</p>
-								<p className="text-sm text-fg-muted">به زودی پر میشه...</p>
+								<p className="text-sm text-fg-muted">
+									به زودی پر میشه...
+								</p>
 							</div>
 						)}
 						{isLoading
@@ -134,8 +136,7 @@ export function MiniAppsLayout() {
 								src={EmptyMiniAppImage}
 								className="max-h-80 max-w-80"
 								onError={(e) => {
-									// @ts-ignore
-									e.target?.remove()
+									e.currentTarget.remove()
 								}}
 							/>
 							<p className="text-lg font-bold text-fg">

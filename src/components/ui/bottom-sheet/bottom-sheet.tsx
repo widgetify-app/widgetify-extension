@@ -118,9 +118,7 @@ export function BottomSheet({
 										/>
 									</button>
 								)}
-								<h2 className="text-sm font-bold text-fg">
-									{title}
-								</h2>
+								<h2 className="text-sm font-bold text-fg">{title}</h2>
 							</div>
 						)}
 

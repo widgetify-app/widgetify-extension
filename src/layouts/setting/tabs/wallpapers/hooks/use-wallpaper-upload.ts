@@ -7,7 +7,7 @@ import { useGetWallpaperConfig } from '@/services/hooks/wallpapers/get-wallpaper
 import { safeAwait } from '@/services/api'
 import { translateError } from '@/common/utils/translate-error'
 import { callEvent } from '@/common/utils/call-event'
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 
 const DEFAULT_FREE_MAX_SIZE = 2
 const DEFAULT_VIP_MAX_SIZE = 40

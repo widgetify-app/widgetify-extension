@@ -1,8 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import {
-	EXIT_ANIMATION_MS,
-	isRetainableValue,
-} from '@/common/utils/animation-timing'
+import { EXIT_ANIMATION_MS, isRetainableValue } from '@/common/utils/animation-timing'
 
 describe('EXIT_ANIMATION_MS', () => {
 	it('outlasts the daisyUI modal transition of 300ms', () => {

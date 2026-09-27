@@ -7,10 +7,7 @@ interface SortableCurrencyBoxProps {
 	id: string
 }
 
-export function SortableCurrencyBox({
-	code,
-	id,
-}: SortableCurrencyBoxProps) {
+export function SortableCurrencyBox({ code, id }: SortableCurrencyBoxProps) {
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
 		useSortable({
 			id,
@@ -28,10 +25,7 @@ export function SortableCurrencyBox({
 			style={style}
 			className={isDragging ? 'opacity-50' : undefined}
 		>
-			<CurrencyBox
-				code={code}
-				dragHandle={{ ...attributes, ...listeners }}
-			/>
+			<CurrencyBox code={code} dragHandle={{ ...attributes, ...listeners }} />
 		</div>
 	)
 }

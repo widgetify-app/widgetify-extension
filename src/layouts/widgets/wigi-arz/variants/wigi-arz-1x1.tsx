@@ -60,7 +60,12 @@ export function CurrencyCompactSquare({
 	if (hasFailed) {
 		return (
 			<div className="flex flex-col items-center justify-center w-full h-full gap-[4.2cqh] p-[10.4cqh] text-center select-none">
-				<Icon name="alert" size={16} className="text-fg-muted" aria-hidden="true" />
+				<Icon
+					name="alert"
+					size={16}
+					className="text-fg-muted"
+					aria-hidden="true"
+				/>
 				<p className="text-[9.4cqh] leading-tight text-fg-muted">
 					قیمت {activeCode} دریافت نشد
 				</p>

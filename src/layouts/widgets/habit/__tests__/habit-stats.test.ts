@@ -36,10 +36,7 @@ describe('computeHabitStats', () => {
 	})
 
 	it('keeps the streak alive while today is still open', () => {
-		const stats = computeHabitStats([
-			...done(4),
-			{ isDone: false, hasRecord: false },
-		])
+		const stats = computeHabitStats([...done(4), { isDone: false, hasRecord: false }])
 
 		expect(stats.currentStreak).toBe(4)
 	})

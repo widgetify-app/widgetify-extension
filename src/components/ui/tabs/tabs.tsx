@@ -34,10 +34,9 @@ export const TabNavigation = <T,>({
 	const uniqueId = useId()
 
 	return (
-		<div
-			role="group"
+		<fieldset
 			className={cn(
-				'flex items-center p-1 bg-surface-2 rounded-2xl border border-line relative',
+				'flex items-center min-w-0 p-1 bg-surface-2 rounded-2xl border border-line relative',
 				className
 			)}
 		>
@@ -81,6 +80,6 @@ export const TabNavigation = <T,>({
 					</button>
 				)
 			})}
-		</div>
+		</fieldset>
 	)
 }

@@ -20,4 +20,3 @@ export const useGetWallpaperConfig = () => {
 		gcTime: 1000 * 60 * 60 * 24,
 	})
 }
-

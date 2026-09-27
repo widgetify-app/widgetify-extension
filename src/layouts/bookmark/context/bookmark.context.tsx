@@ -315,11 +315,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 		if (!input.title?.trim() || !bookmarks) return
 
-		if (
-			input.icon &&
-			input.icon instanceof File &&
-			input.icon.size > MAX_ICON_SIZE
-		) {
+		if (input.icon && input.icon instanceof File && input.icon.size > MAX_ICON_SIZE) {
 			showToast('حجم فایل آیکون نباید بیشتر از ۲۵۰ کیلوبایت باشد', 'error')
 			return
 		}

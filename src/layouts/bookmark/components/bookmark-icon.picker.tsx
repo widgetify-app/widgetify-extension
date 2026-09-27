@@ -29,7 +29,7 @@ export function BookmarkIconPicker({ value, url, onChange, size = 'md' }: Props)
 	}
 
 	const handleFile = (file?: File) => {
-		if (!file || !file.type.startsWith('image/'))
+		if (!file?.type.startsWith('image/'))
 			return showToast('فرمت فایل نامعتبر است', 'error')
 		if (file.size > 250 * 1024) {
 			return showToast('حجم فایل آیکون نباید بیشتر از ۲۵۰ کیلوبایت باشد', 'error')

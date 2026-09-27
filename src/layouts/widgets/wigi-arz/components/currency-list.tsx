@@ -56,10 +56,7 @@ export const CurrencyList: React.FC<CurrencyListProps> = ({
 				<ul className={className} aria-label="لیست ارزها">
 					{currencies.map((currency) => (
 						<li key={currency}>
-							<SortableCurrencyBox
-								id={currency}
-								code={currency}
-							/>
+							<SortableCurrencyBox id={currency} code={currency} />
 						</li>
 					))}
 				</ul>

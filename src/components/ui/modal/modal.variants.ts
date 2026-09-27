@@ -68,10 +68,4 @@ export const modalScrollVariants = cva(
 	}
 )
 
-export const modalDialogVariants = cva([
-	'modal',
-	'modal-middle',
-	'p-2',
-	'md:p-4',
-])
-
+export const modalDialogVariants = cva(['modal', 'modal-middle', 'p-2', 'md:p-4'])

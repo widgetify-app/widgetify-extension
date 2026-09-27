@@ -38,16 +38,11 @@ function assertValidInDev(
 ): void {
 	if (!import.meta.env.DEV) return
 	if (!validateLayout(layout, cols, registry)) {
-		console.error(
-			`[layout-engine] "${operation}" produced an invalid layout`,
-			layout
-		)
+		console.error(`[layout-engine] "${operation}" produced an invalid layout`, layout)
 	}
 }
 
-export function resolveLayoutChange(
-	options: LayoutEngineOptions
-): StoredWidget[] | null {
+export function resolveLayoutChange(options: LayoutEngineOptions): StoredWidget[] | null {
 	const {
 		layout,
 		operation,
@@ -78,7 +73,7 @@ export function resolveLayoutChange(
 			})
 			if (!patched) return null
 
-			const resolved = resolveCollisions(patched, new Set([instanceId]), cols)
+			const resolved = resolveCollisions(patched, new Set([instanceId]))
 			assertValidInDev(resolved, cols, registry, 'move')
 
 			return reconcileIdentity(layout, resolved)
@@ -105,7 +100,7 @@ export function resolveLayoutChange(
 			})
 			if (!patched) return null
 
-			const resolved = resolveCollisions(patched, new Set([instanceId]), cols)
+			const resolved = resolveCollisions(patched, new Set([instanceId]))
 			assertValidInDev(resolved, cols, registry, 'resize')
 
 			return reconcileIdentity(layout, resolved)
@@ -130,8 +125,7 @@ export function resolveLayoutChange(
 				toAdd.position = { ...targetPosition }
 				const resolved = resolveCollisions(
 					[...layout, toAdd],
-					new Set([toAdd.instanceId]),
-					cols
+					new Set([toAdd.instanceId])
 				)
 				if (validateLayout(resolved, cols, registry)) {
 					return resolved
@@ -218,7 +212,7 @@ export function resolveLayoutChange(
 				)
 			}
 
-			const compacted = compactLayout(reflowed, cols)
+			const compacted = compactLayout(reflowed)
 			if (!validateLayout(compacted, cols, registry)) {
 				return null
 			}

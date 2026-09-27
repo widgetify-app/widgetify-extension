@@ -8,7 +8,6 @@ interface CompactOptions {
 
 export function compactLayout(
 	layout: StoredWidget[],
-	cols: number,
 	fixedIdsOrOptions?: Set<string> | CompactOptions
 ): StoredWidget[] {
 	const options: CompactOptions =

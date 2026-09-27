@@ -2,7 +2,6 @@ import { describe, expect, it } from 'bun:test'
 import { getPhotoFileError } from '../utils/get-photo-file-error'
 
 const TYPE_ERROR = 'لطفا یک فایل تصویری انتخاب کن'
-const SIZE_ERROR = 'حجم عکس نباید بیشتر از ۱ مگابایت باشه'
 
 describe('getPhotoFileError', () => {
 	it('accepts an image under the limit', () => {

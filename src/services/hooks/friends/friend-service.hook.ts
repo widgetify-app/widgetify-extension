@@ -162,49 +162,25 @@ export function useSendFriendRequest() {
 }
 
 export function useGetFriends(q: GetFriendsParams) {
-	if (q.caching) {
-		// biome-ignore lint/correctness/useHookAtTopLevel: <explanation>
-		return useInfiniteQuery({
-			queryKey: ['friends', q.status, q.limit],
-			queryFn: async ({ pageParam }) =>
-				getFriends({ ...q, page: pageParam as number }),
-			retry: 1,
-			staleTime: 5 * 60 * 1000, // 5 minutes
-			gcTime: 10 * 60 * 1000, // 10 minutes
-			enabled: q.enabled !== undefined ? q.enabled : true,
-			initialPageParam: 1,
-			getNextPageParam: (lastPage, allPages) => {
-				const currentPage = allPages.length
-				return currentPage < lastPage.data.totalPages
-					? currentPage + 1
-					: undefined
-			},
-			refetchOnWindowFocus: false,
-			refetchOnMount: false,
-			refetchOnReconnect: false,
-		})
-	} else {
-		// biome-ignore lint/correctness/useHookAtTopLevel: <explanation>
-		return useInfiniteQuery({
-			queryKey: ['friends', q.status, q.limit, 'no-cache'],
-			queryFn: async ({ pageParam }) =>
-				getFriends({ ...q, page: pageParam as number }),
-			retry: 1,
-			staleTime: 0,
-			gcTime: 0,
-			enabled: q.enabled !== undefined ? q.enabled : true,
-			initialPageParam: 1,
-			getNextPageParam: (lastPage, allPages) => {
-				const currentPage = allPages.length
-				return currentPage < lastPage.data.totalPages
-					? currentPage + 1
-					: undefined
-			},
-			refetchOnWindowFocus: true,
-			refetchOnMount: true,
-			refetchOnReconnect: true,
-		})
-	}
+	const cached = Boolean(q.caching)
+	return useInfiniteQuery({
+		queryKey: cached
+			? ['friends', q.status, q.limit]
+			: ['friends', q.status, q.limit, 'no-cache'],
+		queryFn: async ({ pageParam }) => getFriends({ ...q, page: pageParam as number }),
+		retry: 1,
+		staleTime: cached ? 5 * 60 * 1000 : 0,
+		gcTime: cached ? 10 * 60 * 1000 : 0,
+		enabled: q.enabled !== undefined ? q.enabled : true,
+		initialPageParam: 1,
+		getNextPageParam: (lastPage, allPages) => {
+			const currentPage = allPages.length
+			return currentPage < lastPage.data.totalPages ? currentPage + 1 : undefined
+		},
+		refetchOnWindowFocus: !cached,
+		refetchOnMount: !cached,
+		refetchOnReconnect: !cached,
+	})
 }
 
 export function useGetActivities() {

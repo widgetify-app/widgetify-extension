@@ -63,7 +63,6 @@
 	--color-info-rgb: 59, 130, 246;
 }
 
-
 [data-theme="glass"] .menu,
 [data-theme="glass"] .modal-box {
 	-webkit-backdrop-filter: blur(16px) saturate(180%);

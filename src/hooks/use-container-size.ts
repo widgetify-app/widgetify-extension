@@ -5,9 +5,7 @@ interface ContainerSize {
 	height: number
 }
 
-export function useContainerSize(
-	ref: RefObject<HTMLElement | null>
-): ContainerSize {
+export function useContainerSize(ref: RefObject<HTMLElement | null>): ContainerSize {
 	const [size, setSize] = useState<ContainerSize>({
 		width: 0,
 		height: 0,
@@ -23,8 +21,7 @@ export function useContainerSize(
 			const entry = entries[0]
 			if (!entry) return
 
-			const width =
-				entry.contentBoxSize?.[0]?.inlineSize ?? entry.contentRect.width
+			const width = entry.contentBoxSize?.[0]?.inlineSize ?? entry.contentRect.width
 
 			const height =
 				entry.contentBoxSize?.[0]?.blockSize ?? entry.contentRect.height

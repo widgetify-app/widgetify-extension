@@ -200,7 +200,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 		setCustomWallpaper(null)
 		await setToStorage('customWallpaper', null as any)
 		if (selectedBackground?.id === 'custom-wallpaper') {
-			const [error, randomWallpaper] = await safeAwait<any, Wallpaper>(
+			const [, randomWallpaper] = await safeAwait<any, Wallpaper>(
 				getRandomWallpaper()
 			)
 			if (randomWallpaper) {

@@ -113,7 +113,7 @@ const AuthForm = () => {
 			const errMsg = err?.response?.data?.message
 			if (typeof errMsg === 'string' && errMsg.startsWith('OTP_RATE_LIMIT:')) {
 				const rem = parseInt(errMsg.split(':')[1], 10)
-				if (!isNaN(rem)) {
+				if (!Number.isNaN(rem)) {
 					startCooldown(rem)
 					setStep('otp')
 					return

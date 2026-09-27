@@ -73,7 +73,7 @@ const CollectiblesRenderer: React.FC<CollectiblesRendererProps> = ({
 
 interface BasePetContainerProps {
 	name: string
-	containerRef: React.RefObject<HTMLDivElement | null>
+	containerRef: React.RefObject<HTMLButtonElement | null>
 	petRef: React.RefObject<HTMLDivElement | null>
 	position: Position
 	direction: number
@@ -83,7 +83,6 @@ interface BasePetContainerProps {
 	dimensions: PetDimensions
 	assets: PetAssets
 	isHungry: boolean
-	onFeed: () => void
 	className?: string
 }
 
@@ -99,7 +98,6 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 	dimensions,
 	assets,
 	isHungry,
-	onFeed,
 	className,
 }) => {
 	const showToolTip = showName || isHungry
@@ -117,16 +115,10 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 	}, [currentSrc])
 
 	return (
-		<div
+		<button
+			type="button"
 			ref={containerRef}
-			role="button"
-			tabIndex={0}
 			aria-label={`غذا دادن به ${name}`}
-			onKeyDown={(event) => {
-				if (event.key !== 'Enter' && event.key !== ' ') return
-				event.preventDefault()
-				onFeed()
-			}}
 			className={cn(
 				'absolute flex w-full h-16 overflow-hidden -bottom-2 focus-visible:focus-ring',
 				className
@@ -168,12 +160,14 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 							alt=""
 							aria-hidden="true"
 							className="absolute inset-0 object-contain w-full h-full pointer-events-none"
-							style={{ visibility: src === currentSrc ? 'visible' : 'hidden' }}
+							style={{
+								visibility: src === currentSrc ? 'visible' : 'hidden',
+							}}
 						/>
 					))}
 				</div>
 			</div>
-		</div>
+		</button>
 	)
 }
 
@@ -186,7 +180,7 @@ export function useBasePetLogic({
 	isHungry = false,
 	onLevelDownHungryState,
 }: BasePetProps) {
-	const containerRef = useRef<HTMLDivElement>(null)
+	const containerRef = useRef<HTMLButtonElement>(null)
 	const petRef = useRef<HTMLDivElement>(null)
 
 	const [position, setPosition] = useState<Position>({ x: 30, y: 0 })
@@ -284,9 +278,7 @@ export function useBasePetLogic({
 			const container = containerRef.current
 			if (!container) return
 
-			const uneatenFood = collectiblesRef.current.filter(
-				(item) => !item.collected
-			)
+			const uneatenFood = collectiblesRef.current.filter((item) => !item.collected)
 			if (uneatenFood.length >= MAX_ACTIVE_PET_FOOD) return
 
 			const rect = container.getBoundingClientRect()
@@ -330,16 +322,6 @@ export function useBasePetLogic({
 		]
 	)
 
-	const handleClick = useCallback(
-		(e: MouseEvent) => {
-			const container = containerRef.current
-			if (!container) return
-
-			dropFood(e.clientX - container.getBoundingClientRect().left)
-		},
-		[dropFood]
-	)
-
 	const feedFromKeyboard = useCallback(() => {
 		const bounds = getBounds()
 		const petCenter = positionRef.current.x + dimensions.width / 2
@@ -347,6 +329,21 @@ export function useBasePetLogic({
 
 		dropFood(petCenter + offset)
 	}, [dropFood, getBounds, dimensions.width])
+
+	const handleClick = useCallback(
+		(e: MouseEvent) => {
+			const container = containerRef.current
+			if (!container) return
+
+			if (e.detail === 0) {
+				feedFromKeyboard()
+				return
+			}
+
+			dropFood(e.clientX - container.getBoundingClientRect().left)
+		},
+		[dropFood, feedFromKeyboard]
+	)
 
 	const findNearestCollectible = useCallback(
 		(currentCollectibles: CollectibleItem[]) => {
@@ -483,7 +480,11 @@ export function useBasePetLogic({
 		const random = Math.random()
 		if (behaviorState === PetBehavior.ROAMING) {
 			const bounds = getBounds()
-			if (isNearWall(positionRef.current.x, bounds) && random > 0.7 && animations.climb) {
+			if (
+				isNearWall(positionRef.current.x, bounds) &&
+				random > 0.7 &&
+				animations.climb
+			) {
 				startClimb()
 			} else {
 				updateBehaviorState(PetBehavior.RESTING)
@@ -521,8 +522,7 @@ export function useBasePetLogic({
 					updateAction('run')
 				}
 				const bounds = getBounds()
-				const foodCenter =
-					nearestCollectible.x + assets.collectibleSize / 2
+				const foodCenter = nearestCollectible.x + assets.collectibleSize / 2
 				setTargetX(
 					Math.max(
 						bounds.minX,
@@ -597,7 +597,9 @@ export function useBasePetLogic({
 				setTargetX(null)
 
 				if (behaviorState === PetBehavior.CHASING) {
-					const nextCollectible = findNearestCollectible(collectiblesRef.current)
+					const nextCollectible = findNearestCollectible(
+						collectiblesRef.current
+					)
 					if (!nextCollectible) {
 						updateAction('idle')
 						updateBehaviorState(PetBehavior.RESTING)
@@ -805,6 +807,5 @@ export function useBasePetLogic({
 		getAnimationForCurrentAction,
 		dimensions,
 		assets,
-		onFeed: feedFromKeyboard,
 	}
 }

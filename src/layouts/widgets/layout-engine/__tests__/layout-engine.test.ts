@@ -131,7 +131,7 @@ describe('Layout Engine Tests', () => {
 			},
 		]
 
-		const compacted = compactLayout(withGaps, 8)
+		const compacted = compactLayout(withGaps)
 		const bookmarks = compacted.find((w) => w.instanceId === 'bookmarks')!
 		expect(bookmarks.position.row).toBe(1)
 	})

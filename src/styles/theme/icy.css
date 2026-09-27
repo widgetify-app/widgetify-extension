@@ -65,7 +65,6 @@
 	--color-info-rgb: 59, 130, 246;
 }
 
-
 [data-theme="icy"] .menu,
 [data-theme="icy"] .modal-box {
 	-webkit-backdrop-filter: blur(20px) saturate(180%) brightness(110%);

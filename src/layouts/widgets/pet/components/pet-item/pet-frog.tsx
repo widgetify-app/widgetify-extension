@@ -82,7 +82,6 @@ export const FrogComponent = ({ className }: { className?: string }) => {
 		getAnimationForCurrentAction,
 		dimensions,
 		assets,
-		onFeed,
 	} = useBasePetLogic({
 		name: getCurrentPetName(PetTypes.FROG),
 		animations: frogAnimations,
@@ -108,7 +107,6 @@ export const FrogComponent = ({ className }: { className?: string }) => {
 			dimensions={dimensions}
 			assets={assets}
 			isHungry={isPetHungry(PetTypes.FROG)}
-			onFeed={onFeed}
 		/>
 	)
 }

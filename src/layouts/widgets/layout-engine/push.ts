@@ -88,9 +88,7 @@ export function pushDownward(
 	for (const widget of movable) {
 		let row = widget.position.row
 
-		while (
-			overlapsAny({ col: widget.position.col, row }, widget.size, placed)
-		) {
+		while (overlapsAny({ col: widget.position.col, row }, widget.size, placed)) {
 			row++
 		}
 
@@ -117,7 +115,6 @@ export function pushDownward(
 export function resolveCollisions(
 	layout: StoredWidget[],
 	fixedIds: Set<string>,
-	cols: number,
 	options?: ResolveCollisionsOptions
 ): StoredWidget[] {
 	const { layout: pushed, displacedIds } = pushDownward(layout, fixedIds)
@@ -126,5 +123,5 @@ export function resolveCollisions(
 		return pushed
 	}
 
-	return compactLayout(pushed, cols, { fixedIds, onlyIds: displacedIds })
+	return compactLayout(pushed, { fixedIds, onlyIds: displacedIds })
 }

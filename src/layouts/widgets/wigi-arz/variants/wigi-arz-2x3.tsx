@@ -7,11 +7,7 @@ interface WigiArz2x3Props {
 	instanceId?: string
 }
 
-export function WigiArz2x3({
-	currencies,
-	onReorder,
-	instanceId,
-}: WigiArz2x3Props) {
+export function WigiArz2x3({ currencies, onReorder, instanceId }: WigiArz2x3Props) {
 	if (currencies.length === 0) {
 		return <CurrencyEmptyState instanceId={instanceId} />
 	}

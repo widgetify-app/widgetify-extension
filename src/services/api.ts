@@ -107,7 +107,7 @@ export function getMainClient(): AxiosInstance {
 
 					originalRequest.headers.Authorization = `Bearer ${newToken}`
 
-					return instance!(originalRequest)
+					return getMainClient()(originalRequest)
 				} catch (_refreshError) {
 					callEvent('auth_logout', null)
 					return Promise.reject(error)

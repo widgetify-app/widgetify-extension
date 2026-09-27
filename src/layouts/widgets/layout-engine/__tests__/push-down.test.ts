@@ -257,7 +257,7 @@ describe('push-down collision engine', () => {
 	it('honours onlyIds in compactLayout', () => {
 		const layout = [widget('pull-me', 0, 5, 2, 1), widget('leave-me', 4, 5, 2, 1)]
 
-		const compacted = compactLayout(layout, 8, { onlyIds: new Set(['pull-me']) })
+		const compacted = compactLayout(layout, { onlyIds: new Set(['pull-me']) })
 
 		expect(compacted.find((w) => w.instanceId === 'pull-me')!.position.row).toBe(0)
 		expect(compacted.find((w) => w.instanceId === 'leave-me')!.position.row).toBe(5)

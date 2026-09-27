@@ -1,8 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import {
-	MAX_AVATAR_DIMENSION,
-	getAvatarTargetDimensions,
-} from '../avatar-crop.utils'
+import { MAX_AVATAR_DIMENSION, getAvatarTargetDimensions } from '../avatar-crop.utils'
 
 describe('Avatar crop dimension clamping', () => {
 	it('defines MAX_AVATAR_DIMENSION as 512px to prevent oversized avatar files', () => {

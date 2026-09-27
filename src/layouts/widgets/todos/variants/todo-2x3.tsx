@@ -110,7 +110,9 @@ export const Todo2x3: React.FC<Todo2x3Props> = ({
 							<Icon
 								name="sortDown"
 								size={10}
-								className={sort !== 'def' ? 'text-brand!' : 'text-fg-muted'}
+								className={
+									sort !== 'def' ? 'text-brand!' : 'text-fg-muted'
+								}
 								aria-hidden="true"
 							/>
 						}
@@ -149,51 +151,51 @@ export const Todo2x3: React.FC<Todo2x3Props> = ({
 					aria-busy={isLoading}
 					className="h-full overflow-y-auto space-y-1.5 scrollbar-none"
 				>
-						{isLoading ? (
-							<div className="flex flex-col gap-1">
-								{[...Array(5)].map((_, i) => (
-									<TodoSkeleton key={`todo-skeleton-${i}`} />
-								))}
-							</div>
-						) : isError ? (
-							<TodosError onRetry={onRefresh} />
-						) : todos.length === 0 ? (
-							<TodosEmpty />
-						) : (
-							<>
-								<ul
-									className={cn(
-										'flex flex-col gap-0',
-										blurMode ? 'blur-mode' : 'disabled-blur-mode'
-									)}
-								>
-									{todos.map((todo) => (
-										<li key={todo.id}>
-											<TodoItem
-												blurMode={blurMode}
-												todo={todo}
-												onUpdated={onUpdated}
-												onEdit={onEdit}
-											/>
-										</li>
-									))}
-								</ul>
-
-								{hasNextPage && (
-									<div ref={loadMoreRef}>
-										{isFetchingNextPage && (
-											<div className="flex flex-col gap-1">
-												{[...Array(3)].map((_, i) => (
-													<TodoSkeleton
-														key={`todo-next-skeleton-${i}`}
-													/>
-												))}
-											</div>
-										)}
-									</div>
+					{isLoading ? (
+						<div className="flex flex-col gap-1">
+							{[...Array(5)].map((_, i) => (
+								<TodoSkeleton key={`todo-skeleton-${i}`} />
+							))}
+						</div>
+					) : isError ? (
+						<TodosError onRetry={onRefresh} />
+					) : todos.length === 0 ? (
+						<TodosEmpty />
+					) : (
+						<>
+							<ul
+								className={cn(
+									'flex flex-col gap-0',
+									blurMode ? 'blur-mode' : 'disabled-blur-mode'
 								)}
-							</>
-						)}
+							>
+								{todos.map((todo) => (
+									<li key={todo.id}>
+										<TodoItem
+											blurMode={blurMode}
+											todo={todo}
+											onUpdated={onUpdated}
+											onEdit={onEdit}
+										/>
+									</li>
+								))}
+							</ul>
+
+							{hasNextPage && (
+								<div ref={loadMoreRef}>
+									{isFetchingNextPage && (
+										<div className="flex flex-col gap-1">
+											{[...Array(3)].map((_, i) => (
+												<TodoSkeleton
+													key={`todo-next-skeleton-${i}`}
+												/>
+											))}
+										</div>
+									)}
+								</div>
+							)}
+						</>
+					)}
 				</div>
 			</div>
 

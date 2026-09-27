@@ -4,11 +4,7 @@ import Analytics from '@/analytics'
 import { playNativeToastSound, showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
 import { callEvent } from '@/common/utils/call-event'
-import {
-	DEFAULT_COLS,
-	resolveLayoutChange,
-	validateLayout,
-} from '@widget/layout-engine'
+import { DEFAULT_COLS, resolveLayoutChange, validateLayout } from '@widget/layout-engine'
 import {
 	type StoredWidget,
 	WidgetKeys,
@@ -325,7 +321,7 @@ export function useWidgetOperations({
 				duplicatedMeta.activeNoteId = noteId
 			} else if (original.id === WidgetKeys.arzLive) {
 				duplicatedMeta.currencies = []
-			} 
+			}
 
 			let newInstanceId = `${original.id}-${Date.now().toString(36)}`
 

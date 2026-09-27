@@ -22,9 +22,7 @@ export const useGetMoods = (enabled: boolean, start: string, end: string) => {
 
 async function getMoods(start: string, end: string): Promise<GetMoodsResponse> {
 	const client = getMainClient()
-	const { data } = await client.get<any>(
-		`/users/@me/moods?start=${start}&end=${end}`
-	)
+	const { data } = await client.get<any>(`/users/@me/moods?start=${start}&end=${end}`)
 
 	if (!data) return { moods: [] }
 	if (Array.isArray(data)) return { moods: data }

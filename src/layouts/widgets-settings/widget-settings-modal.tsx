@@ -42,7 +42,6 @@ const WIDGET_SETTING_MODALS: Record<string, WidgetSettingModalConfig> = {
 }
 
 interface WidgetSettingsModalProps {
-	isOpen: boolean
 	onClose: () => void
 	selectedTab: WidgetTabKeys | null
 	activeSettingTab?: WidgetTabKeys | null
@@ -52,7 +51,6 @@ interface WidgetSettingsModalProps {
 }
 
 export function WidgetSettingsModal({
-	isOpen,
 	onClose,
 	selectedTab,
 	activeSettingTab,

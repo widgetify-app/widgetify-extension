@@ -8,10 +8,9 @@ interface ToolsCompactRowProps {
 
 export function ToolsCompactRow({ onSelectTab }: ToolsCompactRowProps) {
 	return (
-		<div
-			role="group"
+		<fieldset
 			aria-label="ابزارها"
-			className="grid grid-cols-3 gap-1.5 h-full w-full select-none"
+			className="grid grid-cols-3 gap-1.5 h-full w-full min-w-0 select-none"
 		>
 			{TOOLS_TABS.map((tab) => (
 				<button
@@ -30,6 +29,6 @@ export function ToolsCompactRow({ onSelectTab }: ToolsCompactRowProps) {
 					</span>
 				</button>
 			))}
-		</div>
+		</fieldset>
 	)
 }

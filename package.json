@@ -14,7 +14,7 @@
     "zip:firefox": "wxt zip -b firefox",
     "zip:firefox:clean": "npm run clean && wxt zip -b firefox",
     "compile": "tsc --noEmit",
-    "lint": "biome check src",
+    "lint": "biome check src background entrypoints wxt.config.ts",
     "test": "bun test",
     "test:pre-push": ".git/hooks/pre-push.bat",
     "postinstall": "wxt prepare"

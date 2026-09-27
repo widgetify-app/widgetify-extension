@@ -1,8 +1,4 @@
-import {
-	PopoverMenu,
-	PopoverMenuItem,
-	PopoverMenuDivider,
-} from '@/components/ui'
+import { PopoverMenu, PopoverMenuItem, PopoverMenuDivider } from '@/components/ui'
 import { Icon } from '@/icons'
 
 interface BookmarkContextMenuProps {
@@ -22,12 +18,7 @@ export function BookmarkContextMenu({
 	onClose,
 }: BookmarkContextMenuProps) {
 	return (
-		<PopoverMenu
-			isOpen={true}
-			onClose={onClose}
-			position={position}
-			width={160}
-		>
+		<PopoverMenu isOpen={true} onClose={onClose} position={position} width={160}>
 			{onOpenInNewTab && (
 				<PopoverMenuItem
 					icon={<Icon name="plus" size={13} />}

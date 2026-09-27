@@ -4,10 +4,7 @@ import type { PetSettings } from '@widget/pet/types'
 import type { ComboTabType } from '@widget/combo-widget/types'
 import type { YadkarTab } from '@widget/yadkar/types'
 import type { WigiNewsSetting } from '@widget/news/rss.interface'
-import type {
-	PomodoroSession,
-	PomodoroSettings,
-} from '@widget/tools/pomodoro/types'
+import type { PomodoroSession, PomodoroSettings } from '@widget/tools/pomodoro/types'
 import type { ToolsTabType } from '@widget/tools/types'
 import type {
 	FetchedForecast,

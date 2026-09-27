@@ -253,11 +253,7 @@ export function TodoBoard({
 							value={completed}
 							className="text-success"
 						/>
-						<StatRow
-							label="در انتظار"
-							value={pending}
-							className="text-fg"
-						/>
+						<StatRow label="در انتظار" value={pending} className="text-fg" />
 						<StatRow label="مهم" value={important} className="text-danger" />
 					</dl>
 				</aside>

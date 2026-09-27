@@ -51,7 +51,10 @@ describe('buildInstanceIdMap', () => {
 	})
 
 	it('does not map two local widgets onto the same server id', () => {
-		const layout = [widget('clock-1', WidgetKeys.clock), widget('clock-2', WidgetKeys.clock)]
+		const layout = [
+			widget('clock-1', WidgetKeys.clock),
+			widget('clock-2', WidgetKeys.clock),
+		]
 		const synced = [{ instanceId: SERVER_A, widgetKey: WidgetKeys.clock }]
 
 		const idMap = buildInstanceIdMap(layout, synced)

@@ -9,4 +9,3 @@ export function getWeekDays(referenceDate: WidgetifyDate): WidgetifyDate[] {
 		startOfWeek.clone().add(i, 'days')
 	)
 }
-

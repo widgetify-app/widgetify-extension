@@ -1,10 +1,7 @@
 import { hasAnyCollision } from './collision'
 import type { StoredWidget, WidgetDefinition } from './types'
 
-function isWithinHorizontalBounds(
-	widget: StoredWidget,
-	cols: number
-): boolean {
+function isWithinHorizontalBounds(widget: StoredWidget, cols: number): boolean {
 	return (
 		widget.position.col >= 0 &&
 		widget.size.w > 0 &&
@@ -37,7 +34,7 @@ export function validateLayout(
 			return false
 		}
 
-		if (registry && registry[widget.id]) {
+		if (registry?.[widget.id]) {
 			const def = registry[widget.id]
 			const sizeValid = def.allowedSizes.some(
 				(s) => s.w === widget.size.w && s.h === widget.size.h

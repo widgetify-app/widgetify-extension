@@ -25,8 +25,7 @@ export function WigiArzLayout({
 	instanceId,
 	meta,
 }: WigiArzLayoutProps) {
-	const { selectedCurrencies, reorderCurrencies } =
-		useCurrencyStore()
+	const { selectedCurrencies, reorderCurrencies } = useCurrencyStore()
 	const freeWidgets = useOptionalFreeWidgets()
 
 	const targetWidget = instanceId
@@ -45,7 +44,7 @@ export function WigiArzLayout({
 				: []
 		: selectedCurrencies
 
-		const handleReorder = (reordered: string[]) => {
+	const handleReorder = (reordered: string[]) => {
 		if (ownsList && instanceId) {
 			freeWidgets?.updateWidgetSettings(instanceId, {
 				...meta,

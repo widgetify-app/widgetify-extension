@@ -109,7 +109,6 @@ function Main() {
 					</motion.div>
 				</Presence>
 				<WidgetSettingsModal
-					isOpen={!!activeSettingPayload}
 					onClose={() => setActiveSettingPayload(null)}
 					selectedTab={null}
 					activeSettingTab={activeSettingPayload?.tab}

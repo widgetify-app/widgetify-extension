@@ -7,7 +7,6 @@ export function TourTooltip({
 	size,
 	step,
 	backProps,
-	closeProps,
 	primaryProps,
 	skipProps,
 	tooltipProps,

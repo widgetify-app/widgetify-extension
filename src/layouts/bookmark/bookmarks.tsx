@@ -72,11 +72,7 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 		const { active, over } = event
 		if (!over || active.id === over.id) return
 
-		const currentItems = getCurrentFolderItems(
-			currentFolderId,
-			instanceId,
-			isPrimary
-		)
+		const currentItems = getCurrentFolderItems(currentFolderId, instanceId, isPrimary)
 
 		const sourceIndex = currentItems.findIndex(
 			(item) => item.id === active.id || item.onlineId === active.id

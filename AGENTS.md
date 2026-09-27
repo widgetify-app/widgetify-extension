@@ -35,15 +35,17 @@ Run all four before reporting anything as done:
 ```
 npm run compile      # tsc --noEmit
 npm test             # bun test
-npm run lint         # biome check src
+npm run lint         # biome check, zero diagnostics
 npm run build        # wxt build, catches CSS and asset issues tsc cannot
 ```
 
 **Never run `npx biome`.** bun installs Biome's binary as `node_modules/.bin/biome.exe`, which npx
 does not look for, so npx quietly downloads an unrelated npm package that happens to be called
 `biome`, checks nothing and exits cleanly. Every Biome result in this repo was produced that way
-until it was noticed. `npm run lint` runs the pinned version; `biome --version` should say 2.5.0.
-It still reports diagnostics that predate it — a change must never add to them.
+until it was noticed. `npm run lint` runs the pinned version (`biome --version` says 2.5.0) over
+`src`, `background`, `entrypoints` and `wxt.config.ts`, and reports nothing. Keep it at nothing:
+fix a diagnostic rather than suppress it. The one deliberate exception is in `biome.json` — tests
+may use a non-null assertion, because a missing value should fail the test.
 
 Checking the built CSS at `.output/chrome-mv3/assets/newtab-*.css` is often the fastest way to prove a styling claim. Use it — several bugs in this repo were classes that compile to nothing.
 

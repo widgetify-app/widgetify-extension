@@ -1,5 +1,12 @@
 import type React from 'react'
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import {
+	createContext,
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useState,
+} from 'react'
 import Analytics from '@/analytics'
 import { getMultipleFromStorage, setToStorage } from '@/common/storage'
 import {
@@ -13,7 +20,6 @@ import { translateError } from '@/common/utils/translate-error'
 import { listenEvent } from '@/common/utils/call-event'
 
 enum UI {
-	DEFAULT = 'CUSTOM',
 	ADVANCED = 'ADVANCED',
 	SIMPLE = 'SIMPLE',
 	CUSTOM = 'CUSTOM',

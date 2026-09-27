@@ -59,7 +59,6 @@ export const ChickenComponent = ({ className }: { className?: string }) => {
 		getAnimationForCurrentAction,
 		dimensions,
 		assets,
-		onFeed,
 	} = useBasePetLogic({
 		name: getCurrentPetName(PetTypes.CHICKEN),
 		animations: chickenAnimations,
@@ -85,7 +84,6 @@ export const ChickenComponent = ({ className }: { className?: string }) => {
 			dimensions={dimensions}
 			assets={assets}
 			isHungry={isPetHungry(PetTypes.CHICKEN)}
-			onFeed={onFeed}
 		/>
 	)
 }
