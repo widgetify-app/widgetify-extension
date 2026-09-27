@@ -48,7 +48,7 @@ export const FriendsList = ({
 				{Array.from({ length: 5 }).map((_, i) => (
 					<div
 						key={i}
-						className="flex items-center justify-between p-3 border rounded-xl border-surface-3 bg-background animate-pulse"
+						className="flex items-center justify-between p-3 border rounded-xl border-surface-3 animate-pulse"
 					>
 						<div className="flex items-center flex-1 min-w-0 gap-3">
 							<div className="w-12 h-12 rounded-full skeleton" />

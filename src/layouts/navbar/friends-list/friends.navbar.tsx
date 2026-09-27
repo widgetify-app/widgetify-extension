@@ -9,7 +9,7 @@ import Analytics from '@/analytics'
 import { Icon } from '@/icons'
 
 const renderPendingNotification = (pendingCount: number) => (
-	<div className="absolute flex items-center justify-center w-2 h-2 text-[.4rem] z-20 font-bold text-white bg-danger rounded-full top-1 right-1 p-0.5 text-center">
+	<div className="absolute flex items-center justify-center w-2 h-2 text-[.4rem] z-20 font-bold text-on-danger bg-danger rounded-full top-1 right-1 p-0.5 text-center">
 		{pendingCount}
 	</div>
 )

@@ -133,7 +133,7 @@ function WallpaperItemFu({
 							className={`absolute flex  justify-between inset-x-0 bottom-0 p-2 rounded-xl transition-opacity duration-300 bg-linear-to-t from-scrim to-transparent items-center`}
 						>
 							{wallpaper.name ? (
-								<div className="flex-1 text-[10px] font-medium text-white">
+								<div className="flex-1 text-[10px] font-medium text-image-fg">
 									{wallpaper.name}
 								</div>
 							) : null}
@@ -181,7 +181,7 @@ function WallpaperItemFu({
 									e.stopPropagation()
 									onPreviewBackground(wallpaper)
 								}}
-								className="absolute bottom-1.5 right-1.5 flex items-center gap-1 px-2 py-1 rounded-lg bg-scrim border border-image-line text-[rgba(255,255,255,0.8)] hover:text-white transition-colors text-[10px] font-medium backdrop-blur-sm cursor-pointer opacity-0 group-hover:opacity-100"
+								className="absolute bottom-1.5 right-1.5 flex items-center gap-1 px-2 py-1 rounded-lg bg-scrim border border-image-line text-[rgba(255,255,255,0.8)] hover:text-image-fg transition-colors text-[10px] font-medium backdrop-blur-sm cursor-pointer opacity-0 group-hover:opacity-100"
 							>
 								<Icon name="outlineEye" size={10} />
 								<span>پیش‌نمایش</span>

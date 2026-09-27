@@ -325,7 +325,7 @@ The colour names and everything declared with `@utility` are real utilities, so
 silently, with no warning from tsc, biome or the build.
 
 Promote the rule to `@utility` if it needs a variant. The same trap catches any class name
-that does not exist: `bg-background` is used in `src` and has never been defined.
+that does not exist, and nothing but the built CSS will tell you.
 
 Grep the built CSS rather than trusting the markup:
 

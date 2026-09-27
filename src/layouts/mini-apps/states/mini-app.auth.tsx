@@ -24,7 +24,7 @@ export function WebAppAuthGate({ scopes, onConfirm }: Prop) {
 
 	return (
 		<div className="absolute inset-0 flex items-center justify-center p-6">
-			<div className="flex flex-col items-center w-full max-w-sm gap-6 p-6 text-center rounded-2xl bg-background">
+			<div className="flex flex-col items-center w-full max-w-sm gap-6 p-6 text-center rounded-2xl bg-surface-2">
 				<div className="flex items-center justify-center w-12 h-12 rounded-xl bg-warning-fill">
 					<span className="text-2xl text-warning">
 						<Icon name="alert" />

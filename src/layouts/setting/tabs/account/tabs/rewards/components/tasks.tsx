@@ -41,14 +41,14 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 												<div className="relative">
 													<Icon
 														name="check"
-														className="w-5 h-5 text-white drop-shadow-lg"
+														className="w-5 h-5 text-on-success drop-shadow-lg"
 													/>
 													<div className="absolute inset-0 rounded-full bg-image-fill animate-ping"></div>
 												</div>
 											) : (
 												<Icon
 													name="target"
-													className="w-5 h-5 text-white"
+													className="w-5 h-5 text-on-brand"
 												/>
 											)}
 										</div>

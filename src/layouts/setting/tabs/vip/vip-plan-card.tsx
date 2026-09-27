@@ -40,7 +40,7 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 					}
 					className={cn(
 						'absolute -top-2.5 left-1/2 -translate-x-1/2 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-xs',
-						!badgeColor && 'bg-brand text-white'
+						!badgeColor && 'bg-brand text-on-brand'
 					)}
 				>
 					{badge}

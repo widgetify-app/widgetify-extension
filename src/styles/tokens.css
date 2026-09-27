@@ -48,6 +48,7 @@
 	--color-vip-fill-2: rgba(var(--color-vip-rgb), 0.2);
 	--color-vip-hover: rgba(var(--color-vip-rgb), 0.9);
 
+	--color-image-fg: #ffffff;
 	--color-image-fill: rgba(255, 255, 255, 0.2);
 	--color-image-line: rgba(255, 255, 255, 0.3);
 	--color-scrim: rgba(0, 0, 0, 0.6);

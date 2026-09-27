@@ -70,8 +70,10 @@ by `theme.css`, under exactly those names, so `tokens.css` only adds their `on-`
 and tint names. Redeclaring one there would make it refer to itself.
 
 **Over imagery** — chrome drawn on a wallpaper or a photo follows no theme,
-because the theme says nothing about the pixels behind it: `image-fill` (white
-20) · `image-line` (white 30) · `scrim` (black 60) · `scrim-soft` (black 20).
+because the theme says nothing about the pixels behind it: `image-fg` (white) ·
+`image-fill` (white 20) · `image-line` (white 30) · `scrim` (black 60) ·
+`scrim-soft` (black 20). Text on a solid accent is never one of these: it is
+that accent's `on-` pair.
 
 ## Adding a colour
 

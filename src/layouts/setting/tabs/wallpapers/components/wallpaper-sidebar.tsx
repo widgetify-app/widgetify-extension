@@ -43,7 +43,7 @@ export function WallpaperSidebar({
 						onClick={() => onSelectCategory(null)}
 						className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all duration-200 cursor-pointer ${
 							selectedCategoryId === null
-								? 'bg-brand text-white shadow-sm'
+								? 'bg-brand text-on-brand shadow-sm'
 								: 'text-fg hover:bg-fill'
 						}`}
 					>
@@ -54,7 +54,7 @@ export function WallpaperSidebar({
 							<span
 								className={`text-[10px] px-1.5 py-0.5 rounded-md ${
 									selectedCategoryId === null
-										? 'bg-image-fill text-white'
+										? 'bg-image-fill text-on-brand'
 										: 'bg-fill-2 text-fg-muted'
 								}`}
 							>
@@ -73,7 +73,7 @@ export function WallpaperSidebar({
 								onClick={() => onSelectCategory(cat.id)}
 								className={`relative w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all duration-200 cursor-pointer ${
 									isSelected
-										? 'bg-brand text-white shadow-sm'
+										? 'bg-brand text-on-brand shadow-sm'
 										: 'text-fg hover:bg-fill'
 								}`}
 							>

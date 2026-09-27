@@ -64,7 +64,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 			{loaded && !error && (
 				<>
 					<div className="absolute inset-x-0 bottom-0 p-2.5 rounded-b-2xl bg-linear-to-t from-scrim via-[rgba(0,0,0,0.4)] to-transparent flex items-center justify-between pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-						<span className="text-[11px] font-medium text-white truncate max-w-[60%]">
+						<span className="text-[11px] font-medium text-image-fg truncate max-w-[60%]">
 							{asset.title || ''}
 						</span>
 
@@ -90,7 +90,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 									: 'رایگان برای کاربران پرو'
 							}
 						>
-							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip-hover backdrop-blur-xs text-white text-[10px] font-bold shadow-xs border border-image-line">
+							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip-hover backdrop-blur-xs text-on-vip text-[10px] font-bold shadow-xs border border-image-line">
 								<Icon name="diamond" size={10} />
 								<span>رایگان با پرو</span>
 							</span>

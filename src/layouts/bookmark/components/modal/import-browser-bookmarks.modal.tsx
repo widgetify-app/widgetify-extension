@@ -132,7 +132,11 @@ function TreeNode({
 					}`}
 				>
 					{(isChecked || isIndeterminate) && (
-						<Icon name="check" size={9} className="text-white" />
+						<Icon
+							name="check"
+							size={9}
+							className={isChecked ? 'text-on-brand' : 'text-brand'}
+						/>
 					)}
 				</span>
 

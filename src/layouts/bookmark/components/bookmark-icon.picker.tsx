@@ -142,7 +142,7 @@ export function BookmarkIconPicker({ value, url, onChange, size = 'md' }: Props)
 					<button
 						type="button"
 						onClick={handleRemove}
-						className="absolute -top-1 -right-1 flex items-center justify-center w-4.5 h-4.5 rounded-full bg-danger text-white text-[10px] leading-none shadow-md hover:scale-110 active:scale-95 transition-transform cursor-pointer z-10 border border-surface-3"
+						className="absolute -top-1 -right-1 flex items-center justify-center w-4.5 h-4.5 rounded-full bg-danger text-on-danger text-[10px] leading-none shadow-md hover:scale-110 active:scale-95 transition-transform cursor-pointer z-10 border border-surface-3"
 						title="حذف آیکون"
 					>
 						<span className="mb-0.5">✕</span>
