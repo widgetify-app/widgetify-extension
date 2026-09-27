@@ -142,7 +142,7 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 					<div className="px-2 pr-1 overflow-x-hidden overflow-y-auto transition-opacity duration-300 ease-out min-h-64 max-h-64 scrollbar-thin scrollbar-thumb">
 						{filteredGroups.map((group) => (
 							<section key={group.label} className="mb-6">
-								<h3 className="mb-3 text-sm font-medium text-content">
+								<h3 className="mb-3 text-sm font-medium text-ds-fg">
 									{group.label}
 								</h3>
 								<ul className="grid grid-cols-2 gap-3 md:grid-cols-4">
@@ -165,8 +165,8 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 														'transition-ui active:scale-98 hover:scale-95',
 														'focus-visible:focus-ring',
 														isSelected
-															? 'border-brand-muted bg-brand-subtle text-content'
-															: 'border-content bg-content hover:!bg-brand-subtle'
+															? 'border-ds-brand-fill-2 bg-ds-brand-fill text-ds-fg'
+															: 'border-ds-surface-3 bg-ds-surface-2 hover:!bg-ds-brand-fill'
 													)}
 												>
 													<span

@@ -43,23 +43,23 @@ export const NewsItem = ({
 			target="_blank"
 			rel="noopener noreferrer"
 			onClick={() => onOpen(url)}
-			className="group flex items-center gap-2 p-1.5 rounded-2xl cursor-pointer bg-content hover:bg-hovered transition-all border border-content hover:border-subtle active:scale-[0.99] focus-visible:focus-ring shrink-0"
+			className="group flex items-center gap-2 p-1.5 rounded-2xl cursor-pointer bg-ds-surface-2 hover:bg-ds-fill-2 transition-all border border-ds-surface-3 hover:border-ds-line active:scale-[0.99] focus-visible:focus-ring shrink-0"
 		>
 			{hasImage && (
 				<img
 					src={image_url}
 					alt=""
-					className="object-cover w-10 h-10 rounded-lg shrink-0 bg-hovered"
+					className="object-cover w-10 h-10 rounded-lg shrink-0 bg-ds-fill-2"
 					loading="lazy"
 					onError={() => setImageError(true)}
 				/>
 			)}
 
 			<span className="flex flex-col justify-center flex-1 min-w-0 py-0.5">
-				<span className="text-[11.5px] font-medium leading-[1.4] text-content group-hover:text-primary transition-colors line-clamp-2">
+				<span className="text-[11.5px] font-medium leading-[1.4] text-ds-fg group-hover:text-ds-brand transition-colors line-clamp-2">
 					{title}
 				</span>
-				<span className="flex items-center gap-1 mt-0.5 text-[10px] text-muted">
+				<span className="flex items-center gap-1 mt-0.5 text-[10px] text-ds-fg-muted">
 					<span className="truncate max-w-[100px]">{source.name}</span>
 					<span aria-hidden="true" className="opacity-50">
 						·

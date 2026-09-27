@@ -34,7 +34,7 @@ export function ContextMenu({
 		<div
 			ref={ref}
 			className={cn(
-				'absolute z-popover flex flex-col p-2 min-w-5 rounded-2xl shadow-lg bg-content backdrop-blur-lg border-2 border-content',
+				'absolute z-popover flex flex-col p-2 min-w-5 rounded-2xl shadow-lg bg-ds-surface-2 backdrop-blur-lg border-2 border-ds-surface-3',
 				className
 			)}
 			style={{

@@ -61,7 +61,7 @@ Also `from-`/`to-`/`via-`, `border-content*`, `ring-`, `outline-`, `stroke-`,
 
 **Ink tints** — the foreground colour used as a fill: `bg-subtle` (rest),
 `bg-hovered` (hover), `bg-strong` (pressed). Gradient stops match:
-`from-subtle`, `from-hovered`, `from-strong`, `to-strong`.
+`from-subtle`, `from-hovered`.
 
 **Lines** — `border-faint` → `border-subtle` → `border-muted` →
 `border-strong`; `ring-subtle`/`ring-strong`; `stroke-faint` →

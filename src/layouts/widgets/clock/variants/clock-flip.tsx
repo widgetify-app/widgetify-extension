@@ -53,7 +53,7 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 			}}
 		>
 			<div
-				className="absolute inset-x-0 top-0 flex items-end justify-center overflow-hidden border-b bg-content bg-glass border-muted"
+				className="absolute inset-x-0 top-0 flex items-end justify-center overflow-hidden border-b bg-ds-surface-2 bg-glass border-ds-line"
 				style={{
 					height: 'var(--flip-h)',
 					borderRadius:
@@ -61,7 +61,7 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 				}}
 			>
 				<span
-					className="font-black leading-none text-content"
+					className="font-black leading-none text-ds-fg"
 					style={{
 						transform: 'translateY(50%)',
 						fontSize: 'calc(var(--flip-h) * 0.92)',
@@ -71,7 +71,7 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 				</span>
 			</div>
 			<div
-				className="absolute inset-x-0 bottom-0 flex items-start justify-center overflow-hidden bg-content bg-glass"
+				className="absolute inset-x-0 bottom-0 flex items-start justify-center overflow-hidden bg-ds-surface-2 bg-glass"
 				style={{
 					height: 'var(--flip-h)',
 					borderRadius:
@@ -79,7 +79,7 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 				}}
 			>
 				<span
-					className="font-black leading-none text-content"
+					className="font-black leading-none text-ds-fg"
 					style={{
 						transform: 'translateY(-50%)',
 						fontSize: 'calc(var(--flip-h) * 0.92)',
@@ -102,11 +102,11 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 					}}
 				>
 					<div
-						className="absolute inset-0 flex items-end justify-center border-b bg-content border-muted"
+						className="absolute inset-0 flex items-end justify-center border-b bg-ds-surface-2 border-ds-line"
 						style={{ backfaceVisibility: 'hidden' }}
 					>
 						<span
-							className="font-black leading-none text-content"
+							className="font-black leading-none text-ds-fg"
 							style={{
 								transform: 'translateY(50%)',
 								fontSize: 'calc(var(--flip-h) * 0.92)',
@@ -114,7 +114,7 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 						>
 							{previous}
 						</span>
-						<div className="absolute inset-0 bg-gradient-to-b from-transparent to-strong" />
+						<div className="absolute inset-0 bg-gradient-to-b from-transparent to-ds-fill-3" />
 					</div>
 				</div>
 			)}
@@ -131,11 +131,11 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 					}}
 				>
 					<div
-						className="absolute inset-0 flex items-start justify-center bg-content"
+						className="absolute inset-0 flex items-start justify-center bg-ds-surface-2"
 						style={{ backfaceVisibility: 'hidden' }}
 					>
 						<span
-							className="font-black leading-none text-content"
+							className="font-black leading-none text-ds-fg"
 							style={{
 								transform: 'translateY(-50%)',
 								fontSize: 'calc(var(--flip-h) * 0.92)',
@@ -143,16 +143,16 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 						>
 							{value}
 						</span>
-						<div className="absolute inset-0 bg-gradient-to-b from-strong to-transparent" />
+						<div className="absolute inset-0 bg-gradient-to-b from-ds-fill-3 to-transparent" />
 					</div>
 				</div>
 			)}
 			<div
-				className="absolute inset-x-0 z-30 bg-hovered"
+				className="absolute inset-x-0 z-30 bg-ds-fill-2"
 				style={{ top: 'var(--flip-h)', height: 1, transform: 'translateY(-50%)' }}
 			/>
 			<div
-				className="absolute z-40 border bg-raised border-strong"
+				className="absolute z-40 border bg-ds-surface-3 border-ds-line"
 				style={{
 					top: 'var(--flip-h)',
 					left: 'calc(var(--flip-h) * -0.07)',
@@ -164,7 +164,7 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 				}}
 			/>
 			<div
-				className="absolute z-40 border bg-raised border-strong"
+				className="absolute z-40 border bg-ds-surface-3 border-ds-line"
 				style={{
 					top: 'var(--flip-h)',
 					right: 'calc(var(--flip-h) * -0.07)',
@@ -202,14 +202,14 @@ export function ClockFlip() {
 					style={{ gap: 'calc(var(--flip-h) * 0.3)' }}
 				>
 					<span
-						className="rounded-full bg-content"
+						className="rounded-full bg-ds-surface-2"
 						style={{
 							width: 'calc(var(--flip-h) * 0.13)',
 							height: 'calc(var(--flip-h) * 0.13)',
 						}}
 					/>
 					<span
-						className="rounded-full bg-content"
+						className="rounded-full bg-ds-surface-2"
 						style={{
 							width: 'calc(var(--flip-h) * 0.13)',
 							height: 'calc(var(--flip-h) * 0.13)',

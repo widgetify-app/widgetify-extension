@@ -21,11 +21,11 @@ export const CurrencyEmptyState: React.FC<CurrencyEmptyStateProps> = ({
 			<div className="flex flex-col items-center justify-center flex-1 px-5 py-16 gap-y-1.5">
 				<span
 					aria-hidden="true"
-					className="flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-hovered"
+					className="flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-ds-fill-2"
 				>
 					💲
 				</span>
-				<p className="mt-1 text-center text-content">
+				<p className="mt-1 text-center text-ds-fg">
 					ارزهای مورد نظر خود را اضافه کنید
 				</p>
 				<Button rounded="xl" size="sm" color="primary" onClick={onSettingClick}>
@@ -43,8 +43,8 @@ export const CurrencyEmptyState: React.FC<CurrencyEmptyStateProps> = ({
 				className="flex-1 object-contain w-auto min-h-0 max-w-40 select-none"
 			/>
 			<div className="flex flex-col shrink-0 gap-0.5">
-				<p className="text-xs font-bold text-content">هنوز ارزی اضافه نکردی</p>
-				<p className="text-[11px] text-muted">
+				<p className="text-xs font-bold text-ds-fg">هنوز ارزی اضافه نکردی</p>
+				<p className="text-[11px] text-ds-fg-muted">
 					برای مشاهده قیمت لحظه‌ای، ارزهای دلخواهت رو انتخاب کن
 				</p>
 			</div>

@@ -192,14 +192,14 @@ export function Dropdown({
 	const dropdownContent = children || (
 		<>
 			{options.length === 0 && placeholder && (
-				<div className="px-3 py-2 text-sm italic text-muted">{placeholder}</div>
+				<div className="px-3 py-2 text-sm italic text-ds-fg-muted">{placeholder}</div>
 			)}
 			{options.map((option) => (
 				<button
 					key={option.id}
 					onClick={() => handleOptionClick(option)}
 					disabled={option.disabled}
-					className="w-full px-3 py-2 text-sm text-left transition-colors hover:bg-brand-subtle hover:text-primary disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-muted focus:outline-none focus:bg-brand-subtle focus:text-primary"
+					className="w-full px-3 py-2 text-sm text-left transition-colors hover:bg-ds-brand-fill hover:text-ds-brand disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-ds-fg-muted focus:outline-none focus:bg-ds-brand-fill focus:text-ds-brand"
 				>
 					{option.label}
 				</button>
@@ -226,7 +226,7 @@ export function Dropdown({
 					>
 						<Motion.div
 							ref={dropdownContentRef}
-							className={`fixed shadow-xl overflow-hidden rounded-2xl bg-content backdrop-blur-xl ${isReady ? 'pointer-events-auto' : 'pointer-events-none'} ${dropdownClassName}`}
+							className={`fixed shadow-xl overflow-hidden rounded-2xl bg-ds-surface-2 backdrop-blur-xl ${isReady ? 'pointer-events-auto' : 'pointer-events-none'} ${dropdownClassName}`}
 							initial={{ opacity: 0, scale: 0.95 }}
 							animate={{
 								opacity: isReady ? 1 : 0,

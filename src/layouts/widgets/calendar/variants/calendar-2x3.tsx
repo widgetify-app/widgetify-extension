@@ -21,7 +21,7 @@ import { toIsoDateKey } from '../utils/jalali-date'
 import { buildMonthGrid } from '../utils/month-grid'
 
 const navButtonClass =
-	'h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-ui text-muted opacity-70 hover:bg-raised hover:opacity-100 focus-visible:focus-ring'
+	'h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-ui text-ds-fg-muted opacity-70 hover:bg-ds-surface-3 hover:opacity-100 focus-visible:focus-ring'
 
 const MonthHeader: React.FC = () => {
 	const { currentDate, today, setCurrentDate, goToToday } = useDate()
@@ -35,7 +35,7 @@ const MonthHeader: React.FC = () => {
 
 	return (
 		<header className="flex items-center justify-between gap-1">
-			<h3 className="text-xs font-medium truncate text-content">
+			<h3 className="text-xs font-medium truncate text-ds-fg">
 				<time dateTime={toIsoDateKey(currentDate)}>
 					{currentDate.format('dddd، jD jMMMM jYYYY')}
 				</time>
@@ -137,7 +137,7 @@ const MonthGrid: React.FC = () => {
 									key={weekday.short}
 									scope="col"
 									abbr={weekday.full}
-									className="pb-1 text-[4.6cqh] font-normal text-content opacity-80"
+									className="pb-1 text-[4.6cqh] font-normal text-ds-fg opacity-80"
 								>
 									{weekday.short}
 								</th>
@@ -165,7 +165,7 @@ const MonthGrid: React.FC = () => {
 										<td
 											key={`cell-${weekIndex}-${dayIndex}`}
 											aria-hidden="true"
-											className="text-[4cqh] text-center text-content opacity-40"
+											className="text-[4cqh] text-center text-ds-fg opacity-40"
 										>
 											{cell.day}
 										</td>

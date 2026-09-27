@@ -154,15 +154,15 @@ export const Tooltip = ({
 			case 'top':
 			case 'top-left':
 			case 'top-right':
-				return `${base} bottom-[-5px] left-1/2 -translate-x-1/2 border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-content`
+				return `${base} bottom-[-5px] left-1/2 -translate-x-1/2 border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-ds-surface-3`
 			case 'bottom':
 			case 'bottom-left':
 			case 'bottom-right':
-				return `${base} top-[-5px] left-1/2 -translate-x-1/2 border-l-[6px] border-r-[6px] border-b-[6px] border-l-transparent border-r-transparent border-content`
+				return `${base} top-[-5px] left-1/2 -translate-x-1/2 border-l-[6px] border-r-[6px] border-b-[6px] border-l-transparent border-r-transparent border-ds-surface-3`
 			case 'left':
-				return `${base} right-[-5px] top-1/2 -translate-y-1/2 border-t-[6px] border-b-[6px] border-l-[6px] border-t-transparent border-b-transparent border-content`
+				return `${base} right-[-5px] top-1/2 -translate-y-1/2 border-t-[6px] border-b-[6px] border-l-[6px] border-t-transparent border-b-transparent border-ds-surface-3`
 			case 'right':
-				return `${base} left-[-5px] top-1/2 -translate-y-1/2 border-t-[6px] border-b-[6px] border-r-[6px] border-t-transparent border-b-transparent border-content`
+				return `${base} left-[-5px] top-1/2 -translate-y-1/2 border-t-[6px] border-b-[6px] border-r-[6px] border-t-transparent border-b-transparent border-ds-surface-3`
 		}
 	}
 
@@ -184,7 +184,7 @@ export const Tooltip = ({
 					<Presence>
 						<motion.div
 							ref={tooltipRef}
-							className={`tooltip fixed pointer-events-auto rounded-lg py-1.5 px-3 text-xs max-w-xs bg-content shadow-lg z-popover  ${contentClassName}`}
+							className={`tooltip fixed pointer-events-auto rounded-lg py-1.5 px-3 text-xs max-w-xs bg-ds-surface-2 shadow-lg z-popover  ${contentClassName}`}
 							style={{
 								left: placement?.x ?? 0,
 								top: placement?.y ?? 0,

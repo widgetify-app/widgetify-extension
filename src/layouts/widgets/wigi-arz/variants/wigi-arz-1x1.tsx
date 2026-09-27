@@ -38,7 +38,7 @@ export function CurrencyCompactSquare({
 						size: { w: 1, h: 1 },
 					})
 				}}
-				className="group flex flex-col items-center justify-center w-full h-full p-2 text-center cursor-pointer select-none transition-ui hover:bg-subtle focus-visible:focus-ring"
+				className="group flex flex-col items-center justify-center w-full h-full p-2 text-center cursor-pointer select-none transition-ui hover:bg-ds-fill focus-visible:focus-ring"
 			>
 				<span className="relative flex items-center justify-center w-12 h-12 transition-transform duration-200 group-hover:scale-105">
 					<img
@@ -48,10 +48,10 @@ export function CurrencyCompactSquare({
 						draggable={false}
 					/>
 				</span>
-				<span className="mt-1.5 text-[11px] font-bold text-content leading-tight transition-colors duration-200 group-hover:text-primary">
+				<span className="mt-1.5 text-[11px] font-bold text-ds-fg leading-tight transition-colors duration-200 group-hover:text-ds-brand">
 					انتخاب ارز
 				</span>
-				<span className="mt-0.5 text-[9px] text-muted leading-tight font-medium">
+				<span className="mt-0.5 text-[9px] text-ds-fg-muted leading-tight font-medium">
 					کلیک کن
 				</span>
 			</button>
@@ -61,14 +61,14 @@ export function CurrencyCompactSquare({
 	if (hasFailed) {
 		return (
 			<div className="flex flex-col items-center justify-center w-full h-full gap-[4.2cqh] p-[10.4cqh] text-center select-none">
-				<Icon name="alert" size={16} className="text-muted" aria-hidden="true" />
-				<p className="text-[9.4cqh] leading-tight text-muted">
+				<Icon name="alert" size={16} className="text-ds-fg-muted" aria-hidden="true" />
+				<p className="text-[9.4cqh] leading-tight text-ds-fg-muted">
 					قیمت {activeCode} دریافت نشد
 				</p>
 				<button
 					type="button"
 					onClick={() => refetch()}
-					className="px-[8.3cqh] py-[4.2cqh] rounded-lg bg-hovered text-[9.4cqh] font-bold text-content cursor-pointer transition-ui hover:bg-strong focus-visible:focus-ring"
+					className="px-[8.3cqh] py-[4.2cqh] rounded-lg bg-ds-fill-2 text-[9.4cqh] font-bold text-ds-fg cursor-pointer transition-ui hover:bg-ds-fill-3 focus-visible:focus-ring"
 				>
 					تلاش دوباره
 				</button>
@@ -100,7 +100,7 @@ export function CurrencyCompactSquare({
 				type="button"
 				onClick={toggleModal}
 				aria-label={`${currency.name?.fa || activeCode}، ${price.formatted}`}
-				className="flex flex-col justify-between w-full h-full p-[10.4cqh] text-center cursor-pointer select-none transition-ui hover:bg-subtle focus-visible:focus-ring"
+				className="flex flex-col justify-between w-full h-full p-[10.4cqh] text-center cursor-pointer select-none transition-ui hover:bg-ds-fill focus-visible:focus-ring"
 			>
 				<span className="flex items-center justify-between w-full gap-1">
 					<span className="flex items-center gap-1.5 min-w-0">
@@ -110,10 +110,10 @@ export function CurrencyCompactSquare({
 							className="object-cover rounded-md w-4.5 h-4.5 shrink-0"
 						/>
 						<span className="flex flex-col items-start min-w-0 text-right">
-							<span className="text-[11.5cqh] font-bold text-content truncate leading-tight">
+							<span className="text-[11.5cqh] font-bold text-ds-fg truncate leading-tight">
 								{currency.name?.fa || activeCode}
 							</span>
-							<span className="text-[9.4cqh] text-muted font-mono uppercase leading-tight">
+							<span className="text-[9.4cqh] text-ds-fg-muted font-mono uppercase leading-tight">
 								{activeCode}
 							</span>
 						</span>
@@ -122,7 +122,7 @@ export function CurrencyCompactSquare({
 
 				<span
 					dir="ltr"
-					className="block my-auto text-[18.8cqh] font-black leading-tight tracking-tight text-content"
+					className="block my-auto text-[18.8cqh] font-black leading-tight tracking-tight text-ds-fg"
 				>
 					<data value={price.value}>
 						{price.isDollar && '💲'}

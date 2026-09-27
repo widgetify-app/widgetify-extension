@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @plugin "daisyui";
 @import "./styles/theme.css";
+@import "./styles/tokens.css";
 @import "./styles/theme-colors.css";
 @import "./styles/elevation.css";
 @import "./styles/utilities.css";

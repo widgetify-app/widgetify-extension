@@ -3,13 +3,13 @@ import { cva, type VariantProps } from 'class-variance-authority'
 export const textInputVariants = cva(
 	[
 		'w-full inline-flex items-center',
-		'bg-content text-content',
-		'border border-content rounded-xl',
+		'bg-ds-surface-2 text-ds-fg',
+		'border border-ds-surface-3 rounded-xl',
 		'font-light',
 		'transition-ui',
-		'placeholder:text-subtle',
+		'placeholder:text-ds-fg-faint',
 		'outline-none focus:outline-none',
-		'focus:border-primary focus:ring-1 focus:ring-brand-muted',
+		'focus:border-ds-brand focus:ring-1 focus:ring-ds-brand-fill-2',
 		'disabled:cursor-not-allowed disabled:opacity-50',
 	],
 	{
@@ -22,7 +22,7 @@ export const textInputVariants = cva(
 				xl: 'h-14 px-4 text-[1.375rem]',
 			},
 			invalid: {
-				true: 'border-error focus:border-error focus:ring-danger-muted',
+				true: 'border-ds-danger focus:border-ds-danger focus:ring-ds-danger-fill-2',
 				false: '',
 			},
 		},

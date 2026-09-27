@@ -12,7 +12,7 @@ export function Clock2x1({ time, timezoneLabel, hours, minutes }: Clock2x1Props)
 				<div className="flex flex-col items-start justify-center">
 					<div className="flex items-baseline gap-1.5 leading-none">
 						<span
-							className="text-3xl sm:text-4xl font-black text-content tracking-tight"
+							className="text-3xl sm:text-4xl font-black text-ds-fg tracking-tight"
 							dir="ltr"
 						>
 							{hours} : {minutes}
@@ -22,10 +22,10 @@ export function Clock2x1({ time, timezoneLabel, hours, minutes }: Clock2x1Props)
 			</div>
 
 			<div className="flex flex-col items-end justify-center text-left pl-1">
-				<div className="px-2 py-0.5 rounded-lg bg-subtle text-[11px] text-content font-bold">
+				<div className="px-2 py-0.5 rounded-lg bg-ds-fill text-[11px] text-ds-fg font-bold">
 					{timezoneLabel}
 				</div>
-				<span className="text-[10px] text-muted mt-1">
+				<span className="text-[10px] text-ds-fg-muted mt-1">
 					{time.toLocaleDateString('fa-IR', {
 						weekday: 'short',
 						month: 'short',

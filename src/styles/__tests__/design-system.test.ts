@@ -148,6 +148,43 @@ describe('colour lives in one place', () => {
 		}
 		expect(bad).toEqual([])
 	})
+
+	it('builds every ds- token from a theme variable', () => {
+		const css = readFileSync(join(STYLES, 'tokens.css'), 'utf8')
+		const drawnOverImage = /^--color-ds-(image-|scrim)/
+		const bad = [...css.matchAll(/^\s*(--[a-z0-9-]+)\s*:\s*([^;]+);/gm)]
+			.filter(
+				([, name, value]) =>
+					!name.startsWith('--color-ds-') ||
+					!(
+						value.startsWith('rgba(var(--color-') ||
+						value.startsWith('var(--color-') ||
+						drawnOverImage.test(name)
+					)
+			)
+			.map(([, name, value]) => `${name}: ${value}`)
+		expect(bad).toEqual([])
+	})
+})
+
+describe('migrated areas', () => {
+	const MIGRATED = [
+		'src/layouts/widgets/clock',
+		'src/layouts/widgets/calendar',
+		'src/layouts/widgets/combo-widget',
+		'src/layouts/widgets/news',
+		'src/layouts/widgets/wigi-arz',
+		'src/components/ui',
+	]
+
+	it('use only the ds- vocabulary', () => {
+		const legacy =
+			/(?<![\w-])(bg|text|border|border-[tblrxy]|ring|ring-offset|shadow|placeholder|from|to|via|stroke|fill|divide|outline)-(widget|content|raised|subtle|hovered|strong|muted|faint|ghost|bold|primary|secondary|brand|danger|error|success|warning|info|vip|accent|neutral|over-image|medal|avatar)(?!\w)/
+		const bad = offenders(legacy).filter((o) =>
+			MIGRATED.some((dir) => o.startsWith(`${dir}/`))
+		)
+		expect(bad).toEqual([])
+	})
 })
 
 describe('themes', () => {

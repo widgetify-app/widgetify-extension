@@ -87,9 +87,6 @@
 	   To restyle every danger panel in the app, change one number below.
 	   -------------------------------------------- */
 	--color-brand: var(--color-primary);
-	--color-brand-content: var(--color-primary-content);
-	--color-primary-hover: rgba(var(--color-primary-rgb), 0.9);
-	--color-secondary-hover: rgba(var(--color-secondary-rgb), 0.9);
 	--color-secondary-bold: rgba(var(--color-secondary-rgb), 0.8);
 	--color-secondary-strong: rgba(var(--color-secondary-rgb), 0.5);
 	--color-secondary-muted: rgba(var(--color-secondary-rgb), 0.2);
@@ -101,7 +98,6 @@
 	--color-brand-bold: rgba(var(--color-primary-rgb), 0.8);
 
 	--color-danger: var(--color-error);
-	--color-danger-hover: rgba(var(--color-error-rgb), 0.9);
 	--color-danger-subtle: rgba(var(--color-error-rgb), 0.1);
 	--color-danger-muted: rgba(var(--color-error-rgb), 0.2);
 	--color-danger-strong: rgba(var(--color-error-rgb), 0.5);
@@ -109,7 +105,6 @@
 	--color-danger-content-subtle: rgba(var(--color-error-content-rgb), 0.1);
 	--color-danger-content-muted: rgba(var(--color-error-content-rgb), 0.2);
 
-	--color-success-hover: rgba(var(--color-success-rgb), 0.9);
 	--color-success-subtle: rgba(var(--color-success-rgb), 0.1);
 	--color-success-muted: rgba(var(--color-success-rgb), 0.2);
 	--color-success-strong: rgba(var(--color-success-rgb), 0.5);

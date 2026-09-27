@@ -260,22 +260,6 @@
 			var(--tw-gradient-to) var(--tw-gradient-to-position));
 }
 
-@utility from-strong {
-	--tw-gradient-from: rgba(var(--color-base-content-rgb), 0.2);
-	--tw-gradient-stops: var(--tw-gradient-via-stops,
-			var(--tw-gradient-position),
-			var(--tw-gradient-from) var(--tw-gradient-from-position),
-			var(--tw-gradient-to) var(--tw-gradient-to-position));
-}
-
-@utility to-strong {
-	--tw-gradient-to: rgba(var(--color-base-content-rgb), 0.2);
-	--tw-gradient-stops: var(--tw-gradient-via-stops,
-			var(--tw-gradient-position),
-			var(--tw-gradient-from) var(--tw-gradient-from-position),
-			var(--tw-gradient-to) var(--tw-gradient-to-position));
-}
-
 /* --------------------------------------------
    OVER-IMAGE - drawn on a wallpaper, so it follows no theme.
    -------------------------------------------- */

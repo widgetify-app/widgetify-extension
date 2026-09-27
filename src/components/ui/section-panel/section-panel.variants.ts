@@ -12,7 +12,7 @@ export const sectionPanelVariants = cva(['overflow-hidden', 'duration-300'], {
 	defaultVariants: { size: 'md' },
 })
 
-export const sectionPanelHeaderVariants = cva(['border-b', 'border-content'], {
+export const sectionPanelHeaderVariants = cva(['border-b', 'border-ds-surface-3'], {
 	variants: {
 		size: {
 			xs: ['p-1'],
@@ -24,7 +24,7 @@ export const sectionPanelHeaderVariants = cva(['border-b', 'border-content'], {
 	defaultVariants: { size: 'md' },
 })
 
-export const sectionPanelTitleVariants = cva(['font-medium', 'text-content'], {
+export const sectionPanelTitleVariants = cva(['font-medium', 'text-ds-fg'], {
 	variants: {
 		size: {
 			xs: ['text-sm'],

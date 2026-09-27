@@ -68,20 +68,20 @@ export function Calendar2x1() {
 									isSelected && 'font-bold shadow-sm',
 									isSelected &&
 										(isHoliday
-											? 'bg-error text-error-content'
-											: 'bg-primary text-primary-content'),
+											? 'bg-ds-danger text-ds-on-danger'
+											: 'bg-ds-brand text-ds-on-brand'),
 									!isSelected && isToday && 'font-bold ring-1',
 									!isSelected &&
 										isToday &&
 										(isHoliday
-											? 'bg-danger-subtle text-error ring-danger-muted'
-											: 'bg-brand-subtle text-primary ring-brand-muted'),
+											? 'bg-ds-danger-fill text-ds-danger ring-ds-danger-fill-2'
+											: 'bg-ds-brand-fill text-ds-brand ring-ds-brand-fill-2'),
 									!isSelected &&
 										!isToday &&
-										'bg-content-subtle hover:bg-content-strong',
+										'bg-ds-fill hover:bg-ds-fill-2',
 									!isSelected &&
 										!isToday &&
-										(isHoliday ? 'text-error' : 'text-content')
+										(isHoliday ? 'text-ds-danger' : 'text-ds-fg')
 								)}
 							>
 								<span
@@ -90,8 +90,8 @@ export function Calendar2x1() {
 										isSelected
 											? 'opacity-90'
 											: isHoliday
-												? 'text-error'
-												: 'text-muted'
+												? 'text-ds-danger'
+												: 'text-ds-fg-muted'
 									)}
 								>
 									{PERSIAN_WEEKDAYS[idx].short}
@@ -118,8 +118,8 @@ export function Calendar2x1() {
 												isSelected
 													? 'bg-current'
 													: isHoliday
-														? 'bg-error'
-														: 'bg-primary'
+														? 'bg-ds-danger'
+														: 'bg-ds-brand'
 											)}
 										/>
 									)}

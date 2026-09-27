@@ -23,9 +23,9 @@ export const dropdownItemVariants = cva(
 		variants: {
 			variant: {
 				default:
-					'text-content hover:bg-brand-subtle hover:text-primary! active:bg-brand-muted!',
-				danger: 'text-error hover:bg-danger-subtle active:bg-danger-muted',
-				primary: 'text-primary bg-brand-subtle hover:bg-brand-muted',
+					'text-ds-fg hover:bg-ds-brand-fill hover:text-ds-brand! active:bg-ds-brand-fill-2!',
+				danger: 'text-ds-danger hover:bg-ds-danger-fill active:bg-ds-danger-fill-2',
+				primary: 'text-ds-brand bg-ds-brand-fill hover:bg-ds-brand-fill-2',
 			},
 		},
 		defaultVariants: {
@@ -37,9 +37,9 @@ export const dropdownItemVariants = cva(
 export const dropdownItemIconVariants = cva(['transition-colors', 'shrink-0'], {
 	variants: {
 		variant: {
-			default: 'text-muted group-hover:text-primary!',
-			danger: 'text-error',
-			primary: 'text-primary',
+			default: 'text-ds-fg-muted group-hover:text-ds-brand!',
+			danger: 'text-ds-danger',
+			primary: 'text-ds-brand',
 		},
 	},
 	defaultVariants: {

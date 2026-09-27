@@ -57,7 +57,7 @@ export const CurrencyModalComponent = ({
 	}
 
 	const isPositive = priceChange > 0
-	const priceChangeColor = isPositive ? 'text-error' : 'text-success'
+	const priceChangeColor = isPositive ? 'text-ds-danger' : 'text-ds-success'
 
 	const price = getPrice(code, currency)
 
@@ -71,17 +71,17 @@ export const CurrencyModalComponent = ({
 				/>
 
 				<header className="mt-2 space-y-1 text-center">
-					<h2 className="text-xl font-bold text-strong">
+					<h2 className="text-xl font-bold text-ds-fg-strong">
 						{currency?.name?.en}
 					</h2>
-					<div className="flex items-center justify-center gap-1 text-sm font-medium text-muted">
+					<div className="flex items-center justify-center gap-1 text-sm font-medium text-ds-fg-muted">
 						<span>{code.toUpperCase()}</span>
 						<button
 							type="button"
 							onClick={onClickConverter}
 							aria-label="تبدیل ارز"
 							aria-expanded={showConverter}
-							className="cursor-pointer hover:text-primary focus-visible:focus-ring"
+							className="cursor-pointer hover:text-ds-brand focus-visible:focus-ring"
 						>
 							<Icon name="arrowRightLeft" aria-hidden="true" />
 						</button>
@@ -89,7 +89,7 @@ export const CurrencyModalComponent = ({
 				</header>
 
 				<div className="relative flex flex-row items-center justify-center gap-2 transition-transform duration-150 ease-out hover:scale-102">
-					<p className="text-xl font-bold text-strong opacity-95">
+					<p className="text-xl font-bold text-ds-fg-strong opacity-95">
 						<data value={price.value}>
 							{price.isDollar && '💲'}
 							{price.formatted}
@@ -123,8 +123,8 @@ export const CurrencyModalComponent = ({
 							: 'opacity-0 max-h-0 overflow-hidden'
 					)}
 				>
-					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content hover:bg-content hover:border-content">
-						<span className="text-sm font-medium text-strong min-w-fit">
+					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-ds-surface-2 hover:bg-ds-surface-2 hover:border-ds-surface-3">
+						<span className="text-sm font-medium text-ds-fg-strong min-w-fit">
 							{code.toUpperCase()}
 						</span>
 						<TextInput
@@ -133,13 +133,13 @@ export const CurrencyModalComponent = ({
 							onChange={(e) =>
 								handleCurrencyAmountChange(parseFormattedNumber(e))
 							}
-							className="!rounded-2xl !px-4 border-content"
+							className="!rounded-2xl !px-4 border-ds-surface-3"
 							placeholder="مبلغ"
 						/>
 					</div>
 
-					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-content hover:bg-content hover:border-content">
-						<span className="text-sm font-medium text-strong min-w-fit">
+					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-ds-surface-2 hover:bg-ds-surface-2 hover:border-ds-surface-3">
+						<span className="text-sm font-medium text-ds-fg-strong min-w-fit">
 							تومان
 						</span>
 						<TextInput
@@ -148,7 +148,7 @@ export const CurrencyModalComponent = ({
 							onChange={(value) =>
 								handleTomanAmountChange(parseFormattedNumber(value))
 							}
-							className="!rounded-2xl !px-4 border-content"
+							className="!rounded-2xl !px-4 border-ds-surface-3"
 							placeholder="مبلغ"
 						/>
 					</div>

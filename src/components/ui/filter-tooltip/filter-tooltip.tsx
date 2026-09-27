@@ -43,7 +43,7 @@ export function FilterTooltip({
 				<Button
 					size="sm"
 					ref={filterButtonRef}
-					className={`px-2 border h-7! border-none! rounded-xl text-faint shrink-0 active:scale-95 ${buttonClassName || ''}`}
+					className={`px-2 border h-7! border-none! rounded-xl text-ds-fg-faint shrink-0 active:scale-95 ${buttonClassName || ''}`}
 				>
 					{icon}
 				</Button>
@@ -55,15 +55,15 @@ export function FilterTooltip({
 				position="bottom"
 				contentClassName={tooltipClassName || ''}
 				content={
-					<div className="flex flex-col gap-1 p-2 overflow-y-auto border border-content rounded-2xl min-w-25 bg-content max-h-52">
+					<div className="flex flex-col gap-1 p-2 overflow-y-auto border border-ds-surface-3 rounded-2xl min-w-25 bg-ds-surface-2 max-h-52">
 						{options.map((option) => (
 							<button
 								key={option.value}
 								onClick={() => handleFilterSelect(option.value)}
 								className={`px-3 py-2 text-xs cursor-pointer text-right rounded-lg transition-colors ${
 									value === option.value
-										? 'bg-brand-subtle text-primary border border-brand-muted'
-										: 'hover:bg-hovered text-content'
+										? 'bg-ds-brand-fill text-ds-brand border border-ds-brand-fill-2'
+										: 'hover:bg-ds-fill-2 text-ds-fg'
 								}`}
 							>
 								{option.label}
