@@ -23,31 +23,10 @@ body {
 	background-attachment: fixed;
 }
 
-.custom-select-box hr {
-	color: #333333;
-}
-
 @layer base {
 	body {
 		direction: rtl;
 	}
-}
-
-@utility transition-ui {
-	transition-property:
-		color, background-color, border-color, outline-color, box-shadow, opacity,
-		transform;
-	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-	transition-duration: 150ms;
-}
-
-@utility focus-ring {
-	outline: 2px solid var(--color-primary);
-	outline-offset: 2px;
-}
-
-@utility rounded-card {
-	border-radius: 0.75rem;
 }
 
 input[type="number"]::-webkit-inner-spin-button,
@@ -175,14 +154,6 @@ html.optimal-mode *::after {
 	transition-delay: 0s !important;
 }
 
-html.modal-isActive {
-	scrollbar-width: none !important;
-}
-
-html.modal-isActive::-webkit-scrollbar {
-	display: none !important;
-}
-
 .disabled-blur-mode {
 	filter: blur(0px);
 	transition: filter 300ms ease-in-out;
@@ -204,29 +175,6 @@ img {
 }
 
 /* updater */
-
-/* Vertical Writing Mode */
-.writing-mode-vertical {
-	writing-mode: vertical-rl;
-	text-orientation: mixed;
-}
-
-/* Slide in animation from right */
-@keyframes slide-in-right {
-	0% {
-		transform: translateX(100%);
-		opacity: 0;
-	}
-
-	100% {
-		transform: translateX(0);
-		opacity: 1;
-	}
-}
-
-.animate-slide-in-right {
-	animation: slide-in-right 0.3s ease-out;
-}
 
 @keyframes widget-wiggle {
 	0% {

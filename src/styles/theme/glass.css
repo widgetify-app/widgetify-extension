@@ -66,19 +66,11 @@
 
 [data-theme="glass"] .menu,
 [data-theme="glass"] .navbar,
-[data-theme="glass"] .modal-box,
-[data-theme="glass"] .drawer-side,
-[data-theme="glass"] .collapse {
+[data-theme="glass"] .modal-box {
 	-webkit-backdrop-filter: blur(16px) saturate(180%);
 	backdrop-filter: blur(16px) saturate(180%);
 }
 
-[data-theme="glass"] .search-box {
-	-webkit-backdrop-filter: blur(10px) saturate(180%);
-	backdrop-filter: blur(10px) saturate(180%);
-}
-
-[data-theme="glass"] .widget-wrapper,
 [data-theme="glass"] .bg-glass,
 [data-theme="glass"] .tooltip {
 	background-color: #171717b3;

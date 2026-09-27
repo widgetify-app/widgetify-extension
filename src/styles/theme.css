@@ -54,10 +54,7 @@
      MOTION
      -------------------------------------------- */
 	--duration-fast: 150ms;
-	--duration-base: 200ms;
-	--duration-slow: 300ms;
 	--ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
-	--ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
 
 	/* --------------------------------------------
      LAYERS - the stacking order, named.

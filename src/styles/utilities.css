@@ -17,14 +17,6 @@
 	box-shadow: var(--elevation-xl);
 }
 
-@utility rounded-card {
-	border-radius: var(--radius-card);
-}
-
-@utility rounded-widget {
-	border-radius: var(--radius-widget);
-}
-
 @utility transition-ui {
 	transition-property:
 		color, background-color, border-color, outline-color, box-shadow, opacity,

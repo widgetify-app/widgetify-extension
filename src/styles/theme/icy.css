@@ -68,9 +68,7 @@
 
 [data-theme="icy"] .menu,
 [data-theme="icy"] .navbar,
-[data-theme="icy"] .modal-box,
-[data-theme="icy"] .drawer-side,
-[data-theme="icy"] .collapse {
+[data-theme="icy"] .modal-box {
 	-webkit-backdrop-filter: blur(20px) saturate(180%) brightness(110%);
 	backdrop-filter: blur(20px) saturate(180%) brightness(110%);
 	border: 1px solid var(--glass-border);
@@ -79,16 +77,6 @@
 		inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-[data-theme="icy"] .search-box {
-	-webkit-backdrop-filter: blur(12px) saturate(160%) brightness(105%);
-	backdrop-filter: blur(12px) saturate(160%) brightness(105%);
-	border: 1px solid rgba(255, 255, 255, 0.12);
-	box-shadow:
-		0 4px 16px rgba(0, 0, 0, 0.08),
-		inset 0 1px 0 rgba(255, 255, 255, 0.08);
-}
-
-[data-theme="icy"] .widget-wrapper,
 [data-theme="icy"] .bg-glass,
 [data-theme="icy"] .tooltip {
 	background-color: rgba(23, 23, 23, 0.12);
