@@ -73,13 +73,13 @@ export function NoteNavigation() {
 							type="button"
 							onClick={onBackToList}
 							aria-label="بازگشت به لیست یادداشت‌ها"
-							className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 hover:bg-hovered hover:opacity-100 focus-visible:focus-ring"
+							className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-ds-fg-muted opacity-70 hover:bg-ds-fill-2 hover:opacity-100 focus-visible:focus-ring"
 						>
 							<Icon
 								name="chevronLeft"
 								size={18}
 								aria-hidden="true"
-								className="text-content"
+								className="text-ds-fg"
 							/>
 						</button>
 					</Tooltip>
@@ -95,7 +95,7 @@ export function NoteNavigation() {
 							disabled={isCreatingNote}
 							loading={isCreatingNote}
 							loadingText={<IconLoading title="درحال ساخت..." />}
-							className="w-7 h-7 p-0! border-none! hover:text-primary rounded-xl shrink-0 active:scale-95 transition-colors"
+							className="w-7 h-7 p-0! border-none! hover:text-ds-brand rounded-xl shrink-0 active:scale-95 transition-colors"
 						>
 							<Icon name="plus" size={16} aria-hidden="true" />
 						</Button>

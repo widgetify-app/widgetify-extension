@@ -67,21 +67,21 @@ export function MarketItemPurchaseModal({
 
 				<div className="space-y-2">
 					<div className="flex items-center justify-between">
-						<h3 className="text-base font-semibold text-content">
+						<h3 className="text-base font-semibold text-ds-fg">
 							{item.name}
 						</h3>
 						{item.price > 0 && (
 							<UserCoin coins={item.price} title="قیمت خرید دائمی" />
 						)}
 					</div>
-					<p className="text-xs text-muted">
+					<p className="text-xs text-ds-fg-muted">
 						{item.description ||
 							'این آیتم را با ویج‌کوین باز کنید و برای همیشه از آن استفاده کنید'}
 					</p>
 				</div>
 
 				{!canAfford && (
-					<div className="flex items-center justify-between px-3 py-2 text-xs rounded-xl bg-danger-subtle text-error">
+					<div className="flex items-center justify-between px-3 py-2 text-xs rounded-xl bg-ds-danger-fill text-ds-danger">
 						<span>
 							موجودی ویج‌کوین ناکافیه ({item.price - userCoins} ویج‌کوین کسری
 							داری)

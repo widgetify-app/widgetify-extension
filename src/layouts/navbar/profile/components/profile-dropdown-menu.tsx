@@ -34,7 +34,7 @@ export function ProfileDropdownMenu({
 	}
 
 	return (
-		<div className="bg-content py-2 bg-glass min-w-52 px-1" dir="rtl">
+		<div className="bg-ds-surface-2 py-2 bg-glass min-w-52 px-1" dir="rtl">
 			{isAuthenticated ? (
 				<div
 					onClick={handleProfileClick}
@@ -45,14 +45,14 @@ export function ProfileDropdownMenu({
 					</div>
 					<div className="flex flex-col min-w-0 flex-1 justify-center">
 						<div className="flex items-center gap-1.5 leading-tight">
-							<span className="text-xs font-bold text-content truncate">
+							<span className="text-xs font-bold text-ds-fg truncate">
 								{user?.name || user?.username || 'کاربر ویجتیفای'}
 							</span>
 							{isVip && (
 								<VipBadge size="xs" variant="indigo-subtle" iconOnly />
 							)}
 						</div>
-						<span className="text-[11px] text-muted truncate leading-normal">
+						<span className="text-[11px] text-ds-fg-muted truncate leading-normal">
 							مشاهده پروفایل
 						</span>
 					</div>
@@ -62,14 +62,14 @@ export function ProfileDropdownMenu({
 					onClick={handleProfileClick}
 					className="flex items-center gap-3 px-3.5 py-2.5 cursor-pointer border-b border-subtle transition-colors hover:bg-content-muted"
 				>
-					<div className="w-8 h-8 rounded-xl bg-brand-subtle text-primary flex items-center justify-center shrink-0">
+					<div className="w-8 h-8 rounded-xl bg-ds-brand-fill text-ds-brand flex items-center justify-center shrink-0">
 						<Icon name="user" size={15} />
 					</div>
 					<div className="flex flex-col flex-1">
-						<span className="text-xs font-bold text-content">
+						<span className="text-xs font-bold text-ds-fg">
 							ورود یا ثبت‌نام
 						</span>
-						<span className="text-[10px] text-muted">
+						<span className="text-[10px] text-ds-fg-muted">
 							همگام‌سازی و دسترسی به امکانات
 						</span>
 					</div>

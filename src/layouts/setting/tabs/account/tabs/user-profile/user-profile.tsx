@@ -58,7 +58,7 @@ export const UserProfile = () => {
 	if (isLoading) {
 		return (
 			<div className="flex items-center justify-center h-full">
-				<div className="w-10 h-10 border-4 rounded-full border-brand-muted border-t-primary animate-spin"></div>
+				<div className="w-10 h-10 border-4 rounded-full border-ds-brand-fill-2 border-t-ds-brand animate-spin"></div>
 			</div>
 		)
 	}
@@ -66,7 +66,7 @@ export const UserProfile = () => {
 	if (isError) {
 		return (
 			<div className="flex flex-col items-center justify-center h-full">
-				<p className={'mb-4 text-center text-content'}>{getMessageError()}</p>
+				<p className={'mb-4 text-center text-ds-fg'}>{getMessageError()}</p>
 				<Button
 					onClick={() => onClickLogout()}
 					color={'danger'}
@@ -100,7 +100,7 @@ export const UserProfile = () => {
 
 			<SectionPanel title="حساب کاربری" delay={0.3} size="xs">
 				<div className="p-2 space-y-3 transition-colors rounded-lg">
-					<p className={'text-sm font-light text-content'}>
+					<p className={'text-sm font-light text-ds-fg'}>
 						برای خروج از حساب کاربری خود، روی دکمه زیر کلیک کنید.
 					</p>
 					<Button

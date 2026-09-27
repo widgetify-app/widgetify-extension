@@ -90,7 +90,7 @@ export function AddEmailModal(prop: AddPhoneProp) {
 		>
 			<section>
 				<div>
-					<p className="text-xs text-muted mt-0.5">
+					<p className="text-xs text-ds-fg-muted mt-0.5">
 						با اضافه کردن ایمیل، می‌تونی وقتی پسوردت رو فراموش کردی یا می‌خوای
 						امنیت حسابت رو بالا ببری، ازش استفاده کنی.
 					</p>
@@ -103,7 +103,7 @@ export function AddEmailModal(prop: AddPhoneProp) {
 					<div>
 						<label
 							htmlFor="email"
-							className="block mb-1 md:mb-1.5 text-xs md:text-sm font-semibold text-content"
+							className="block mb-1 md:mb-1.5 text-xs md:text-sm font-semibold text-ds-fg"
 						>
 							ایمیل
 						</label>
@@ -124,7 +124,7 @@ export function AddEmailModal(prop: AddPhoneProp) {
 					</div>
 					{step === 'enter-code' && (
 						<div>
-							<label className="block mb-2 md:mb-2.5 text-xs md:text-sm font-semibold text-content ">
+							<label className="block mb-2 md:mb-2.5 text-xs md:text-sm font-semibold text-ds-fg ">
 								کد تایید
 							</label>
 

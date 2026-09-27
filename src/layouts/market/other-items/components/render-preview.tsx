@@ -39,13 +39,13 @@ export function RenderPreview({ item }: RenderPreviewProps) {
 			<div className={`${base} bg-content-subtle`}>
 				<div className="text-center px-2">
 					<p
-						className="text-base font-medium text-content"
+						className="text-base font-medium text-ds-fg"
 						style={{ fontFamily: item.itemValue }}
 					>
 						نمونه متن
 					</p>
 					<p
-						className="text-[10px] text-muted mt-0.5"
+						className="text-[10px] text-ds-fg-muted mt-0.5"
 						style={{ fontFamily: item.itemValue }}
 					>
 						{item.itemValue}

@@ -34,18 +34,18 @@ export const RewardsTab = () => {
 					}
 					size="xs"
 				>
-					<div className="p-2 border rounded-2xl bg-gradient-to-br from-brand-subtle to-secondary-subtle border-brand-muted">
+					<div className="p-2 border rounded-2xl bg-gradient-to-br from-ds-brand-fill to-secondary-subtle border-ds-brand-fill-2">
 						<div className="flex items-start gap-3">
 							<Icon
 								name="info"
-								className="w-5 h-5 text-primary mt-0.5 flex-shrink-0"
+								className="w-5 h-5 text-ds-brand mt-0.5 flex-shrink-0"
 							/>
 							<div className="flex-1">
-								<p className="mb-2 text-sm font-medium text-content">
+								<p className="mb-2 text-sm font-medium text-ds-fg">
 									ویج‌کوین، سکه ویژه ویجتیفای است که می‌توانید آن را
 									جمع‌آوری و خرج کنید! 🎉
 								</p>
-								<p className="text-xs text-muted">
+								<p className="text-xs text-ds-fg-muted">
 									با جمع‌آوری ویج‌کوین می‌توانید آن‌ها را خرج کنید و محصولات
 									و امکانات ویژه داخل ویجتیفای را بخرید.
 								</p>

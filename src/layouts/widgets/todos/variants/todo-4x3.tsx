@@ -68,10 +68,10 @@ export function TodoBoard({
 		<div className="flex flex-col h-full gap-2" dir="rtl">
 			<header className="flex items-center flex-none gap-2.5">
 				<div className="w-20 shrink-0">
-					<h3 className="text-sm font-bold leading-tight truncate text-content">
+					<h3 className="text-sm font-bold leading-tight truncate text-ds-fg">
 						تسک‌ها
 					</h3>
-					<p className="text-[10px] leading-tight truncate text-muted">
+					<p className="text-[10px] leading-tight truncate text-ds-fg-muted">
 						{total > 0
 							? `${completed} از ${total} انجام شده`
 							: 'برنامه‌ی امروزت'}
@@ -103,8 +103,8 @@ export function TodoBoard({
 								aria-hidden="true"
 								className={
 									tagFilter && tagFilter !== '-all-'
-										? 'text-primary!'
-										: 'text-muted'
+										? 'text-ds-brand!'
+										: 'text-ds-fg-muted'
 								}
 							/>
 						}
@@ -120,7 +120,7 @@ export function TodoBoard({
 								size={13}
 								aria-hidden="true"
 								className={
-									sort !== 'def' ? 'text-primary!' : 'text-muted'
+									sort !== 'def' ? 'text-ds-brand!' : 'text-ds-fg-muted'
 								}
 							/>
 						}
@@ -141,7 +141,7 @@ export function TodoBoard({
 								size={13}
 								aria-hidden="true"
 								className={cn(
-									'text-content opacity-50 transition-opacity group-hover:opacity-100',
+									'text-ds-fg opacity-50 transition-opacity group-hover:opacity-100',
 									isLoading && 'animate-spin'
 								)}
 							/>
@@ -226,7 +226,7 @@ export function TodoBoard({
 							<path
 								className={cn(
 									'transition-[stroke-dasharray] duration-700 ease-out',
-									isAllDone ? 'text-success' : 'text-primary'
+									isAllDone ? 'text-ds-success' : 'text-ds-brand'
 								)}
 								stroke="currentColor"
 								strokeWidth="3.5"
@@ -240,7 +240,7 @@ export function TodoBoard({
 							<span
 								className={cn(
 									'text-sm font-black leading-none tabular-nums',
-									isAllDone ? 'text-success' : 'text-content'
+									isAllDone ? 'text-ds-success' : 'text-ds-fg'
 								)}
 							>
 								{percent}٪
@@ -252,14 +252,14 @@ export function TodoBoard({
 						<StatRow
 							label="انجام‌شده"
 							value={completed}
-							className="text-success"
+							className="text-ds-success"
 						/>
 						<StatRow
 							label="در انتظار"
 							value={pending}
-							className="text-content"
+							className="text-ds-fg"
 						/>
-						<StatRow label="مهم" value={important} className="text-error" />
+						<StatRow label="مهم" value={important} className="text-ds-danger" />
 					</dl>
 				</aside>
 			</div>
@@ -279,7 +279,7 @@ function BoardTodoSkeleton() {
 	return (
 		<div
 			aria-hidden="true"
-			className="flex items-center justify-between gap-2 px-3 py-2 border rounded-xl border-subtle bg-subtle"
+			className="flex items-center justify-between gap-2 px-3 py-2 border rounded-xl border-subtle bg-ds-fill"
 		>
 			<div className="flex items-center flex-1 min-w-0 gap-2.5">
 				<div className="rounded-md size-4.5 skeleton shrink-0" />
@@ -301,8 +301,8 @@ interface StatRowProps {
 
 function StatRow({ label, value, className }: StatRowProps) {
 	return (
-		<div className="flex items-center justify-between gap-1 px-2 py-0.5 rounded-lg bg-subtle">
-			<dt className="text-[10px] font-medium truncate text-muted">{label}</dt>
+		<div className="flex items-center justify-between gap-1 px-2 py-0.5 rounded-lg bg-ds-fill">
+			<dt className="text-[10px] font-medium truncate text-ds-fg-muted">{label}</dt>
 			<dd className={cn('text-[11px] font-black tabular-nums', className)}>
 				<data value={value}>{value}</data>
 			</dd>

@@ -156,14 +156,14 @@ export function PhotoWidget({
 					)}
 
 					{hasFailed && (
-						<span className="flex flex-col items-center justify-center w-full h-full gap-2 p-3 text-center select-none rounded-widget bg-content bg-glass">
+						<span className="flex flex-col items-center justify-center w-full h-full gap-2 p-3 text-center select-none rounded-widget bg-ds-surface-2 bg-glass">
 							<Icon
 								name="alert"
 								size={18}
-								className="text-muted"
+								className="text-ds-fg-muted"
 								aria-hidden="true"
 							/>
-							<span className="text-[11px] leading-tight text-muted">
+							<span className="text-[11px] leading-tight text-ds-fg-muted">
 								عکس بارگذاری نشد، یکی دیگه انتخاب کن
 							</span>
 						</span>
@@ -175,13 +175,13 @@ export function PhotoWidget({
 				{isUploading && (
 					<div
 						role="status"
-						className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-content bg-glass rounded-widget"
+						className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-ds-surface-2 bg-glass rounded-widget"
 					>
 						<span
 							aria-hidden="true"
-							className="w-5 h-5 border-2 rounded-full border-brand-muted border-t-primary animate-spin"
+							className="w-5 h-5 border-2 rounded-full border-ds-brand-fill-2 border-t-ds-brand animate-spin"
 						/>
-						<span className="text-xs font-medium text-content">
+						<span className="text-xs font-medium text-ds-fg">
 							در حال بارگذاری...
 						</span>
 					</div>

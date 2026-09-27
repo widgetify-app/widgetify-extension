@@ -21,14 +21,14 @@ export function LayoutDropdown() {
 		<Dropdown
 			trigger={
 				<div
-					className="relative p-2 transition-all cursor-pointer nav-btn text-faint hover:text-strong active:scale-90"
+					className="relative p-2 transition-all cursor-pointer nav-btn text-faint hover:text-ds-fg-strong active:scale-90"
 					id="layout-menu-button"
 				>
 					<Icon name="appsPlus" size={15} />
 				</div>
 			}
 		>
-			<div className="bg-content py-2 bg-glass min-w-48 px-1" dir="rtl">
+			<div className="bg-ds-surface-2 py-2 bg-glass min-w-48 px-1" dir="rtl">
 				<DropdownItem
 					icon={<Icon name="appsPlus" size={14} />}
 					label="مدیریت ویجت‌ها"

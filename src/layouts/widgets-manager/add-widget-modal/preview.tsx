@@ -44,7 +44,7 @@ export function AddWidgetPreview({
 			}}
 			className="flex-1 flex flex-col items-center justify-center p-3 rounded-2xl bg-raised-faint text-ghost border border-subtle overflow-hidden relative min-h-47.5"
 		>
-			<div className="text-[10px] text-muted absolute top-2 right-2 font-medium bg-content-strong px-2 py-0.5 rounded-lg border border-subtle z-10">
+			<div className="text-[10px] text-ds-fg-muted absolute top-2 right-2 font-medium bg-content-strong px-2 py-0.5 rounded-lg border border-subtle z-10">
 				پیش‌نمایش در اندازه {previewSize.w}×{previewSize.h}
 			</div>
 

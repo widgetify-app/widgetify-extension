@@ -84,7 +84,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 				{isOpen && (
 					<Motion.div
 						key="bookmark-popover"
-						className="fixed overflow-hidden border shadow-2xl bookmark-popover z-popover w-72 border-subtle rounded-2xl origin-top-left bg-content bg-glass"
+						className="fixed overflow-hidden border shadow-2xl bookmark-popover z-popover w-72 border-subtle rounded-2xl origin-top-left bg-ds-surface-2 bg-glass"
 						initial={{ opacity: 0, scale: 0.95 }}
 						animate={{ opacity: 1, scale: 1 }}
 						exit={{ opacity: 0, scale: 0.95 }}
@@ -93,10 +93,10 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 					>
 						{!browserBookmarksEnabled ? (
 							<div className="p-5 text-center">
-								<div className="flex items-center justify-center w-8 h-8 mx-auto mb-3 rounded-full bg-brand-subtle">
+								<div className="flex items-center justify-center w-8 h-8 mx-auto mb-3 rounded-full bg-ds-brand-fill">
 									<Icon
 										name="lock"
-										className="text-primary"
+										className="text-ds-brand"
 										size={18}
 										aria-hidden="true"
 									/>
@@ -104,7 +104,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 								<p className="mb-1 text-sm font-bold">
 									دسترسی به بوکمارک‌ها
 								</p>
-								<p className="mb-4 text-xs leading-relaxed text-muted">
+								<p className="mb-4 text-xs leading-relaxed text-ds-fg-muted">
 									برای مشاهده بوکمارک‌های مرورگر در این بخش، نیاز به
 									دسترسی شما داریم.
 								</p>
@@ -121,7 +121,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 						) : (
 							<div className="flex flex-col max-h-105">
 								<div className="flex items-center justify-between p-3 border-b border-faint">
-									<span className="text-xs font-bold text-content">
+									<span className="text-xs font-bold text-ds-fg">
 										{currentFolderTitle}
 									</span>
 									{currentFolderId && (
@@ -147,7 +147,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 												<button
 													type="button"
 													onClick={() => handleClickItem(item)}
-													className="flex items-center gap-2.5 p-2 w-full text-right bg-transparent border-none rounded-xl cursor-pointer group transition-ui hover:bg-brand-subtle hover:text-brand-bold focus-visible:focus-ring"
+													className="flex items-center gap-2.5 p-2 w-full text-right bg-transparent border-none rounded-xl cursor-pointer group transition-ui hover:bg-ds-brand-fill hover:text-brand-bold focus-visible:focus-ring"
 												>
 													{item.type === 'FOLDER' ? (
 														<Icon
@@ -183,7 +183,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 											</li>
 										))
 									) : (
-										<li className="py-8 text-xs text-center text-muted">
+										<li className="py-8 text-xs text-center text-ds-fg-muted">
 											پوشه خالی است
 										</li>
 									)}

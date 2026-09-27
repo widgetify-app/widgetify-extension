@@ -47,18 +47,18 @@ export const GoogleCalendarEventCard: React.FC<GoogleCalendarEventCardProps> = (
 		>
 			<div className="flex flex-col items-center justify-center w-11 shrink-0 py-0.5 border-l border-subtle">
 				{isAllDay ? (
-					<span className="text-[10px] font-bold text-primary">همه‌روز</span>
+					<span className="text-[10px] font-bold text-ds-brand">همه‌روز</span>
 				) : (
 					<>
 						<time
 							dateTime={toDateTimeAttr(start)}
-							className="text-[11px] font-bold text-content tabular-nums leading-tight"
+							className="text-[11px] font-bold text-ds-fg tabular-nums leading-tight"
 						>
 							{startTimeStr}
 						</time>
 						<time
 							dateTime={toDateTimeAttr(end)}
-							className="text-[9px] text-muted tabular-nums leading-tight"
+							className="text-[9px] text-ds-fg-muted tabular-nums leading-tight"
 						>
 							{endTimeStr}
 						</time>
@@ -67,8 +67,8 @@ export const GoogleCalendarEventCard: React.FC<GoogleCalendarEventCardProps> = (
 			</div>
 
 			<div className="flex-1 min-w-0">
-				<p className="text-xs font-bold truncate text-content">{title}</p>
-				<div className="flex items-center gap-2 text-[10px] text-muted mt-0.5">
+				<p className="text-xs font-bold truncate text-ds-fg">{title}</p>
+				<div className="flex items-center gap-2 text-[10px] text-ds-fg-muted mt-0.5">
 					<span className="tabular-nums">{durationLabel}</span>
 					{event.location && (
 						<span className="truncate max-w-22.5">
@@ -85,7 +85,7 @@ export const GoogleCalendarEventCard: React.FC<GoogleCalendarEventCardProps> = (
 			</div>
 
 			{event.hangoutLink && !isPast && (
-				<span className="flex items-center justify-center w-6 h-6 rounded-lg bg-brand-subtle text-primary shrink-0">
+				<span className="flex items-center justify-center w-6 h-6 rounded-lg bg-ds-brand-fill text-ds-brand shrink-0">
 					<Icon name="videoCamera" size={12} aria-hidden="true" />
 				</span>
 			)}

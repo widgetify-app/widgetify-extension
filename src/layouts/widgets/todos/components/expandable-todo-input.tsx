@@ -233,7 +233,7 @@ export function ExpandableTodoInput({
 			<div
 				className={`overflow-hidden transition-shadow ${isExpanded ? 'shadow-2xl' : ''} rounded-xl`}
 			>
-				<div className="flex items-center gap-1 p-2 border rounded-3xl bg-content border-faint">
+				<div className="flex items-center gap-1 p-2 border rounded-3xl bg-ds-surface-2 border-faint">
 					<div className="w-full grow">
 						<TextInput
 							ref={inputRef}
@@ -298,8 +298,8 @@ export function ExpandableTodoInput({
 											}
 											placeholder="توضیحات بیشتر یا لینک اضافه کنید..."
 											className={twMerge(
-												'w-full px-4 py-2 text-xs leading-relaxed transition-ui outline-none resize-none rounded-2xl min-h-28 focus:placeholder:text-ghost text-muted',
-												`${transparentInput ? 'bg-transparent!' : 'bg-content! focus:ring-primary'} border-none! shadow-none!`
+												'w-full px-4 py-2 text-xs leading-relaxed transition-ui outline-none resize-none rounded-2xl min-h-28 focus:placeholder:text-ghost text-ds-fg-muted',
+												`${transparentInput ? 'bg-transparent!' : 'bg-ds-surface-2! focus:ring-ds-brand'} border-none! shadow-none!`
 											)}
 										/>
 									</div>
@@ -349,8 +349,8 @@ export function ExpandableTodoInput({
 												</Button>
 											}
 										>
-											<div className="flex flex-col gap-2 p-2 border w-62 bg-content rounded-2xl border-content">
-												<div className="relative flex flex-row items-center gap-1 px-2 border rounded-2xl border-content bg-content">
+											<div className="flex flex-col gap-2 p-2 border w-62 bg-ds-surface-2 rounded-2xl border-ds-surface-3">
+												<div className="relative flex flex-row items-center gap-1 px-2 border rounded-2xl border-ds-surface-3 bg-ds-surface-2">
 													<TextInput
 														value={category}
 														onChange={(val) =>
@@ -371,7 +371,7 @@ export function ExpandableTodoInput({
 														<Icon name="plus" size={18} />
 													</Button>
 												</div>
-												<div className="w-full h-0.5  rounded-full bg-raised" />
+												<div className="w-full h-0.5  rounded-full bg-ds-surface-3" />
 												<div className="flex flex-wrap w-full gap-1 overflow-x-hidden overflow-y-auto max-h-32 scrollbar-none">
 													{fetchedTags
 														?.filter((tag) => tag.trim())

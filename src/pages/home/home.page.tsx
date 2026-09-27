@@ -14,13 +14,13 @@ const steps: Step[] = [
 		target: '#chrome-footer',
 		content: (
 			<div className="flex flex-col gap-2 text-center">
-				<h4 className="text-[13px] font-black text-primary">
+				<h4 className="text-[13px] font-black text-ds-brand">
 					خلوت کردن فضای مرورگر
 				</h4>
 
-				<p className="text-[12px] leading-5 text-muted font-medium">
+				<p className="text-[12px] leading-5 text-ds-fg-muted font-medium">
 					برای مخفی کردن این نوار، کافیه روش{' '}
-					<span className="font-black text-error">راست‌کلیک</span> کنی و این
+					<span className="font-black text-ds-danger">راست‌کلیک</span> کنی و این
 					گزینه رو بزنی:
 				</p>
 
@@ -32,8 +32,8 @@ const steps: Step[] = [
 					/>
 				</div>
 
-				<div className="p-1.5 border border-dashed rounded-lg bg-raised-subtle border-muted">
-					<code className="text-[11px] font-bold text-muted">
+				<div className="p-1.5 border border-dashed rounded-lg bg-raised-subtle border-ds-line">
+					<code className="text-[11px] font-bold text-ds-fg-muted">
 						"Hide footer on New Tab page"
 					</code>
 				</div>
@@ -54,7 +54,7 @@ const steps: Step[] = [
 						className="object-cover w-full h-full"
 					/>
 				</div>
-				<p className="text-[12px] leading-relaxed text-content font-medium">
+				<p className="text-[12px] leading-relaxed text-ds-fg font-medium">
 					برای تغییر اندازه، جابه‌جایی، تغییر استایل، کپی یا حذف هر ویجت، کافیه
 					کافیه روش راست‌کلیک کنی تا منوی اختصاصی اون باز بشه
 				</p>

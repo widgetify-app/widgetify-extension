@@ -104,11 +104,11 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 			target={target}
 			type={type}
 			goTo={goTo}
-			className={`flex gap-2 p-2 transition-all duration-300 border rounded-2xl ${!isText && 'hover:scale-[0.99] hover:bg-raised  items-center active:scale-[0.99]'} ${link && 'cursor-pointer'}   border-content-subtle group relative ${prop.className || ''}`}
+			className={`flex gap-2 p-2 transition-all duration-300 border rounded-2xl ${!isText && 'hover:scale-[0.99] hover:bg-ds-surface-3  items-center active:scale-[0.99]'} ${link && 'cursor-pointer'}   border-content-subtle group relative ${prop.className || ''}`}
 		>
 			{icon && (
 				<div className="shrink-0 self-start mt-0.5">
-					<div className="p-1 rounded-lg bg-subtle">
+					<div className="p-1 rounded-lg bg-ds-fill">
 						{icon.startsWith('http') ? (
 							<img
 								src={icon}
@@ -125,7 +125,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 			<div className="flex-1 min-w-0">
 				<div className="flex items-start justify-between gap-2">
 					<h4
-						className="text-[13px] font-black tracking-tight text-content"
+						className="text-[13px] font-black tracking-tight text-ds-fg"
 						style={headTitleStyle}
 					>
 						{title}
@@ -135,7 +135,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 				{description && (
 					<div className="relative">
 						<p
-							className={`mt-0.5 text-[9px] font-medium  text-muted  leading-relaxed whitespace-pre-wrap wrap-break-word transition-all duration-300 ${!isExpanded && shouldShowReadMore ? 'line-clamp-2' : ''}`}
+							className={`mt-0.5 text-[9px] font-medium  text-ds-fg-muted  leading-relaxed whitespace-pre-wrap wrap-break-word transition-all duration-300 ${!isExpanded && shouldShowReadMore ? 'line-clamp-2' : ''}`}
 						>
 							{description}
 						</p>
@@ -143,7 +143,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 						{shouldShowReadMore && (
 							<button
 								onClick={toggleExpand}
-								className="mt-1 flex items-center gap-1 border border-faint rounded-xl px-1 hover:border-subtle text-[10px] font-light text-muted hover:underline cursor-pointer"
+								className="mt-1 flex items-center gap-1 border border-faint rounded-xl px-1 hover:border-subtle text-[10px] font-light text-ds-fg-muted hover:underline cursor-pointer"
 							>
 								{isExpanded ? 'نمایش کمتر' : 'مشاهده بیشتر'}
 								<Icon
@@ -168,7 +168,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 			{closeable && id && (
 				<button
 					type="button"
-					className="flex p-0.5 transition-opacity  self-start rounded-md cursor-pointer top-2 left-2 bg-subtle text-faint hover:bg-danger-subtle hover:text-error"
+					className="flex p-0.5 transition-opacity  self-start rounded-md cursor-pointer top-2 left-2 bg-ds-fill text-faint hover:bg-ds-danger-fill hover:text-ds-danger"
 					onClick={(e) => {
 						e.preventDefault()
 						e.stopPropagation()

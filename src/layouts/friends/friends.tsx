@@ -48,7 +48,7 @@ export const FriendsLayout = () => {
 			<div className="space-y-4">
 				<div className="flex items-center justify-between px-4">
 					<div className="flex items-center gap-2">
-						<h2 className="text-lg font-semibold text-content">دوستان</h2>
+						<h2 className="text-lg font-semibold text-ds-fg">دوستان</h2>
 					</div>
 
 					<div className="flex items-center gap-2">

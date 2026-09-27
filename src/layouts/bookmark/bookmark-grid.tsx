@@ -271,7 +271,7 @@ export function BookmarkGrid({
 					bookmarkToDelete?.type === 'FOLDER' ? (
 						<div>
 							<p>آیا از حذف پوشه "{bookmarkToDelete.title}" مطمئن هستی؟</p>
-							<p className="flex gap-1 px-2 py-1 mt-2 text-xs rounded-xl bg-danger-muted text-error">
+							<p className="flex gap-1 px-2 py-1 mt-2 text-xs rounded-xl bg-ds-danger-fill-2 text-ds-danger">
 								با حذف این پوشه، تمام بوکمارک‌های داخلش هم برای همیشه حذف
 								میشن و این عمل قابل بازگشت نیست!
 							</p>

@@ -38,23 +38,23 @@ const VIP_FEATURES: VipFeatureItem[] = [
 
 export function VipHeroBanner() {
 	return (
-		<div className="relative overflow-hidden rounded-3xl border border-vip-subtle bg-gradient-to-br from-vip-subtle via-raised-subtle to-raised-faint p-5 sm:p-6 shadow-sm">
-			<div className="absolute -top-12 -left-12 w-48 h-48 rounded-full bg-vip-muted blur-3xl pointer-events-none" />
-			<div className="absolute -bottom-12 -right-12 w-48 h-48 rounded-full bg-vip-subtle blur-3xl pointer-events-none" />
+		<div className="relative overflow-hidden rounded-3xl border border-ds-vip-fill bg-gradient-to-br from-ds-vip-fill via-raised-subtle to-raised-faint p-5 sm:p-6 shadow-sm">
+			<div className="absolute -top-12 -left-12 w-48 h-48 rounded-full bg-ds-vip-fill-2 blur-3xl pointer-events-none" />
+			<div className="absolute -bottom-12 -right-12 w-48 h-48 rounded-full bg-ds-vip-fill blur-3xl pointer-events-none" />
 
 			<div className="relative z-10 flex flex-col gap-5">
 				<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-subtle pb-4">
 					<div className="flex items-center gap-3">
-						<div className="flex items-center justify-center w-11 h-11 rounded-2xl  text-vip  shrink-0">
+						<div className="flex items-center justify-center w-11 h-11 rounded-2xl  text-ds-vip  shrink-0">
 							<Icon name="diamond" size={32} />
 						</div>
 						<div className="flex flex-col">
 							<div className="flex items-center gap-2">
-								<h2 className="text-lg sm:text-xl font-black text-content tracking-tight">
-									ویجتیفای <span className="text-vip">پرو</span>
+								<h2 className="text-lg sm:text-xl font-black text-ds-fg tracking-tight">
+									ویجتیفای <span className="text-ds-vip">پرو</span>
 								</h2>
 							</div>
-							<p className="text-xs text-muted mt-0.5">
+							<p className="text-xs text-ds-fg-muted mt-0.5">
 								تجربه‌ای سریع‌تر، زیباتر و بدون هیچ مرزی در چیدمان ابزارها
 							</p>
 						</div>
@@ -65,16 +65,16 @@ export function VipHeroBanner() {
 					{VIP_FEATURES.map((feature) => (
 						<div
 							key={feature.id}
-							className="flex items-start gap-3 p-3.5 rounded-2xl bg-widget-muted border border-faint backdrop-blur-xs hover:bg-widget-strong hover:border-vip-muted transition-all duration-200 shadow-2xs"
+							className="flex items-start gap-3 p-3.5 rounded-2xl bg-widget-muted border border-faint backdrop-blur-xs hover:bg-widget-strong hover:border-ds-vip-fill-2 transition-all duration-200 shadow-2xs"
 						>
-							<div className="flex items-center justify-center w-8 h-8 rounded-xl bg-vip-subtle text-vip shrink-0 mt-0.5">
+							<div className="flex items-center justify-center w-8 h-8 rounded-xl bg-ds-vip-fill text-ds-vip shrink-0 mt-0.5">
 								<Icon name={feature.icon} size={16} />
 							</div>
 							<div className="flex flex-col gap-1 min-w-0">
-								<h4 className="text-xs font-bold text-content leading-tight">
+								<h4 className="text-xs font-bold text-ds-fg leading-tight">
 									{feature.title}
 								</h4>
-								<p className="text-[11px] text-muted leading-relaxed">
+								<p className="text-[11px] text-ds-fg-muted leading-relaxed">
 									{feature.description}
 								</p>
 							</div>

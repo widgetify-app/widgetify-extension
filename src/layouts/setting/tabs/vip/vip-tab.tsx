@@ -97,7 +97,7 @@ export function VipTab() {
 			<VipHeroBanner />
 
 			<div className="space-y-2.5 pt-1">
-				<h4 className="text-xs font-bold text-content">
+				<h4 className="text-xs font-bold text-ds-fg">
 					پلن مناسب خودت رو انتخاب کن
 				</h4>
 
@@ -133,7 +133,7 @@ export function VipTab() {
 					</div>
 				) : (
 					<div className="flex flex-col items-center justify-center py-6 text-center border rounded-2xl border-subtle bg-raised-faint">
-						<p className="text-xs text-muted">
+						<p className="text-xs text-ds-fg-muted">
 							در حال حاضر پلن فعالی موجود نیست
 						</p>
 					</div>
@@ -142,14 +142,14 @@ export function VipTab() {
 
 			<div className="p-3.5 rounded-2xl border border-subtle bg-raised-faint flex flex-col sm:flex-row items-center justify-between gap-3">
 				<div className="flex items-center gap-2.5 w-full sm:w-auto">
-					<div className="flex items-center justify-center w-10 h-10 rounded-xl text-primary shrink-0">
+					<div className="flex items-center justify-center w-10 h-10 rounded-xl text-ds-brand shrink-0">
 						<Icon name="shoppingBag" size={19} />
 					</div>
 					<div className="flex flex-col">
-						<span className="text-xs font-bold text-content">
+						<span className="text-xs font-bold text-ds-fg">
 							{selectedPlan?.title || 'اشتراک'} {VIP_LABEL}
 						</span>
-						<span className="text-[11px] text-muted">
+						<span className="text-[11px] text-ds-fg-muted">
 							دسترسی کامل به تمام امکانات {VIP_LABEL}
 						</span>
 					</div>
@@ -157,20 +157,20 @@ export function VipTab() {
 
 				<div className="flex items-center justify-between w-full gap-4 sm:justify-end sm:w-auto">
 					<div className="flex flex-col items-start sm:items-end">
-						<span className="text-[11px] text-muted">مبلغ قابل پرداخت</span>
+						<span className="text-[11px] text-ds-fg-muted">مبلغ قابل پرداخت</span>
 						<div className="flex items-baseline gap-1">
 							{selectedPlan?.price === 0 ? (
-								<span className="text-base font-black sm:text-lg text-success">
+								<span className="text-base font-black sm:text-lg text-ds-success">
 									{selectedPlan.isClaimed
 										? 'قبلا دریافت شده'
 										: 'رایگان'}
 								</span>
 							) : (
 								<>
-									<span className="text-base font-black sm:text-lg text-content tabular-nums">
+									<span className="text-base font-black sm:text-lg text-ds-fg tabular-nums">
 										{selectedPlan ? fmt(selectedPlan.price) : '۰'}
 									</span>
-									<span className="text-xs text-muted">تومان</span>
+									<span className="text-xs text-ds-fg-muted">تومان</span>
 								</>
 							)}
 						</div>

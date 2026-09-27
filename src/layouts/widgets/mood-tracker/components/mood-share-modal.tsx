@@ -45,7 +45,7 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 			title={
 				<div className="flex items-center gap-2">
 					<Icon name="cameraPlus" size={16} />
-					<span className="text-sm font-bold text-content">
+					<span className="text-sm font-bold text-ds-fg">
 						اشتراک‌گذاری حال این ماه
 					</span>
 				</div>
@@ -53,7 +53,7 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 		>
 			<div className="flex flex-col gap-4 p-2">
 				{!isAuthenticated && (
-					<div className="flex flex-col items-center justify-center h-64 gap-2 text-center text-muted">
+					<div className="flex flex-col items-center justify-center h-64 gap-2 text-center text-ds-fg-muted">
 						<Icon name="alert" size={20} aria-hidden="true" />
 						<span className="text-xs leading-relaxed">
 							برای ساختن گزارش ماهانه باید وارد حساب کاربریت بشی
@@ -62,8 +62,8 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 				)}
 
 				{isAuthenticated && isLoading && (
-					<div className="flex flex-col items-center justify-center h-64 gap-2 text-muted">
-						<span className="loading loading-spinner loading-md text-primary" />
+					<div className="flex flex-col items-center justify-center h-64 gap-2 text-ds-fg-muted">
+						<span className="loading loading-spinner loading-md text-ds-brand" />
 						<span className="text-xs">در حال آماده‌سازی تصویر...</span>
 					</div>
 				)}
@@ -77,7 +77,7 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 					</div>
 				)}
 
-				<div className="flex flex-wrap items-center justify-between gap-2 px-1 pt-2.5 border-t border-content">
+				<div className="flex flex-wrap items-center justify-between gap-2 px-1 pt-2.5 border-t border-ds-surface-3">
 					<Button variant="ghost" size="sm" rounded="xl" onClick={onClose}>
 						بستن
 					</Button>

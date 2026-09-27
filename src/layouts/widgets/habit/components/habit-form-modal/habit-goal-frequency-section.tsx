@@ -43,21 +43,21 @@ interface StepperCounterProps {
 const StepperCounter = React.memo<StepperCounterProps>(
 	({ target, onDecrease, onIncrease }) => {
 		return (
-			<div className="flex items-center px-1.5 py-0.5 rounded-full bg-content">
+			<div className="flex items-center px-1.5 py-0.5 rounded-full bg-ds-surface-2">
 				<button
 					type="button"
 					onClick={onDecrease}
-					className="flex items-center justify-center w-5 h-5 text-sm cursor-pointer text-muted hover:text-strong"
+					className="flex items-center justify-center w-5 h-5 text-sm cursor-pointer text-ds-fg-muted hover:text-ds-fg-strong"
 				>
 					<Icon name="minus" size={12} />
 				</button>
-				<span className="px-1.5 text-xs font-bold text-center text-content min-w-5">
+				<span className="px-1.5 text-xs font-bold text-center text-ds-fg min-w-5">
 					{target}
 				</span>
 				<button
 					type="button"
 					onClick={onIncrease}
-					className="flex items-center justify-center w-5 h-5 text-sm cursor-pointer text-muted hover:text-strong"
+					className="flex items-center justify-center w-5 h-5 text-sm cursor-pointer text-ds-fg-muted hover:text-ds-fg-strong"
 				>
 					<Icon name="plus" size={12} />
 				</button>
@@ -102,7 +102,7 @@ const UnitSelectionRow = React.memo<UnitSelectionRowProps>(({ unit, onChangeUnit
 					<div className="flex items-center justify-between w-full px-1 text-xs">
 						<span>{opt.label}</span>
 						{unit === opt.id && (
-							<Icon name="check" size={13} className="text-primary" />
+							<Icon name="check" size={13} className="text-ds-brand" />
 						)}
 					</div>
 				),
@@ -167,7 +167,7 @@ const FrequencyComparisonRow = React.memo<FrequencyComparisonRowProps>(
 						<div className="flex items-center justify-between w-full px-1 text-xs">
 							<span>{opt.label}</span>
 							{comparison === opt.value && (
-								<Icon name="check" size={13} className="text-primary" />
+								<Icon name="check" size={13} className="text-ds-brand" />
 							)}
 						</div>
 					),
@@ -182,7 +182,7 @@ const FrequencyComparisonRow = React.memo<FrequencyComparisonRowProps>(
 		return (
 			<div className="flex items-center justify-between pt-3">
 				<div className="flex items-center gap-2">
-					<span className="text-xs font-bold text-content">تکرار</span>
+					<span className="text-xs font-bold text-ds-fg">تکرار</span>
 					<div className="flex items-center gap-1.5">
 						{HABIT_FREQUENCY_OPTIONS.map((freqOpt) => (
 							<Chip
@@ -201,7 +201,7 @@ const FrequencyComparisonRow = React.memo<FrequencyComparisonRowProps>(
 
 				<Dropdown
 					trigger={
-						<div className="flex items-center gap-1 text-xs cursor-pointer text-muted hover:text-strong">
+						<div className="flex items-center gap-1 text-xs cursor-pointer text-ds-fg-muted hover:text-ds-fg-strong">
 							<span className="text-xs">{currentComparisonLabel}</span>
 							<Icon name="chevronDown" size={14} />
 						</div>
@@ -241,10 +241,10 @@ export const HabitGoalFrequencySection: React.FC<HabitGoalFrequencySectionProps>
 			}, [target, onChangeTarget])
 
 			return (
-				<div className="flex flex-col p-3 border divide-y rounded-2xl border-muted bg-subtle divide-subtle gap-y-3">
+				<div className="flex flex-col p-3 border divide-y rounded-2xl border-ds-line bg-ds-fill divide-subtle gap-y-3">
 					<div className="flex items-center justify-between gap-2 pb-1">
 						<div className="flex items-center gap-2.5 shrink-0">
-							<span className="text-xs font-bold text-content whitespace-nowrap">
+							<span className="text-xs font-bold text-ds-fg whitespace-nowrap">
 								هدف روزانه
 							</span>
 							<StepperCounter
@@ -259,7 +259,7 @@ export const HabitGoalFrequencySection: React.FC<HabitGoalFrequencySectionProps>
 
 					{unit === HabitUnit.CUSTOM && onChangeCustomUnit && (
 						<div className="flex items-center gap-2 py-1">
-							<span className="text-xs text-muted shrink-0">
+							<span className="text-xs text-ds-fg-muted shrink-0">
 								نام واحد دلخواه:
 							</span>
 							<TextInput

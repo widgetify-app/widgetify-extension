@@ -124,7 +124,7 @@ export function SearchHistoryPortal({
 							animate={{ opacity: 1, y: 0 }}
 							exit={{ opacity: 0, y: -8 }}
 							transition={{ duration: 0.18, ease: 'easeOut' }}
-							className="z-20 overflow-y-auto shadow-2xl bg-content bg-glass max-h-60 rounded-2xl"
+							className="z-20 overflow-y-auto shadow-2xl bg-ds-surface-2 bg-glass max-h-60 rounded-2xl"
 						>
 							{isLoadingSuggestions ? (
 								<SuggestionSkeleton />
@@ -137,7 +137,7 @@ export function SearchHistoryPortal({
 								/>
 							) : showEnableButton ? (
 								<div className="flex flex-col items-center gap-3 px-4 py-5 text-center">
-									<div className="flex items-center justify-center w-8 h-8 rounded-xl bg-subtle">
+									<div className="flex items-center justify-center w-8 h-8 rounded-xl bg-ds-fill">
 										<Icon
 											name="search"
 											size={15}
@@ -145,7 +145,7 @@ export function SearchHistoryPortal({
 										/>
 									</div>
 									<div className="space-y-1">
-										<p className="text-xs font-medium text-muted">
+										<p className="text-xs font-medium text-ds-fg-muted">
 											پیشنهادهای جستجو
 										</p>
 										<p className="text-[11px] text-faint leading-relaxed">
@@ -159,7 +159,7 @@ export function SearchHistoryPortal({
 											e.preventDefault()
 											setShowConsentModal(true)
 										}}
-										className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-xl cursor-pointer bg-subtle text-muted transition-ui hover:text-primary hover:bg-brand-subtle focus-visible:focus-ring searchbox-item"
+										className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-xl cursor-pointer bg-ds-fill text-ds-fg-muted transition-ui hover:text-ds-brand hover:bg-ds-brand-fill focus-visible:focus-ring searchbox-item"
 									>
 										فعال‌سازی
 									</button>

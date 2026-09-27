@@ -52,18 +52,18 @@ export function VoiceSearchPortal({
 				style={portalStyles}
 				role="dialog"
 				aria-label="جستجوی صوتی"
-				className="z-20 p-5 overflow-hidden duration-300 shadow-2xl -mt-26 bg-content bg-glass rounded-2xl animate-in fade-in slide-in-from-top-2"
+				className="z-20 p-5 overflow-hidden duration-300 shadow-2xl -mt-26 bg-ds-surface-2 bg-glass rounded-2xl animate-in fade-in slide-in-from-top-2"
 			>
 				<div className="flex items-center justify-between px-1 mb-6">
 					<div className="flex items-center gap-2">
-						<span className="text-[15px] font-medium text-content">
+						<span className="text-[15px] font-medium text-ds-fg">
 							جستجوی صوتی
 						</span>
 						<div aria-hidden="true" className="flex items-end h-3 gap-1 mb-1">
 							{[...Array(4)].map((_, i) => (
 								<div
 									key={i}
-									className={`w-1 bg-primary rounded-full ${isListening ? 'animate-bounce h-3' : 'h-1'}`}
+									className={`w-1 bg-ds-brand rounded-full ${isListening ? 'animate-bounce h-3' : 'h-1'}`}
 									style={{ animationDelay: `${i * 0.1}s` }}
 								/>
 							))}
@@ -73,7 +73,7 @@ export function VoiceSearchPortal({
 						type="button"
 						onClick={onClose}
 						aria-label="بستن جستجوی صوتی"
-						className="p-2 rounded-full cursor-pointer transition-ui hover:bg-hovered text-muted focus-visible:focus-ring"
+						className="p-2 rounded-full cursor-pointer transition-ui hover:bg-ds-fill-2 text-ds-fg-muted focus-visible:focus-ring"
 					>
 						<Icon name="close" size={22} aria-hidden="true" />
 					</button>
@@ -84,7 +84,7 @@ export function VoiceSearchPortal({
 						{error ? (
 							<p
 								role="alert"
-								className="flex items-start gap-2 text-sm leading-relaxed text-center text-error"
+								className="flex items-start gap-2 text-sm leading-relaxed text-center text-ds-danger"
 							>
 								<Icon
 									name="alert"
@@ -97,7 +97,7 @@ export function VoiceSearchPortal({
 						) : (
 							<p
 								aria-live="polite"
-								className={`text-xl text-center leading-relaxed ${currentTranscript ? 'text-strong font-bold' : 'text-strong font-medium'}`}
+								className={`text-xl text-center leading-relaxed ${currentTranscript ? 'text-ds-fg-strong font-bold' : 'text-ds-fg-strong font-medium'}`}
 							>
 								{currentTranscript ||
 									(selectedLanguage === 'fa-IR'
@@ -113,7 +113,7 @@ export function VoiceSearchPortal({
 							width="120px"
 							dropdownClassName="text-xs font-bold searchbox-item"
 							trigger={
-								<div className="flex cursor-pointer items-center gap-2 px-3 py-1.5 hover:bg-hovered rounded-xl transition-ui text-xs font-bold text-muted">
+								<div className="flex cursor-pointer items-center gap-2 px-3 py-1.5 hover:bg-ds-fill-2 rounded-xl transition-ui text-xs font-bold text-ds-fg-muted">
 									<Icon name="settings" size={14} aria-hidden="true" />
 									{
 										languages.find((l) => l.code === selectedLanguage)
@@ -136,7 +136,7 @@ export function VoiceSearchPortal({
 								isListening ? stopVoiceSearch() : startVoiceSearch()
 							}
 							aria-label={isListening ? 'توقف ضبط صدا' : 'شروع ضبط صدا'}
-							className={`w-12 h-12 cursor-pointer flex items-center justify-center rounded-full transition-ui focus-visible:focus-ring ${isListening ? 'bg-error text-error-content shadow-lg shadow-danger-muted' : 'bg-primary text-primary-content shadow-lg shadow-brand-muted'}`}
+							className={`w-12 h-12 cursor-pointer flex items-center justify-center rounded-full transition-ui focus-visible:focus-ring ${isListening ? 'bg-ds-danger text-ds-on-danger shadow-lg shadow-ds-danger-fill-2' : 'bg-ds-brand text-ds-on-brand shadow-lg shadow-ds-brand-fill-2'}`}
 						>
 							<Icon
 								name="mic"

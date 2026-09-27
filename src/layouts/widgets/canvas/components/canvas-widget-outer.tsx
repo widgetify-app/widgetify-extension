@@ -364,7 +364,7 @@ function CanvasWidgetOuterImpl({
 							e.stopPropagation()
 							handleDelete()
 						}}
-						className="absolute z-50 flex items-center justify-center w-6 h-6 text-xs font-bold text-white transition-transform rounded-full shadow-lg cursor-pointer widget-delete-btn -top-2 -right-2 bg-error hover:scale-110 active:scale-95"
+						className="absolute z-50 flex items-center justify-center w-6 h-6 text-xs font-bold text-white transition-transform rounded-full shadow-lg cursor-pointer widget-delete-btn -top-2 -right-2 bg-ds-danger hover:scale-110 active:scale-95"
 					>
 						✕
 					</button>
@@ -387,7 +387,7 @@ function CanvasWidgetOuterImpl({
 					)}
 					{isLocked && canvasMode === 'normal' && (
 						<div
-							className="absolute inset-0 z-25 rounded-widget bg-content bg-glass border border-vip-muted flex flex-col items-center justify-center p-2 text-center select-none cursor-pointer overflow-hidden group transition-all duration-200 hover:border-vip-strong"
+							className="absolute inset-0 z-25 rounded-widget bg-ds-surface-2 bg-glass border border-ds-vip-fill-2 flex flex-col items-center justify-center p-2 text-center select-none cursor-pointer overflow-hidden group transition-all duration-200 hover:border-vip-strong"
 							onClick={(e) => {
 								e.stopPropagation()
 								callEvent('openSettings', 'vip')
@@ -400,7 +400,7 @@ function CanvasWidgetOuterImpl({
 									rounded="full"
 								/>
 								{!isCompactSize && (
-									<span className="text-[11px] font-medium text-muted transition-colors duration-200 group-hover:text-content">
+									<span className="text-[11px] font-medium text-ds-fg-muted transition-colors duration-200 group-hover:text-ds-fg">
 										ارتقا به اشتراک پرو
 									</span>
 								)}

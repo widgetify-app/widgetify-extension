@@ -28,8 +28,8 @@ export const HabitLivePreview: React.FC<HabitLivePreviewProps> = React.memo(
 
 		return (
 			<div className="flex flex-col gap-1.5">
-				<span className="text-xs font-bold text-muted">پیش‌نمایش</span>
-				<div className="flex items-center justify-between p-3 border rounded-2xl border-muted bg-subtle">
+				<span className="text-xs font-bold text-ds-fg-muted">پیش‌نمایش</span>
+				<div className="flex items-center justify-between p-3 border rounded-2xl border-ds-line bg-ds-fill">
 					<div className="flex items-center min-w-0 gap-3">
 						<div
 							className="flex items-center justify-center w-10 h-10 text-xl rounded-xl shrink-0"
@@ -42,10 +42,10 @@ export const HabitLivePreview: React.FC<HabitLivePreviewProps> = React.memo(
 						</div>
 
 						<div className="flex flex-col min-w-0">
-							<span className="text-sm font-bold truncate text-content">
+							<span className="text-sm font-bold truncate text-ds-fg">
 								{displayTitle}
 							</span>
-							<span className="text-xs truncate text-muted">
+							<span className="text-xs truncate text-ds-fg-muted">
 								{`۰ از ${target} ${unitText} • ${freqText}`}
 							</span>
 						</div>

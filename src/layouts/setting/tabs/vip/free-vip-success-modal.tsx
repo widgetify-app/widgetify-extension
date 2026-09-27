@@ -53,10 +53,10 @@ export function FreeVipSuccessModal({
 				</div>
 
 				<div className="space-y-1.5">
-					<h3 className="text-lg font-black text-content">
+					<h3 className="text-lg font-black text-ds-fg">
 						مبارکه! دسترسی پرو باز شد
 					</h3>
-					<p className="text-xs text-muted leading-relaxed max-w-xs">
+					<p className="text-xs text-ds-fg-muted leading-relaxed max-w-xs">
 						پلن رایگان {days} روزه با موفقیت روی حسابت فعال شد. واسه اعمال و
 						دسترسی به تمام قابلیت‌ها، یه بار صفحه رو بارگذاری کنید
 					</p>

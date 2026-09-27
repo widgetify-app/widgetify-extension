@@ -13,12 +13,12 @@ export function PhotoEmptyState({ size }: PhotoEmptyStateProps) {
 
 	if (is1x1) {
 		return (
-			<span className="flex flex-col items-center justify-center w-full h-full p-2 text-center rounded-widget bg-content bg-glass">
+			<span className="flex flex-col items-center justify-center w-full h-full p-2 text-center rounded-widget bg-ds-surface-2 bg-glass">
 				<Icon
 					name="imagePlus"
 					size={22}
 					aria-hidden="true"
-					className="transition-ui text-muted group-hover:text-primary group-hover:scale-110"
+					className="transition-ui text-ds-fg-muted group-hover:text-ds-brand group-hover:scale-110"
 				/>
 			</span>
 		)
@@ -26,7 +26,7 @@ export function PhotoEmptyState({ size }: PhotoEmptyStateProps) {
 
 	if (is2x2 || is2x4) {
 		return (
-			<span className="relative flex flex-col items-center justify-between w-full h-full p-3.5 text-center overflow-hidden rounded-widget bg-content bg-glass select-none">
+			<span className="relative flex flex-col items-center justify-between w-full h-full p-3.5 text-center overflow-hidden rounded-widget bg-ds-surface-2 bg-glass select-none">
 				<span className="relative flex items-center justify-center flex-1 w-full min-h-0 overflow-hidden rounded-xl">
 					<img
 						src={PHOTO_PLACEHOLDER_SRC}
@@ -35,7 +35,7 @@ export function PhotoEmptyState({ size }: PhotoEmptyStateProps) {
 					/>
 				</span>
 
-				<span className="flex items-center justify-center gap-1.5 pt-2.5 shrink-0 text-muted transition-colors duration-200 group-hover:text-primary">
+				<span className="flex items-center justify-center gap-1.5 pt-2.5 shrink-0 text-ds-fg-muted transition-colors duration-200 group-hover:text-ds-brand">
 					<Icon name="imagePlus" size={15} aria-hidden="true" />
 					<span className="text-xs font-medium">برای انتخاب عکس کلیک کن</span>
 				</span>
@@ -44,7 +44,7 @@ export function PhotoEmptyState({ size }: PhotoEmptyStateProps) {
 	}
 
 	return (
-		<span className="flex flex-col items-center justify-center w-full h-full gap-1 p-2 overflow-hidden text-center select-none rounded-widget bg-content bg-glass">
+		<span className="flex flex-col items-center justify-center w-full h-full gap-1 p-2 overflow-hidden text-center select-none rounded-widget bg-ds-surface-2 bg-glass">
 			<span className="relative flex items-center justify-center overflow-hidden shrink-0 aspect-square h-[46cqh] rounded-xl">
 				<img
 					src={PHOTO_PLACEHOLDER_SRC}
@@ -53,7 +53,7 @@ export function PhotoEmptyState({ size }: PhotoEmptyStateProps) {
 				/>
 			</span>
 
-			<span className="text-[10px] shrink-0 text-muted">
+			<span className="text-[10px] shrink-0 text-ds-fg-muted">
 				برای انتخاب یا آپلود کلیک کن
 			</span>
 		</span>

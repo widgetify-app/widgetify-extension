@@ -97,7 +97,7 @@ export function BrowserTitleSelector({ fetched_browserTitles, isAuthenticated }:
 	return (
 		<SectionPanel title="عنوان مرورگر" size="sm">
 			<div className="space-y-3">
-				<p className={'text-xs text-muted'}>
+				<p className={'text-xs text-ds-fg-muted'}>
 					عنوان تب مرورگر خود را همین‌جا تغییر دهید تا هر وقت روی تب بودید،
 					راحت‌تر پیدایش کنید.
 				</p>
@@ -113,7 +113,7 @@ export function BrowserTitleSelector({ fetched_browserTitles, isAuthenticated }:
 						/>
 					))}
 					<div
-						className="flex items-center justify-center w-full h-20 text-xs border border-content gap-0.5  text-muted hover:!text-primary cursor-pointer hover:!border-primary transition-all duration-200  rounded-xl"
+						className="flex items-center justify-center w-full h-20 text-xs border border-ds-surface-3 gap-0.5  text-ds-fg-muted hover:!text-ds-brand cursor-pointer hover:!border-ds-brand transition-all duration-200  rounded-xl"
 						onClick={() => handleMoreClick()}
 					>
 						<Icon name="shoppingBag" size={18} />

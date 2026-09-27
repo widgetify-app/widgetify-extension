@@ -42,7 +42,7 @@ export function SelectFriendLayout({
 		<div className="h-full pl-0.5 overflow-y-auto">
 			{isLoading ? (
 				<div className="flex items-center justify-center py-12">
-					<div className="w-6 h-6 border-2 rounded-full border-primary border-t-transparent animate-spin" />
+					<div className="w-6 h-6 border-2 rounded-full border-ds-brand border-t-transparent animate-spin" />
 				</div>
 			) : friends.length === 0 ? (
 				<FriendEmptyList emptyMessage="هنوز دوستی نداری." />
@@ -61,13 +61,13 @@ export function SelectFriendLayout({
 									border cursor-pointer
 									${
 										isSelected
-											? 'bg-brand-subtle border-primary'
-											: 'hover:bg-subtle border-subtle hover:border-strong active:scale-95'
+											? 'bg-ds-brand-fill border-ds-brand'
+											: 'hover:bg-ds-fill border-subtle hover:border-strong active:scale-95'
 									}
 								`}
 							>
 								<div className="shrink-0">
-									<div className="w-8 h-8 overflow-hidden rounded-full ring-2 ring-content">
+									<div className="w-8 h-8 overflow-hidden rounded-full ring-2 ring-ds-surface-3">
 										<AvatarComponent
 											url={friend.user.avatar}
 											placeholder={friend.user.name}
@@ -80,14 +80,14 @@ export function SelectFriendLayout({
 								<div className="flex-1 min-w-0 text-right">
 									<div
 										className={`font-medium truncate ${
-											isSelected ? 'text-primary' : 'text-content'
+											isSelected ? 'text-ds-brand' : 'text-ds-fg'
 										}`}
 									>
 										{friend.user.name}
 									</div>
 									<div
 										className={`text-sm truncate ${
-											isSelected ? 'text-brand' : 'text-content'
+											isSelected ? 'text-ds-brand' : 'text-ds-fg'
 										}`}
 										dir="ltr"
 									>

@@ -149,12 +149,12 @@ function SearchFullContent() {
 		<div className="flex flex-col items-center justify-center w-full h-full">
 			<div
 				ref={searchRef}
-				className="relative w-full p-1 bg-content bg-glass rounded-widget"
+				className="relative w-full p-1 bg-ds-surface-2 bg-glass rounded-widget"
 			>
 				<form onSubmit={handleSubmit}>
 					<div
 						ref={searchRowRef}
-						className="relative flex items-center px-3 py-1.5 overflow-hidden transition-all duration-300 shadow-xs rounded-2xl bg-content group"
+						className="relative flex items-center px-3 py-1.5 overflow-hidden transition-all duration-300 shadow-xs rounded-2xl bg-ds-surface-2 group"
 					>
 						<EngineSelector onSelected={onEngineSelected} />
 
@@ -173,7 +173,7 @@ function SearchFullContent() {
 								Analytics.event('search_input_focused')
 								updateHistoryPosition()
 							}}
-							className="w-full py-1.5 text-base font-light text-right focus:outline-none text-content placeholder:text-muted placeholder:font-medium focus:placeholder:opacity-50 bg-transparent"
+							className="w-full py-1.5 text-base font-light text-right focus:outline-none text-ds-fg placeholder:text-ds-fg-muted placeholder:font-medium focus:placeholder:opacity-50 bg-transparent"
 							placeholder={`جستجو در ${selectedEngine.label}`}
 							aria-label={`جستجو در ${selectedEngine.label}`}
 							autoComplete="off"
@@ -183,7 +183,7 @@ function SearchFullContent() {
 							type="button"
 							onClick={handleClearSearch}
 							aria-label="پاک کردن عبارت جستجو"
-							className={`h-9 w-9 shrink-0 flex items-center justify-center rounded-full cursor-pointer transition-all duration-300 ${searchQuery ? 'opacity-70 hover:opacity-100 hover:bg-raised' : 'opacity-0 pointer-events-none'}`}
+							className={`h-9 w-9 shrink-0 flex items-center justify-center rounded-full cursor-pointer transition-all duration-300 ${searchQuery ? 'opacity-70 hover:opacity-100 hover:bg-ds-surface-3' : 'opacity-0 pointer-events-none'}`}
 						>
 							<Icon
 								name="close"
@@ -204,7 +204,7 @@ function SearchFullContent() {
 							type="button"
 							onClick={handleSearchButtonClick}
 							aria-label="جستجو"
-							className={`${searchQuery ? 'flex' : 'opacity-0 hidden'} h-9 w-9 shrink-0 flex items-center justify-center rounded-full cursor-pointer hover:bg-raised border-none bg-transparent p-0`}
+							className={`${searchQuery ? 'flex' : 'opacity-0 hidden'} h-9 w-9 shrink-0 flex items-center justify-center rounded-full cursor-pointer hover:bg-ds-surface-3 border-none bg-transparent p-0`}
 						>
 							<Icon
 								name="search"

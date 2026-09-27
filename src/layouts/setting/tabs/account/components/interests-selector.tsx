@@ -31,9 +31,9 @@ export const InterestsSelector = ({
 	}
 
 	const content = (
-		<div className="p-2 border w-82 bg-content  rounded-2xl border-content">
+		<div className="p-2 border w-82 bg-ds-surface-2  rounded-2xl border-ds-surface-3">
 			{isLoading ? (
-				<div className="py-3 text-[10px] italic font-medium text-center animate-pulse text-muted">
+				<div className="py-3 text-[10px] italic font-medium text-center animate-pulse text-ds-fg-muted">
 					صبر کنید...
 				</div>
 			) : (
@@ -64,7 +64,7 @@ export const InterestsSelector = ({
 					ref={triggerRef}
 					type="button"
 					onClick={() => setIsOpen(!isOpen)}
-					className="flex items-center justify-between w-full py-2 text-right transition-colors hover:bg-content"
+					className="flex items-center justify-between w-full py-2 text-right transition-colors hover:bg-ds-surface-2"
 				>
 					{triggerElement}
 				</button>

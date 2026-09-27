@@ -86,7 +86,7 @@ export function HabitDetailModal({
 				</div>
 
 				<div className="flex-1 min-w-0">
-					<div className="flex items-center text-xs text-content gap-x-1">
+					<div className="flex items-center text-xs text-ds-fg gap-x-1">
 						<p className="font-medium truncate ">{habit.title}</p>
 						<Dropdown
 							trigger={
@@ -94,7 +94,7 @@ export function HabitDetailModal({
 									size="xs"
 									aria-label="گزینه‌های عادت"
 									rounded={'xl'}
-									className="w-7 h-7 p-0! text-muted hover:text-strong border-muted"
+									className="w-7 h-7 p-0! text-ds-fg-muted hover:text-ds-fg-strong border-ds-line"
 								>
 									<Icon
 										name="menuOption"
@@ -104,10 +104,10 @@ export function HabitDetailModal({
 								</Button>
 							}
 						>
-							<div className="flex flex-col p-2 border bg-content bg-glass border-subtle rounded-2xl">
+							<div className="flex flex-col p-2 border bg-ds-surface-2 bg-glass border-subtle rounded-2xl">
 								<button
 									type="button"
-									className="w-full px-3 py-1.5 flex items-center gap-x-2 cursor-pointer rounded-lg transition-ui text-content hover:bg-hovered focus-visible:focus-ring"
+									className="w-full px-3 py-1.5 flex items-center gap-x-2 cursor-pointer rounded-lg transition-ui text-ds-fg hover:bg-ds-fill-2 focus-visible:focus-ring"
 									onClick={onClickEdit}
 								>
 									<Icon name="pen" size={13} aria-hidden="true" />
@@ -116,7 +116,7 @@ export function HabitDetailModal({
 
 								<button
 									type="button"
-									className="w-full px-3 py-1.5 flex items-center gap-x-2 cursor-pointer rounded-lg transition-ui text-error hover:bg-danger-subtle focus-visible:focus-ring"
+									className="w-full px-3 py-1.5 flex items-center gap-x-2 cursor-pointer rounded-lg transition-ui text-ds-danger hover:bg-ds-danger-fill focus-visible:focus-ring"
 									onClick={onClickArchive}
 								>
 									<Icon name="trash" size={14} aria-hidden="true" />
@@ -125,7 +125,7 @@ export function HabitDetailModal({
 							</div>
 						</Dropdown>
 					</div>
-					<p className="text-[10px] truncate text-muted">
+					<p className="text-[10px] truncate text-ds-fg-muted">
 						{formatHabitGoal(habit)}
 					</p>
 				</div>
@@ -147,33 +147,33 @@ export function HabitDetailModal({
 					</div>
 				) : error ? (
 					<div className="flex flex-col items-center justify-center py-16 text-center">
-						<p className="text-sm font-medium text-content">
+						<p className="text-sm font-medium text-ds-fg">
 							خطا در دریافت اطلاعات
 						</p>
-						<p className="mt-1 text-xs text-muted">
+						<p className="mt-1 text-xs text-ds-fg-muted">
 							لطفا چند لحظه دیگر دوباره تلاش کنید
 						</p>
 					</div>
 				) : !habit ? (
 					<div className="flex flex-col items-center justify-center py-16 text-center">
 						<div className="mb-2 text-3xl">📭</div>
-						<p className="text-sm text-muted">اطلاعات این عادت پیدا نشد</p>
+						<p className="text-sm text-ds-fg-muted">اطلاعات این عادت پیدا نشد</p>
 					</div>
 				) : (
 					<div className="flex flex-col gap-3 p-2">
 						<HabitStatsCards habit={habit} today={today} />
 
-						<div className="flex flex-col gap-3 p-3 overflow-hidden border rounded-2xl bg-subtle border-subtle">
+						<div className="flex flex-col gap-3 p-3 overflow-hidden border rounded-2xl bg-ds-fill border-subtle">
 							<div className="flex items-center justify-between gap-2">
-								<div className="flex items-center p-1 border bg-subtle rounded-2xl border-subtle">
+								<div className="flex items-center p-1 border bg-ds-fill rounded-2xl border-subtle">
 									<button
 										type="button"
 										onClick={() => setActiveView('contribution')}
 										className={cn(
 											'flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-xl transition-ui cursor-pointer select-none',
 											activeView === 'contribution'
-												? 'bg-hovered text-content shadow-sm'
-												: 'text-muted hover:text-strong'
+												? 'bg-ds-fill-2 text-ds-fg shadow-sm'
+												: 'text-ds-fg-muted hover:text-ds-fg-strong'
 										)}
 									>
 										<Icon name="squares2X2" size={13} />
@@ -185,8 +185,8 @@ export function HabitDetailModal({
 										className={cn(
 											'flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-xl transition-ui cursor-pointer select-none',
 											activeView === 'calendar'
-												? 'bg-hovered text-content shadow-sm'
-												: 'text-muted hover:text-strong'
+												? 'bg-ds-fill-2 text-ds-fg shadow-sm'
+												: 'text-ds-fg-muted hover:text-ds-fg-strong'
 										)}
 									>
 										<Icon name="calendar" size={13} />

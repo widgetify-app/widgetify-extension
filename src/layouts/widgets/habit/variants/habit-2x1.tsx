@@ -89,14 +89,14 @@ export function HabitCompactWide({
 				onClick={onAddHabit}
 				className="flex items-center w-full h-full gap-2.5 text-right transition-transform cursor-pointer select-none active:scale-[0.98] focus-visible:focus-ring"
 			>
-				<span className="flex items-center justify-center w-10 h-10 text-xl rounded-full shrink-0 bg-brand-subtle">
+				<span className="flex items-center justify-center w-10 h-10 text-xl rounded-full shrink-0 bg-ds-brand-fill">
 					🌱
 				</span>
 				<span className="flex-1 min-w-0">
-					<span className="block text-xs font-bold truncate text-content">
+					<span className="block text-xs font-bold truncate text-ds-fg">
 						عادت‌های خوب
 					</span>
-					<span className="block text-[10px] font-medium truncate text-primary">
+					<span className="block text-[10px] font-medium truncate text-ds-brand">
 						افزودن عادت +
 					</span>
 				</span>
@@ -194,10 +194,10 @@ export function HabitCompactWide({
 					aria-label={`جزئیات ${selectedHabit.title}`}
 					className="flex-1 min-w-0 text-right cursor-pointer group/title focus-visible:focus-ring"
 				>
-					<span className="block text-xs font-bold truncate transition-colors text-content group-hover/title:text-primary">
+					<span className="block text-xs font-bold truncate transition-colors text-ds-fg group-hover/title:text-ds-brand">
 						{selectedHabit.title}
 					</span>
-					<span className="block text-[9px] font-medium truncate text-muted">
+					<span className="block text-[9px] font-medium truncate text-ds-fg-muted">
 						{value} از {target} امروز
 					</span>
 				</button>
@@ -205,7 +205,7 @@ export function HabitCompactWide({
 				<span
 					onClick={() => onViewDetails?.(selectedHabit.id)}
 					aria-hidden="true"
-					className="flex items-center justify-center cursor-pointer w-6 h-6 rounded-lg text-muted shrink-0"
+					className="flex items-center justify-center cursor-pointer w-6 h-6 rounded-lg text-ds-fg-muted shrink-0"
 				>
 					<Icon name="chevronLeft" size={13} />
 				</span>
@@ -260,7 +260,7 @@ export function HabitCompactWide({
 						onClick={onAddHabit}
 						aria-label="عادت جدید"
 						title="عادت جدید"
-						className="flex items-center justify-center w-[18px] h-[18px] rounded-full shrink-0 cursor-pointer text-muted bg-hovered transition-ui hover:text-strong hover:bg-strong focus-visible:focus-ring"
+						className="flex items-center justify-center w-[18px] h-[18px] rounded-full shrink-0 cursor-pointer text-ds-fg-muted bg-ds-fill-2 transition-ui hover:text-ds-fg-strong hover:bg-ds-fill-3 focus-visible:focus-ring"
 					>
 						<Icon name="plus" size={11} aria-hidden="true" />
 					</button>

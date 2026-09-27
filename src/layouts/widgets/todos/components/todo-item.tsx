@@ -114,7 +114,7 @@ export function TodoItem({
 	const hasFriends = currentTodo?.friends && currentTodo?.friends?.length > 0
 	return (
 		<div
-			className={`group overflow-hidden border  border-content bg-content transition-ui hover:border-strong hover:bg-hovered ${comfortable ? 'mb-1.5 rounded-xl' : 'mb-1 rounded-xl'} ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+			className={`group overflow-hidden border  border-ds-surface-3 bg-ds-surface-2 transition-ui hover:border-strong hover:bg-ds-fill-2 ${comfortable ? 'mb-1.5 rounded-xl' : 'mb-1 rounded-xl'} ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 		>
 			<div
 				className={`flex items-center ${comfortable ? 'gap-2.5 px-3 py-2' : 'gap-1.5 px-2 py-1'}`}
@@ -147,15 +147,15 @@ export function TodoItem({
 							comfortable ? 'text-[11.5px]' : 'text-[10px]'
 						} ${
 							isDone
-								? 'text-muted opacity-60 line-through font-normal'
-								: 'text-content'
+								? 'text-ds-fg-muted opacity-60 line-through font-normal'
+								: 'text-ds-fg'
 						}`}
 					>
 						{currentTodo.text}
 					</p>
 
 					{comfortable && !expanded && (
-						<span className="flex items-center gap-1.5 mt-1 text-[9px] text-muted">
+						<span className="flex items-center gap-1.5 mt-1 text-[9px] text-ds-fg-muted">
 							<span className="flex items-center gap-1 shrink-0">
 								<Icon name="calendar" size={10} aria-hidden="true" />
 								<time dateTime={isoDate}>
@@ -183,7 +183,7 @@ export function TodoItem({
 							<Icon
 								name="users"
 								size={12}
-								className="text-muted"
+								className="text-ds-fg-muted"
 								aria-hidden="true"
 							/>
 						</Tooltip>
@@ -195,7 +195,7 @@ export function TodoItem({
 									type="button"
 									onClick={handleEdit}
 									aria-label="ویرایش تسک"
-									className="p-1 rounded-lg cursor-pointer text-brand-strong hover:bg-brand-subtle hover:text-primary focus-visible:focus-ring"
+									className="p-1 rounded-lg cursor-pointer text-brand-strong hover:bg-ds-brand-fill hover:text-ds-brand focus-visible:focus-ring"
 								>
 									<Icon name="edit" size={13} aria-hidden="true" />
 								</button>
@@ -204,7 +204,7 @@ export function TodoItem({
 								type="button"
 								onClick={handleDelete}
 								aria-label="حذف تسک"
-								className="p-1 rounded-lg cursor-pointer text-danger-strong hover:bg-danger-subtle hover:text-error focus-visible:focus-ring"
+								className="p-1 rounded-lg cursor-pointer text-danger-strong hover:bg-ds-danger-fill hover:text-ds-danger focus-visible:focus-ring"
 							>
 								<Icon name="trash" size={13} aria-hidden="true" />
 							</button>
@@ -217,7 +217,7 @@ export function TodoItem({
 						aria-expanded={expanded}
 						aria-label={expanded ? 'بستن جزئیات' : 'نمایش جزئیات'}
 						className={cn(
-							'rounded p-0.5 text-muted opacity-50 cursor-pointer transition-transform duration-300 hover:scale-110 focus-visible:focus-ring',
+							'rounded p-0.5 text-ds-fg-muted opacity-50 cursor-pointer transition-transform duration-300 hover:scale-110 focus-visible:focus-ring',
 							expanded && 'rotate-180'
 						)}
 					>
@@ -227,8 +227,8 @@ export function TodoItem({
 			</div>
 
 			{expanded && (
-				<div className="border-t border-faint bg-subtle px-2.5 py-2">
-					<p className="mb-0 text-[11px] leading-snug text-muted whitespace-pre-wrap">
+				<div className="border-t border-faint bg-ds-fill px-2.5 py-2">
+					<p className="mb-0 text-[11px] leading-snug text-ds-fg-muted whitespace-pre-wrap">
 						{currentTodo.text}
 					</p>
 					{hasFriends && (
@@ -242,7 +242,7 @@ export function TodoItem({
 					)}
 					<div className="flex items-center gap-2 text-[10px]">
 						{currentTodo.category && (
-							<span className="flex text-[10px] items-center gap-1 rounded-lg border border-dashed border-strong px-1.5 text-muted">
+							<span className="flex text-[10px] items-center gap-1 rounded-lg border border-dashed border-strong px-1.5 text-ds-fg-muted">
 								<Icon name="tags" size={9} aria-hidden="true" />
 								{currentTodo.category}
 							</span>
@@ -256,7 +256,7 @@ export function TodoItem({
 							</span>
 						)}
 
-						<span className="flex items-center gap-1 mr-auto text-muted">
+						<span className="flex items-center gap-1 mr-auto text-ds-fg-muted">
 							<Icon name="calendar" size={12} aria-hidden="true" />
 							<time dateTime={isoDate}>
 								{parseTodoDate(currentTodo.date)
@@ -267,7 +267,7 @@ export function TodoItem({
 					</div>
 
 					{currentTodo.description && (
-						<div className="mt-2 leading-relaxed whitespace-break-spaces rounded-xl border border-faint bg-subtle p-1.5 text-[11px] font-black">
+						<div className="mt-2 leading-relaxed whitespace-break-spaces rounded-xl border border-faint bg-ds-fill p-1.5 text-[11px] font-black">
 							<NoteLinkRenderer note={currentTodo.description} />
 						</div>
 					)}
@@ -302,7 +302,7 @@ function NoteLinkRenderer({ note }: { note: string }) {
 				href={urls[0]}
 				target="_blank"
 				rel="noopener noreferrer"
-				className="block text-primary underline break-all"
+				className="block text-ds-brand underline break-all"
 			>
 				{urls[0]}
 			</a>

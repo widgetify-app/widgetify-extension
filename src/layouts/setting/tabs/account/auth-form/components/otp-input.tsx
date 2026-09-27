@@ -107,9 +107,9 @@ const OtpInput: React.FC<OtpInputProps> = ({ otp, setOtp, isError }) => {
 					onPaste={handlePaste}
 					className={`w-10 h-12 md:w-12 md:h-14 text-center text-xl md:text-2xl font-bold border-2 ${
 						isError
-							? 'border-danger-bold bg-danger-muted text-error'
-							: 'border-content bg-content'
-					} rounded-lg md:rounded-xl text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-brand-muted transition-all duration-200 hover:border-brand-strong active:scale-95`}
+							? 'border-danger-bold bg-ds-danger-fill-2 text-ds-danger'
+							: 'border-ds-surface-3 bg-ds-surface-2'
+					} rounded-lg md:rounded-xl text-ds-fg-muted focus:outline-none focus:border-ds-brand focus:ring-2 focus:ring-ds-brand-fill-2 transition-all duration-200 hover:border-brand-strong active:scale-95`}
 				/>
 			))}
 		</div>

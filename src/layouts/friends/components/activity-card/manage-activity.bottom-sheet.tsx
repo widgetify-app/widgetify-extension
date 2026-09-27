@@ -93,10 +93,10 @@ export function ManageActivityBottomSheet({
 
 	if (currentActivity) {
 		return (
-			<div className="flex flex-col gap-3 p-2 border min-w-96 max-w-96 bg-content border-content rounded-2xl">
+			<div className="flex flex-col gap-3 p-2 border min-w-96 max-w-96 bg-ds-surface-2 border-ds-surface-3 rounded-2xl">
 				<div className="flex flex-col gap-1">
 					<div className="flex flex-row items-center justify-between">
-						<p className="text-sm font-bold text-muted">نوشته فعلی شما</p>
+						<p className="text-sm font-bold text-ds-fg-muted">نوشته فعلی شما</p>
 						<Button
 							type="button"
 							onClick={handleDelete}
@@ -104,19 +104,19 @@ export function ManageActivityBottomSheet({
 							size="xs"
 							color="danger"
 							rounded="xl"
-							className="shadow left-1 group shadow-danger-muted"
+							className="shadow left-1 group shadow-ds-danger-fill-2"
 							loading={isRemoving}
 						>
-							<div className="flex items-center justify-center gap-1 text-error-content leading-1">
+							<div className="flex items-center justify-center gap-1 text-ds-on-danger leading-1">
 								<Icon name="trash" />
 								حذف نوشته
 							</div>
 						</Button>
 					</div>
 
-					<div className="p-4 border border-dashed rounded-xl bg-content border-content">
+					<div className="p-4 border border-dashed rounded-xl bg-ds-surface-2 border-ds-surface-3">
 						<p
-							className="text-content text-shadow-2xs wrap-break-word"
+							className="text-ds-fg text-shadow-2xs wrap-break-word"
 							dir="auto"
 						>
 							{currentActivity.content}
@@ -125,7 +125,7 @@ export function ManageActivityBottomSheet({
 				</div>
 
 				<div className="flex flex-col">
-					<p className="mb-2 text-sm font-bold text-muted">
+					<p className="mb-2 text-sm font-bold text-ds-fg-muted">
 						واکنش ها ({fetchedReactions?.reactions?.length || 0})
 					</p>
 					{isPending ? (
@@ -136,10 +136,10 @@ export function ManageActivityBottomSheet({
 						<div className="flex flex-wrap items-start justify-start gap-1 pb-4 pl-1 overflow-y-auto h-28">
 							{fetchedReactions.reactions.map((r, i) => (
 								<div
-									className="flex items-center h-10 gap-1.5 px-2 border rounded-full w-fit bg-content border-content"
+									className="flex items-center h-10 gap-1.5 px-2 border rounded-full w-fit bg-ds-surface-2 border-ds-surface-3"
 									key={i}
 								>
-									<div className="overflow-hidden rounded-full ring-2 ring-content">
+									<div className="overflow-hidden rounded-full ring-2 ring-ds-surface-3">
 										<AvatarComponent
 											url={r.avatar}
 											placeholder={r.name}
@@ -148,16 +148,16 @@ export function ManageActivityBottomSheet({
 									</div>
 
 									<div className="flex-1 min-w-0">
-										<div className="text-xs font-medium truncate text-content">
+										<div className="text-xs font-medium truncate text-ds-fg">
 											{r.name}
 										</div>
-										<div className="text-xs truncate text-muted">
+										<div className="text-xs truncate text-ds-fg-muted">
 											{r.username}@
 										</div>
 									</div>
 
 									<div className="flex items-center gap-2 mr-1 shrink-0">
-										<span className="w-5 h-5 text-sm leading-6 rounded-full shadow bg-brand-subtle">
+										<span className="w-5 h-5 text-sm leading-6 rounded-full shadow bg-ds-brand-fill">
 											{RenderReactionContent(
 												GetContentFromReactions(
 													r.reaction,
@@ -170,7 +170,7 @@ export function ManageActivityBottomSheet({
 							))}
 						</div>
 					) : (
-						<div className="flex items-start justify-center h-24 text-muted">
+						<div className="flex items-start justify-center h-24 text-ds-fg-muted">
 							فعلا واکنشی نداری 😶‍🌫️
 						</div>
 					)}
@@ -181,16 +181,16 @@ export function ManageActivityBottomSheet({
 
 	return (
 		<>
-			<div className="flex flex-col gap-2 p-2 border min-w-96 max-w-96 bg-content border-content rounded-2xl">
+			<div className="flex flex-col gap-2 p-2 border min-w-96 max-w-96 bg-ds-surface-2 border-ds-surface-3 rounded-2xl">
 				<div className="space-y-1">
 					<div className="space-y-1">
 						<div className="flex justify-between">
-							<p className="flex text-sm font-medium text-content">
+							<p className="flex text-sm font-medium text-ds-fg">
 								متن نوشته
 								<Tooltip content="نوشته فقط برای دوستان نمایش داده میشه!">
 									<Icon
 										name="info"
-										className="mr-1 text-muted mt-0.5"
+										className="mr-1 text-ds-fg-muted mt-0.5"
 									/>
 								</Tooltip>
 							</p>
@@ -222,7 +222,7 @@ export function ManageActivityBottomSheet({
 								setActivity(e.target.value.slice(0, MAX_ACTIVITY_LENGTH))
 							}
 							placeholder="یه چیزی بگو..."
-							className="w-full h-16 px-4 py-2 mt-1 text-base leading-relaxed transition-all border-none outline-none resize-none max-h-16 bg-content text-muted rounded-2xl placeholder:font-light focus:placeholder:text-ghost"
+							className="w-full h-16 px-4 py-2 mt-1 text-base leading-relaxed transition-all border-none outline-none resize-none max-h-16 bg-ds-surface-2 text-ds-fg-muted rounded-2xl placeholder:font-light focus:placeholder:text-ghost"
 							rows={4}
 							dir={!activity ? 'rtl' : 'auto'}
 							maxLength={MAX_ACTIVITY_LENGTH}
@@ -268,7 +268,7 @@ export function ManageActivityBottomSheet({
 				className="px-4"
 				title="قوانین"
 			>
-				<div className="space-y-3 text-sm leading-relaxed text-muted">
+				<div className="space-y-3 text-sm leading-relaxed text-ds-fg-muted">
 					<p>
 						از درج هرگونه متن یا محتوای توهین‌آمیز، سیاسی یا دینی خودداری کنید.
 					</p>

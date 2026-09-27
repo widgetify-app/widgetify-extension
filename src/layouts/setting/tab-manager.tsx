@@ -62,11 +62,11 @@ export const TabManager = ({
 	}
 
 	const getTabButtonStyle = (isActive: boolean) => {
-		return isActive ? 'text-primary bg-brand-subtle' : 'text-muted hover:bg-raised'
+		return isActive ? 'text-ds-brand bg-ds-brand-fill' : 'text-ds-fg-muted hover:bg-ds-surface-3'
 	}
 
 	const getTabIconStyle = (isActive: boolean) => {
-		return isActive ? 'text-primary' : 'text-muted'
+		return isActive ? 'text-ds-brand' : 'text-ds-fg-muted'
 	}
 
 	const headClass =
@@ -96,10 +96,10 @@ export const TabManager = ({
 									<div key={idx} className="flex flex-col gap-1">
 										{group.parentName && (
 											<div className="flex items-center gap-2 mx-4 my-2">
-												<span className="text-xs font-medium text-muted shrink-0">
+												<span className="text-xs font-medium text-ds-fg-muted shrink-0">
 													{group.parentName}
 												</span>
-												<div className="h-px bg-raised flex-1" />
+												<div className="h-px bg-ds-surface-3 flex-1" />
 											</div>
 										)}
 
@@ -119,7 +119,7 @@ export const TabManager = ({
 													>
 														{icon}
 														{isNew && (
-															<span className="absolute left-0 z-30 w-2 h-2 rounded-full -bottom-1 bg-error animate-ping" />
+															<span className="absolute left-0 z-30 w-2 h-2 rounded-full -bottom-1 bg-ds-danger animate-ping" />
 														)}
 													</span>
 													<span className="text-sm">

@@ -233,7 +233,7 @@ const AuthForm = () => {
 	return (
 		<div className="flex flex-col w-full px-1 py-1">
 			{authStatus?.content && step === 'identifier' && (
-				<div className="px-3 py-2 mb-4 text-xs alert alert-warning rounded-2xl ring-4 ring-warning-subtle">
+				<div className="px-3 py-2 mb-4 text-xs alert alert-warning rounded-2xl ring-4 ring-ds-warning-fill">
 					<Icon name="alert" className="w-4 h-4 shrink-0" />
 					<span>{authStatus.content}</span>
 				</div>
@@ -242,10 +242,10 @@ const AuthForm = () => {
 			{step === 'identifier' && (
 				<div className="flex flex-col">
 					<div className="mb-5 text-center">
-						<h2 className="text-lg font-bold tracking-tight text-content">
+						<h2 className="text-lg font-bold tracking-tight text-ds-fg">
 							ورود یا ساخت حساب
 						</h2>
-						<p className="mt-1 text-xs text-muted">
+						<p className="mt-1 text-xs text-ds-fg-muted">
 							ایمیل یا شماره موبایلت رو وارد کن
 						</p>
 					</div>
@@ -289,10 +289,10 @@ const AuthForm = () => {
 					<div className="relative my-4">
 						<span
 							aria-hidden="true"
-							className="absolute inset-0 flex items-center w-full translate-y-1/2 border-t border-content"
+							className="absolute inset-0 flex items-center w-full translate-y-1/2 border-t border-ds-surface-3"
 						/>
 						<div className="relative z-10 flex justify-center">
-							<span className="px-3 py-0.5 text-xs font-medium text-muted bg-widget rounded-full">
+							<span className="px-3 py-0.5 text-xs font-medium text-ds-fg-muted bg-ds-surface rounded-full">
 								یا
 							</span>
 						</div>
@@ -305,12 +305,12 @@ const AuthForm = () => {
 			{step === 'password' && (
 				<div className="flex flex-col">
 					<div className="mb-5 text-center">
-						<h2 className="text-lg font-bold tracking-tight text-content">
+						<h2 className="text-lg font-bold tracking-tight text-ds-fg">
 							رمز عبور
 						</h2>
-						<div className="flex items-center justify-center gap-1.5 mt-1 text-xs text-muted">
+						<div className="flex items-center justify-center gap-1.5 mt-1 text-xs text-ds-fg-muted">
 							<span
-								className="font-mono truncate text-content dir-ltr max-w-50"
+								className="font-mono truncate text-ds-fg dir-ltr max-w-50"
 								title={identifier}
 							>
 								{identifier}
@@ -319,7 +319,7 @@ const AuthForm = () => {
 							<button
 								type="button"
 								onClick={goBackToIdentifier}
-								className="font-medium cursor-pointer text-primary hover:underline"
+								className="font-medium cursor-pointer text-ds-brand hover:underline"
 							>
 								تغییر
 							</button>
@@ -327,7 +327,7 @@ const AuthForm = () => {
 					</div>
 
 					{error.api && (
-						<div className="px-3 py-2 mb-3 text-xs border bg-danger-subtle text-error border-danger-muted rounded-xl">
+						<div className="px-3 py-2 mb-3 text-xs border bg-ds-danger-fill text-ds-danger border-ds-danger-fill-2 rounded-xl">
 							{error.api}
 						</div>
 					)}
@@ -366,9 +366,9 @@ const AuthForm = () => {
 							type="button"
 							onClick={() => handleSendOtp()}
 							disabled={isOtpSending}
-							className="w-full mt-1 h-10 px-3 rounded-xl border border-content bg-widget hover:bg-content-strong text-xs font-medium text-content flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.99] shadow-xs"
+							className="w-full mt-1 h-10 px-3 rounded-xl border border-ds-surface-3 bg-ds-surface hover:bg-content-strong text-xs font-medium text-ds-fg flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.99] shadow-xs"
 						>
-							<Icon name="mail" className="w-4 h-4 text-muted" />
+							<Icon name="mail" className="w-4 h-4 text-ds-fg-muted" />
 							<span>
 								{isOtpSending ? 'درحال ارسال...' : 'ورود با کد موقت'}
 							</span>
@@ -380,13 +380,13 @@ const AuthForm = () => {
 			{step === 'otp' && (
 				<div className="flex flex-col">
 					<div className="mb-5 text-center">
-						<h2 className="text-lg font-bold tracking-tight text-content">
+						<h2 className="text-lg font-bold tracking-tight text-ds-fg">
 							کد تایید
 						</h2>
-						<p className="flex items-center justify-center gap-1 mt-1 text-xs text-muted">
+						<p className="flex items-center justify-center gap-1 mt-1 text-xs text-ds-fg-muted">
 							<span>کد ارسال شده به</span>
 							<span
-								className="font-mono font-semibold truncate text-content dir-ltr max-w-44"
+								className="font-mono font-semibold truncate text-ds-fg dir-ltr max-w-44"
 								title={identifier}
 							>
 								{identifier}
@@ -411,9 +411,9 @@ const AuthForm = () => {
 							/>
 						</div>
 
-						<div className="flex items-center justify-between px-1 text-xs text-muted">
+						<div className="flex items-center justify-between px-1 text-xs text-ds-fg-muted">
 							{resendCooldown > 0 ? (
-								<div className="flex items-center gap-1 font-mono select-none text-muted">
+								<div className="flex items-center gap-1 font-mono select-none text-ds-fg-muted">
 									<Icon name="clock" className="w-3.5 h-3.5" />
 									<span>
 										{Math.floor(resendCooldown / 60)}:
@@ -428,7 +428,7 @@ const AuthForm = () => {
 									type="button"
 									onClick={() => handleSendOtp()}
 									disabled={isOtpSending}
-									className="flex items-center gap-1 transition-colors cursor-pointer hover:text-primary disabled:opacity-50"
+									className="flex items-center gap-1 transition-colors cursor-pointer hover:text-ds-brand disabled:opacity-50"
 								>
 									<Icon
 										name="refresh"
@@ -450,7 +450,7 @@ const AuthForm = () => {
 										setOtp('')
 										resetErrors()
 									}}
-									className="transition-colors cursor-pointer hover:text-primary"
+									className="transition-colors cursor-pointer hover:text-ds-brand"
 								>
 									ورود با رمز عبور
 								</button>
@@ -458,7 +458,7 @@ const AuthForm = () => {
 								<button
 									type="button"
 									onClick={goBackToIdentifier}
-									className="transition-colors cursor-pointer hover:text-content"
+									className="transition-colors cursor-pointer hover:text-ds-fg"
 								>
 									تغییر شماره
 								</button>

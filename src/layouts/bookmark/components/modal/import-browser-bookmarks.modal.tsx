@@ -97,7 +97,7 @@ function TreeNode({
 	return (
 		<div>
 			<div
-				className="flex items-center gap-2 py-1.5 px-1.5 rounded-lg hover:bg-brand-subtle cursor-pointer transition-colors"
+				className="flex items-center gap-2 py-1.5 px-1.5 rounded-lg hover:bg-ds-brand-fill cursor-pointer transition-colors"
 				style={{ paddingRight: depth * 16 }}
 				onClick={() => onToggleSelect(node)}
 			>
@@ -108,7 +108,7 @@ function TreeNode({
 							e.stopPropagation()
 							onToggleExpand(node.id)
 						}}
-						className="flex items-center justify-center w-4 h-4 shrink-0 text-muted"
+						className="flex items-center justify-center w-4 h-4 shrink-0 text-ds-fg-muted"
 					>
 						<Icon
 							name="chevronLeft"
@@ -125,9 +125,9 @@ function TreeNode({
 				<span
 					className={`flex items-center justify-center w-4 h-4 rounded-md border shrink-0 transition-colors ${
 						isChecked
-							? 'bg-primary border-primary'
+							? 'bg-ds-brand border-ds-brand'
 							: isIndeterminate
-								? 'bg-brand-muted border-primary'
+								? 'bg-ds-brand-fill-2 border-ds-brand'
 								: 'border-strong'
 					}`}
 				>
@@ -288,11 +288,11 @@ export function ImportBrowserBookmarksModal({
 		>
 			{!browserBookmarksEnabled ? (
 				<div className="flex flex-col items-center justify-center h-64 px-4 text-center">
-					<div className="flex items-center justify-center w-10 h-10 mb-3 rounded-full bg-brand-subtle">
-						<Icon name="lock" className="text-primary" size={20} />
+					<div className="flex items-center justify-center w-10 h-10 mb-3 rounded-full bg-ds-brand-fill">
+						<Icon name="lock" className="text-ds-brand" size={20} />
 					</div>
 					<p className="mb-1 text-sm font-bold">دسترسی به بوکمارک‌ها</p>
-					<p className="mb-4 text-xs leading-relaxed text-muted">
+					<p className="mb-4 text-xs leading-relaxed text-ds-fg-muted">
 						برای درون‌ریزی بوکمارک‌های مرورگر، نیاز به دسترسی شما داریم.
 					</p>
 					<Button
@@ -307,7 +307,7 @@ export function ImportBrowserBookmarksModal({
 			) : (
 				<div className="flex flex-col justify-between h-96">
 					<div className="flex items-center justify-between mb-2 shrink-0">
-						<span className="text-xs text-muted">
+						<span className="text-xs text-ds-fg-muted">
 							{selectedIds.size > 0
 								? `${selectedIds.size} از ${MAX_BROWSER_IMPORT_ITEMS} مورد انتخاب شده`
 								: `حداکثر ${MAX_BROWSER_IMPORT_ITEMS} مورد قابل انتخاب است`}
@@ -319,7 +319,7 @@ export function ImportBrowserBookmarksModal({
 							<div className="flex items-center justify-center h-full">
 								<Icon
 									name="spinner"
-									className="animate-spin text-muted"
+									className="animate-spin text-ds-fg-muted"
 									size={20}
 								/>
 							</div>
@@ -336,7 +336,7 @@ export function ImportBrowserBookmarksModal({
 								/>
 							))
 						) : (
-							<div className="py-8 text-xs text-center text-muted">
+							<div className="py-8 text-xs text-center text-ds-fg-muted">
 								بوکمارکی در مرورگر شما یافت نشد.
 							</div>
 						)}

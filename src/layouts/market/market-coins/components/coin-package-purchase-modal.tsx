@@ -59,7 +59,7 @@ export function CoinPackagePurchaseModal({
 			showCloseButton={!isPending}
 		>
 			<div className="space-y-3">
-				<div className="overflow-hidden border rounded-2xl border-content-subtle bg-widget">
+				<div className="overflow-hidden border rounded-2xl border-content-subtle bg-ds-surface">
 					<div className="flex items-center justify-center py-8 bg-content-subtle">
 						<div className="flex flex-col items-center gap-2">
 							<img
@@ -68,41 +68,41 @@ export function CoinPackagePurchaseModal({
 								className="w-14 h-14"
 							/>
 							<div className="flex items-baseline gap-1.5">
-								<span className="text-4xl font-bold text-primary tabular-nums">
+								<span className="text-4xl font-bold text-ds-brand tabular-nums">
 									{formatPrice(pkg.coin)}
 								</span>
-								<span className="text-sm text-muted">ویج‌کوین</span>
+								<span className="text-sm text-ds-fg-muted">ویج‌کوین</span>
 							</div>
 						</div>
 					</div>
 					<div className="px-3 py-2.5">
-						<h3 className="text-sm font-semibold text-content">
+						<h3 className="text-sm font-semibold text-ds-fg">
 							{pkg.title}
 						</h3>
 						{pkg.description && (
-							<p className="mt-0.5 text-xs text-muted">{pkg.description}</p>
+							<p className="mt-0.5 text-xs text-ds-fg-muted">{pkg.description}</p>
 						)}
 					</div>
 				</div>
 
-				<div className="border divide-y rounded-2xl border-content-subtle bg-widget divide-content">
+				<div className="border divide-y rounded-2xl border-content-subtle bg-ds-surface divide-content">
 					<div className="flex items-center justify-between px-3 py-3">
-						<span className="text-xs text-muted">مبلغ قابل پرداخت</span>
+						<span className="text-xs text-ds-fg-muted">مبلغ قابل پرداخت</span>
 						<div className="flex items-baseline gap-1">
-							<span className="text-lg font-bold text-content tabular-nums">
+							<span className="text-lg font-bold text-ds-fg tabular-nums">
 								{formatPrice(pkg.price)}
 							</span>
-							<span className="text-xs text-muted">تومان</span>
+							<span className="text-xs text-ds-fg-muted">تومان</span>
 						</div>
 					</div>
 					<div className="px-3 py-2.5">
-						<p className="text-[11px] text-center text-muted">
+						<p className="text-[11px] text-center text-ds-fg-muted">
 							پس از تایید، به درگاه پرداخت منتقل می‌شوید
 						</p>
 					</div>
 				</div>
 
-				<div className="px-3 py-2.5 rounded-2xl border border-info-muted bg-info-subtle">
+				<div className="px-3 py-2.5 rounded-2xl border border-info-muted bg-ds-info-fill">
 					<p className="text-[11px] text-info-hover">
 						💡 سکه‌های خریداری شده بلافاصله پس از پرداخت موفق به حساب شما اضافه
 						می‌شوند.

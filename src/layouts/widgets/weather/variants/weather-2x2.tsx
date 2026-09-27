@@ -32,7 +32,7 @@ export const Weather2x2: React.FC<Weather2x2Props> = ({
 		<section
 			aria-label="آب و هوا"
 			aria-busy={!fetchedWeather}
-			className="flex flex-col justify-between w-full h-full my-auto p-3.5 select-none overflow-hidden text-right bg-content rounded-widget bg-glass"
+			className="flex flex-col justify-between w-full h-full my-auto p-3.5 select-none overflow-hidden text-right bg-ds-surface-2 rounded-widget bg-glass"
 		>
 			<header className="flex items-center justify-between w-full gap-2">
 				<div className="flex items-center justify-center shrink-0">
@@ -45,23 +45,23 @@ export const Weather2x2: React.FC<Weather2x2Props> = ({
 					) : (
 						<div
 							aria-hidden="true"
-							className="rounded-full w-14 h-14 bg-hovered animate-pulse"
+							className="rounded-full w-14 h-14 bg-ds-fill-2 animate-pulse"
 						/>
 					)}
 				</div>
 
 				<div className="flex flex-col items-end min-w-0 gap-1">
-					<span className="max-w-30 text-xs font-medium truncate text-muted">
+					<span className="max-w-30 text-xs font-medium truncate text-ds-fg-muted">
 						{cityName || 'تهران'}
 					</span>
 
 					<div className="flex items-center gap-2.5 mt-0.5">
 						<div className="flex flex-col items-end gap-0.5">
-							<span className="text-xs font-semibold leading-tight truncate text-content max-w-32.5">
+							<span className="text-xs font-semibold leading-tight truncate text-ds-fg max-w-32.5">
 								{description || 'صاف'}
 							</span>
 
-							<dl className="flex items-center gap-2 text-[10px] font-medium text-muted">
+							<dl className="flex items-center gap-2 text-[10px] font-medium text-ds-fg-muted">
 								<div className="flex items-center gap-0.5">
 									<dt className="flex items-center">
 										<Icon
@@ -90,7 +90,7 @@ export const Weather2x2: React.FC<Weather2x2Props> = ({
 							</dl>
 						</div>
 
-						<span className="text-4xl font-black leading-none tracking-tight text-content">
+						<span className="text-4xl font-black leading-none tracking-tight text-ds-fg">
 							<data value={temp.value}>{temp.value}</data>
 							<span className="text-lg font-medium">{temp.symbol}</span>
 						</span>
@@ -110,7 +110,7 @@ export const Weather2x2: React.FC<Weather2x2Props> = ({
 						>
 							<time
 								dateTime={at.clone().locale('en').format()}
-								className="text-[11px] font-medium text-muted w-full"
+								className="text-[11px] font-medium text-ds-fg-muted w-full"
 							>
 								{at.format('HH:mm')}
 							</time>
@@ -124,11 +124,11 @@ export const Weather2x2: React.FC<Weather2x2Props> = ({
 							) : (
 								<div
 									aria-hidden="true"
-									className="w-5 h-5 rounded-full bg-hovered animate-pulse"
+									className="w-5 h-5 rounded-full bg-ds-fill-2 animate-pulse"
 								/>
 							)}
 
-							<span className="text-xs font-bold leading-none text-content">
+							<span className="text-xs font-bold leading-none text-ds-fg">
 								<data value={itemTemp.value}>{itemTemp.value}</data>°
 							</span>
 						</li>

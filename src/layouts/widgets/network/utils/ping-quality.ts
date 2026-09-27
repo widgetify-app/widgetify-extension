@@ -11,10 +11,10 @@ const QUALITY_LABELS: Record<PingQuality, string> = {
 }
 
 const QUALITY_TEXT_CLASS: Record<PingQuality, string> = {
-	unknown: 'text-muted',
-	good: 'text-success',
-	fair: 'text-warning',
-	poor: 'text-error',
+	unknown: 'text-ds-fg-muted',
+	good: 'text-ds-success',
+	fair: 'text-ds-warning',
+	poor: 'text-ds-danger',
 }
 
 export function getPingQuality(ping: number | null): PingQuality {

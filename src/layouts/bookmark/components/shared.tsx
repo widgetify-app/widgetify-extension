@@ -18,7 +18,7 @@ export function TypeSelector({
 				onClick={() => setType('BOOKMARK')}
 				label={
 					<div
-						className={`flex items-center gap-1 ${type === 'BOOKMARK' ? 'text-primary' : 'text-muted'}`}
+						className={`flex items-center gap-1 ${type === 'BOOKMARK' ? 'text-ds-brand' : 'text-ds-fg-muted'}`}
 					>
 						<Icon name="bookmark" />
 						بوکمارک
@@ -32,7 +32,7 @@ export function TypeSelector({
 				onClick={() => setType('FOLDER')}
 				label={
 					<div
-						className={`flex items-center gap-1 ${type === 'FOLDER' ? 'text-primary' : 'text-muted'}`}
+						className={`flex items-center gap-1 ${type === 'FOLDER' ? 'text-ds-brand' : 'text-ds-fg-muted'}`}
 					>
 						<Icon name="folder" />
 						پوشه

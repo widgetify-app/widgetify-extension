@@ -26,14 +26,14 @@ export function ProfileProgressNotification({ className }: Prop) {
 		>
 			<div className="flex flex-row items-center w-full gap-2 rounded-xl ">
 				<RadialProgressSmall percentage={profilePercentage} size={15} />
-				<p className="text-[11px] w-fit font-normal text-muted">
+				<p className="text-[11px] w-fit font-normal text-ds-fg-muted">
 					پروفایلت رو کامل کن و پاداش بگیر!
 				</p>
 			</div>
 			<div className="flex items-start justify-between">
 				<button
 					type="button"
-					className="flex p-0.5 transition-opacity rounded-md cursor-pointer top-2 left-2 bg-subtle text-faint hover:bg-danger-subtle hover:text-error"
+					className="flex p-0.5 transition-opacity rounded-md cursor-pointer top-2 left-2 bg-ds-fill text-faint hover:bg-ds-danger-fill hover:text-ds-danger"
 					onClick={(e) => {
 						e.preventDefault()
 						e.stopPropagation()
@@ -73,7 +73,7 @@ const RadialProgressSmall = ({ percentage }: any) => {
 					cy={size / 2}
 					r={radius}
 					fill="none"
-					// className="stroke-primary"
+					// className="stroke-ds-brand"
 					className="stroke-subtle"
 					strokeWidth={strokeWidth}
 				/>
@@ -91,7 +91,7 @@ const RadialProgressSmall = ({ percentage }: any) => {
 				/>
 			</svg>
 			{/* Small Percentage Text */}
-			<span className="absolute text-xs font-bold text-subtle">
+			<span className="absolute text-xs font-bold text-ds-fg-faint">
 				{safePercentage}%
 			</span>
 		</div>

@@ -174,14 +174,14 @@ export function FreeWidgetCanvas() {
 							className="relative w-full p-2 border rounded-2xl bg-content-strong border-subtle"
 						>
 							<div className="flex items-center justify-between pb-1 mb-2 border-b border-subtle">
-								<div className="flex items-center gap-1.5 font-bold text-xs text-content">
+								<div className="flex items-center gap-1.5 font-bold text-xs text-ds-fg">
 									<span>{def.emoji}</span>
 									<span>{def.label}</span>
 								</div>
 								<button
 									type="button"
 									onClick={() => removeWidget(widget.instanceId)}
-									className="text-error text-xs hover:bg-danger-subtle px-2 py-0.5 rounded-lg transition-colors"
+									className="text-ds-danger text-xs hover:bg-ds-danger-fill px-2 py-0.5 rounded-lg transition-colors"
 								>
 									حذف
 								</button>

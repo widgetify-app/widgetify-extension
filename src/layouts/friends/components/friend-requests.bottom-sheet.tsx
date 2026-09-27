@@ -60,7 +60,7 @@ export const FriendRequestsBottomSheet = ({ isOpen, onClose }: Prop) => {
 					/>
 				</>
 			) : (
-				<span className="flex items-center px-3 text-xs font-medium rounded-lg h-9 text-content bg-content">
+				<span className="flex items-center px-3 text-xs font-medium rounded-lg h-9 text-ds-fg bg-ds-surface-2">
 					ارسال شده
 				</span>
 			)}

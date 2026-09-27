@@ -82,7 +82,7 @@ export function ThemeSelector({ fetched_themes }: Props) {
 	return (
 		<SectionPanel title="انتخاب تم" delay={0.2} size="sm">
 			<div className="space-y-3">
-				<p className="text-sm text-muted">تم ظاهری ویجتیفای را انتخاب کنید.</p>
+				<p className="text-sm text-ds-fg-muted">تم ظاهری ویجتیفای را انتخاب کنید.</p>
 
 				<div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
 					{themes.map((item) => (
@@ -94,7 +94,7 @@ export function ThemeSelector({ fetched_themes }: Props) {
 						/>
 					))}
 					<div
-						className="flex items-center gap-1 justify-center w-full h-full text-xs border border-content   text-muted hover:text-primary! cursor-pointer hover:border-primary! transition-all duration-200 rounded-xl"
+						className="flex items-center gap-1 justify-center w-full h-full text-xs border border-ds-surface-3   text-ds-fg-muted hover:text-ds-brand! cursor-pointer hover:border-ds-brand! transition-all duration-200 rounded-xl"
 						onClick={() => handleMoreClick()}
 					>
 						<Icon name="shoppingBag" size={18} />

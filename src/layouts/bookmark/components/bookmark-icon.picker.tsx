@@ -103,8 +103,8 @@ export function BookmarkIconPicker({ value, url, onChange, size = 'md' }: Props)
 					onDrop={handleDrop}
 					className={`relative shrink-0 flex items-center justify-center cursor-pointer border-2 transition-all duration-200 ${containerSizeClasses} ${
 						isDragging
-							? 'border-primary bg-brand-subtle shadow-lg'
-							: 'border-muted hover:border-brand-strong bg-content-strong hover:bg-content'
+							? 'border-ds-brand bg-ds-brand-fill shadow-lg'
+							: 'border-ds-line hover:border-brand-strong bg-content-strong hover:bg-ds-surface-2'
 					}`}
 					title="انتخاب یا تغییر آیکون"
 				>
@@ -121,7 +121,7 @@ export function BookmarkIconPicker({ value, url, onChange, size = 'md' }: Props)
 						<Icon
 							name="image"
 							size={isLarge ? 24 : 18}
-							className="transition-colors text-muted group-hover:text-primary"
+							className="transition-colors text-ds-fg-muted group-hover:text-ds-brand"
 						/>
 					)}
 
@@ -133,7 +133,7 @@ export function BookmarkIconPicker({ value, url, onChange, size = 'md' }: Props)
 						<Icon
 							name="brush"
 							size={isLarge ? 20 : 16}
-							className="text-content"
+							className="text-ds-fg"
 						/>
 					</div>
 				</button>
@@ -142,7 +142,7 @@ export function BookmarkIconPicker({ value, url, onChange, size = 'md' }: Props)
 					<button
 						type="button"
 						onClick={handleRemove}
-						className="absolute -top-1 -right-1 flex items-center justify-center w-4.5 h-4.5 rounded-full bg-error text-white text-[10px] leading-none shadow-md hover:scale-110 active:scale-95 transition-transform cursor-pointer z-10 border border-content"
+						className="absolute -top-1 -right-1 flex items-center justify-center w-4.5 h-4.5 rounded-full bg-ds-danger text-white text-[10px] leading-none shadow-md hover:scale-110 active:scale-95 transition-transform cursor-pointer z-10 border border-ds-surface-3"
 						title="حذف آیکون"
 					>
 						<span className="mb-0.5">✕</span>

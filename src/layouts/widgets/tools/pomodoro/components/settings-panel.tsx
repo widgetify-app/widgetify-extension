@@ -13,8 +13,8 @@ interface SettingInputProps {
 
 const SettingInput: React.FC<SettingInputProps> = ({ label, value, onChange, max }) => {
 	return (
-		<div className="flex items-center justify-between gap-3 p-2 rounded-lg bg-subtle">
-			<label className="flex-1 text-sm font-medium text-strong">{label}</label>
+		<div className="flex items-center justify-between gap-3 p-2 rounded-lg bg-ds-fill">
+			<label className="flex-1 text-sm font-medium text-ds-fg-strong">{label}</label>
 			<div className="relative w-20">
 				<TextInput
 					type="number"
@@ -27,7 +27,7 @@ const SettingInput: React.FC<SettingInputProps> = ({ label, value, onChange, max
 						}
 					}}
 				/>
-				<span className="absolute text-xs -translate-y-1/2 right-2 top-1/2 text-subtle">
+				<span className="absolute text-xs -translate-y-1/2 right-2 top-1/2 text-ds-fg-faint">
 					<span>{max}</span>
 					<span>/</span>
 				</span>
@@ -73,7 +73,7 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 			<div className={'rounded-xl'}>
 				<h4
 					className={
-						'pb-2 text-sm font-medium text-strong border-b border-content'
+						'pb-2 text-sm font-medium text-ds-fg-strong border-b border-ds-surface-3'
 					}
 				>
 					تنظیمات زمان (دقیقه)
@@ -116,10 +116,10 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 							}
 							className="cursor-pointer"
 						>
-							<p className={'font-medium text-content'}>
+							<p className={'font-medium text-ds-fg'}>
 								فعال‌سازی هشدار صوتی
 							</p>
-							<p className={'text-sm font-light text-muted'}>
+							<p className={'text-sm font-light text-ds-fg-muted'}>
 								با فعال‌سازی این گزینه، در پایان هر دوره کاری، یک هشدار
 								صوتی پخش خواهد شد.
 							</p>

@@ -36,7 +36,7 @@ export function MiniAppRunnerHeader({
 						<Icon
 							name="chevronRight"
 							size={20}
-							className="transition-colors duration-200 text-muted group-hover:text-strong"
+							className="transition-colors duration-200 text-ds-fg-muted group-hover:text-ds-fg-strong"
 						/>
 					</button>
 
@@ -49,19 +49,19 @@ export function MiniAppRunnerHeader({
 							/>
 						)}
 						{isLoadingApp && (
-							<div className="rounded-lg w-7 h-7 skeleton bg-hovered shrink-0" />
+							<div className="rounded-lg w-7 h-7 skeleton bg-ds-fill-2 shrink-0" />
 						)}
 
 						<div>
 							{isLoadingApp ? (
-								<div className="w-24 h-3.5 rounded-full skeleton bg-hovered" />
+								<div className="w-24 h-3.5 rounded-full skeleton bg-ds-fill-2" />
 							) : (
-								<h2 className="text-base font-bold leading-tight text-content">
+								<h2 className="text-base font-bold leading-tight text-ds-fg">
 									{app?.name ?? ''}
 								</h2>
 							)}
 							{app?.description && (
-								<p className="text-xs leading-tight text-subtle">
+								<p className="text-xs leading-tight text-ds-fg-faint">
 									{app.description}
 								</p>
 							)}
@@ -79,13 +79,13 @@ export function MiniAppRunnerHeader({
 							<Icon
 								name="minimize"
 								size={18}
-								className={`transition-colors duration-200 text-muted group-hover:text-strong`}
+								className={`transition-colors duration-200 text-ds-fg-muted group-hover:text-ds-fg-strong`}
 							/>
 						) : (
 							<Icon
 								name="maximize"
 								size={18}
-								className={`transition-colors duration-200 text-muted group-hover:text-strong`}
+								className={`transition-colors duration-200 text-ds-fg-muted group-hover:text-ds-fg-strong`}
 							/>
 						)}
 					</button>
@@ -97,7 +97,7 @@ export function MiniAppRunnerHeader({
 						<Icon
 							name="refresh"
 							size={18}
-							className={`transition-colors duration-200 text-muted group-hover:text-strong ${isLoading || isConnecting ? 'animate-spin' : ''}`}
+							className={`transition-colors duration-200 text-ds-fg-muted group-hover:text-ds-fg-strong ${isLoading || isConnecting ? 'animate-spin' : ''}`}
 						/>
 					</button>
 				</div>

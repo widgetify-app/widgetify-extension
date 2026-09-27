@@ -72,13 +72,13 @@ export function ShortcutsTab() {
 		<div className="w-full max-w-xl mx-auto" dir="rtl">
 			<SectionPanel title="کلیدهای میانبر" delay={0.1}>
 				<div className="space-y-5">
-					<p className="text-muted">
+					<p className="text-ds-fg-muted">
 						کلیدهای میانبر افزونه ویجتیفای برای استفاده راحت‌تر و سریع‌تر
 					</p>
 
 					{Object.entries(categories).map(([category, categoryShortcuts]) => (
 						<div key={category} className="mb-6">
-							<h3 className={'text-base font-medium mb-3 text-content'}>
+							<h3 className={'text-base font-medium mb-3 text-ds-fg'}>
 								{category}
 							</h3>
 							<div className="space-y-2">
@@ -86,10 +86,10 @@ export function ShortcutsTab() {
 									<div
 										key={shortcut.id}
 										className={
-											'flex items-center justify-between p-3 rounded-lg border border-content'
+											'flex items-center justify-between p-3 rounded-lg border border-ds-surface-3'
 										}
 									>
-										<span className={'text-content'}>
+										<span className={'text-ds-fg'}>
 											{shortcut.description}
 										</span>
 										<div className={'px-3 py-1 text-sm'} dir="ltr">

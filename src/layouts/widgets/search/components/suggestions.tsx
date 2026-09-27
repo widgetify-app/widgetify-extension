@@ -25,7 +25,7 @@ export function Suggestions({
 					<li
 						key={item.text}
 						className={`relative flex items-center rounded-xl transition-ui ${
-							isSelected ? 'bg-hovered' : 'hover:bg-subtle'
+							isSelected ? 'bg-ds-fill-2' : 'hover:bg-ds-fill'
 						}`}
 					>
 						<button
@@ -44,11 +44,11 @@ export function Suggestions({
 								name={item.isRecent ? 'history' : 'search'}
 								size={15}
 								aria-hidden="true"
-								className={`shrink-0 ${isSelected ? 'text-primary' : 'text-faint'}`}
+								className={`shrink-0 ${isSelected ? 'text-ds-brand' : 'text-faint'}`}
 							/>
 							<span
 								className={`text-sm font-medium truncate ${
-									isSelected ? 'text-content font-bold' : 'text-muted'
+									isSelected ? 'text-ds-fg font-bold' : 'text-ds-fg-muted'
 								}`}
 							>
 								{item.text}
@@ -64,7 +64,7 @@ export function Suggestions({
 									e.stopPropagation()
 									onRemove(item.text)
 								}}
-								className="flex items-center justify-center w-6 h-6 mr-1 ml-2 bg-transparent border-none rounded-full cursor-pointer shrink-0 text-faint transition-ui hover:bg-hovered hover:text-content focus-visible:focus-ring"
+								className="flex items-center justify-center w-6 h-6 mr-1 ml-2 bg-transparent border-none rounded-full cursor-pointer shrink-0 text-faint transition-ui hover:bg-ds-fill-2 hover:text-ds-fg focus-visible:focus-ring"
 							>
 								<Icon name="close" size={14} aria-hidden="true" />
 							</button>

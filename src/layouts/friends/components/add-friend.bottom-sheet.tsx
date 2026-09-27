@@ -78,26 +78,26 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 			<div className="flex flex-col gap-3 p-5">
 				<div className="flex items-center justify-center">
 					<div className="relative mb-2">
-						<div className="flex items-center justify-center w-16 h-16 rounded-xl bg-content">
-							<Icon name="usersPlus" className="text-content" size={26} />
+						<div className="flex items-center justify-center w-16 h-16 rounded-xl bg-ds-surface-2">
+							<Icon name="usersPlus" className="text-ds-fg" size={26} />
 						</div>
-						<div className="absolute inset-0 rounded-full bg-content blur-xl opacity-40" />
+						<div className="absolute inset-0 rounded-full bg-ds-surface-2 blur-xl opacity-40" />
 					</div>
 				</div>
 
 				<div className="text-center">
-					<p className="text-sm leading-relaxed text-muted">
+					<p className="text-sm leading-relaxed text-ds-fg-muted">
 						برای افزودن دوست جدید، نام کاربری او را وارد کنید
 					</p>
 				</div>
 
 				{!canSendRequest && (
-					<div className="flex items-start gap-3 p-4 border rounded-xl bg-warning-subtle border-warning-muted">
+					<div className="flex items-start gap-3 p-4 border rounded-xl bg-ds-warning-fill border-warning-muted">
 						<Icon
 							name="alert"
-							className="w-5 h-5 text-warning flex-shrink-0 mt-0.5"
+							className="w-5 h-5 text-ds-warning flex-shrink-0 mt-0.5"
 						/>
-						<p className="text-sm leading-relaxed text-warning">
+						<p className="text-sm leading-relaxed text-ds-warning">
 							برای ارسال درخواست دوستی، ابتدا باید نام کاربری خود را در بخش
 							پروفایل تنظیم کنید.
 						</p>
@@ -108,7 +108,7 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 					<div className="space-y-2">
 						<label
 							htmlFor="friend-username"
-							className="block text-sm font-medium text-strong"
+							className="block text-sm font-medium text-ds-fg-strong"
 						>
 							نام کاربری
 						</label>
@@ -126,7 +126,7 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 						/>
 
 						{translatedError && (
-							<p className="flex items-center gap-1 text-sm text-error">
+							<p className="flex items-center gap-1 text-sm text-ds-danger">
 								<Icon name="alert" className="w-4 h-4" />
 								{translatedError}
 							</p>

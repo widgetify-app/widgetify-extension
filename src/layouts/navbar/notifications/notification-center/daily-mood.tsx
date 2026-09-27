@@ -81,12 +81,12 @@ export function DailyMoodNotification({ className }: Prop) {
 		>
 			<div className="flex-1 min-w-0 ">
 				<div className="flex items-center justify-between">
-					<h4 className="text-[10px] font-medium truncate text-content">
+					<h4 className="text-[10px] font-medium truncate text-ds-fg">
 						{GetUserFirstName(user?.name || '')}، امروز حالت چطوره؟
 					</h4>
 					<button
 						type="button"
-						className="flex p-0.5 transition-opacity rounded-md cursor-pointer top-2 left-2 bg-subtle text-faint hover:bg-danger-subtle hover:text-error"
+						className="flex p-0.5 transition-opacity rounded-md cursor-pointer top-2 left-2 bg-ds-fill text-faint hover:bg-ds-danger-fill hover:text-ds-danger"
 						onClick={(e) => {
 							e.preventDefault()
 							e.stopPropagation()
@@ -107,8 +107,8 @@ export function DailyMoodNotification({ className }: Prop) {
 								}
 								className={`p-1.5 w-full shadow-xs rounded-xl transition-all cursor-pointer ${
 									mood === option.value
-										? `bg-${option.colorClass} text-${option.colorClass}-content scale-105`
-										: `bg-raised hover:bg-raised-strong opacity-80 hover:opacity-100 hover:scale-95`
+										? `${option.activeClass} scale-105`
+										: `bg-ds-surface-3 hover:bg-raised-strong opacity-80 hover:opacity-100 hover:scale-95`
 								}`}
 							>
 								{isAdding ? (

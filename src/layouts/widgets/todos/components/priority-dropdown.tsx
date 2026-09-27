@@ -6,23 +6,23 @@ const priorityOptions = [
 	{
 		value: TodoPriority.Low,
 		label: 'کم اهمیت',
-		color: 'text-success',
+		color: 'text-ds-success',
 		bg: 'bg-success-subtle',
 		border: 'border-success-muted',
 	},
 	{
 		value: TodoPriority.Medium,
 		label: 'متوسط',
-		color: 'text-warning',
-		bg: 'bg-warning-subtle',
+		color: 'text-ds-warning',
+		bg: 'bg-ds-warning-fill',
 		border: 'border-warning-muted',
 	},
 	{
 		value: TodoPriority.High,
 		label: 'مهم',
-		color: 'text-error',
-		bg: 'bg-danger-subtle',
-		border: 'border-danger-muted',
+		color: 'text-ds-danger',
+		bg: 'bg-ds-danger-fill',
+		border: 'border-ds-danger-fill-2',
 	},
 ]
 
@@ -51,13 +51,13 @@ export function PriorityDropdown({ priority, setPriority }: PriorityDropdownProp
 			}
 			position="top-left"
 		>
-			<div className="flex flex-col gap-1 border min-w-32 bg-content border-content rounded-2xl p-1.5">
+			<div className="flex flex-col gap-1 border min-w-32 bg-ds-surface-2 border-ds-surface-3 rounded-2xl p-1.5">
 				<button
 					onClick={() => setPriority(undefined)}
 					className={`px-3 py-2 rounded-lg text-xs text-right cursor-pointer transition-colors ${
 						priority === undefined
-							? 'bg-brand-subtle text-primary font-medium'
-							: 'text-muted hover:bg-subtle'
+							? 'bg-ds-brand-fill text-ds-brand font-medium'
+							: 'text-ds-fg-muted hover:bg-ds-fill'
 					}`}
 				>
 					بدون اولویت
@@ -70,7 +70,7 @@ export function PriorityDropdown({ priority, setPriority }: PriorityDropdownProp
 						className={`px-3 py-2 rounded-lg text-xs text-right cursor-pointer transition-colors ${
 							priority === option.value
 								? `${option.bg} ${option.color} font-medium`
-								: 'text-muted hover:bg-subtle'
+								: 'text-ds-fg-muted hover:bg-ds-fill'
 						}`}
 					>
 						{option.label}

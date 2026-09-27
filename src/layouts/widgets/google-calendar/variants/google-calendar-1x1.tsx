@@ -52,16 +52,16 @@ export const GoogleCalendar1x1: React.FC<GoogleCalendar1x1Props> = ({
 						<Icon
 							name="googleCalendar"
 							size={14}
-							className="text-primary"
+							className="text-ds-brand"
 							aria-hidden="true"
 						/>
-						<span className="text-[10.4cqh] font-bold text-content">
+						<span className="text-[10.4cqh] font-bold text-ds-fg">
 							تقویم
 						</span>
 					</span>
 					<time
 						dateTime={todayIso}
-						className="text-[9.4cqh] text-muted tabular-nums"
+						className="text-[9.4cqh] text-ds-fg-muted tabular-nums"
 					>
 						{today.format('jD jMMMM')}
 					</time>
@@ -71,17 +71,17 @@ export const GoogleCalendar1x1: React.FC<GoogleCalendar1x1Props> = ({
 					<Icon
 						name="check"
 						size={18}
-						className="mb-1 text-primary"
+						className="mb-1 text-ds-brand"
 						aria-hidden="true"
 					/>
-					<span className="text-[10.4cqh] font-bold text-content leading-tight">
+					<span className="text-[10.4cqh] font-bold text-ds-fg leading-tight">
 						بدون برنامه
 					</span>
-					<span className="text-[8.3cqh] text-muted mt-0.5">امروز آزادتری</span>
+					<span className="text-[8.3cqh] text-ds-fg-muted mt-0.5">امروز آزادتری</span>
 				</div>
 
 				<div className="text-center shrink-0">
-					<span className="text-[9.4cqh] font-medium text-muted">
+					<span className="text-[9.4cqh] font-medium text-ds-fg-muted">
 						{today.format('dddd')}
 					</span>
 				</div>
@@ -103,7 +103,7 @@ export const GoogleCalendar1x1: React.FC<GoogleCalendar1x1Props> = ({
 				'flex flex-col justify-between w-full h-full p-[10.4cqh] text-start select-none transition-ui',
 				'focus-visible:focus-ring',
 				hasAction && 'cursor-pointer active:scale-[0.98]',
-				isNow && 'bg-brand-subtle'
+				isNow && 'bg-ds-brand-fill'
 			)}
 		>
 			<span className="flex items-center justify-between shrink-0">
@@ -113,21 +113,21 @@ export const GoogleCalendar1x1: React.FC<GoogleCalendar1x1Props> = ({
 							aria-hidden="true"
 							className="relative flex w-2 h-2 shrink-0"
 						>
-							<span className="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-primary" />
-							<span className="relative inline-flex w-2 h-2 rounded-full bg-primary" />
+							<span className="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-ds-brand" />
+							<span className="relative inline-flex w-2 h-2 rounded-full bg-ds-brand" />
 						</span>
 					) : (
 						<Icon
 							name="googleCalendar"
 							size={13}
-							className="text-primary"
+							className="text-ds-brand"
 							aria-hidden="true"
 						/>
 					)}
 					<span
 						className={cn(
 							'text-[9.4cqh] font-bold',
-							isNow ? 'text-primary' : 'text-muted'
+							isNow ? 'text-ds-brand' : 'text-ds-fg-muted'
 						)}
 					>
 						{isNow ? 'در حال جلسه' : 'جلسه بعدی'}
@@ -136,17 +136,17 @@ export const GoogleCalendar1x1: React.FC<GoogleCalendar1x1Props> = ({
 
 				<time
 					dateTime={toDateTimeAttr(start)}
-					className="text-[9.4cqh] font-bold text-content tabular-nums"
+					className="text-[9.4cqh] font-bold text-ds-fg tabular-nums"
 				>
 					{startTimeStr}
 				</time>
 			</span>
 
 			<span className="block py-1 my-auto">
-				<span className="block text-[11.5cqh] font-bold text-content truncate leading-snug">
+				<span className="block text-[11.5cqh] font-bold text-ds-fg truncate leading-snug">
 					{title}
 				</span>
-				<span className="block text-[8.3cqh] text-muted mt-0.5 tabular-nums">
+				<span className="block text-[8.3cqh] text-ds-fg-muted mt-0.5 tabular-nums">
 					{isNow
 						? `${minsRemaining} دقیقه مانده`
 						: `امروز (${classifiedEvents.length} برنامه)`}
@@ -154,17 +154,17 @@ export const GoogleCalendar1x1: React.FC<GoogleCalendar1x1Props> = ({
 			</span>
 
 			<span className="flex items-center justify-between pt-0.5 shrink-0 border-t border-faint">
-				<span className="text-[8.3cqh] text-muted truncate max-w-[50px]">
+				<span className="text-[8.3cqh] text-ds-fg-muted truncate max-w-[50px]">
 					{today.format('dddd')}
 				</span>
 
 				{event.hangoutLink ? (
-					<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-primary text-primary-content text-[8.3cqh] font-bold shrink-0">
+					<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-ds-brand text-ds-on-brand text-[8.3cqh] font-bold shrink-0">
 						<Icon name="videoCamera" size={8} aria-hidden="true" />
 						<span>ورود</span>
 					</span>
 				) : (
-					<span className="text-[8.3cqh] font-bold text-primary">مشاهده</span>
+					<span className="text-[8.3cqh] font-bold text-ds-brand">مشاهده</span>
 				)}
 			</span>
 		</button>

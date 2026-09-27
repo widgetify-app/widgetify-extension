@@ -24,7 +24,7 @@ export const RequireVerification = ({
 		return (
 			<div className="flex items-center justify-center h-full">
 				<div className="text-center">
-					<div className="w-10 h-10 mx-auto border-t-2 border-b-2 rounded-full animate-spin border-primary"></div>
+					<div className="w-10 h-10 mx-auto border-t-2 border-b-2 rounded-full animate-spin border-ds-brand"></div>
 					<p className="mt-2">در حال بارگذاری...</p>
 				</div>
 			</div>
@@ -45,7 +45,7 @@ export const RequireVerification = ({
 					>
 						<Icon name="verifyUser" size={20} className="text-success-bold" />
 						<h3 className="text-lg font-semibold">نیاز به تأیید حساب</h3>
-						<p className={'text-xs text-content text-center'}>
+						<p className={'text-xs text-ds-fg text-center'}>
 							برای دسترسی به این بخش، لطفا حساب کاربری خود را تأیید کنید.
 						</p>
 					</div>
@@ -60,11 +60,11 @@ export const RequireVerification = ({
 				initial={{ opacity: 0, y: 10 }}
 				animate={{ opacity: 1, y: 0 }}
 				className={
-					'flex h-full flex-col items-center justify-center p-4 text-center rounded-md text-content'
+					'flex h-full flex-col items-center justify-center p-4 text-center rounded-md text-ds-fg'
 				}
 			>
 				<h3 className="mb-2 text-xl font-semibold">نیاز به تأیید حساب</h3>
-				<p className={'text-xs mb-4 text-content text-center'}>
+				<p className={'text-xs mb-4 text-ds-fg text-center'}>
 					برای دسترسی به این بخش، لطفا حساب کاربری خود را تأیید کنید.
 				</p>
 				<Button onClick={handleVerificationClick} size="sm">

@@ -47,13 +47,13 @@ export const GoogleCalendarWeekStrip: React.FC<GoogleCalendarWeekStripProps> = (
 								'relative flex flex-col items-center justify-center w-full py-1.5',
 								'rounded-xl transition-all cursor-pointer focus-visible:focus-ring',
 								isDaySelected &&
-									'bg-primary text-primary-content shadow-xs font-bold',
+									'bg-ds-brand text-ds-on-brand shadow-xs font-bold',
 								!isDaySelected &&
 									isDayToday &&
-									'bg-brand-subtle text-primary font-bold hover:bg-brand-muted',
+									'bg-ds-brand-fill text-ds-brand font-bold hover:bg-ds-brand-fill-2',
 								!isDaySelected &&
 									!isDayToday &&
-									'text-muted hover:bg-content hover:text-strong font-medium'
+									'text-ds-fg-muted hover:bg-ds-surface-2 hover:text-ds-fg-strong font-medium'
 							)}
 						>
 							<span
@@ -88,7 +88,7 @@ export const GoogleCalendarWeekStrip: React.FC<GoogleCalendarWeekStripProps> = (
 											isDaySelected
 												? 'bg-current'
 												: isDayToday
-													? 'bg-primary'
+													? 'bg-ds-brand'
 													: 'bg-brand-strong'
 										)}
 									/>

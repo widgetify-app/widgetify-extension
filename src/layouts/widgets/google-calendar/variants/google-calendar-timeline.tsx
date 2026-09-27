@@ -12,7 +12,7 @@ import { isSameJalaliDay, toIsoDateKey } from '@widget/calendar/utils/jalali-dat
 const SKELETON_ROWS = 4
 
 const navButtonClass =
-	'flex items-center justify-center w-7 h-7 rounded-lg cursor-pointer transition-ui text-muted opacity-70 hover:bg-raised hover:opacity-100 focus-visible:focus-ring'
+	'flex items-center justify-center w-7 h-7 rounded-lg cursor-pointer transition-ui text-ds-fg-muted opacity-70 hover:bg-ds-surface-3 hover:opacity-100 focus-visible:focus-ring'
 
 interface GoogleCalendarTimelineProps {
 	selectedDay: WidgetifyDate
@@ -66,17 +66,17 @@ export const GoogleCalendarTimeline: React.FC<GoogleCalendarTimelineProps> = ({
 					type="button"
 					onClick={handleResetDay}
 					title="برو به امروز"
-					className="flex flex-col items-center px-2 py-1 rounded-lg cursor-pointer select-none transition-ui hover:bg-raised focus-visible:focus-ring"
+					className="flex flex-col items-center px-2 py-1 rounded-lg cursor-pointer select-none transition-ui hover:bg-ds-surface-3 focus-visible:focus-ring"
 				>
 					<time
 						dateTime={toIsoDateKey(selectedDay)}
-						className="text-[12px] font-black leading-tight text-content"
+						className="text-[12px] font-black leading-tight text-ds-fg"
 					>
 						{isSelectedToday
 							? `امروز، ${selectedDay.format('dddd')}`
 							: selectedDay.format('dddd')}
 					</time>
-					<span className="text-[9px] leading-none mt-0.5 text-muted">
+					<span className="text-[9px] leading-none mt-0.5 text-ds-fg-muted">
 						{selectedDay.format('jD jMMMM jYYYY')}
 					</span>
 				</button>

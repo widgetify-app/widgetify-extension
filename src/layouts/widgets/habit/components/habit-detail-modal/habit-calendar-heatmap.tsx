@@ -125,7 +125,7 @@ export function HabitCalendar({ habit, color, today }: HabitCalendarProps) {
 			)
 		} else if (value >= 4) {
 			indicator = (
-				<span className="flex items-center justify-center gap-0.5 absolute right-2 -bottom-0.5 w-6 h-3 rounded-t-sm font-bold text-muted bg-content">
+				<span className="flex items-center justify-center gap-0.5 absolute right-2 -bottom-0.5 w-6 h-3 rounded-t-sm font-bold text-ds-fg-muted bg-ds-surface-2">
 					<span className="text-[8px] mt-0.5">{value}</span>
 					<span
 						className="w-1 h-1 rounded-full"
@@ -185,7 +185,7 @@ export function HabitCalendar({ habit, color, today }: HabitCalendarProps) {
 	return (
 		<div className="w-full rounded-xl">
 			<div className="flex items-center justify-between mb-2">
-				<h3 className="text-xs font-medium text-content">
+				<h3 className="text-xs font-medium text-ds-fg">
 					{currentDate.format('jMMMM jYYYY')}
 				</h3>
 				<div className="flex gap-0.5 items-center">
@@ -195,7 +195,7 @@ export function HabitCalendar({ habit, color, today }: HabitCalendarProps) {
 							type="button"
 							onClick={goToToday}
 							aria-label="برو به ماه جاری"
-							className="flex items-center justify-center rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 transition-ui hover:bg-hovered hover:opacity-100 focus-visible:focus-ring"
+							className="flex items-center justify-center rounded-full cursor-pointer h-7 w-7 text-ds-fg-muted opacity-70 transition-ui hover:bg-ds-fill-2 hover:opacity-100 focus-visible:focus-ring"
 						>
 							<Icon name="backRight" size={12} aria-hidden="true" />
 						</button>
@@ -204,7 +204,7 @@ export function HabitCalendar({ habit, color, today }: HabitCalendarProps) {
 						type="button"
 						onClick={() => changeMonth(-1)}
 						aria-label="ماه قبل"
-						className="flex items-center justify-center rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 transition-ui hover:bg-hovered hover:opacity-100 focus-visible:focus-ring"
+						className="flex items-center justify-center rounded-full cursor-pointer h-7 w-7 text-ds-fg-muted opacity-70 transition-ui hover:bg-ds-fill-2 hover:opacity-100 focus-visible:focus-ring"
 					>
 						<Icon name="chevronRight" size={12} aria-hidden="true" />
 					</button>
@@ -212,7 +212,7 @@ export function HabitCalendar({ habit, color, today }: HabitCalendarProps) {
 						type="button"
 						onClick={() => changeMonth(1)}
 						aria-label="ماه بعد"
-						className="flex items-center justify-center rounded-full cursor-pointer h-7 w-7 text-muted opacity-70 transition-ui hover:bg-hovered hover:opacity-100 focus-visible:focus-ring"
+						className="flex items-center justify-center rounded-full cursor-pointer h-7 w-7 text-ds-fg-muted opacity-70 transition-ui hover:bg-ds-fill-2 hover:opacity-100 focus-visible:focus-ring"
 					>
 						<Icon name="chevronLeft" size={12} aria-hidden="true" />
 					</button>
@@ -224,7 +224,7 @@ export function HabitCalendar({ habit, color, today }: HabitCalendarProps) {
 					<div
 						key={weekday}
 						aria-hidden="true"
-						className="flex items-center justify-center h-6 text-xs font-medium text-muted"
+						className="flex items-center justify-center h-6 text-xs font-medium text-ds-fg-muted"
 					>
 						{weekday}
 					</div>

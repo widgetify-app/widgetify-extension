@@ -26,7 +26,7 @@ export function Mood2x1({
 			className="flex flex-col justify-between w-full h-full p-[10.4cqh] overflow-hidden text-right select-none group"
 		>
 			<header className="flex items-center justify-between px-0.5">
-				<h3 className="text-[11.5cqh] font-bold leading-none text-content">
+				<h3 className="text-[11.5cqh] font-bold leading-none text-ds-fg">
 					امروز چه حسی داری؟
 				</h3>
 
@@ -36,7 +36,7 @@ export function Mood2x1({
 						type="button"
 						onClick={onOpenMenu}
 						aria-label="گزینه‌های حال روزانه"
-						className="p-1 leading-none transition-ui rounded-lg opacity-0 cursor-pointer text-muted hover:text-strong hover:bg-hovered group-hover:opacity-100 focus-visible:focus-ring"
+						className="p-1 leading-none transition-ui rounded-lg opacity-0 cursor-pointer text-ds-fg-muted hover:text-ds-fg-strong hover:bg-ds-fill-2 group-hover:opacity-100 focus-visible:focus-ring"
 					>
 						<Icon name="menuOption" size={13} aria-hidden="true" />
 					</button>
@@ -59,8 +59,8 @@ export function Mood2x1({
 								'flex flex-col items-center justify-center py-[4cqh] px-0.5 rounded-xl border transition-ui cursor-pointer',
 								'disabled:cursor-not-allowed disabled:opacity-60 focus-visible:focus-ring',
 								isSelected
-									? 'bg-brand-subtle border-primary shadow-xs font-black'
-									: 'bg-content hover:bg-hovered border-transparent'
+									? 'bg-ds-brand-fill border-ds-brand shadow-xs font-black'
+									: 'bg-ds-surface-2 hover:bg-ds-fill-2 border-transparent'
 							)}
 						>
 							<span
@@ -73,7 +73,7 @@ export function Mood2x1({
 								aria-hidden="true"
 								className={cn(
 									'text-[9.4cqh] mt-0.5 truncate leading-none',
-									isSelected ? 'font-bold text-primary' : 'text-muted'
+									isSelected ? 'font-bold text-ds-brand' : 'text-ds-fg-muted'
 								)}
 							>
 								{opt.label}

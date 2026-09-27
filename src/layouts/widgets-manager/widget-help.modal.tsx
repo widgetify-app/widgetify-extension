@@ -112,8 +112,8 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 								className={cn(
 									'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition-all cursor-pointer font-medium',
 									isCurrent
-										? 'bg-primary text-primary-content font-bold shadow-xs'
-										: 'bg-content-strong hover:bg-raised text-muted'
+										? 'bg-ds-brand text-ds-on-brand font-bold shadow-xs'
+										: 'bg-content-strong hover:bg-ds-surface-3 text-ds-fg-muted'
 								)}
 							>
 								<Icon name={tab.icon} size={14} />
@@ -134,21 +134,21 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 						playsInline
 						className="object-cover w-full h-full"
 					/>
-					<div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-widget-strong backdrop-blur-md border border-subtle text-[11px] font-bold text-content shadow-xs">
+					<div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-widget-strong backdrop-blur-md border border-subtle text-[11px] font-bold text-ds-fg shadow-xs">
 						{activeTab.badge}
 					</div>
 				</div>
 
 				{/* Tab Detail Info */}
 				<div className="flex items-start gap-3 p-3.5 rounded-2xl bg-content-muted border border-subtle transition-all">
-					<div className="w-9 h-9 rounded-xl bg-brand-subtle text-primary flex items-center justify-center shrink-0 mt-0.5">
+					<div className="w-9 h-9 rounded-xl bg-ds-brand-fill text-ds-brand flex items-center justify-center shrink-0 mt-0.5">
 						<Icon name={activeTab.icon} size={18} />
 					</div>
 					<div className="flex flex-col gap-1 justify-center">
-						<span className="text-xs font-bold text-content">
+						<span className="text-xs font-bold text-ds-fg">
 							{activeTab.title}
 						</span>
-						<p className="text-[11px] leading-relaxed text-muted">
+						<p className="text-[11px] leading-relaxed text-ds-fg-muted">
 							{activeTab.description}
 						</p>
 					</div>
@@ -158,10 +158,10 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 				<div className="flex flex-col gap-2 p-3 border bg-content-subtle rounded-2xl border-subtle">
 					{activeTab.tips.map((tip, idx) => (
 						<div key={tip} className="flex items-start gap-2.5">
-							<span className="w-5 h-5 rounded-full bg-brand-subtle text-primary flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">
+							<span className="w-5 h-5 rounded-full bg-ds-brand-fill text-ds-brand flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">
 								{idx + 1}
 							</span>
-							<p className="text-xs leading-relaxed text-content">{tip}</p>
+							<p className="text-xs leading-relaxed text-ds-fg">{tip}</p>
 						</div>
 					))}
 				</div>

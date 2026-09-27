@@ -13,7 +13,7 @@ const fmt = (n: number) => new Intl.NumberFormat('fa-IR').format(n)
 
 export function CoinPackageCard({ package: pkg, onPurchase }: CoinPackageCardProps) {
 	return (
-		<div className="flex flex-col overflow-hidden transition-all duration-200 border bg-widget-strong rounded-2xl border-subtle hover:border-brand-muted hover:shadow-sm group">
+		<div className="flex flex-col overflow-hidden transition-all duration-200 border bg-widget-strong rounded-2xl border-subtle hover:border-ds-brand-fill-2 hover:shadow-sm group">
 			{/* Coin visual area */}
 			<div className="flex items-center justify-center py-6 bg-content-subtle">
 				<div className="flex flex-col items-center gap-2">
@@ -25,7 +25,7 @@ export function CoinPackageCard({ package: pkg, onPurchase }: CoinPackageCardPro
 							className="relative w-10 h-10 transition-transform duration-200 group-hover:scale-105"
 						/>
 					</div>
-					<p className="text-2xl font-bold leading-none text-primary tabular-nums">
+					<p className="text-2xl font-bold leading-none text-ds-brand tabular-nums">
 						{fmt(pkg.coin)}
 					</p>
 					<p className="text-[10px] text-faint font-medium">ویج‌کوین</p>
@@ -35,7 +35,7 @@ export function CoinPackageCard({ package: pkg, onPurchase }: CoinPackageCardPro
 			{/* Info */}
 			<div className="flex flex-col gap-2.5 px-3 py-2.5 border-t border-faint">
 				<div>
-					<p className="text-[12px] font-semibold text-strong leading-snug truncate">
+					<p className="text-[12px] font-semibold text-ds-fg-strong leading-snug truncate">
 						{pkg.title}
 					</p>
 					{pkg.description && (
@@ -47,7 +47,7 @@ export function CoinPackageCard({ package: pkg, onPurchase }: CoinPackageCardPro
 
 				<div className="flex items-center justify-between">
 					<div className="flex items-baseline gap-0.5">
-						<span className="text-sm font-bold text-strong tabular-nums">
+						<span className="text-sm font-bold text-ds-fg-strong tabular-nums">
 							{fmt(pkg.price)}
 						</span>
 						<span className="text-[10px] text-faint mr-0.5">تومان</span>

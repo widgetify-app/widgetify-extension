@@ -176,7 +176,7 @@ export function BookmarkFolderModal({
 			title={
 				<div className="flex items-center gap-2">
 					<span className="text-xl">📁</span>
-					<span className="max-w-xs text-sm font-bold truncate text-content">
+					<span className="max-w-xs text-sm font-bold truncate text-ds-fg">
 						{currentFolder?.title || 'پوشه بوکمارک'}
 					</span>
 				</div>

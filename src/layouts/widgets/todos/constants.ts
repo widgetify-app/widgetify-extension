@@ -28,24 +28,24 @@ export const PRIORITY_LABELS: Record<string, string> = {
 }
 
 export const PRIORITY_BORDER_CLASS: Record<string, string> = {
-	high: 'border-error!',
-	medium: 'border-warning!',
-	low: 'border-success!',
-	default: 'border-primary!',
+	high: 'border-ds-danger!',
+	medium: 'border-ds-warning!',
+	low: 'border-ds-success!',
+	default: 'border-ds-brand!',
 }
 
 export const PRIORITY_CHECKED_CLASS: Record<string, string> = {
-	high: 'border-error! bg-error!',
-	medium: 'border-warning! bg-warning!',
-	low: 'border-success! bg-success!',
-	default: 'border-primary! bg-primary!',
+	high: 'border-ds-danger! bg-ds-danger!',
+	medium: 'border-ds-warning! bg-ds-warning!',
+	low: 'border-ds-success! bg-ds-success!',
+	default: 'border-ds-brand! bg-ds-brand!',
 }
 
 export const PRIORITY_BADGE_CLASS: Record<string, string> = {
-	high: 'bg-danger-subtle text-error',
-	medium: 'bg-warning-subtle text-warning',
-	low: 'bg-success-subtle text-success',
-	default: 'bg-brand-subtle text-primary',
+	high: 'bg-ds-danger-fill text-ds-danger',
+	medium: 'bg-ds-warning-fill text-ds-warning',
+	low: 'bg-success-subtle text-ds-success',
+	default: 'bg-ds-brand-fill text-ds-brand',
 }
 
 export function priorityClass(map: Record<string, string>, priority?: string): string {

@@ -30,7 +30,7 @@ export function AutocompleteConsentModal({
 			direction="rtl"
 		>
 			<div className="flex flex-col gap-4 pt-1 searchbox-item">
-				<p className="px-1 text-sm leading-relaxed text-content">
+				<p className="px-1 text-sm leading-relaxed text-ds-fg">
 					با فعال کردن این گزینه، هنگام تایپ در باکس جستجو، پیشنهادها مستقیما از
 					گوگل دریافت می‌شوند. هیچ اطلاعاتی ذخیره نمی‌شود.
 				</p>

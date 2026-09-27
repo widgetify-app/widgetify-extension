@@ -4,39 +4,39 @@ export const NOTE_PREVIEW_CHARACTER_LIMIT = 120
 
 export const STICKY_COLOR_MAP: Record<string, StickyColorTheme> = {
 	default: {
-		bg: 'bg-content bg-glass',
+		bg: 'bg-ds-surface-2 bg-glass',
 		border: 'border-subtle',
-		text: 'text-content',
-		headerBg: 'bg-hovered',
+		text: 'text-ds-fg',
+		headerBg: 'bg-ds-fill-2',
 		divider: 'border-subtle',
 	},
 	low: {
-		bg: 'bg-success',
+		bg: 'bg-ds-success',
 		border: 'border-success-content-muted',
-		text: 'text-success-content',
+		text: 'text-ds-on-success',
 		headerBg: 'bg-success-content-subtle',
 		divider: 'border-success-content-muted',
 	},
 	medium: {
-		bg: 'bg-warning',
+		bg: 'bg-ds-warning',
 		border: 'border-warning-content-muted',
-		text: 'text-warning-content',
+		text: 'text-ds-on-warning',
 		headerBg: 'bg-warning-content-subtle',
 		divider: 'border-warning-content-muted',
 	},
 	high: {
-		bg: 'bg-error',
+		bg: 'bg-ds-danger',
 		border: 'border-danger-content-muted',
-		text: 'text-error-content',
+		text: 'text-ds-on-danger',
 		headerBg: 'bg-danger-content-subtle',
 		divider: 'border-danger-content-muted',
 	},
 }
 
 export const PRIORITY_BG_COLORS: Record<NotePriority, string> = {
-	low: 'bg-success text-success-content',
-	medium: 'bg-warning text-warning-content',
-	high: 'bg-error text-error-content',
+	low: 'bg-ds-success text-ds-on-success',
+	medium: 'bg-ds-warning text-ds-on-warning',
+	high: 'bg-ds-danger text-ds-on-danger',
 }
 
 export const PRIORITY_OPTIONS: {

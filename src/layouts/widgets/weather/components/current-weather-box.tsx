@@ -46,7 +46,7 @@ export const CurrentWeatherBox: React.FC<CurrentWeatherBoxProps> = ({
 	return (
 		<>
 			<header
-				className={`relative p-2 overflow-hidden bg-subtle hover:bg-hovered border border-content-subtle ${banner ? 'border-r-0' : ''} rounded-2xl border-content min-h-28 max-h-28`}
+				className={`relative p-2 overflow-hidden bg-ds-fill hover:bg-ds-fill-2 border border-content-subtle ${banner ? 'border-r-0' : ''} rounded-2xl border-ds-surface-3 min-h-28 max-h-28`}
 			>
 				{banner ? (
 					<div
@@ -61,24 +61,24 @@ export const CurrentWeatherBox: React.FC<CurrentWeatherBoxProps> = ({
 				) : (
 					<div
 						aria-hidden="true"
-						className="absolute inset-0 bg-gradient-to-br from-content to-content-muted"
+						className="absolute inset-0 bg-gradient-to-br from-ds-surface-2 to-content-muted"
 					/>
 				)}
 
 				<div className="relative z-10 flex items-center justify-between py-1">
 					<div className="flex flex-col gap-1.5">
-						<span className="text-xs font-medium text-muted drop-shadow-lg">
+						<span className="text-xs font-medium text-ds-fg-muted drop-shadow-lg">
 							{cityName}
 						</span>
 
-						<span className="flex items-baseline gap-1.5 text-4xl font-bold leading-none text-content drop-shadow-lg">
+						<span className="flex items-baseline gap-1.5 text-4xl font-bold leading-none text-ds-fg drop-shadow-lg">
 							<data value={temp.value}>{temp.value}</data>
-							<span className="text-xl font-medium text-content drop-shadow-lg">
+							<span className="text-xl font-medium text-ds-fg drop-shadow-lg">
 								{temp.symbol}
 							</span>
 						</span>
 
-						<span className="text-xs leading-tight text-muted drop-shadow-lg">
+						<span className="text-xs leading-tight text-ds-fg-muted drop-shadow-lg">
 							{weather?.description?.text} •{' '}
 							{weather?.temperature?.temp_description}
 						</span>
@@ -93,7 +93,7 @@ export const CurrentWeatherBox: React.FC<CurrentWeatherBoxProps> = ({
 					) : (
 						<div
 							aria-hidden="true"
-							className="w-20 h-20 rounded-lg animate-pulse bg-hovered"
+							className="w-20 h-20 rounded-lg animate-pulse bg-ds-fill-2"
 						/>
 					)}
 				</div>
@@ -104,17 +104,17 @@ export const CurrentWeatherBox: React.FC<CurrentWeatherBoxProps> = ({
 					{metrics.map((metric) => (
 						<div
 							key={metric.id}
-							className="flex items-center justify-center gap-1.5 py-2 transition-colors bg-content border rounded-xl border-content"
+							className="flex items-center justify-center gap-1.5 py-2 transition-colors bg-ds-surface-2 border rounded-xl border-ds-surface-3"
 						>
 							<dt className="flex items-center">
 								<Icon
 									name={metric.icon}
-									className="w-4 h-4 text-muted"
+									className="w-4 h-4 text-ds-fg-muted"
 									aria-hidden="true"
 								/>
 								<span className="sr-only">{metric.label}</span>
 							</dt>
-							<dd className="text-xs font-medium text-muted">
+							<dd className="text-xs font-medium text-ds-fg-muted">
 								{metric.value}
 							</dd>
 						</div>

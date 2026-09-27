@@ -55,7 +55,7 @@ export const ProfileHeader = ({
 	}
 
 	return (
-		<div className="relative flex flex-col items-center justify-center border bg-widget-muted border-content rounded-3xl">
+		<div className="relative flex flex-col items-center justify-center border bg-widget-muted border-ds-surface-3 rounded-3xl">
 			<input
 				ref={fileInputRef}
 				type="file"
@@ -124,12 +124,12 @@ export const ProfileHeader = ({
 							placeholder={user?.name || 'کاربر'}
 							size="xl"
 							onClick={() => setMenuOpen((prev) => !prev)}
-							className="w-16 h-16 text-2xl transition-all cursor-pointer ring-4 ring-brand-muted"
+							className="w-16 h-16 text-2xl transition-all cursor-pointer ring-4 ring-ds-brand-fill-2"
 						/>
 						<button
 							type="button"
 							onClick={() => setMenuOpen((prev) => !prev)}
-							className="absolute z-30 p-1 text-primary-content transition-all -translate-x-3 translate-y-3 rounded-full shadow-xl cursor-pointer bottom-2 -right-3 bg-primary hover:scale-110 active:scale-95"
+							className="absolute z-30 p-1 text-ds-on-brand transition-all -translate-x-3 translate-y-3 rounded-full shadow-xl cursor-pointer bottom-2 -right-3 bg-ds-brand hover:scale-110 active:scale-95"
 						>
 							<Icon name="cameraPlus" size={12} />
 						</button>
@@ -161,7 +161,7 @@ export const ProfileHeader = ({
 					</PopoverMenu>
 
 					{showEditBadge('avatar') && (
-						<span className="absolute w-2.5 h-2.5 rounded-full right-10 bottom-10 -translate-x-1 translate-y-1 bg-error animate-pulse z-30"></span>
+						<span className="absolute w-2.5 h-2.5 rounded-full right-10 bottom-10 -translate-x-1 translate-y-1 bg-ds-danger animate-pulse z-30"></span>
 					)}
 
 					{(() => {
@@ -195,7 +195,7 @@ export const ProfileHeader = ({
 					})()}
 
 					<div className="absolute left-0 right-0 z-40 flex flex-col items-center bottom-2">
-						<h2 className="text-xl font-bold text-center text-content">
+						<h2 className="text-xl font-bold text-center text-ds-fg">
 							{user?.name || 'کاربر'}
 						</h2>
 						<p className="text-sm opacity-60 text-center mt-0.5" dir="ltr">

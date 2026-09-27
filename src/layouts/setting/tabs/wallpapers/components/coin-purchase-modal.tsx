@@ -76,21 +76,21 @@ export function CoinPurchaseModal({
 
 				<div className="space-y-2">
 					<div className="flex items-center justify-between">
-						<h3 className="text-base font-semibold text-content">
+						<h3 className="text-base font-semibold text-ds-fg">
 							{wallpaper.name || 'تصویر زمینه'}
 						</h3>
 						{wallpaperPrice > 0 && (
 							<UserCoin coins={wallpaperPrice} title="قیمت خرید دائمی" />
 						)}
 					</div>
-					<p className="text-xs text-muted">
+					<p className="text-xs text-ds-fg-muted">
 						این تصویر زمینه را با ویج‌کوین باز کنید و برای همیشه از آن استفاده
 						کنید
 					</p>
 				</div>
 
 				{isAuthenticated && !canAfford && wallpaperPrice > 0 && (
-					<div className="flex items-center justify-between px-3 py-2 text-xs rounded-xl bg-danger-subtle text-error">
+					<div className="flex items-center justify-between px-3 py-2 text-xs rounded-xl bg-ds-danger-fill text-ds-danger">
 						<span>
 							موجودی ویج‌کوین ناکافیه ({wallpaperPrice - userCoins} ویج‌کوین
 							کسری داری)

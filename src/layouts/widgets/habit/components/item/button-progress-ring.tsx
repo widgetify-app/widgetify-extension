@@ -49,7 +49,7 @@ export function SegmentedProgressRing({
 				d={pathData}
 				fill="none"
 				strokeLinecap={'round'}
-				className={isFilled ? `` : `stroke-content`}
+				className={isFilled ? `` : `stroke-ds-surface-2`}
 				stroke={isFilled ? color : undefined}
 				strokeWidth={strokeWidth}
 				opacity={isFilled ? 1 : 0.8}

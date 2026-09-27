@@ -36,7 +36,7 @@ export const GoogleCalendarTimelineItem = ({
 
 	const hasAction = !!(event.hangoutLink || event.location)
 
-	const accentClass = isNow ? 'bg-primary' : isNext ? 'bg-warning' : 'bg-raised'
+	const accentClass = isNow ? 'bg-ds-brand' : isNext ? 'bg-ds-warning' : 'bg-ds-surface-3'
 
 	const timeLabel = isAllDay ? durationLabel : `${startTimeStr} تا ${endTimeStr}`
 
@@ -52,13 +52,13 @@ export const GoogleCalendarTimelineItem = ({
 				isNow ? 'py-1' : 'py-1.5',
 				isPast && 'opacity-35',
 				hasAction && !isPast
-					? 'cursor-pointer hover:bg-subtle active:scale-[0.98]'
+					? 'cursor-pointer hover:bg-ds-fill active:scale-[0.98]'
 					: 'cursor-default'
 			)}
 		>
 			<div className="flex flex-col items-end justify-center shrink-0 w-10 gap-0.5 pl-1">
 				{isAllDay ? (
-					<span className="text-[9px] font-bold leading-tight text-muted">
+					<span className="text-[9px] font-bold leading-tight text-ds-fg-muted">
 						{durationLabel}
 					</span>
 				) : (
@@ -68,10 +68,10 @@ export const GoogleCalendarTimelineItem = ({
 							className={cn(
 								'text-[11px] font-bold leading-none tabular-nums',
 								isNow
-									? 'text-primary'
+									? 'text-ds-brand'
 									: isNext
-										? 'text-warning'
-										: 'text-content'
+										? 'text-ds-warning'
+										: 'text-ds-fg'
 							)}
 						>
 							{startTimeStr}
@@ -80,7 +80,7 @@ export const GoogleCalendarTimelineItem = ({
 							dateTime={isoTime(end)}
 							className={cn(
 								'text-[9px] leading-none tabular-nums',
-								isNow ? 'text-brand-strong' : 'text-muted'
+								isNow ? 'text-brand-strong' : 'text-ds-fg-muted'
 							)}
 						>
 							{endTimeStr}
@@ -101,15 +101,15 @@ export const GoogleCalendarTimelineItem = ({
 					<span
 						className={cn(
 							'flex-1 text-[11px] leading-snug truncate',
-							isNow ? 'font-bold text-content' : 'font-semibold',
-							isPast ? 'line-through text-muted' : 'text-content'
+							isNow ? 'font-bold text-ds-fg' : 'font-semibold',
+							isPast ? 'line-through text-ds-fg-muted' : 'text-ds-fg'
 						)}
 					>
 						{event.summary || 'بدون عنوان'}
 					</span>
 
 					{isNow && event.hangoutLink ? (
-						<span className="flex items-center gap-1 px-2 py-0.5 mb-1 rounded-lg bg-primary text-primary-content text-[9px] font-medium shrink-0">
+						<span className="flex items-center gap-1 px-2 py-0.5 mb-1 rounded-lg bg-ds-brand text-ds-on-brand text-[9px] font-medium shrink-0">
 							<Icon name="videoCamera" size={9} aria-hidden="true" />
 							ورود به جلسه
 						</span>
@@ -117,14 +117,14 @@ export const GoogleCalendarTimelineItem = ({
 						<Icon
 							name="videoCamera"
 							size={11}
-							className="shrink-0 text-muted"
+							className="shrink-0 text-ds-fg-muted"
 							aria-hidden="true"
 						/>
 					) : event.location ? (
 						<Icon
 							name="location"
 							size={11}
-							className="shrink-0 text-muted"
+							className="shrink-0 text-ds-fg-muted"
 							aria-hidden="true"
 						/>
 					) : null}
@@ -133,25 +133,25 @@ export const GoogleCalendarTimelineItem = ({
 				{isNow ? (
 					<div className="flex items-center gap-1.5">
 						<span className="relative flex w-1.5 h-1.5 shrink-0">
-							<span className="absolute inline-flex w-full h-full rounded-full opacity-60 animate-ping bg-primary" />
-							<span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-primary" />
+							<span className="absolute inline-flex w-full h-full rounded-full opacity-60 animate-ping bg-ds-brand" />
+							<span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-ds-brand" />
 						</span>
-						<span className="text-[9px] font-bold text-primary">
+						<span className="text-[9px] font-bold text-ds-brand">
 							در حال برگزاری
 						</span>
-						<span className="text-[9px] text-muted tabular-nums">
+						<span className="text-[9px] text-ds-fg-muted tabular-nums">
 							· {minsRemaining} دقیقه مانده
 						</span>
 					</div>
 				) : (
 					<div className="flex items-center min-w-0 gap-2">
 						{isNext && (
-							<span className="text-[9px] font-bold text-warning shrink-0">
+							<span className="text-[9px] font-bold text-ds-warning shrink-0">
 								بعدی
 							</span>
 						)}
 						{event.location && (
-							<span className="text-[9px] text-muted truncate max-w-[70px]">
+							<span className="text-[9px] text-ds-fg-muted truncate max-w-[70px]">
 								{event.location}
 							</span>
 						)}
@@ -164,14 +164,14 @@ export const GoogleCalendarTimelineItem = ({
 											content={attendee.email}
 											position="top"
 										>
-											<span className="w-3.5 h-3.5 rounded-full bg-raised border border-subtle flex items-center justify-center text-[5px] font-bold text-muted">
+											<span className="w-3.5 h-3.5 rounded-full bg-ds-surface-3 border border-subtle flex items-center justify-center text-[5px] font-bold text-ds-fg-muted">
 												{getInitials(attendee.email)}
 											</span>
 										</Tooltip>
 									))}
 								</div>
 								{event.attendees.length > 3 && (
-									<span className="text-[8px] text-muted">
+									<span className="text-[8px] text-ds-fg-muted">
 										+{event.attendees.length - 3}
 									</span>
 								)}
@@ -182,7 +182,7 @@ export const GoogleCalendarTimelineItem = ({
 			</div>
 
 			{isNow && (
-				<div className="absolute bottom-0 left-1 right-1 h-[1.5px] bg-brand-subtle">
+				<div className="absolute bottom-0 left-1 right-1 h-[1.5px] bg-ds-brand-fill">
 					<div
 						className="h-full transition-all duration-1000 bg-brand-strong"
 						style={{ width: `${elapsedPercent}%` }}

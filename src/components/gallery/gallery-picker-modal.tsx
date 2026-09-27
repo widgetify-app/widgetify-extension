@@ -141,7 +141,7 @@ export function GalleryPickerModal({
 								</div>
 							)
 						) : assets.length === 0 ? (
-							<div className="flex flex-col items-center justify-center h-full py-20 text-muted">
+							<div className="flex flex-col items-center justify-center h-full py-20 text-ds-fg-muted">
 								<Icon
 									name="image"
 									size={40}

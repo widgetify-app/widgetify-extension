@@ -75,13 +75,13 @@ interface StatCardProps {
 
 function StatCard({ label, value, suffix, hint }: StatCardProps) {
 	return (
-		<div className="flex flex-col p-2.5 border rounded-2xl bg-subtle border-subtle">
-			<div className="mb-1 text-xs font-medium text-muted">{label}</div>
+		<div className="flex flex-col p-2.5 border rounded-2xl bg-ds-fill border-subtle">
+			<div className="mb-1 text-xs font-medium text-ds-fg-muted">{label}</div>
 			<div className="flex items-baseline gap-1">
-				<span className="text-lg font-bold text-content">{value}</span>
-				{suffix && <span className="text-[11px] text-muted">{suffix}</span>}
+				<span className="text-lg font-bold text-ds-fg">{value}</span>
+				{suffix && <span className="text-[11px] text-ds-fg-muted">{suffix}</span>}
 			</div>
-			{hint && <div className="text-[10px] text-muted truncate">{hint}</div>}
+			{hint && <div className="text-[10px] text-ds-fg-muted truncate">{hint}</div>}
 		</div>
 	)
 }

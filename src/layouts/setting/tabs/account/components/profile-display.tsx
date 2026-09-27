@@ -130,7 +130,7 @@ export const ProfileDisplay = () => {
 
 			<div className="overflow-hidden border border-content-subtle rounded-2xl bg-widget-subtle">
 				<DisplayRow
-					icon={<Icon name="user" className="text-primary" />}
+					icon={<Icon name="user" className="text-ds-brand" />}
 					label="نام و نام خانوادگی"
 					value={user?.name}
 					editable
@@ -151,7 +151,7 @@ export const ProfileDisplay = () => {
 				/>
 
 				<DisplayRow
-					icon={<Icon name="mail" className="text-secondary" />}
+					icon={<Icon name="mail" className="text-ds-secondary" />}
 					label="ایمیل"
 					value={user?.email}
 					isLtr
@@ -162,7 +162,7 @@ export const ProfileDisplay = () => {
 				/>
 
 				<DisplayRow
-					icon={<Icon name="phone" className="text-secondary" />}
+					icon={<Icon name="phone" className="text-ds-secondary" />}
 					label="شماره موبایل"
 					value={
 						user?.phone ? (
@@ -200,7 +200,7 @@ export const ProfileDisplay = () => {
 				/>
 
 				<DisplayRow
-					icon={<Icon name="calendar" className="text-warning" />}
+					icon={<Icon name="calendar" className="text-ds-warning" />}
 					label="تاریخ تولد"
 					value={formatJalaliDate(user?.birthDate)}
 					showBadge={showEditBadge('birthDate')}
@@ -211,7 +211,7 @@ export const ProfileDisplay = () => {
 				/>
 
 				<DisplayRow
-					icon={<Icon name="briefcase" className="text-info" />}
+					icon={<Icon name="briefcase" className="text-ds-info" />}
 					label="شغل"
 					value={user?.occupation?.label}
 					showBadge={showEditBadge('occupation')}
@@ -222,7 +222,7 @@ export const ProfileDisplay = () => {
 				/>
 
 				<DisplayRow
-					icon={<Icon name="outlineHeart" className="text-error" />}
+					icon={<Icon name="outlineHeart" className="text-ds-danger" />}
 					label="علایق"
 					editable
 					value={
@@ -239,7 +239,7 @@ export const ProfileDisplay = () => {
 									</Chip>
 								))}
 								{user.interests.length > 2 && (
-									<span className="flex items-center justify-center px-1.5 h-6 text-[10px] font-medium rounded-full bg-raised text-muted">
+									<span className="flex items-center justify-center px-1.5 h-6 text-[10px] font-medium rounded-full bg-ds-surface-3 text-ds-fg-muted">
 										+{user.interests.length - 2}
 									</span>
 								)}
@@ -339,20 +339,20 @@ const DisplayRow = ({
 				<div className="relative flex items-center justify-center w-7 h-7 rounded-xl bg-content-muted">
 					{icon}
 					{showBadge && (
-						<span className="absolute w-2 h-2 rounded-full left-0.5 -top-0.5 bg-error animate-pulse"></span>
+						<span className="absolute w-2 h-2 rounded-full left-0.5 -top-0.5 bg-ds-danger animate-pulse"></span>
 					)}
 				</div>
 				<span className="text-[10px] font-medium opacity-60">{label}</span>
 			</div>
 			<div
-				className={`relative flex justify-end text-xs w-fit pr-1 font-semibold text-content ${isLtr ? 'dir-ltr' : 'dir-rtl'}`}
+				className={`relative flex justify-end text-xs w-fit pr-1 font-semibold text-ds-fg ${isLtr ? 'dir-ltr' : 'dir-rtl'}`}
 			>
 				<div className="overflow-y-auto max-h-12 scrollbar-none">
 					{value || '-'}
 				</div>
 				{editable && (
 					<div
-						className="absolute p-1 -translate-y-1/2 cursor-pointer text-muted -right-4 top-1/2 active:scale-95"
+						className="absolute p-1 -translate-y-1/2 cursor-pointer text-ds-fg-muted -right-4 top-1/2 active:scale-95"
 						onClick={onClickEdit}
 					>
 						<Icon name="edit" />

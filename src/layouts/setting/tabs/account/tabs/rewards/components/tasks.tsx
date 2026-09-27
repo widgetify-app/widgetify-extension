@@ -14,8 +14,8 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 			<div className="flex flex-col gap-2 py-2">
 				{isLoading ? (
 					<div className="py-12 text-center">
-						<div className="w-8 h-8 mx-auto border-4 rounded-full border-brand-muted border-t-primary animate-spin"></div>
-						<p className="mt-4 text-sm text-muted">در حال بارگذاری...</p>
+						<div className="w-8 h-8 mx-auto border-4 rounded-full border-ds-brand-fill-2 border-t-ds-brand animate-spin"></div>
+						<p className="mt-4 text-sm text-ds-fg-muted">در حال بارگذاری...</p>
 					</div>
 				) : tasks.length > 0 ? (
 					tasks.map((taskItem, index) => {
@@ -25,7 +25,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 								className={`relative overflow-hidden rounded-2xl transition-all duration-300 ${
 									taskItem.isDone
 										? 'bg-gradient-to-r from-success-subtle to-success-subtle border border-success-muted'
-										: 'bg-gradient-to-r from-widget to-content border border-content'
+										: 'bg-gradient-to-r from-ds-surface to-ds-surface-2 border border-ds-surface-3'
 								}`}
 							>
 								<div className="relative flex items-center justify-between gap-3 p-3">
@@ -33,8 +33,8 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 										<div
 											className={`relative flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 ${
 												taskItem.isDone
-													? 'bg-gradient-to-br from-success to-success-bold shadow-md shadow-success-muted'
-													: 'bg-gradient-to-br from-primary to-brand-bold shadow-sm shadow-brand-muted'
+													? 'bg-gradient-to-br from-ds-success to-success-bold shadow-md shadow-success-muted'
+													: 'bg-gradient-to-br from-ds-brand to-brand-bold shadow-sm shadow-ds-brand-fill-2'
 											}`}
 										>
 											{taskItem.isDone ? (
@@ -43,7 +43,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 														name="check"
 														className="w-5 h-5 text-white drop-shadow-lg"
 													/>
-													<div className="absolute inset-0 rounded-full bg-over-image animate-ping"></div>
+													<div className="absolute inset-0 rounded-full bg-ds-image-fill animate-ping"></div>
 												</div>
 											) : (
 												<Icon
@@ -57,7 +57,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 												className={`text-sm font-medium transition-all duration-200 ${
 													taskItem.isDone
 														? 'text-success-bold line-through'
-														: 'text-strong'
+														: 'text-ds-fg-strong'
 												}`}
 											>
 												{taskItem.task}
@@ -69,7 +69,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 															href={taskItem.button.url}
 															target="_blank"
 															rel="noopener noreferrer"
-															className="inline-flex items-center px-3 py-1 text-xs font-medium transition-all duration-200 rounded-lg bg-brand-subtle text-primary hover:bg-brand-muted"
+															className="inline-flex items-center px-3 py-1 text-xs font-medium transition-all duration-200 rounded-lg bg-ds-brand-fill text-ds-brand hover:bg-ds-brand-fill-2"
 														>
 															<Icon
 																name="externalLink"
@@ -86,14 +86,14 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 										className={`flex items-center flex-shrink-0 gap-1.5 px-2.5 py-1 rounded-lg ${
 											taskItem.isDone
 												? 'bg-success-subtle'
-												: 'bg-brand-subtle'
+												: 'bg-ds-brand-fill'
 										}`}
 									>
 										<span
 											className={`text-sm font-bold ${
 												taskItem.isDone
-													? 'text-success'
-													: 'text-primary'
+													? 'text-ds-success'
+													: 'text-ds-brand'
 											}`}
 										>
 											+{taskItem.reward_coin}
@@ -110,14 +110,14 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 					})
 				) : (
 					<div className="py-12 text-center">
-						<div className="relative flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-content to-raised">
-							<Icon name="check" className="w-8 h-8 text-muted" />
+						<div className="relative flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-ds-surface-2 to-ds-surface-3">
+							<Icon name="check" className="w-8 h-8 text-ds-fg-muted" />
 							<div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-transparent to-over-image-sheen"></div>
 						</div>
-						<p className="text-sm font-medium text-muted">
+						<p className="text-sm font-medium text-ds-fg-muted">
 							هیچ ماموریتی یافت نشد
 						</p>
-						<p className="mt-1 text-xs text-subtle">
+						<p className="mt-1 text-xs text-ds-fg-faint">
 							ماموریت‌های جدید به زودی اضافه می‌شوند
 						</p>
 					</div>

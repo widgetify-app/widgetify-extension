@@ -33,8 +33,8 @@ export function WallpaperSidebar({
 		<aside className="w-42 shrink-0 flex flex-col gap-3 h-full overflow-hidden select-none">
 			<div className="flex flex-col flex-1 min-h-0 bg-raised-subtle border border-subtle rounded-2xl p-2.5 overflow-hidden">
 				<div className="flex items-center justify-between px-2 py-1.5 mb-1">
-					<span className="text-xs font-semibold text-muted">پوشه ها</span>
-					<div className="w-8 h-0.5 bg-hovered rounded-full" />
+					<span className="text-xs font-semibold text-ds-fg-muted">پوشه ها</span>
+					<div className="w-8 h-0.5 bg-ds-fill-2 rounded-full" />
 				</div>
 
 				<div className="flex-1 overflow-y-auto space-y-1 pr-0.5">
@@ -43,8 +43,8 @@ export function WallpaperSidebar({
 						onClick={() => onSelectCategory(null)}
 						className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all duration-200 cursor-pointer ${
 							selectedCategoryId === null
-								? 'bg-brand text-white shadow-sm'
-								: 'text-content hover:bg-subtle'
+								? 'bg-ds-brand text-white shadow-sm'
+								: 'text-ds-fg hover:bg-ds-fill'
 						}`}
 					>
 						<div className="flex items-center gap-2">
@@ -54,8 +54,8 @@ export function WallpaperSidebar({
 							<span
 								className={`text-[10px] px-1.5 py-0.5 rounded-md ${
 									selectedCategoryId === null
-										? 'bg-over-image text-white'
-										: 'bg-hovered text-muted'
+										? 'bg-ds-image-fill text-white'
+										: 'bg-ds-fill-2 text-ds-fg-muted'
 								}`}
 							>
 								{totalCount.toLocaleString('fa-IR')}
@@ -73,8 +73,8 @@ export function WallpaperSidebar({
 								onClick={() => onSelectCategory(cat.id)}
 								className={`relative w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all duration-200 cursor-pointer ${
 									isSelected
-										? 'bg-brand text-white shadow-sm'
-										: 'text-content hover:bg-subtle'
+										? 'bg-ds-brand text-white shadow-sm'
+										: 'text-ds-fg hover:bg-ds-fill'
 								}`}
 							>
 								<div className="flex items-center gap-2 truncate">
@@ -94,23 +94,23 @@ export function WallpaperSidebar({
 				<button
 					type="button"
 					onClick={() => setIsFilterOpen((prev) => !prev)}
-					className="w-full flex items-center justify-between px-2 py-1 text-xs font-semibold text-content cursor-pointer"
+					className="w-full flex items-center justify-between px-2 py-1 text-xs font-semibold text-ds-fg cursor-pointer"
 				>
 					<div className="flex items-center gap-1.5">
-						<Icon name="filter" size={13} className="text-brand" />
+						<Icon name="filter" size={13} className="text-ds-brand" />
 						<span>فیلتر</span>
 					</div>
 					<Icon
 						name={isFilterOpen ? 'chevronUp' : 'chevronDown'}
 						size={14}
-						className="text-muted"
+						className="text-ds-fg-muted"
 					/>
 				</button>
 
 				{isFilterOpen && (
 					<div className="space-y-2.5 pt-1">
 						<div className="space-y-1">
-							<span className="text-[11px] text-muted block px-1">
+							<span className="text-[11px] text-ds-fg-muted block px-1">
 								نوع تصویر
 							</span>
 							<TabNavigation
@@ -137,7 +137,7 @@ export function WallpaperSidebar({
 						</div>
 
 						<div className="space-y-1">
-							<span className="text-[11px] text-muted block px-1">
+							<span className="text-[11px] text-ds-fg-muted block px-1">
 								دسترسی
 							</span>
 							<TabNavigation

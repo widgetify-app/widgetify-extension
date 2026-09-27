@@ -86,7 +86,7 @@ export function SelectCity({ size }: Prop) {
 				<button
 					onClick={onModalOpen}
 					disabled={isSettingCity}
-					className="flex items-center justify-between w-full p-3 text-right transition-colors border cursor-pointer rounded-2xl bg-widget border-content hover:bg-content disabled:opacity-50 disabled:cursor-not-allowed"
+					className="flex items-center justify-between w-full p-3 text-right transition-colors border cursor-pointer rounded-2xl bg-ds-surface border-ds-surface-3 hover:bg-ds-surface-2 disabled:opacity-50 disabled:cursor-not-allowed"
 				>
 					{isLoadingUser ? (
 						<IconLoading className="mx-auto text-center" />
@@ -98,13 +98,13 @@ export function SelectCity({ size }: Prop) {
 					{isSettingCity ? (
 						<IconLoading />
 					) : (
-						<Icon name="location" className="w-5 h-5 text-primary" />
+						<Icon name="location" className="w-5 h-5 text-ds-brand" />
 					)}
 				</button>
 
 				{error && (
-					<div className="p-3 text-sm text-right duration-300 border rounded-lg border-danger-muted bg-danger-subtle backdrop-blur-sm animate-in fade-in-0">
-						<div className="font-medium text-error">
+					<div className="p-3 text-sm text-right duration-300 border rounded-lg border-ds-danger-fill-2 bg-ds-danger-fill backdrop-blur-sm animate-in fade-in-0">
+						<div className="font-medium text-ds-danger">
 							خطا در دریافت اطلاعات
 						</div>
 						<div className="mt-1 text-danger-bold">
@@ -145,7 +145,7 @@ export function SelectCity({ size }: Prop) {
 
 					<div className="overflow-y-auto min-h-52 max-h-52 custom-scrollbar">
 						{isLoading ? (
-							<div className="flex items-center justify-center p-4 text-center text-primary">
+							<div className="flex items-center justify-center p-4 text-center text-ds-brand">
 								<IconLoading />
 								در حال بارگذاری...
 							</div>
@@ -154,11 +154,11 @@ export function SelectCity({ size }: Prop) {
 								<div
 									key={city.cityId}
 									onClick={() => handleSelectCity(city)}
-									className="flex items-center w-full p-3 text-right transition-all duration-200 border-b cursor-pointer border-content-faint last:border-b-0 group rounded-2xl hover:bg-brand-muted hover:text-primary"
+									className="flex items-center w-full p-3 text-right transition-all duration-200 border-b cursor-pointer border-content-faint last:border-b-0 group rounded-2xl hover:bg-ds-brand-fill-2 hover:text-ds-brand"
 								>
 									<Icon
 										name="location"
-										className="flex-shrink-0 w-5 h-5 ml-3 transition-transform text-primary group-hover:scale-110"
+										className="flex-shrink-0 w-5 h-5 ml-3 transition-transform text-ds-brand group-hover:scale-110"
 									/>
 									<span className="flex-1 font-medium">
 										{city.city}
@@ -166,22 +166,22 @@ export function SelectCity({ size }: Prop) {
 								</div>
 							))
 						) : searchTerm ? (
-							<div className="p-4 text-center text-muted">
+							<div className="p-4 text-center text-ds-fg-muted">
 								نتیجه‌ای یافت نشد
 							</div>
 						) : cities && cities.length === 0 ? (
-							<div className="p-4 text-center text-muted">
+							<div className="p-4 text-center text-ds-fg-muted">
 								هیچ شهری موجود نیست
 							</div>
 						) : (
-							<div className="p-4 text-center text-muted">
+							<div className="p-4 text-center text-ds-fg-muted">
 								شهر مورد نظر خود را جستجو کنید
 							</div>
 						)}
 					</div>
 
-					<div className="pt-2 border-t border-content">
-						<p className="text-sm text-center text-muted">
+					<div className="pt-2 border-t border-ds-surface-3">
+						<p className="text-sm text-center text-ds-fg-muted">
 							اگه شهر شما تو لیست نبود، لطفا اطلاع بدید تا اضافه بشه🤝
 						</p>
 					</div>

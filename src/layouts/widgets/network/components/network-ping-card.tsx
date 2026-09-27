@@ -22,14 +22,14 @@ interface NetworkPingCardProps {
 
 export const NetworkPingCard: React.FC<NetworkPingCardProps> = ({ ping }) => {
 	return (
-		<div className="relative p-3 overflow-hidden border rounded-2xl border-content">
+		<div className="relative p-3 overflow-hidden border rounded-2xl border-ds-surface-3">
 			<div
 				aria-hidden="true"
-				className="absolute inset-0 bg-linear-to-br from-subtle to-transparent"
+				className="absolute inset-0 bg-linear-to-br from-ds-fill to-transparent"
 			/>
 
 			<dl className="relative">
-				<dt className="flex items-center gap-2 mb-1 text-xs font-medium text-muted">
+				<dt className="flex items-center gap-2 mb-1 text-xs font-medium text-ds-fg-muted">
 					<Icon name="router" className="w-4 h-4" aria-hidden="true" />
 					پینگ - زمان پاسخگویی
 				</dt>
@@ -41,7 +41,7 @@ export const NetworkPingCard: React.FC<NetworkPingCardProps> = ({ ping }) => {
 							aria-hidden="true"
 						/>
 						{ping === null ? (
-							<span className="text-muted">اندازه‌گیری نشد</span>
+							<span className="text-ds-fg-muted">اندازه‌گیری نشد</span>
 						) : (
 							<data value={ping}>{ping}ms</data>
 						)}

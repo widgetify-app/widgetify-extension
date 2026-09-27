@@ -81,7 +81,7 @@ export function EngineSelector({ trigger, onSelected }: EngineSelectorProps) {
 						onClick={() => setIsExpanded(!isExpanded)}
 						type="button"
 						aria-label={`موتور جستجو: ${currentEngine.label}`}
-						className="relative flex gap-0.5 items-center justify-start w-10 pr-1 ml-2 transition-all duration-300 cursor-pointer h-7 shrink-0 bg-raised opacity-70 hover:opacity-100 rounded-xl"
+						className="relative flex gap-0.5 items-center justify-start w-10 pr-1 ml-2 transition-all duration-300 cursor-pointer h-7 shrink-0 bg-ds-surface-3 opacity-70 hover:opacity-100 rounded-xl"
 					>
 						<EngineIcon
 							engineId={currentEngine.id}
@@ -90,7 +90,7 @@ export function EngineSelector({ trigger, onSelected }: EngineSelectorProps) {
 						<Icon
 							name="chevronDown"
 							aria-hidden="true"
-							className={`shrink-0 text-muted transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}
+							className={`shrink-0 text-ds-fg-muted transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}
 							size={12}
 						/>
 					</button>
@@ -99,8 +99,8 @@ export function EngineSelector({ trigger, onSelected }: EngineSelectorProps) {
 			onClose={() => setIsExpanded(false)}
 			dropdownClassName="engine-selector"
 		>
-			<div className="flex flex-col gap-1 p-2 border-2 rounded-2xl min-w-40 bg-content border-content">
-				<p className="px-2 mb-1 text-xs font-medium text-muted">
+			<div className="flex flex-col gap-1 p-2 border-2 rounded-2xl min-w-40 bg-ds-surface-2 border-ds-surface-3">
+				<p className="px-2 mb-1 text-xs font-medium text-ds-fg-muted">
 					انتخاب موتور جستجو
 				</p>
 
@@ -115,7 +115,7 @@ export function EngineSelector({ trigger, onSelected }: EngineSelectorProps) {
 							disabled={changeEngineMutation.isPending}
 							aria-pressed={isCurrent}
 							className={`flex items-center gap-2 px-3 py-2 cursor-pointer rounded-xl transition-ui focus-visible:focus-ring ${
-								isCurrent ? 'bg-hovered' : 'hover:bg-subtle'
+								isCurrent ? 'bg-ds-fill-2' : 'hover:bg-ds-fill'
 							}`}
 						>
 							<span className="flex items-center justify-center w-5 h-5 shrink-0">
@@ -127,7 +127,7 @@ export function EngineSelector({ trigger, onSelected }: EngineSelectorProps) {
 							</span>
 							<span className="text-sm font-medium">{engine.label}</span>
 							{isCurrent && (
-								<span className="w-2 h-2 mr-auto rounded-full bg-primary" />
+								<span className="w-2 h-2 mr-auto rounded-full bg-ds-brand" />
 							)}
 						</button>
 					)

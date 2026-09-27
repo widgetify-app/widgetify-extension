@@ -260,14 +260,14 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 								<div className="flex flex-col gap-3 pr-0.5 scrollbar-none md:flex-1 md:min-h-0 md:overflow-y-auto">
 									<div className="flex items-center justify-between pb-2 border-b border-subtle">
 										<div className="flex items-center gap-2">
-											<span className="flex items-center justify-center rounded-xl w-9 h-9 shrink-0 bg-brand-subtle text-primary">
+											<span className="flex items-center justify-center rounded-xl w-9 h-9 shrink-0 bg-ds-brand-fill text-ds-brand">
 												<Icon name={selectedDef.icon} size={19} />
 											</span>
 											<div>
-												<h3 className="text-sm font-bold text-content">
+												<h3 className="text-sm font-bold text-ds-fg">
 													{selectedDef.label}
 												</h3>
-												<p className="text-[11px] text-muted">
+												<p className="text-[11px] text-ds-fg-muted">
 													{selectedDef.canDuplicate
 														? 'امکان افزودن چندین نمونه از این ویجت وجود دارد'
 														: 'ویجت تکی صفحه اصلی'}
@@ -281,7 +281,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 												rounded="xl"
 												onClick={handleOpenSelectedSettings}
 												variant="outline"
-												className="gap-1.5 text-xs px-3 py-1.5 hover:text-primary"
+												className="gap-1.5 text-xs px-3 py-1.5 hover:text-ds-brand"
 											>
 												<Icon name="settings" size={12} />
 												<span>تنظیمات ویجت</span>

@@ -31,7 +31,7 @@ export function Mood1x1({
 				<span
 					className={cn(
 						'px-2 py-0.5 rounded-full text-[10.4cqh] font-bold leading-none transition-colors truncate',
-						currentOption ? 'text-primary' : 'bg-content text-muted'
+						currentOption ? 'text-ds-brand' : 'bg-ds-surface-2 text-ds-fg-muted'
 					)}
 				>
 					{currentOption ? currentOption.label : 'حس امروزت؟'}
@@ -43,7 +43,7 @@ export function Mood1x1({
 						type="button"
 						onClick={onOpenMenu}
 						aria-label="گزینه‌های حال روزانه"
-						className="p-1 leading-none transition-ui rounded-lg opacity-0 cursor-pointer text-muted hover:text-strong hover:bg-hovered group-hover:opacity-100 focus-visible:focus-ring"
+						className="p-1 leading-none transition-ui rounded-lg opacity-0 cursor-pointer text-ds-fg-muted hover:text-ds-fg-strong hover:bg-ds-fill-2 group-hover:opacity-100 focus-visible:focus-ring"
 					>
 						<Icon name="menuOption" size={12} aria-hidden="true" />
 					</button>
@@ -57,7 +57,7 @@ export function Mood1x1({
 				{currentOption ? currentOption.emoji : '🤍'}
 			</span>
 
-			<div className="flex items-center justify-center w-full gap-1.5 p-[4cqh] rounded-full bg-content">
+			<div className="flex items-center justify-center w-full gap-1.5 p-[4cqh] rounded-full bg-ds-surface-2">
 				{moodOptions.map((opt) => {
 					const isSelected = todayMood?.mood === opt.value
 
@@ -77,8 +77,8 @@ export function Mood1x1({
 								'text-[13cqh] transition-ui cursor-pointer',
 								'disabled:cursor-not-allowed disabled:opacity-60 focus-visible:focus-ring',
 								isSelected
-									? 'bg-primary text-primary-content scale-110 shadow-xs'
-									: 'hover:bg-hovered hover:scale-105 opacity-70 hover:opacity-100'
+									? 'bg-ds-brand text-ds-on-brand scale-110 shadow-xs'
+									: 'hover:bg-ds-fill-2 hover:scale-105 opacity-70 hover:opacity-100'
 							)}
 						>
 							<span aria-hidden="true">{opt.emoji}</span>

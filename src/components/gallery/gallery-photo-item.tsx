@@ -24,7 +24,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 	const elementRef = useLazyLoad(loadContent)
 
 	const itemOutlineStyle = isSelected
-		? 'ring-2 ring-primary ring-offset-2 ring-offset-widget'
+		? 'ring-2 ring-ds-brand ring-offset-2 ring-offset-ds-surface'
 		: 'ring-1 ring-subtle hover:ring-brand-bold'
 
 	return (
@@ -35,14 +35,14 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 		>
 			{!loaded && (
 				<div className="flex items-center justify-center w-full min-h-28 bg-raised-subtle">
-					<div className="w-5 h-5 border-2 rounded-full border-brand-muted border-t-primary animate-spin" />
+					<div className="w-5 h-5 border-2 rounded-full border-ds-brand-fill-2 border-t-ds-brand animate-spin" />
 				</div>
 			)}
 
 			{error && (
-				<div className="flex flex-col items-center justify-center w-full min-h-28 bg-danger-subtle">
-					<Icon name="alert" className="text-error" />
-					<p className="mt-1 text-[10px] text-muted">خطا در بارگذاری</p>
+				<div className="flex flex-col items-center justify-center w-full min-h-28 bg-ds-danger-fill">
+					<Icon name="alert" className="text-ds-danger" />
+					<p className="mt-1 text-[10px] text-ds-fg-muted">خطا در بارگذاری</p>
 				</div>
 			)}
 
@@ -76,7 +76,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 					</div>
 
 					{isSelected && (
-						<div className="absolute p-1 text-primary-content rounded-full shadow-sm top-2 left-2 bg-primary">
+						<div className="absolute p-1 text-ds-on-brand rounded-full shadow-sm top-2 left-2 bg-ds-brand">
 							<Icon name="check" size={12} />
 						</div>
 					)}
@@ -90,7 +90,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 									: 'رایگان برای کاربران پرو'
 							}
 						>
-							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip-hover backdrop-blur-xs text-white text-[10px] font-bold shadow-xs border border-over-image">
+							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-ds-vip-hover backdrop-blur-xs text-white text-[10px] font-bold shadow-xs border border-ds-image-line">
 								<Icon name="diamond" size={10} />
 								<span>رایگان با پرو</span>
 							</span>
@@ -98,7 +98,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 					)}
 
 					{asset.isOwned && !isSelected && (
-						<div className="absolute flex gap-0.5 px-1.5 rounded-tl-2xl rounded-br-md bg-success text-success-content shadow-sm items-center top-0 left-0 text-[10px] h-4.5">
+						<div className="absolute flex gap-0.5 px-1.5 rounded-tl-2xl rounded-br-md bg-ds-success text-ds-on-success shadow-sm items-center top-0 left-0 text-[10px] h-4.5">
 							<Icon name="shoppingBag" size={10} />
 							<span>خریداری شده</span>
 						</div>

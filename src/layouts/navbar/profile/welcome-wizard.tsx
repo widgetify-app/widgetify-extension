@@ -114,7 +114,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 					<StepWrapper>
 						<div className="flex flex-col items-center justify-center w-full p-8 text-center md:w-1/2 md:p-12">
 							<div className="mb-10 space-y-4">
-								<h2 className="text-2xl font-black text-content">
+								<h2 className="text-2xl font-black text-ds-fg">
 									خوش اومدی!
 								</h2>
 								<p className="text-sm font-medium leading-loose opacity-70">
@@ -145,7 +145,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 						<div className="flex flex-col justify-between w-full p-4 md:w-1/2 md:p-10">
 							<div className="w-full">
 								<div className="mb-6 text-right">
-									<h2 className="mb-2 text-2xl font-black text-content">
+									<h2 className="mb-2 text-2xl font-black text-ds-fg">
 										چه کاره‌ای؟
 									</h2>
 									<p className="text-sm font-medium opacity-60">
@@ -202,7 +202,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 						<div className="flex flex-col justify-between w-full p-8 md:w-1/2 md:p-10">
 							<div className="w-full">
 								<div className="mb-6 text-right">
-									<h2 className="mb-2 text-2xl font-black text-content">
+									<h2 className="mb-2 text-2xl font-black text-ds-fg">
 										به چی علاقه داری؟
 									</h2>
 									<p className="text-sm font-medium opacity-60">
@@ -269,7 +269,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 					<StepWrapper>
 						<div className="flex flex-col items-center justify-center w-full p-8 text-center md:w-1/2 md:p-12">
 							<div className="mb-10 space-y-4">
-								<h2 className="text-2xl font-black text-content">
+								<h2 className="text-2xl font-black text-ds-fg">
 									مرحله ۴: از کجا شنیدی؟
 								</h2>
 								<p className="text-sm font-medium leading-loose opacity-70 text-balance">
@@ -345,7 +345,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 					<StepWrapper>
 						<div className="flex flex-col items-center justify-center w-full p-8 text-center md:w-1/2 md:p-12">
 							<div className="mb-10 space-y-4">
-								<h2 className="text-2xl font-black text-content">
+								<h2 className="text-2xl font-black text-ds-fg">
 									همه چیز آماده‌ست! 🚀
 								</h2>
 								<p className="text-sm font-medium leading-loose opacity-70">
@@ -374,11 +374,11 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} size="xl" direction="rtl" title=" ">
-			<div className="relative overflow-hidden rounded bg-widget">
+			<div className="relative overflow-hidden rounded bg-ds-surface">
 				{currentStep > 1 && currentStep < totalSteps && (
 					<button
 						onClick={prevStep}
-						className="absolute z-20 p-2 transition-colors rounded-full top-10 right-96 bg-content-muted text-content hover:bg-raised"
+						className="absolute z-20 p-2 transition-colors rounded-full top-10 right-96 bg-content-muted text-ds-fg hover:bg-ds-surface-3"
 					>
 						<Icon name="chevronLeft" size={20} />
 					</button>

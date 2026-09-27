@@ -35,27 +35,27 @@ export const WeatherCompactRow: React.FC<WeatherCompactRowProps> = ({
 				) : (
 					<div
 						aria-hidden="true"
-						className="rounded-full w-11 h-11 animate-pulse bg-hovered"
+						className="rounded-full w-11 h-11 animate-pulse bg-ds-fill-2"
 					/>
 				)}
 
 				<div className="flex flex-col">
 					<div className="flex items-baseline gap-1.5">
-						<span className="text-2xl font-black leading-none text-content">
+						<span className="text-2xl font-black leading-none text-ds-fg">
 							<data value={temp.value}>{temp.value}</data>
-							<span className="text-xs font-medium text-muted mr-0.5">
+							<span className="text-xs font-medium text-ds-fg-muted mr-0.5">
 								{temp.symbol}
 							</span>
 						</span>
-						<span className="text-xs font-bold text-content">{cityName}</span>
+						<span className="text-xs font-bold text-ds-fg">{cityName}</span>
 					</div>
-					<span className="text-[11px] text-muted font-medium mt-0.5 truncate max-w-36">
+					<span className="text-[11px] text-ds-fg-muted font-medium mt-0.5 truncate max-w-36">
 						{description}
 					</span>
 				</div>
 			</div>
 
-			<dl className="flex flex-col items-end gap-1 text-[10px] text-muted">
+			<dl className="flex flex-col items-end gap-1 text-[10px] text-ds-fg-muted">
 				<div className="flex items-center gap-1">
 					<dt className="flex items-center">
 						<Icon name="wind" className="w-3 h-3" aria-hidden="true" />

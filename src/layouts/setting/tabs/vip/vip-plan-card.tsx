@@ -24,7 +24,7 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 				isClaimed
 					? 'opacity-65  border-strong bg-raised-faint cursor-not-allowed saturate-50'
 					: isSelected
-						? 'border-primary bg-brand-subtle ring-1 ring-primary shadow-xs cursor-pointer'
+						? 'border-ds-brand bg-ds-brand-fill ring-1 ring-ds-brand shadow-xs cursor-pointer'
 						: 'border-subtle bg-raised-faint hover:border-brand-strong hover:bg-raised-subtle cursor-pointer'
 			)}
 		>
@@ -40,7 +40,7 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 					}
 					className={cn(
 						'absolute -top-2.5 left-1/2 -translate-x-1/2 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-xs',
-						!badgeColor && 'bg-primary text-white'
+						!badgeColor && 'bg-ds-brand text-white'
 					)}
 				>
 					{badge}
@@ -48,7 +48,7 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 			)}
 
 			{isClaimed && (
-				<div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-widget text-muted text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+				<div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-ds-surface text-ds-fg-muted text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
 					<span>استفاده شده</span>
 				</div>
 			)}
@@ -58,12 +58,12 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 					<h5
 						className={cn(
 							'text-xs font-bold',
-							isClaimed ? 'text-muted' : 'text-content'
+							isClaimed ? 'text-ds-fg-muted' : 'text-ds-fg'
 						)}
 					>
 						{plan.title}
 					</h5>
-					<span className="text-[10px] text-muted">
+					<span className="text-[10px] text-ds-fg-muted">
 						{fmt(plan.days)} روز اعتبار
 					</span>
 				</div>
@@ -72,9 +72,9 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 					className={cn(
 						'w-4 h-4 rounded-full border flex items-center justify-center shrink-0 transition-colors',
 						isClaimed
-							? 'border-strong bg-raised-subtle text-muted'
+							? 'border-strong bg-raised-subtle text-ds-fg-muted'
 							: isSelected
-								? 'border-primary bg-primary text-primary-content'
+								? 'border-ds-brand bg-ds-brand text-ds-on-brand'
 								: 'border-strong bg-raised-muted group-hover:border-brand-strong'
 					)}
 				>
@@ -92,17 +92,17 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 						<span
 							className={cn(
 								'text-base font-black',
-								isClaimed ? 'text-muted' : 'text-success'
+								isClaimed ? 'text-ds-fg-muted' : 'text-ds-success'
 							)}
 						>
 							{isClaimed ? 'قبلا دریافت شده' : 'رایگان'}
 						</span>
 					) : (
 						<>
-							<span className="text-base font-black text-content tabular-nums">
+							<span className="text-base font-black text-ds-fg tabular-nums">
 								{fmt(plan.price)}
 							</span>
-							<span className="text-[11px] text-muted">تومان</span>
+							<span className="text-[11px] text-ds-fg-muted">تومان</span>
 						</>
 					)}
 				</div>

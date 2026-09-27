@@ -10,7 +10,7 @@ function ExplorerSkeleton() {
 			{[1, 2, 3, 4, 5, 6].map((i) => (
 				<div
 					key={i}
-					className="flex flex-col gap-4 p-5 rounded-2xl bg-content bg-glass"
+					className="flex flex-col gap-4 p-5 rounded-2xl bg-ds-surface-2 bg-glass"
 				>
 					<div className="flex items-center gap-3">
 						<div className="w-5 h-5 rounded-md skeleton opacity-40"></div>
@@ -120,8 +120,8 @@ export function ExplorerContent() {
 											onClick={() => scrollToCategory(cat.id)}
 											className={`relative flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium whitespace-nowrap rounded-xl transition-all duration-200 shrink-0 cursor-pointer ${
 												active
-													? 'bg-content text-content shadow-xs font-semibold'
-													: 'text-muted hover:text-content hover:bg-content-muted'
+													? 'bg-ds-surface-2 text-ds-fg shadow-xs font-semibold'
+													: 'text-ds-fg-muted hover:text-ds-fg hover:bg-content-muted'
 											}`}
 										>
 											{cat.icon && (

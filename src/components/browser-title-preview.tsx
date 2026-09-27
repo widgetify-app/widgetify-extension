@@ -8,7 +8,7 @@ export function renderBrowserTitlePreview(item: Prop) {
 	const isPersian = /[\u0600-\u06FF]/.test(item.template)
 	return (
 		<div
-			className={`flex items-center justify-between w-40 p-1.5 text-xs font-medium border shadow-sm text-content bg-content border-content rounded-t-md max-w-40 ${item.className || ''} font-sans`}
+			className={`flex items-center justify-between w-40 p-1.5 text-xs font-medium border shadow-sm text-ds-fg bg-ds-surface-2 border-ds-surface-3 rounded-t-md max-w-40 ${item.className || ''} font-sans`}
 		>
 			<div className="flex items-center gap-1">
 				<Icon name="close" />

@@ -71,25 +71,25 @@ export function MiniAppsLayout() {
 		<div className="w-full h-[calc(100vh-4rem)] overflow-hidden">
 			<div className="flex flex-row justify-between w-full h-full px-4 py-2 overflow-hidden">
 				<div
-					className={`flex-1 w-full h-full p-1 border-l border-content bg-content bg-glass rounded-tr-2xl rounded-br-2xl ${isFullScreen ? 'hidden' : ''} transition-all duration-200`}
+					className={`flex-1 w-full h-full p-1 border-l border-ds-surface-3 bg-ds-surface-2 bg-glass rounded-tr-2xl rounded-br-2xl ${isFullScreen ? 'hidden' : ''} transition-all duration-200`}
 				>
 					<div className="flex justify-between px-1 py-2">
 						<p className="text-lg font-bold"> برنامک ها</p>
 						<div
 							onClick={() => onClickToShowInfo()}
-							className="p-1 text-lg font-bold cursor-pointer text-muted hover:text-strong active:scale-95"
+							className="p-1 text-lg font-bold cursor-pointer text-ds-fg-muted hover:text-ds-fg-strong active:scale-95"
 						>
 							<Icon name="info" className="m-auto text-center" />
 						</div>
 					</div>
 					<div className="flex flex-col gap-1 mt-4 overflow-y-auto  h-[calc(100vh-10rem)]">
 						{isEmpty && (
-							<div className="flex flex-col items-center justify-center gap-3 py-16 text-center rounded-2xl bg-content">
+							<div className="flex flex-col items-center justify-center gap-3 py-16 text-center rounded-2xl bg-ds-surface-2">
 								<div className="text-5xl">📭</div>
-								<p className="text-base font-medium text-content">
+								<p className="text-base font-medium text-ds-fg">
 									هنوز برنامکی وجود ندارد
 								</p>
-								<p className="text-sm text-muted">به زودی پر میشه...</p>
+								<p className="text-sm text-ds-fg-muted">به زودی پر میشه...</p>
 							</div>
 						)}
 						{isLoading
@@ -120,7 +120,7 @@ export function MiniAppsLayout() {
 					</div>
 				</div>
 				<div
-					className={`flex items-center justify-center w-full h-full rounded-tr-none rounded-br-none bg-content bg-glass flex-3 rounded-2xl text-content rounded-bl-2xl ${isFullScreen ? 'rounded-2xl!' : ''}`}
+					className={`flex items-center justify-center w-full h-full rounded-tr-none rounded-br-none bg-ds-surface-2 bg-glass flex-3 rounded-2xl text-ds-fg rounded-bl-2xl ${isFullScreen ? 'rounded-2xl!' : ''}`}
 				>
 					{selectedAppId ? (
 						<MiniAppRunner
@@ -138,7 +138,7 @@ export function MiniAppsLayout() {
 									e.target?.remove()
 								}}
 							/>
-							<p className="text-lg font-bold text-content">
+							<p className="text-lg font-bold text-ds-fg">
 								یه برنامک انتخاب کن
 							</p>
 						</div>
