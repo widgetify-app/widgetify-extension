@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
-import { getMainClient } from '@/services/api'
-import { useGetUserProfile } from '@/services/hooks/user/user-service.hook'
+import { connectPlatform, disconnectPlatform } from '@/services/user/platform-connections'
+import { useGetUserProfile } from '@/services/user/user-service.hook'
 import { ConnectionModal } from './components/connection-modal'
 import type { Platform } from './components/platform-config'
 import { PLATFORM_CONFIGS } from './components/platform-data'
@@ -62,8 +62,7 @@ export function Connections() {
 
 		try {
 			if (selectedPlatform.connected) {
-				const api = getMainClient()
-				await api.post(`/${selectedPlatform.id}/disconnect`)
+				await disconnectPlatform(selectedPlatform.id)
 
 				setPlatforms((prev) =>
 					prev.map((p) =>
@@ -75,10 +74,9 @@ export function Connections() {
 
 				showToast(`اتصال به ${selectedPlatform.name} قطع شد.`, 'success')
 			} else {
-				const api = getMainClient()
-				const response = await api.post(`/${selectedPlatform.id}/connect`)
+				const { url } = await connectPlatform(selectedPlatform.id)
 
-				window.location.href = response.data.url
+				window.location.href = url
 			}
 		} catch {
 			setPlatforms((prev) =>

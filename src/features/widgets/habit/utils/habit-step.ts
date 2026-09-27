@@ -1,5 +1,5 @@
 import { HABIT_UNIT_STEP } from '@/features/widgets/habit/constants'
-import { HabitComparison, type Habit } from '@/services/hooks/habit/habit.interface'
+import { HabitComparison, type Habit } from '@/services/habit/habit.interface'
 
 interface HabitStep {
 	amount: number

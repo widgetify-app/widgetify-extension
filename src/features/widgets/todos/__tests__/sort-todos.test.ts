@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import type { Todo } from '@/services/hooks/todo/todo.interface'
+import type { Todo } from '@/services/todo/todo.interface'
 import { sortTodos } from '../utils/sort-todos'
 
 function todo(id: string, order: number, priority?: string): Todo {

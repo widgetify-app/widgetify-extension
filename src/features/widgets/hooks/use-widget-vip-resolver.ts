@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react'
-import { useGetWidgetCatalog } from '@/services/hooks/widgets/widget-catalog.hook'
+import { useGetWidgetCatalog } from '@/services/widgets/widget-catalog.hook'
 import { WIDGET_DEFINITIONS } from '../registry'
 
 const DEFAULT_MAX_FREE_WIDGETS = 5

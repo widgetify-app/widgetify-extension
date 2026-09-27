@@ -1,0 +1,46 @@
+import { useMutation } from '@tanstack/react-query'
+import { getMainClient } from '@/services/api'
+import type { Bookmark, BookmarkType } from '@/services/bookmark/bookmark.interface'
+import { bookmarkKeys } from '@/services/bookmark/bookmark.keys'
+
+interface BookmarkCreationPayload {
+	title: string
+	type: BookmarkType
+	url: string | null
+	sticker: string | null
+	parentId: string | null
+	order: number | null
+	customTextColor: string | null
+	customBackground: string | null
+	icon: File | string | null
+	widgetId?: string | null
+}
+
+export const useAddBookmark = () => {
+	return useMutation({
+		mutationKey: bookmarkKeys.add,
+		mutationFn: async (input: BookmarkCreationPayload) => {
+			return await AddBookmarkApi(input)
+		},
+	})
+}
+
+async function AddBookmarkApi(input: BookmarkCreationPayload) {
+	const client = getMainClient()
+
+	const formData = new FormData()
+
+	Object.entries(input).forEach(([key, value]) => {
+		if (value !== undefined && value !== null) {
+			formData.append(key, value as any)
+		}
+	})
+
+	const response = await client.post<Bookmark>(`/bookmarks`, formData, {
+		headers: {
+			'Content-Type': 'multipart/form-data',
+		},
+	})
+
+	return response.data
+}

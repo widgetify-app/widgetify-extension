@@ -9,7 +9,7 @@ import {
 	useGetGalleryCategories,
 	type GalleryAsset,
 	type GalleryAssetType,
-} from '@/services/hooks/gallery/get-gallery-assets.hook'
+} from '@/services/gallery/get-gallery-assets.hook'
 import { GalleryAssetPurchaseModal } from './gallery-asset-purchase-modal'
 import { GalleryPhotoItem } from './gallery-photo-item'
 import { GalleryBookmarkIconItem } from './gallery-bookmark-icon-item'

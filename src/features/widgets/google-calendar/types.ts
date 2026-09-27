@@ -1,4 +1,4 @@
-import type { GoogleCalendarEvent } from '@/services/hooks/date/get-google-calendar-events.hook'
+import type { GoogleCalendarEvent } from '@/services/date/get-google-calendar-events.hook'
 
 export type GoogleCalendarVariant = 'schedule' | 'timeline' | 'agenda'
 

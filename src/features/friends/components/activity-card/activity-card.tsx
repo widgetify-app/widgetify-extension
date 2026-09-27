@@ -5,7 +5,7 @@ import {
 	type ReactionKey,
 	useGetActivityReactions,
 	useUpsertActivityReaction,
-} from '@/services/hooks/friends/friend-service.hook'
+} from '@/services/friends/friend-service.hook'
 import { useEffect, useState } from 'react'
 import { GetContentFromReactions, RenderReactionContent } from './activity-reaction'
 import { safeAwait } from '@/services/api'

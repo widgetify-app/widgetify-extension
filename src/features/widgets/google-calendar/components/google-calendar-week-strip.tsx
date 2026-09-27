@@ -2,7 +2,7 @@ import type React from 'react'
 import { PERSIAN_WEEKDAYS } from '@/features/widgets/constants'
 import { cn } from '@/common/utils/cn'
 import type { WidgetifyDate } from '@/common/utils/date-events'
-import type { GoogleCalendarEvent } from '@/services/hooks/date/get-google-calendar-events.hook'
+import type { GoogleCalendarEvent } from '@/services/date/get-google-calendar-events.hook'
 import { isSameJalaliDay, toIsoDateKey } from '@/features/widgets/utils/jalali-date'
 
 interface GoogleCalendarWeekStripProps {

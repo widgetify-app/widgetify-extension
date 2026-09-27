@@ -1,4 +1,4 @@
-import type { ExplorerCategoryBadge } from '@/services/hooks/content/get-content.hook'
+import type { ExplorerCategoryBadge } from '@/services/content/get-content.hook'
 import type { CategoryItem } from '../types'
 import { RenderContentBanner } from './content-banner'
 import { RenderContentIframe } from './content-iframe'

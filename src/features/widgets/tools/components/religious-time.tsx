@@ -3,7 +3,7 @@ import { useAuth } from '@/context/auth.context'
 import { Icon } from '@/icons'
 import type { IconName } from '@/icons'
 import type { WidgetifyDate } from '@/common/utils/date-events'
-import { useReligiousTime } from '@/services/hooks/date/get-religious-time.hook'
+import { useReligiousTime } from '@/services/date/get-religious-time.hook'
 
 const DAILY_LIST = [
 	{ day: 'شنبه', zikr: 'یا رَبَّ الْعَالَمِینَ', meaning: 'ای پروردگار جهانیان' },

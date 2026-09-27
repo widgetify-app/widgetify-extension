@@ -1,7 +1,7 @@
 import type { WidgetSize } from '../utils/layout-engine/types'
 import { WidgetContainer } from '../components/widget-container'
 import { useWeatherSettings } from './hooks/use-weather-settings'
-import { useGetWeatherByLatLon } from '@/services/hooks/weather/get-weather-by-lat-lon.hook'
+import { useGetWeatherByLatLon } from '@/services/weather/get-weather-by-lat-lon.hook'
 import { WeatherError } from './components/weather-error'
 import { WeatherCompactSquare } from './variants/weather-1x1'
 import { WeatherCompactRow } from './variants/weather-2x1'

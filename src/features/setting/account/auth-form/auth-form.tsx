@@ -5,7 +5,7 @@ import {
 	useRequestOtp,
 	useVerifyOtp,
 	useSignIn,
-} from '@/services/hooks/auth/auth-service.hook'
+} from '@/services/auth/auth-service.hook'
 import { translateError } from '@/common/utils/translate-error'
 import { useAuth } from '@/context/auth.context'
 import { isEmpty, isEmail, isLessThan } from '@/features/setting/account/utils/validators'

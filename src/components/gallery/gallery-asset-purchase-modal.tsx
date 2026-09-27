@@ -2,8 +2,8 @@ import { Button, Modal } from '@/components/ui'
 import { UserCoin } from '@/components/user-coin'
 import { callEvent } from '@/common/utils/call-event'
 import { showToast } from '@/common/toast'
-import type { GalleryAsset } from '@/services/hooks/gallery/get-gallery-assets.hook'
-import { usePurchaseGalleryAsset } from '@/services/hooks/gallery/get-gallery-assets.hook'
+import type { GalleryAsset } from '@/services/gallery/get-gallery-assets.hook'
+import { usePurchaseGalleryAsset } from '@/services/gallery/get-gallery-assets.hook'
 
 interface GalleryAssetPurchaseModalProps {
 	isOpen: boolean

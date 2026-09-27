@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 import { Button, Modal } from '@/components/ui'
 import { TextInput } from '@/components/ui'
 import { Icon } from '@/icons'
-import type { BookmarkType } from '@/services/hooks/bookmark/bookmark.interface'
+import type { BookmarkType } from '@/services/bookmark/bookmark.interface'
 import { BookmarkSuggestions } from '../bookmark-suggestions'
 import { ShowAdvancedButton, TypeSelector } from '../shared'
 import { AdvancedModal } from './advanced-modal'
 import { useIsMutating } from '@tanstack/react-query'
 import { BookmarkIconPicker } from '../bookmark-icon-picker'
-import type { BookmarkSuggestion } from '@/services/hooks/bookmark/get-bookmarks.hook'
+import type { BookmarkSuggestion } from '@/services/bookmark/get-bookmarks.hook'
+import { bookmarkKeys } from '@/services/bookmark/bookmark.keys'
 
 interface AddBookmarkModalProps {
 	isOpen: boolean
@@ -61,7 +62,7 @@ export function AddBookmarkModal({
 	const [type, setType] = useState<BookmarkType>('BOOKMARK')
 	const [showAdvanced, setShowAdvanced] = useState(false)
 
-	const isAdding = useIsMutating({ mutationKey: ['addBookmark'] }) > 0
+	const isAdding = useIsMutating({ mutationKey: bookmarkKeys.add }) > 0
 
 	const [formData, setFormData] = useState<BookmarkCreateFormFields>(
 		structuredClone(empty)

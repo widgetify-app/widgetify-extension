@@ -9,10 +9,7 @@ import {
 } from 'react'
 import Analytics from '@/analytics'
 import { getMultipleFromStorage, setToStorage } from '@/common/storage'
-import {
-	useChangeFont,
-	useChangeUI,
-} from '@/services/hooks/extension/update-setting.hook'
+import { useChangeFont, useChangeUI } from '@/services/extension/update-setting.hook'
 import { useAuth } from './auth.context'
 import { safeAwait } from '@/services/api'
 import { showToast } from '@/common/toast'

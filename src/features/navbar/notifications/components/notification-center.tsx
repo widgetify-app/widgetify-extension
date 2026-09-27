@@ -6,7 +6,7 @@ import { getWithExpiry, setToStorage, setWithExpiry } from '@/common/storage'
 import {
 	useGetNotifications,
 	useNotifyAsSeen,
-} from '@/services/hooks/extension/get-notifications.hook'
+} from '@/services/extension/get-notifications.hook'
 import Analytics from '@/analytics'
 import { useAuth } from '@/context/auth.context'
 import { DailyMoodNotification } from './daily-mood'

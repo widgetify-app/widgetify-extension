@@ -1,6 +1,6 @@
 import { ConfigKey } from '@/common/constants/config-keys'
 import { SectionPanel } from '@/components/ui'
-import { useGetReferrals } from '@/services/hooks/user/referrals-service.hook'
+import { useGetReferrals } from '@/services/user/referrals-service.hook'
 import { ReferralCodeSection } from '../components/referral-code-section'
 import { RewardTasks } from './components/tasks'
 import { RequireVerification } from './components/require-verification'

@@ -4,7 +4,7 @@ import { getFaviconFromUrl } from '@/features/widgets/utils/icon'
 import { NewBadge, Tooltip } from '@/components/ui'
 import { Page, usePage } from '@/context/page.context'
 import { Icon } from '@/icons'
-import { useGetSearchboxData } from '@/services/hooks/trends/get-trends.hook'
+import { useGetSearchboxData } from '@/services/trends/get-trends.hook'
 import { BookmarkPopover } from './bookmark-popover'
 
 const POPOVER_WIDTH = 288

@@ -1,7 +1,7 @@
 import type React from 'react'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
-import type { GoogleCalendarEvent } from '@/services/hooks/date/get-google-calendar-events.hook'
+import type { GoogleCalendarEvent } from '@/services/date/get-google-calendar-events.hook'
 import type { ClassifiedCalendarEvent } from '../types'
 import { toDateTimeAttr } from '../utils/classify-event'
 

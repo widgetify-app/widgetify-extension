@@ -1,16 +1,13 @@
 import { useState } from 'react'
 import { showToast } from '@/common/toast'
 import { Button, Modal } from '@/components/ui'
-import {
-	useRemoveActivity,
-	useSetActivity,
-} from '@/services/hooks/user/user-service.hook'
+import { useRemoveActivity, useSetActivity } from '@/services/user/user-service.hook'
 import { translateError } from '@/common/utils/translate-error'
 import { playAlarm } from '@/common/play-alarm'
 import {
 	type AttachmentReaction,
 	useGetActivityReactions,
-} from '@/services/hooks/friends/friend-service.hook'
+} from '@/services/friends/friend-service.hook'
 import { MakeSkeletonFriendItem } from '../friend-item-skeleton'
 import { GetContentFromReactions, RenderReactionContent } from './activity-reaction'
 import { AvatarComponent } from '@/components/ui'

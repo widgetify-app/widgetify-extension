@@ -1,7 +1,7 @@
 import type React from 'react'
 import Analytics from '@/analytics'
 import { Icon } from '@/icons'
-import type { GoogleCalendarEvent } from '@/services/hooks/date/get-google-calendar-events.hook'
+import type { GoogleCalendarEvent } from '@/services/date/get-google-calendar-events.hook'
 import type { WidgetifyDate } from '@/common/utils/date-events'
 import { GoogleCalendarEmpty } from '../components/google-calendar-empty'
 import { GoogleCalendarEventCard } from '../components/google-calendar-event-card'

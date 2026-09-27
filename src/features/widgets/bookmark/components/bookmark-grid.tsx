@@ -3,7 +3,7 @@ import { useIsMutating } from '@tanstack/react-query'
 import Analytics from '@/analytics'
 import { ConfirmationModal } from '@/components/ui'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import type { Bookmark } from '@/services/hooks/bookmark/bookmark.interface'
+import type { Bookmark } from '@/services/bookmark/bookmark.interface'
 import type { FolderPathItem } from '../types'
 import { openBookmarksOptimized } from '../utils/tab-manager'
 import { EmptyBookmarkSlot } from './bookmark-empty-slot'
@@ -16,6 +16,7 @@ import { useAuth } from '@/context/auth.context'
 import { AuthRequiredModal } from '@/components/auth/auth-required-modal'
 import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
+import { bookmarkKeys } from '@/services/bookmark/bookmark.keys'
 
 interface BookmarkGridProps {
 	displayedBookmarks: Bookmark[]
@@ -176,7 +177,7 @@ export function BookmarkGrid({
 		setSelectedBookmark(null)
 	}
 
-	const isRemoving = useIsMutating({ mutationKey: ['removeBookmark'] }) > 0
+	const isRemoving = useIsMutating({ mutationKey: bookmarkKeys.remove }) > 0
 
 	useEffect(() => {
 		if (!isRemoving) {

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useGetActivities } from '@/services/hooks/friends/friend-service.hook'
+import { useGetActivities } from '@/services/friends/friend-service.hook'
 import { useAuth } from '@/context/auth.context'
 import { ActivityCard } from './activity-card/activity-card'
 import { ManageActivityBottomSheet } from './activity-card/manage-activity-bottom-sheet'

@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Analytics from '@/analytics'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
-import type { FetchedNote } from '@/services/hooks/note/note.interface'
+import type { FetchedNote } from '@/services/note/note.interface'
 import { NOTE_PREVIEW_CHARACTER_LIMIT, PRIORITY_BG_COLORS } from '../constants'
 
 interface NoteItemProps {

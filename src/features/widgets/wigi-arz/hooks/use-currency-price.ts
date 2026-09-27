@@ -3,7 +3,7 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import {
 	type FetchedCurrency,
 	useGetCurrencyByCode,
-} from '@/services/hooks/currency/get-currency-by-code.hook'
+} from '@/services/currency/get-currency-by-code.hook'
 
 export function useCurrencyPrice(code: string) {
 	const [currency, setCurrency] = useState<FetchedCurrency | null>(null)

@@ -1,9 +1,6 @@
 import { IconLoading } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
-import {
-	type AuthResponse,
-	useGoogleSignIn,
-} from '@/services/hooks/auth/auth-service.hook'
+import { type AuthResponse, useGoogleSignIn } from '@/services/auth/auth-service.hook'
 import { useState } from 'react'
 import { safeAwait } from '@/services/api'
 import type { AxiosError } from 'axios'

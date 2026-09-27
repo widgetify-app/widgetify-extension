@@ -1,6 +1,6 @@
 import Analytics from '@/analytics'
 import { Icon } from '@/icons'
-import { useGetRss } from '@/services/hooks/news/get-news.hook'
+import { useGetRss } from '@/services/news/get-news.hook'
 import { NewsItem } from './news-item'
 import { NewsSkeleton } from './news-skeleton'
 

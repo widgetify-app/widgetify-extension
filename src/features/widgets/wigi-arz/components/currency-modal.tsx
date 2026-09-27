@@ -3,7 +3,7 @@ import Analytics from '@/analytics'
 import { cn } from '@/common/utils/cn'
 import { Modal, TextInput } from '@/components/ui'
 import { Icon } from '@/icons'
-import type { FetchedCurrency } from '@/services/hooks/currency/get-currency-by-code.hook'
+import type { FetchedCurrency } from '@/services/currency/get-currency-by-code.hook'
 import { getPrice } from '../utils/get-price'
 
 interface CurrencyModalComponentProps {

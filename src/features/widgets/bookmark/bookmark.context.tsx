@@ -3,24 +3,24 @@ import React, { createContext, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
-import type { Bookmark } from '@/services/hooks/bookmark/bookmark.interface'
+import type { Bookmark } from '@/services/bookmark/bookmark.interface'
 import type { BrowserImportNode } from '@/features/widgets/bookmark/types'
 import { safeAwait } from '@/services/api'
-import { useRemoveBookmark } from '@/services/hooks/bookmark/remove-bookmark.hook'
+import { useRemoveBookmark } from '@/services/bookmark/remove-bookmark.hook'
 import { translateError } from '@/common/utils/translate-error'
 import { useAuth } from '@/context/auth.context'
-import { useAddBookmark } from '@/services/hooks/bookmark/add-bookmark.hook'
-import { useImportBrowserBookmarks } from '@/services/hooks/bookmark/import-browser-bookmarks.hook'
-import type { BulkImportBookmarkNode } from '@/services/hooks/bookmark/import-browser-bookmarks.hook'
+import { useAddBookmark } from '@/services/bookmark/add-bookmark.hook'
+import { useImportBrowserBookmarks } from '@/services/bookmark/import-browser-bookmarks.hook'
+import type { BulkImportBookmarkNode } from '@/services/bookmark/import-browser-bookmarks.hook'
 import type { AxiosError } from 'axios'
 import type { BookmarkCreateFormFields } from './components/modal/add-bookmark-modal'
 import type { BookmarkUpdateFormFields } from './components/modal/edit-bookmark-modal'
-import { useUpdateBookmark } from '@/services/hooks/bookmark/update-bookmark.hook'
+import { useUpdateBookmark } from '@/services/bookmark/update-bookmark.hook'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
 import {
 	type FetchedBookmark,
 	useGetBookmarks,
-} from '@/services/hooks/bookmark/get-bookmarks.hook'
+} from '@/services/bookmark/get-bookmarks.hook'
 
 const MAX_ICON_SIZE = 250 * 1024 // 250 KB
 

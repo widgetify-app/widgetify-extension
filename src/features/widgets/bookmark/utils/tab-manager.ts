@@ -1,4 +1,4 @@
-import type { Bookmark } from '@/services/hooks/bookmark/bookmark.interface'
+import type { Bookmark } from '@/services/bookmark/bookmark.interface'
 
 export async function openBookmarksOptimized(bookmark: Bookmark, children: Bookmark[]) {
 	const COLORS = [

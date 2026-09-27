@@ -7,11 +7,8 @@ import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
 import { callEvent } from '@/common/utils/call-event'
 import { Icon } from '@/icons'
-import {
-	useGetVipPlans,
-	usePurchaseVipPlan,
-} from '@/services/hooks/market/market-vip.hook'
-import type { VipPlan } from '@/services/hooks/market/market-vip.interface'
+import { useGetVipPlans, usePurchaseVipPlan } from '@/services/market/market-vip.hook'
+import type { VipPlan } from '@/services/market/market-vip.interface'
 import { FreeVipSuccessModal } from './components/free-vip-success-modal'
 import { VipPlanCard } from './components/vip-plan-card'
 import { VipHeroBanner } from './components/vip-hero-banner'

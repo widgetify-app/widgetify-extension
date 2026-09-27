@@ -5,7 +5,7 @@ import type React from 'react'
 import { useRef, useState } from 'react'
 import { PopoverMenu, PopoverMenuItem, PopoverMenuDivider } from '@/components/ui'
 import { GalleryPickerModal } from '@/components/gallery'
-import type { GalleryAsset } from '@/services/hooks/gallery/get-gallery-assets.hook'
+import type { GalleryAsset } from '@/services/gallery/get-gallery-assets.hook'
 
 type Props = {
 	value: File | string | null

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import type { SupportedCurrencies } from '@/services/hooks/currency/get-support-currencies.hook'
+import type { SupportedCurrencies } from '@/services/currency/get-support-currencies.hook'
 import { filterCurrencyGroups, getCurrencyOptions } from '../utils/get-currency-options'
 
 const SUPPORTED = [

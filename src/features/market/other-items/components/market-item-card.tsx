@@ -1,6 +1,6 @@
 import { ItemPrice } from './item-price'
 import { getItemTypeEmoji } from '../utils/get-item-type-emoji'
-import { type MarketItem, MarketItemType } from '@/services/hooks/market/market.interface'
+import { type MarketItem, MarketItemType } from '@/services/market/market.interface'
 import { showToast } from '@/common/toast'
 import { RenderPreview } from './render-preview'
 import { Icon } from '@/icons'

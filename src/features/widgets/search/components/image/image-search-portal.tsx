@@ -3,7 +3,7 @@ import { showToast } from '@/common/toast'
 import { TextInput } from '@/components/ui'
 import Analytics from '@/analytics'
 import { RequireAuth } from '@/features/widgets/components/require-auth'
-import { getMainClient } from '@/services/api'
+import { uploadSearchImage } from '@/services/search/upload-search-image'
 import { translateError } from '@/common/utils/translate-error'
 import { Button, Portal } from '@/components/ui'
 import { Icon } from '@/icons'
@@ -51,23 +51,7 @@ export function ImageSearchPortal({
 		Analytics.event('searchbox_image_file')
 
 		try {
-			const formData = new FormData()
-			formData.append('image', file)
-
-			const client = getMainClient()
-			const response = await client.post('/users/@me/upload/search', formData, {
-				headers: {
-					'Content-Type': 'multipart/form-data',
-				},
-				onUploadProgress: (progressEvent) => {
-					const percentCompleted = Math.round(
-						(progressEvent.loaded * 100) / (progressEvent.total || 1)
-					)
-					setUploadProgress(percentCompleted)
-				},
-			})
-
-			const data = response.data
+			const data = await uploadSearchImage(file, setUploadProgress)
 			window.open(
 				`https://www.google.com/searchbyimage?image_url=${encodeURIComponent(data.url)}&client=chrome`,
 				'_blank'

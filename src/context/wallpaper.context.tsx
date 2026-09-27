@@ -4,14 +4,15 @@ import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storag
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper, Wallpaper } from '@/common/wallpaper.interface'
 import { safeAwait } from '@/services/api'
-import { useChangeWallpaper } from '@/services/hooks/extension/update-setting.hook'
+import { useChangeWallpaper } from '@/services/extension/update-setting.hook'
 import { translateError } from '@/common/utils/translate-error'
 import Analytics from '@/analytics'
 import { showToast } from '@/common/toast'
 import { useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '@/context/auth.context'
 
-import { getRandomWallpaper } from '@/services/hooks/wallpapers/get-wallpaper-categories.hook'
+import { getRandomWallpaper } from '@/services/wallpapers/get-wallpaper-categories.hook'
+import { userKeys } from '@/services/user/user.keys'
 
 interface WallpaperContextValue {
 	selectedBackground: Wallpaper | null
@@ -182,7 +183,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 
 			if (wallpaper.coin && !wallpaper.isOwned) {
 				showToast('هووورا! تصویر زمینه فعال شد 🎉', 'success')
-				queryClient.invalidateQueries({ queryKey: ['userProfile'] })
+				queryClient.invalidateQueries({ queryKey: userKeys.profile })
 			}
 
 			if (!isSet) setSelectedBackground(responseWallpaper)

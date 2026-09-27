@@ -1,6 +1,6 @@
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { upsertNote } from '@/services/hooks/note/upsert-note.hook'
-import type { FetchedNote } from '@/services/hooks/note/note.interface'
+import { upsertNote } from '@/services/note/upsert-note.hook'
+import type { FetchedNote } from '@/services/note/note.interface'
 
 export async function createNoteForDuplicatedWidget(
 	isAuthenticated: boolean

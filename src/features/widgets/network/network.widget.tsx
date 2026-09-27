@@ -1,4 +1,3 @@
-import type { AxiosError } from 'axios'
 import { useCallback, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { cn } from '@/common/utils/cn'
@@ -7,7 +6,7 @@ import { AvatarComponent, Button, Tooltip } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { Icon } from '@/icons'
-import { getMainClient, safeAwait } from '@/services/api'
+import { getIpInfo, measurePing } from '@/services/network/get-network-info'
 import type { WidgetSize } from '../utils/layout-engine/types'
 import { WidgetContainer } from '../components/widget-container'
 import { NetworkError } from './components/network-error'
@@ -61,33 +60,7 @@ export function NetworkLayout({ size = { w: 2, h: 3 } }: Prop) {
 			isRefresh ? NetworkLoadingState.REFRESHING : NetworkLoadingState.INITIAL
 		)
 
-		const client = getMainClient()
-
-		const fetchIp = async () => {
-			const [error, response] = await safeAwait<AxiosError, { data: NetworkInfo }>(
-				client.get('/extension/@me/ip')
-			)
-			if (error || !response) return null
-
-			const data = response.data
-			return {
-				ip: data.ip,
-				country: data.country,
-				countryIcon: data.countryIcon,
-				city: data.city,
-				isp: data.isp,
-			}
-		}
-
-		const fetchPing = async () => {
-			const start = Date.now()
-			const [error] = await safeAwait<AxiosError, unknown>(client.get('/'))
-			if (error && !error.status) return null
-
-			return Date.now() - start
-		}
-
-		const [ipData, ping] = await Promise.all([fetchIp(), fetchPing()])
+		const [ipData, ping] = await Promise.all([getIpInfo(), measurePing()])
 
 		if (ipData) {
 			setNetworkInfo({ ...ipData, ping })

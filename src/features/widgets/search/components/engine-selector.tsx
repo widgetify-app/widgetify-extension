@@ -5,11 +5,8 @@ import { callEvent } from '@/common/utils/call-event'
 import { Dropdown } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { Icon } from '@/icons'
-import { useChangeSearchEngine } from '@/services/hooks/extension/update-setting.hook'
-import {
-	type EngineMeta,
-	useGetSearchboxData,
-} from '@/services/hooks/trends/get-trends.hook'
+import { useChangeSearchEngine } from '@/services/extension/update-setting.hook'
+import { type EngineMeta, useGetSearchboxData } from '@/services/trends/get-trends.hook'
 import { DEFAULT_ENGINE } from '../constants'
 
 type EngineSelectorProps = {

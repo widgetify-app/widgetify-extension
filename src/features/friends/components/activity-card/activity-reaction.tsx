@@ -1,4 +1,4 @@
-import type { AttachmentReaction } from '@/services/hooks/friends/friend-service.hook'
+import type { AttachmentReaction } from '@/services/friends/friend-service.hook'
 
 export function GetContentFromReactions(
 	reactionId: string | undefined,

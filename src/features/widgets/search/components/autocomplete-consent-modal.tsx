@@ -1,7 +1,7 @@
 import { autoFormatErrorToast } from '@/common/toast'
 import { Button, Modal } from '@/components/ui'
 import { safeAwait } from '@/services/api'
-import { useUpdateSearchAutocomplete } from '@/services/hooks/extension/update-setting.hook'
+import { useUpdateSearchAutocomplete } from '@/services/extension/update-setting.hook'
 
 export function AutocompleteConsentModal({
 	isOpen,

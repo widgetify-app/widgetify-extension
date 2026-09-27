@@ -1,8 +1,4 @@
-import {
-	HabitFrequency,
-	HabitUnit,
-	type Habit,
-} from '@/services/hooks/habit/habit.interface'
+import { HabitFrequency, HabitUnit, type Habit } from '@/services/habit/habit.interface'
 
 const unitLabels: Record<HabitUnit, string> = {
 	[HabitUnit.TIMES]: 'دفعه',

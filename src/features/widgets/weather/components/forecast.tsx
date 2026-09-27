@@ -1,6 +1,6 @@
 import moment from 'jalali-moment'
 import type React from 'react'
-import type { FetchedWeather } from '@/services/hooks/weather/weather.interface'
+import type { FetchedWeather } from '@/services/weather/weather.interface'
 import type { TemperatureUnit } from '../types'
 import { formatTemperature } from '../utils/format-temperature'
 

@@ -12,14 +12,14 @@ import { Page, usePage } from '@/context/page.context'
 import { useAuth } from '@/context/auth.context'
 import { useAppearance } from '@/context/appearance.context'
 import { BlurModeButton } from './components/blur-mode-button'
-import type { UserProfile } from '@/services/hooks/user/user-service.hook'
+import type { UserProfile } from '@/services/user/user-service.hook'
 import { NewBadge } from '@/components/ui'
 import { useSyncAccount } from './hooks/use-sync-account'
 import { getCurrentDate } from '@/common/utils/date-events'
 import { useBirthdayConfetti } from '@/features/navbar/hooks/use-birthday-confetti'
 import { Icon } from '@/icons'
 import { GetUserFirstName } from '@/features/navbar/utils/get-firstname'
-import { useGetNotifications } from '@/services/hooks/extension/get-notifications.hook'
+import { useGetNotifications } from '@/services/extension/get-notifications.hook'
 
 const WIDGETIFY_URLS = {
 	website: 'https://widgetify.ir',

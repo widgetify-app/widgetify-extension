@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { Dropdown, NewBadge } from '@/components/ui'
 import { Icon } from '@/icons'
-import { useGetNotifications } from '@/services/hooks/extension/get-notifications.hook'
+import { useGetNotifications } from '@/services/extension/get-notifications.hook'
 import { NotificationCenter } from '@/features/navbar/notifications/components/notification-center'
 import Analytics from '@/analytics'
 

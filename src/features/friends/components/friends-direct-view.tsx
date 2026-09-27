@@ -3,7 +3,7 @@ import {
 	type Friend,
 	useGetFriends,
 	useRemoveFriend,
-} from '@/services/hooks/friends/friend-service.hook'
+} from '@/services/friends/friend-service.hook'
 import { AvatarComponent, ConfirmationModal } from '@/components/ui'
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll'
 import { Icon } from '@/icons'

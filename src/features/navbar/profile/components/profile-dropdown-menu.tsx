@@ -1,7 +1,7 @@
 import { callEvent } from '@/common/utils/call-event'
 import { AvatarComponent, DropdownDivider, DropdownItem, VipBadge } from '@/components/ui'
 import { Icon } from '@/icons'
-import type { UserProfile } from '@/services/hooks/user/user-service.hook'
+import type { UserProfile } from '@/services/user/user-service.hook'
 
 interface ProfileDropdownMenuProps {
 	user: UserProfile | null

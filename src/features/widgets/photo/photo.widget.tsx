@@ -9,7 +9,7 @@ import { Icon } from '@/icons'
 import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
 import { safeAwait } from '@/services/api'
-import { uploadWidgetMediaApi } from '@/services/hooks/widgets/widget-media.hook'
+import { uploadWidgetMediaApi } from '@/services/widgets/widget-media.hook'
 import { callEvent } from '@/common/utils/call-event'
 import { GalleryPickerModal } from '@/components/gallery'
 import {
@@ -20,7 +20,7 @@ import {
 	VipBadge,
 } from '@/components/ui'
 import type { AxiosError } from 'axios'
-import type { GalleryAsset } from '@/services/hooks/gallery/get-gallery-assets.hook'
+import type { GalleryAsset } from '@/services/gallery/get-gallery-assets.hook'
 import { PhotoEmptyState } from './components/photo-empty-state'
 import { getPhotoFileError } from './utils/get-photo-file-error'
 

@@ -253,7 +253,16 @@ describe('dead code', () => {
 const ROLE_FOLDERS = ['components', 'variants', 'hooks', 'utils', '__tests__']
 const GROUPING_ROLES = ['components', 'utils']
 const BARRELS = ['src/components/ui', 'src/components/gallery', 'src/icons']
-const SUFFIXES = ['widget', 'page', 'context', 'hook', 'variants', 'interface', 'test']
+const SUFFIXES = [
+	'widget',
+	'page',
+	'context',
+	'hook',
+	'variants',
+	'interface',
+	'keys',
+	'test',
+]
 
 const srcFiles = walk('src')
 const srcFileSet = new Set(srcFiles)
@@ -603,5 +612,110 @@ describe('layers', () => {
 			return !inside && outside.size === 1
 		})
 		expect(misplaced).toEqual([])
+	})
+})
+
+const QUERY_CLIENT_KEY_METHODS = [
+	'setQueryData',
+	'getQueryData',
+	'setQueriesData',
+	'getQueriesData',
+	'fetchQuery',
+	'prefetchQuery',
+	'ensureQueryData',
+]
+
+function isKeyLiteral(node: ts.Node): boolean {
+	if (!ts.isArrayLiteralExpression(node) || node.elements.length === 0) return false
+	const first = node.elements[0]
+	return (
+		ts.isStringLiteral(first) ||
+		ts.isNoSubstitutionTemplateLiteral(first) ||
+		ts.isTemplateExpression(first)
+	)
+}
+
+function writtenKeys(file: ts.SourceFile): ts.Node[] {
+	const found: ts.Node[] = []
+	const collect = (expression: ts.Expression) => {
+		if (isKeyLiteral(expression)) found.push(expression)
+		else if (ts.isConditionalExpression(expression)) {
+			collect(expression.whenTrue)
+			collect(expression.whenFalse)
+		}
+	}
+	forEachNode(file, (node) => {
+		if (
+			ts.isPropertyAssignment(node) &&
+			ts.isIdentifier(node.name) &&
+			['queryKey', 'mutationKey'].includes(node.name.text)
+		) {
+			collect(node.initializer)
+		}
+		if (
+			ts.isCallExpression(node) &&
+			ts.isPropertyAccessExpression(node.expression) &&
+			QUERY_CLIENT_KEY_METHODS.includes(node.expression.name.text) &&
+			node.arguments[0]
+		) {
+			collect(node.arguments[0])
+		}
+	})
+	return found
+}
+
+describe('server state', () => {
+	it('keeps src/services to the client and one flat folder per domain', () => {
+		const misplaced = srcFiles
+			.filter((path) => path.startsWith('src/services/'))
+			.filter((path) => {
+				const depth = path.split('/').length
+				return path === 'src/services/api.ts' ? false : depth !== 4
+			})
+		expect(misplaced).toEqual([])
+	})
+
+	it('names each keys file after its domain', () => {
+		const misplaced = srcFiles
+			.filter((path) => nameOf(path).endsWith('.keys.ts'))
+			.filter((path) => {
+				const domain = nameOf(parentOf(path))
+				return (
+					parentOf(parentOf(path)) !== 'src/services' ||
+					nameOf(path) !== `${domain}.keys.ts`
+				)
+			})
+		expect(misplaced).toEqual([])
+	})
+
+	it('writes query and mutation keys only in a keys file', () => {
+		const literal = projectFiles
+			.filter((path) => !path.endsWith('.keys.ts'))
+			.flatMap((path) => {
+				const file = sourceFile(path)
+				return writtenKeys(file).map(
+					(node) =>
+						`${path}:${file.getLineAndCharacterOfPosition(node.getStart()).line + 1}`
+				)
+			})
+		expect(literal).toEqual([])
+	})
+
+	it('calls the API client only from src/services', () => {
+		const outside = projectFiles
+			.filter(
+				(path) => path.startsWith('src/') && !path.startsWith('src/services/')
+			)
+			.filter((path) => /\bgetMainClient\b/.test(readFileSync(path, 'utf8')))
+		expect(outside).toEqual([])
+	})
+
+	it('touches browser storage only through common/storage', () => {
+		const outside = projectFiles
+			.filter((path) => path !== 'src/common/storage.ts' && !isTest(path))
+			.filter((path) =>
+				/\b(localStorage|sessionStorage)\s*\./.test(readFileSync(path, 'utf8'))
+			)
+		expect(outside).toEqual([])
 	})
 })

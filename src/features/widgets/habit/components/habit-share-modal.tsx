@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Button, Modal } from '@/components/ui'
 import { Icon } from '@/icons'
-import type { Habit } from '@/services/hooks/habit/habit.interface'
+import type { Habit } from '@/services/habit/habit.interface'
 import {
 	copyCanvasToClipboard,
 	downloadCanvasAsImage,

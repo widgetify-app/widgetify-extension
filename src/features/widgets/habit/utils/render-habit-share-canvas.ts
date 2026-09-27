@@ -1,6 +1,6 @@
 import jalaliMoment from 'jalali-moment'
 import moment from 'moment'
-import type { Habit } from '@/services/hooks/habit/habit.interface'
+import type { Habit } from '@/services/habit/habit.interface'
 import { drawRoundedRect, fitText, rgba } from '@/features/widgets/utils/canvas'
 import { formatHabitGoal } from './habit-goal'
 

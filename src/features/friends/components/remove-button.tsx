@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui'
-import type { Friend } from '@/services/hooks/friends/friend-service.hook'
+import type { Friend } from '@/services/friends/friend-service.hook'
 import { Icon } from '@/icons'
 
 type Props = {

@@ -258,7 +258,8 @@ kebab-case for every file and folder. A file is `.tsx` exactly when it contains 
 | Routed page | `<name>.page.tsx`, directly under `src/pages/<name>/` |
 | Settings panel | `<name>-setting.tsx` |
 | Context provider | `<name>.context.tsx` |
-| Server state hook | `<verb>-<noun>.hook.ts`, only in `src/services` |
+| Server state hook | `<name>.hook.ts`, only in `src/services/<domain>/` |
+| Query and mutation keys | `<domain>.keys.ts`, one per domain in `src/services/<domain>/` |
 | Local React hook | `hooks/use-<name>.ts` |
 | cva class variants | `<component>.variants.ts`, beside the component in `src/components/ui` |
 | Alternate size or display renderer | `variants/<name>-<WxH>.tsx` |
@@ -294,6 +295,31 @@ spellings are a missing alias, not a convention, and the test rejects them.
 file inside that same folder importing a sibling: `popover-menu.tsx` reaches
 `@/components/ui/portal/portal` directly because going through its own barrel would be a
 circular import. No other folder gets an `index.ts`.
+
+### Server state
+
+**Everything that talks to the server lives in `src/services/<domain>/`,** one flat folder
+per backend domain, however many features use it: the hooks (`*.hook.ts`), the shapes
+the server sends (`*.interface.ts`), a plain request that is not a hook
+(`<verb>-<noun>.ts`), and the domain's keys (`<domain>.keys.ts`). `src/services/api.ts`
+is the client, and only `src/services` calls `getMainClient` — a feature that needs a new
+request adds a function there rather than calling the client itself.
+
+**Every query and mutation key comes from a keys file.** A literal array passed as
+`queryKey`, `mutationKey` or to `setQueryData` anywhere else fails the test, because a key
+typed twice drifts: the profile was once invalidated as `['getUser']` after a purchase
+while every query cached it as `['userProfile']`, so the coin balance never refreshed.
+
+```ts
+export const habitKeys = {
+	list: (archived: boolean) => ['get-habits', archived] as const,
+	detail: (habitId: string) => ['get-habit-detail', habitId] as const,
+	add: ['addHabit'] as const,
+}
+```
+
+The strings are what TanStack Query caches by — renaming one is harmless, but never make
+two queries share a key they did not share before.
 
 ### Before adding a file
 
@@ -342,6 +368,11 @@ declare module '@/common/constants/store-keys' {
 That keeps the global layer from importing feature types, and the compiler still rejects a
 key nobody declared. Grep `interface StorageKV` to see every key. Deprecated keys get
 purged via `purgeDeprecatedStorageKeys`.
+
+`localStorage` is touched only inside `src/common/storage.ts`. The one value it holds is the
+Firefox favicon consent, because `getFaviconFromUrl` reads it synchronously while
+rendering; `getFaviconConsent` and `setFaviconConsent` wrap it under its original key, and
+logout clears it with `clearLocalStorage`, as it clears every other setting.
 
 **Cross component messaging** uses `callEvent` / `listenEvent` from `@/common/utils/call-event`, typed on the `EventName` interface — app-wide events in that file, a feature's own events in its `types.ts`, the same way as storage keys. A file that augments must stay a module (keep at least one export): a `declare module` in a file with no import or export replaces the module instead of extending it.
 

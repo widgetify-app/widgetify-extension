@@ -3,12 +3,12 @@ import { Button, Modal } from '@/components/ui'
 import {
 	useGetOccupations,
 	useGetInterests,
-} from '@/services/hooks/profile/get-profile-meta.hook'
+} from '@/services/profile/get-profile-meta.hook'
 import { TextInput } from '@/components/ui'
 import { sleep } from '@/common/utils/timeout'
 import { Chip } from '@/components/ui'
 import { ItemSelector } from '@/components/ui'
-import { useSetupWizard } from '@/services/hooks/auth/auth-service.hook'
+import { useSetupWizard } from '@/services/auth/auth-service.hook'
 import { showToast } from '@/common/toast'
 import { safeAwait } from '@/services/api'
 import Analytics from '@/analytics'

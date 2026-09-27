@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import type { FetchedCurrency } from '@/services/hooks/currency/get-currency-by-code.hook'
+import type { FetchedCurrency } from '@/services/currency/get-currency-by-code.hook'
 import { getPrice } from '../utils/get-price'
 
 function currency(overrides: Partial<FetchedCurrency> = {}): FetchedCurrency {

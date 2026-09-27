@@ -3,9 +3,8 @@ import { getMultipleFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper, Wallpaper } from '@/common/wallpaper.interface'
 import { useAuth } from '@/context/auth.context'
-import type { Theme } from '@/context/theme.context'
-import { getMainClient } from '@/services/api'
-import type { UserInventoryItem } from '@/services/hooks/market/market.interface'
+import { getAccountSync } from '@/services/extension/get-account-sync'
+import type { UserInventoryItem } from '@/services/market/market.interface'
 
 export function useSyncAccount() {
 	const { isAuthenticated } = useAuth()
@@ -30,16 +29,7 @@ export function useSyncAccount() {
 
 async function getAll() {
 	try {
-		const client = getMainClient()
-		const response = await client.get<{
-			wallpaper: Wallpaper
-			theme: Theme | null
-			browserTitle: UserInventoryItem
-			font: string | null
-			ui: string | null
-		}>('/extension/@me/sync')
-
-		const { wallpaper, theme, browserTitle, font, ui } = response.data
+		const { wallpaper, theme, browserTitle, font, ui } = await getAccountSync()
 		const store = await getMultipleFromStorage(['wallpaper', 'theme', 'appearance'])
 
 		await Promise.all([

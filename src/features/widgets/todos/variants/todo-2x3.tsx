@@ -8,7 +8,7 @@ import {
 	Tooltip,
 } from '@/components/ui'
 import { Icon } from '@/icons'
-import type { Todo } from '@/services/hooks/todo/todo.interface'
+import type { Todo } from '@/services/todo/todo.interface'
 import { ExpandableTodoInput } from '../components/expandable-todo-input'
 import { TodosEmpty } from '../components/todo-empty'
 import { TodosError } from '../components/todo-error'

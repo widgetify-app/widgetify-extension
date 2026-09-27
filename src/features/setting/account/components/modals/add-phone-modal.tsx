@@ -6,7 +6,7 @@ import OtpInput from '../otp-input'
 import {
 	useChangePhoneRequest,
 	useChangePhoneVerify,
-} from '@/services/hooks/user/user-service.hook'
+} from '@/services/user/user-service.hook'
 import { safeAwait } from '@/services/api'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'

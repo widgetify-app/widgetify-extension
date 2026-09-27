@@ -1,6 +1,6 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import type { Bookmark } from '@/services/hooks/bookmark/bookmark.interface'
+import type { Bookmark } from '@/services/bookmark/bookmark.interface'
 import { FolderBookmarkItem } from './bookmark-folder'
 import { BookmarkItem } from './bookmark-item'
 

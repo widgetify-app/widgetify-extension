@@ -8,9 +8,10 @@ import type { WidgetifyDate } from '@/common/utils/date-events'
 import { useQueryClient } from '@tanstack/react-query'
 import { Icon } from '@/icons'
 import { safeAwait } from '@/services/api'
-import type { Habit } from '@/services/hooks/habit/habit.interface'
-import { useLogHabitProgress } from '@/services/hooks/habit/log-habit-progress.hook'
+import type { Habit } from '@/services/habit/habit.interface'
+import { useLogHabitProgress } from '@/services/habit/log-habit-progress.hook'
 import { resolveHabitStep } from '../../utils/habit-step'
+import { habitKeys } from '@/services/habit/habit.keys'
 
 interface HabitCalendarProps {
 	habit: Habit
@@ -93,7 +94,7 @@ export function HabitCalendar({ habit, color, today }: HabitCalendarProps) {
 			return
 		}
 
-		queryClient.invalidateQueries({ queryKey: ['get-habit-detail', habit.id] })
+		queryClient.invalidateQueries({ queryKey: habitKeys.detail(habit.id) })
 	}
 
 	const renderDay = (

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { SectionPanel, ToggleSwitch } from '@/components/ui'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { SearchAutocompleteSwitch } from './components/search-autocomplete-switch'
+import { getFaviconConsent, setFaviconConsent } from '@/common/storage'
 
 export function PrivacySettings() {
 	const {
@@ -13,9 +14,7 @@ export function PrivacySettings() {
 		setBrowserTabsEnabled,
 	} = useGeneralSetting()
 
-	const [allowFavicon, setAllowFaviconState] = useState(() => {
-		return localStorage.getItem('wxt_local:allowFaviconService') === 'true'
-	})
+	const [allowFavicon, setAllowFaviconState] = useState(getFaviconConsent)
 
 	const handleToggleAnalytics = () => {
 		setAnalyticsEnabled(!analyticsEnabled)
@@ -24,7 +23,7 @@ export function PrivacySettings() {
 	const handleToggleFavicon = () => {
 		const nextValue = !allowFavicon
 		setAllowFaviconState(nextValue)
-		localStorage.setItem('wxt_local:allowFaviconService', String(nextValue))
+		setFaviconConsent(nextValue)
 	}
 
 	return (

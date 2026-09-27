@@ -1,6 +1,6 @@
 import { AvatarComponent } from '@/components/ui'
 import { Icon } from '@/icons'
-import type { UserProfile } from '@/services/hooks/user/user-service.hook'
+import type { UserProfile } from '@/services/user/user-service.hook'
 
 interface ProfileTriggerProps {
 	user: UserProfile | null

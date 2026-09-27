@@ -7,13 +7,11 @@ import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { getCurrentDate } from '@/common/utils/date-events'
 import { safeAwait } from '@/services/api'
-import {
-	type MoodType,
-	useUpsertMoodLog,
-} from '@/services/hooks/mood-log/upsert-mood-log.hook'
+import { type MoodType, useUpsertMoodLog } from '@/services/mood-log/upsert-mood-log.hook'
 import { Icon } from '@/icons'
 import { useIsMutating, useQueryClient } from '@tanstack/react-query'
 import type { AxiosError } from 'axios'
+import { moodLogKeys } from '@/services/mood-log/mood-log.keys'
 
 interface Prop {
 	className: string
@@ -25,7 +23,7 @@ export function DailyMoodNotification({ className }: Prop) {
 	const today = getCurrentDate(timezone.value)
 	const { mutateAsync: upsertMoodLog } = useUpsertMoodLog()
 	const [mood, setMood] = useState<string>()
-	const isAdding = useIsMutating({ mutationKey: ['upsertMoodLog'] }) > 0
+	const isAdding = useIsMutating({ mutationKey: moodLogKeys.upsert }) > 0
 
 	const onRemoveNotif = () => {
 		callEvent('remove_from_notifications', { id: 'notificationMood', ttl: 420 })
@@ -64,7 +62,7 @@ export function DailyMoodNotification({ className }: Prop) {
 
 		setTimeout(() => {
 			queryClient.invalidateQueries({
-				queryKey: ['get-moods'],
+				queryKey: moodLogKeys.all,
 			})
 			callEvent('remove_from_notifications', {
 				id: 'notificationMood',

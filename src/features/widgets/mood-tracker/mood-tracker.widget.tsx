@@ -3,11 +3,8 @@ import { useGeneralSetting } from '@/context/general-setting.context'
 import { getCurrentDate } from '@/common/utils/date-events'
 import { toIsoDateKey } from '@/features/widgets/utils/jalali-date'
 import { useAuth } from '@/context/auth.context'
-import { useGetMoods } from '@/services/hooks/mood-log/get-moods.hook'
-import {
-	type MoodType,
-	useUpsertMoodLog,
-} from '@/services/hooks/mood-log/upsert-mood-log.hook'
+import { useGetMoods } from '@/services/mood-log/get-moods.hook'
+import { type MoodType, useUpsertMoodLog } from '@/services/mood-log/upsert-mood-log.hook'
 import { useQueryClient } from '@tanstack/react-query'
 import { safeAwait } from '@/services/api'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
@@ -21,6 +18,7 @@ import { Icon } from '@/icons'
 import Analytics from '@/analytics'
 import type { AxiosError } from 'axios'
 import { callEvent } from '@/common/utils/call-event'
+import { moodLogKeys } from '@/services/mood-log/mood-log.keys'
 
 const MOOD_HISTORY_DAYS = 7
 
@@ -99,8 +97,7 @@ export function MoodTrackerWidget({ size = { w: 2, h: 1 } }: MoodTrackerWidgetPr
 			showToast('حال روزانه شما ثبت شد.', 'success')
 		}
 
-		queryClient.invalidateQueries({ queryKey: ['get-moods'] })
-		queryClient.invalidateQueries({ queryKey: ['get-calendar-data'] })
+		queryClient.invalidateQueries({ queryKey: moodLogKeys.all })
 	}
 
 	const handleOpenMenu = (e: React.MouseEvent) => {

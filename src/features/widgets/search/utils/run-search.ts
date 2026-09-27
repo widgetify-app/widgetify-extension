@@ -1,4 +1,4 @@
-import type { EngineMeta } from '@/services/hooks/trends/get-trends.hook'
+import type { EngineMeta } from '@/services/trends/get-trends.hook'
 
 export function runSearch(content: string, engine: EngineMeta) {
 	if (engine.id === 'google') {

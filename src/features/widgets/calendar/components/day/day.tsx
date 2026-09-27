@@ -2,8 +2,8 @@ import type jalaliMoment from 'jalali-moment'
 import { useRef } from 'react'
 import { moodOptions } from '@/common/constants/moods'
 import { cn } from '@/common/utils/cn'
-import type { FetchedAllEvents } from '@/services/hooks/date/get-events.hook'
-import type { MoodEntry } from '@/services/hooks/mood-log/get-moods.hook'
+import type { FetchedAllEvents } from '@/services/date/get-events.hook'
+import type { MoodEntry } from '@/services/mood-log/get-moods.hook'
 import {
 	formatDateStr,
 	getCurrentDate,

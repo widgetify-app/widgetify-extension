@@ -2,11 +2,12 @@ import { getFaviconFromUrl } from '@/features/widgets/utils/icon'
 import { Button, Modal } from '@/components/ui'
 import { TextInput } from '@/components/ui'
 import { useEffect, useState } from 'react'
-import type { Bookmark } from '@/services/hooks/bookmark/bookmark.interface'
+import type { Bookmark } from '@/services/bookmark/bookmark.interface'
 import { ShowAdvancedButton } from '../shared'
 import { AdvancedModal } from './advanced-modal'
 import { useIsMutating } from '@tanstack/react-query'
 import { BookmarkIconPicker } from '../bookmark-icon-picker'
+import { bookmarkKeys } from '@/services/bookmark/bookmark.keys'
 
 interface EditBookmarkModalProps {
 	isOpen: boolean
@@ -55,7 +56,7 @@ export function EditBookmarkModal({
 		structuredClone(empty)
 	)
 
-	const isUpdating = useIsMutating({ mutationKey: ['updateBookmark'] }) > 0
+	const isUpdating = useIsMutating({ mutationKey: bookmarkKeys.update }) > 0
 
 	const [showAdvanced, setShowAdvanced] = useState(false)
 	const [icon, setIcon] = useState<string | null | File>(null)

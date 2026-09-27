@@ -10,12 +10,9 @@ import { useAuth } from '@/context/auth.context'
 import { useDate } from '@/features/widgets/date.context'
 import { Icon } from '@/icons'
 import { safeAwait } from '@/services/api'
-import type { FetchedAllEvents } from '@/services/hooks/date/get-events.hook'
-import type { MoodEntry } from '@/services/hooks/mood-log/get-moods.hook'
-import {
-	type MoodType,
-	useUpsertMoodLog,
-} from '@/services/hooks/mood-log/upsert-mood-log.hook'
+import type { FetchedAllEvents } from '@/services/date/get-events.hook'
+import type { MoodEntry } from '@/services/mood-log/get-moods.hook'
+import { type MoodType, useUpsertMoodLog } from '@/services/mood-log/upsert-mood-log.hook'
 import {
 	getGregorianEvents,
 	getHijriEvents,
@@ -23,6 +20,7 @@ import {
 	hijriMonthNames,
 	type WidgetifyDate,
 } from '@/common/utils/date-events'
+import { moodLogKeys } from '@/services/mood-log/mood-log.keys'
 
 const MOOD_BACKLOG_DAYS = 7
 
@@ -46,7 +44,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 
 	const [mood, setMood] = useState<MoodType | ''>('')
 
-	const isSavingMood = useIsMutating({ mutationKey: ['upsertMoodLog'] }) > 0
+	const isSavingMood = useIsMutating({ mutationKey: moodLogKeys.upsert }) > 0
 
 	const currentGregorian = today.clone().doAsGregorian()
 	const dayGregorian = date.clone().doAsGregorian()

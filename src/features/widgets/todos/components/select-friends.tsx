@@ -1,7 +1,7 @@
 import { callEvent } from '@/common/utils/call-event'
 import { Button, Dropdown } from '@/components/ui'
 import { SelectFriendLayout } from '@/features/friends/friends'
-import type { Friend } from '@/services/hooks/friends/friend-service.hook'
+import type { Friend } from '@/services/friends/friend-service.hook'
 import { Icon } from '@/icons'
 
 interface Prop {

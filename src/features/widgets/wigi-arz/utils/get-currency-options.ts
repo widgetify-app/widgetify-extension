@@ -1,4 +1,4 @@
-import type { SupportedCurrencies } from '@/services/hooks/currency/get-support-currencies.hook'
+import type { SupportedCurrencies } from '@/services/currency/get-support-currencies.hook'
 import { CurrenciesType, type CurrencyGroup } from '../types'
 
 const GROUP_LABELS: { type: CurrenciesType; label: string }[] = [

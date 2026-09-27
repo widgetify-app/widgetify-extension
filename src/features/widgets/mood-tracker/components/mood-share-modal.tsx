@@ -6,7 +6,7 @@ import {
 	copyCanvasToClipboard,
 	downloadCanvasAsImage,
 } from '@/features/widgets/utils/canvas'
-import { useGetMoodStats } from '@/services/hooks/mood-log/get-mood-stats.hook'
+import { useGetMoodStats } from '@/services/mood-log/get-mood-stats.hook'
 import { renderMoodShareCanvas } from '../utils/render-mood-share-canvas'
 
 interface MoodShareModalProps {

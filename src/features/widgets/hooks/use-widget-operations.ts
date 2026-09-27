@@ -19,7 +19,7 @@ import {
 	createUserWidgetApi,
 	deleteUserWidgetApi,
 	updateUserWidgetApi,
-} from '@/services/hooks/widgets/widget-sync.hook'
+} from '@/services/widgets/widget-sync.hook'
 import { reflowForColumns, sanitizeLayout } from '../utils/widget-layout-helpers'
 import { createNoteForDuplicatedWidget } from '../utils/widget-note-helpers'
 

@@ -2,7 +2,7 @@ import { useState, useRef } from 'react'
 import { Icon } from '@/icons'
 import { UserCoin } from '@/components/user-coin'
 import { useLazyLoad } from '@/hooks/use-lazy-load'
-import type { GalleryAsset } from '@/services/hooks/gallery/get-gallery-assets.hook'
+import type { GalleryAsset } from '@/services/gallery/get-gallery-assets.hook'
 
 interface GalleryBookmarkIconItemProps {
 	asset: GalleryAsset

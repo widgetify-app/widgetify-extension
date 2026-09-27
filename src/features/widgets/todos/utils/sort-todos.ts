@@ -1,4 +1,4 @@
-import type { Todo } from '@/services/hooks/todo/todo.interface'
+import type { Todo } from '@/services/todo/todo.interface'
 
 const PRIORITY_RANK: Record<string, number> = {
 	high: 3,

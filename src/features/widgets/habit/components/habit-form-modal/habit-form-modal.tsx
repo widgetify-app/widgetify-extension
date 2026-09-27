@@ -12,10 +12,10 @@ import {
 	HabitComparison,
 	HabitFrequency,
 	HabitUnit,
-} from '@/services/hooks/habit/habit.interface'
-import { useAddHabit } from '@/services/hooks/habit/add-habit.hook'
-import { useUpdateHabit } from '@/services/hooks/habit/update-habit.hook'
-import type { HabitIcon } from '@/services/hooks/habit/get-habits.hook'
+} from '@/services/habit/habit.interface'
+import { useAddHabit } from '@/services/habit/add-habit.hook'
+import { useUpdateHabit } from '@/services/habit/update-habit.hook'
+import type { HabitIcon } from '@/services/habit/get-habits.hook'
 import { addOpacityToColor } from '@/common/color'
 import { safeAwait } from '@/services/api'
 import { translateError } from '@/common/utils/translate-error'

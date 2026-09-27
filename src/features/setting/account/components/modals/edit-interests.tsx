@@ -1,8 +1,8 @@
 import { Chip, Modal } from '@/components/ui'
-import { useUpdateUserProfile } from '@/services/hooks/auth/auth-service.hook'
+import { useUpdateUserProfile } from '@/services/auth/auth-service.hook'
 import { useEffect, useState } from 'react'
 import { InterestsSelector } from '../interests-selector'
-import { useGetInterests } from '@/services/hooks/profile/get-profile-meta.hook'
+import { useGetInterests } from '@/services/profile/get-profile-meta.hook'
 import { SectionPanel } from '@/components/ui'
 import { FooterButtons } from './footer-buttons'
 

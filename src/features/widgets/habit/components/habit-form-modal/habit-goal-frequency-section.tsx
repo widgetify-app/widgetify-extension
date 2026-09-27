@@ -3,7 +3,7 @@ import {
 	type HabitComparison,
 	type HabitFrequency,
 	HabitUnit,
-} from '@/services/hooks/habit/habit.interface'
+} from '@/services/habit/habit.interface'
 import {
 	HABIT_COMPARISON_OPTIONS,
 	HABIT_FREQUENCY_OPTIONS,

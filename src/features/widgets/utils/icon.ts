@@ -1,3 +1,4 @@
+import { getFaviconConsent } from '@/common/storage'
 /**
  * Retrieves a favicon URL for a given website URL using Google's favicon service.
  *
@@ -19,8 +20,7 @@ export const getFaviconFromUrl = (url: string): string => {
 		}
 
 		if (import.meta.env.FIREFOX) {
-			const privacyConfig = localStorage.getItem('wxt_local:allowFaviconService')
-			if (privacyConfig !== 'true') {
+			if (!getFaviconConsent()) {
 				return ''
 			}
 		}

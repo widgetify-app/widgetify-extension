@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button, ItemSelector } from '@/components/ui'
 import { Icon } from '@/icons'
-import { getFromStorage, setToStorage } from '@/common/storage'
+import { getFromStorage, setFaviconConsent, setToStorage } from '@/common/storage'
 
 interface StepFirefoxConsentProps {
 	onGetStarted: () => void
@@ -28,7 +28,7 @@ export const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) =>
 			...current,
 			analyticsEnabled: allowAnalytics,
 		})
-		localStorage.setItem('wxt_local:allowFaviconService', String(allowIcon))
+		setFaviconConsent(allowIcon)
 
 		onGetStarted()
 	}

@@ -54,6 +54,20 @@ export async function clearStorage() {
 	await storage.clear('local')
 }
 
+const FAVICON_CONSENT_KEY = 'wxt_local:allowFaviconService'
+
+export function getFaviconConsent(): boolean {
+	return localStorage.getItem(FAVICON_CONSENT_KEY) === 'true'
+}
+
+export function setFaviconConsent(allowed: boolean) {
+	localStorage.setItem(FAVICON_CONSENT_KEY, String(allowed))
+}
+
+export function clearLocalStorage() {
+	localStorage.clear()
+}
+
 export async function removeFromStorage<K extends keyof StorageKV>(key: K) {
 	await storage.removeItem(`local:${key}`)
 }

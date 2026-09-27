@@ -2,7 +2,7 @@ import { SectionPanel } from '@/components/ui'
 import {
 	type BookmarkSuggestion,
 	useGetSuggestedBookmarks,
-} from '@/services/hooks/bookmark/get-bookmarks.hook'
+} from '@/services/bookmark/get-bookmarks.hook'
 import { Icon } from '@/icons'
 
 interface BookmarkSuggestionsProps {

@@ -15,12 +15,13 @@ import { migrateWidgetLayoutIfNeeded } from '@/features/widgets/utils/migration'
 import {
 	getUserWidgetsApi,
 	syncUserWidgetsApi,
-} from '@/services/hooks/widgets/widget-sync.hook'
+} from '@/services/widgets/widget-sync.hook'
 import {
 	reflowForColumns,
 	sanitizeLayout,
 	storedWidgetToApiPayload,
 } from '../utils/widget-layout-helpers'
+import { widgetsKeys } from '@/services/widgets/widgets.keys'
 
 interface UseWidgetSyncParams {
 	isAuthenticated: boolean
@@ -157,7 +158,7 @@ export function useWidgetSync({
 				if (res === null) return
 
 				if (res.catalog) {
-					queryClient.setQueryData(['widgetCatalog'], res.catalog)
+					queryClient.setQueryData(widgetsKeys.catalog, res.catalog)
 				}
 
 				const serverWidgets = res.widgets || []

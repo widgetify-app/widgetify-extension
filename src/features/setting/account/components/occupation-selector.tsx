@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { Dropdown } from '@/components/ui'
-import type { ProfileMetaItem } from '@/services/hooks/profile/get-profile-meta.hook'
+import type { ProfileMetaItem } from '@/services/profile/get-profile-meta.hook'
 import { Chip } from '@/components/ui'
 
 interface OccupationSelectorProps {

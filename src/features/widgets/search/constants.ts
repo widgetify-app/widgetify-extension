@@ -1,4 +1,4 @@
-import type { EngineMeta } from '@/services/hooks/trends/get-trends.hook'
+import type { EngineMeta } from '@/services/trends/get-trends.hook'
 
 export const DEFAULT_ENGINE: EngineMeta = {
 	id: 'google',

@@ -1,7 +1,7 @@
 import type React from 'react'
 import { CurrentWeatherBox } from '../components/current-weather-box'
 import { Forecast } from '../components/forecast'
-import type { FetchedWeather } from '@/services/hooks/weather/weather.interface'
+import type { FetchedWeather } from '@/services/weather/weather.interface'
 import type { WeatherSettings } from '../types'
 
 interface Weather2x3Props {

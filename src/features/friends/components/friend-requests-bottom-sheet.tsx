@@ -1,7 +1,7 @@
 import {
 	type Friend,
 	useHandleFriendRequest,
-} from '@/services/hooks/friends/friend-service.hook'
+} from '@/services/friends/friend-service.hook'
 
 import { RemoveFriendButton } from './remove-button'
 import { FriendsList } from './friends-list'

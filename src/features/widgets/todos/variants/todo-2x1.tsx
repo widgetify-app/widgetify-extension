@@ -4,8 +4,8 @@ import { translateError } from '@/common/utils/translate-error'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { Icon } from '@/icons'
 import { safeAwait } from '@/services/api'
-import type { Todo } from '@/services/hooks/todo/todo.interface'
-import { useUpdateTodo } from '@/services/hooks/todo/update-todo.hook'
+import type { Todo } from '@/services/todo/todo.interface'
+import { useUpdateTodo } from '@/services/todo/update-todo.hook'
 import { TodosError } from '../components/todo-error'
 
 interface TodoCompactRowProps {

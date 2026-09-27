@@ -1,4 +1,4 @@
-import type { FetchedCurrency } from '@/services/hooks/currency/get-currency-by-code.hook'
+import type { FetchedCurrency } from '@/services/currency/get-currency-by-code.hook'
 
 const DOLLAR_PRICED_CODES = ['btc']
 

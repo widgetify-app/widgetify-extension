@@ -1,6 +1,6 @@
-import type { Bookmark } from '@/services/hooks/bookmark/bookmark.interface'
+import type { Bookmark } from '@/services/bookmark/bookmark.interface'
 import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
-import type { Todo } from '@/services/hooks/todo/todo.interface'
+import type { Todo } from '@/services/todo/todo.interface'
 import type { Page } from '@/context/page.context'
 
 export interface EventName {

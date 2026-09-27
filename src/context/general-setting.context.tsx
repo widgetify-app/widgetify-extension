@@ -3,11 +3,11 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { shouldReduceMotion } from '@/context/utils/reduced-motion'
-import { useUpdateExtensionSettings } from '@/services/hooks/extension/update-setting.hook'
+import { useUpdateExtensionSettings } from '@/services/extension/update-setting.hook'
 import {
 	type FetchedTimezone,
 	getTimezones,
-} from '@/services/hooks/timezone/get-timezones.hook'
+} from '@/services/timezone/get-timezones.hook'
 import { useAuth } from './auth.context'
 
 interface GeneralData {

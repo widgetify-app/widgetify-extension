@@ -5,7 +5,7 @@ import { ColorPicker } from '@/components/ui'
 import { TextInput } from '@/components/ui'
 import { getEmojiList } from '@/services/emoji/get-emoji-list'
 import { BookmarkItem } from '../bookmark-item'
-import type { BookmarkType } from '@/services/hooks/bookmark/bookmark.interface'
+import type { BookmarkType } from '@/services/bookmark/bookmark.interface'
 import { Icon } from '@/icons'
 
 interface AdvancedModalProps {

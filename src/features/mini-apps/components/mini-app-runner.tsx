@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { useLaunchMiniApp } from '@/services/hooks/mini-apps/launch-mini-app.hook'
-import { useGetMiniApp } from '@/services/hooks/mini-apps/get-mini-app.hook'
+import { useLaunchMiniApp } from '@/services/mini-apps/launch-mini-app.hook'
+import { useGetMiniApp } from '@/services/mini-apps/get-mini-app.hook'
 import { MiniAppError } from './mini-app-error'
 import { MiniAppLoadingState } from './mini-app-loading'
 import { MiniAppRunnerHeader } from './runner-header'

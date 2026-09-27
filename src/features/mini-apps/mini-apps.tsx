@@ -1,4 +1,4 @@
-import { useGetMiniApps } from '@/services/hooks/mini-apps/get-mini-apps.hook'
+import { useGetMiniApps } from '@/services/mini-apps/get-mini-apps.hook'
 import { MiniAppCard } from './components/card/mini-app-card'
 import { MiniAppCardSkeleton } from './components/card/mini-app-card-skeleton'
 import { useEffect, useRef } from 'react'

@@ -2,8 +2,8 @@ import type React from 'react'
 import { moodOptions } from '@/common/constants/moods'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
-import type { MoodEntry } from '@/services/hooks/mood-log/get-moods.hook'
-import type { MoodType } from '@/services/hooks/mood-log/upsert-mood-log.hook'
+import type { MoodEntry } from '@/services/mood-log/get-moods.hook'
+import type { MoodType } from '@/services/mood-log/upsert-mood-log.hook'
 
 interface Mood2x1Props {
 	todayMood?: MoodEntry

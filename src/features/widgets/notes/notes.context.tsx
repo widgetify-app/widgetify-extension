@@ -12,11 +12,11 @@ import { getFromStorage, setToStorage, watchStorage } from '@/common/storage'
 import { safeAwait } from '@/services/api'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
-import { useGetNotes } from '@/services/hooks/note/get-notes.hook'
+import { useGetNotes } from '@/services/note/get-notes.hook'
 import { useAuth } from '@/context/auth.context'
-import { useRemoveNote } from '@/services/hooks/note/delete-note.hook'
-import { useUpsertNote } from '@/services/hooks/note/upsert-note.hook'
-import type { FetchedNote, NoteCreateInput } from '@/services/hooks/note/note.interface'
+import { useRemoveNote } from '@/services/note/delete-note.hook'
+import { useUpsertNote } from '@/services/note/upsert-note.hook'
+import type { FetchedNote, NoteCreateInput } from '@/services/note/note.interface'
 
 interface NotesContextType {
 	notes: FetchedNote[]

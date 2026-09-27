@@ -4,9 +4,9 @@ import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
 import { safeAwait } from '@/services/api'
-import { useArchiveHabit } from '@/services/hooks/habit/archive-habit.hook'
-import { useGetHabits } from '@/services/hooks/habit/get-habits.hook'
-import type { Habit } from '@/services/hooks/habit/habit.interface'
+import { useArchiveHabit } from '@/services/habit/archive-habit.hook'
+import { useGetHabits } from '@/services/habit/get-habits.hook'
+import type { Habit } from '@/services/habit/habit.interface'
 
 export function useHabitActions() {
 	const { isAuthenticated } = useAuth()

@@ -6,10 +6,11 @@ import { cn } from '@/common/utils/cn'
 import type { WidgetifyDate } from '@/common/utils/date-events'
 import { useQueryClient } from '@tanstack/react-query'
 import { safeAwait } from '@/services/api'
-import type { Habit } from '@/services/hooks/habit/habit.interface'
-import { useLogHabitProgress } from '@/services/hooks/habit/log-habit-progress.hook'
+import type { Habit } from '@/services/habit/habit.interface'
+import { useLogHabitProgress } from '@/services/habit/log-habit-progress.hook'
 import { getHabitUnitLabel } from '../../utils/habit-goal'
 import { resolveHabitStep } from '../../utils/habit-step'
+import { habitKeys } from '@/services/habit/habit.keys'
 
 interface HabitContributionChartProps {
 	habit: Habit
@@ -144,7 +145,7 @@ export function HabitContributionChart({
 			return
 		}
 
-		queryClient.invalidateQueries({ queryKey: ['get-habit-detail', habit.id] })
+		queryClient.invalidateQueries({ queryKey: habitKeys.detail(habit.id) })
 	}
 
 	const getCellColor = (level: number) => {

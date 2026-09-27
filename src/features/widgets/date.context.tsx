@@ -8,7 +8,7 @@ import {
 	type WidgetifyDate,
 } from '@/common/utils/date-events'
 import { isSameJalaliDay } from '@/features/widgets/utils/jalali-date'
-import { useGetEvents } from '@/services/hooks/date/get-events.hook'
+import { useGetEvents } from '@/services/date/get-events.hook'
 import { useGeneralSetting } from '@/context/general-setting.context'
 
 interface DateContextType {

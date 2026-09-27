@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'bun:test'
-import type { Bookmark } from '@/services/hooks/bookmark/bookmark.interface'
-import type { FetchedBookmark } from '@/services/hooks/bookmark/get-bookmarks.hook'
+import type { Bookmark } from '@/services/bookmark/bookmark.interface'
+import type { FetchedBookmark } from '@/services/bookmark/get-bookmarks.hook'
 import type { WidgetSize } from '../../utils/layout-engine/types'
 
 function mapBookmarks(fetchedBookmarks: FetchedBookmark[]): Bookmark[] {

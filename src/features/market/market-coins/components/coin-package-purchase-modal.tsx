@@ -3,8 +3,8 @@ import { Button, Modal } from '@/components/ui'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
 import { ConfigKey } from '@/common/constants/config-keys'
-import type { CoinPackage } from '@/services/hooks/market/market-coins.interface'
-import { usePurchaseCoinPackage } from '@/services/hooks/market/market-coins.hook'
+import type { CoinPackage } from '@/services/market/market-coins.interface'
+import { usePurchaseCoinPackage } from '@/services/market/market-coins.hook'
 import { Icon } from '@/icons'
 
 interface CoinPackagePurchaseModalProps {

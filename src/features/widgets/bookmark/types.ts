@@ -1,4 +1,4 @@
-import type { BookmarkType } from '@/services/hooks/bookmark/bookmark.interface'
+import type { BookmarkType } from '@/services/bookmark/bookmark.interface'
 
 export interface FolderPathItem {
 	id: string

@@ -1,12 +1,12 @@
-import type { Bookmark } from '@/services/hooks/bookmark/bookmark.interface'
+import type { Bookmark } from '@/services/bookmark/bookmark.interface'
 import type {
 	FetchedForecast,
 	FetchedWeather,
-} from '@/services/hooks/weather/weather.interface'
+} from '@/services/weather/weather.interface'
 import type { ExtensionConfigResponse } from '@/services/config-data/config-data.interface'
-import type { FetchedCurrency } from '@/services/hooks/currency/get-currency-by-code.hook'
-import type { RecommendedSite, TrendItem } from '@/services/hooks/trends/get-trends.hook'
-import type { UserProfile } from '@/services/hooks/user/user-service.hook'
+import type { FetchedCurrency } from '@/services/currency/get-currency-by-code.hook'
+import type { RecommendedSite, TrendItem } from '@/services/trends/get-trends.hook'
+import type { UserProfile } from '@/services/user/user-service.hook'
 import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
 
 export interface StorageKV {

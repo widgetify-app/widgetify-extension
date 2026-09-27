@@ -1,5 +1,5 @@
 import { Button, ItemSelector } from '@/components/ui'
-import type { BookmarkType } from '@/services/hooks/bookmark/bookmark.interface'
+import type { BookmarkType } from '@/services/bookmark/bookmark.interface'
 import { Icon } from '@/icons'
 
 export function TypeSelector({

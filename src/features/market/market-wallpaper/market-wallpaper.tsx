@@ -2,11 +2,11 @@ import { useState } from 'react'
 import Analytics from '@/analytics'
 import { Pagination } from '@/components/ui'
 import { WallpaperItem } from '@/components/wallpaper/wallpaper-item'
-import { useGetWallpapers } from '@/services/hooks/wallpapers/get-wallpaper-categories.hook'
+import { useGetWallpapers } from '@/services/wallpapers/get-wallpaper-categories.hook'
 import { useWallpaperContext } from '@/context/wallpaper.context'
 import { usePreviewHandler } from '@/hooks/use-preview-handler'
 import type { Wallpaper } from '@/common/wallpaper.interface'
-import { MarketItemType } from '@/services/hooks/market/market.interface'
+import { MarketItemType } from '@/services/market/market.interface'
 
 export function MarketWallpaper() {
 	const [currentPage, setCurrentPage] = useState(1)

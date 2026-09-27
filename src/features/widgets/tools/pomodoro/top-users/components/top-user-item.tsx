@@ -1,6 +1,6 @@
 import { AvatarComponent } from '@/components/ui'
 import { UserCardPortal } from '../../components/user-card-portal'
-import type { TopUser } from '@/services/hooks/pomodoro/get-top-users.hook'
+import type { TopUser } from '@/services/pomodoro/get-top-users.hook'
 import { Icon } from '@/icons'
 
 interface TopUserItemProps {

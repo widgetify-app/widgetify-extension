@@ -1,8 +1,5 @@
 import type React from 'react'
-import {
-	type TopUsersType,
-	useGetTopUsers,
-} from '@/services/hooks/pomodoro/get-top-users.hook'
+import { type TopUsersType, useGetTopUsers } from '@/services/pomodoro/get-top-users.hook'
 import { TopUserItem } from './components/top-user-item'
 
 interface TopUsersTabProps {

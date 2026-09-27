@@ -1,10 +1,7 @@
 import jalaliMoment from 'jalali-moment'
 import hijriMoment from 'moment-hijri'
 import momentTz from 'moment-timezone'
-import type {
-	FetchedAllEvents,
-	FetchedEvent,
-} from '@/services/hooks/date/get-events.hook'
+import type { FetchedAllEvents, FetchedEvent } from '@/services/date/get-events.hook'
 export const formatDateStr = (date: jalaliMoment.Moment) => {
 	return `${date.jYear()}-${(date.jMonth() + 1).toString().padStart(2, '0')}-${date.jDate().toString().padStart(2, '0')}`
 }

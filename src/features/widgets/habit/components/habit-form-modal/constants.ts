@@ -1,9 +1,9 @@
-import type { CreateHabitInput } from '@/services/hooks/habit/habit.interface'
+import type { CreateHabitInput } from '@/services/habit/habit.interface'
 import {
 	HabitComparison,
 	HabitFrequency,
 	HabitUnit,
-} from '@/services/hooks/habit/habit.interface'
+} from '@/services/habit/habit.interface'
 
 export interface HabitPresetItem {
 	id: string

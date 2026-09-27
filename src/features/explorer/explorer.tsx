@@ -1,4 +1,4 @@
-import { useGetContents } from '@/services/hooks/content/get-content.hook'
+import { useGetContents } from '@/services/content/get-content.hook'
 import { useRef, useState, useEffect } from 'react'
 import Analytics from '@/analytics'
 import type { CategoryItem } from './types'
