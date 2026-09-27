@@ -29,8 +29,8 @@ const EmojiItem = React.memo<EmojiItemProps>(({ emoji, isSelected, onSelect }) =
 			className={cn(
 				'w-7.5 h-7.5 flex items-center justify-center rounded-xl text-base transition-colors cursor-pointer select-none',
 				isSelected
-					? 'bg-ds-brand text-ds-on-brand shadow-xs'
-					: 'bg-transparent text-ds-fg hover:bg-ds-fill-2'
+					? 'bg-brand text-on-brand shadow-xs'
+					: 'bg-transparent text-fg hover:bg-fill-2'
 			)}
 		>
 			{emoji}
@@ -78,9 +78,9 @@ export const HabitIconColorPicker: React.FC<HabitIconColorPickerProps> = React.m
 
 		return (
 			<div className="grid items-stretch grid-cols-12 gap-3">
-				<div className="flex flex-col col-span-8 p-3 overflow-hidden border rounded-2xl border-ds-line bg-ds-fill">
+				<div className="flex flex-col col-span-8 p-3 overflow-hidden border rounded-2xl border-line bg-fill">
 					<div className="flex items-center justify-between mb-2">
-						<span className="text-xs font-bold text-ds-fg">شکلک</span>
+						<span className="text-xs font-bold text-fg">شکلک</span>
 						<div className="flex items-center gap-1 overflow-x-auto scrollbar-none py-0.5">
 							{HABIT_EMOJI_CATEGORIES.map((cat) => (
 								<Chip
@@ -107,9 +107,9 @@ export const HabitIconColorPicker: React.FC<HabitIconColorPickerProps> = React.m
 					</div>
 				</div>
 
-				<div className="flex flex-col justify-between col-span-4 p-3 border rounded-2xl border-ds-line bg-ds-fill">
+				<div className="flex flex-col justify-between col-span-4 p-3 border rounded-2xl border-line bg-fill">
 					<div className="flex items-center justify-between mb-2">
-						<span className="text-xs font-bold text-ds-fg">رنگ</span>
+						<span className="text-xs font-bold text-fg">رنگ</span>
 						<div className="flex items-center">
 							<ColorPicker color={selectedColor} onChange={onSelectColor} />
 						</div>

@@ -96,28 +96,28 @@ export default function JalaliDatePicker({
 				<button
 					ref={enable ? triggerRef : null}
 					type="button"
-					className="flex items-center justify-between w-full p-3 text-right transition-colors hover:bg-ds-surface-2"
+					className="flex items-center justify-between w-full p-3 text-right transition-colors hover:bg-surface-2"
 				>
 					<div
-						className={`flex items-center justify-between w-full h-12 p-3 transition-colors border  border-ds-surface-3 rounded-xl  ${!enable ? 'opacity-50 cursor-not-allowed' : 'hover:border-ds-brand-muted! cursor-pointer'}`}
+						className={`flex items-center justify-between w-full h-12 p-3 transition-colors border  border-surface-3 rounded-xl  ${!enable ? 'opacity-50 cursor-not-allowed' : 'hover:border-brand-muted! cursor-pointer'}`}
 					>
 						<div className="flex items-center gap-3">
 							<Icon
 								name="calendarDays"
 								size={14}
-								className="text-ds-brand"
+								className="text-brand"
 							/>
-							<span className={value ? 'text-ds-fg' : 'text-ds-fg-muted'}>
+							<span className={value ? 'text-fg' : 'text-fg-muted'}>
 								{value || 'انتخاب تاریخ'}
 							</span>
 						</div>
-						<Icon name="chevronRight" size={18} className="text-ds-fg-muted" />
+						<Icon name="chevronRight" size={18} className="text-fg-muted" />
 					</div>
 				</button>
 			}
 			className="w-full"
 		>
-			<div className="p-2 border min-w-52 bg-ds-surface-2 rounded-2xl border-ds-surface-3">
+			<div className="p-2 border min-w-52 bg-surface-2 rounded-2xl border-surface-3">
 				<div className="flex gap-3 mb-5">
 					<ScrollWheel
 						label="روز"
@@ -246,8 +246,8 @@ function ScrollWheel({ value, max, onChange, type, startYear }: ScrollWheelProps
 	}
 
 	return (
-		<div className="relative w-full h-40 overflow-hidden rounded-xl bg-ds-fill">
-			<div className="absolute inset-x-0 z-10 h-10 -translate-y-1 pointer-events-none top-1/2 border-y-2 border-ds-brand-fill-2 bg-ds-brand-fill" />
+		<div className="relative w-full h-40 overflow-hidden rounded-xl bg-fill">
+			<div className="absolute inset-x-0 z-10 h-10 -translate-y-1 pointer-events-none top-1/2 border-y-2 border-brand-fill-2 bg-brand-fill" />
 
 			<div
 				ref={containerRef}
@@ -274,8 +274,8 @@ function ScrollWheel({ value, max, onChange, type, startYear }: ScrollWheelProps
 							<span
 								className={`text-sm font-bold transition-all ${
 									isActive
-										? 'text-ds-brand scale-110'
-										: 'text-ds-fg-muted scale-90 opacity-40'
+										? 'text-brand scale-110'
+										: 'text-fg-muted scale-90 opacity-40'
 								}`}
 							>
 								{item}
@@ -286,8 +286,8 @@ function ScrollWheel({ value, max, onChange, type, startYear }: ScrollWheelProps
 				<div style={{ height: `${ITEM_HEIGHT * 2}px` }} />
 			</div>
 
-			<div className="absolute inset-x-0 top-0 h-16 pointer-events-none bg-linear-to-b from-ds-surface-2 to-transparent" />
-			<div className="absolute inset-x-0 bottom-0 h-16 pointer-events-none bg-linear-to-t from-ds-surface-2 to-transparent" />
+			<div className="absolute inset-x-0 top-0 h-16 pointer-events-none bg-linear-to-b from-surface-2 to-transparent" />
+			<div className="absolute inset-x-0 bottom-0 h-16 pointer-events-none bg-linear-to-t from-surface-2 to-transparent" />
 		</div>
 	)
 }

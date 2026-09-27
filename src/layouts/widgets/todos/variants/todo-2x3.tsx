@@ -79,7 +79,7 @@ export const Todo2x3: React.FC<Todo2x3Props> = ({
 								}
 								size={10}
 								className={
-									dateFilter !== 'all' ? 'text-ds-brand' : 'text-ds-fg-muted'
+									dateFilter !== 'all' ? 'text-brand' : 'text-fg-muted'
 								}
 								aria-hidden="true"
 							/>
@@ -95,8 +95,8 @@ export const Todo2x3: React.FC<Todo2x3Props> = ({
 								size={10}
 								className={
 									UNFILTERED_TAGS.includes(tagFilter)
-										? 'text-ds-fg-muted'
-										: 'text-ds-brand!'
+										? 'text-fg-muted'
+										: 'text-brand!'
 								}
 								aria-hidden="true"
 							/>
@@ -111,7 +111,7 @@ export const Todo2x3: React.FC<Todo2x3Props> = ({
 							<Icon
 								name="sortDown"
 								size={10}
-								className={sort !== 'def' ? 'text-ds-brand!' : 'text-ds-fg-muted'}
+								className={sort !== 'def' ? 'text-brand!' : 'text-fg-muted'}
 								aria-hidden="true"
 							/>
 						}
@@ -136,7 +136,7 @@ export const Todo2x3: React.FC<Todo2x3Props> = ({
 								name="refresh"
 								aria-hidden="true"
 								className={cn(
-									'text-ds-fg opacity-50 group-hover:opacity-100',
+									'text-fg opacity-50 group-hover:opacity-100',
 									isLoading && 'animate-spin'
 								)}
 							/>

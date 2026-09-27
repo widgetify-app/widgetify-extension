@@ -36,14 +36,14 @@ const StepOne = ({ onGetStarted }: StepOneProps) => {
 	return (
 		<>
 			<div className="mb-3">
-				<h3 className={'text-center text-2xl font-bold text-ds-fg'}>
+				<h3 className={'text-center text-2xl font-bold text-fg'}>
 					به ویجتیفای خوش اومدی!
 				</h3>
 			</div>
 
 			<div
 				className={
-					'relative p-1 mt-1 mb-3 border rounded-xl border-ds-surface-3 bg-ds-surface-2'
+					'relative p-1 mt-1 mb-3 border rounded-xl border-surface-3 bg-surface-2'
 				}
 			>
 				<div className="flex items-center justify-center">
@@ -58,10 +58,10 @@ const StepOne = ({ onGetStarted }: StepOneProps) => {
 
 			<div
 				className={
-					'p-3 mb-2 text-ds-fg rounded-lg border border-ds-surface-3  bg-ds-surface-2'
+					'p-3 mb-2 text-fg rounded-lg border border-surface-3  bg-surface-2'
 				}
 			>
-				<p className="font-bold text-ds-fg-muted">
+				<p className="font-bold text-fg-muted">
 					⚠️ برای فعالسازی افزونه، روی دکمه "Keep It" کلیک کنید.
 				</p>
 			</div>
@@ -69,7 +69,7 @@ const StepOne = ({ onGetStarted }: StepOneProps) => {
 			<Button
 				size="md"
 				onClick={onGetStarted}
-				className="w-full text-base font-light shadow-sm rounded-2xl shadow-ds-brand outline-none!"
+				className="w-full text-base font-light shadow-sm rounded-2xl shadow-brand outline-none!"
 				color="primary"
 			>
 				شروع کنید

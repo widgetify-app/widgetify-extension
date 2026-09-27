@@ -21,7 +21,7 @@ export function GeneralSettingTab() {
 				title={
 					<div className="flex items-center">
 						<p>حالت بهینه</p>
-						<span className="mr-2 text-white badge badge-error badge-xs outline-2 outline-ds-danger-fill-2">
+						<span className="mr-2 text-white badge badge-error badge-xs outline-2 outline-danger-fill-2">
 							جدید
 						</span>
 					</div>
@@ -29,7 +29,7 @@ export function GeneralSettingTab() {
 				size="sm"
 			>
 				<div className="flex">
-					<p className="flex-1 ml-1 text-sm font-light leading-relaxed text-ds-fg-muted">
+					<p className="flex-1 ml-1 text-sm font-light leading-relaxed text-fg-muted">
 						برای کاهش مصرف منابع، انیمیشن‌ها، حیوان خانگی، ثانیه‌شمار ساعت و
 						برخی افکت‌های بصری غیرفعال می‌شوند.
 					</p>

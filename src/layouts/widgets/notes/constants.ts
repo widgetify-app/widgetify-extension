@@ -4,39 +4,39 @@ export const NOTE_PREVIEW_CHARACTER_LIMIT = 120
 
 export const STICKY_COLOR_MAP: Record<string, StickyColorTheme> = {
 	default: {
-		bg: 'bg-ds-surface-2 bg-glass',
-		border: 'border-ds-line',
-		text: 'text-ds-fg',
-		headerBg: 'bg-ds-fill-2',
-		divider: 'border-ds-line',
+		bg: 'bg-surface-2 bg-glass',
+		border: 'border-line',
+		text: 'text-fg',
+		headerBg: 'bg-fill-2',
+		divider: 'border-line',
 	},
 	low: {
-		bg: 'bg-ds-success',
+		bg: 'bg-success',
 		border: 'border-[rgba(var(--color-success-content-rgb),0.2)]',
-		text: 'text-ds-on-success',
+		text: 'text-on-success',
 		headerBg: 'bg-[rgba(var(--color-success-content-rgb),0.1)]',
 		divider: 'border-[rgba(var(--color-success-content-rgb),0.2)]',
 	},
 	medium: {
-		bg: 'bg-ds-warning',
+		bg: 'bg-warning',
 		border: 'border-[rgba(var(--color-warning-content-rgb),0.2)]',
-		text: 'text-ds-on-warning',
+		text: 'text-on-warning',
 		headerBg: 'bg-[rgba(var(--color-warning-content-rgb),0.1)]',
 		divider: 'border-[rgba(var(--color-warning-content-rgb),0.2)]',
 	},
 	high: {
-		bg: 'bg-ds-danger',
+		bg: 'bg-danger',
 		border: 'border-[rgba(var(--color-error-content-rgb),0.2)]',
-		text: 'text-ds-on-danger',
+		text: 'text-on-danger',
 		headerBg: 'bg-[rgba(var(--color-error-content-rgb),0.1)]',
 		divider: 'border-[rgba(var(--color-error-content-rgb),0.2)]',
 	},
 }
 
 export const PRIORITY_BG_COLORS: Record<NotePriority, string> = {
-	low: 'bg-ds-success text-ds-on-success',
-	medium: 'bg-ds-warning text-ds-on-warning',
-	high: 'bg-ds-danger text-ds-on-danger',
+	low: 'bg-success text-on-success',
+	medium: 'bg-warning text-on-warning',
+	high: 'bg-danger text-on-danger',
 }
 
 export const PRIORITY_OPTIONS: {

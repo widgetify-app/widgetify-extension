@@ -20,7 +20,7 @@ export function FolderPath({ folderPath, onNavigate, className }: FolderPathProp
 					<button
 						onClick={() => onNavigate(null, -1)}
 						className={
-							'cursor-pointer transition-colors text-ds-fg opacity-70 hover:opacity-100'
+							'cursor-pointer transition-colors text-fg opacity-70 hover:opacity-100'
 						}
 						aria-label="Go to root folder"
 					>
@@ -30,11 +30,11 @@ export function FolderPath({ folderPath, onNavigate, className }: FolderPathProp
 
 				{folderPath.map((item, index) => (
 					<li key={item.id} className="flex items-center">
-						<Icon name="chevronLeft" className="text-ds-fg" size={14} />
+						<Icon name="chevronLeft" className="text-fg" size={14} />
 						<button
 							onClick={() => onNavigate(item.id, index)}
 							className={
-								'cursor-pointer transition-colors text-ds-brand hover:text-ds-brand-hover'
+								'cursor-pointer transition-colors text-brand hover:text-brand-hover'
 							}
 							aria-label={`Go to ${item.title} folder`}
 						>

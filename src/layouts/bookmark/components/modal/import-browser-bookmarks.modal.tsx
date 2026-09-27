@@ -97,7 +97,7 @@ function TreeNode({
 	return (
 		<div>
 			<div
-				className="flex items-center gap-2 py-1.5 px-1.5 rounded-lg hover:bg-ds-brand-fill cursor-pointer transition-colors"
+				className="flex items-center gap-2 py-1.5 px-1.5 rounded-lg hover:bg-brand-fill cursor-pointer transition-colors"
 				style={{ paddingRight: depth * 16 }}
 				onClick={() => onToggleSelect(node)}
 			>
@@ -108,7 +108,7 @@ function TreeNode({
 							e.stopPropagation()
 							onToggleExpand(node.id)
 						}}
-						className="flex items-center justify-center w-4 h-4 shrink-0 text-ds-fg-muted"
+						className="flex items-center justify-center w-4 h-4 shrink-0 text-fg-muted"
 					>
 						<Icon
 							name="chevronLeft"
@@ -125,10 +125,10 @@ function TreeNode({
 				<span
 					className={`flex items-center justify-center w-4 h-4 rounded-md border shrink-0 transition-colors ${
 						isChecked
-							? 'bg-ds-brand border-ds-brand'
+							? 'bg-brand border-brand'
 							: isIndeterminate
-								? 'bg-ds-brand-fill-2 border-ds-brand'
-								: 'border-ds-line'
+								? 'bg-brand-fill-2 border-brand'
+								: 'border-line'
 					}`}
 				>
 					{(isChecked || isIndeterminate) && (
@@ -137,7 +137,7 @@ function TreeNode({
 				</span>
 
 				{isFolder ? (
-					<Icon name="folder" size={15} className="text-ds-brand shrink-0" />
+					<Icon name="folder" size={15} className="text-brand shrink-0" />
 				) : (
 					<img
 						src={getFaviconFromUrl(node.url || '')}
@@ -288,11 +288,11 @@ export function ImportBrowserBookmarksModal({
 		>
 			{!browserBookmarksEnabled ? (
 				<div className="flex flex-col items-center justify-center h-64 px-4 text-center">
-					<div className="flex items-center justify-center w-10 h-10 mb-3 rounded-full bg-ds-brand-fill">
-						<Icon name="lock" className="text-ds-brand" size={20} />
+					<div className="flex items-center justify-center w-10 h-10 mb-3 rounded-full bg-brand-fill">
+						<Icon name="lock" className="text-brand" size={20} />
 					</div>
 					<p className="mb-1 text-sm font-bold">دسترسی به بوکمارک‌ها</p>
-					<p className="mb-4 text-xs leading-relaxed text-ds-fg-muted">
+					<p className="mb-4 text-xs leading-relaxed text-fg-muted">
 						برای درون‌ریزی بوکمارک‌های مرورگر، نیاز به دسترسی شما داریم.
 					</p>
 					<Button
@@ -307,19 +307,19 @@ export function ImportBrowserBookmarksModal({
 			) : (
 				<div className="flex flex-col justify-between h-96">
 					<div className="flex items-center justify-between mb-2 shrink-0">
-						<span className="text-xs text-ds-fg-muted">
+						<span className="text-xs text-fg-muted">
 							{selectedIds.size > 0
 								? `${selectedIds.size} از ${MAX_BROWSER_IMPORT_ITEMS} مورد انتخاب شده`
 								: `حداکثر ${MAX_BROWSER_IMPORT_ITEMS} مورد قابل انتخاب است`}
 						</span>
 					</div>
 
-					<div className="flex-1 p-1 overflow-y-auto border rounded-xl border-ds-line custom-scrollbar">
+					<div className="flex-1 p-1 overflow-y-auto border rounded-xl border-line custom-scrollbar">
 						{isLoadingTree ? (
 							<div className="flex items-center justify-center h-full">
 								<Icon
 									name="spinner"
-									className="animate-spin text-ds-fg-muted"
+									className="animate-spin text-fg-muted"
 									size={20}
 								/>
 							</div>
@@ -336,7 +336,7 @@ export function ImportBrowserBookmarksModal({
 								/>
 							))
 						) : (
-							<div className="py-8 text-xs text-center text-ds-fg-muted">
+							<div className="py-8 text-xs text-center text-fg-muted">
 								بوکمارکی در مرورگر شما یافت نشد.
 							</div>
 						)}

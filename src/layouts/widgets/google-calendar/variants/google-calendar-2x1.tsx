@@ -32,13 +32,13 @@ export const GoogleCalendar2x1: React.FC<GoogleCalendar2x1Props> = ({
 				className="flex items-center justify-between w-full h-full gap-3 p-3 select-none animate-pulse"
 			>
 				<div className="w-1/3 space-y-1.5">
-					<div className="w-3/4 h-3 rounded bg-ds-fill-2" />
-					<div className="w-1/2 h-4 rounded bg-ds-fill" />
+					<div className="w-3/4 h-3 rounded bg-fill-2" />
+					<div className="w-1/2 h-4 rounded bg-fill" />
 				</div>
-				<div className="w-px h-8 bg-ds-fill-2 shrink-0" />
+				<div className="w-px h-8 bg-fill-2 shrink-0" />
 				<div className="flex-1 space-y-1.5">
-					<div className="w-2/3 h-3 rounded bg-ds-fill-2" />
-					<div className="w-1/3 h-2 rounded bg-ds-fill" />
+					<div className="w-2/3 h-3 rounded bg-fill-2" />
+					<div className="w-1/3 h-2 rounded bg-fill" />
 				</div>
 			</div>
 		)
@@ -51,20 +51,20 @@ export const GoogleCalendar2x1: React.FC<GoogleCalendar2x1Props> = ({
 					<Icon
 						name="googleCalendar"
 						size={13}
-						className="text-ds-brand shrink-0"
+						className="text-brand shrink-0"
 						aria-hidden="true"
 					/>
-					<span className="text-[10.4cqh] font-bold text-ds-fg-muted truncate">
+					<span className="text-[10.4cqh] font-bold text-fg-muted truncate">
 						{today.format('dddd')}
 					</span>
 				</div>
 				<time
 					dateTime={todayIso}
-					className="text-[14.6cqh] font-black leading-tight text-ds-fg tabular-nums"
+					className="text-[14.6cqh] font-black leading-tight text-fg tabular-nums"
 				>
 					{today.format('jD jMMMM')}
 				</time>
-				<span className="text-[9.4cqh] font-medium text-ds-fg-muted mt-0.5 tabular-nums">
+				<span className="text-[9.4cqh] font-medium text-fg-muted mt-0.5 tabular-nums">
 					{classifiedEvents.length > 0
 						? `${classifiedEvents.length} برنامه`
 						: 'بدون برنامه'}
@@ -73,7 +73,7 @@ export const GoogleCalendar2x1: React.FC<GoogleCalendar2x1Props> = ({
 
 			<div
 				aria-hidden="true"
-				className="w-px self-stretch bg-ds-fill-2 shrink-0 my-0.5"
+				className="w-px self-stretch bg-fill-2 shrink-0 my-0.5"
 			/>
 
 			<div className="flex flex-col justify-center flex-1 min-w-0">
@@ -83,15 +83,15 @@ export const GoogleCalendar2x1: React.FC<GoogleCalendar2x1Props> = ({
 						onEventClick={onEventClick}
 					/>
 				) : (
-					<div className="flex items-center gap-2 p-1 text-ds-fg-muted opacity-60">
+					<div className="flex items-center gap-2 p-1 text-fg-muted opacity-60">
 						<Icon
 							name="check"
 							size={16}
-							className="text-ds-brand shrink-0"
+							className="text-brand shrink-0"
 							aria-hidden="true"
 						/>
 						<div className="flex flex-col min-w-0">
-							<span className="text-[10.4cqh] font-bold text-ds-fg">
+							<span className="text-[10.4cqh] font-bold text-fg">
 								برنامه‌ای نداری
 							</span>
 							<span className="text-[8.3cqh]">
@@ -136,8 +136,8 @@ const NextEventSummary: React.FC<NextEventSummaryProps> = ({
 			className={cn(
 				'flex flex-col w-full gap-1 p-1.5 text-start rounded-xl transition-all',
 				'focus-visible:focus-ring',
-				hasAction && 'cursor-pointer hover:bg-ds-fill active:scale-[0.99]',
-				isNow && 'bg-ds-brand-fill border border-ds-brand-fill-2'
+				hasAction && 'cursor-pointer hover:bg-fill active:scale-[0.99]',
+				isNow && 'bg-brand-fill border border-brand-fill-2'
 			)}
 		>
 			<span className="flex items-center justify-between gap-1.5">
@@ -148,15 +148,15 @@ const NextEventSummary: React.FC<NextEventSummaryProps> = ({
 								aria-hidden="true"
 								className="relative flex w-1.5 h-1.5 shrink-0"
 							>
-								<span className="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-ds-brand" />
-								<span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-ds-brand" />
+								<span className="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-brand" />
+								<span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-brand" />
 							</span>
-							<span className="text-[9.4cqh] font-bold text-ds-brand">
+							<span className="text-[9.4cqh] font-bold text-brand">
 								در حال جلسه
 							</span>
 						</>
 					) : (
-						<span className="text-[9.4cqh] font-bold text-ds-fg-muted tabular-nums">
+						<span className="text-[9.4cqh] font-bold text-fg-muted tabular-nums">
 							<time dateTime={toDateTimeAttr(start)}>{startTimeStr}</time> -{' '}
 							<time dateTime={toDateTimeAttr(end)}>{endTimeStr}</time>
 						</span>
@@ -164,18 +164,18 @@ const NextEventSummary: React.FC<NextEventSummaryProps> = ({
 				</span>
 
 				{event.hangoutLink && (
-					<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-ds-brand text-ds-on-brand text-[8.3cqh] font-bold shrink-0">
+					<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-brand text-on-brand text-[8.3cqh] font-bold shrink-0">
 						<Icon name="videoCamera" size={9} aria-hidden="true" />
 						<span>ورود</span>
 					</span>
 				)}
 			</span>
 
-			<span className="block text-[11.5cqh] font-bold text-ds-fg truncate leading-snug">
+			<span className="block text-[11.5cqh] font-bold text-fg truncate leading-snug">
 				{title}
 			</span>
 
-			<span className="flex items-center gap-2 text-[8.3cqh] text-ds-fg-muted tabular-nums">
+			<span className="flex items-center gap-2 text-[8.3cqh] text-fg-muted tabular-nums">
 				<span>{isNow ? `${minsRemaining} دقیقه مانده` : durationLabel}</span>
 				{event.location && (
 					<span className="truncate max-w-20">

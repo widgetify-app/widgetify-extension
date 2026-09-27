@@ -6,23 +6,23 @@ const priorityOptions = [
 	{
 		value: TodoPriority.Low,
 		label: 'کم اهمیت',
-		color: 'text-ds-success',
-		bg: 'bg-ds-success-fill',
-		border: 'border-ds-success-fill-2',
+		color: 'text-success',
+		bg: 'bg-success-fill',
+		border: 'border-success-fill-2',
 	},
 	{
 		value: TodoPriority.Medium,
 		label: 'متوسط',
-		color: 'text-ds-warning',
-		bg: 'bg-ds-warning-fill',
-		border: 'border-ds-warning-fill-2',
+		color: 'text-warning',
+		bg: 'bg-warning-fill',
+		border: 'border-warning-fill-2',
 	},
 	{
 		value: TodoPriority.High,
 		label: 'مهم',
-		color: 'text-ds-danger',
-		bg: 'bg-ds-danger-fill',
-		border: 'border-ds-danger-fill-2',
+		color: 'text-danger',
+		bg: 'bg-danger-fill',
+		border: 'border-danger-fill-2',
 	},
 ]
 
@@ -43,7 +43,7 @@ export function PriorityDropdown({ priority, setPriority }: PriorityDropdownProp
 					className={`p-2 border shrink-0 active:scale-95 transition-colors ${
 						selected
 							? `${selected.bg} ${selected.color} ${selected.border}`
-							: 'text-ds-fg-faint hover:text-ds-brand-muted'
+							: 'text-fg-faint hover:text-brand-muted'
 					}`}
 				>
 					<Icon name="filterLeft" size={18} />
@@ -51,13 +51,13 @@ export function PriorityDropdown({ priority, setPriority }: PriorityDropdownProp
 			}
 			position="top-left"
 		>
-			<div className="flex flex-col gap-1 border min-w-32 bg-ds-surface-2 border-ds-surface-3 rounded-2xl p-1.5">
+			<div className="flex flex-col gap-1 border min-w-32 bg-surface-2 border-surface-3 rounded-2xl p-1.5">
 				<button
 					onClick={() => setPriority(undefined)}
 					className={`px-3 py-2 rounded-lg text-xs text-right cursor-pointer transition-colors ${
 						priority === undefined
-							? 'bg-ds-brand-fill text-ds-brand font-medium'
-							: 'text-ds-fg-muted hover:bg-ds-fill'
+							? 'bg-brand-fill text-brand font-medium'
+							: 'text-fg-muted hover:bg-fill'
 					}`}
 				>
 					بدون اولویت
@@ -70,7 +70,7 @@ export function PriorityDropdown({ priority, setPriority }: PriorityDropdownProp
 						className={`px-3 py-2 rounded-lg text-xs text-right cursor-pointer transition-colors ${
 							priority === option.value
 								? `${option.bg} ${option.color} font-medium`
-								: 'text-ds-fg-muted hover:bg-ds-fill'
+								: 'text-fg-muted hover:bg-fill'
 						}`}
 					>
 						{option.label}

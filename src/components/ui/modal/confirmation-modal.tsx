@@ -80,17 +80,17 @@ export function ConfirmationModal({
 						<div>{displayIcon}</div>
 					</div>
 					{title && (
-						<h3 className="text-base font-semibold text-ds-fg">{title}</h3>
+						<h3 className="text-base font-semibold text-fg">{title}</h3>
 					)}
 				</div>
 			}
 		>
 			<div className="relative overflow-hidden">
-				<div className="pt-1 text-sm leading-relaxed text-ds-fg-muted">
+				<div className="pt-1 text-sm leading-relaxed text-fg-muted">
 					{typeof message === 'string' ? <p>{message}</p> : message}
 				</div>
 
-				<div className="mt-4 border-t border-ds-line" />
+				<div className="mt-4 border-t border-line" />
 
 				<div className="flex items-center justify-end gap-2 pt-3">
 					<Button

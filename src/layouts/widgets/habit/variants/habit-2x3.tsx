@@ -43,7 +43,7 @@ export const Habit2x3: React.FC<Habit2x3Props> = ({ actions }) => {
 						variant="ghost"
 						size="sm"
 						aria-label="عادت جدید"
-						className="w-7 h-7 p-0! border-none! hover:text-ds-brand rounded-xl shrink-0 active:scale-95 transition-colors"
+						className="w-7 h-7 p-0! border-none! hover:text-brand rounded-xl shrink-0 active:scale-95 transition-colors"
 						onClick={openAddHabit}
 					>
 						<Icon name="plus" size={16} aria-hidden="true" />

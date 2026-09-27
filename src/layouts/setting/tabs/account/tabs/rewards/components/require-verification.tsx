@@ -24,7 +24,7 @@ export const RequireVerification = ({
 		return (
 			<div className="flex items-center justify-center h-full">
 				<div className="text-center">
-					<div className="w-10 h-10 mx-auto border-t-2 border-b-2 rounded-full animate-spin border-ds-brand"></div>
+					<div className="w-10 h-10 mx-auto border-t-2 border-b-2 rounded-full animate-spin border-brand"></div>
 					<p className="mt-2">در حال بارگذاری...</p>
 				</div>
 			</div>
@@ -43,9 +43,9 @@ export const RequireVerification = ({
 							'absolute inset-0 p-2 flex flex-col items-center justify-center gap-y-2 bg-[rgba(var(--color-base-300-rgb),calc(var(--color-base-300-a)*0.2))] backdrop-blur-xs rounded-xl'
 						}
 					>
-						<Icon name="verifyUser" size={20} className="text-ds-success" />
+						<Icon name="verifyUser" size={20} className="text-success" />
 						<h3 className="text-lg font-semibold">نیاز به تأیید حساب</h3>
-						<p className={'text-xs text-ds-fg text-center'}>
+						<p className={'text-xs text-fg text-center'}>
 							برای دسترسی به این بخش، لطفا حساب کاربری خود را تأیید کنید.
 						</p>
 					</div>
@@ -60,11 +60,11 @@ export const RequireVerification = ({
 				initial={{ opacity: 0, y: 10 }}
 				animate={{ opacity: 1, y: 0 }}
 				className={
-					'flex h-full flex-col items-center justify-center p-4 text-center rounded-md text-ds-fg'
+					'flex h-full flex-col items-center justify-center p-4 text-center rounded-md text-fg'
 				}
 			>
 				<h3 className="mb-2 text-xl font-semibold">نیاز به تأیید حساب</h3>
-				<p className={'text-xs mb-4 text-ds-fg text-center'}>
+				<p className={'text-xs mb-4 text-fg text-center'}>
 					برای دسترسی به این بخش، لطفا حساب کاربری خود را تأیید کنید.
 				</p>
 				<Button onClick={handleVerificationClick} size="sm">

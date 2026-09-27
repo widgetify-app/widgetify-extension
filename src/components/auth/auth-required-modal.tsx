@@ -36,13 +36,13 @@ export function AuthRequiredModal({
 			title=" "
 		>
 			<div className="flex flex-col items-center justify-between w-full h-56 pt-2 text-center">
-				<div className="relative flex items-center justify-center w-16 h-16 border shadow-xs rounded-2xl bg-ds-surface-2 border-ds-surface-3">
-					<Icon name="lock" className="relative text-2xl text-ds-brand" />
+				<div className="relative flex items-center justify-center w-16 h-16 border shadow-xs rounded-2xl bg-surface-2 border-surface-3">
+					<Icon name="lock" className="relative text-2xl text-brand" />
 				</div>
 
 				<div className="flex flex-col items-center gap-1.5 px-2">
-					<h3 className="text-base font-semibold text-ds-fg">{title}</h3>
-					<p className="text-xs leading-relaxed text-ds-fg-muted max-w-70">
+					<h3 className="text-base font-semibold text-fg">{title}</h3>
+					<p className="text-xs leading-relaxed text-fg-muted max-w-70">
 						{message}
 					</p>
 				</div>

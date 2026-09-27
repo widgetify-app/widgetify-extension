@@ -21,7 +21,7 @@ export const EmptyActivityCard = ({ avatar, name, onClick }: EmptyActivityCardPr
 							className={`
 							w-full h-full text-[10px] px-2 py-1 rounded-2xl 
 							leading-tight text-center overflow-hidden transition-all
-							bg-ds-surface-2 border border-ds-line shadow-xs text-ds-fg-muted
+							bg-surface-2 border border-line shadow-xs text-fg-muted
 							group-hover:scale-95 cursor-pointer z-10
 						`}
 						>
@@ -30,18 +30,18 @@ export const EmptyActivityCard = ({ avatar, name, onClick }: EmptyActivityCardPr
 							</div>
 						</div>
 
-						<div className="absolute w-2 h-2 -translate-x-3 rounded-full -bottom-0.5 left-7 bg-ds-fill  z-10" />
-						<div className="absolute w-2 h-2 -translate-x-3 rounded-full  -bottom-3.5 left-8 bg-ds-fill shadow-md  z-10" />
-						<div className="absolute z-10 w-2 h-2 -translate-x-3 rounded-full shadow-md bg-ds-surface-3 -bottom-6 left-10" />
+						<div className="absolute w-2 h-2 -translate-x-3 rounded-full -bottom-0.5 left-7 bg-fill  z-10" />
+						<div className="absolute w-2 h-2 -translate-x-3 rounded-full  -bottom-3.5 left-8 bg-fill shadow-md  z-10" />
+						<div className="absolute z-10 w-2 h-2 -translate-x-3 rounded-full shadow-md bg-surface-3 -bottom-6 left-10" />
 					</div>
-					<div className="absolute w-2 h-2 -translate-x-3 rounded-full -bottom-0.5 left-7 bg-ds-fill " />
-					<div className="absolute w-2 h-2 -translate-x-3 rounded-full  -bottom-3.5 left-8 bg-ds-fill shadow-md " />
-					<div className="absolute w-2 h-2 -translate-x-3 rounded-full shadow-md bg-ds-surface-3 -bottom-6 left-10" />
+					<div className="absolute w-2 h-2 -translate-x-3 rounded-full -bottom-0.5 left-7 bg-fill " />
+					<div className="absolute w-2 h-2 -translate-x-3 rounded-full  -bottom-3.5 left-8 bg-fill shadow-md " />
+					<div className="absolute w-2 h-2 -translate-x-3 rounded-full shadow-md bg-surface-3 -bottom-6 left-10" />
 				</div>
 
 				{/* Avatar */}
 				<div className="-mt-1">
-					<div className="transition-all rounded-full ring-2 ring-ds-surface-3">
+					<div className="transition-all rounded-full ring-2 ring-surface-3">
 						<AvatarComponent
 							url={avatar}
 							placeholder={name}
@@ -53,7 +53,7 @@ export const EmptyActivityCard = ({ avatar, name, onClick }: EmptyActivityCardPr
 			</div>
 
 			{/* Name */}
-			<p className="w-full px-1 mt-2 text-xs font-medium text-center truncate text-ds-fg">
+			<p className="w-full px-1 mt-2 text-xs font-medium text-center truncate text-fg">
 				{name}
 			</p>
 		</button>

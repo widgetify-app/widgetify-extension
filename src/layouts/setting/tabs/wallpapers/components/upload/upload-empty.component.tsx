@@ -34,8 +34,8 @@ export function UploadEmpty({
 			onDragLeave={onDragLeave}
 			onDrop={onDrop}
 			className={cn(
-				'relative p-3 overflow-hidden transition-all border shadow-xs rounded-2xl border-ds-surface-3 bg-ds-surface-2',
-				isDragging && 'border-ds-brand bg-ds-brand-fill'
+				'relative p-3 overflow-hidden transition-all border shadow-xs rounded-2xl border-surface-3 bg-surface-2',
+				isDragging && 'border-brand bg-brand-fill'
 			)}
 		>
 			<div className="flex items-center justify-between gap-3">
@@ -43,14 +43,14 @@ export function UploadEmpty({
 					<div
 						onClick={onFileSelect}
 						className={cn(
-							'relative flex items-center justify-center w-24 h-16 overflow-hidden rounded-xl border border-dashed cursor-pointer shrink-0 transition-all group bg-ds-surface-2',
+							'relative flex items-center justify-center w-24 h-16 overflow-hidden rounded-xl border border-dashed cursor-pointer shrink-0 transition-all group bg-surface-2',
 							isDragging
-								? 'border-ds-brand bg-ds-brand-fill text-ds-brand'
-								: 'border-ds-line hover:border-ds-brand-muted text-ds-fg-muted hover:text-ds-fg'
+								? 'border-brand bg-brand-fill text-brand'
+								: 'border-line hover:border-brand-muted text-fg-muted hover:text-fg'
 						)}
 					>
 						{isUploading ? (
-							<IconLoading className="w-5 h-5 text-ds-brand" />
+							<IconLoading className="w-5 h-5 text-brand" />
 						) : (
 							<div className="flex flex-col items-center justify-center gap-0.5">
 								<Icon
@@ -66,7 +66,7 @@ export function UploadEmpty({
 					</div>
 
 					<div className="flex flex-col min-w-0 gap-1">
-						<p className="text-sm font-bold truncate text-ds-fg">
+						<p className="text-sm font-bold truncate text-fg">
 							{isDragging
 								? 'فایل رو همین‌جا رها کن'
 								: isVip
@@ -80,7 +80,7 @@ export function UploadEmpty({
 										content={`عکس، گیف و ویدیو تا سقف ${vipMaxSize} مگابایت`}
 										position="top"
 									>
-										<span className="inline-flex items-center gap-1 text-[11px] font-medium text-ds-fg-muted bg-ds-fill px-2 py-0.5 rounded-xl cursor-default">
+										<span className="inline-flex items-center gap-1 text-[11px] font-medium text-fg-muted bg-fill px-2 py-0.5 rounded-xl cursor-default">
 											<span>تا {vipMaxSize} مگابایت</span>
 										</span>
 									</Tooltip>
@@ -88,7 +88,7 @@ export function UploadEmpty({
 										content="روی سرور ذخیره می‌شه و روی اکانتت ذخیره می‌مونه"
 										position="top"
 									>
-										<span className="inline-flex items-center gap-1 text-[11px] font-medium text-ds-fg-muted bg-ds-fill px-2 py-0.5 rounded-xl cursor-default">
+										<span className="inline-flex items-center gap-1 text-[11px] font-medium text-fg-muted bg-fill px-2 py-0.5 rounded-xl cursor-default">
 											<span>همگام سازی با اکانت</span>
 										</span>
 									</Tooltip>
@@ -99,7 +99,7 @@ export function UploadEmpty({
 										content={`عکس تا ${freeMaxSize} مگابایت روی همین مرورگرت ذخیره می‌شه`}
 										position="top"
 									>
-										<span className="inline-flex items-center gap-1 text-[11px] font-medium text-ds-fg-muted bg-ds-fill px-2 py-0.5 rounded-xl cursor-default">
+										<span className="inline-flex items-center gap-1 text-[11px] font-medium text-fg-muted bg-fill px-2 py-0.5 rounded-xl cursor-default">
 											فقط عکس (تا {freeMaxSize} مگابایت)
 										</span>
 									</Tooltip>
@@ -115,7 +115,7 @@ export function UploadEmpty({
 												e.stopPropagation()
 												callEvent('openSettings', 'vip')
 											}}
-											className="inline-flex items-center gap-1 text-[11px] font-bold text-ds-vip bg-ds-vip-fill border border-ds-vip-fill-2 px-2.5 py-0.5 rounded-xl hover:bg-ds-vip-fill-2 active:scale-95 transition-all cursor-pointer"
+											className="inline-flex items-center gap-1 text-[11px] font-bold text-vip bg-vip-fill border border-vip-fill-2 px-2.5 py-0.5 rounded-xl hover:bg-vip-fill-2 active:scale-95 transition-all cursor-pointer"
 										>
 											<Icon name="diamond" size={11} />
 											<span>ارتقا به پرو</span>

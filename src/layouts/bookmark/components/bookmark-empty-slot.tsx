@@ -13,7 +13,7 @@ export function EmptyBookmarkSlot({
 		<button
 			onClick={canAdd ? onClick : undefined}
 			className={cn(
-				'relative flex flex-col items-center shadow-xs h-20 md:h-[5.9rem] w-full justify-center p-2 duration-300 border cursor-pointer border-ds-surface-3 bg-ds-surface-2 bg-glass group rounded-widget transition-transform ease-in-out group-hover:scale-102'
+				'relative flex flex-col items-center shadow-xs h-20 md:h-[5.9rem] w-full justify-center p-2 duration-300 border cursor-pointer border-surface-3 bg-surface-2 bg-glass group rounded-widget transition-transform ease-in-out group-hover:scale-102'
 			)}
 		>
 			<div className="relative flex items-center justify-center w-full h-full">
@@ -22,12 +22,12 @@ export function EmptyBookmarkSlot({
 						<Icon name="bookmarkPlus" size={32} className="opacity-50" />
 					</div>
 				) : (
-					<div className="flex items-center justify-center w-6 h-6 rounded-full bg-ds-fill-3" />
+					<div className="flex items-center justify-center w-6 h-6 rounded-full bg-fill-3" />
 				)}
 			</div>
 
 			{canAdd && (
-				<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-ds-fill rounded-widget" />
+				<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-fill rounded-widget" />
 			)}
 		</button>
 	)

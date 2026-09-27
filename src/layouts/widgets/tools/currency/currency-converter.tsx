@@ -51,13 +51,13 @@ export const CurrencyConverter: React.FC = () => {
 
 	return (
 		<div className="flex flex-col w-full gap-3 p-1 select-none">
-			<div className="relative flex flex-col gap-6 p-5 border bg-ds-fill border-ds-line rounded-2xl">
+			<div className="relative flex flex-col gap-6 p-5 border bg-fill border-line rounded-2xl">
 				<div className="flex items-center justify-between gap-3">
 					<TextInput
 						type="number"
 						value={amount.toString()}
 						onChange={(e) => setAmount(Number(e))}
-						className="flex-1 text-3xl font-black !bg-transparent border-none !p-0 focus:ring-0 text-ds-fg"
+						className="flex-1 text-3xl font-black !bg-transparent border-none !p-0 focus:ring-0 text-fg"
 					/>
 					<SelectBox
 						options={supportedCurrencies?.map((c) => ({
@@ -66,7 +66,7 @@ export const CurrencyConverter: React.FC = () => {
 						}))}
 						value={fromCurrency}
 						onChange={setFromCurrency}
-						className="!w-24 !h-11 rounded-2xl! !bg-ds-surface border border-ds-surface-3 shadow-sm font-bold text-xs"
+						className="!w-24 !h-11 rounded-2xl! !bg-surface border border-surface-3 shadow-sm font-bold text-xs"
 					/>
 				</div>
 
@@ -75,7 +75,7 @@ export const CurrencyConverter: React.FC = () => {
 						type="button"
 						onClick={handleSwap}
 						aria-label="جابه‌جایی دو ارز"
-						className="flex items-center justify-center border rounded-full shadow-lg cursor-pointer bg-ds-surface-2 w-11 h-11 border-ds-brand-fill text-ds-fg transition-ui hover:text-ds-brand active:scale-90 hover:scale-105 backdrop-blur-md focus-visible:focus-ring"
+						className="flex items-center justify-center border rounded-full shadow-lg cursor-pointer bg-surface-2 w-11 h-11 border-brand-fill text-fg transition-ui hover:text-brand active:scale-90 hover:scale-105 backdrop-blur-md focus-visible:focus-ring"
 					>
 						<motion.div animate={{ rotate: isSwapping ? 180 : 0 }}>
 							<Icon name="upDown" size={20} aria-hidden="true" />
@@ -84,7 +84,7 @@ export const CurrencyConverter: React.FC = () => {
 				</div>
 
 				<div className="flex items-center justify-between gap-3 mt-1">
-					<div className="flex-1 text-3xl font-black truncate text-ds-brand">
+					<div className="flex-1 text-3xl font-black truncate text-brand">
 						{formatNumber(convertedAmount)}
 					</div>
 					<SelectBox
@@ -94,7 +94,7 @@ export const CurrencyConverter: React.FC = () => {
 						}))}
 						value={toCurrency}
 						onChange={setToCurrency}
-						className="!w-24 !h-11 !rounded-2xl  border border-ds-brand-fill-2 shadow-sm font-bold text-xs"
+						className="!w-24 !h-11 !rounded-2xl  border border-brand-fill-2 shadow-sm font-bold text-xs"
 					/>
 				</div>
 			</div>
@@ -102,7 +102,7 @@ export const CurrencyConverter: React.FC = () => {
 			<div className="flex flex-col gap-2 px-1 mt-1">
 				<div className="flex justify-between items-center text-[11px] font-bold opacity-50">
 					<span>ارزش به تومان:</span>
-					<span className="text-[12px] font-black text-ds-fg">
+					<span className="text-[12px] font-black text-fg">
 						{fromCurrencyData
 							? formatNumber(fromCurrencyData.rialPrice * amount)
 							: 0}{' '}
@@ -110,7 +110,7 @@ export const CurrencyConverter: React.FC = () => {
 					</span>
 				</div>
 
-				<div className="flex items-center justify-between p-3.5 bg-ds-surface-2 rounded-2xl border border-ds-surface-3">
+				<div className="flex items-center justify-between p-3.5 bg-surface-2 rounded-2xl border border-surface-3">
 					<div className="flex gap-5">
 						<div className="flex flex-col gap-0.5">
 							<span className="text-[8px] font-black opacity-30 uppercase">
@@ -133,7 +133,7 @@ export const CurrencyConverter: React.FC = () => {
 							</span>
 						</div>
 					</div>
-					<div className="flex items-center gap-1.5 text-[11px] font-black text-ds-brand bg-ds-fill px-2 py-1 rounded-lg">
+					<div className="flex items-center gap-1.5 text-[11px] font-black text-brand bg-fill px-2 py-1 rounded-lg">
 						<Icon
 							name="info"
 							size={14}

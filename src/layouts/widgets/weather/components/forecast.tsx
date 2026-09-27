@@ -20,20 +20,20 @@ export const Forecast: React.FC<ForecastProps> = ({ forecast, temperatureUnit })
 				return (
 					<li
 						key={item.date}
-						className="flex flex-col items-center justify-between w-16 gap-2 py-2 transition-ui border rounded-2xl bg-ds-surface-2 border-ds-surface-3 hover:bg-ds-fill-2"
+						className="flex flex-col items-center justify-between w-16 gap-2 py-2 transition-ui border rounded-2xl bg-surface-2 border-surface-3 hover:bg-fill-2"
 					>
 						<time
 							dateTime={at.clone().locale('en').format()}
-							className="text-[10px] font-medium text-ds-fg-muted"
+							className="text-[10px] font-medium text-fg-muted"
 						>
 							{at.format('HH:mm')}
 						</time>
 
 						<img src={item.icon} className="w-9 h-9" alt="" />
 
-						<span className="text-sm font-bold text-ds-fg">
+						<span className="text-sm font-bold text-fg">
 							<data value={temp.value}>{temp.value}</data>
-							<span className="text-[10px] font-medium text-ds-fg-muted">
+							<span className="text-[10px] font-medium text-fg-muted">
 								{temp.symbol}
 							</span>
 						</span>

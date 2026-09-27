@@ -305,7 +305,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 								rounded="full"
 								onClick={() => setShowDeleteConfirm(true)}
 								className={cn(
-									'h-6 w-6 p-0 transition-ui hover:scale-105 hover:bg-ds-danger-fill-2 hover:text-ds-on-danger border-none shadow-none text-inherit',
+									'h-6 w-6 p-0 transition-ui hover:scale-105 hover:bg-danger-fill-2 hover:text-on-danger border-none shadow-none text-inherit',
 									colorTheme.headerBg
 								)}
 							>
@@ -367,9 +367,9 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 							aria-label="رنگ پیش‌فرض"
 							aria-pressed={!localPriority}
 							className={cn(
-								'w-3.5 h-3.5 rounded-full transition-transform cursor-pointer bg-ds-fill-2 border border-ds-line focus-visible:focus-ring',
+								'w-3.5 h-3.5 rounded-full transition-transform cursor-pointer bg-fill-2 border border-line focus-visible:focus-ring',
 								!localPriority
-									? 'ring-2 ring-ds-brand ring-offset-1 scale-110'
+									? 'ring-2 ring-brand ring-offset-1 scale-110'
 									: 'opacity-60 hover:opacity-100'
 							)}
 						/>
@@ -387,7 +387,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 										'w-3.5 h-3.5 rounded-full transition-transform cursor-pointer focus-visible:focus-ring',
 										opt.bgColor,
 										isSelected
-											? 'ring-2 ring-ds-brand ring-offset-1 scale-110'
+											? 'ring-2 ring-brand ring-offset-1 scale-110'
 											: 'opacity-60 hover:opacity-100'
 									)}
 								/>
@@ -398,7 +398,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 
 				<div className="flex items-center gap-1.5">
 					{isSaving ? (
-						<div className="flex items-center gap-1 text-ds-brand">
+						<div className="flex items-center gap-1 text-brand">
 							<IconLoading />
 							<span className="text-[9px]">درحال ذخیره</span>
 						</div>

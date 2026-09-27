@@ -42,10 +42,10 @@ export function UserCard({ user, className = '' }: UserCardProps) {
 		<div className={`${className}`}>
 			<div
 				className={
-					'flex flex-col overflow-hidden border border-ds-surface-3 rounded-widget elevation-lg bg-ds-surface-2 bg-glass'
+					'flex flex-col overflow-hidden border border-surface-3 rounded-widget elevation-lg bg-surface-2 bg-glass'
 				}
 			>
-				<div className="w-full h-16 bg-ds-surface-3"></div>
+				<div className="w-full h-16 bg-surface-3"></div>
 
 				<div className="px-4 pb-4">
 					<div className="relative mb-3 -mt-8">
@@ -54,7 +54,7 @@ export function UserCard({ user, className = '' }: UserCardProps) {
 								url={user.avatar}
 								placeholder={user.username || ''}
 								size="xl"
-								className="w-16 h-16 overflow-hidden border-2 border-ds-surface-3 rounded-full"
+								className="w-16 h-16 overflow-hidden border-2 border-surface-3 rounded-full"
 							/>
 							{showManageFriend ? (
 								<div className={'w-24 top-9 absolute -right-3'} dir="rtl">
@@ -77,7 +77,7 @@ export function UserCard({ user, className = '' }: UserCardProps) {
 										{user.friendshipStatus === 'PENDING' && (
 											<p
 												className={
-													'text-sm text-ds-fg opacity-70 bg-ds-surface-2 bg-glass rounded-2xl px-1'
+													'text-sm text-fg opacity-70 bg-surface-2 bg-glass rounded-2xl px-1'
 												}
 											>
 												ارسال شده
@@ -90,14 +90,14 @@ export function UserCard({ user, className = '' }: UserCardProps) {
 					</div>
 
 					<div className="mb-4">
-						<p className={'text-xl font-bold text-ds-fg'}>{user.name}</p>
-						<div className={'text-sm font-bold text-ds-fg-muted'}>
+						<p className={'text-xl font-bold text-fg'}>{user.name}</p>
+						<div className={'text-sm font-bold text-fg-muted'}>
 							@{user.username}
 						</div>
 
 						{user.extras?.activity && (
-							<div className="flex items-center mt-2 text-sm text-ds-fg-muted">
-								<span className={'text-ds-fg opacity-85'}>
+							<div className="flex items-center mt-2 text-sm text-fg-muted">
+								<span className={'text-fg opacity-85'}>
 									{user.extras.activity}
 								</span>
 							</div>

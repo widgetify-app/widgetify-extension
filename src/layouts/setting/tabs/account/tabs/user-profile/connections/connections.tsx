@@ -112,9 +112,9 @@ export function Connections() {
 							(platform.isActive || platform.connected) &&
 							handleConnectionClick(platform.id)
 						}
-						className={`group relative p-2.5 rounded-2xl border transition-all duration-200 bg-ds-surface-2 border-ds-surface-3
+						className={`group relative p-2.5 rounded-2xl border transition-all duration-200 bg-surface-2 border-surface-3
                 ${
-					platform.connected ? '' : ' hover:bg-ds-fill'
+					platform.connected ? '' : ' hover:bg-fill'
 				} ${!platform.isActive && !platform.connected ? 'opacity-50' : 'cursor-pointer active:scale-95'}`}
 					>
 						<div className="flex items-center justify-between gap-3">
@@ -125,11 +125,11 @@ export function Connections() {
 									{platform.icon}
 								</div>
 								<div className="overflow-hidden">
-									<h3 className="text-[13px] font-bold text-ds-fg truncate">
+									<h3 className="text-[13px] font-bold text-fg truncate">
 										{platform.name}
 									</h3>
 									<p
-										className={`text-[10px]  font-medium truncate ${platform.connected ? 'text-ds-success' : 'text-ds-fg-muted'}`}
+										className={`text-[10px]  font-medium truncate ${platform.connected ? 'text-success' : 'text-fg-muted'}`}
 									>
 										{platform.connected ? 'متصل شده' : 'عدم اتصال'}
 									</p>
@@ -140,9 +140,9 @@ export function Connections() {
 								className={`h-7 px-3 flex items-center justify-center rounded-lg text-[10px] font-black shrink-0 transition-all
                     ${
 						platform.connected
-							? 'bg-ds-danger-fill text-ds-danger'
-							: 'bg-ds-brand text-ds-on-brand'
-					} ${!platform.isActive && !platform.connected ? 'bg-ds-surface-3! text-ds-fg-muted' : ''}`}
+							? 'bg-danger-fill text-danger'
+							: 'bg-brand text-on-brand'
+					} ${!platform.isActive && !platform.connected ? 'bg-surface-3! text-fg-muted' : ''}`}
 							>
 								{platform.isLoading ? (
 									<div className="w-3 h-3 border-2 border-current rounded-full animate-spin border-t-transparent" />

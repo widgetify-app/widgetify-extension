@@ -25,7 +25,7 @@ export function RenderPreview({ item }: RenderPreviewProps) {
 
 	if (item.type === 'BROWSER_TITLE') {
 		return (
-			<div className={`${base} bg-ds-fill px-2`}>
+			<div className={`${base} bg-fill px-2`}>
 				{renderBrowserTitlePreview({
 					template: item.meta?.template || item.name,
 					className: '!w-96 !max-w-96',
@@ -36,16 +36,16 @@ export function RenderPreview({ item }: RenderPreviewProps) {
 
 	if (item.type === 'FONT') {
 		return (
-			<div className={`${base} bg-ds-fill`}>
+			<div className={`${base} bg-fill`}>
 				<div className="text-center px-2">
 					<p
-						className="text-base font-medium text-ds-fg"
+						className="text-base font-medium text-fg"
 						style={{ fontFamily: item.itemValue }}
 					>
 						نمونه متن
 					</p>
 					<p
-						className="text-[10px] text-ds-fg-muted mt-0.5"
+						className="text-[10px] text-fg-muted mt-0.5"
 						style={{ fontFamily: item.itemValue }}
 					>
 						{item.itemValue}
@@ -56,7 +56,7 @@ export function RenderPreview({ item }: RenderPreviewProps) {
 	}
 
 	return (
-		<div className={`${base} bg-ds-fill`}>
+		<div className={`${base} bg-fill`}>
 			<span className="text-3xl opacity-20">{getItemTypeEmoji(item.type)}</span>
 		</div>
 	)

@@ -52,9 +52,9 @@ export const FolderBookmarkItem = memo(function FolderBookmarkItem({
 		}
 
 		return isHovered ? (
-			<Icon name="folderOpen" className="w-8 h-8 text-ds-brand" />
+			<Icon name="folderOpen" className="w-8 h-8 text-brand" />
 		) : (
-			<Icon name="folder" className="w-8 h-8 text-ds-brand" />
+			<Icon name="folder" className="w-8 h-8 text-brand" />
 		)
 	}
 
@@ -93,9 +93,9 @@ export const FolderBookmarkItem = memo(function FolderBookmarkItem({
 				onMouseLeave={() => setIsHovered(false)}
 				style={customStyles}
 				className={cn(
-					'relative flex group h-20 md:h-[5.9rem] border border-ds-surface-3 w-full flex-col items-center justify-between px-2 py-1.5 transition-all duration-300 cursor-pointer rounded-widget shadow-xs ease-in-out',
+					'relative flex group h-20 md:h-[5.9rem] border border-surface-3 w-full flex-col items-center justify-between px-2 py-1.5 transition-all duration-300 cursor-pointer rounded-widget shadow-xs ease-in-out',
 					!bookmark.customBackground
-						? 'bg-ds-surface-2 bg-glass hover:bg-ds-surface-3 text-ds-fg'
+						? 'bg-surface-2 bg-glass hover:bg-surface-3 text-fg'
 						: 'before:bg-inherit '
 				)}
 			>
@@ -118,7 +118,7 @@ export const FolderBookmarkItem = memo(function FolderBookmarkItem({
 							onMenuClick(e)
 						}}
 						className={
-							'absolute cursor-pointer top-1 right-1.5 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-ds-fill-2 z-10'
+							'absolute cursor-pointer top-1 right-1.5 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-fill-2 z-10'
 						}
 					>
 						<Icon name="menuOption" size={12} strokeWidth={2} />

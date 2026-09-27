@@ -8,9 +8,9 @@ interface Prop {
 export function MiniAppError({ handleReload, onClickToBack }: Prop) {
 	return (
 		<div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 p-6 text-center">
-			<div className="relative flex items-center justify-center w-16 h-16 rounded-2xl bg-ds-danger-fill">
+			<div className="relative flex items-center justify-center w-16 h-16 rounded-2xl bg-danger-fill">
 				<svg
-					className="w-10 h-10 text-ds-danger"
+					className="w-10 h-10 text-danger"
 					fill="none"
 					viewBox="0 0 24 24"
 					stroke="currentColor"
@@ -25,8 +25,8 @@ export function MiniAppError({ handleReload, onClickToBack }: Prop) {
 				</svg>
 			</div>
 
-			<p className="text-lg font-bold text-ds-fg">خطا در اجرای برنامک</p>
-			<p className="max-w-xs text-sm text-ds-fg-muted">
+			<p className="text-lg font-bold text-fg">خطا در اجرای برنامک</p>
+			<p className="max-w-xs text-sm text-fg-muted">
 				عاممم یه مشکلی رخ داد، دوباره تلاش کنید.
 			</p>
 			<div className="flex flex-col gap-2 mt-4 w-80">

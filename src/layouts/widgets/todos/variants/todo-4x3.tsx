@@ -68,10 +68,10 @@ export function TodoBoard({
 		<div className="flex flex-col h-full gap-2" dir="rtl">
 			<header className="flex items-center flex-none gap-2.5">
 				<div className="w-20 shrink-0">
-					<h3 className="text-sm font-bold leading-tight truncate text-ds-fg">
+					<h3 className="text-sm font-bold leading-tight truncate text-fg">
 						تسک‌ها
 					</h3>
-					<p className="text-[10px] leading-tight truncate text-ds-fg-muted">
+					<p className="text-[10px] leading-tight truncate text-fg-muted">
 						{total > 0
 							? `${completed} از ${total} انجام شده`
 							: 'برنامه‌ی امروزت'}
@@ -103,8 +103,8 @@ export function TodoBoard({
 								aria-hidden="true"
 								className={
 									tagFilter && tagFilter !== '-all-'
-										? 'text-ds-brand!'
-										: 'text-ds-fg-muted'
+										? 'text-brand!'
+										: 'text-fg-muted'
 								}
 							/>
 						}
@@ -120,7 +120,7 @@ export function TodoBoard({
 								size={13}
 								aria-hidden="true"
 								className={
-									sort !== 'def' ? 'text-ds-brand!' : 'text-ds-fg-muted'
+									sort !== 'def' ? 'text-brand!' : 'text-fg-muted'
 								}
 							/>
 						}
@@ -141,7 +141,7 @@ export function TodoBoard({
 								size={13}
 								aria-hidden="true"
 								className={cn(
-									'text-ds-fg opacity-50 transition-opacity group-hover:opacity-100',
+									'text-fg opacity-50 transition-opacity group-hover:opacity-100',
 									isLoading && 'animate-spin'
 								)}
 							/>
@@ -205,7 +205,7 @@ export function TodoBoard({
 					)}
 				</div>
 
-				<aside className="flex flex-col justify-center flex-none gap-2 pr-2.5 overflow-y-auto border-r w-26 border-ds-line scrollbar-none">
+				<aside className="flex flex-col justify-center flex-none gap-2 pr-2.5 overflow-y-auto border-r w-26 border-line scrollbar-none">
 					<div
 						role="img"
 						aria-label={`${percent} درصد تسک‌ها انجام شده`}
@@ -217,7 +217,7 @@ export function TodoBoard({
 							viewBox="0 0 36 36"
 						>
 							<path
-								className="text-ds-fg-ghost"
+								className="text-fg-ghost"
 								stroke="currentColor"
 								strokeWidth="3.5"
 								fill="none"
@@ -226,7 +226,7 @@ export function TodoBoard({
 							<path
 								className={cn(
 									'transition-[stroke-dasharray] duration-700 ease-out',
-									isAllDone ? 'text-ds-success' : 'text-ds-brand'
+									isAllDone ? 'text-success' : 'text-brand'
 								)}
 								stroke="currentColor"
 								strokeWidth="3.5"
@@ -240,7 +240,7 @@ export function TodoBoard({
 							<span
 								className={cn(
 									'text-sm font-black leading-none tabular-nums',
-									isAllDone ? 'text-ds-success' : 'text-ds-fg'
+									isAllDone ? 'text-success' : 'text-fg'
 								)}
 							>
 								{percent}٪
@@ -252,14 +252,14 @@ export function TodoBoard({
 						<StatRow
 							label="انجام‌شده"
 							value={completed}
-							className="text-ds-success"
+							className="text-success"
 						/>
 						<StatRow
 							label="در انتظار"
 							value={pending}
-							className="text-ds-fg"
+							className="text-fg"
 						/>
-						<StatRow label="مهم" value={important} className="text-ds-danger" />
+						<StatRow label="مهم" value={important} className="text-danger" />
 					</dl>
 				</aside>
 			</div>
@@ -279,7 +279,7 @@ function BoardTodoSkeleton() {
 	return (
 		<div
 			aria-hidden="true"
-			className="flex items-center justify-between gap-2 px-3 py-2 border rounded-xl border-ds-line bg-ds-fill"
+			className="flex items-center justify-between gap-2 px-3 py-2 border rounded-xl border-line bg-fill"
 		>
 			<div className="flex items-center flex-1 min-w-0 gap-2.5">
 				<div className="rounded-md size-4.5 skeleton shrink-0" />
@@ -301,8 +301,8 @@ interface StatRowProps {
 
 function StatRow({ label, value, className }: StatRowProps) {
 	return (
-		<div className="flex items-center justify-between gap-1 px-2 py-0.5 rounded-lg bg-ds-fill">
-			<dt className="text-[10px] font-medium truncate text-ds-fg-muted">{label}</dt>
+		<div className="flex items-center justify-between gap-1 px-2 py-0.5 rounded-lg bg-fill">
+			<dt className="text-[10px] font-medium truncate text-fg-muted">{label}</dt>
 			<dd className={cn('text-[11px] font-black tabular-nums', className)}>
 				<data value={value}>{value}</data>
 			</dd>

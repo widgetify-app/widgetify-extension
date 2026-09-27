@@ -46,7 +46,7 @@ export const ActivityCard = ({
 						className={`
 							w-full h-full text-[10px] px-2 py-1 rounded-2xl 
 							leading-tight text-center overflow-hidden transition-all
-							bg-ds-surface-2 border border-ds-line shadow-xs text-ds-fg-muted
+							bg-surface-2 border border-line shadow-xs text-fg-muted
 							${onClick ? 'group-hover:scale-95 cursor-pointer z-10' : ''}
 						`}
 					>
@@ -58,9 +58,9 @@ export const ActivityCard = ({
 						</div>
 					</div>
 
-					<div className="absolute w-2 h-2 -translate-x-3 rounded-full -bottom-0.5 left-7 bg-ds-fill  z-10" />
-					<div className="absolute w-2 h-2 -translate-x-3 rounded-full  -bottom-3.5 left-8 bg-ds-fill shadow-md  z-10" />
-					<div className="absolute z-10 w-2 h-2 -translate-x-3 rounded-full shadow-md bg-ds-surface-3 -bottom-6 left-10" />
+					<div className="absolute w-2 h-2 -translate-x-3 rounded-full -bottom-0.5 left-7 bg-fill  z-10" />
+					<div className="absolute w-2 h-2 -translate-x-3 rounded-full  -bottom-3.5 left-8 bg-fill shadow-md  z-10" />
+					<div className="absolute z-10 w-2 h-2 -translate-x-3 rounded-full shadow-md bg-surface-3 -bottom-6 left-10" />
 					{isSelf ? null : (
 						<ActivityReactionSelector
 							reactions={reactions}
@@ -73,7 +73,7 @@ export const ActivityCard = ({
 				<div className="-mt-1">
 					<div
 						className={`
-							rounded-full transition-all ring-2 ring-ds-surface-3
+							rounded-full transition-all ring-2 ring-surface-3
 							${onClick ? '' : ''}
 						`}
 					>
@@ -87,7 +87,7 @@ export const ActivityCard = ({
 				</div>
 			</div>
 
-			<p className="w-full px-1 mt-2 text-xs font-medium text-center truncate text-ds-fg">
+			<p className="w-full px-1 mt-2 text-xs font-medium text-center truncate text-fg">
 				{name}
 			</p>
 		</button>
@@ -132,7 +132,7 @@ function ActivityReactionSelector({ reactions, activityId, index }: Prop) {
 		<Dropdown
 			trigger={
 				<div
-					className={`flex  items-center justify-center w-5 h-5 text-xs text-center transition-all duration-200 rounded-full shadow-sm active:scale-95 bg-ds-fill ${reacted ? 'opacity-85' : 'opacity-50'}`}
+					className={`flex  items-center justify-center w-5 h-5 text-xs text-center transition-all duration-200 rounded-full shadow-sm active:scale-95 bg-fill ${reacted ? 'opacity-85' : 'opacity-50'}`}
 					onClick={() => setEnable(true)}
 				>
 					{reacted
@@ -147,14 +147,14 @@ function ActivityReactionSelector({ reactions, activityId, index }: Prop) {
 			}
 			className="absolute! top-0! left-0!"
 		>
-			<div className="flex items-center justify-around w-full h-10 gap-1 px-2 py-1 overflow-x-auto shadow-lg bg-ds-surface-3">
+			<div className="flex items-center justify-around w-full h-10 gap-1 px-2 py-1 overflow-x-auto shadow-lg bg-surface-3">
 				{isPending
 					? Array.from({ length: 5 }).map((_, i) => (
 							<div
 								key={`skeleton-reaction-${i}`}
 								className={`transition-transform duration-150 cursor-pointer active:scale-95 focus:outline-none `}
 							>
-								<div className="w-4 h-4 bg-ds-surface-3 rounded-xl skeleton" />
+								<div className="w-4 h-4 bg-surface-3 rounded-xl skeleton" />
 							</div>
 						))
 					: reactions.map((reaction, index) => (
@@ -162,7 +162,7 @@ function ActivityReactionSelector({ reactions, activityId, index }: Prop) {
 								key={index}
 								disabled={isUpdating}
 								onClick={() => handleReaction(reaction.id)}
-								className={`h-5.5 w-5.5 rounded-full ${isUpdating && 'opacity-45'}  ${selectedReaction === reaction.id ? 'bg-ds-brand-fill-2' : 'opacity-85'} transition-transform   duration-150 cursor-pointer active:scale-95 focus:outline-none hover:bg-ds-brand-fill`}
+								className={`h-5.5 w-5.5 rounded-full ${isUpdating && 'opacity-45'}  ${selectedReaction === reaction.id ? 'bg-brand-fill-2' : 'opacity-85'} transition-transform   duration-150 cursor-pointer active:scale-95 focus:outline-none hover:bg-brand-fill`}
 							>
 								<p
 									className={` leading-6.5 ${selectedReaction === reaction.id && 'scale-85'}`}

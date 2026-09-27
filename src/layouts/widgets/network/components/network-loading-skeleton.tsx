@@ -1,7 +1,7 @@
 export function NetworkLoadingSkeleton() {
 	return (
 		<div aria-hidden="true" className="flex-1 space-y-2">
-			<div className="relative overflow-hidden border border-ds-surface-3 rounded-2xl">
+			<div className="relative overflow-hidden border border-surface-3 rounded-2xl">
 				<div className="p-2 space-y-3 max-h-32 min-h-32">
 					<div className="flex items-center justify-between">
 						<div className="flex items-center gap-2">
@@ -23,7 +23,7 @@ export function NetworkLoadingSkeleton() {
 				</div>
 			</div>
 
-			<div className="p-3 border rounded-2xl border-ds-surface-3">
+			<div className="p-3 border rounded-2xl border-surface-3">
 				<div className="flex items-center gap-2 mb-1">
 					<div className="w-4 h-4 rounded skeleton" />
 					<div className="w-24 h-3 rounded skeleton" />

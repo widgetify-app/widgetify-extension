@@ -18,7 +18,7 @@ export function Calendar1x1() {
 
 			<span
 				aria-hidden="true"
-				className="text-[11cqh] font-semibold leading-none text-ds-fg-muted"
+				className="text-[11cqh] font-semibold leading-none text-fg-muted"
 			>
 				{monthName}
 			</span>
@@ -28,7 +28,7 @@ export function Calendar1x1() {
 				aria-hidden="true"
 				className={cn(
 					'flex items-center justify-center flex-1 gap-x-[0.06em] text-[62cqh] font-black leading-none',
-					todayIsHoliday ? 'text-ds-danger' : 'text-ds-fg'
+					todayIsHoliday ? 'text-danger' : 'text-fg'
 				)}
 			>
 				{dayDigits.map((digit, index) => (
@@ -38,7 +38,7 @@ export function Calendar1x1() {
 
 			<span
 				aria-hidden="true"
-				className="text-[11cqh] font-medium leading-none text-ds-fg-muted"
+				className="text-[11cqh] font-medium leading-none text-fg-muted"
 			>
 				{weekDayName}
 			</span>

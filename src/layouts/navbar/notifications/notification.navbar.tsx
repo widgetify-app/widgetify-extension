@@ -29,7 +29,7 @@ export function NotificationNavbar() {
 			trigger={
 				<div
 					onClick={handleOpen}
-					className="relative p-2 transition-all cursor-pointer nav-btn text-ds-fg-faint hover:text-ds-fg-strong active:scale-90"
+					className="relative p-2 transition-all cursor-pointer nav-btn text-fg-faint hover:text-fg-strong active:scale-90"
 					id="notifications-button"
 				>
 					<Icon name="notification" size={15} />
@@ -37,9 +37,9 @@ export function NotificationNavbar() {
 				</div>
 			}
 		>
-			<div className="flex flex-col p-3 w-80 bg-ds-surface-2 bg-glass" dir="rtl">
-				<div className="sticky top-0 z-10 flex items-center justify-between pb-1 mb-2 border-b border-ds-line shrink-0">
-					<div className="flex items-center gap-1.5 text-ds-fg">
+			<div className="flex flex-col p-3 w-80 bg-surface-2 bg-glass" dir="rtl">
+				<div className="sticky top-0 z-10 flex items-center justify-between pb-1 mb-2 border-b border-line shrink-0">
+					<div className="flex items-center gap-1.5 text-fg">
 						<Icon name="notification" size={14} />
 						<span className="text-xs font-bold">اعلان‌ها</span>
 					</div>
@@ -49,14 +49,14 @@ export function NotificationNavbar() {
 					<NotificationCenter hasBorder={true} />
 
 					{!hasNotifications && (
-						<div className="flex flex-col items-center justify-center py-8 text-center text-ds-fg-muted">
-							<div className="flex items-center justify-center w-10 h-10 mb-2 text-ds-fg-muted">
+						<div className="flex flex-col items-center justify-center py-8 text-center text-fg-muted">
+							<div className="flex items-center justify-center w-10 h-10 mb-2 text-fg-muted">
 								<Icon name="notification" size={18} />
 							</div>
-							<span className="text-xs font-bold text-ds-fg">
+							<span className="text-xs font-bold text-fg">
 								اعلان جدیدی نداری
 							</span>
-							<span className="text-[10px] text-ds-fg-muted mt-0.5">
+							<span className="text-[10px] text-fg-muted mt-0.5">
 								همه چیز به‌روز و مرتبه
 							</span>
 						</div>

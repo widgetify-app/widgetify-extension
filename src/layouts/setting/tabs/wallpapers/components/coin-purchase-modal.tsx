@@ -51,7 +51,7 @@ export function CoinPurchaseModal({
 			title=" "
 		>
 			<div className="space-y-4">
-				<div className="relative flex items-center justify-center overflow-hidden rounded-2xl bg-ds-fill-2 aspect-video">
+				<div className="relative flex items-center justify-center overflow-hidden rounded-2xl bg-fill-2 aspect-video">
 					{wallpaper.type === 'IMAGE' ? (
 						<img
 							src={wallpaper.previewSrc}
@@ -76,21 +76,21 @@ export function CoinPurchaseModal({
 
 				<div className="space-y-2">
 					<div className="flex items-center justify-between">
-						<h3 className="text-base font-semibold text-ds-fg">
+						<h3 className="text-base font-semibold text-fg">
 							{wallpaper.name || 'تصویر زمینه'}
 						</h3>
 						{wallpaperPrice > 0 && (
 							<UserCoin coins={wallpaperPrice} title="قیمت خرید دائمی" />
 						)}
 					</div>
-					<p className="text-xs text-ds-fg-muted">
+					<p className="text-xs text-fg-muted">
 						این تصویر زمینه را با ویج‌کوین باز کنید و برای همیشه از آن استفاده
 						کنید
 					</p>
 				</div>
 
 				{isAuthenticated && !canAfford && wallpaperPrice > 0 && (
-					<div className="flex items-center justify-between px-3 py-2 text-xs rounded-xl bg-ds-danger-fill text-ds-danger">
+					<div className="flex items-center justify-between px-3 py-2 text-xs rounded-xl bg-danger-fill text-danger">
 						<span>
 							موجودی ویج‌کوین ناکافیه ({wallpaperPrice - userCoins} ویج‌کوین
 							کسری داری)

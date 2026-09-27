@@ -14,14 +14,14 @@ export const AccountVerificationStatus = ({
 }: AccountVerificationStatusProps) => {
 	return (
 		<SectionPanel title="وضعیت تایید حساب" size="xs" delay={0.1}>
-			<div className="flex items-center justify-between p-3 border rounded-2xl bg-ds-warning-fill border-ds-warning-fill-2">
+			<div className="flex items-center justify-between p-3 border rounded-2xl bg-warning-fill border-warning-fill-2">
 				<div className="flex items-center gap-3">
-					<Icon name="mail" className="text-ds-warning" size={24} />
+					<Icon name="mail" className="text-warning" size={24} />
 					<div>
-						<p className="text-sm font-medium text-ds-warning">
+						<p className="text-sm font-medium text-warning">
 							⚠️ حساب شما تایید نشده است
 						</p>
-						<p className="text-xs text-ds-warning">
+						<p className="text-xs text-warning">
 							لطفا ایمیل خود را بررسی کنید یا ایمیل جدید درخواست کنید.
 						</p>
 					</div>
@@ -35,7 +35,7 @@ export const AccountVerificationStatus = ({
 				>
 					{sendVerificationMutation.isPending ? (
 						<>
-							<div className="w-4 h-4 border-2 rounded-full border-ds-image-line border-t-white animate-spin" />
+							<div className="w-4 h-4 border-2 rounded-full border-image-line border-t-white animate-spin" />
 							در حال ارسال...
 						</>
 					) : (

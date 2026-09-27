@@ -34,25 +34,25 @@ export function ProfileDropdownMenu({
 	}
 
 	return (
-		<div className="bg-ds-surface-2 py-2 bg-glass min-w-52 px-1" dir="rtl">
+		<div className="bg-surface-2 py-2 bg-glass min-w-52 px-1" dir="rtl">
 			{isAuthenticated ? (
 				<div
 					onClick={handleProfileClick}
-					className="flex items-center gap-3 px-3.5 py-2.5 cursor-pointer border-b border-ds-line transition-colors hover:bg-ds-fill-2"
+					className="flex items-center gap-3 px-3.5 py-2.5 cursor-pointer border-b border-line transition-colors hover:bg-fill-2"
 				>
 					<div className="shrink-0 flex items-center justify-center">
 						<AvatarComponent url={user?.avatar} size="sm" isPro={isVip} />
 					</div>
 					<div className="flex flex-col min-w-0 flex-1 justify-center">
 						<div className="flex items-center gap-1.5 leading-tight">
-							<span className="text-xs font-bold text-ds-fg truncate">
+							<span className="text-xs font-bold text-fg truncate">
 								{user?.name || user?.username || 'کاربر ویجتیفای'}
 							</span>
 							{isVip && (
 								<VipBadge size="xs" variant="indigo-subtle" iconOnly />
 							)}
 						</div>
-						<span className="text-[11px] text-ds-fg-muted truncate leading-normal">
+						<span className="text-[11px] text-fg-muted truncate leading-normal">
 							مشاهده پروفایل
 						</span>
 					</div>
@@ -60,16 +60,16 @@ export function ProfileDropdownMenu({
 			) : (
 				<div
 					onClick={handleProfileClick}
-					className="flex items-center gap-3 px-3.5 py-2.5 cursor-pointer border-b border-ds-line transition-colors hover:bg-ds-fill-2"
+					className="flex items-center gap-3 px-3.5 py-2.5 cursor-pointer border-b border-line transition-colors hover:bg-fill-2"
 				>
-					<div className="w-8 h-8 rounded-xl bg-ds-brand-fill text-ds-brand flex items-center justify-center shrink-0">
+					<div className="w-8 h-8 rounded-xl bg-brand-fill text-brand flex items-center justify-center shrink-0">
 						<Icon name="user" size={15} />
 					</div>
 					<div className="flex flex-col flex-1">
-						<span className="text-xs font-bold text-ds-fg">
+						<span className="text-xs font-bold text-fg">
 							ورود یا ثبت‌نام
 						</span>
-						<span className="text-[10px] text-ds-fg-muted">
+						<span className="text-[10px] text-fg-muted">
 							همگام‌سازی و دسترسی به امکانات
 						</span>
 					</div>

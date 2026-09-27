@@ -11,7 +11,7 @@ import type { ClassifiedCalendarEvent } from '../types'
 import { isSameJalaliDay, toIsoDateKey } from '@widget/calendar/utils/jalali-date'
 
 const navButtonClass =
-	'flex items-center justify-center w-6 h-6 rounded-lg cursor-pointer transition-ui text-ds-fg-muted opacity-70 hover:opacity-100 hover:bg-ds-fill-2 focus-visible:focus-ring'
+	'flex items-center justify-center w-6 h-6 rounded-lg cursor-pointer transition-ui text-fg-muted opacity-70 hover:opacity-100 hover:bg-fill-2 focus-visible:focus-ring'
 
 interface GoogleCalendarScheduleProps {
 	selectedDay: WidgetifyDate
@@ -50,11 +50,11 @@ export const GoogleCalendarSchedule: React.FC<GoogleCalendarScheduleProps> = ({
 	return (
 		<section className="flex flex-col h-full p-3 overflow-hidden select-none">
 			<header className="flex items-center justify-between mb-2 shrink-0">
-				<h3 className="flex items-center gap-1.5 min-w-0 text-xs font-bold text-ds-fg">
+				<h3 className="flex items-center gap-1.5 min-w-0 text-xs font-bold text-fg">
 					<Icon
 						name="googleCalendar"
 						size={16}
-						className="text-ds-brand shrink-0"
+						className="text-brand shrink-0"
 						aria-hidden="true"
 					/>
 					<span className="truncate">{selectedDay.format('jMMMM jYYYY')}</span>
@@ -68,7 +68,7 @@ export const GoogleCalendarSchedule: React.FC<GoogleCalendarScheduleProps> = ({
 						<button
 							type="button"
 							onClick={handleResetToday}
-							className="px-2 py-0.5 text-[10px] font-bold text-ds-brand bg-ds-brand-fill hover:bg-ds-brand-fill-2 rounded-lg transition-ui cursor-pointer ml-1 focus-visible:focus-ring"
+							className="px-2 py-0.5 text-[10px] font-bold text-brand bg-brand-fill hover:bg-brand-fill-2 rounded-lg transition-ui cursor-pointer ml-1 focus-visible:focus-ring"
 						>
 							امروز
 						</button>
@@ -105,13 +105,13 @@ export const GoogleCalendarSchedule: React.FC<GoogleCalendarScheduleProps> = ({
 			<div className="flex items-center justify-between px-1 pb-1.5 shrink-0">
 				<time
 					dateTime={toIsoDateKey(selectedDay)}
-					className="text-[11px] font-bold text-ds-fg"
+					className="text-[11px] font-bold text-fg"
 				>
 					{isSelectedToday
 						? `امروز، ${selectedDay.format('dddd')}`
 						: selectedDay.format('dddd jD jMMMM')}
 				</time>
-				<span className="text-[10px] text-ds-fg-muted tabular-nums">
+				<span className="text-[10px] text-fg-muted tabular-nums">
 					{classifiedEvents.length > 0
 						? `${classifiedEvents.length} برنامه`
 						: 'بدون برنامه'}
@@ -124,12 +124,12 @@ export const GoogleCalendarSchedule: React.FC<GoogleCalendarScheduleProps> = ({
 						{Array.from({ length: 3 }).map((_, i) => (
 							<div
 								key={`loading-item-${i}`}
-								className="flex items-center gap-2 p-2 rounded-xl bg-ds-fill animate-pulse"
+								className="flex items-center gap-2 p-2 rounded-xl bg-fill animate-pulse"
 							>
-								<div className="w-10 h-8 rounded-lg bg-ds-fill-2 shrink-0" />
+								<div className="w-10 h-8 rounded-lg bg-fill-2 shrink-0" />
 								<div className="flex-1 space-y-1">
-									<div className="w-3/4 h-3 rounded bg-ds-fill-2" />
-									<div className="w-1/2 h-2 rounded bg-ds-fill" />
+									<div className="w-3/4 h-3 rounded bg-fill-2" />
+									<div className="w-1/2 h-2 rounded bg-fill" />
 								</div>
 							</div>
 						))}

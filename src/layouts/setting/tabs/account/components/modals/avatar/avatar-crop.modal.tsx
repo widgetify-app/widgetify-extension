@@ -53,7 +53,7 @@ export function AvatarCropModal({
 			showCloseButton={!isPending}
 		>
 			<div className="flex flex-col w-full h-96">
-				<div className="relative flex-1 overflow-hidden rounded-lg bg-ds-surface-3">
+				<div className="relative flex-1 overflow-hidden rounded-lg bg-surface-3">
 					<Cropper
 						image={image}
 						crop={crop}
@@ -68,7 +68,7 @@ export function AvatarCropModal({
 				</div>
 
 				<div className="flex items-center gap-3 px-2 mt-4">
-					<span className="text-xs text-ds-fg-muted">بزرگنمایی</span>
+					<span className="text-xs text-fg-muted">بزرگنمایی</span>
 					<input
 						type="range"
 						min={1}

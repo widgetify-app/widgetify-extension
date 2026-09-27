@@ -44,10 +44,10 @@ export function RequestNotificationModal({
 			direction="rtl"
 		>
 			<div className="p-4 max-h-[80vh] overflow-y-auto">
-				<article className="pb-4 border-b blog-post border-ds-surface-3 animate-fade-in animate-slide-up">
+				<article className="pb-4 border-b blog-post border-surface-3 animate-fade-in animate-slide-up">
 					{/* Type badge and title */}
 					<div className="flex items-start justify-between mb-3">
-						<h3 className="text-xl font-bold text-ds-fg">
+						<h3 className="text-xl font-bold text-fg">
 							می‌خواهیم به شما یادآوری کنیم!
 						</h3>
 					</div>
@@ -61,14 +61,14 @@ export function RequestNotificationModal({
 								alt={'نمونه اعلان'}
 								className="object-cover w-full h-auto"
 							/>
-							<p className="p-2 text-xs text-center text-ds-fg-muted bg-ds-fill-2">
+							<p className="p-2 text-xs text-center text-fg-muted bg-fill-2">
 								نمونه اعلان که دریافت خواهید کرد
 							</p>
 						</div>
 					</div>
 
 					<div className="mt-2">
-						<p className="leading-relaxed text-justify text-ds-fg-muted">
+						<p className="leading-relaxed text-justify text-fg-muted">
 							برای اینکه به شما یادآوری کنیم، نیاز داریم اعلان‌ها را فعال
 							کنید. این کار باعث می‌شود هیچ تایمری یا یادآوری مهمی را از دست
 							ندهید.

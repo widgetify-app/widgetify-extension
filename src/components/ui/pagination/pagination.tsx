@@ -40,7 +40,7 @@ export function Pagination({
 				<Icon name="chevronRight" size={18} />
 			</Button>
 
-			<span className="mx-2 text-sm text-ds-fg-muted">
+			<span className="mx-2 text-sm text-fg-muted">
 				صفحه {currentPage} از {totalPages}
 			</span>
 

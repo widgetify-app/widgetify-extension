@@ -121,7 +121,7 @@ export function WallpaperView({
 			{isLoading ? (
 				<div className="grid grid-cols-3 gap-3">{MakeSkeleton(6)}</div>
 			) : filteredWallpapers.length === 0 ? (
-				<div className="flex flex-col items-center justify-center flex-1 py-16 text-ds-fg-muted">
+				<div className="flex flex-col items-center justify-center flex-1 py-16 text-fg-muted">
 					<Icon name="image" size={32} className="mb-2 opacity-40" />
 					<p className="text-sm font-medium">تصویر زمینه‌ای یافت نشد</p>
 					<p className="text-xs opacity-70 mt-0.5">
@@ -149,7 +149,7 @@ export function WallpaperView({
 						</div>
 					)}
 
-					<div className="flex items-center justify-between py-2 text-xs border-t text-ds-fg-muted border-ds-line">
+					<div className="flex items-center justify-between py-2 text-xs border-t text-fg-muted border-line">
 						<span>
 							نمایش {filteredWallpapers.length.toLocaleString('fa-IR')}{' '}
 							تصویر زمینه
@@ -165,7 +165,7 @@ function MakeSkeleton(count: number) {
 	return [...Array(count)].map((_, idx) => (
 		<div
 			key={`loading-${idx}`}
-			className="w-full border aspect-video rounded-xl skeleton bg-ds-surface-3 border-ds-line"
+			className="w-full border aspect-video rounded-xl skeleton bg-surface-3 border-line"
 		/>
 	))
 }

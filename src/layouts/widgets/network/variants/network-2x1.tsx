@@ -78,10 +78,10 @@ export function NetworkCompactRow({
 				<Icon
 					name="network"
 					size={14}
-					className="text-ds-fg-muted"
+					className="text-fg-muted"
 					aria-hidden="true"
 				/>
-				<span className="text-xs text-ds-fg-muted">
+				<span className="text-xs text-fg-muted">
 					برای دیدن وضعیت شبکه وارد حسابت شو
 				</span>
 			</div>
@@ -123,7 +123,7 @@ export function NetworkCompactRow({
 							<span className="text-[9px] font-medium opacity-70">ms</span>
 						</div>
 					) : (
-						<div className="flex items-center gap-1 text-[11px] font-bold text-ds-danger shrink-0">
+						<div className="flex items-center gap-1 text-[11px] font-bold text-danger shrink-0">
 							<Icon
 								name="wifiOff"
 								size={13}
@@ -134,7 +134,7 @@ export function NetworkCompactRow({
 						</div>
 					)}
 
-					<span className="text-xs select-none text-ds-fg-ghost shrink-0">•</span>
+					<span className="text-xs select-none text-fg-ghost shrink-0">•</span>
 
 					<button
 						type="button"
@@ -143,9 +143,9 @@ export function NetworkCompactRow({
 						title="کپی آدرس IP"
 						aria-label={ip ? `کپی آدرس ${ip}` : undefined}
 						className={cn(
-							'flex items-center gap-1 font-mono text-xs font-semibold tracking-tight text-ds-fg transition-ui truncate',
+							'flex items-center gap-1 font-mono text-xs font-semibold tracking-tight text-fg transition-ui truncate',
 							ip
-								? 'cursor-pointer hover:text-ds-brand focus-visible:focus-ring'
+								? 'cursor-pointer hover:text-brand focus-visible:focus-ring'
 								: 'cursor-default',
 							blurMode ? 'blur-mode' : 'disabled-blur-mode'
 						)}
@@ -155,11 +155,11 @@ export function NetworkCompactRow({
 					</button>
 				</div>
 
-				<div className="flex items-center gap-1.5 text-[11px] text-ds-fg-muted truncate">
+				<div className="flex items-center gap-1.5 text-[11px] text-fg-muted truncate">
 					<span
 						className={cn(
 							'font-medium shrink-0',
-							isOnline ? 'text-ds-success' : 'text-ds-danger'
+							isOnline ? 'text-success' : 'text-danger'
 						)}
 					>
 						{isOnline ? 'متصل' : 'اتصال ندارد'}
@@ -168,7 +168,7 @@ export function NetworkCompactRow({
 					<span className="opacity-30">•</span>
 
 					<span
-						className="truncate text-ds-fg-muted text-[10px]"
+						className="truncate text-fg-muted text-[10px]"
 						title={isp || undefined}
 					>
 						{city ? `${city}، ` : ''}
@@ -183,12 +183,12 @@ export function NetworkCompactRow({
 						<img
 							src={countryIcon}
 							alt=""
-							className="object-cover w-8 h-8 rounded-full shadow-xs ring-2 ring-ds-line"
+							className="object-cover w-8 h-8 rounded-full shadow-xs ring-2 ring-line"
 						/>
 					) : (
 						<div
 							aria-hidden="true"
-							className="flex items-center justify-center w-8 h-8 text-sm border rounded-full shadow-xs bg-ds-fill-2 border-ds-line"
+							className="flex items-center justify-center w-8 h-8 text-sm border rounded-full shadow-xs bg-fill-2 border-line"
 						>
 							🌐
 						</div>
@@ -196,8 +196,8 @@ export function NetworkCompactRow({
 
 					<span
 						className={cn(
-							'absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full ring-2 ring-ds-surface shadow-xs',
-							isOnline ? 'bg-ds-success' : 'bg-ds-danger'
+							'absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full ring-2 ring-surface shadow-xs',
+							isOnline ? 'bg-success' : 'bg-danger'
 						)}
 					/>
 				</div>
@@ -210,7 +210,7 @@ export function NetworkCompactRow({
 							onRefresh()
 						}}
 						aria-label="بارگذاری مجدد"
-						className="absolute flex items-center justify-center w-5 h-5 min-h-0 p-0 rounded-full shadow-xs cursor-pointer transition-ui opacity-0 group-hover:opacity-100 -top-1 -left-1 bg-ds-surface-2 focus-visible:focus-ring"
+						className="absolute flex items-center justify-center w-5 h-5 min-h-0 p-0 rounded-full shadow-xs cursor-pointer transition-ui opacity-0 group-hover:opacity-100 -top-1 -left-1 bg-surface-2 focus-visible:focus-ring"
 						variant={'ghost'}
 					>
 						<Icon name="refresh" size={10} aria-hidden="true" />

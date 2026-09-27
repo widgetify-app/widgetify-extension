@@ -14,7 +14,7 @@ export function TimezoneSettings() {
 	return (
 		<SectionPanel title="منطقه‌ی زمانی" delay={0.1} size="sm">
 			<div className="space-y-3">
-				<p className={'text-sm text-ds-fg-muted'}>
+				<p className={'text-sm text-fg-muted'}>
 					منطقه‌ی زمانی مورد نظر خود را انتخاب کنید.
 				</p>
 
@@ -22,10 +22,10 @@ export function TimezoneSettings() {
 					<div className="flex items-center gap-2">
 						{isLoading ? (
 							<div className="flex justify-center w-full p-3">
-								<div className="w-6 h-6 border-2 border-ds-brand rounded-full border-t-ds-brand animate-spin"></div>
+								<div className="w-6 h-6 border-2 border-brand rounded-full border-t-brand animate-spin"></div>
 							</div>
 						) : error ? (
-							<div className="w-full p-3 text-center text-ds-danger">
+							<div className="w-full p-3 text-center text-danger">
 								خطا در دریافت اطلاعات مناطق زمانی
 							</div>
 						) : (
@@ -33,7 +33,7 @@ export function TimezoneSettings() {
 								value={timezone.value}
 								onChange={handleSelectTimezone}
 								className={
-									'w-full rounded-lg appearance-none border-ds-surface-3 border select focus:outline-none focus:ring-2 focus:ring-ds-brand'
+									'w-full rounded-lg appearance-none border-surface-3 border select focus:outline-none focus:ring-2 focus:ring-brand'
 								}
 							>
 								{!timezone && (
@@ -43,7 +43,7 @@ export function TimezoneSettings() {
 									<option
 										key={tz.value}
 										value={tz.value}
-										className={'bg-ds-surface-2 text-ds-fg opacity-55'}
+										className={'bg-surface-2 text-fg opacity-55'}
 									>
 										{tz.label} ({tz.offset})
 									</option>

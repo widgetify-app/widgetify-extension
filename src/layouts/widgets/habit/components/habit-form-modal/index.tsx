@@ -191,8 +191,8 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 				)}
 
 				<div className="flex flex-col gap-1.5">
-					<label className="text-xs text-ds-fg-muted">عنوان</label>
-					<div className="flex items-center px-3 py-2 transition-colors border rounded-2xl border-ds-line bg-ds-fill focus-within:border-ds-brand">
+					<label className="text-xs text-fg-muted">عنوان</label>
+					<div className="flex items-center px-3 py-2 transition-colors border rounded-2xl border-line bg-fill focus-within:border-brand">
 						<div
 							className="flex items-center justify-center w-8 h-8 text-lg transition-transform rounded-xl shrink-0"
 							style={{
@@ -210,7 +210,7 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 								setActivePresetId(null)
 							}}
 							placeholder="عنوان عادت (مثلا: نوشیدن آب)"
-							className="flex-1 text-sm font-medium bg-transparent border-none shadow-none text-ds-fg placeholder:text-ds-fg-faint focus:outline-none focus:ring-0"
+							className="flex-1 text-sm font-medium bg-transparent border-none shadow-none text-fg placeholder:text-fg-faint focus:outline-none focus:ring-0"
 						/>
 					</div>
 				</div>

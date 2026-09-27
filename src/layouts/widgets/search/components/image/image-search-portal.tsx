@@ -102,16 +102,16 @@ export function ImageSearchPortal({
 				style={portalStyles}
 				role="dialog"
 				aria-label="جستجوی تصویر با گوگل"
-				className="z-20 p-4 overflow-hidden duration-300 shadow-2xl bg-ds-surface-2 bg-glass -mt-26 rounded-2xl animate-in fade-in slide-in-from-top-2"
+				className="z-20 p-4 overflow-hidden duration-300 shadow-2xl bg-surface-2 bg-glass -mt-26 rounded-2xl animate-in fade-in slide-in-from-top-2"
 			>
 				<div className="flex items-center justify-between px-2 mb-4">
-					<span className="text-sm font-black text-ds-fg-muted">
+					<span className="text-sm font-black text-fg-muted">
 						جستجوی تصویر با گوگل
 					</span>
 					<div className="flex flex-row items-center gap-1">
 						<a
 							href="https://widgetify.ir/privacy?target=search"
-							className="p-1 rounded-full cursor-pointer transition-ui hover:bg-ds-fill-2 text-ds-fg-faint focus-visible:focus-ring"
+							className="p-1 rounded-full cursor-pointer transition-ui hover:bg-fill-2 text-fg-faint focus-visible:focus-ring"
 							target="_blank"
 							rel="noreferrer"
 						>
@@ -121,7 +121,7 @@ export function ImageSearchPortal({
 							type="button"
 							onClick={onClose}
 							aria-label="بستن جستجوی تصویر"
-							className="p-1 rounded-full cursor-pointer transition-ui hover:bg-ds-fill-2 text-ds-fg-faint focus-visible:focus-ring"
+							className="p-1 rounded-full cursor-pointer transition-ui hover:bg-fill-2 text-fg-faint focus-visible:focus-ring"
 						>
 							<Icon name="close" size={22} aria-hidden="true" />
 						</button>
@@ -138,10 +138,10 @@ export function ImageSearchPortal({
 								const file = e.dataTransfer.files[0]
 								if (file) handleUpload(file)
 							}}
-							className="relative flex flex-col items-center justify-center w-full py-6 bg-transparent border-2 border-dashed cursor-pointer group border-ds-line rounded-2xl transition-ui hover:border-ds-brand-muted hover:bg-ds-brand-fill focus-visible:focus-ring"
+							className="relative flex flex-col items-center justify-center w-full py-6 bg-transparent border-2 border-dashed cursor-pointer group border-line rounded-2xl transition-ui hover:border-brand-muted hover:bg-brand-fill focus-visible:focus-ring"
 							onClick={() => fileInputRef.current?.click()}
 						>
-							<div className="flex items-center justify-center w-10 h-10 mb-2 transition-ui rounded-full bg-ds-fill group-hover:text-ds-brand">
+							<div className="flex items-center justify-center w-10 h-10 mb-2 transition-ui rounded-full bg-fill group-hover:text-brand">
 								<svg
 									width="36"
 									height="36"
@@ -179,14 +179,14 @@ export function ImageSearchPortal({
 									/>
 								</svg>
 							</div>
-							<p className="text-xs font-bold text-ds-fg-muted">
+							<p className="text-xs font-bold text-fg-muted">
 								یک تصویر را اینجا بکشید یا{' '}
-								<span className="text-ds-brand hover:underline">
+								<span className="text-brand hover:underline">
 									فایل را انتخاب کنید
 								</span>
 							</p>
 							{isUploading && (
-								<div className="absolute inset-0 z-10 flex flex-col items-center justify-center overflow-hidden rounded-2xl bg-ds-surface">
+								<div className="absolute inset-0 z-10 flex flex-col items-center justify-center overflow-hidden rounded-2xl bg-surface">
 									{previewUrl && (
 										<img
 											src={previewUrl}
@@ -196,22 +196,22 @@ export function ImageSearchPortal({
 									)}
 
 									<div className="relative flex flex-col items-center w-full gap-3 px-12">
-										<span className="loading loading-spinner loading-md text-ds-brand"></span>
+										<span className="loading loading-spinner loading-md text-brand"></span>
 
 										<div className="flex flex-col items-center gap-1">
-											<span className="text-xs font-black text-ds-fg-strong">
+											<span className="text-xs font-black text-fg-strong">
 												{uploadProgress < 100
 													? 'در حال ارسال تصویر...'
 													: 'در حال جستجو در گوگل...'}
 											</span>
-											<span className="text-[10px] font-bold text-ds-fg-faint tracking-widest">
+											<span className="text-[10px] font-bold text-fg-faint tracking-widest">
 												{uploadProgress}%
 											</span>
 										</div>
 
-										<div className="w-full h-1 overflow-hidden rounded-full bg-ds-fill-2">
+										<div className="w-full h-1 overflow-hidden rounded-full bg-fill-2">
 											<div
-												className="h-full duration-300 transition-[width] bg-ds-brand"
+												className="h-full duration-300 transition-[width] bg-brand"
 												style={{ width: `${uploadProgress}%` }}
 											></div>
 										</div>
@@ -220,8 +220,8 @@ export function ImageSearchPortal({
 							)}
 						</button>
 					</RequireAuth>
-					<div className="flex items-center gap-2 p-1 border bg-ds-fill rounded-xl border-ds-line">
-						<div className="pl-3 text-ds-fg-faint">
+					<div className="flex items-center gap-2 p-1 border bg-fill rounded-xl border-line">
+						<div className="pl-3 text-fg-faint">
 							<Icon name="link" size={20} />
 						</div>
 						<TextInput

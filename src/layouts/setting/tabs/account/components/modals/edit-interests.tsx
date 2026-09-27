@@ -52,7 +52,7 @@ export function ChangeInterestsModal({ show, onClose, currentValue }: Prop) {
 					onSelect={(ids) => setInterests(() => [...ids])}
 					isLoading={interestsLoading}
 					triggerElement={
-						<div className="flex flex-wrap w-full min-h-24 max-h-24 h-24 overflow-y-auto gap-1 p-2 transition-all border   border-ds-surface-3 rounded-2xl hover:border-ds-brand-muted! cursor-pointer">
+						<div className="flex flex-wrap w-full min-h-24 max-h-24 h-24 overflow-y-auto gap-1 p-2 transition-all border   border-surface-3 rounded-2xl hover:border-brand-muted! cursor-pointer">
 							{interests.length > 0 ? (
 								interests.map((id) => (
 									<Chip
@@ -65,7 +65,7 @@ export function ChangeInterestsModal({ show, onClose, currentValue }: Prop) {
 									</Chip>
 								))
 							) : (
-								<span className="text-xs text-ds-fg-muted">
+								<span className="text-xs text-fg-muted">
 									انتخاب زمینه‌های مورد علاقه...
 								</span>
 							)}

@@ -39,26 +39,26 @@ export const GoogleCalendarEventCard: React.FC<GoogleCalendarEventCardProps> = (
 			}
 			className={cn(
 				'flex items-center w-full gap-2.5 p-2 text-start rounded-xl',
-				'bg-ds-fill hover:bg-ds-fill-2 border border-ds-line transition-all',
+				'bg-fill hover:bg-fill-2 border border-line transition-all',
 				'focus-visible:focus-ring',
 				hasAction && 'cursor-pointer active:scale-[0.99]',
 				isPast && 'opacity-40'
 			)}
 		>
-			<div className="flex flex-col items-center justify-center w-11 shrink-0 py-0.5 border-l border-ds-line">
+			<div className="flex flex-col items-center justify-center w-11 shrink-0 py-0.5 border-l border-line">
 				{isAllDay ? (
-					<span className="text-[10px] font-bold text-ds-brand">همه‌روز</span>
+					<span className="text-[10px] font-bold text-brand">همه‌روز</span>
 				) : (
 					<>
 						<time
 							dateTime={toDateTimeAttr(start)}
-							className="text-[11px] font-bold text-ds-fg tabular-nums leading-tight"
+							className="text-[11px] font-bold text-fg tabular-nums leading-tight"
 						>
 							{startTimeStr}
 						</time>
 						<time
 							dateTime={toDateTimeAttr(end)}
-							className="text-[9px] text-ds-fg-muted tabular-nums leading-tight"
+							className="text-[9px] text-fg-muted tabular-nums leading-tight"
 						>
 							{endTimeStr}
 						</time>
@@ -67,8 +67,8 @@ export const GoogleCalendarEventCard: React.FC<GoogleCalendarEventCardProps> = (
 			</div>
 
 			<div className="flex-1 min-w-0">
-				<p className="text-xs font-bold truncate text-ds-fg">{title}</p>
-				<div className="flex items-center gap-2 text-[10px] text-ds-fg-muted mt-0.5">
+				<p className="text-xs font-bold truncate text-fg">{title}</p>
+				<div className="flex items-center gap-2 text-[10px] text-fg-muted mt-0.5">
 					<span className="tabular-nums">{durationLabel}</span>
 					{event.location && (
 						<span className="truncate max-w-22.5">
@@ -85,7 +85,7 @@ export const GoogleCalendarEventCard: React.FC<GoogleCalendarEventCardProps> = (
 			</div>
 
 			{event.hangoutLink && !isPast && (
-				<span className="flex items-center justify-center w-6 h-6 rounded-lg bg-ds-brand-fill text-ds-brand shrink-0">
+				<span className="flex items-center justify-center w-6 h-6 rounded-lg bg-brand-fill text-brand shrink-0">
 					<Icon name="videoCamera" size={12} aria-hidden="true" />
 				</span>
 			)}

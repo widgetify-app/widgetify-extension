@@ -3,9 +3,9 @@ import { modeFullLabels } from '../constants'
 import type { TimerMode } from '../types'
 
 export const modeColors = {
-	work: 'stroke-ds-brand',
-	'short-break': 'stroke-ds-success',
-	'long-break': 'stroke-ds-warning',
+	work: 'stroke-brand',
+	'short-break': 'stroke-success',
+	'long-break': 'stroke-warning',
 }
 
 interface TimerDisplayProps {
@@ -32,7 +32,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 					cy="50"
 					r="45"
 					fill="none"
-					className="stroke-ds-line"
+					className="stroke-line"
 					strokeWidth="5"
 					filter="url(#shadow)"
 				/>
@@ -55,13 +55,13 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 					cy="50"
 					r="40"
 					fill="none"
-					className="stroke-ds-line"
+					className="stroke-line"
 					strokeWidth="1"
 				/>
 				<text
 					x="50"
 					y="50"
-					className={'text-ds-fg-strong'}
+					className={'text-fg-strong'}
 					textAnchor="middle"
 					dominantBaseline="middle"
 					fontSize="16"
@@ -77,7 +77,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 					textAnchor="middle"
 					fontSize="7"
 					fill="currentColor"
-					className={'text-ds-fg-muted'}
+					className={'text-fg-muted'}
 				>
 					{modeFullLabels[mode]}
 				</text>

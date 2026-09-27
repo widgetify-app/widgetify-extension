@@ -18,7 +18,7 @@ export function FolderHeader({ folderPath, onNavigate }: FolderHeaderProps) {
 	}, [isOpen])
 	return (
 		<>
-			<div className="flex flex-row justify-between p-1 border-b border-ds-surface-3 mb-0.5 bg-glass rounded-2xl">
+			<div className="flex flex-row justify-between p-1 border-b border-surface-3 mb-0.5 bg-glass rounded-2xl">
 				<FolderPath
 					folderPath={folderPath}
 					onNavigate={onNavigate}
@@ -35,26 +35,26 @@ export function FolderHeader({ folderPath, onNavigate }: FolderHeaderProps) {
 			>
 				<div className="p-4 space-y-6">
 					<div>
-						<h3 className="mb-3 text-base font-semibold text-ds-brand">
+						<h3 className="mb-3 text-base font-semibold text-brand">
 							💡 ویژگی‌های پوشه‌ها
 						</h3>
-						<ul className="space-y-3 text-sm leading-relaxed text-ds-fg-muted">
+						<ul className="space-y-3 text-sm leading-relaxed text-fg-muted">
 							<li className="flex items-start gap-2">
-								<span className="text-ds-success mt-0.5">•</span>
+								<span className="text-success mt-0.5">•</span>
 								<span>
 									<strong>بینهایت بوکمارک:</strong> در پوشه‌ها می‌توانید
 									نامحدود بوکمارک اضافه کنید
 								</span>
 							</li>
 							<li className="flex items-start gap-2">
-								<span className="text-ds-success mt-0.5">•</span>
+								<span className="text-success mt-0.5">•</span>
 								<span>
 									<strong>اسکرول خودکار:</strong> وقتی بیشتر از 10 ایتم
 									داشتید، لیست قابل اسکرول می‌شود
 								</span>
 							</li>
 							<li className="flex items-start gap-2">
-								<span className="text-ds-success mt-0.5">•</span>
+								<span className="text-success mt-0.5">•</span>
 								<span>
 									<strong>سازماندهی بهتر:</strong> بوکمارک‌های مشابه را
 									در پوشه‌های جداگانه قرار دهید
@@ -64,32 +64,32 @@ export function FolderHeader({ folderPath, onNavigate }: FolderHeaderProps) {
 					</div>
 
 					<div>
-						<h3 className="mb-3 text-base font-semibold text-ds-brand">
+						<h3 className="mb-3 text-base font-semibold text-brand">
 							🎯 نحوه استفاده
 						</h3>
-						<ul className="space-y-3 text-sm leading-relaxed text-ds-fg-muted">
+						<ul className="space-y-3 text-sm leading-relaxed text-fg-muted">
 							<li className="flex items-start gap-2">
-								<span className="text-ds-info mt-0.5">1.</span>
+								<span className="text-info mt-0.5">1.</span>
 								<span>
 									<strong>کلیک معمولی:</strong> برای وارد شدن به پوشه
 								</span>
 							</li>
 							<li className="flex items-start gap-2">
-								<span className="text-ds-info mt-0.5">2.</span>
+								<span className="text-info mt-0.5">2.</span>
 								<span>
 									<strong>Ctrl + کلیک:</strong> برای باز کردن همه
 									بوکمارک‌های پوشه
 								</span>
 							</li>
 							<li className="flex items-start gap-2">
-								<span className="text-ds-info mt-0.5">3.</span>
+								<span className="text-info mt-0.5">3.</span>
 								<span>
 									<strong>کلیک میانی:</strong> برای باز کردن همه
 									بوکمارک‌ها در تب‌های جدید
 								</span>
 							</li>
 							<li className="flex items-start gap-2">
-								<span className="text-ds-info mt-0.5">4.</span>
+								<span className="text-info mt-0.5">4.</span>
 								<span>
 									<strong>کشیدن و رها کردن:</strong> برای تغییر ترتیب
 									بوکمارک‌ها
@@ -99,23 +99,23 @@ export function FolderHeader({ folderPath, onNavigate }: FolderHeaderProps) {
 					</div>
 
 					<div>
-						<h3 className="mb-3 text-base font-semibold text-ds-brand">
+						<h3 className="mb-3 text-base font-semibold text-brand">
 							⚡ نکات مفید
 						</h3>
-						<ul className="space-y-3 text-sm leading-relaxed text-ds-fg-muted">
+						<ul className="space-y-3 text-sm leading-relaxed text-fg-muted">
 							<li className="flex items-start gap-2">
-								<span className="text-ds-warning mt-0.5">💡</span>
+								<span className="text-warning mt-0.5">💡</span>
 								<span>
 									از نام‌های توصیفی برای پوشه‌ها استفاده کنید (مثل "کار"،
 									"سرگرمی")
 								</span>
 							</li>
 							<li className="flex items-start gap-2">
-								<span className="text-ds-warning mt-0.5">💡</span>
+								<span className="text-warning mt-0.5">💡</span>
 								<span>پوشه‌های تودرتو برای سازماندهی بهتر ایجاد کنید</span>
 							</li>
 							<li className="flex items-start gap-2">
-								<span className="text-ds-warning mt-0.5">💡</span>
+								<span className="text-warning mt-0.5">💡</span>
 								<span>
 									از مسیر بالای صفحه برای ناوبری سریع استفاده کنید
 								</span>

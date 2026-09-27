@@ -45,7 +45,7 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 			title={
 				<div className="flex items-center gap-2">
 					<Icon name="cameraPlus" size={16} />
-					<span className="text-sm font-bold text-ds-fg">
+					<span className="text-sm font-bold text-fg">
 						اشتراک‌گذاری حال این ماه
 					</span>
 				</div>
@@ -53,7 +53,7 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 		>
 			<div className="flex flex-col gap-4 p-2">
 				{!isAuthenticated && (
-					<div className="flex flex-col items-center justify-center h-64 gap-2 text-center text-ds-fg-muted">
+					<div className="flex flex-col items-center justify-center h-64 gap-2 text-center text-fg-muted">
 						<Icon name="alert" size={20} aria-hidden="true" />
 						<span className="text-xs leading-relaxed">
 							برای ساختن گزارش ماهانه باید وارد حساب کاربریت بشی
@@ -62,8 +62,8 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 				)}
 
 				{isAuthenticated && isLoading && (
-					<div className="flex flex-col items-center justify-center h-64 gap-2 text-ds-fg-muted">
-						<span className="loading loading-spinner loading-md text-ds-brand" />
+					<div className="flex flex-col items-center justify-center h-64 gap-2 text-fg-muted">
+						<span className="loading loading-spinner loading-md text-brand" />
 						<span className="text-xs">در حال آماده‌سازی تصویر...</span>
 					</div>
 				)}
@@ -72,12 +72,12 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 					<div className="flex items-center justify-center overflow-hidden">
 						<canvas
 							ref={canvasRef}
-							className="h-auto max-w-full max-h-[60vh] rounded-2xl shadow-lg border border-ds-line"
+							className="h-auto max-w-full max-h-[60vh] rounded-2xl shadow-lg border border-line"
 						/>
 					</div>
 				)}
 
-				<div className="flex flex-wrap items-center justify-between gap-2 px-1 pt-2.5 border-t border-ds-surface-3">
+				<div className="flex flex-wrap items-center justify-between gap-2 px-1 pt-2.5 border-t border-surface-3">
 					<Button variant="ghost" size="sm" rounded="xl" onClick={onClose}>
 						بستن
 					</Button>

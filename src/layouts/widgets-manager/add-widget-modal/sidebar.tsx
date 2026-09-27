@@ -30,8 +30,8 @@ export function AddWidgetSidebar({
 	onOpenWidgetSettings,
 }: AddWidgetSidebarProps) {
 	return (
-		<div className="flex flex-col w-full pb-3 pl-0 border-b md:min-h-0 md:w-5/12 md:border-b-0 md:border-l border-ds-line md:pl-3 md:pb-0">
-			<div className="flex items-center gap-1 pb-2 mb-2 overflow-x-auto border-b shrink-0 scrollbar-none border-ds-line">
+		<div className="flex flex-col w-full pb-3 pl-0 border-b md:min-h-0 md:w-5/12 md:border-b-0 md:border-l border-line md:pl-3 md:pb-0">
+			<div className="flex items-center gap-1 pb-2 mb-2 overflow-x-auto border-b shrink-0 scrollbar-none border-line">
 				{CATEGORIES.map((cat) => (
 					<button
 						key={cat.id}
@@ -40,8 +40,8 @@ export function AddWidgetSidebar({
 						className={cn(
 							'px-2.5 py-1 rounded-xl text-xs whitespace-nowrap transition-all cursor-pointer font-medium',
 							activeCategory === cat.id
-								? 'bg-ds-brand text-ds-on-brand font-bold shadow-xs'
-								: 'bg-ds-fill-2 hover:bg-ds-surface-2 text-ds-fg-muted'
+								? 'bg-brand text-on-brand font-bold shadow-xs'
+								: 'bg-fill-2 hover:bg-surface-2 text-fg-muted'
 						)}
 					>
 						{cat.label}
@@ -62,8 +62,8 @@ export function AddWidgetSidebar({
 							className={cn(
 								'w-full flex items-center justify-between p-2.5 rounded-2xl border text-right transition-all duration-150 cursor-pointer',
 								isSelected
-									? 'bg-ds-brand-fill border-ds-brand shadow-xs'
-									: 'bg-ds-fill-2 hover:bg-ds-surface-2 border-ds-line'
+									? 'bg-brand-fill border-brand shadow-xs'
+									: 'bg-fill-2 hover:bg-surface-2 border-line'
 							)}
 						>
 							<div className="flex items-center min-w-0 gap-2">
@@ -71,8 +71,8 @@ export function AddWidgetSidebar({
 									className={cn(
 										'flex items-center justify-center rounded-xl w-7 h-7 shrink-0 transition-ui',
 										isSelected
-											? 'bg-ds-brand-fill text-ds-brand'
-											: 'bg-ds-fill text-ds-fg-muted'
+											? 'bg-brand-fill text-brand'
+											: 'bg-fill text-fg-muted'
 									)}
 								>
 									<Icon name={def.icon} size={15} />
@@ -81,8 +81,8 @@ export function AddWidgetSidebar({
 									className={cn(
 										'text-xs truncate',
 										isSelected
-											? 'font-bold text-ds-brand'
-											: 'font-medium text-ds-fg'
+											? 'font-bold text-brand'
+											: 'font-medium text-fg'
 									)}
 								>
 									{def.label}
@@ -113,8 +113,8 @@ export function AddWidgetSidebar({
 										className={cn(
 											'text-[10px] px-1.5 py-0.5 rounded-lg font-medium flex items-center gap-1',
 											isActive
-												? 'bg-ds-brand-fill text-ds-brand'
-												: 'bg-ds-surface-3 text-ds-fg-muted'
+												? 'bg-brand-fill text-brand'
+												: 'bg-surface-3 text-fg-muted'
 										)}
 									>
 										<span>
@@ -122,7 +122,7 @@ export function AddWidgetSidebar({
 										</span>
 									</span>
 								) : isActive ? (
-									<span className="text-[10px] px-1.5 py-0.5 rounded-lg bg-ds-surface-3 text-ds-fg-muted font-medium">
+									<span className="text-[10px] px-1.5 py-0.5 rounded-lg bg-surface-3 text-fg-muted font-medium">
 										فعال
 									</span>
 								) : null}

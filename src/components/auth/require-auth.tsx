@@ -21,7 +21,7 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 		return (
 			<div className="flex items-center justify-center h-full">
 				<div className="text-center">
-					<div className="w-10 h-10 mx-auto border-t-2 border-b-2 rounded-full animate-spin border-ds-brand"></div>
+					<div className="w-10 h-10 mx-auto border-t-2 border-b-2 rounded-full animate-spin border-brand"></div>
 					<p className="mt-2">در حال بارگذاری...</p>
 				</div>
 			</div>
@@ -43,7 +43,7 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 						<h3 className="text-lg font-semibold">
 							نیاز ورود به حساب کاربری
 						</h3>
-						<p className={'text-xs text-ds-fg text-center'}>
+						<p className={'text-xs text-fg text-center'}>
 							برای دسترسی به این بخش، لطفا وارد حساب کاربری خود شوید.
 						</p>
 						<Button
@@ -66,11 +66,11 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 				initial={{ opacity: 0, y: 10 }}
 				animate={{ opacity: 1, y: 0 }}
 				className={
-					'flex h-full flex-col items-center justify-center p-4 text-center rounded-md text-ds-fg'
+					'flex h-full flex-col items-center justify-center p-4 text-center rounded-md text-fg'
 				}
 			>
 				<h3 className="mb-2 text-xl font-semibold">نیاز ورود به حساب کاربری</h3>
-				<p className={'text-xs mb-4 text-ds-fg text-center'}>
+				<p className={'text-xs mb-4 text-fg text-center'}>
 					برای دسترسی به این بخش، لطفا وارد حساب کاربری خود شوید.
 				</p>
 				<Button

@@ -190,7 +190,7 @@ export function HabitContributionChart({
 
 	return (
 		<div className="flex flex-col w-full gap-4 select-none">
-			<div className="flex flex-col p-3 overflow-hidden border rounded-2xl bg-ds-fill border-ds-line">
+			<div className="flex flex-col p-3 overflow-hidden border rounded-2xl bg-fill border-line">
 				<div
 					ref={scrollContainerRef}
 					className="pb-1 pl-1 overflow-x-auto scrollbar-thin"
@@ -203,7 +203,7 @@ export function HabitContributionChart({
 									className="relative w-3.5 md:w-4 shrink-0"
 								>
 									{week.monthLabel && (
-										<span className="absolute top-0 right-0 text-[9px] font-medium leading-4 whitespace-nowrap text-ds-fg-muted">
+										<span className="absolute top-0 right-0 text-[9px] font-medium leading-4 whitespace-nowrap text-fg-muted">
 											{week.monthLabel}
 										</span>
 									)}
@@ -212,7 +212,7 @@ export function HabitContributionChart({
 						</div>
 
 						<div className="flex gap-1.5 items-start">
-							<div className="flex flex-col gap-1 shrink-0 text-[10px] text-ds-fg-muted font-medium">
+							<div className="flex flex-col gap-1 shrink-0 text-[10px] text-fg-muted font-medium">
 								{DISPLAY_WEEKDAYS.map((dayName) => (
 									<div
 										key={dayName}
@@ -263,13 +263,13 @@ export function HabitContributionChart({
 														'w-3.5 h-3.5 md:w-4 md:h-4 rounded-[4px] transition-ui cursor-pointer select-none',
 														'focus-visible:focus-ring',
 														day.isFuture
-															? 'opacity-20 cursor-not-allowed bg-ds-fill'
+															? 'opacity-20 cursor-not-allowed bg-fill'
 															: 'hover:scale-125 hover:z-10',
 														day.isToday &&
-															'ring-2 ring-ds-line',
+															'ring-2 ring-line',
 														!cellBg &&
 															!day.isFuture &&
-															'bg-ds-fill-2'
+															'bg-fill-2'
 													)}
 													style={{
 														backgroundColor: cellBg,
@@ -284,11 +284,11 @@ export function HabitContributionChart({
 					</div>
 				</div>
 
-				<div className="flex flex-wrap items-center justify-between gap-2 mt-3 pt-2.5 border-t border-ds-line text-xs">
-					<div className="min-h-5 flex items-center gap-1.5 text-ds-fg-muted text-[11px]">
+				<div className="flex flex-wrap items-center justify-between gap-2 mt-3 pt-2.5 border-t border-line text-xs">
+					<div className="min-h-5 flex items-center gap-1.5 text-fg-muted text-[11px]">
 						{hoveredDay ? (
 							<>
-								<span className="font-semibold text-ds-fg">
+								<span className="font-semibold text-fg">
 									{hoveredDay.jalaliDate.format('dddd، jD jMMMM')}
 								</span>
 								<span>:</span>
@@ -298,7 +298,7 @@ export function HabitContributionChart({
 										: 'بدون ثبت'}
 								</span>
 								{hoveredDay.isDone && (
-									<span className="font-medium text-ds-success">
+									<span className="font-medium text-success">
 										(انجام شد)
 									</span>
 								)}
@@ -308,9 +308,9 @@ export function HabitContributionChart({
 						)}
 					</div>
 
-					<div className="flex items-center gap-1 text-[10px] text-ds-fg-muted shrink-0">
+					<div className="flex items-center gap-1 text-[10px] text-fg-muted shrink-0">
 						<span>کمتر</span>
-						<div className="w-2.5 h-2.5 rounded-[2px] bg-ds-fill-2" />
+						<div className="w-2.5 h-2.5 rounded-[2px] bg-fill-2" />
 						<div
 							className="w-2.5 h-2.5 rounded-[2px]"
 							style={{ backgroundColor: `${color}33` }}

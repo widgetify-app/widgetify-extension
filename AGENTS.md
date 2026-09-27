@@ -287,7 +287,7 @@ Before writing any colour, decide which of two kinds it is.
 
 **Content** is a colour that carries its own meaning and would be wrong to re-theme: a thing being depicted (artwork, an illustrated object), a palette the user picks a value out of, a colour derived from an image, or a fill handed to an API that cannot take a class. Content is correctly hardcoded, and converting it to a token breaks it.
 
-When the same non-token colour appears in more than a couple of places, it is neither — it is a missing token. Name it once in the theme layer and point every site at that name.
+When the same non-token colour appears in more than a couple of places, it is neither — it is a missing token. Name it once in `src/styles/tokens.css` and point every site at that name. The reverse holds too: a colour only one component needs is not a token. Write it inline from the theme channels (`border-[rgba(var(--color-error-rgb),0.5)]`), never as a hex. `src/styles/README.md` has the vocabulary and the order to work through before adding a name.
 
 ### Tokens come in pairs, and the pair is the unit
 
@@ -302,7 +302,7 @@ Every surface token has a matching content token that is the only safe foregroun
 
 Tailwind compiles `/N` to a `color-mix` against transparent, which **multiplies** whatever alpha the token already has. A theme is free to define its surfaces as translucent, and some do. The same class then lands anywhere between its nominal value and near zero depending on the theme, so an element styled this way disappears in exactly the themes where it mattered.
 
-To tint a surface, dilute the **content** token instead. A content token is near opaque in any sane theme and contrasts its own background by definition, so one class behaves the same everywhere: a light wash on dark themes, a dark wash on light ones.
+To tint a surface, dilute the **content** token instead. A content token is near opaque in any sane theme and contrasts its own background by definition, so one class behaves the same everywhere: a light wash on dark themes, a dark wash on light ones. That is what `fill`, `fill-2` and `fill-3` are.
 
 ### Anything drawn over an image is its own context
 
@@ -312,26 +312,25 @@ The app renders over a user supplied wallpaper, and individual surfaces may carr
 
 `dark:` and `light:` key off `prefers-color-scheme`, which is unrelated to `data-theme`. They fire for a user whose OS disagrees with the theme they chose. Grep for them rather than assuming one is load bearing: none belong in `src`, so every hit is something to remove.
 
-### Prefer the project's semantic class over the raw utility
+### Prefer the project's colour name over the raw one
 
-`src/index.css` defines short names for the combinations this app actually uses — its surfaces, its body and muted text, its border, its widget radius. Use those rather than the underlying utility. They are the single place a decision like "what is a muted foreground" can be changed, and a raw utility at a call site opts that site out of any future change. When a combination you need has no name yet, add one there rather than inventing a new opacity step inline.
+`src/styles/tokens.css` names the colours this app actually uses — its surfaces, its text steps, its line, its fills, its brand and status tints. Use those rather than a daisyUI name (`text-primary`, `bg-error`) or an inline value. They are the single place a decision like "what is a muted foreground" can be changed, and a raw value at a call site opts that site out of any future change. A test rejects any colour class whose name is not declared there.
 
-### A variant on a shortcut class compiles to nothing
+### A variant on a plain CSS rule compiles to nothing
 
-`src/index.css` defines its shortcuts two different ways, and only one of them takes
-variants. `@utility transition-ui { ... }` registers a real utility, so `hover:transition-ui`
-works. A plain rule like `.text-content { @apply ... }` does not, so **`hover:text-content`,
-`focus:bg-content` and the like generate no CSS at all** — the hover simply never happens,
+The colour names and everything declared with `@utility` are real utilities, so
+`hover:bg-fill-2` and `hover:transition-ui` work. A class that exists only as a plain rule —
+`.bg-glass`, `.z-popover`, a selector in a theme file — does not take variants, so
+**`hover:bg-glass` and the like generate no CSS at all** — the hover simply never happens,
 silently, with no warning from tsc, biome or the build.
 
-Use the token the shortcut wraps for the variant (`hover:text-base-content`), or promote the
-shortcut to `@utility`. The same trap catches any class name that does not exist:
-`bg-background` is used in three places in `src` and has never been defined.
+Promote the rule to `@utility` if it needs a variant. The same trap catches any class name
+that does not exist: `bg-background` is used in `src` and has never been defined.
 
 Grep the built CSS rather than trusting the markup:
 
 ```
-grep -o 'hover\:text-content' .output/chrome-mv3/assets/newtab-*.css
+grep -o 'hover\:bg-fill-2' .output/chrome-mv3/assets/newtab-*.css
 ```
 
 ### Verifying
@@ -347,18 +346,12 @@ No output means the class compiled to nothing. Note that the compiler merges sel
 
 ### Known debt
 
-Four shapes of debt exist in bulk. Do not treat them as fixed; do not sweep them inside an unrelated task; never add to them. Counts move every time work lands, so measure rather than quote a number from here:
+Two shapes of debt remain. Do not treat them as fixed; do not sweep them inside an unrelated task; never add to them. Counts move every time work lands, so measure rather than quote a number from here.
 
-```
-grep -rnoE '(bg|text|border|shadow|ring|from|to|via)-[a-z-]+/[0-9]+' src | wc -l
-```
-
-That is a starting point, not an answer: it counts every opacity modifier, and the ones on content tokens are the prescribed way to tint. Narrow it to the token you are actually chasing before reporting a figure.
-
-- **Opacity modifiers on surface tokens.** Not swept because a theme that defines a surface translucent *means* it to be faint, so most sites read as thin rather than broken, and a blanket rewrite would change every theme to repair the handful that break. Fix them when you are already in the file.
-- **Hardcoded colours**, in five shapes: `white`/`black` classes, numbered palette classes, raw hex literals, `rgb()`/`rgba()` literals, and arbitrary-value classes. Counting only classes in `.tsx` misses more than half of it — scan `.ts` and raw literals too. A meaningful share of them are content by the test above and must stay as they are; the rest are chrome.
+- **`white`/`black` classes.** Some are content or drawn over imagery and must stay; the rest are chrome that predates the tokens.
 - **Theme stylesheets carrying rules for class names that no longer exist.** A theme file outlives the markup it was written against, so a selector living there is not evidence the class is still used. Grep `src` before trusting one.
-- **The semantic class and its raw equivalent both in wide use for the same thing.** New code uses the semantic one.
+
+Opacity modifiers, palette classes, raw daisyUI base classes and colour names outside `tokens.css` are no longer debt: the tests reject every one of them.
 
 ---
 

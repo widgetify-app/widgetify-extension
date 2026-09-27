@@ -228,7 +228,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 							rounded="xl"
 							onClick={() => setIsHelpOpen(true)}
 							variant="ghost"
-							className="gap-1 text-xs px-2.5 py-1 border-ds-line font-normal"
+							className="gap-1 text-xs px-2.5 py-1 border-line font-normal"
 							title="راهنمای مدیریت ویجت‌ها"
 						>
 							<Icon name="help" size={13} />
@@ -258,16 +258,16 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 						{selectedDef ? (
 							<div className="flex flex-col gap-3 md:flex-1 md:min-h-0">
 								<div className="flex flex-col gap-3 pr-0.5 scrollbar-none md:flex-1 md:min-h-0 md:overflow-y-auto">
-									<div className="flex items-center justify-between pb-2 border-b border-ds-line">
+									<div className="flex items-center justify-between pb-2 border-b border-line">
 										<div className="flex items-center gap-2">
-											<span className="flex items-center justify-center rounded-xl w-9 h-9 shrink-0 bg-ds-brand-fill text-ds-brand">
+											<span className="flex items-center justify-center rounded-xl w-9 h-9 shrink-0 bg-brand-fill text-brand">
 												<Icon name={selectedDef.icon} size={19} />
 											</span>
 											<div>
-												<h3 className="text-sm font-bold text-ds-fg">
+												<h3 className="text-sm font-bold text-fg">
 													{selectedDef.label}
 												</h3>
-												<p className="text-[11px] text-ds-fg-muted">
+												<p className="text-[11px] text-fg-muted">
 													{selectedDef.canDuplicate
 														? 'امکان افزودن چندین نمونه از این ویجت وجود دارد'
 														: 'ویجت تکی صفحه اصلی'}
@@ -281,7 +281,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 												rounded="xl"
 												onClick={handleOpenSelectedSettings}
 												variant="outline"
-												className="gap-1.5 text-xs px-3 py-1.5 hover:text-ds-brand"
+												className="gap-1.5 text-xs px-3 py-1.5 hover:text-brand"
 											>
 												<Icon name="settings" size={12} />
 												<span>تنظیمات ویجت</span>
@@ -307,7 +307,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 									/>
 								</div>
 
-								<div className="pt-2 border-t border-ds-line shrink-0">
+								<div className="pt-2 border-t border-line shrink-0">
 									<AddWidgetActions
 										isVipRequired={isVipRequired}
 										isVip={isVip}

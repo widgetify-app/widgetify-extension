@@ -8,13 +8,13 @@ export function NewsEmpty() {
 			<Icon
 				name="outlineNewspaper"
 				size={22}
-				className="text-ds-fg-muted"
+				className="text-fg-muted"
 				aria-hidden="true"
 			/>
 
-			<p className="text-xs font-bold text-ds-fg">هیچ منبع خبری فعالی نداری</p>
+			<p className="text-xs font-bold text-fg">هیچ منبع خبری فعالی نداری</p>
 
-			<p className="text-[.65rem] leading-5 text-ds-fg-muted">
+			<p className="text-[.65rem] leading-5 text-fg-muted">
 				منابع پیش‌فرض رو روشن کن یا یک فید دلخواه اضافه کن
 			</p>
 
@@ -23,7 +23,7 @@ export function NewsEmpty() {
 				onClick={() =>
 					callEvent('openWidgetsSettings', { tab: WidgetTabKeys.news_settings })
 				}
-				className="px-2.5 py-1 text-[11px] font-bold rounded-lg cursor-pointer text-ds-fg bg-ds-fill-2 transition-ui hover:bg-ds-fill-3 focus-visible:focus-ring"
+				className="px-2.5 py-1 text-[11px] font-bold rounded-lg cursor-pointer text-fg bg-fill-2 transition-ui hover:bg-fill-3 focus-visible:focus-ring"
 			>
 				تنظیمات اخبار
 			</button>

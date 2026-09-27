@@ -24,7 +24,7 @@ export function TopUserItem({
 	}
 
 	const style =
-		rank <= 3 ? 'bg-ds-success-fill text-ds-success' : 'bg-ds-brand-fill text-ds-brand'
+		rank <= 3 ? 'bg-success-fill text-success' : 'bg-brand-fill text-brand'
 
 	const convertToHours = (duration: number) => {
 		const hours = Math.floor(duration / 60)
@@ -38,7 +38,7 @@ export function TopUserItem({
 	return (
 		<>
 			<div
-				className={`relative flex items-center gap-2 p-2 cursor-pointer rounded-2xl bg-ds-surface-2 transition-ui hover:scale-95 shadow-md hover:shadow-none`}
+				className={`relative flex items-center gap-2 p-2 cursor-pointer rounded-2xl bg-surface-2 transition-ui hover:scale-95 shadow-md hover:shadow-none`}
 				onClick={() => setActiveProfileId(user.id)}
 				ref={containerRef}
 			>
@@ -51,13 +51,13 @@ export function TopUserItem({
 				<AvatarComponent
 					url={user.avatar}
 					size="sm"
-					className="outline-2 outline-offset-0 outline-ds-brand-fill-2"
+					className="outline-2 outline-offset-0 outline-brand-fill-2"
 				/>
 				<div className="relative flex-1 min-w-0">
-					<p className="text-sm font-medium truncate text-ds-fg">
+					<p className="text-sm font-medium truncate text-fg">
 						{user.name}
 					</p>
-					<p className="text-xs text-ds-fg-muted">{duration}</p>
+					<p className="text-xs text-fg-muted">{duration}</p>
 				</div>
 
 				<div

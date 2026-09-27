@@ -25,18 +25,18 @@ export function MiniAppRunnerHeader({
 		callEvent('toggle_miniApp_fullScreen', newState)
 	}
 	return (
-		<div className="sticky top-0 z-10 w-full border-b border-ds-line">
+		<div className="sticky top-0 z-10 w-full border-b border-line">
 			<div className="relative flex items-center justify-between px-4 py-3">
 				<div className="flex items-center gap-2">
 					<button
-						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-ds-fill-2 active:scale-95 group border-ds-line"
+						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-fill-2 active:scale-95 group border-line"
 						aria-label="بازگشت"
 						onClick={() => onClickToBack()}
 					>
 						<Icon
 							name="chevronRight"
 							size={20}
-							className="transition-colors duration-200 text-ds-fg-muted group-hover:text-ds-fg-strong"
+							className="transition-colors duration-200 text-fg-muted group-hover:text-fg-strong"
 						/>
 					</button>
 
@@ -49,19 +49,19 @@ export function MiniAppRunnerHeader({
 							/>
 						)}
 						{isLoadingApp && (
-							<div className="rounded-lg w-7 h-7 skeleton bg-ds-fill-2 shrink-0" />
+							<div className="rounded-lg w-7 h-7 skeleton bg-fill-2 shrink-0" />
 						)}
 
 						<div>
 							{isLoadingApp ? (
-								<div className="w-24 h-3.5 rounded-full skeleton bg-ds-fill-2" />
+								<div className="w-24 h-3.5 rounded-full skeleton bg-fill-2" />
 							) : (
-								<h2 className="text-base font-bold leading-tight text-ds-fg">
+								<h2 className="text-base font-bold leading-tight text-fg">
 									{app?.name ?? ''}
 								</h2>
 							)}
 							{app?.description && (
-								<p className="text-xs leading-tight text-ds-fg-faint">
+								<p className="text-xs leading-tight text-fg-faint">
 									{app.description}
 								</p>
 							)}
@@ -73,31 +73,31 @@ export function MiniAppRunnerHeader({
 					<button
 						onClick={() => onToggleFullScreen()}
 						disabled={isLoading || isConnecting}
-						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-ds-fill-2 active:scale-95 group border-ds-line disabled:opacity-40"
+						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-fill-2 active:scale-95 group border-line disabled:opacity-40"
 					>
 						{isFullScreen ? (
 							<Icon
 								name="minimize"
 								size={18}
-								className={`transition-colors duration-200 text-ds-fg-muted group-hover:text-ds-fg-strong`}
+								className={`transition-colors duration-200 text-fg-muted group-hover:text-fg-strong`}
 							/>
 						) : (
 							<Icon
 								name="maximize"
 								size={18}
-								className={`transition-colors duration-200 text-ds-fg-muted group-hover:text-ds-fg-strong`}
+								className={`transition-colors duration-200 text-fg-muted group-hover:text-fg-strong`}
 							/>
 						)}
 					</button>
 
 					<button
 						onClick={handleReload}
-						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-ds-fill-2 active:scale-95 group border-ds-line disabled:opacity-40"
+						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-fill-2 active:scale-95 group border-line disabled:opacity-40"
 					>
 						<Icon
 							name="refresh"
 							size={18}
-							className={`transition-colors duration-200 text-ds-fg-muted group-hover:text-ds-fg-strong ${isLoading || isConnecting ? 'animate-spin' : ''}`}
+							className={`transition-colors duration-200 text-fg-muted group-hover:text-fg-strong ${isLoading || isConnecting ? 'animate-spin' : ''}`}
 						/>
 					</button>
 				</div>

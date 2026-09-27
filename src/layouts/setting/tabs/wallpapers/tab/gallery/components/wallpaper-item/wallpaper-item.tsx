@@ -38,8 +38,8 @@ function WallpaperItemFu({
 	const elementRef = useLazyLoad(loadContent)
 
 	const itemOutlineStyle = isSelected
-		? 'ring-2 ring-ds-brand ring-offset-ds-surface'
-		: 'ring-1 ring-ds-line hover:ring-ds-brand'
+		? 'ring-2 ring-brand ring-offset-surface'
+		: 'ring-1 ring-line hover:ring-brand'
 
 	useEffect(() => {
 		if (loaded && videoRef.current && isSelected) {
@@ -88,14 +88,14 @@ function WallpaperItemFu({
 				onClick={handleSelect}
 			>
 				{!loaded && (
-					<div className="absolute inset-0 flex items-center justify-center bg-ds-scrim rounded-xl">
-						<div className="w-5 h-5 border-2 rounded-full border-ds-brand-fill-2 border-t-ds-brand animate-spin"></div>
+					<div className="absolute inset-0 flex items-center justify-center bg-scrim rounded-xl">
+						<div className="w-5 h-5 border-2 rounded-full border-brand-fill-2 border-t-brand animate-spin"></div>
 					</div>
 				)}
 				{error && (
-					<div className="absolute inset-0 flex flex-col items-center justify-center bg-ds-danger-fill rounded-xl">
-						<Icon name="outlineHeart" className="text-ds-danger" />
-						<p className="mt-2 text-xs text-ds-fg-muted">خطا در بارگذاری</p>
+					<div className="absolute inset-0 flex flex-col items-center justify-center bg-danger-fill rounded-xl">
+						<Icon name="outlineHeart" className="text-danger" />
+						<p className="mt-2 text-xs text-fg-muted">خطا در بارگذاری</p>
 					</div>
 				)}
 
@@ -130,7 +130,7 @@ function WallpaperItemFu({
 				{loaded && !error && (
 					<>
 						<div
-							className={`absolute flex  justify-between inset-x-0 bottom-0 p-2 rounded-xl transition-opacity duration-300 bg-linear-to-t from-ds-scrim to-transparent items-center`}
+							className={`absolute flex  justify-between inset-x-0 bottom-0 p-2 rounded-xl transition-opacity duration-300 bg-linear-to-t from-scrim to-transparent items-center`}
 						>
 							{wallpaper.name ? (
 								<div className="flex-1 text-[10px] font-medium text-white">
@@ -154,26 +154,26 @@ function WallpaperItemFu({
 						</div>
 
 						{isSelected && (
-							<div className="absolute p-1 text-ds-on-brand rounded-full shadow-sm top-2 left-2 bg-ds-brand">
+							<div className="absolute p-1 text-on-brand rounded-full shadow-sm top-2 left-2 bg-brand">
 								<Icon name="check" size={12} />
 							</div>
 						)}
 
 						{!isSelected && wallpaper.isOwned && (
-							<div className="absolute flex gap-0.5 px-1 rounded-tl-xl rounded-r-md bg-ds-success text-ds-on-success shadow-sm  items-center top-0 left-0 w-max h-4">
+							<div className="absolute flex gap-0.5 px-1 rounded-tl-xl rounded-r-md bg-success text-on-success shadow-sm  items-center top-0 left-0 w-max h-4">
 								<Icon name="shoppingBag" size={10} />
 								<span className="text-[10px]! font-normal">باز شده</span>
 							</div>
 						)}
 
 						{isAnimated && (
-							<div className="absolute flex gap-0.5 px-1 rounded-t-none rounded-b-lg bg-ds-info text-ds-on-info shadow-sm  items-center top-0 right-0 m- inset-x-0 m-auto w-max h-4">
+							<div className="absolute flex gap-0.5 px-1 rounded-t-none rounded-b-lg bg-info text-on-info shadow-sm  items-center top-0 right-0 m- inset-x-0 m-auto w-max h-4">
 								<Icon name="play" size={12} />
 								<span className="text-[10px]! font-normal">متحرک</span>
 							</div>
 						)}
 
-						<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-ds-scrim-soft rounded-2xl"></div>
+						<div className="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-scrim-soft rounded-2xl"></div>
 
 						{!isSelected && !wallpaper.isOwned && wallpaper.coin ? (
 							<button
@@ -181,7 +181,7 @@ function WallpaperItemFu({
 									e.stopPropagation()
 									onPreviewBackground(wallpaper)
 								}}
-								className="absolute bottom-1.5 right-1.5 flex items-center gap-1 px-2 py-1 rounded-lg bg-ds-scrim border border-ds-image-line text-[rgba(255,255,255,0.8)] hover:text-white transition-colors text-[10px] font-medium backdrop-blur-sm cursor-pointer opacity-0 group-hover:opacity-100"
+								className="absolute bottom-1.5 right-1.5 flex items-center gap-1 px-2 py-1 rounded-lg bg-scrim border border-image-line text-[rgba(255,255,255,0.8)] hover:text-white transition-colors text-[10px] font-medium backdrop-blur-sm cursor-pointer opacity-0 group-hover:opacity-100"
 							>
 								<Icon name="outlineEye" size={10} />
 								<span>پیش‌نمایش</span>

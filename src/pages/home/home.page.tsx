@@ -14,17 +14,17 @@ const steps: Step[] = [
 		target: '#chrome-footer',
 		content: (
 			<div className="flex flex-col gap-2 text-center">
-				<h4 className="text-[13px] font-black text-ds-brand">
+				<h4 className="text-[13px] font-black text-brand">
 					خلوت کردن فضای مرورگر
 				</h4>
 
-				<p className="text-[12px] leading-5 text-ds-fg-muted font-medium">
+				<p className="text-[12px] leading-5 text-fg-muted font-medium">
 					برای مخفی کردن این نوار، کافیه روش{' '}
-					<span className="font-black text-ds-danger">راست‌کلیک</span> کنی و این
+					<span className="font-black text-danger">راست‌کلیک</span> کنی و این
 					گزینه رو بزنی:
 				</p>
 
-				<div className="relative overflow-hidden border rounded-xl border-ds-line">
+				<div className="relative overflow-hidden border rounded-xl border-line">
 					<img
 						src="https://cdn.widgetify.ir/extension/how-to-disable-footer.png"
 						alt="نحوه مخفی کردن نوار پایین مرورگر"
@@ -32,8 +32,8 @@ const steps: Step[] = [
 					/>
 				</div>
 
-				<div className="p-1.5 border border-dashed rounded-lg bg-ds-fill border-ds-line">
-					<code className="text-[11px] font-bold text-ds-fg-muted">
+				<div className="p-1.5 border border-dashed rounded-lg bg-fill border-line">
+					<code className="text-[11px] font-bold text-fg-muted">
 						"Hide footer on New Tab page"
 					</code>
 				</div>
@@ -44,7 +44,7 @@ const steps: Step[] = [
 		target: '.widget-outer',
 		content: (
 			<div className="flex flex-col gap-2.5">
-				<div className="relative overflow-hidden border shadow-sm aspect-video rounded-xl border-ds-line bg-ds-fill">
+				<div className="relative overflow-hidden border shadow-sm aspect-video rounded-xl border-line bg-fill">
 					<video
 						src="https://cdn.widgetify.ir/extension/help_videos/WIDGET-STYLES.webm"
 						autoPlay
@@ -54,7 +54,7 @@ const steps: Step[] = [
 						className="object-cover w-full h-full"
 					/>
 				</div>
-				<p className="text-[12px] leading-relaxed text-ds-fg font-medium">
+				<p className="text-[12px] leading-relaxed text-fg font-medium">
 					برای تغییر اندازه، جابه‌جایی، تغییر استایل، کپی یا حذف هر ویجت، کافیه
 					کافیه روش راست‌کلیک کنی تا منوی اختصاصی اون باز بشه
 				</p>

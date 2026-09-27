@@ -9,11 +9,11 @@ export function HabitEmpty() {
 				/>
 			</div>
 
-			<p className="mt-1 font-bold text-center text-ds-fg">
+			<p className="mt-1 font-bold text-center text-fg">
 				عادت‌های خوب رو از اینجا شروع کن 🌱
 			</p>
 
-			<p className="text-center text-[.65rem] leading-5 text-ds-fg opacity-75">
+			<p className="text-center text-[.65rem] leading-5 text-fg opacity-75">
 				اولین عادتت رو اضافه کن
 				<br />
 				مثلا:

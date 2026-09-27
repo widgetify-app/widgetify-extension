@@ -124,10 +124,10 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 
 	return (
 		<section
-			className="flex flex-col overflow-hidden border w-60 bg-ds-surface-2 border-ds-surface-3 rounded-2xl"
+			className="flex flex-col overflow-hidden border w-60 bg-surface-2 border-surface-3 rounded-2xl"
 			aria-labelledby={headingId}
 		>
-			<header className="px-3 py-2 bg-ds-brand text-ds-on-brand">
+			<header className="px-3 py-2 bg-brand text-on-brand">
 				<h2
 					id={headingId}
 					className="flex items-center justify-between text-sm font-medium"
@@ -143,7 +143,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 			</header>
 
 			<div className="p-2 space-y-2">
-				<dl className="flex items-center justify-between px-1 text-xs text-ds-fg-muted">
+				<dl className="flex items-center justify-between px-1 text-xs text-fg-muted">
 					<div className="flex items-center gap-1">
 						<dt className="flex items-center">
 							<Icon name="moon" size={10} aria-hidden="true" />
@@ -165,11 +165,11 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 				</dl>
 
 				{!isFuture && isWithinMoodBacklog && (
-					<fieldset className="p-1.5 rounded-2xl bg-ds-fill">
+					<fieldset className="p-1.5 rounded-2xl bg-fill">
 						<legend className="sr-only">{moodTitle}</legend>
 						<span
 							aria-hidden="true"
-							className="block mb-1.5 px-0.5 text-[10px] font-medium text-ds-fg"
+							className="block mb-1.5 px-0.5 text-[10px] font-medium text-fg"
 						>
 							{moodTitle}
 						</span>
@@ -188,7 +188,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 										'disabled:cursor-not-allowed disabled:opacity-60',
 										mood === option.value
 											? option.activeClass
-											: 'bg-ds-surface-3 opacity-80 hover:opacity-100'
+											: 'bg-surface-3 opacity-80 hover:opacity-100'
 									)}
 								>
 									<span className="block text-lg leading-none mb-0.5">
@@ -211,8 +211,8 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 								className={cn(
 									'flex items-center w-full gap-1 px-2 outline rounded-xl min-h-8',
 									event.isHoliday
-										? 'bg-ds-danger-fill-2 text-ds-danger outline-ds-danger-fill-2'
-										: 'text-ds-fg outline-ds-surface-3 bg-ds-fill'
+										? 'bg-danger-fill-2 text-danger outline-danger-fill-2'
+										: 'text-fg outline-surface-3 bg-fill'
 								)}
 							>
 								<span className="flex-1 min-w-0 text-[11px]">

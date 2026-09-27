@@ -54,7 +54,7 @@ export function ChangeGenderModal({ show, onClose, currentValue }: Prop) {
 		>
 			<div className="flex flex-col justify-between h-40 gap-4">
 				<SectionPanel title="جنسیت (کاملا اختیاری)" size="xs">
-					<div className="flex gap-2 p-1.5 bg-ds-surface-2 rounded-2xl">
+					<div className="flex gap-2 p-1.5 bg-surface-2 rounded-2xl">
 						{(['MALE', 'FEMALE', 'OTHER'] as const).map((g) => {
 							const isActive = value === g
 
@@ -65,13 +65,13 @@ export function ChangeGenderModal({ show, onClose, currentValue }: Prop) {
 									onClick={() => setValue(g)}
 									className={`flex-1 py-2 px-1 flex flex-col  items-center gap-1 text-[10px] font-bold rounded-xl transition-all duration-300 cursor-pointer ${
 										isActive
-											? 'text-ds-brand shadow-sm ring-1 ring-ds-brand-fill-2 scale-[1.02]'
-											: 'text-ds-fg-muted hover:text-ds-brand hover:ring-1 hover:ring-ds-brand-fill active:scale-95'
+											? 'text-brand shadow-sm ring-1 ring-brand-fill-2 scale-[1.02]'
+											: 'text-fg-muted hover:text-brand hover:ring-1 hover:ring-brand-fill active:scale-95'
 									}`}
 								>
 									<span
 										className={
-											isActive ? 'text-ds-brand' : 'text-ds-fg-faint'
+											isActive ? 'text-brand' : 'text-fg-faint'
 										}
 									>
 										{options[g].icon}

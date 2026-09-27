@@ -26,11 +26,11 @@ const CheckboxBase = ({
 	const getCheckboxStyle = () => {
 		if (checked) {
 			if (checkedCheckBoxClassName) return checkedCheckBoxClassName
-			return 'bg-ds-brand border-ds-brand'
+			return 'bg-brand border-brand'
 		}
 
 		if (unCheckedCheckBoxClassName) return unCheckedCheckBoxClassName
-		return 'border-ds-surface-3'
+		return 'border-surface-3'
 	}
 
 	const onChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,7 +82,7 @@ const CheckboxBase = ({
 				</div>
 			</div>
 			{label && (
-				<span className={`ml-2 mr-2 ${fontSize} text-sm text-ds-fg`}>
+				<span className={`ml-2 mr-2 ${fontSize} text-sm text-fg`}>
 					{label}
 				</span>
 			)}

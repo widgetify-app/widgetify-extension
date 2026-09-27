@@ -26,9 +26,9 @@ export function CheckBoxWithDescription({
 				className="active:scale-95"
 			/>
 			<div className="flex-1">
-				<p className={'font-bold text-ds-fg'}>{title}</p>
+				<p className={'font-bold text-fg'}>{title}</p>
 				{description ? (
-					<p className={'text-sm mt-1 font-light text-ds-fg-muted'}>{description}</p>
+					<p className={'text-sm mt-1 font-light text-fg-muted'}>{description}</p>
 				) : null}
 			</div>
 		</div>

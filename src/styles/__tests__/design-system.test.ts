@@ -33,7 +33,7 @@ function offenders(pattern: RegExp): string[] {
 }
 
 const PALETTE =
-	'red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose|slate|gray|zinc|stone'
+	'red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose|slate|gray|zinc|stone|neutral'
 
 describe('one vocabulary', () => {
 	it('never uses a Tailwind palette colour', () => {
@@ -117,35 +117,13 @@ describe('stylesheets stay parseable on Chrome 109', () => {
 })
 
 describe('colour lives in one place', () => {
-	const theme = readFileSync(join(STYLES, 'theme.css'), 'utf8')
-
-	it('declares accents as a ramp step or a plain rgba of a theme token', () => {
-		const accents = theme.slice(
-			theme.indexOf('ACCENTS'),
-			theme.indexOf('CONTENT COLOURS')
-		)
-		const bad: string[] = []
-		for (const m of accents.matchAll(/^\s*(--color-[a-z0-9-]+)\s*:\s*([^;]+);/gm)) {
-			const [, name, value] = m
-			// -rgb holds channels, not a colour
-			if (name.endsWith('-rgb')) continue
-			const ok =
-				value.startsWith('rgba(var(--color-') ||
-				value.startsWith('var(--color-') ||
-				/^#[0-9a-f]{6}$/i.test(value.trim())
-			if (!ok) bad.push(`${name}: ${value}`)
-		}
-		expect(bad).toEqual([])
-	})
+	const tokens = readFileSync(join(STYLES, 'tokens.css'), 'utf8')
 
 	it('keeps utilities.css to names, not colour literals', () => {
-		// One exception: over-image chrome is drawn on a wallpaper, so it
-		// follows no theme. Everything else must read a token.
 		const css = readFileSync(join(STYLES, 'utilities.css'), 'utf8')
 		const bad: string[] = []
 		for (const block of css.split('@utility').slice(1)) {
 			const name = block.trim().split(/\s/)[0]
-			if (name.includes('over-image')) continue
 			for (const m of block.matchAll(/:\s*(#[0-9a-f]{3,8}|rgba?\([\d\s,.]+\))/gi)) {
 				if (m[1].startsWith('rgba(var')) continue
 				bad.push(`${name}: ${m[1]}`)
@@ -154,13 +132,12 @@ describe('colour lives in one place', () => {
 		expect(bad).toEqual([])
 	})
 
-	it('builds every ds- token from a theme variable', () => {
-		const css = readFileSync(join(STYLES, 'tokens.css'), 'utf8')
-		const drawnOverImage = /^--color-ds-(image-|scrim)/
-		const bad = [...css.matchAll(/^\s*(--[a-z0-9-]+)\s*:\s*([^;]+);/gm)]
+	it('builds every token in tokens.css from a theme variable', () => {
+		const drawnOverImage = /^--color-(image-|scrim)/
+		const bad = [...tokens.matchAll(/^\s*(--[a-z0-9-]+)\s*:\s*([^;]+);/gm)]
 			.filter(
 				([, name, value]) =>
-					!name.startsWith('--color-ds-') ||
+					!name.startsWith('--color-') ||
 					!(
 						value.startsWith('rgba(var(--color-') ||
 						value.startsWith('var(--color-') ||
@@ -170,13 +147,26 @@ describe('colour lives in one place', () => {
 			.map(([, name, value]) => `${name}: ${value}`)
 		expect(bad).toEqual([])
 	})
-})
 
-describe('the legacy colour vocabulary', () => {
-	it('is no longer used anywhere in src', () => {
-		const legacy =
-			/(?<![\w-])(bg|text|border|border-[tblrxyse]|ring|ring-offset|shadow|placeholder|from|to|via|stroke|fill|divide|outline)-(widget|content|raised|subtle|hovered|strong|muted|faint|ghost|bold|primary|secondary|brand|danger|error|success|warning|info|vip|accent|neutral|over-image|medal|avatar)(?!\w)/
-		expect(offenders(legacy)).toEqual([])
+	it('names only colours that tokens.css or the theme declare', () => {
+		const declared = [...tokens.matchAll(/^\s*--color-([a-z0-9-]+)\s*:/gm)].map(
+			(m) => m[1]
+		)
+		const declaredByTheTheme = ['secondary', 'success', 'warning', 'info', 'vip']
+		const vocabulary = new Set([...declared, ...declaredByTheTheme])
+		const pattern =
+			/(?<![\w-])(?:[a-z0-9\/-]+:)*!?(?:bg|text|border(?:-[tblrxyse])?|ring(?:-offset)?|outline|from|to|via|divide|fill|stroke|shadow|placeholder|caret|accent|decoration)-((?:fg|surface|fill|line|on|brand|danger|success|warning|info|secondary|vip|image|scrim|primary|error|accent|neutral|widget|content|raised|subtle|hovered|strong|muted|faint|ghost|bold|over-image|medal|avatar)(?:-[a-z0-9]+)*)!?(?![\w-])/g
+		const bad: string[] = []
+		for (const path of sourceFiles()) {
+			readFileSync(path, 'utf8')
+				.split('\n')
+				.forEach((line, i) => {
+					for (const m of line.matchAll(pattern)) {
+						if (!vocabulary.has(m[1])) bad.push(`${path}:${i + 1} ${m[0]}`)
+					}
+				})
+		}
+		expect(bad).toEqual([])
 	})
 })
 

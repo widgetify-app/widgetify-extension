@@ -13,33 +13,33 @@ const fmt = (n: number) => new Intl.NumberFormat('fa-IR').format(n)
 
 export function CoinPackageCard({ package: pkg, onPurchase }: CoinPackageCardProps) {
 	return (
-		<div className="flex flex-col overflow-hidden transition-all duration-200 border bg-ds-surface-veil rounded-2xl border-ds-line hover:border-ds-brand-fill-2 hover:shadow-sm group">
+		<div className="flex flex-col overflow-hidden transition-all duration-200 border bg-surface-veil rounded-2xl border-line hover:border-brand-fill-2 hover:shadow-sm group">
 			{/* Coin visual area */}
-			<div className="flex items-center justify-center py-6 bg-ds-fill">
+			<div className="flex items-center justify-center py-6 bg-fill">
 				<div className="flex flex-col items-center gap-2">
 					<div className="relative">
-						<div className="absolute inset-0 scale-125 rounded-full bg-ds-warning-fill-2 blur-md" />
+						<div className="absolute inset-0 scale-125 rounded-full bg-warning-fill-2 blur-md" />
 						<img
 							src={ConfigKey.WIG_COIN_ICON}
 							alt="ویج‌کوین"
 							className="relative w-10 h-10 transition-transform duration-200 group-hover:scale-105"
 						/>
 					</div>
-					<p className="text-2xl font-bold leading-none text-ds-brand tabular-nums">
+					<p className="text-2xl font-bold leading-none text-brand tabular-nums">
 						{fmt(pkg.coin)}
 					</p>
-					<p className="text-[10px] text-ds-fg-faint font-medium">ویج‌کوین</p>
+					<p className="text-[10px] text-fg-faint font-medium">ویج‌کوین</p>
 				</div>
 			</div>
 
 			{/* Info */}
-			<div className="flex flex-col gap-2.5 px-3 py-2.5 border-t border-ds-line">
+			<div className="flex flex-col gap-2.5 px-3 py-2.5 border-t border-line">
 				<div>
-					<p className="text-[12px] font-semibold text-ds-fg-strong leading-snug truncate">
+					<p className="text-[12px] font-semibold text-fg-strong leading-snug truncate">
 						{pkg.title}
 					</p>
 					{pkg.description && (
-						<p className="text-[10px] text-ds-fg-faint mt-0.5 line-clamp-1">
+						<p className="text-[10px] text-fg-faint mt-0.5 line-clamp-1">
 							{pkg.description}
 						</p>
 					)}
@@ -47,10 +47,10 @@ export function CoinPackageCard({ package: pkg, onPurchase }: CoinPackageCardPro
 
 				<div className="flex items-center justify-between">
 					<div className="flex items-baseline gap-0.5">
-						<span className="text-sm font-bold text-ds-fg-strong tabular-nums">
+						<span className="text-sm font-bold text-fg-strong tabular-nums">
 							{fmt(pkg.price)}
 						</span>
-						<span className="text-[10px] text-ds-fg-faint mr-0.5">تومان</span>
+						<span className="text-[10px] text-fg-faint mr-0.5">تومان</span>
 					</div>
 
 					<Button

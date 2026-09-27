@@ -147,10 +147,10 @@ export const UpdateReleaseNotesModal = ({
 								onClick={() => setActiveStepIndex(index)}
 								className={`flex-1 h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
 									isCurrent
-										? 'bg-ds-brand'
+										? 'bg-brand'
 										: isCompleted
-											? 'bg-ds-brand-muted'
-											: 'bg-ds-fill-2 hover:bg-ds-fill-3'
+											? 'bg-brand-muted'
+											: 'bg-fill-2 hover:bg-fill-3'
 								}`}
 								aria-label={step.title}
 							/>
@@ -159,7 +159,7 @@ export const UpdateReleaseNotesModal = ({
 				</div>
 
 				{/* Video Preview Container */}
-				<div className="relative flex items-center justify-center w-full overflow-hidden border shadow-sm aspect-video max-h-56 rounded-2xl border-ds-line bg-ds-fill shrink-0">
+				<div className="relative flex items-center justify-center w-full overflow-hidden border shadow-sm aspect-video max-h-56 rounded-2xl border-line bg-fill shrink-0">
 					<video
 						key={currentStep.videoUrl}
 						ref={videoRef}
@@ -170,7 +170,7 @@ export const UpdateReleaseNotesModal = ({
 						playsInline
 						className="object-cover w-full h-full"
 					/>
-					<div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-ds-surface-veil backdrop-blur-md border border-ds-line text-[11px] font-bold text-ds-fg shadow-xs">
+					<div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-surface-veil backdrop-blur-md border border-line text-[11px] font-bold text-fg shadow-xs">
 						{currentStep.badge}
 					</div>
 				</div>
@@ -179,28 +179,28 @@ export const UpdateReleaseNotesModal = ({
 				<div className="flex flex-col justify-center min-h-[128px]">
 					{activeStepIndex === 0 ? (
 						<div className="flex flex-col justify-between h-full gap-2">
-							<div className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-ds-brand">
+							<div className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-brand">
 								<span className="text-sm">💣</span>
 								<span className="text-lg font-bold leading-normal">
 									بزرگ‌ترین تحول: چیدمان کاملا آزاد و بی‌نهایت
 								</span>
 							</div>
 
-							<div className="flex items-start gap-3 p-3 rounded-2xl bg-ds-fill-2 border border-ds-line transition-all">
-								<div className="w-8 h-8 rounded-xl bg-ds-brand-fill text-ds-brand flex items-center justify-center shrink-0 mt-0.5">
+							<div className="flex items-start gap-3 p-3 rounded-2xl bg-fill-2 border border-line transition-all">
+								<div className="w-8 h-8 rounded-xl bg-brand-fill text-brand flex items-center justify-center shrink-0 mt-0.5">
 									<Icon name={currentStep.icon} size={16} />
 								</div>
 								<div className="flex flex-col gap-0.5">
-									<span className="text-xs font-bold text-ds-fg">
+									<span className="text-xs font-bold text-fg">
 										{currentStep.title}
 									</span>
-									<span className="text-[11px] leading-relaxed text-ds-fg-muted">
+									<span className="text-[11px] leading-relaxed text-fg-muted">
 										{currentStep.description}
 									</span>
 								</div>
 							</div>
 
-							<div className="flex items-center gap-1.5 px-2 text-[11px] font-medium text-ds-fg-muted">
+							<div className="flex items-center gap-1.5 px-2 text-[11px] font-medium text-fg-muted">
 								<span>
 									دیگه خبری از محدودیت ستون‌های ثابت نیست؛ صفحه تماما در
 									اختیارته!
@@ -209,36 +209,36 @@ export const UpdateReleaseNotesModal = ({
 						</div>
 					) : (
 						<div className="flex flex-col justify-between h-full gap-2">
-							<div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-ds-fill-2 border border-ds-line transition-all">
-								<div className="w-9 h-9 rounded-xl bg-ds-brand-fill text-ds-brand flex items-center justify-center shrink-0 mt-0.5">
+							<div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-fill-2 border border-line transition-all">
+								<div className="w-9 h-9 rounded-xl bg-brand-fill text-brand flex items-center justify-center shrink-0 mt-0.5">
 									<Icon name={currentStep.icon} size={18} />
 								</div>
 								<div className="flex flex-col gap-1 justify-center">
 									<div className="flex items-center gap-2">
-										<span className="text-sm font-bold text-ds-fg">
+										<span className="text-sm font-bold text-fg">
 											{currentStep.title}
 										</span>
 									</div>
-									<p className="text-xs leading-relaxed text-ds-fg-muted">
+									<p className="text-xs leading-relaxed text-fg-muted">
 										{currentStep.description}
 									</p>
 								</div>
 							</div>
 
 							{isLastStep ? (
-								<div className="flex items-center justify-between gap-2 px-3 py-1.5 rounded-xl bg-ds-brand-fill border border-ds-brand-fill-2 text-ds-fg">
+								<div className="flex items-center justify-between gap-2 px-3 py-1.5 rounded-xl bg-brand-fill border border-brand-fill-2 text-fg">
 									<div className="flex items-center gap-2">
 										<span className="text-base">📸</span>
-										<span className="text-xs font-bold text-ds-brand">
+										<span className="text-xs font-bold text-brand">
 											مشتاقیم چیدمان‌های خلاقانه‌ت رو ببینیم!
 										</span>
 									</div>
-									<span className="text-[11px] font-medium text-ds-fg-muted">
+									<span className="text-[11px] font-medium text-fg-muted">
 										عکس تب قشنگت رو با ما به اشتراک بذار
 									</span>
 								</div>
 							) : (
-								<div className="flex items-center gap-1.5 px-2 text-[11px] font-medium text-ds-fg-muted">
+								<div className="flex items-center gap-1.5 px-2 text-[11px] font-medium text-fg-muted">
 									<span>
 										{activeStepIndex === 1
 											? 'هر ویجت رو می‌تونی با اندازه و مدل اختصاصی تنظیم کنی'
@@ -251,14 +251,14 @@ export const UpdateReleaseNotesModal = ({
 				</div>
 
 				{/* Footer Controls & Actions */}
-				<div className="flex items-center justify-between gap-2 pt-2 border-t border-ds-line">
+				<div className="flex items-center justify-between gap-2 pt-2 border-t border-line">
 					<div className="flex items-center gap-1.5">
 						<Button
 							type="button"
 							size="sm"
 							variant="ghost"
 							onClick={onClose}
-							className="px-3 text-xs font-medium text-ds-fg-muted hover:text-ds-fg"
+							className="px-3 text-xs font-medium text-fg-muted hover:text-fg"
 							rounded="xl"
 						>
 							<span>بعدا</span>
@@ -270,7 +270,7 @@ export const UpdateReleaseNotesModal = ({
 								size="sm"
 								variant="ghost"
 								onClick={handlePrevStep}
-								className="px-2.5 text-xs font-bold flex items-center gap-1 text-ds-fg"
+								className="px-2.5 text-xs font-bold flex items-center gap-1 text-fg"
 								rounded="xl"
 							>
 								<Icon name="chevronRight" size={14} />

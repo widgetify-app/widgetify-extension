@@ -178,7 +178,7 @@ export function NetworkLayout({ size = { w: 2, h: 3 } }: Prop) {
 			<RequireAuth mode="preview">
 				<section aria-label="شبکه" className="flex flex-col h-full">
 					<header className="flex items-center justify-between mb-2">
-						<h3 className="flex items-center gap-2 text-sm font-semibold text-ds-fg">
+						<h3 className="flex items-center gap-2 text-sm font-semibold text-fg">
 							شبکه
 						</h3>
 
@@ -195,7 +195,7 @@ export function NetworkLayout({ size = { w: 2, h: 3 } }: Prop) {
 									size={12}
 									aria-hidden="true"
 									className={cn(
-										'text-ds-fg opacity-70 hover:opacity-100',
+										'text-fg opacity-70 hover:opacity-100',
 										isLoading && 'animate-spin'
 									)}
 								/>
@@ -209,10 +209,10 @@ export function NetworkLayout({ size = { w: 2, h: 3 } }: Prop) {
 						<NetworkError onRetry={handleRefresh} />
 					) : (
 						<div className="flex-1 space-y-2">
-							<div className="relative overflow-hidden border border-ds-surface-3 rounded-2xl">
+							<div className="relative overflow-hidden border border-surface-3 rounded-2xl">
 								<div
 									aria-hidden="true"
-									className="absolute inset-0 bg-linear-to-br from-ds-fill to-transparent"
+									className="absolute inset-0 bg-linear-to-br from-fill to-transparent"
 								/>
 								<div className="relative p-2 space-y-3 max-h-32 min-h-32">
 									<div className="flex items-center justify-between">
@@ -222,11 +222,11 @@ export function NetworkLayout({ size = { w: 2, h: 3 } }: Prop) {
 												className={cn(
 													'w-2 h-2 rounded-full',
 													isOnline
-														? 'bg-ds-success animate-pulse'
-														: 'bg-ds-danger'
+														? 'bg-success animate-pulse'
+														: 'bg-danger'
 												)}
 											/>
-											<span className="text-xs font-medium text-ds-fg-muted">
+											<span className="text-xs font-medium text-fg-muted">
 												{isOnline ? 'متصل' : 'قطع شده'}
 											</span>
 										</div>
@@ -255,12 +255,12 @@ export function NetworkLayout({ size = { w: 2, h: 3 } }: Prop) {
 									{(networkInfo.city || networkInfo.country) && (
 										<div className="flex flex-wrap items-center justify-center gap-2 text-xs">
 											{networkInfo.city && (
-												<span className="px-2 py-1 font-medium rounded-full text-ds-brand bg-ds-brand-fill">
+												<span className="px-2 py-1 font-medium rounded-full text-brand bg-brand-fill">
 													{networkInfo.city}
 												</span>
 											)}
 											{networkInfo.country && (
-												<span className="px-2 py-1 font-medium rounded-full text-ds-secondary bg-ds-secondary-fill">
+												<span className="px-2 py-1 font-medium rounded-full text-secondary bg-secondary-fill">
 													{networkInfo.country}
 												</span>
 											)}

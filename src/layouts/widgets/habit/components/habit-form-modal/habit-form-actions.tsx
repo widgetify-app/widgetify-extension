@@ -30,7 +30,7 @@ export const HabitFormActions: React.FC<HabitFormActionsProps> = React.memo(
 					rounded="2xl"
 					onClick={onSubmit}
 					disabled={isPending}
-					className="flex-1 w-full text-xs font-bold shadow-md h-11 shadow-ds-brand-fill-2"
+					className="flex-1 w-full text-xs font-bold shadow-md h-11 shadow-brand-fill-2"
 				>
 					{isPending
 						? 'در حال ذخیره...'

@@ -5,8 +5,8 @@ export const toggleTrackVariants = cva(
 	{
 		variants: {
 			enabled: {
-				true: ['bg-ds-brand'],
-				false: ['bg-ds-surface-3'],
+				true: ['bg-brand'],
+				false: ['bg-surface-3'],
 			},
 			interactive: {
 				true: ['cursor-pointer', 'active:scale-95'],

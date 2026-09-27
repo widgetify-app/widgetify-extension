@@ -84,17 +84,17 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 
 	return (
 		<section className="flex flex-col h-full p-3 overflow-hidden select-none">
-			<header className="flex items-center justify-between pb-2 mb-2 border-b shrink-0 border-ds-line">
-				<h3 className="flex items-center gap-1.5 min-w-0 text-xs font-bold text-ds-fg">
+			<header className="flex items-center justify-between pb-2 mb-2 border-b shrink-0 border-line">
+				<h3 className="flex items-center gap-1.5 min-w-0 text-xs font-bold text-fg">
 					<Icon
 						name="googleCalendar"
 						size={16}
-						className="text-ds-brand shrink-0"
+						className="text-brand shrink-0"
 						aria-hidden="true"
 					/>
 					<span>برنامه‌های پیش‌رو</span>
 				</h3>
-				<time dateTime={toIsoDateKey(today)} className="text-[10px] text-ds-fg-muted">
+				<time dateTime={toIsoDateKey(today)} className="text-[10px] text-fg-muted">
 					{today.format('jD jMMMM')}
 				</time>
 			</header>
@@ -107,8 +107,8 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 								key={`agenda-skeleton-${i}`}
 								className="space-y-1.5 animate-pulse"
 							>
-								<div className="w-24 h-3 rounded bg-ds-fill-2" />
-								<div className="h-12 rounded-2xl bg-ds-fill" />
+								<div className="w-24 h-3 rounded bg-fill-2" />
+								<div className="h-12 rounded-2xl bg-fill" />
 							</div>
 						))}
 					</div>
@@ -128,15 +128,15 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 										className={cn(
 											'text-[10px] font-bold px-2 py-0.5 rounded-lg',
 											isToday
-												? 'bg-ds-brand text-ds-on-brand'
-												: 'bg-ds-surface-2 text-ds-fg-muted'
+												? 'bg-brand text-on-brand'
+												: 'bg-surface-2 text-fg-muted'
 										)}
 									>
 										{dayLabel}
 									</time>
 									<span
 										aria-hidden="true"
-										className="flex-1 h-px bg-ds-fill"
+										className="flex-1 h-px bg-fill"
 									/>
 								</h4>
 
@@ -188,13 +188,13 @@ const AgendaItem: React.FC<AgendaItemProps> = ({ classified, onEventClick }) => 
 				aria-label={`${title}، تمام روز`}
 				className={cn(
 					'flex items-center w-full gap-2 p-2 text-start rounded-xl transition-all',
-					'bg-ds-brand-fill border border-ds-brand-fill-2 text-ds-brand focus-visible:focus-ring',
-					hasAction && 'cursor-pointer hover:bg-ds-brand-fill'
+					'bg-brand-fill border border-brand-fill-2 text-brand focus-visible:focus-ring',
+					hasAction && 'cursor-pointer hover:bg-brand-fill'
 				)}
 			>
 				<span
 					aria-hidden="true"
-					className="w-1.5 h-1.5 rounded-full bg-ds-brand shrink-0"
+					className="w-1.5 h-1.5 rounded-full bg-brand shrink-0"
 				/>
 				<span className="flex-1 text-xs font-bold truncate">{title}</span>
 				<span className="text-[10px] font-medium opacity-75 shrink-0">
@@ -214,29 +214,29 @@ const AgendaItem: React.FC<AgendaItemProps> = ({ classified, onEventClick }) => 
 			aria-label={`${title}، ${startTimeStr} تا ${endTimeStr}`}
 			className={cn(
 				'flex items-center w-full gap-2 p-2 text-start rounded-xl transition-all',
-				'bg-ds-fill hover:bg-ds-fill-2 border border-ds-line',
+				'bg-fill hover:bg-fill-2 border border-line',
 				'focus-visible:focus-ring',
 				hasAction && 'cursor-pointer active:scale-[0.99]',
-				isNow && 'ring-1 ring-ds-brand-muted bg-ds-brand-fill'
+				isNow && 'ring-1 ring-brand-muted bg-brand-fill'
 			)}
 		>
 			<span
 				aria-hidden="true"
-				className="self-stretch w-1 rounded-full bg-ds-brand shrink-0"
+				className="self-stretch w-1 rounded-full bg-brand shrink-0"
 			/>
 
 			<span className="flex flex-col flex-1 min-w-0">
 				<span className="flex items-center justify-between gap-1.5">
-					<span className="text-xs font-bold truncate text-ds-fg">
+					<span className="text-xs font-bold truncate text-fg">
 						{title}
 					</span>
 					{isNow && (
-						<span className="text-[9px] font-bold text-ds-brand shrink-0">
+						<span className="text-[9px] font-bold text-brand shrink-0">
 							در حال برگزاری
 						</span>
 					)}
 				</span>
-				<span className="flex items-center gap-2 text-[10px] text-ds-fg-muted mt-0.5">
+				<span className="flex items-center gap-2 text-[10px] text-fg-muted mt-0.5">
 					<span className="tabular-nums">
 						<time dateTime={toDateTimeAttr(start)}>{startTimeStr}</time> -{' '}
 						<time dateTime={toDateTimeAttr(end)}>{endTimeStr}</time>
@@ -247,7 +247,7 @@ const AgendaItem: React.FC<AgendaItemProps> = ({ classified, onEventClick }) => 
 			</span>
 
 			{event.hangoutLink && (
-				<span className="flex items-center justify-center w-6 h-6 rounded-lg bg-ds-brand-fill text-ds-brand shrink-0">
+				<span className="flex items-center justify-center w-6 h-6 rounded-lg bg-brand-fill text-brand shrink-0">
 					<Icon name="videoCamera" size={11} aria-hidden="true" />
 				</span>
 			)}

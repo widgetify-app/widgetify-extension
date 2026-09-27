@@ -31,7 +31,7 @@ export const OccupationSelector = ({
 	}
 
 	const content = (
-		<div className="w-64 p-2 border bg-ds-surface-2 rounded-2xl border-ds-surface-3">
+		<div className="w-64 p-2 border bg-surface-2 rounded-2xl border-surface-3">
 			{isLoading ? (
 				<div className="py-4 text-xs italic font-medium text-center animate-pulse">
 					درحال بارگذاری...
@@ -63,7 +63,7 @@ export const OccupationSelector = ({
 					ref={triggerRef}
 					type="button"
 					onClick={() => setIsOpen(!isOpen)}
-					className="flex items-center justify-between w-full py-2 text-right transition-colors hover:bg-ds-surface-2"
+					className="flex items-center justify-between w-full py-2 text-right transition-colors hover:bg-surface-2"
 				>
 					{triggerElement}
 				</button>

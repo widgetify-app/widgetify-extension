@@ -40,7 +40,7 @@ export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareMod
 			title={
 				<div className="flex items-center gap-2">
 					<Icon name="cameraPlus" size={16} />
-					<span className="text-sm font-bold text-ds-fg">
+					<span className="text-sm font-bold text-fg">
 						اشتراک‌گذاری پیشرفت
 					</span>
 				</div>
@@ -51,7 +51,7 @@ export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareMod
 					<canvas ref={canvasRef} className="h-auto max-w-full rounded-4xl" />
 				</div>
 
-				<div className="flex flex-wrap items-center justify-between gap-2 px-2 pt-2.5 border-t border-ds-line">
+				<div className="flex flex-wrap items-center justify-between gap-2 px-2 pt-2.5 border-t border-line">
 					<Button variant="ghost" size="sm" rounded="xl" onClick={onClose}>
 						بستن
 					</Button>

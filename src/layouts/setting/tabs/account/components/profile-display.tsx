@@ -128,9 +128,9 @@ export const ProfileDisplay = () => {
 				showEditBadge={showEditBadge}
 			/>
 
-			<div className="overflow-hidden border border-ds-surface-3 rounded-2xl bg-ds-surface-veil">
+			<div className="overflow-hidden border border-surface-3 rounded-2xl bg-surface-veil">
 				<DisplayRow
-					icon={<Icon name="user" className="text-ds-brand" />}
+					icon={<Icon name="user" className="text-brand" />}
 					label="نام و نام خانوادگی"
 					value={user?.name}
 					editable
@@ -140,7 +140,7 @@ export const ProfileDisplay = () => {
 				/>
 
 				<DisplayRow
-					icon={<Icon name="atSign" className="text-ds-brand-muted" />}
+					icon={<Icon name="atSign" className="text-brand-muted" />}
 					label="نام کاربری (یوزرنیم)"
 					value={user?.username}
 					editable
@@ -151,7 +151,7 @@ export const ProfileDisplay = () => {
 				/>
 
 				<DisplayRow
-					icon={<Icon name="mail" className="text-ds-secondary" />}
+					icon={<Icon name="mail" className="text-secondary" />}
 					label="ایمیل"
 					value={user?.email}
 					isLtr
@@ -162,7 +162,7 @@ export const ProfileDisplay = () => {
 				/>
 
 				<DisplayRow
-					icon={<Icon name="phone" className="text-ds-secondary" />}
+					icon={<Icon name="phone" className="text-secondary" />}
 					label="شماره موبایل"
 					value={
 						user?.phone ? (
@@ -200,7 +200,7 @@ export const ProfileDisplay = () => {
 				/>
 
 				<DisplayRow
-					icon={<Icon name="calendar" className="text-ds-warning" />}
+					icon={<Icon name="calendar" className="text-warning" />}
 					label="تاریخ تولد"
 					value={formatJalaliDate(user?.birthDate)}
 					showBadge={showEditBadge('birthDate')}
@@ -211,7 +211,7 @@ export const ProfileDisplay = () => {
 				/>
 
 				<DisplayRow
-					icon={<Icon name="briefcase" className="text-ds-info" />}
+					icon={<Icon name="briefcase" className="text-info" />}
 					label="شغل"
 					value={user?.occupation?.label}
 					showBadge={showEditBadge('occupation')}
@@ -222,7 +222,7 @@ export const ProfileDisplay = () => {
 				/>
 
 				<DisplayRow
-					icon={<Icon name="outlineHeart" className="text-ds-danger" />}
+					icon={<Icon name="outlineHeart" className="text-danger" />}
 					label="علایق"
 					editable
 					value={
@@ -239,7 +239,7 @@ export const ProfileDisplay = () => {
 									</Chip>
 								))}
 								{user.interests.length > 2 && (
-									<span className="flex items-center justify-center px-1.5 h-6 text-[10px] font-medium rounded-full bg-ds-surface-3 text-ds-fg-muted">
+									<span className="flex items-center justify-center px-1.5 h-6 text-[10px] font-medium rounded-full bg-surface-3 text-fg-muted">
 										+{user.interests.length - 2}
 									</span>
 								)}
@@ -255,7 +255,7 @@ export const ProfileDisplay = () => {
 				/>
 
 				<DisplayRow
-					icon={<Icon name="treeCity" className="text-ds-brand-muted" />}
+					icon={<Icon name="treeCity" className="text-brand-muted" />}
 					label="شهر"
 					value={user?.city?.name || '-'}
 					showBadge={showEditBadge('city')}
@@ -334,25 +334,25 @@ const DisplayRow = ({
 	}
 
 	return (
-		<div className="flex items-center justify-between p-2 transition-colors border-b last:border-b-0 border-ds-surface-3 hover:bg-ds-fill">
+		<div className="flex items-center justify-between p-2 transition-colors border-b last:border-b-0 border-surface-3 hover:bg-fill">
 			<div className="flex items-center gap-3">
-				<div className="relative flex items-center justify-center w-7 h-7 rounded-xl bg-ds-fill-2">
+				<div className="relative flex items-center justify-center w-7 h-7 rounded-xl bg-fill-2">
 					{icon}
 					{showBadge && (
-						<span className="absolute w-2 h-2 rounded-full left-0.5 -top-0.5 bg-ds-danger animate-pulse"></span>
+						<span className="absolute w-2 h-2 rounded-full left-0.5 -top-0.5 bg-danger animate-pulse"></span>
 					)}
 				</div>
 				<span className="text-[10px] font-medium opacity-60">{label}</span>
 			</div>
 			<div
-				className={`relative flex justify-end text-xs w-fit pr-1 font-semibold text-ds-fg ${isLtr ? 'dir-ltr' : 'dir-rtl'}`}
+				className={`relative flex justify-end text-xs w-fit pr-1 font-semibold text-fg ${isLtr ? 'dir-ltr' : 'dir-rtl'}`}
 			>
 				<div className="overflow-y-auto max-h-12 scrollbar-none">
 					{value || '-'}
 				</div>
 				{editable && (
 					<div
-						className="absolute p-1 -translate-y-1/2 cursor-pointer text-ds-fg-muted -right-4 top-1/2 active:scale-95"
+						className="absolute p-1 -translate-y-1/2 cursor-pointer text-fg-muted -right-4 top-1/2 active:scale-95"
 						onClick={onClickEdit}
 					>
 						<Icon name="edit" />

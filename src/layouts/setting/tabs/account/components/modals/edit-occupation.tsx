@@ -51,15 +51,15 @@ export function ChangeOccupationModal({ show, onClose, currentValue }: Prop) {
 						onSelect={(id) => setOccupations(id || '')}
 						isLoading={occupationsLoading}
 						triggerElement={
-							<div className="flex items-center justify-between w-full h-12 p-3 transition-colors border cursor-pointer border-ds-surface-3 rounded-xl hover:border-ds-brand-muted!">
+							<div className="flex items-center justify-between w-full h-12 p-3 transition-colors border cursor-pointer border-surface-3 rounded-xl hover:border-brand-muted!">
 								<div className="flex items-center gap-3">
 									<Icon
 										name="briefcase"
 										size={14}
-										className="text-ds-brand"
+										className="text-brand"
 									/>
 									<span
-										className={`text-sm ${occupation ? 'text-ds-fg' : 'text-ds-fg-muted'}`}
+										className={`text-sm ${occupation ? 'text-fg' : 'text-fg-muted'}`}
 									>
 										{occupation
 											? FetchedOccupations.find(
@@ -71,7 +71,7 @@ export function ChangeOccupationModal({ show, onClose, currentValue }: Prop) {
 								<Icon
 									name="chevronRight"
 									size={18}
-									className="text-ds-fg-muted"
+									className="text-fg-muted"
 								/>
 							</div>
 						}

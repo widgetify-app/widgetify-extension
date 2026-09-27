@@ -53,7 +53,7 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 	}
 
 	return (
-		<article className="w-full p-2 text-right transition-ui border rounded-2xl border-ds-surface-3 bg-ds-surface-2 hover:border-ds-line hover:bg-ds-fill-2">
+		<article className="w-full p-2 text-right transition-ui border rounded-2xl border-surface-3 bg-surface-2 hover:border-line hover:bg-fill-2">
 			<div className="flex items-center gap-2">
 				<button
 					type="button"
@@ -66,17 +66,17 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 						style={{ backgroundColor: `${color}22`, color }}
 					>
 						{isPending ? (
-							<IconLoading className="text-ds-fg-muted" />
+							<IconLoading className="text-fg-muted" />
 						) : (
 							habit.emoji || '🎯'
 						)}
 					</span>
 
 					<span className="flex-1 min-w-0">
-						<span className="block text-xs font-bold truncate text-ds-fg">
+						<span className="block text-xs font-bold truncate text-fg">
 							{habit.title}
 						</span>
-						<span className="mt-0.5 block text-[9px] truncate text-ds-fg-muted">
+						<span className="mt-0.5 block text-[9px] truncate text-fg-muted">
 							{formatHabitGoal(habit)}
 						</span>
 					</span>
@@ -142,7 +142,7 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 					return (
 						<li
 							key={day.date}
-							className="flex-1 h-1.5 rounded-full bg-ds-fill-2 overflow-hidden"
+							className="flex-1 h-1.5 rounded-full bg-fill-2 overflow-hidden"
 						>
 							<div
 								className="w-full h-full rounded-full"

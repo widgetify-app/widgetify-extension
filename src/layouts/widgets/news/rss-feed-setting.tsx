@@ -183,7 +183,7 @@ export const RssFeedSetting = () => {
 		<WidgetSettingWrapper>
 			{/* error section */}
 			{error && (
-				<div className="p-3 mb-3 text-sm rounded-lg bg-ds-danger-fill-2 text-ds-danger">
+				<div className="p-3 mb-3 text-sm rounded-lg bg-danger-fill-2 text-danger">
 					{error}
 				</div>
 			)}
@@ -233,7 +233,7 @@ export const RssFeedSetting = () => {
 							<div
 								key={feed.url}
 								className={
-									'flex items-center justify-center p-2 border rounded-xl cursor-pointer bg-ds-surface-2 border-ds-surface-3 transition-ui hover:opacity-75'
+									'flex items-center justify-center p-2 border rounded-xl cursor-pointer bg-surface-2 border-surface-3 transition-ui hover:opacity-75'
 								}
 								onClick={() => addSuggestedFeed(feed)}
 							>
@@ -275,15 +275,15 @@ const FeedsList = ({ feeds, onToggleFeed, onRemoveFeed }: FeedsListProps) => {
 			{feeds.length === 0 ? (
 				<div
 					className={
-						'flex flex-col items-center justify-center p-2 text-center border border-dashed rounded-lg border-ds-surface-3'
+						'flex flex-col items-center justify-center p-2 text-center border border-dashed rounded-lg border-surface-3'
 					}
 				>
 					<Icon
 						name="rss"
-						className={'mb-3 opacity-50 text-ds-fg'}
+						className={'mb-3 opacity-50 text-fg'}
 						size={32}
 					/>
-					<p className={'mb-1 text-sm font-medium opacity-70 text-ds-fg'}>
+					<p className={'mb-1 text-sm font-medium opacity-70 text-fg'}>
 						هیچ فید RSS اضافه نشده است
 					</p>
 					<p className={'text-xs opacity-50'}>
@@ -321,12 +321,12 @@ interface FeedItemProps {
 const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps) => {
 	const getTextStyle = () => {
 		const baseStyle = feed.enabled ? 'font-medium' : 'line-through opacity-70'
-		return `${baseStyle} text-ds-fg`
+		return `${baseStyle} text-fg`
 	}
 
 	return (
 		<div
-			className={`flex items-center justify-between px-2.5 py-2 transition-colors rounded-3xl bg-ds-surface-2 border border-ds-surface-3 ${!feed.enabled && 'opacity-60'} ${disabled && 'cursor-not-allowed'}`}
+			className={`flex items-center justify-between px-2.5 py-2 transition-colors rounded-3xl bg-surface-2 border border-surface-3 ${!feed.enabled && 'opacity-60'} ${disabled && 'cursor-not-allowed'}`}
 		>
 			<div className="flex items-center flex-1 gap-3">
 				<ToggleSwitch
@@ -338,7 +338,7 @@ const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps)
 					<span className={`block truncate ${getTextStyle()}`}>
 						{feed.name}
 					</span>
-					<span className={'block text-xs truncate text-ds-fg-muted'}>
+					<span className={'block text-xs truncate text-fg-muted'}>
 						{feed.url}
 					</span>
 				</div>

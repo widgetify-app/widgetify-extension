@@ -37,12 +37,12 @@ export const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) =>
 		<div className="flex flex-col gap-3 text-right">
 			<div className="space-y-1">
 				<div className="flex items-center justify-between">
-					<h3 className="text-xl font-bold text-ds-fg">حریم خصوصی</h3>
-					<span className="text-[11px] font-medium px-2 py-0.5 rounded-lg bg-ds-fill-2 text-ds-fg-muted">
+					<h3 className="text-xl font-bold text-fg">حریم خصوصی</h3>
+					<span className="text-[11px] font-medium px-2 py-0.5 rounded-lg bg-fill-2 text-fg-muted">
 						Privacy Notice
 					</span>
 				</div>
-				<p className="text-xs text-ds-fg-muted leading-relaxed">
+				<p className="text-xs text-fg-muted leading-relaxed">
 					تمام تنظیمات در مرورگر خودت ذخیره می‌شن، انتخاب کن کدوم موارد فعال باشن
 				</p>
 			</div>
@@ -63,20 +63,20 @@ export const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) =>
 				/>
 			</div>
 
-			<div className="flex items-center justify-between text-[11px] text-ds-fg-muted pt-1">
+			<div className="flex items-center justify-between text-[11px] text-fg-muted pt-1">
 				<span>می‌تونی بعداً توی تنظیمات این موارد رو تغییر بدی</span>
 				<a
 					href="https://widgetify.ir/privacy"
 					target="_blank"
 					rel="noopener noreferrer"
-					className="flex items-center gap-1 text-ds-brand hover:underline"
+					className="flex items-center gap-1 text-brand hover:underline"
 				>
 					<Icon name="externalLink" className="w-3 h-3" />
 					سیاست حریم خصوصی
 				</a>
 			</div>
 
-			<div className="flex items-center gap-2 pt-2 border-t border-ds-line">
+			<div className="flex items-center gap-2 pt-2 border-t border-line">
 				<Button
 					onClick={handleDecline}
 					size="md"

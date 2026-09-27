@@ -20,20 +20,20 @@ export function ProfileProgressNotification({ className }: Prop) {
 
 	return (
 		<div
-			className={`flex w-full gap-2 px-2 py-1 transition-all duration-300 border cursor-pointer rounded-xl  border-ds-surface-3 hover:scale-[0.99] active:scale-[0.99] ${className}`}
+			className={`flex w-full gap-2 px-2 py-1 transition-all duration-300 border cursor-pointer rounded-xl  border-surface-3 hover:scale-[0.99] active:scale-[0.99] ${className}`}
 			id="update_profile"
 			onClick={() => onClick()}
 		>
 			<div className="flex flex-row items-center w-full gap-2 rounded-xl ">
 				<RadialProgressSmall percentage={profilePercentage} size={15} />
-				<p className="text-[11px] w-fit font-normal text-ds-fg-muted">
+				<p className="text-[11px] w-fit font-normal text-fg-muted">
 					پروفایلت رو کامل کن و پاداش بگیر!
 				</p>
 			</div>
 			<div className="flex items-start justify-between">
 				<button
 					type="button"
-					className="flex p-0.5 transition-opacity rounded-md cursor-pointer top-2 left-2 bg-ds-fill text-ds-fg-faint hover:bg-ds-danger-fill hover:text-ds-danger"
+					className="flex p-0.5 transition-opacity rounded-md cursor-pointer top-2 left-2 bg-fill text-fg-faint hover:bg-danger-fill hover:text-danger"
 					onClick={(e) => {
 						e.preventDefault()
 						e.stopPropagation()
@@ -73,8 +73,8 @@ const RadialProgressSmall = ({ percentage }: any) => {
 					cy={size / 2}
 					r={radius}
 					fill="none"
-					// className="stroke-ds-brand"
-					className="stroke-ds-line"
+					// className="stroke-brand"
+					className="stroke-line"
 					strokeWidth={strokeWidth}
 				/>
 				{/* Progress Circle */}
@@ -83,7 +83,7 @@ const RadialProgressSmall = ({ percentage }: any) => {
 					cy={size / 2}
 					r={radius}
 					fill="none"
-					className="transition-all duration-500 ease-out stroke-ds-fg-faint"
+					className="transition-all duration-500 ease-out stroke-fg-faint"
 					strokeWidth={strokeWidth}
 					strokeDasharray={circumference}
 					strokeDashoffset={offset}
@@ -91,7 +91,7 @@ const RadialProgressSmall = ({ percentage }: any) => {
 				/>
 			</svg>
 			{/* Small Percentage Text */}
-			<span className="absolute text-xs font-bold text-ds-fg-faint">
+			<span className="absolute text-xs font-bold text-fg-faint">
 				{safePercentage}%
 			</span>
 		</div>

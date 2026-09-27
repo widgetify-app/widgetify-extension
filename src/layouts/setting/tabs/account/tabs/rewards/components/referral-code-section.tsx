@@ -28,12 +28,12 @@ export const ReferralCodeSection = ({ code, className }: ReferralCodeSectionProp
 		>
 			<div className="space-y-2">
 				<div
-					className={`flex items-center justify-between p-4 bg-ds-surface-2 rounded-2xl ${className}`}
+					className={`flex items-center justify-between p-4 bg-surface-2 rounded-2xl ${className}`}
 				>
 					<div>
-						<p className="mb-1 text-sm text-ds-fg-muted">کد دعوت</p>
+						<p className="mb-1 text-sm text-fg-muted">کد دعوت</p>
 						<p
-							className="text-lg font-semibold cursor-pointer text-ds-fg hover:underline"
+							className="text-lg font-semibold cursor-pointer text-fg hover:underline"
 							onClick={handleCopyCode}
 						>
 							{code}
@@ -48,7 +48,7 @@ export const ReferralCodeSection = ({ code, className }: ReferralCodeSectionProp
 						کپی کد
 					</Button>
 				</div>
-				<p className="flex text-sm text-ds-fg-muted gap-0.5 items-center">
+				<p className="flex text-sm text-fg-muted gap-0.5 items-center">
 					با فرستادن این کد برای دوستات، هم خودت و هم دوستت ویج‌کوین می‌گیرید
 				</p>
 			</div>

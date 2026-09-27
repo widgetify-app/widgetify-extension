@@ -89,7 +89,7 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 		>
 			<section>
 				<div>
-					<p className="text-xs text-ds-fg-muted mt-0.5">
+					<p className="text-xs text-fg-muted mt-0.5">
 						برای اینکه بتونی با شماره موبایلت هم وارد حسابت بشی!
 					</p>
 				</div>
@@ -101,7 +101,7 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 					<div>
 						<label
 							htmlFor="email"
-							className="block mb-1 md:mb-1.5 text-xs md:text-sm font-semibold text-ds-fg"
+							className="block mb-1 md:mb-1.5 text-xs md:text-sm font-semibold text-fg"
 						>
 							شماره موبایل
 						</label>
@@ -122,7 +122,7 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 					</div>
 					{step === 'enter-otp' && (
 						<div>
-							<label className="block mb-2 md:mb-2.5 text-xs md:text-sm font-semibold text-ds-fg ">
+							<label className="block mb-2 md:mb-2.5 text-xs md:text-sm font-semibold text-fg ">
 								کد تایید
 							</label>
 

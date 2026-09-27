@@ -30,7 +30,7 @@ export function AddWidgetOptions({
 	if (definition.variants && definition.variants.length > 0) {
 		return (
 			<div className="flex flex-col gap-1.5">
-				<span className="text-xs font-bold text-ds-fg">
+				<span className="text-xs font-bold text-fg">
 					انتخاب مدل و استایل:
 				</span>
 				<div className="flex flex-wrap gap-1.5">
@@ -51,8 +51,8 @@ export function AddWidgetOptions({
 								className={cn(
 									'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs transition-all duration-150 cursor-pointer font-medium',
 									isCurrent
-										? 'bg-ds-brand text-ds-on-brand font-bold shadow-xs'
-										: 'bg-ds-fill-2 hover:bg-ds-surface-3 text-ds-fg border border-ds-line'
+										? 'bg-brand text-on-brand font-bold shadow-xs'
+										: 'bg-fill-2 hover:bg-surface-3 text-fg border border-line'
 								)}
 							>
 								<span>{variant.label}</span>
@@ -72,7 +72,7 @@ export function AddWidgetOptions({
 
 	return (
 		<div className="flex flex-col gap-1.5">
-			<span className="text-xs font-bold text-ds-fg">انتخاب اندازه ویجت:</span>
+			<span className="text-xs font-bold text-fg">انتخاب اندازه ویجت:</span>
 			<div className="flex flex-wrap gap-1.5">
 				{definition.allowedSizes.map((sizeOption) => {
 					const isCurrentSize =
@@ -88,7 +88,7 @@ export function AddWidgetOptions({
 							key={`${sizeOption.w}x${sizeOption.h}`}
 							className={cn(
 								'py-1 flex items-center gap-1',
-								isVipBadge && !isCurrentSize && 'border-ds-vip-fill-2'
+								isVipBadge && !isCurrentSize && 'border-vip-fill-2'
 							)}
 							selected={isCurrentSize}
 							dir="ltr"
@@ -103,7 +103,7 @@ export function AddWidgetOptions({
 								/>
 							)}
 							{isDefault && !isCurrentSize && !isVipBadge && (
-								<span className="text-[9px] text-ds-fg-muted mr-1">
+								<span className="text-[9px] text-fg-muted mr-1">
 									(پیش‌فرض)
 								</span>
 							)}

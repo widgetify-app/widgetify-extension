@@ -8,20 +8,20 @@ export function AboutUsTab() {
 			<div className="flex flex-col items-center p-3 text-center">
 				<h1
 					className={
-						'mb-1 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-ds-brand to-ds-secondary'
+						'mb-1 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand to-secondary'
 					}
 				>
 					ویجتیفای
 				</h1>
 				<div
 					className={
-						'inline-flex items-center px-3 py-1 mb-2 text-xs font-medium border rounded-full backdrop-blur-sm text-ds-brand'
+						'inline-flex items-center px-3 py-1 mb-2 text-xs font-medium border rounded-full backdrop-blur-sm text-brand'
 					}
 				>
 					<span>نسخه "{ConfigKey.VERSION_NAME}"</span>
 				</div>
 
-				<p className={'max-w-lg mb-2 text-sm leading-relaxed text-ds-fg'}>
+				<p className={'max-w-lg mb-2 text-sm leading-relaxed text-fg'}>
 					ویجتیفای یک افزونه واسه مرورگر شماست که صفحه جدید را با ابزارهای
 					کاربردی و سبک زیبا به محیطی کارآمد و شخصی‌سازی شده تبدیل می‌کند.
 				</p>
@@ -33,17 +33,17 @@ export function AboutUsTab() {
 						href="https://widgetify.ir"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-ds-line bg-ds-fill hover:bg-ds-fill-2 hover:border-ds-brand-fill-2"
+						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-line bg-fill hover:bg-fill-2 hover:border-brand-fill-2"
 					>
 						<div className="flex items-center gap-3">
-							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-ds-brand-fill text-ds-brand group-hover:scale-110">
+							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-brand-fill text-brand group-hover:scale-110">
 								<Icon name="globe" size={18} />
 							</div>
 							<div className="text-right">
-								<h3 className="text-xs font-bold text-ds-fg-strong">
+								<h3 className="text-xs font-bold text-fg-strong">
 									وب‌سایت رسمی
 								</h3>
-								<p className="text-[10px] text-ds-fg-faint mt-0.5">
+								<p className="text-[10px] text-fg-faint mt-0.5">
 									widgetify.ir
 								</p>
 							</div>
@@ -51,7 +51,7 @@ export function AboutUsTab() {
 						<Icon
 							name="externalLink"
 							size={12}
-							className="transition-colors text-ds-fg-ghost group-hover:text-ds-brand"
+							className="transition-colors text-fg-ghost group-hover:text-brand"
 						/>
 					</a>
 
@@ -59,17 +59,17 @@ export function AboutUsTab() {
 						href="https://blog.widgetify.ir"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-ds-line bg-ds-fill hover:bg-ds-fill-2 hover:border-[rgba(var(--color-secondary-rgb),0.2)]"
+						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-line bg-fill hover:bg-fill-2 hover:border-[rgba(var(--color-secondary-rgb),0.2)]"
 					>
 						<div className="flex items-center gap-3">
-							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-ds-secondary-fill text-ds-secondary group-hover:scale-110">
+							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-secondary-fill text-secondary group-hover:scale-110">
 								<Icon name="externalLink" size={18} />
 							</div>
 							<div className="text-right">
-								<h3 className="text-xs font-bold text-ds-fg-strong">
+								<h3 className="text-xs font-bold text-fg-strong">
 									وبلاگ رسمی
 								</h3>
-								<p className="text-[10px] text-ds-fg-faint mt-0.5">
+								<p className="text-[10px] text-fg-faint mt-0.5">
 									blog.widgetify.ir
 								</p>
 							</div>
@@ -77,7 +77,7 @@ export function AboutUsTab() {
 						<Icon
 							name="externalLink"
 							size={12}
-							className="transition-colors text-ds-fg-ghost group-hover:text-ds-secondary"
+							className="transition-colors text-fg-ghost group-hover:text-secondary"
 						/>
 					</a>
 
@@ -85,17 +85,17 @@ export function AboutUsTab() {
 						href="https://t.me/widgetify"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-ds-line bg-ds-fill hover:bg-ds-fill-2 hover:border-ds-info-fill-2"
+						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-line bg-fill hover:bg-fill-2 hover:border-info-fill-2"
 					>
 						<div className="flex items-center gap-3">
-							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-ds-info-fill text-ds-info group-hover:scale-110">
+							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-info-fill text-info group-hover:scale-110">
 								<Icon name="telegramLogo" size={18} />
 							</div>
 							<div className="text-right">
-								<h3 className="text-xs font-bold text-ds-fg-strong">
+								<h3 className="text-xs font-bold text-fg-strong">
 									کانال تلگرام
 								</h3>
-								<p className="text-[10px] text-ds-fg-faint mt-0.5">
+								<p className="text-[10px] text-fg-faint mt-0.5">
 									t.me/widgetify
 								</p>
 							</div>
@@ -103,7 +103,7 @@ export function AboutUsTab() {
 						<Icon
 							name="externalLink"
 							size={12}
-							className="transition-colors text-ds-fg-ghost group-hover:text-ds-info"
+							className="transition-colors text-fg-ghost group-hover:text-info"
 						/>
 					</a>
 
@@ -111,10 +111,10 @@ export function AboutUsTab() {
 						href="https://ble.ir/widgetify"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-ds-line bg-ds-fill hover:bg-ds-fill-2 hover:border-ds-success-fill-2"
+						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-4xl border-line bg-fill hover:bg-fill-2 hover:border-success-fill-2"
 					>
 						<div className="flex items-center gap-3">
-							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-ds-success-fill text-ds-success group-hover:scale-110">
+							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-success-fill text-success group-hover:scale-110">
 								<svg
 									viewBox="0 0 710.27 750"
 									xmlns="http://www.w3.org/2000/svg"
@@ -129,10 +129,10 @@ export function AboutUsTab() {
 								</svg>
 							</div>
 							<div className="text-right">
-								<h3 className="text-xs font-bold text-ds-fg-strong">
+								<h3 className="text-xs font-bold text-fg-strong">
 									پیام‌رسان بله
 								</h3>
-								<p className="text-[10px] text-ds-fg-faint mt-0.5">
+								<p className="text-[10px] text-fg-faint mt-0.5">
 									ble.ir/widgetify
 								</p>
 							</div>
@@ -140,7 +140,7 @@ export function AboutUsTab() {
 						<Icon
 							name="externalLink"
 							size={12}
-							className="transition-colors text-ds-fg-ghost group-hover:text-ds-success"
+							className="transition-colors text-fg-ghost group-hover:text-success"
 						/>
 					</a>
 				</div>
@@ -149,13 +149,13 @@ export function AboutUsTab() {
 			{/* Footer */}
 			<div
 				className={
-					'flex items-center justify-center mt-8 space-x-1 space-x-reverse text-sm text-ds-fg opacity-75'
+					'flex items-center justify-center mt-8 space-x-1 space-x-reverse text-sm text-fg opacity-75'
 				}
 			>
 				<span>ساخته شده با</span>💙<span>در ایران</span>
 			</div>
 
-			<div className={'mt-2 mb-4 text-xs text-center text-ds-fg opacity-55'}>
+			<div className={'mt-2 mb-4 text-xs text-center text-fg opacity-55'}>
 				© ویجتیفای - تمامی حقوق محفوظ است
 			</div>
 		</div>

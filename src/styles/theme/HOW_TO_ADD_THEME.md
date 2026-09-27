@@ -6,7 +6,7 @@ why the channel block exists. This file is just the checklist.
 A theme is two blocks in one file: the daisyUI values, and the channel triples
 those values are decomposed into. **Both are required.** A theme with only the
 first one compiles, passes type-checking, renders — and has no working colour
-layer, because every `text-muted`, `border-subtle` and accent tint in the app
+layer, because every `text-fg-muted`, `border-line` and accent tint in the app
 resolves to nothing. See the README for why.
 
 ## 1. Create `src/styles/theme/<name>.css`
@@ -81,8 +81,8 @@ Rules for the values:
   arithmetic, only that they exist.
 - **If a surface is translucent** (see `glass.css`, `icy.css`), put its base
   alpha in `--color-base-N-a` and the underlying channels in
-  `--color-base-N-rgb`. The veil utilities multiply into it, so
-  `bg-content-subtle` thins your surface further rather than making it opaque.
+  `--color-base-N-rgb`. `surface-veil` multiplies into it, so it thins your
+  surface further rather than making it opaque.
 
 ## 2. Import it
 
@@ -129,7 +129,7 @@ a missing variable, a channel left inside the `@plugin` block, a missing
 
 Then load the extension and switch to the theme. Look at a modal, a widget
 panel over a wallpaper, a disabled control, and a progress ring — those exercise
-the surface veils, the ink tints and the stroke ladder respectively.
+the surface veil, the ink fills and the line on SVG tracks respectively.
 
 Do not style the selector button with a palette colour (`ring-blue-500` and
 friends) — the tests reject those. Use a token.

@@ -205,7 +205,7 @@ export function EditBookmarkModal({
 						)}
 					</div>
 
-					<div className="flex items-center justify-between pt-2 border-t border-ds-line">
+					<div className="flex items-center justify-between pt-2 border-t border-line">
 						<ShowAdvancedButton
 							showAdvanced={showAdvanced}
 							setShowAdvanced={setShowAdvanced}

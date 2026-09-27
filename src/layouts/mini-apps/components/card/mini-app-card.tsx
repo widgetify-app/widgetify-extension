@@ -17,8 +17,8 @@ export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
                 transition-all duration-200 active:scale-[0.98] select-none overflow-hidden
                 border ${
 					isSelected
-						? `border-ds-brand-fill-2 bg-linear-to-t from-ds-brand-fill via-ds-brand-fill to-transparent shadow-md shadow-ds-brand-fill`
-						: `border-ds-line bg-ds-surface-2 bg-glass! hover:bg-ds-brand-fill hover:border-ds-brand-fill`
+						? `border-brand-fill-2 bg-linear-to-t from-brand-fill via-brand-fill to-transparent shadow-md shadow-brand-fill`
+						: `border-line bg-surface-2 bg-glass! hover:bg-brand-fill hover:border-brand-fill`
 				}
             `}
 		>
@@ -26,7 +26,7 @@ export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
 				className={`
                     absolute right-0 top-1/2 -translate-y-1/2 h-6 w-1 rounded-full
                     transition-all duration-200
-                    ${isSelected ? 'bg-ds-brand opacity-100' : 'opacity-0'}
+                    ${isSelected ? 'bg-brand opacity-100' : 'opacity-0'}
                 `}
 			/>
 
@@ -52,14 +52,14 @@ export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
 				<p
 					className={`
                         text-sm font-semibold truncate transition-colors
-                        ${isSelected ? 'text-ds-brand' : 'text-ds-fg-strong'}
+                        ${isSelected ? 'text-brand' : 'text-fg-strong'}
                     `}
 				>
 					{app.name}
 				</p>
 
 				{app.description && (
-					<p className="text-xs min-w-60 max-w-60 mt-0.5 text-ds-fg-muted ">
+					<p className="text-xs min-w-60 max-w-60 mt-0.5 text-fg-muted ">
 						{app.description}
 					</p>
 				)}

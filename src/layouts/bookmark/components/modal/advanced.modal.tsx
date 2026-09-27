@@ -99,7 +99,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 		if (isLoadingEmojis) {
 			return (
 				<div className="flex items-center justify-center w-full p-4">
-					<div className="w-6 h-6 border-2 rounded-full border-t-ds-brand border-ds-brand-fill-2 animate-spin"></div>
+					<div className="w-6 h-6 border-2 rounded-full border-t-brand border-brand-fill-2 animate-spin"></div>
 				</div>
 			)
 		}
@@ -113,8 +113,8 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						className={`flex items-center justify-center w-7 h-7 cursor-pointer rounded-lg transition-all duration-150 ease-in-out
 							${
 								sticker === url
-									? 'bg-ds-brand-fill-2 border-2 border-ds-brand transform scale-110'
-									: 'border border-transparent hover:bg-ds-fill-2 active:bg-ds-fill-3'
+									? 'bg-brand-fill-2 border-2 border-brand transform scale-110'
+									: 'border border-transparent hover:bg-fill-2 active:bg-fill-3'
 							}`}
 					>
 						<img
@@ -157,7 +157,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 		>
 			<div className={'flex flex-col gap-4 rounded-lg'}>
 				<div className="relative z-30">
-					<label className={'block text-sm font-medium mb-1.5 text-ds-fg'}>
+					<label className={'block text-sm font-medium mb-1.5 text-fg'}>
 						رنگ پس زمینه (اختیاری)
 					</label>
 					<div className="relative flex flex-1 gap-0.5">
@@ -188,7 +188,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 				</div>
 
 				<div className="relative z-20">
-					<label className={'block text-sm  font-medium mb-1.5 text-ds-fg'}>
+					<label className={'block text-sm  font-medium mb-1.5 text-fg'}>
 						رنگ متن (اختیاری)
 					</label>
 					<div className="relative flex flex-1 gap-0.5">
@@ -219,7 +219,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 				</div>
 
 				<div className="relative z-10" ref={emojiPopoverRef}>
-					<label className={'block text-sm font-medium mb-1.5 text-ds-fg'}>
+					<label className={'block text-sm font-medium mb-1.5 text-fg'}>
 						انتخاب استیکر (اختیاری)
 					</label>
 
@@ -264,7 +264,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 								type="button"
 								onClick={() => handleEmojiSelect(sticker)}
 								className={
-									'px-3 py-1.5 cursor-pointer text-xs rounded-md text-ds-danger hover:bg-ds-danger-fill'
+									'px-3 py-1.5 cursor-pointer text-xs rounded-md text-danger hover:bg-danger-fill'
 								}
 							>
 								حذف
@@ -276,7 +276,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 					{isEmojiPopoverOpen && (
 						<div
 							className={
-								'absolute mt-1 p-2 w-64 max-h-32 overflow-y-auto small-scrollbar rounded-xl backdrop-blur-lg border border-ds-surface-3'
+								'absolute mt-1 p-2 w-64 max-h-32 overflow-y-auto small-scrollbar rounded-xl backdrop-blur-lg border border-surface-3'
 							}
 							style={{ zIndex: 99999 }}
 						>
@@ -286,7 +286,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 				</div>
 
 				<div className="pt-2 space-y-2">
-					<label className={'block text-sm font-medium text-ds-fg'}>
+					<label className={'block text-sm font-medium text-fg'}>
 						پیش‌نمایش:
 					</label>
 					<div

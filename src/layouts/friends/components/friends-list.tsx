@@ -48,7 +48,7 @@ export const FriendsList = ({
 				{Array.from({ length: 5 }).map((_, i) => (
 					<div
 						key={i}
-						className="flex items-center justify-between p-3 border rounded-xl border-ds-surface-3 bg-background animate-pulse"
+						className="flex items-center justify-between p-3 border rounded-xl border-surface-3 bg-background animate-pulse"
 					>
 						<div className="flex items-center flex-1 min-w-0 gap-3">
 							<div className="w-12 h-12 rounded-full skeleton" />
@@ -76,11 +76,11 @@ export const FriendsList = ({
 			{allFriends.map((friend) => (
 				<div
 					key={`f-${friend.id}`}
-					className="flex items-center justify-between p-3 transition-all duration-200 border rounded-2xl border-ds-surface-3 hover:shadow-sm"
+					className="flex items-center justify-between p-3 transition-all duration-200 border rounded-2xl border-surface-3 hover:shadow-sm"
 				>
 					<div className="flex items-center flex-1 min-w-0 gap-1.5">
 						<div className="relative shrink-0">
-							<div className="w-8 h-8 overflow-hidden rounded-full ring-2 ring-ds-surface-3">
+							<div className="w-8 h-8 overflow-hidden rounded-full ring-2 ring-surface-3">
 								<AvatarComponent
 									url={friend.user.avatar}
 									placeholder={friend.user.name}
@@ -91,10 +91,10 @@ export const FriendsList = ({
 						</div>
 
 						<div className="flex-1 min-w-0">
-							<div className="text-sm font-medium truncate text-ds-fg">
+							<div className="text-sm font-medium truncate text-fg">
 								{friend.user.name}
 							</div>
-							<div className="text-xs truncate text-ds-fg-muted">
+							<div className="text-xs truncate text-fg-muted">
 								{friend.user.username}@
 							</div>
 						</div>
@@ -119,7 +119,7 @@ function MakeSkeleton(count: number) {
 	return [...Array(count)].map((_, catIdx) => (
 		<div
 			key={`loading-${catIdx}`}
-			className="w-full border h-14 rounded-xl skeleton bg-ds-fill border-ds-surface-3"
+			className="w-full border h-14 rounded-xl skeleton bg-fill border-surface-3"
 		></div>
 	))
 }

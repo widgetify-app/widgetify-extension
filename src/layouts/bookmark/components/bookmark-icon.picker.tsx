@@ -103,8 +103,8 @@ export function BookmarkIconPicker({ value, url, onChange, size = 'md' }: Props)
 					onDrop={handleDrop}
 					className={`relative shrink-0 flex items-center justify-center cursor-pointer border-2 transition-all duration-200 ${containerSizeClasses} ${
 						isDragging
-							? 'border-ds-brand bg-ds-brand-fill shadow-lg'
-							: 'border-ds-line hover:border-ds-brand-muted bg-ds-fill-2 hover:bg-ds-surface-2'
+							? 'border-brand bg-brand-fill shadow-lg'
+							: 'border-line hover:border-brand-muted bg-fill-2 hover:bg-surface-2'
 					}`}
 					title="انتخاب یا تغییر آیکون"
 				>
@@ -121,19 +121,19 @@ export function BookmarkIconPicker({ value, url, onChange, size = 'md' }: Props)
 						<Icon
 							name="image"
 							size={isLarge ? 24 : 18}
-							className="transition-colors text-ds-fg-muted group-hover:text-ds-brand"
+							className="transition-colors text-fg-muted group-hover:text-brand"
 						/>
 					)}
 
 					<div
-						className={`absolute inset-0 flex items-center justify-center transition-opacity duration-150 opacity-0 group-hover:opacity-100 bg-ds-surface-veil ${
+						className={`absolute inset-0 flex items-center justify-center transition-opacity duration-150 opacity-0 group-hover:opacity-100 bg-surface-veil ${
 							isLarge ? 'rounded-2xl' : 'rounded-xl'
 						}`}
 					>
 						<Icon
 							name="brush"
 							size={isLarge ? 20 : 16}
-							className="text-ds-fg"
+							className="text-fg"
 						/>
 					</div>
 				</button>
@@ -142,7 +142,7 @@ export function BookmarkIconPicker({ value, url, onChange, size = 'md' }: Props)
 					<button
 						type="button"
 						onClick={handleRemove}
-						className="absolute -top-1 -right-1 flex items-center justify-center w-4.5 h-4.5 rounded-full bg-ds-danger text-white text-[10px] leading-none shadow-md hover:scale-110 active:scale-95 transition-transform cursor-pointer z-10 border border-ds-surface-3"
+						className="absolute -top-1 -right-1 flex items-center justify-center w-4.5 h-4.5 rounded-full bg-danger text-white text-[10px] leading-none shadow-md hover:scale-110 active:scale-95 transition-transform cursor-pointer z-10 border border-surface-3"
 						title="حذف آیکون"
 					>
 						<span className="mb-0.5">✕</span>

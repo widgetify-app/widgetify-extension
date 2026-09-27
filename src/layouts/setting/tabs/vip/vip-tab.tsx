@@ -97,7 +97,7 @@ export function VipTab() {
 			<VipHeroBanner />
 
 			<div className="space-y-2.5 pt-1">
-				<h4 className="text-xs font-bold text-ds-fg">
+				<h4 className="text-xs font-bold text-fg">
 					پلن مناسب خودت رو انتخاب کن
 				</h4>
 
@@ -106,7 +106,7 @@ export function VipTab() {
 						{Array.from({ length: 2 }).map((_, i) => (
 							<div
 								key={i}
-								className="border rounded-2xl border-ds-line bg-ds-fill p-4 space-y-2.5 min-h-27.5"
+								className="border rounded-2xl border-line bg-fill p-4 space-y-2.5 min-h-27.5"
 							>
 								<div className="w-2/3 h-4 rounded-md skeleton opacity-40" />
 								<div className="w-full h-5 mt-3 rounded-md skeleton opacity-20" />
@@ -132,24 +132,24 @@ export function VipTab() {
 						))}
 					</div>
 				) : (
-					<div className="flex flex-col items-center justify-center py-6 text-center border rounded-2xl border-ds-line bg-ds-fill">
-						<p className="text-xs text-ds-fg-muted">
+					<div className="flex flex-col items-center justify-center py-6 text-center border rounded-2xl border-line bg-fill">
+						<p className="text-xs text-fg-muted">
 							در حال حاضر پلن فعالی موجود نیست
 						</p>
 					</div>
 				)}
 			</div>
 
-			<div className="p-3.5 rounded-2xl border border-ds-line bg-ds-fill flex flex-col sm:flex-row items-center justify-between gap-3">
+			<div className="p-3.5 rounded-2xl border border-line bg-fill flex flex-col sm:flex-row items-center justify-between gap-3">
 				<div className="flex items-center gap-2.5 w-full sm:w-auto">
-					<div className="flex items-center justify-center w-10 h-10 rounded-xl text-ds-brand shrink-0">
+					<div className="flex items-center justify-center w-10 h-10 rounded-xl text-brand shrink-0">
 						<Icon name="shoppingBag" size={19} />
 					</div>
 					<div className="flex flex-col">
-						<span className="text-xs font-bold text-ds-fg">
+						<span className="text-xs font-bold text-fg">
 							{selectedPlan?.title || 'اشتراک'} {VIP_LABEL}
 						</span>
-						<span className="text-[11px] text-ds-fg-muted">
+						<span className="text-[11px] text-fg-muted">
 							دسترسی کامل به تمام امکانات {VIP_LABEL}
 						</span>
 					</div>
@@ -157,20 +157,20 @@ export function VipTab() {
 
 				<div className="flex items-center justify-between w-full gap-4 sm:justify-end sm:w-auto">
 					<div className="flex flex-col items-start sm:items-end">
-						<span className="text-[11px] text-ds-fg-muted">مبلغ قابل پرداخت</span>
+						<span className="text-[11px] text-fg-muted">مبلغ قابل پرداخت</span>
 						<div className="flex items-baseline gap-1">
 							{selectedPlan?.price === 0 ? (
-								<span className="text-base font-black sm:text-lg text-ds-success">
+								<span className="text-base font-black sm:text-lg text-success">
 									{selectedPlan.isClaimed
 										? 'قبلا دریافت شده'
 										: 'رایگان'}
 								</span>
 							) : (
 								<>
-									<span className="text-base font-black sm:text-lg text-ds-fg tabular-nums">
+									<span className="text-base font-black sm:text-lg text-fg tabular-nums">
 										{selectedPlan ? fmt(selectedPlan.price) : '۰'}
 									</span>
-									<span className="text-xs text-ds-fg-muted">تومان</span>
+									<span className="text-xs text-fg-muted">تومان</span>
 								</>
 							)}
 						</div>

@@ -133,7 +133,7 @@ export function SearchCompactRow() {
 		<div className="flex items-center justify-center w-full h-full p-1 select-none">
 			<div ref={searchRef} className="relative w-full">
 				<form onSubmit={handleSubmit}>
-					<div className="relative flex items-center px-2 py-1.5 overflow-hidden transition-all duration-300 shadow-xs bg-ds-surface-2 bg-glass rounded-2xl">
+					<div className="relative flex items-center px-2 py-1.5 overflow-hidden transition-all duration-300 shadow-xs bg-surface-2 bg-glass rounded-2xl">
 						<EngineSelector onSelected={onEngineSelected} />
 
 						<input
@@ -151,7 +151,7 @@ export function SearchCompactRow() {
 								updatePosition()
 								Analytics.event('search_input_focused_2x1')
 							}}
-							className="w-full py-1 px-1.5 text-xs font-light text-right focus:outline-none text-ds-fg placeholder:text-ds-fg-muted placeholder:font-medium bg-transparent"
+							className="w-full py-1 px-1.5 text-xs font-light text-right focus:outline-none text-fg placeholder:text-fg-muted placeholder:font-medium bg-transparent"
 							placeholder="جستجو..."
 							aria-label="جستجو"
 							autoComplete="off"
@@ -163,7 +163,7 @@ export function SearchCompactRow() {
 								hasQuery ? handleClearSearch : handleSearchButtonClick
 							}
 							aria-label={hasQuery ? 'پاک کردن عبارت جستجو' : 'جستجو'}
-							className="flex items-center justify-center w-6 h-6 transition-colors rounded-full cursor-pointer shrink-0 hover:bg-ds-surface-3"
+							className="flex items-center justify-center w-6 h-6 transition-colors rounded-full cursor-pointer shrink-0 hover:bg-surface-3"
 						>
 							<Icon
 								name={hasQuery ? 'close' : 'search'}

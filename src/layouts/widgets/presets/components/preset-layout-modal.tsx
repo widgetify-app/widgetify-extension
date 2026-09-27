@@ -70,7 +70,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 				showCloseButton={true}
 				title={
 					<span className="flex items-center gap-2">
-						<span className="flex items-center justify-center rounded-lg w-7 h-7 bg-ds-brand-fill text-ds-brand shrink-0">
+						<span className="flex items-center justify-center rounded-lg w-7 h-7 bg-brand-fill text-brand shrink-0">
 							<Icon name="viewGridAdd" size={16} />
 						</span>
 						<span>چیدمان‌های آماده</span>
@@ -78,7 +78,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 				}
 			>
 				<div className="flex flex-col flex-1 min-h-0 gap-3 text-right">
-					<p className="text-[11px] leading-relaxed text-ds-fg-muted shrink-0">
+					<p className="text-[11px] leading-relaxed text-fg-muted shrink-0">
 						یکی از این قالب‌ها رو انتخاب کن تا ویجت‌های صفحه‌ی اصلی با همون
 						چیدمان جایگزین بشن.
 					</p>
@@ -100,17 +100,17 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 								<li key={preset.id} className="flex">
 									<article
 										className={cn(
-											'group flex flex-col w-full gap-3 p-3.5 text-right border rounded-2xl bg-ds-fill shadow-2xs transition-ui hover:shadow-md',
+											'group flex flex-col w-full gap-3 p-3.5 text-right border rounded-2xl bg-fill shadow-2xs transition-ui hover:shadow-md',
 											preset.isVip
-												? 'border-ds-vip-fill-2 hover:border-ds-vip'
-												: 'border-ds-line hover:border-ds-brand-muted'
+												? 'border-vip-fill-2 hover:border-vip'
+												: 'border-line hover:border-brand-muted'
 										)}
 									>
 										<PresetCanvasPreview preset={preset} />
 
 										<div className="flex flex-col gap-2">
 											<div className="flex items-start justify-between gap-2">
-												<h4 className="text-sm font-bold leading-6 truncate text-ds-fg">
+												<h4 className="text-sm font-bold leading-6 truncate text-fg">
 													{preset.title}
 												</h4>
 
@@ -121,13 +121,13 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 														className="mt-0.5"
 													/>
 												) : (
-													<span className="mt-0.5 shrink-0 rounded-full border border-ds-success-fill-2 bg-ds-success-fill px-2 py-0.5 text-[9px] font-bold text-ds-success">
+													<span className="mt-0.5 shrink-0 rounded-full border border-success-fill-2 bg-success-fill px-2 py-0.5 text-[9px] font-bold text-success">
 														رایگان
 													</span>
 												)}
 											</div>
 
-											<p className="text-[11px] leading-relaxed text-ds-fg-muted line-clamp-2 min-h-8">
+											<p className="text-[11px] leading-relaxed text-fg-muted line-clamp-2 min-h-8">
 												{preset.description}
 											</p>
 
@@ -140,7 +140,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 													return (
 														<li
 															key={widgetId}
-															className="inline-flex items-center gap-1 rounded-lg border border-ds-line bg-ds-fill px-1.5 py-0.5 text-[10px] font-medium text-ds-fg-muted"
+															className="inline-flex items-center gap-1 rounded-lg border border-line bg-fill px-1.5 py-0.5 text-[10px] font-medium text-fg-muted"
 														>
 															<Icon
 																name={definition.icon}
@@ -156,7 +156,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 												{hiddenWidgetCount > 0 && (
 													<li
 														dir="ltr"
-														className="rounded-lg border border-ds-line px-1.5 py-0.5 text-[10px] font-medium text-ds-fg-muted"
+														className="rounded-lg border border-line px-1.5 py-0.5 text-[10px] font-medium text-fg-muted"
 													>
 														{`+${hiddenWidgetCount.toLocaleString('fa-IR')}`}
 													</li>
@@ -164,7 +164,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 											</ul>
 										</div>
 
-										<div className="pt-3 mt-auto border-t border-ds-line">
+										<div className="pt-3 mt-auto border-t border-line">
 											{isLocked ? (
 												<Button
 													onClick={handleOpenVipSettings}

@@ -31,12 +31,12 @@ export function PrivacySettings() {
 		<div className="w-full max-w-xl mx-auto space-y-4">
 			<SectionPanel title="حریم خصوصی و دسترسی‌ها" delay={0.1}>
 				<div className="space-y-1">
-					<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-ds-fill">
+					<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-fill">
 						<div className="flex-1 space-y-1">
-							<h3 className="text-sm font-medium text-ds-fg">
+							<h3 className="text-sm font-medium text-fg">
 								آمار و عملکرد افزونه (Analytics)
 							</h3>
-							<p className="text-xs font-normal leading-relaxed text-ds-fg-muted">
+							<p className="text-xs font-normal leading-relaxed text-fg-muted">
 								جمع‌آوری آمار فنی و گزارش خطاهای ناشناس برای بهبود عملکرد
 								افزونه بدون ارسال هیچ‌گونه اطلاعات شخصی یا یادداشت‌ها
 							</p>
@@ -50,12 +50,12 @@ export function PrivacySettings() {
 					</div>
 
 					{import.meta.env.FIREFOX && (
-						<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-ds-fill">
+						<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-fill">
 							<div className="flex-1 space-y-1">
-								<h3 className="text-sm font-medium text-ds-fg">
+								<h3 className="text-sm font-medium text-fg">
 									نمایش آیکون‌های بوکمارک‌ها
 								</h3>
-								<p className="text-xs font-normal leading-relaxed text-ds-fg-muted">
+								<p className="text-xs font-normal leading-relaxed text-fg-muted">
 									دریافت فاوآیکون بوکمارک‌ها از سرویس امن گوگل با ارسال
 									دامنه سایت‌ها برای نمایش بصری بهتر
 								</p>
@@ -69,12 +69,12 @@ export function PrivacySettings() {
 						</div>
 					)}
 
-					<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-ds-fill">
+					<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-fill">
 						<div className="flex-1 space-y-1">
-							<h3 className="text-sm font-medium text-ds-fg">
+							<h3 className="text-sm font-medium text-fg">
 								دسترسی به بوکمارک‌های مرورگر
 							</h3>
-							<p className="text-xs font-normal leading-relaxed text-ds-fg-muted">
+							<p className="text-xs font-normal leading-relaxed text-fg-muted">
 								نمایش بوکمارک‌های ذخیره‌شده مرورگر در ویجت سرچ‌باکس، ذخیره یا
 								ارسال نمیشن
 							</p>
@@ -89,12 +89,12 @@ export function PrivacySettings() {
 						</div>
 					</div>
 
-					<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-ds-fill">
+					<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-fill">
 						<div className="flex-1 space-y-1">
-							<h3 className="text-sm font-medium text-ds-fg">
+							<h3 className="text-sm font-medium text-fg">
 								دسترسی به تب‌ها
 							</h3>
-							<p className="text-xs font-normal leading-relaxed text-ds-fg-muted">
+							<p className="text-xs font-normal leading-relaxed text-fg-muted">
 								امکان باز کردن و مدیریت گروهی بوکمارک‌های داخل پوشه‌ها در
 								تب‌های مرورگر
 							</p>

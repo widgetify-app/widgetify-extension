@@ -2,7 +2,7 @@ export function MakeSkeletonFriendItem(count: number) {
 	return [...Array(count)].map((_, catIdx) => (
 		<div
 			key={`loading-${catIdx}`}
-			className="w-full h-8 border rounded-xl skeleton bg-ds-fill border-ds-surface-3"
+			className="w-full h-8 border rounded-xl skeleton bg-fill border-surface-3"
 		></div>
 	))
 }

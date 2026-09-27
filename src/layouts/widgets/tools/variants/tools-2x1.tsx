@@ -18,14 +18,14 @@ export function ToolsCompactRow({ onSelectTab }: ToolsCompactRowProps) {
 					key={tab.id}
 					type="button"
 					onClick={() => onSelectTab(tab.id)}
-					className="flex flex-col items-center justify-center gap-1 p-1.5 border rounded-xl cursor-pointer bg-ds-fill border-ds-line transition-ui hover:bg-ds-fill-2 focus-visible:focus-ring"
+					className="flex flex-col items-center justify-center gap-1 p-1.5 border rounded-xl cursor-pointer bg-fill border-line transition-ui hover:bg-fill-2 focus-visible:focus-ring"
 				>
 					<Icon
 						name={tab.icon}
-						className="w-4 h-4 text-ds-brand"
+						className="w-4 h-4 text-brand"
 						aria-hidden="true"
 					/>
-					<span className="text-[10px] font-medium text-ds-fg">
+					<span className="text-[10px] font-medium text-fg">
 						{tab.compactLabel}
 					</span>
 				</button>

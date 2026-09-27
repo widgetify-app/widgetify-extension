@@ -176,7 +176,7 @@ export function BookmarkFolderModal({
 			title={
 				<div className="flex items-center gap-2">
 					<span className="text-xl">📁</span>
-					<span className="max-w-xs text-sm font-bold truncate text-ds-fg">
+					<span className="max-w-xs text-sm font-bold truncate text-fg">
 						{currentFolder?.title || 'پوشه بوکمارک'}
 					</span>
 				</div>
@@ -188,7 +188,7 @@ export function BookmarkFolderModal({
 		>
 			<div className="flex flex-col flex-1 h-full min-h-0 gap-3 p-1 select-none">
 				{folderPath.length > 1 && (
-					<div className="pb-2 border-b border-ds-line shrink-0">
+					<div className="pb-2 border-b border-line shrink-0">
 						<FolderPath folderPath={folderPath} onNavigate={handleNavigate} />
 					</div>
 				)}

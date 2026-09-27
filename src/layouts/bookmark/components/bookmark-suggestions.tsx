@@ -29,7 +29,7 @@ export function BookmarkSuggestions({ onSelect }: BookmarkSuggestionsProps) {
 								e.stopPropagation()
 								onSelect(suggestion)
 							}}
-							className="p-1.5 flex flex-col items-center justify-center text-center transition-all duration-200 bg-ds-surface-2 hover:bg-ds-brand-fill hover:border-ds-brand-fill-2 h-14 border border-ds-line rounded-xl cursor-pointer"
+							className="p-1.5 flex flex-col items-center justify-center text-center transition-all duration-200 bg-surface-2 hover:bg-brand-fill hover:border-brand-fill-2 h-14 border border-line rounded-xl cursor-pointer"
 						>
 							<div className="flex items-center justify-center flex-shrink-0 w-6 h-6 mb-1">
 								{suggestion.icon ? (
@@ -46,11 +46,11 @@ export function BookmarkSuggestions({ onSelect }: BookmarkSuggestionsProps) {
 									<Icon
 										name="bookmark"
 										size={16}
-										className="text-ds-fg-muted"
+										className="text-fg-muted"
 									/>
 								)}
 							</div>
-							<p className="w-full text-[11px] font-medium truncate text-ds-fg">
+							<p className="w-full text-[11px] font-medium truncate text-fg">
 								{suggestion.title}
 							</p>
 						</button>

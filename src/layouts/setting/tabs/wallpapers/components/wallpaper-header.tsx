@@ -6,9 +6,9 @@ export function WallpaperHeader() {
 		useWallpaperContext()
 
 	return (
-		<header className="flex flex-col gap-3 pb-3 border-b border-ds-line select-none">
+		<header className="flex flex-col gap-3 pb-3 border-b border-line select-none">
 			<div className="flex flex-col gap-0.5">
-				<h2 className="text-lg font-bold text-ds-fg tracking-tight">
+				<h2 className="text-lg font-bold text-fg tracking-tight">
 					تصویر سفارشی
 				</h2>
 			</div>
@@ -18,10 +18,10 @@ export function WallpaperHeader() {
 				onWallpaperRemove={handleRemoveCustomWallpaper}
 			/>
 			<div className="flex flex-col gap-0.5">
-				<h2 className="text-lg font-bold text-ds-fg tracking-tight">
+				<h2 className="text-lg font-bold text-fg tracking-tight">
 					تصویر زمینه‌ها
 				</h2>
-				<p className="text-xs text-ds-fg-muted">تصویر زمینه مورد علاقه‌ت رو انتخاب کن</p>
+				<p className="text-xs text-fg-muted">تصویر زمینه مورد علاقه‌ت رو انتخاب کن</p>
 			</div>
 		</header>
 	)

@@ -1,12 +1,12 @@
 import { cva } from 'class-variance-authority'
 
 export const popoverMenuVariants = cva([
-	'bg-ds-surface-2',
+	'bg-surface-2',
 	'bg-glass',
 	'rounded-3xl',
 	'shadow-2xl',
 	'border',
-	'border-ds-line',
+	'border-line',
 	'p-2',
 	'text-right',
 	'text-xs',
@@ -38,9 +38,9 @@ export const popoverMenuItemVariants = cva(
 	{
 		variants: {
 			variant: {
-				default: 'text-ds-fg hover:bg-ds-fill-2 active:bg-ds-surface-3',
-				danger: 'text-ds-danger hover:bg-ds-danger-fill active:bg-ds-danger-fill-2',
-				primary: 'text-ds-brand hover:bg-ds-brand-fill active:bg-ds-brand-fill-2',
+				default: 'text-fg hover:bg-fill-2 active:bg-surface-3',
+				danger: 'text-danger hover:bg-danger-fill active:bg-danger-fill-2',
+				primary: 'text-brand hover:bg-brand-fill active:bg-brand-fill-2',
 			},
 		},
 		defaultVariants: {

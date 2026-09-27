@@ -32,7 +32,7 @@ export function ConnectionModal({
 					>
 						{platform.icon}
 					</div>
-					<h2 className="text-xl font-semibold text-ds-fg">
+					<h2 className="text-xl font-semibold text-fg">
 						{platform.connected ? 'قطع اتصال از' : 'اتصال به'} {platform.name}
 					</h2>
 				</div>
@@ -40,21 +40,21 @@ export function ConnectionModal({
 				<div className="mb-6">
 					{platform.connected ? (
 						<div className="space-y-2">
-							<p className="text-ds-fg">
+							<p className="text-fg">
 								آیا مطمئن هستید که می‌خواهید اتصال به {platform.name} را
 								قطع کنید؟
 							</p>
-							<div className="p-3 text-sm rounded-2xl text-ds-on-warning bg-ds-warning">
+							<div className="p-3 text-sm rounded-2xl text-on-warning bg-warning">
 								⚠️ با قطع اتصال، دسترسی به داده‌ها و ویژگی‌های مربوط به این
 								پلتفرم از دست خواهد رفت.
 							</div>
 						</div>
 					) : (
 						<div className="space-y-3">
-							<p className="text-ds-fg">{platform.description}</p>
+							<p className="text-fg">{platform.description}</p>
 							{platform.features && platform.features.length > 0 && (
 								<div>
-									<p className="mb-2 text-sm font-medium text-ds-fg">
+									<p className="mb-2 text-sm font-medium text-fg">
 										امکانات:
 									</p>
 									<ul className="space-y-1">
@@ -62,9 +62,9 @@ export function ConnectionModal({
 											(feature: string, index: number) => (
 												<li
 													key={index}
-													className="flex items-center gap-2 text-sm text-ds-fg-muted"
+													className="flex items-center gap-2 text-sm text-fg-muted"
 												>
-													<span className="w-1.5 h-1.5 bg-ds-brand rounded-full" />
+													<span className="w-1.5 h-1.5 bg-brand rounded-full" />
 													{feature}
 												</li>
 											)
@@ -74,7 +74,7 @@ export function ConnectionModal({
 							)}
 							{platform.permissions && platform.permissions.length > 0 && (
 								<div>
-									<p className="mb-2 text-sm font-medium text-ds-fg">
+									<p className="mb-2 text-sm font-medium text-fg">
 										مجوزهای مورد نیاز:
 									</p>
 									<ul className="space-y-1">
@@ -82,9 +82,9 @@ export function ConnectionModal({
 											(permission: string, index: number) => (
 												<li
 													key={index}
-													className="flex items-center gap-2 text-sm text-ds-fg-muted"
+													className="flex items-center gap-2 text-sm text-fg-muted"
 												>
-													<span className="w-1.5 h-1.5 bg-ds-secondary rounded-full" />
+													<span className="w-1.5 h-1.5 bg-secondary rounded-full" />
 													{permission}
 												</li>
 											)
@@ -103,7 +103,7 @@ export function ConnectionModal({
 						loading={isLoading}
 						loadingText={
 							<span className="flex items-center justify-center gap-2">
-								<div className="w-4 h-4 border-2 rounded-full border-ds-image-line border-t-white animate-spin" />
+								<div className="w-4 h-4 border-2 rounded-full border-image-line border-t-white animate-spin" />
 								در حال پردازش
 							</span>
 						}

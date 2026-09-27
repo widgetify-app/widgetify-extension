@@ -140,9 +140,9 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 
 	return (
 		<div className="flex flex-col gap-4">
-			<section className="flex items-center gap-3 p-3 border rounded-2xl border-ds-surface-3 bg-ds-surface-2">
+			<section className="flex items-center gap-3 p-3 border rounded-2xl border-surface-3 bg-surface-2">
 				<div
-					className="flex items-end justify-center overflow-hidden border w-16 h-16 shrink-0 rounded-2xl border-ds-surface-3"
+					className="flex items-end justify-center overflow-hidden border w-16 h-16 shrink-0 rounded-2xl border-surface-3"
 					style={{
 						backgroundImage: scene.image ? `url(${scene.image})` : undefined,
 						backgroundSize: 'cover',
@@ -159,10 +159,10 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 
 				<div className="flex items-center justify-between min-w-0 flex-1">
 					<div className="flex items-center gap-2 min-w-0">
-						<h3 className="text-base font-semibold truncate text-ds-fg">
+						<h3 className="text-base font-semibold truncate text-fg">
 							{displayName}
 						</h3>
-						<span className="px-2 py-0.5 text-[10px] leading-[1.7] border rounded-full text-ds-fg border-ds-surface-3 bg-ds-surface-2">
+						<span className="px-2 py-0.5 text-[10px] leading-[1.7] border rounded-full text-fg border-surface-3 bg-surface-2">
 							{PET_SPECIES_LABEL[petType]}
 						</span>
 					</div>
@@ -175,8 +175,8 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 							>
 								{TIPS.map((tip) => (
 									<li key={tip} className="flex items-center gap-2">
-										<span className="w-1.5 h-1.5 rounded-full shrink-0 bg-ds-brand" />
-										<span className="text-xs leading-relaxed text-ds-fg">
+										<span className="w-1.5 h-1.5 rounded-full shrink-0 bg-brand" />
+										<span className="text-xs leading-relaxed text-fg">
 											{tip}
 										</span>
 									</li>
@@ -187,7 +187,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 						<button
 							type="button"
 							aria-label="راهنمای تعامل با حیوان خانگی"
-							className="flex items-center justify-center rounded-full w-7 h-7 text-ds-fg-muted opacity-70 transition-ui hover:opacity-100 hover:bg-ds-fill-2 focus-visible:focus-ring"
+							className="flex items-center justify-center rounded-full w-7 h-7 text-fg-muted opacity-70 transition-ui hover:opacity-100 hover:bg-fill-2 focus-visible:focus-ring"
 						>
 							<Icon name="info" className="w-4 h-4" aria-hidden="true" />
 						</button>
@@ -196,7 +196,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 			</section>
 
 			<section className="flex flex-col gap-2">
-				<h4 id="pet-type-label" className="text-sm font-medium text-ds-fg">
+				<h4 id="pet-type-label" className="text-sm font-medium text-fg">
 					حیوان خانگی
 				</h4>
 				<div aria-labelledby="pet-type-label" className="grid grid-cols-5 gap-2">
@@ -220,7 +220,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 			<section className="flex flex-col gap-2">
 				<h4
 					id="pet-background-label"
-					className="text-sm font-medium text-ds-fg"
+					className="text-sm font-medium text-fg"
 				>
 					محیط
 				</h4>
@@ -236,7 +236,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 							onSelect={() => onChangeBackground(item.id)}
 						>
 							<div
-								className="flex items-center justify-center w-full h-12 bg-ds-fill-2"
+								className="flex items-center justify-center w-full h-12 bg-fill-2"
 								style={
 									item.image
 										? {
@@ -253,7 +253,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 			</section>
 
 			<section className="flex flex-col gap-2">
-				<label htmlFor="pet-name" className="text-sm font-medium text-ds-fg">
+				<label htmlFor="pet-name" className="text-sm font-medium text-fg">
 					نام حیوان خانگی
 				</label>
 				<TextInput

@@ -59,7 +59,7 @@ export function AvatarComponent({
 					onError={handleImageError}
 				/>
 			) : (
-				<div className="font-medium text-ds-fg-muted">
+				<div className="font-medium text-fg-muted">
 					{placeholder.charAt(0)?.toUpperCase() || '?'}
 				</div>
 			)}

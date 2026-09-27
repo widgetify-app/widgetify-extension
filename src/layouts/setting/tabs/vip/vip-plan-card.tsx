@@ -22,10 +22,10 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 			className={cn(
 				'relative flex flex-col justify-between p-3.5 rounded-2xl border transition-all text-right min-h-24 group',
 				isClaimed
-					? 'opacity-65  border-ds-line bg-ds-fill cursor-not-allowed saturate-50'
+					? 'opacity-65  border-line bg-fill cursor-not-allowed saturate-50'
 					: isSelected
-						? 'border-ds-brand bg-ds-brand-fill ring-1 ring-ds-brand shadow-xs cursor-pointer'
-						: 'border-ds-line bg-ds-fill hover:border-ds-brand-muted hover:bg-ds-fill-2 cursor-pointer'
+						? 'border-brand bg-brand-fill ring-1 ring-brand shadow-xs cursor-pointer'
+						: 'border-line bg-fill hover:border-brand-muted hover:bg-fill-2 cursor-pointer'
 			)}
 		>
 			{badge && !isClaimed && (
@@ -40,7 +40,7 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 					}
 					className={cn(
 						'absolute -top-2.5 left-1/2 -translate-x-1/2 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-xs',
-						!badgeColor && 'bg-ds-brand text-white'
+						!badgeColor && 'bg-brand text-white'
 					)}
 				>
 					{badge}
@@ -48,7 +48,7 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 			)}
 
 			{isClaimed && (
-				<div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-ds-surface text-ds-fg-muted text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+				<div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-surface text-fg-muted text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
 					<span>استفاده شده</span>
 				</div>
 			)}
@@ -58,12 +58,12 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 					<h5
 						className={cn(
 							'text-xs font-bold',
-							isClaimed ? 'text-ds-fg-muted' : 'text-ds-fg'
+							isClaimed ? 'text-fg-muted' : 'text-fg'
 						)}
 					>
 						{plan.title}
 					</h5>
-					<span className="text-[10px] text-ds-fg-muted">
+					<span className="text-[10px] text-fg-muted">
 						{fmt(plan.days)} روز اعتبار
 					</span>
 				</div>
@@ -72,10 +72,10 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 					className={cn(
 						'w-4 h-4 rounded-full border flex items-center justify-center shrink-0 transition-colors',
 						isClaimed
-							? 'border-ds-line bg-ds-fill text-ds-fg-muted'
+							? 'border-line bg-fill text-fg-muted'
 							: isSelected
-								? 'border-ds-brand bg-ds-brand text-ds-on-brand'
-								: 'border-ds-line bg-ds-fill-2 group-hover:border-ds-brand-muted'
+								? 'border-brand bg-brand text-on-brand'
+								: 'border-line bg-fill-2 group-hover:border-brand-muted'
 					)}
 				>
 					{isClaimed ? (
@@ -92,17 +92,17 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 						<span
 							className={cn(
 								'text-base font-black',
-								isClaimed ? 'text-ds-fg-muted' : 'text-ds-success'
+								isClaimed ? 'text-fg-muted' : 'text-success'
 							)}
 						>
 							{isClaimed ? 'قبلا دریافت شده' : 'رایگان'}
 						</span>
 					) : (
 						<>
-							<span className="text-base font-black text-ds-fg tabular-nums">
+							<span className="text-base font-black text-fg tabular-nums">
 								{fmt(plan.price)}
 							</span>
-							<span className="text-[11px] text-ds-fg-muted">تومان</span>
+							<span className="text-[11px] text-fg-muted">تومان</span>
 						</>
 					)}
 				</div>

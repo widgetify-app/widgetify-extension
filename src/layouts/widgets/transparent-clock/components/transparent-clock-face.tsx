@@ -50,7 +50,7 @@ export const TransparentClockFace: React.FC<TransparentClockFaceProps> = ({
 					aria-hidden="true"
 					className={cn(
 						'flex items-baseline justify-center font-black leading-none transition-[color,text-shadow] duration-500',
-						!usesWallpaperColors && 'text-ds-fg'
+						!usesWallpaperColors && 'text-fg'
 					)}
 					style={{
 						fontSize: CLOCK_FONT_SIZE,
@@ -72,7 +72,7 @@ export const TransparentClockFace: React.FC<TransparentClockFaceProps> = ({
 					aria-hidden="true"
 					className={cn(
 						'flex items-center justify-center font-medium transition-[color,text-shadow] duration-500',
-						!usesWallpaperColors && 'text-ds-fg-muted'
+						!usesWallpaperColors && 'text-fg-muted'
 					)}
 					style={{
 						gap: '0.5em',

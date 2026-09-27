@@ -124,7 +124,7 @@ export function SearchHistoryPortal({
 							animate={{ opacity: 1, y: 0 }}
 							exit={{ opacity: 0, y: -8 }}
 							transition={{ duration: 0.18, ease: 'easeOut' }}
-							className="z-20 overflow-y-auto shadow-2xl bg-ds-surface-2 bg-glass max-h-60 rounded-2xl"
+							className="z-20 overflow-y-auto shadow-2xl bg-surface-2 bg-glass max-h-60 rounded-2xl"
 						>
 							{isLoadingSuggestions ? (
 								<SuggestionSkeleton />
@@ -137,18 +137,18 @@ export function SearchHistoryPortal({
 								/>
 							) : showEnableButton ? (
 								<div className="flex flex-col items-center gap-3 px-4 py-5 text-center">
-									<div className="flex items-center justify-center w-8 h-8 rounded-xl bg-ds-fill">
+									<div className="flex items-center justify-center w-8 h-8 rounded-xl bg-fill">
 										<Icon
 											name="search"
 											size={15}
-											className="text-ds-fg-faint"
+											className="text-fg-faint"
 										/>
 									</div>
 									<div className="space-y-1">
-										<p className="text-xs font-medium text-ds-fg-muted">
+										<p className="text-xs font-medium text-fg-muted">
 											پیشنهادهای جستجو
 										</p>
-										<p className="text-[11px] text-ds-fg-faint leading-relaxed">
+										<p className="text-[11px] text-fg-faint leading-relaxed">
 											با فعال‌سازی، هنگام تایپ پیشنهادهای هوشمندی
 											داده میشه!
 										</p>
@@ -159,13 +159,13 @@ export function SearchHistoryPortal({
 											e.preventDefault()
 											setShowConsentModal(true)
 										}}
-										className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-xl cursor-pointer bg-ds-fill text-ds-fg-muted transition-ui hover:text-ds-brand hover:bg-ds-brand-fill focus-visible:focus-ring searchbox-item"
+										className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-xl cursor-pointer bg-fill text-fg-muted transition-ui hover:text-brand hover:bg-brand-fill focus-visible:focus-ring searchbox-item"
 									>
 										فعال‌سازی
 									</button>
 								</div>
 							) : (
-								<p className="px-4 py-6 text-xs text-center text-ds-fg-faint">
+								<p className="px-4 py-6 text-xs text-center text-fg-faint">
 									نتیجه‌ای برای نمایش وجود ندارد
 								</p>
 							)}

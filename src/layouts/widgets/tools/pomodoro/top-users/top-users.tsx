@@ -15,14 +15,14 @@ export const TopUsersTab: React.FC<TopUsersTabProps> = ({ type }) => {
 	if (isLoading) {
 		return (
 			<div className="flex items-center justify-center p-4">
-				<div className="w-8 h-8 border-b-2 border-ds-brand rounded-full animate-spin"></div>
+				<div className="w-8 h-8 border-b-2 border-brand rounded-full animate-spin"></div>
 			</div>
 		)
 	}
 
 	if (error) {
 		return (
-			<div className="p-4 font-bold text-center text-ds-danger bg-ds-danger-fill-2 rounded-2xl">
+			<div className="p-4 font-bold text-center text-danger bg-danger-fill-2 rounded-2xl">
 				خطا در بارگذاری داده‌ها
 			</div>
 		)
@@ -30,7 +30,7 @@ export const TopUsersTab: React.FC<TopUsersTabProps> = ({ type }) => {
 
 	if (!data?.tops || data.tops.length === 0) {
 		return (
-			<div className="p-4 font-bold text-center text-ds-brand bg-ds-brand-fill-2 rounded-2xl">
+			<div className="p-4 font-bold text-center text-brand bg-brand-fill-2 rounded-2xl">
 				لیست کاربران خالی است
 			</div>
 		)

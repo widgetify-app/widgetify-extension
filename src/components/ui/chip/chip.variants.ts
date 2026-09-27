@@ -17,13 +17,13 @@ export const chipVariants = cva(
 	{
 		variants: {
 			selected: {
-				true: ['bg-ds-brand', 'border-ds-brand', 'text-ds-on-brand'],
+				true: ['bg-brand', 'border-brand', 'text-on-brand'],
 				false: [
-					'bg-ds-surface',
+					'bg-surface',
 					'bg-glass',
-					'border-ds-surface-3',
-					'text-ds-fg-muted',
-					'enabled:hover:border-ds-brand-fill-2',
+					'border-surface-3',
+					'text-fg-muted',
+					'enabled:hover:border-brand-fill-2',
 					'disabled:opacity-80',
 				],
 			},

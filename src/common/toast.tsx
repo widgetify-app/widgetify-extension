@@ -193,7 +193,7 @@ export function showToast(
 				<button
 					type="button"
 					onClick={() => toast.remove(t.id, t.toasterId)}
-					className="shrink-0 px-3.5 py-1.5 rounded-xl bg-[rgba(255,255,255,0.1)] hover:bg-ds-image-fill active:scale-95 text-xs font-semibold text-white transition-all cursor-pointer select-none"
+					className="shrink-0 px-3.5 py-1.5 rounded-xl bg-[rgba(255,255,255,0.1)] hover:bg-image-fill active:scale-95 text-xs font-semibold text-white transition-all cursor-pointer select-none"
 				>
 					{theme.actionText}
 				</button>
@@ -222,7 +222,7 @@ export function showPreviewToast(itemName: string, onCancel: () => void): string
 				)}
 			>
 				<div className="flex items-center flex-1 min-w-0 gap-3">
-					<div className="flex items-center justify-center w-8 h-8 text-sm font-bold rounded-full shrink-0 bg-ds-brand-fill-2 text-ds-brand">
+					<div className="flex items-center justify-center w-8 h-8 text-sm font-bold rounded-full shrink-0 bg-brand-fill-2 text-brand">
 						<Icon name="info" size={16} />
 					</div>
 					<div className="flex-1 min-w-0">

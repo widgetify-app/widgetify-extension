@@ -117,38 +117,38 @@ export function DatePicker({
 
 		const getDayTextStyle = () => {
 			if (isDaySelected) {
-				return 'bg-ds-brand text-ds-on-brand font-medium'
+				return 'bg-brand text-on-brand font-medium'
 			}
 
 			if (isFriday) {
-				return 'text-ds-danger bg-ds-danger-fill'
+				return 'text-danger bg-danger-fill'
 			}
 
 			if (!isCurrentMonth) {
-				return 'text-ds-fg-muted opacity-50'
+				return 'text-fg-muted opacity-50'
 			}
 
-			return 'text-ds-fg hover:bg-ds-surface-3'
+			return 'text-fg hover:bg-surface-3'
 		}
 
 		const getHoverStyle = () => {
 			if (isDaySelected) return ''
 
 			if (isFriday) {
-				return 'hover:bg-ds-danger-fill'
+				return 'hover:bg-danger-fill'
 			}
 
-			return 'hover:bg-ds-brand-fill'
+			return 'hover:bg-brand-fill'
 		}
 
 		const getTodayRingStyle = () => {
 			if (isDaySelected) return ''
 
 			if (isFriday) {
-				return 'border border-dashed border-ds-danger'
+				return 'border border-dashed border-danger'
 			}
 
-			return 'border border-dashed border-ds-brand'
+			return 'border border-dashed border-brand'
 		}
 
 		return (
@@ -191,32 +191,32 @@ export function DatePicker({
 		<div
 			data-date-picker
 			className={twMerge(
-				'bg-ds-surface border border-ds-surface-3 rounded-xl p-3 w-64',
+				'bg-surface border border-surface-3 rounded-xl p-3 w-64',
 				className
 			)}
 		>
 			<div className="flex items-center justify-between mb-3">
-				<h3 className="text-xs font-medium text-ds-fg">
+				<h3 className="text-xs font-medium text-fg">
 					{currentDate.format('dddd، jD jMMMM jYYYY')}
 				</h3>
 				<div className="flex gap-0.5">
 					{showTodayButton && (
 						<button
 							onClick={goToToday}
-							className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-ds-fg-muted opacity-70 hover:bg-ds-surface-3 hover:opacity-100"
+							className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-fg-muted opacity-70 hover:bg-surface-3 hover:opacity-100"
 						>
 							<Icon name="backRight" size={12} />
 						</button>
 					)}
 					<button
 						onClick={() => changeMonth(-1)}
-						className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-ds-fg-muted opacity-70 hover:bg-ds-surface-3 hover:opacity-100"
+						className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-fg-muted opacity-70 hover:bg-surface-3 hover:opacity-100"
 					>
 						<Icon name="chevronRight" size={12} />
 					</button>
 					<button
 						onClick={() => changeMonth(1)}
-						className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-ds-fg-muted opacity-70 hover:bg-ds-surface-3 hover:opacity-100"
+						className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-fg-muted opacity-70 hover:bg-surface-3 hover:opacity-100"
 					>
 						<Icon name="chevronLeft" size={12} />
 					</button>
@@ -228,7 +228,7 @@ export function DatePicker({
 					<div
 						key={weekday}
 						className={`h-6 flex items-center justify-center text-xs font-medium ${
-							index === 6 ? 'text-ds-danger' : 'text-ds-fg-muted'
+							index === 6 ? 'text-danger' : 'text-fg-muted'
 						}`}
 					>
 						{weekday}

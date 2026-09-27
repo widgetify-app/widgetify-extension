@@ -40,16 +40,16 @@ describe('getPingQuality', () => {
 
 	it('keeps the wording and the colour on the same verdict', () => {
 		expect(getPingFeedback(100)).toBe('پینگ شما عالی هست.')
-		expect(getPingTextClass(100)).toBe('text-ds-success')
+		expect(getPingTextClass(100)).toBe('text-success')
 
 		expect(getPingFeedback(200)).toBe('پینگ شما متوسط است.')
-		expect(getPingTextClass(200)).toBe('text-ds-warning')
+		expect(getPingTextClass(200)).toBe('text-warning')
 
 		expect(getPingFeedback(900)).toBe('پینگ شما ضعیف است.')
-		expect(getPingTextClass(900)).toBe('text-ds-danger')
+		expect(getPingTextClass(900)).toBe('text-danger')
 
 		expect(getPingFeedback(null)).toBe('پینگ در دسترس نیست.')
-		expect(getPingTextClass(null)).toBe('text-ds-fg-muted')
+		expect(getPingTextClass(null)).toBe('text-fg-muted')
 	})
 
 	it('keeps the bands in order', () => {

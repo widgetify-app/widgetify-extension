@@ -45,13 +45,13 @@ export const CurrencyBox = ({ code, dragHandle }: CurrencyBoxProps) => {
 		<>
 			<div
 				dir="ltr"
-				className="group flex items-center gap-2 px-2.5 py-3 rounded-2xl border border-ds-surface-3 bg-ds-surface-2 hover:bg-ds-fill-2 transition-ui active:scale-[0.98]"
+				className="group flex items-center gap-2 px-2.5 py-3 rounded-2xl border border-surface-3 bg-surface-2 hover:bg-fill-2 transition-ui active:scale-[0.98]"
 			>
 				{dragHandle && (
 					<span
 						{...dragHandle}
 						aria-label={`جابه‌جایی ${code}`}
-						className="flex items-center justify-center w-4 h-4 transition-opacity cursor-grab active:cursor-grabbing text-ds-fg-muted opacity-40 group-hover:opacity-90 shrink-0"
+						className="flex items-center justify-center w-4 h-4 transition-opacity cursor-grab active:cursor-grabbing text-fg-muted opacity-40 group-hover:opacity-90 shrink-0"
 					>
 						<Icon name="dragIndicator" size={14} aria-hidden="true" />
 					</span>
@@ -69,12 +69,12 @@ export const CurrencyBox = ({ code, dragHandle }: CurrencyBoxProps) => {
 								<img
 									src={currency.icon}
 									alt=""
-									className="object-cover w-5 h-5 rounded-lg bg-ds-surface-2"
+									className="object-cover w-5 h-5 rounded-lg bg-surface-2"
 								/>
 							) : (
 								<span
 									aria-hidden="true"
-									className="block w-5 h-5 rounded-full bg-ds-fill-2 animate-pulse"
+									className="block w-5 h-5 rounded-full bg-fill-2 animate-pulse"
 								/>
 							)}
 
@@ -87,20 +87,20 @@ export const CurrencyBox = ({ code, dragHandle }: CurrencyBoxProps) => {
 							)}
 						</span>
 
-						<span className="text-xs font-bold uppercase truncate text-ds-fg">
+						<span className="text-xs font-bold uppercase truncate text-fg">
 							{code}
 						</span>
 					</span>
 
 					<span className="flex items-baseline gap-1.5 shrink-0">
-						<span className="text-xs font-bold tracking-tight text-ds-fg">
+						<span className="text-xs font-bold tracking-tight text-fg">
 							{price ? (
 								<data value={price.value}>
 									{price.isDollar && '💲'}
 									{price.formatted}
 								</data>
 							) : hasFailed ? (
-								<span className="text-ds-fg-muted">-</span>
+								<span className="text-fg-muted">-</span>
 							) : (
 								'-'
 							)}

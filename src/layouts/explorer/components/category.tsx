@@ -32,9 +32,9 @@ export function ExplorerCategory({ category, categoryRefs, activeCategory }: Pro
 				}),
 			}}
 			className={twJoin(
-				'relative overflow-hidden border scroll-mt-20 bg-ds-surface-2 bg-glass border-ds-surface-3 hover:border-ds-line rounded-widget transition-all duration-300 shadow-sm hover:shadow-md break-inside-avoid mb-3.5',
+				'relative overflow-hidden border scroll-mt-20 bg-surface-2 bg-glass border-surface-3 hover:border-line rounded-widget transition-all duration-300 shadow-sm hover:shadow-md break-inside-avoid mb-3.5',
 				category.id === activeCategory &&
-					'ring-2 ring-ds-brand-muted border-ds-brand-muted',
+					'ring-2 ring-brand-muted border-brand-muted',
 				category.banner
 					? 'before:absolute before:inset-x-0 before:top-0 before:h-16 before:bg-cover before:bg-center before:bg-no-repeat before:brightness-75 before:contrast-110 before:pointer-events-none'
 					: ''
@@ -60,10 +60,10 @@ export function ExplorerCategory({ category, categoryRefs, activeCategory }: Pro
 								alt=""
 							/>
 						) : (
-							<div className="w-1.5 h-3.5 rounded-full bg-ds-brand" />
+							<div className="w-1.5 h-3.5 rounded-full bg-brand" />
 						)}
 						<h3
-							className={`text-xs font-semibold tracking-wide ${category.banner ? 'text-ds-fg' : 'text-ds-fg-muted'}`}
+							className={`text-xs font-semibold tracking-wide ${category.banner ? 'text-fg' : 'text-fg-muted'}`}
 						>
 							{category.category}
 						</h3>
@@ -76,7 +76,7 @@ export function ExplorerCategory({ category, categoryRefs, activeCategory }: Pro
 							))}
 						</div>
 					) : (
-						<div className="flex-1 h-px bg-linear-to-r from-ds-fill-2 to-transparent" />
+						<div className="flex-1 h-px bg-linear-to-r from-fill-2 to-transparent" />
 					)}
 				</div>
 			</div>
@@ -110,7 +110,7 @@ function HandleCatalogs({ category }: HandleCatalogsProp) {
 					<RenderContentBanner key={link.url} link={link} />
 				) : (
 					<div
-						className="flex items-center justify-center w-full h-full text-[10px] border blur-sm hover:blur-none transition-all duration-200  border-dashed border-ds-surface-3 rounded-2xl text-ds-fg-muted"
+						className="flex items-center justify-center w-full h-full text-[10px] border blur-sm hover:blur-none transition-all duration-200  border-dashed border-surface-3 rounded-2xl text-fg-muted"
 						key=""
 					>
 						نیازمند بروزرسانی

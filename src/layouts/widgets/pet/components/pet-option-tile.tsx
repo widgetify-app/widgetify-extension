@@ -18,8 +18,8 @@ export function PetOptionTile({ label, selected, onSelect, children, className }
 			className={cn(
 				'flex flex-col items-center overflow-hidden border cursor-pointer rounded-2xl transition-ui focus-visible:focus-ring',
 				selected
-					? 'border-ds-brand-muted bg-ds-brand-fill'
-					: 'border-ds-surface-3 bg-ds-surface-2 hover:bg-ds-brand-fill hover:border-ds-brand-fill-2',
+					? 'border-brand-muted bg-brand-fill'
+					: 'border-surface-3 bg-surface-2 hover:bg-brand-fill hover:border-brand-fill-2',
 				className
 			)}
 		>
@@ -27,7 +27,7 @@ export function PetOptionTile({ label, selected, onSelect, children, className }
 			<span
 				className={cn(
 					'w-full py-1 text-[10px] leading-[1.7] text-center',
-					selected ? 'font-medium text-ds-brand' : 'text-ds-fg-muted'
+					selected ? 'font-medium text-brand' : 'text-fg-muted'
 				)}
 			>
 				{label}

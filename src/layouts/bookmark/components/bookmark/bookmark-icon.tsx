@@ -48,7 +48,7 @@ export function BookmarkIcon({ bookmark }: { bookmark: Bookmark }) {
 			displayIcon = bookmark.icon
 		}
 	} else {
-		displayIcon = <Icon name="folder" className="w-6 h-6 text-ds-brand" />
+		displayIcon = <Icon name="folder" className="w-6 h-6 text-brand" />
 	}
 
 	if (displayIcon === '') {

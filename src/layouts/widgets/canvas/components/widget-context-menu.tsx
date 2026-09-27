@@ -56,15 +56,15 @@ export function WidgetContextMenu({
 	return (
 		<PopoverMenu isOpen={true} onClose={onClose} position={{ x, y }} width={208}>
 			<div className="flex items-center justify-between px-2 py-1">
-				<span className="font-bold text-ds-fg flex items-center gap-1.5">
+				<span className="font-bold text-fg flex items-center gap-1.5">
 					<span>{definition.emoji}</span>
 					<span>{definition.label}</span>
 				</span>
 			</div>
 
 			{showResize && (
-				<div className="px-2 py-1 flex flex-col gap-1.5 border-t border-ds-line">
-					<span className="text-[11px] text-ds-fg-muted font-medium">
+				<div className="px-2 py-1 flex flex-col gap-1.5 border-t border-line">
+					<span className="text-[11px] text-fg-muted font-medium">
 						تغییر اندازه
 					</span>
 					<div dir="ltr" className="grid grid-cols-3 gap-1">
@@ -88,7 +88,7 @@ export function WidgetContextMenu({
 									selected={isCurrent}
 									className={cn(
 										'py-0.5 flex items-center justify-center gap-0.5',
-										isSizeVip && !isCurrent && 'border-ds-vip-fill-2'
+										isSizeVip && !isCurrent && 'border-vip-fill-2'
 									)}
 								>
 									<span>

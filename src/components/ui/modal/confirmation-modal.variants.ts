@@ -3,10 +3,10 @@ import { cva } from 'class-variance-authority'
 export const confirmationAccentBarVariants = cva(['h-1', 'w-full'], {
 	variants: {
 		variant: {
-			danger: ['bg-ds-danger'],
-			warning: ['bg-ds-warning'],
-			info: ['bg-ds-info'],
-			primary: ['bg-ds-brand'],
+			danger: ['bg-danger'],
+			warning: ['bg-warning'],
+			info: ['bg-info'],
+			primary: ['bg-brand'],
 		},
 	},
 	defaultVariants: { variant: 'danger' },
@@ -17,10 +17,10 @@ export const confirmationIconVariants = cva(
 	{
 		variants: {
 			variant: {
-				danger: ['bg-ds-danger-fill', 'text-ds-danger'],
-				warning: ['bg-ds-warning-fill', 'text-ds-warning'],
-				info: ['bg-ds-info-fill', 'text-ds-info'],
-				primary: ['bg-ds-brand-fill', 'text-ds-brand'],
+				danger: ['bg-danger-fill', 'text-danger'],
+				warning: ['bg-warning-fill', 'text-warning'],
+				info: ['bg-info-fill', 'text-info'],
+				primary: ['bg-brand-fill', 'text-brand'],
 			},
 		},
 		defaultVariants: { variant: 'danger' },

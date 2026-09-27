@@ -2,7 +2,7 @@ export function TodoSkeleton() {
 	return (
 		<div
 			aria-hidden="true"
-			className="flex flex-row justify-between gap-1 p-1 overflow-hidden border rounded-lg shadow-sm border-ds-line bg-glass bg-ds-fill"
+			className="flex flex-row justify-between gap-1 p-1 overflow-hidden border rounded-lg shadow-sm border-line bg-glass bg-fill"
 		>
 			<div className="flex items-center gap-1">
 				<div className="w-5 h-5 rounded-md skeleton shrink-0" />

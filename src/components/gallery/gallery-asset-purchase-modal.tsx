@@ -76,7 +76,7 @@ export function GalleryAssetPurchaseModal({
 			showCloseButton={!isPending}
 		>
 			<div className="space-y-4">
-				<div className="relative overflow-hidden rounded-2xl bg-ds-fill-2 max-h-[340px] flex items-center justify-center">
+				<div className="relative overflow-hidden rounded-2xl bg-fill-2 max-h-[340px] flex items-center justify-center">
 					<img
 						src={asset.previewUrl || asset.url}
 						alt={asset.title || 'Asset'}
@@ -86,14 +86,14 @@ export function GalleryAssetPurchaseModal({
 
 				<div className="space-y-2">
 					<div className="flex items-center justify-between">
-						<h3 className="text-base font-semibold text-ds-fg">
+						<h3 className="text-base font-semibold text-fg">
 							{asset.title || 'تصویر گالری'}
 						</h3>
 						{asset.price > 0 && (
 							<UserCoin coins={asset.price} title="قیمت خرید دائمی" />
 						)}
 					</div>
-					<p className="text-xs text-ds-fg-muted">
+					<p className="text-xs text-fg-muted">
 						{isVipUnlocked
 							? 'چون اشتراک پرو داری می‌تونی این تصویر رو رایگان فعال کنی یا با ویج‌کوین دائمی بخریش'
 							: 'این تصویر رو با ویج‌کوین باز کن و همیشه ازش استفاده کن'}
@@ -101,7 +101,7 @@ export function GalleryAssetPurchaseModal({
 				</div>
 
 				{!isVipUnlocked && !canAfford && (
-					<div className="flex items-center justify-between px-3 py-2 text-xs rounded-xl bg-ds-danger-fill text-ds-danger">
+					<div className="flex items-center justify-between px-3 py-2 text-xs rounded-xl bg-danger-fill text-danger">
 						<span>
 							موجودی ویج‌کوین ناکافیه ({asset.price - userCoins} ویج‌کوین کسری
 							داری)

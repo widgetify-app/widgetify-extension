@@ -17,7 +17,7 @@ export const GoogleCalendarEmpty: React.FC<GoogleCalendarEmptyProps> = ({
 				className="mb-2"
 				aria-hidden="true"
 			/>
-			<p className="text-[11px] font-medium text-ds-fg">{message}</p>
+			<p className="text-[11px] font-medium text-fg">{message}</p>
 		</div>
 	)
 }

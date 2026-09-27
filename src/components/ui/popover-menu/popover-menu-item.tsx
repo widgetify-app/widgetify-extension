@@ -42,12 +42,12 @@ export function PopoverMenuItem({
 }
 
 export function PopoverMenuDivider() {
-	return <div className="h-px my-1 bg-ds-fill-2" />
+	return <div className="h-px my-1 bg-fill-2" />
 }
 
 export function PopoverMenuHeader({ children }: { children: React.ReactNode }) {
 	return (
-		<div className="px-2.5 py-1 text-[11px] font-semibold text-ds-fg-muted flex items-center justify-between">
+		<div className="px-2.5 py-1 text-[11px] font-semibold text-fg-muted flex items-center justify-between">
 			{children}
 		</div>
 	)

@@ -9,9 +9,9 @@ export function NoteEmpty() {
 				/>
 			</div>
 
-			<p className="mt-2 text-sm font-bold text-ds-fg">اینجا هنوز سفیده...</p>
+			<p className="mt-2 text-sm font-bold text-fg">اینجا هنوز سفیده...</p>
 
-			<p className="text-center text-[.65rem] leading-5 text-ds-fg opacity-75">
+			<p className="text-center text-[.65rem] leading-5 text-fg opacity-75">
 				اولین یادداشتت رو بنویس.
 				<br />
 				مثلا:
