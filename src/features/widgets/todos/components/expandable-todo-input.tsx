@@ -233,7 +233,7 @@ export function ExpandableTodoInput({
 			<div
 				className={`overflow-hidden transition-shadow ${isExpanded ? 'shadow-xl' : ''} rounded-xl`}
 			>
-				<div className="flex items-center gap-1 p-2 border rounded-3xl bg-surface-2 border-line">
+				<div className="flex items-center gap-1 p-2 border rounded-widget bg-surface-2 border-line">
 					<div className="w-full grow">
 						<TextInput
 							ref={inputRef}

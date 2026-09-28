@@ -88,7 +88,7 @@ export const buttonVariants = cva(
 			variant: 'solid',
 			color: 'base',
 			size: 'md',
-			rounded: '2xl',
+			rounded: 'xl',
 			fullWidth: false,
 		},
 	}

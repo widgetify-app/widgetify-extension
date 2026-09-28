@@ -200,9 +200,9 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 					colorTheme.bg
 				)}
 			>
-				<div className="w-1/2 h-3 rounded skeleton" />
+				<div className="w-1/2 h-3 rounded-sm skeleton" />
 				<div className="flex-1 rounded-xl skeleton" />
-				<div className="w-1/3 h-3 rounded skeleton" />
+				<div className="w-1/3 h-3 rounded-sm skeleton" />
 			</div>
 		)
 	}

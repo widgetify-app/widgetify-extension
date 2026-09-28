@@ -48,7 +48,10 @@ export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareMod
 		>
 			<div className="flex flex-col gap-4 p-2">
 				<div className="flex items-center justify-center overflow-hidden">
-					<canvas ref={canvasRef} className="h-auto max-w-full rounded-3xl" />
+					<canvas
+						ref={canvasRef}
+						className="h-auto max-w-full rounded-widget"
+					/>
 				</div>
 
 				<div className="flex flex-wrap items-center justify-between gap-2 px-2 pt-2.5 border-t border-line">

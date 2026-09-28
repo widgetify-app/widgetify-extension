@@ -70,8 +70,8 @@ export function HabitDetailModal({
 			<div className="flex items-center gap-2">
 				<div className="rounded-lg w-7 h-7 skeleton" />
 				<div className="flex flex-col flex-1 gap-2">
-					<div className="h-4 rounded w-28 skeleton" />
-					<div className="w-16 h-3 rounded skeleton" />
+					<div className="h-4 rounded-sm w-28 skeleton" />
+					<div className="w-16 h-3 rounded-sm skeleton" />
 				</div>
 			</div>
 		) : (

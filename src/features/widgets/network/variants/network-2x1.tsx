@@ -58,13 +58,13 @@ export function NetworkCompactRow({
 			>
 				<div className="flex flex-col flex-1 gap-2">
 					<div className="flex items-center gap-2">
-						<div className="w-4 h-4 rounded skeleton" />
-						<div className="h-3 rounded w-14 skeleton" />
-						<div className="w-24 h-3.5 rounded skeleton" />
+						<div className="w-4 h-4 rounded-sm skeleton" />
+						<div className="h-3 rounded-sm w-14 skeleton" />
+						<div className="w-24 h-3.5 rounded-sm skeleton" />
 					</div>
 					<div className="flex items-center gap-2">
-						<div className="w-10 h-3 rounded skeleton" />
-						<div className="w-20 h-3 rounded skeleton" />
+						<div className="w-10 h-3 rounded-sm skeleton" />
+						<div className="w-20 h-3 rounded-sm skeleton" />
 					</div>
 				</div>
 				<div className="w-8 h-8 rounded-full skeleton shrink-0" />

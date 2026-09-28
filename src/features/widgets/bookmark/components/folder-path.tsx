@@ -13,7 +13,7 @@ export function FolderPath({ folderPath, onNavigate, className }: FolderPathProp
 	return (
 		<nav
 			aria-label="Folder navigation"
-			className={`flex w-fit items-center px-4 py-2 text-xs rounded ${className}`}
+			className={`flex w-fit items-center px-4 py-2 text-xs rounded-sm ${className}`}
 		>
 			<ol className="flex flex-wrap items-center gap-y-1">
 				<li>

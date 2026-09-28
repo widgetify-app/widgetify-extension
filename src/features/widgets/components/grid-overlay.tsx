@@ -19,7 +19,7 @@ function GridOverlayImpl({
 
 	return (
 		<div
-			className="absolute inset-0 overflow-hidden pointer-events-none rounded-3xl"
+			className="absolute inset-0 overflow-hidden pointer-events-none rounded-widget"
 			style={{
 				gap: `${gap}px`,
 			}}

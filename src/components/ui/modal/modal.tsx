@@ -127,7 +127,7 @@ export function Modal({
 							<button
 								type="button"
 								onClick={onClose}
-								className="flex items-center justify-center transition-all cursor-pointer w-7 h-7 md:w-8 md:h-8 bg-surface-3 text-fg-muted hover:bg-fill-2 hover:scale-105 active:scale-95 shrink-0 border-0! rounded-xl focus-visible:focus-ring"
+								className="flex items-center justify-center transition-all cursor-pointer w-7 h-7 md:w-8 md:h-8 bg-surface-3 text-fg-muted hover:bg-fill-2 hover:scale-105 active:scale-95 shrink-0 border-0! rounded-lg focus-visible:focus-ring"
 								aria-label="بستن"
 							>
 								<Icon name="close" size={16} className="md:hidden" />

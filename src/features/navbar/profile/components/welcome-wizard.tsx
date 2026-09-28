@@ -374,7 +374,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} size="xl" title=" ">
-			<div className="relative overflow-hidden rounded bg-surface">
+			<div className="relative overflow-hidden rounded-sm bg-surface">
 				{currentStep > 1 && currentStep < totalSteps && (
 					<button
 						onClick={prevStep}

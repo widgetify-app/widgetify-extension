@@ -1,7 +1,7 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 
 export const vipBadgeVariants = cva(
-	'inline-flex items-center justify-center font-bold select-none shrink-0 transition-transform hover:scale-105 active:scale-95 cursor-default',
+	'inline-flex items-center justify-center rounded-full font-bold select-none shrink-0 transition-transform hover:scale-105 active:scale-95 cursor-default',
 	{
 		variants: {
 			variant: {
@@ -15,18 +15,10 @@ export const vipBadgeVariants = cva(
 				md: 'text-xs px-2.5 py-1 gap-1.5',
 				lg: 'text-sm px-3 py-1.5 gap-1.5',
 			},
-			rounded: {
-				sm: 'rounded-sm',
-				md: 'rounded-lg',
-				lg: 'rounded-lg',
-				xl: 'rounded-xl',
-				full: 'rounded-full',
-			},
 		},
 		defaultVariants: {
 			variant: 'indigo',
 			size: 'sm',
-			rounded: 'full',
 		},
 	}
 )

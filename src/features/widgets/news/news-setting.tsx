@@ -322,7 +322,7 @@ const FeedItem = ({ feed, disabled = false, onToggle, onRemove }: FeedItemProps)
 
 	return (
 		<div
-			className={`flex items-center justify-between px-2.5 py-2 transition-colors rounded-3xl bg-surface-2 border border-surface-3 ${!feed.enabled && 'opacity-60'} ${disabled && 'cursor-not-allowed'}`}
+			className={`flex items-center justify-between px-2.5 py-2 transition-colors rounded-widget bg-surface-2 border border-surface-3 ${!feed.enabled && 'opacity-60'} ${disabled && 'cursor-not-allowed'}`}
 		>
 			<div className="flex items-center flex-1 gap-3">
 				<ToggleSwitch

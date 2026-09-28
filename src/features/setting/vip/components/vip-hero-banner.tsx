@@ -38,7 +38,7 @@ const VIP_FEATURES: VipFeatureItem[] = [
 
 export function VipHeroBanner() {
 	return (
-		<div className="relative overflow-hidden rounded-3xl border border-vip-fill bg-gradient-to-br from-vip-fill via-fill to-fill p-5 sm:p-6 shadow-sm">
+		<div className="relative overflow-hidden rounded-widget border border-vip-fill bg-gradient-to-br from-vip-fill via-fill to-fill p-5 sm:p-6 shadow-sm">
 			<div className="absolute -top-12 -left-12 w-48 h-48 rounded-full bg-vip-fill-2 blur-3xl pointer-events-none" />
 			<div className="absolute -bottom-12 -right-12 w-48 h-48 rounded-full bg-vip-fill blur-3xl pointer-events-none" />
 

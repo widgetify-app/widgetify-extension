@@ -88,10 +88,10 @@ export function CurrencyCompactSquare({
 			>
 				<div className="flex items-center justify-between w-full gap-1.5">
 					<div className="w-5 h-5 rounded-full skeleton" />
-					<div className="h-3.5 w-14 rounded skeleton" />
+					<div className="h-3.5 w-14 rounded-sm skeleton" />
 				</div>
-				<div className="w-20 h-6 my-auto rounded skeleton" />
-				<div className="w-12 h-4 rounded skeleton" />
+				<div className="w-20 h-6 my-auto rounded-sm skeleton" />
+				<div className="w-12 h-4 rounded-sm skeleton" />
 			</div>
 		)
 	}

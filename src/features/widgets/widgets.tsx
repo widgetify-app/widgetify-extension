@@ -207,7 +207,7 @@ export function FreeWidgetCanvas() {
 			onContextMenu={handleCanvasContextMenu}
 		>
 			<div
-				className="relative w-full transition-colors duration-300 canvas-background rounded-3xl"
+				className="relative w-full transition-colors duration-300 canvas-background rounded-widget"
 				style={{
 					minHeight: `${canvasPixelHeight}px`,
 					height: `${canvasPixelHeight}px`,

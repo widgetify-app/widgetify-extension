@@ -128,8 +128,8 @@ export const GoogleCalendarSchedule: React.FC<GoogleCalendarScheduleProps> = ({
 							>
 								<div className="w-10 h-8 rounded-lg bg-fill-2 shrink-0" />
 								<div className="flex-1 space-y-1">
-									<div className="w-3/4 h-3 rounded bg-fill-2" />
-									<div className="w-1/2 h-2 rounded bg-fill" />
+									<div className="w-3/4 h-3 rounded-sm bg-fill-2" />
+									<div className="w-1/2 h-2 rounded-sm bg-fill" />
 								</div>
 							</div>
 						))}

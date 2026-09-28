@@ -53,8 +53,8 @@ export const FriendsList = ({
 						<div className="flex items-center flex-1 min-w-0 gap-3">
 							<div className="w-12 h-12 rounded-full skeleton" />
 							<div className="flex-1 space-y-2">
-								<div className="w-1/3 h-3 rounded skeleton" />
-								<div className="w-1/4 h-2 rounded skeleton" />
+								<div className="w-1/3 h-3 rounded-sm skeleton" />
+								<div className="w-1/4 h-2 rounded-sm skeleton" />
 							</div>
 						</div>
 						<div className="w-16 h-8 rounded-lg skeleton" />

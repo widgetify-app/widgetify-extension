@@ -181,10 +181,21 @@ keep `cqh`/`cqw` sizes.
 
 ## Radius
 
-`rounded-xs` 2 · `sm` 4 · `lg` 8 · `xl` 12 · `2xl` 16 · `3xl` 24 ·
-`full`, and `rounded-widget` for a widget's own frame so every widget can change
-together. `rounded-md`, `rounded-4xl` and arbitrary radii are removed from the
-scale and rejected by a test.
+Each step has a role. Pick it by what the element is, not by what looks close:
+
+| step | px | for |
+|---|---|---|
+| `rounded-xs` | 2 | hairline marks |
+| `rounded-sm` | 4 | thin bars, small marks |
+| `rounded-lg` | 8 | anything 32px or smaller: icon buttons, badges, tags, tooltips |
+| `rounded-xl` | 12 | controls: buttons, inputs, list and menu rows |
+| `rounded-2xl` | 16 | cards, panels, popovers, dropdowns |
+| `rounded-widget` | 24 | a widget's frame, modals, the navbar, the bottom sheet |
+| `rounded-full` | | pills, avatars, day cells, dots |
+
+`components/ui` follows the table, and `Button` defaults to `xl`. Code outside
+it predates the table and is not yet held to it. `rounded-md`, `rounded-3xl`,
+`rounded-4xl`, bare `rounded` and arbitrary radii are rejected by a test.
 
 ## Layers
 

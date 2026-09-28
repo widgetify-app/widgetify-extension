@@ -18,7 +18,7 @@ interface SelectedCity {
 }
 
 interface Prop {
-	size?: 'lg' | 'xs'
+	size?: 'xs'
 	onSave?: () => void
 }
 export function SelectCity({ size }: Prop) {

@@ -382,7 +382,7 @@ logout clears it with `clearLocalStorage`, as it clears every other setting.
 
 **Modals are always right to left.** `Modal` has no direction prop; it labels itself from its `title` and its close button reads «بستن».
 
-**Buttons** take `color` from the token names: `base`, `brand`, `danger`, `success`, `warning`, `vip`. `brand` is the app's main action. `rounded` defaults to `2xl`.
+**Buttons** take `color` from the token names: `base`, `brand`, `danger`, `success`, `warning`, `vip`. `brand` is the app's main action. `rounded` defaults to `xl`; every radius has a role, listed in `src/styles/README.md`.
 
 **Analytics** via `@/analytics`.
 

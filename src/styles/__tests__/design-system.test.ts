@@ -125,8 +125,19 @@ describe('one vocabulary', () => {
 
 	it('rounds corners from the radius scale', () => {
 		const pattern =
-			/(?<![\w-])(?:[a-z0-9/&>[\]-]+:)*!?rounded(-[tblrxyse]{1,2})?-(md|4xl|card|\[[^\]]+\])(?![\w-])/
+			/(?<![\w-])(?:[a-z0-9/&>[\]-]+:)*!?rounded(-[tblrxyse]{1,2})?-(md|3xl|4xl|card|\[[^\]]+\])(?![\w-])/
 		expect(offenders(pattern)).toEqual([])
+	})
+
+	it('writes the 4px radius as rounded-sm, never bare rounded', () => {
+		const bare = /^(?:[a-z0-9/&>[\]-]+:)*!?rounded(-(?:tl|tr|bl|br|ss|se|es|ee|t|b|l|r|s|e))?!?$/
+		const found = sourceFiles().flatMap((path) =>
+			[...readFileSync(path, 'utf8').matchAll(/'([^'\n]*)'|"([^"\n]*)"|`([^`]*)`/g)]
+				.flatMap((m) => (m[1] ?? m[2] ?? m[3]).split(/\s+/))
+				.filter((token) => bare.test(token))
+				.map((token) => `${path}: ${token}`)
+		)
+		expect(found).toEqual([])
 	})
 
 	it('never uses the OS-keyed dark:/light: variants', () => {

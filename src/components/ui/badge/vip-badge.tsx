@@ -27,7 +27,6 @@ interface VipBadgeProps
 export function VipBadge({
 	size = 'sm',
 	variant = 'indigo',
-	rounded = 'full',
 	iconOnly = false,
 	text = 'پرو',
 	className,
@@ -39,7 +38,7 @@ export function VipBadge({
 	return (
 		<span
 			className={cn(
-				vipBadgeVariants({ variant, size, rounded }),
+				vipBadgeVariants({ variant, size }),
 				iconOnly && [
 					'aspect-square shrink-0 justify-center items-center',
 					ICON_ONLY_SIZES[currentSize],

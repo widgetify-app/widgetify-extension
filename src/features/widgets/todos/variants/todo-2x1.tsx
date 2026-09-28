@@ -54,9 +54,9 @@ export function TodoCompactRow({
 			<div className="flex items-center justify-between w-full h-full px-3 py-2 select-none">
 				<div className="flex items-center gap-2">
 					<div className="w-5 h-5 rounded-lg skeleton" />
-					<div className="w-32 h-4 rounded skeleton" />
+					<div className="w-32 h-4 rounded-sm skeleton" />
 				</div>
-				<div className="w-12 h-4 rounded skeleton" />
+				<div className="w-12 h-4 rounded-sm skeleton" />
 			</div>
 		)
 	}

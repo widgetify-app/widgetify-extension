@@ -33,7 +33,7 @@ export function AboutUsTab() {
 						href="https://widgetify.ir"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-3xl border-line bg-fill hover:bg-fill-2 hover:border-brand-fill-2"
+						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-widget border-line bg-fill hover:bg-fill-2 hover:border-brand-fill-2"
 					>
 						<div className="flex items-center gap-3">
 							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-brand-fill text-brand group-hover:scale-110">
@@ -59,7 +59,7 @@ export function AboutUsTab() {
 						href="https://blog.widgetify.ir"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-3xl border-line bg-fill hover:bg-fill-2 hover:border-[rgba(var(--color-secondary-rgb),0.2)]"
+						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-widget border-line bg-fill hover:bg-fill-2 hover:border-[rgba(var(--color-secondary-rgb),0.2)]"
 					>
 						<div className="flex items-center gap-3">
 							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-secondary-fill text-secondary group-hover:scale-110">
@@ -85,7 +85,7 @@ export function AboutUsTab() {
 						href="https://t.me/widgetify"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-3xl border-line bg-fill hover:bg-fill-2 hover:border-info-fill-2"
+						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-widget border-line bg-fill hover:bg-fill-2 hover:border-info-fill-2"
 					>
 						<div className="flex items-center gap-3">
 							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-info-fill text-info group-hover:scale-110">
@@ -111,7 +111,7 @@ export function AboutUsTab() {
 						href="https://ble.ir/widgetify"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-3xl border-line bg-fill hover:bg-fill-2 hover:border-success-fill-2"
+						className="flex items-center justify-between p-4 transition-all duration-200 border group rounded-widget border-line bg-fill hover:bg-fill-2 hover:border-success-fill-2"
 					>
 						<div className="flex items-center gap-3">
 							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-success-fill text-success group-hover:scale-110">

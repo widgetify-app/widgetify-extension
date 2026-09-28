@@ -395,7 +395,6 @@ function CanvasWidgetOuterImpl({
 								<ProBadge
 									size={isCompactSize ? 'xs' : 'sm'}
 									variant="indigo"
-									rounded="full"
 								/>
 								{!isCompactSize && (
 									<span className="text-2xs font-medium text-fg-muted transition-colors duration-200 group-hover:text-fg">

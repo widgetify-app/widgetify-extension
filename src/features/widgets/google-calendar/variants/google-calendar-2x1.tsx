@@ -32,13 +32,13 @@ export const GoogleCalendar2x1: React.FC<GoogleCalendar2x1Props> = ({
 				className="flex items-center justify-between w-full h-full gap-3 p-3 select-none animate-pulse"
 			>
 				<div className="w-1/3 space-y-1.5">
-					<div className="w-3/4 h-3 rounded bg-fill-2" />
-					<div className="w-1/2 h-4 rounded bg-fill" />
+					<div className="w-3/4 h-3 rounded-sm bg-fill-2" />
+					<div className="w-1/2 h-4 rounded-sm bg-fill" />
 				</div>
 				<div className="w-px h-8 bg-fill-2 shrink-0" />
 				<div className="flex-1 space-y-1.5">
-					<div className="w-2/3 h-3 rounded bg-fill-2" />
-					<div className="w-1/3 h-2 rounded bg-fill" />
+					<div className="w-2/3 h-3 rounded-sm bg-fill-2" />
+					<div className="w-1/3 h-2 rounded-sm bg-fill" />
 				</div>
 			</div>
 		)

@@ -8,11 +8,11 @@ export function HabitItemSkeleton() {
 				<div className="rounded-lg w-7 h-7 shrink-0 skeleton " />
 
 				<div className="flex-1 min-w-0 space-y-1.5">
-					<div className="w-1/2 h-3 rounded skeleton " />
-					<div className="w-1/3 h-2 rounded skeleton " />
+					<div className="w-1/2 h-3 rounded-sm skeleton " />
+					<div className="w-1/3 h-2 rounded-sm skeleton " />
 				</div>
 
-				<div className="h-2.5 w-8 rounded skeleton shrink-0" />
+				<div className="h-2.5 w-8 rounded-sm skeleton shrink-0" />
 			</div>
 
 			<div className="flex gap-0.5 mt-1.5">

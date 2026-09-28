@@ -25,7 +25,7 @@ export const ActiveFriendsHorizontal = () => {
 						>
 							<div className="z-10 w-24 h-12 bg-surface-3 rounded-xl skeleton" />
 							<div className="w-12 h-12 -mt-2 rounded-full bg-surface-3 skeleton" />
-							<div className="w-20 h-3 mt-2 rounded bg-surface-3 skeleton" />
+							<div className="w-20 h-3 mt-2 rounded-sm bg-surface-3 skeleton" />
 						</div>
 					))}
 				</div>

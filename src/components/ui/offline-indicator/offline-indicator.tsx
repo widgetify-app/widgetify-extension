@@ -18,7 +18,7 @@ export const OfflineIndicator = ({ mode, message }: OfflineIndicatorProps) => {
 
 	if (mode === 'status') {
 		return (
-			<div className="text-xs mt-1 py-0.5 px-2 rounded border offline-indicator-status inline-flex items-center gap-1">
+			<div className="text-xs mt-1 py-0.5 px-2 rounded-sm border offline-indicator-status inline-flex items-center gap-1">
 				<Icon name="offline" className="text-xs" />
 				<span className="font-light">{message || 'حالت آفلاین'}</span>
 			</div>
@@ -26,7 +26,7 @@ export const OfflineIndicator = ({ mode, message }: OfflineIndicatorProps) => {
 	}
 
 	return (
-		<div className="flex items-center gap-2 p-3 text-sm font-bold border rounded-lg bg-danger-fill-2 text-danger border-danger-fill-2">
+		<div className="flex items-center gap-2 p-3 text-sm font-bold border rounded-2xl bg-danger-fill-2 text-danger border-danger-fill-2">
 			<Icon name="offline" className="text-lg shrink-0" />
 			<p>
 				{message ||

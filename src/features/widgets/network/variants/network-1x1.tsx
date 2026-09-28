@@ -48,9 +48,9 @@ export function NetworkCompactSquare({
 				</div>
 				<div className="flex flex-col items-center justify-center my-auto">
 					<div className="mb-1 rounded-lg w-16 h-7 skeleton" />
-					<div className="w-12 h-2.5 rounded skeleton" />
+					<div className="w-12 h-2.5 rounded-sm skeleton" />
 				</div>
-				<div className="h-3 mx-auto rounded w-14 skeleton" />
+				<div className="h-3 mx-auto rounded-sm w-14 skeleton" />
 			</div>
 		)
 	}

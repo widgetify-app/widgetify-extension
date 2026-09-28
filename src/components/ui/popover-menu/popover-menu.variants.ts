@@ -2,7 +2,7 @@ import { cva } from 'class-variance-authority'
 
 export const popoverMenuVariants = cva([
 	'bg-glass-surface-2',
-	'rounded-3xl',
+	'rounded-2xl',
 	'shadow-xl',
 	'border',
 	'border-line',

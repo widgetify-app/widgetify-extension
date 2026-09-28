@@ -108,7 +108,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
 			<div
 				ref={triggerRef}
 				onClick={() => setIsOpen((prev) => !prev)}
-				className="w-8 h-8 p-1 transition-transform border-0 shadow-sm cursor-pointer rounded-xl hover:scale-105 active:scale-95"
+				className="w-8 h-8 p-1 transition-transform border-0 shadow-sm cursor-pointer rounded-lg hover:scale-105 active:scale-95"
 				style={{ backgroundColor: displayColor }}
 			/>
 

@@ -104,8 +104,8 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 								<div className="flex items-center gap-2.5">
 									<div className="w-8 h-8 rounded-full skeleton" />
 									<div className="space-y-1">
-										<div className="w-20 h-3 rounded skeleton" />
-										<div className="w-14 h-2 rounded skeleton" />
+										<div className="w-20 h-3 rounded-sm skeleton" />
+										<div className="w-14 h-2 rounded-sm skeleton" />
 									</div>
 								</div>
 							</div>

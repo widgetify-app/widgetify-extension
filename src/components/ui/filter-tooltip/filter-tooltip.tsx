@@ -43,7 +43,7 @@ export function FilterTooltip({
 				<Button
 					size="sm"
 					ref={filterButtonRef}
-					className={`px-2 border h-7! border-none! rounded-xl text-fg-faint shrink-0 active:scale-95 ${buttonClassName || ''}`}
+					className={`px-2 border h-7! border-none! rounded-lg text-fg-faint shrink-0 active:scale-95 ${buttonClassName || ''}`}
 				>
 					{icon}
 				</Button>
@@ -60,7 +60,7 @@ export function FilterTooltip({
 							<button
 								key={option.value}
 								onClick={() => handleFilterSelect(option.value)}
-								className={`px-3 py-2 text-xs cursor-pointer text-right rounded-lg transition-colors ${
+								className={`px-3 py-2 text-xs cursor-pointer text-right rounded-xl transition-colors ${
 									value === option.value
 										? 'bg-brand-fill text-brand border border-brand-fill-2'
 										: 'hover:bg-fill-2 text-fg'

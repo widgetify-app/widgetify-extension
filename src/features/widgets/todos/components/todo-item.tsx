@@ -217,7 +217,7 @@ export function TodoItem({
 						aria-expanded={expanded}
 						aria-label={expanded ? 'بستن جزئیات' : 'نمایش جزئیات'}
 						className={cn(
-							'rounded p-0.5 text-fg-muted opacity-50 cursor-pointer transition-transform duration-300 hover:scale-110 focus-visible:focus-ring',
+							'rounded-sm p-0.5 text-fg-muted opacity-50 cursor-pointer transition-transform duration-300 hover:scale-110 focus-visible:focus-ring',
 							expanded && 'rotate-180'
 						)}
 					>

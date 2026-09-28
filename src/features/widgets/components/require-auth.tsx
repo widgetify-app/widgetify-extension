@@ -50,7 +50,7 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 							onClick={handleAuthClick}
 							size="sm"
 							color="brand"
-							className="mt-2 w-fit px-6 border-none shadow-none rounded-3xl"
+							className="mt-2 w-fit px-6 border-none shadow-none rounded-widget"
 						>
 							ورود به حساب
 						</Button>
@@ -77,7 +77,7 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 					onClick={handleAuthClick}
 					size="sm"
 					color="brand"
-					className="mt-2 w-fit px-6 border-none shadow-none rounded-3xl"
+					className="mt-2 w-fit px-6 border-none shadow-none rounded-widget"
 				>
 					ورود به حساب
 				</Button>

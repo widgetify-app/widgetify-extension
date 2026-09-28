@@ -107,7 +107,7 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 								key={`agenda-skeleton-${i}`}
 								className="space-y-1.5 animate-pulse"
 							>
-								<div className="w-24 h-3 rounded bg-fill-2" />
+								<div className="w-24 h-3 rounded-sm bg-fill-2" />
 								<div className="h-12 rounded-2xl bg-fill" />
 							</div>
 						))}
