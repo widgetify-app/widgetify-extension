@@ -134,12 +134,7 @@ export function useWidgetVipResolver(enabled = true) {
 			const serverItem = serverCatalog?.widgets?.find(
 				(w) => w.widgetKey === widgetKey
 			)
-			if (serverItem && typeof serverItem.isNew === 'boolean') {
-				return serverItem.isNew
-			}
-			const localDef =
-				WIDGET_DEFINITIONS[widgetKey as keyof typeof WIDGET_DEFINITIONS]
-			return Boolean(localDef?.isNew)
+			return Boolean(serverItem?.isNew)
 		},
 		[serverCatalog]
 	)

@@ -92,7 +92,6 @@ export interface WidgetDefinition {
 	canDuplicate: boolean
 	order?: number
 	canToggle?: boolean
-	isNew?: boolean
 	disabled?: boolean
 	soon?: boolean
 	popular?: boolean

@@ -150,7 +150,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		order: 1,
 		canToggle: true,
 		popular: true,
-		isNew: true,
 		allowedSizes: [
 			{ w: 1, h: 1 },
 			{ w: 2, h: 1 },
@@ -245,7 +244,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		category: 'productivity',
 		order: 1,
 		canToggle: true,
-		isNew: false,
 		allowedSizes: [{ w: 2, h: 3 }],
 		defaultSize: { w: 2, h: 3 },
 		canDuplicate: false,
@@ -333,7 +331,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		category: 'info',
 		order: 7,
 		canToggle: true,
-		isNew: false,
 		allowedSizes: [
 			{ w: 1, h: 1, isVipOnly: true },
 			{ w: 2, h: 1, isVipOnly: true },
@@ -351,7 +348,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		category: 'productivity',
 		order: 8,
 		canToggle: true,
-		isNew: true,
 		isBeta: false,
 		allowedSizes: [
 			{ w: 2, h: 1 },
@@ -488,7 +484,6 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		emoji: '⏳',
 		icon: 'calendarDot',
 		category: 'time',
-		isNew: true,
 		allowedSizes: [{ w: 2, h: 2 }],
 		defaultSize: { w: 2, h: 2 },
 		variants: [
