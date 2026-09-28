@@ -56,9 +56,7 @@ export function VoiceSearchPortal({
 			>
 				<div className="flex items-center justify-between px-1 mb-6">
 					<div className="flex items-center gap-2">
-						<span className="text-[15px] font-medium text-fg">
-							جستجوی صوتی
-						</span>
+						<span className="text-sm font-medium text-fg">جستجوی صوتی</span>
 						<div aria-hidden="true" className="flex items-end h-3 gap-1 mb-1">
 							{[...Array(4)].map((_, i) => (
 								<div

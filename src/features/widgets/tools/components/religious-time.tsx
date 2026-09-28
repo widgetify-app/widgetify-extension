@@ -110,7 +110,7 @@ export function ReligiousTime({ currentDate }: ReligiousTimeProps) {
 								<span className="text-4xs font-black opacity-60 mb-0.5 whitespace-nowrap uppercase">
 									{box.title}
 								</span>
-								<span className="text-[12px] font-black text-fg">
+								<span className="text-xs font-black text-fg">
 									{box.value}
 								</span>
 							</div>

@@ -14,9 +14,7 @@ const steps: Step[] = [
 		target: '#chrome-footer',
 		content: (
 			<div className="flex flex-col gap-2 text-center">
-				<h4 className="text-[13px] font-black text-brand">
-					خلوت کردن فضای مرورگر
-				</h4>
+				<h4 className="text-sm font-black text-brand">خلوت کردن فضای مرورگر</h4>
 
 				<p className="text-xs leading-5 text-fg-muted font-medium">
 					برای مخفی کردن این نوار، کافیه روش{' '}

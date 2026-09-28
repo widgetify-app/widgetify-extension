@@ -102,7 +102,7 @@ export const CurrencyConverter: React.FC = () => {
 			<div className="flex flex-col gap-2 px-1 mt-1">
 				<div className="flex justify-between items-center text-2xs font-bold opacity-50">
 					<span>ارزش به تومان:</span>
-					<span className="text-[12px] font-black text-fg">
+					<span className="text-xs font-black text-fg">
 						{fromCurrencyData
 							? formatNumber(fromCurrencyData.rialPrice * amount)
 							: 0}{' '}

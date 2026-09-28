@@ -70,13 +70,11 @@ function NavbarTabs() {
         `}
 					>
 						{page === tab.id && tab.activeIcon ? (
-							<span className="block text-[18px] sm:text-[22px]">
+							<span className="block text-lg sm:text-xl">
 								{tab.activeIcon}
 							</span>
 						) : (
-							<span className="block text-[18px] sm:text-[22px]">
-								{tab.icon}
-							</span>
+							<span className="block text-lg sm:text-xl">{tab.icon}</span>
 						)}
 					</span>
 

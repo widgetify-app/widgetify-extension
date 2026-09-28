@@ -15,11 +15,8 @@ export const textInputVariants = cva(
 	{
 		variants: {
 			size: {
-				xs: 'h-6 px-2 text-2xs',
 				sm: 'h-8 px-3 text-xs',
 				md: 'h-10 px-3 text-sm',
-				lg: 'h-12 px-4 text-lg',
-				xl: 'h-14 px-4 text-[1.375rem]',
 			},
 			invalid: {
 				true: 'border-danger focus:border-danger focus:ring-danger-fill-2',

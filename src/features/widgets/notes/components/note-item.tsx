@@ -40,7 +40,7 @@ export const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }) => {
 				className="flex flex-col w-full text-start cursor-pointer active:scale-[0.99] hover:opacity-90 focus-visible:focus-ring"
 			>
 				<span className="flex items-center justify-between w-full gap-2 px-2.5 py-1.5">
-					<span className="text-[12px] font-bold truncate">{title}</span>
+					<span className="text-xs font-bold truncate">{title}</span>
 					<span className="flex items-center gap-1 shrink-0">
 						<Icon name="calendarDays" size={10} aria-hidden="true" />
 						<time

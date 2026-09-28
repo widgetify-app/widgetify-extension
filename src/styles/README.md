@@ -175,9 +175,10 @@ Every scrollbar is thin, with a `fg-ghost` thumb on a clear track. Set once in
 
 Text below `text-xs` has three steps: `text-2xs` 11px · `text-3xs` 10px ·
 `text-4xs` 9px. Unlike `text-xs` and up they set no line height, so they inherit
-it exactly as the pixel values they replaced did. A test rejects `text-[10px]`
-and the other pixel sizes they cover. Widgets that scale with their container
-keep `cqh`/`cqw` sizes.
+it exactly as the pixel values they replaced did. From `text-xs` up it is
+Tailwind's scale. A test rejects any size written in `px`, `rem` or `em`
+(`text-[13px]`); pick the nearest step instead. Widgets that scale with their
+container keep `cqh`/`cqw` sizes.
 
 ## Radius
 

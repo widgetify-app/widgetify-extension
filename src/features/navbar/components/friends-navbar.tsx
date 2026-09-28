@@ -7,11 +7,6 @@ import { listenEvent } from '@/common/utils/call-event'
 import Analytics from '@/analytics'
 import { Icon } from '@/icons'
 
-const renderPendingNotification = (pendingCount: number) => (
-	<div className="absolute flex items-center justify-center w-2 h-2 text-[.4rem] z-20 font-bold text-on-danger bg-danger rounded-full top-1 right-1 p-0.5 text-center">
-		{pendingCount}
-	</div>
-)
 export function FriendsListNavbar() {
 	const { user, isAuthenticated } = useAuth()
 
@@ -49,8 +44,12 @@ export function FriendsListNavbar() {
 				onClick={() => clickToOpenSheet()}
 			>
 				<Icon name="friends" size={15} />
-				{hasPendingRequests &&
-					renderPendingNotification(user?.friendshipStats?.pending || 0)}
+				{hasPendingRequests && (
+					<span
+						aria-hidden="true"
+						className="absolute z-20 w-2 h-2 rounded-full bg-danger top-1 right-1"
+					/>
+				)}
 			</div>
 
 			<BottomSheet isOpen={isOpen} onClose={() => setIsOpen(false)} size="medium">

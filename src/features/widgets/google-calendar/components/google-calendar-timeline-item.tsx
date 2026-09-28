@@ -160,7 +160,7 @@ export const GoogleCalendarTimelineItem = ({
 											content={attendee.email}
 											position="top"
 										>
-											<span className="w-3.5 h-3.5 rounded-full bg-surface-3 border border-line flex items-center justify-center text-[5px] font-bold text-fg-muted">
+											<span className="w-3.5 h-3.5 rounded-full bg-surface-3 border border-line flex items-center justify-center text-4xs font-bold text-fg-muted">
 												{getInitials(attendee.email)}
 											</span>
 										</Tooltip>

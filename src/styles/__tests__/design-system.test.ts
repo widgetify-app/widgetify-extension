@@ -112,9 +112,8 @@ describe('one vocabulary', () => {
 		expect(offenders(pattern)).toEqual([])
 	})
 
-	it('sizes text below text-xs from the scale, not by pixel', () => {
-		const pattern =
-			/(?<![\w-])(?:[a-z0-9/-]+:)*!?text-\[((8|9|10|11|11\.5)px|0?\.(5625|625|65|6875|7)rem)\]/
+	it('sizes text from the scale, never by pixel or rem', () => {
+		const pattern = /(?<![\w-])(?:[a-z0-9/-]+:)*!?text-\[\d*\.?\d+(px|rem|em)\]/
 		expect(offenders(pattern)).toEqual([])
 	})
 
@@ -130,7 +129,8 @@ describe('one vocabulary', () => {
 	})
 
 	it('writes the 4px radius as rounded-sm, never bare rounded', () => {
-		const bare = /^(?:[a-z0-9/&>[\]-]+:)*!?rounded(-(?:tl|tr|bl|br|ss|se|es|ee|t|b|l|r|s|e))?!?$/
+		const bare =
+			/^(?:[a-z0-9/&>[\]-]+:)*!?rounded(-(?:tl|tr|bl|br|ss|se|es|ee|t|b|l|r|s|e))?!?$/
 		const found = sourceFiles().flatMap((path) =>
 			[...readFileSync(path, 'utf8').matchAll(/'([^'\n]*)'|"([^"\n]*)"|`([^`]*)`/g)]
 				.flatMap((m) => (m[1] ?? m[2] ?? m[3]).split(/\s+/))

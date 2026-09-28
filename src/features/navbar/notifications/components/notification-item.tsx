@@ -125,7 +125,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 			<div className="flex-1 min-w-0">
 				<div className="flex items-start justify-between gap-2">
 					<h4
-						className="text-[13px] font-black tracking-tight text-fg"
+						className="text-sm font-black tracking-tight text-fg"
 						style={headTitleStyle}
 					>
 						{title}

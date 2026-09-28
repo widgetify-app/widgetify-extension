@@ -124,7 +124,7 @@ export function Connections() {
 									{platform.icon}
 								</div>
 								<div className="overflow-hidden">
-									<h3 className="text-[13px] font-bold text-fg truncate">
+									<h3 className="text-sm font-bold text-fg truncate">
 										{platform.name}
 									</h3>
 									<p
