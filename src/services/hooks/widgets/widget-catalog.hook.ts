@@ -27,6 +27,7 @@ export interface ServerWidgetCatalogItem {
 	emoji: string
 	category: string
 	isVipOnly?: boolean
+	isNew?: boolean
 	allowedSizes: ServerWidgetSizeOption[]
 	defaultSize: WidgetSize
 	variants?: ServerWidgetVariant[]
@@ -126,6 +127,22 @@ export function useWidgetVipResolver(enabled = true) {
 		[serverCatalog]
 	)
 
+	const isWidgetNew = useCallback(
+		(widgetKey?: string): boolean => {
+			if (!widgetKey) return false
+			const serverItem = serverCatalog?.widgets?.find(
+				(w) => w.widgetKey === widgetKey
+			)
+			if (serverItem && typeof serverItem.isNew === 'boolean') {
+				return serverItem.isNew
+			}
+			const localDef =
+				WIDGET_DEFINITIONS[widgetKey as keyof typeof WIDGET_DEFINITIONS]
+			return Boolean(localDef?.isNew)
+		},
+		[serverCatalog]
+	)
+
 	return useMemo(
 		() => ({
 			serverWidgets: serverCatalog?.widgets,
@@ -133,6 +150,7 @@ export function useWidgetVipResolver(enabled = true) {
 			isWidgetVipOnly,
 			isVariantVipOnly,
 			isSizeVipOnly,
+			isWidgetNew,
 		}),
 		[
 			serverCatalog,
@@ -140,6 +158,7 @@ export function useWidgetVipResolver(enabled = true) {
 			isWidgetVipOnly,
 			isVariantVipOnly,
 			isSizeVipOnly,
+			isWidgetNew,
 		]
 	)
 }

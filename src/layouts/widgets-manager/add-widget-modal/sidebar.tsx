@@ -15,6 +15,7 @@ interface AddWidgetSidebarProps {
 	runtimeLayout: { id: string }[]
 	isVip?: boolean
 	isWidgetVipOnly: (id: string) => boolean
+	isWidgetNew?: (id: string) => boolean
 	onOpenWidgetSettings: (e: React.MouseEvent, settingsTab?: WidgetTabKeys) => void
 }
 
@@ -27,6 +28,7 @@ export function AddWidgetSidebar({
 	runtimeLayout,
 	isVip = false,
 	isWidgetVipOnly,
+	isWidgetNew,
 	onOpenWidgetSettings,
 }: AddWidgetSidebarProps) {
 	return (
@@ -87,6 +89,11 @@ export function AddWidgetSidebar({
 								>
 									{def.label}
 								</span>
+								{isWidgetNew?.(def.id) && (
+									<span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 shrink-0 select-none leading-none">
+										جدید
+									</span>
+								)}
 							</div>
 
 							<div className="flex items-center gap-1.5 shrink-0 mr-2">

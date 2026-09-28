@@ -22,8 +22,13 @@ import { AddWidgetActions } from './actions'
 
 export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalProps) {
 	const { isVip } = useAuth()
-	const { isWidgetVipOnly, isVariantVipOnly, isSizeVipOnly, maxFreeWidgets } =
-		useWidgetVipResolver(isOpen)
+	const {
+		isWidgetVipOnly,
+		isVariantVipOnly,
+		isSizeVipOnly,
+		isWidgetNew,
+		maxFreeWidgets,
+	} = useWidgetVipResolver(isOpen)
 	const freeWidgets = useOptionalFreeWidgets()
 
 	const runtimeLayout = freeWidgets?.runtimeLayout || []
@@ -251,6 +256,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 						runtimeLayout={runtimeLayout}
 						isVip={isVip}
 						isWidgetVipOnly={isWidgetVipOnly}
+						isWidgetNew={isWidgetNew}
 						onOpenWidgetSettings={handleOpenWidgetSettings}
 					/>
 
@@ -264,9 +270,16 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 												<Icon name={selectedDef.icon} size={19} />
 											</span>
 											<div>
-												<h3 className="text-sm font-bold text-content">
-													{selectedDef.label}
-												</h3>
+												<div className="flex items-center gap-1.5">
+													<h3 className="text-sm font-bold text-content">
+														{selectedDef.label}
+													</h3>
+													{isWidgetNew?.(selectedDef.id) && (
+														<span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 shrink-0 select-none leading-none">
+															جدید
+														</span>
+													)}
+												</div>
 												<p className="text-[11px] text-muted">
 													{selectedDef.canDuplicate
 														? 'امکان افزودن چندین نمونه از این ویجت وجود دارد'
