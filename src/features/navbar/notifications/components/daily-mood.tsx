@@ -75,7 +75,7 @@ export function DailyMoodNotification({ className }: Prop) {
 
 	return (
 		<div
-			className={`flex w-full h-20 gap-2 px-2 py-1 transition-all duration-300 border rounded-xl border-surface-3 ${className}`}
+			className={`flex w-full h-20 gap-2 px-2 py-1 transition-ui duration-300 border rounded-xl border-surface-3 ${className}`}
 			id="notificationMood "
 		>
 			<div className="flex-1 min-w-0 ">
@@ -104,7 +104,7 @@ export function DailyMoodNotification({ className }: Prop) {
 								onClick={() =>
 									!isAdding && handleMoodChange(option.value)
 								}
-								className={`p-1.5 w-full shadow-sm rounded-xl transition-all cursor-pointer ${
+								className={`p-1.5 w-full shadow-sm rounded-xl transition-ui cursor-pointer ${
 									mood === option.value
 										? `${option.activeClass} scale-105`
 										: `bg-surface-3 hover:bg-fill-2 opacity-80 hover:opacity-100 hover:scale-95`

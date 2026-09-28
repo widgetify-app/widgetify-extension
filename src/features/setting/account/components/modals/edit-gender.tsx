@@ -58,7 +58,7 @@ export function ChangeGenderModal({ show, onClose, currentValue }: Prop) {
 									key={g}
 									type="button"
 									onClick={() => setValue(g)}
-									className={`flex-1 py-2 px-1 flex flex-col  items-center gap-1 text-3xs font-bold rounded-xl transition-all duration-300 cursor-pointer ${
+									className={`flex-1 py-2 px-1 flex flex-col  items-center gap-1 text-3xs font-bold rounded-xl transition-ui duration-300 cursor-pointer ${
 										isActive
 											? 'text-brand shadow-sm ring-1 ring-brand-fill-2 scale-[1.02]'
 											: 'text-fg-muted hover:text-brand hover:ring-1 hover:ring-brand-fill active:scale-95'

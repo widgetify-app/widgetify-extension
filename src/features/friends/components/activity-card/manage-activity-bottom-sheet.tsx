@@ -216,7 +216,7 @@ export function ManageActivityBottomSheet({
 								setActivity(e.target.value.slice(0, MAX_ACTIVITY_LENGTH))
 							}
 							placeholder="یه چیزی بگو..."
-							className="w-full h-16 px-4 py-2 mt-1 text-base leading-relaxed transition-all border-none outline-none resize-none max-h-16 bg-surface-2 text-fg-muted rounded-2xl placeholder:font-light focus:placeholder:text-fg-ghost"
+							className="w-full h-16 px-4 py-2 mt-1 text-base leading-relaxed transition-ui border-none outline-none resize-none max-h-16 bg-surface-2 text-fg-muted rounded-2xl placeholder:font-light focus:placeholder:text-fg-ghost"
 							rows={4}
 							dir={!activity ? 'rtl' : 'auto'}
 							maxLength={MAX_ACTIVITY_LENGTH}

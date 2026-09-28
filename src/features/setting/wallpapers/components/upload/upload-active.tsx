@@ -21,7 +21,7 @@ export function UploadActive({
 	const isCloudWallpaper = Boolean(customWallpaper.src?.startsWith('http'))
 
 	return (
-		<div className="relative p-3 overflow-hidden transition-all border shadow-sm rounded-2xl border-surface-3 bg-surface-2">
+		<div className="relative p-3 overflow-hidden transition-ui border shadow-sm rounded-2xl border-surface-3 bg-surface-2">
 			<div className="flex items-center justify-between gap-3">
 				<div className="flex items-center min-w-0 gap-3">
 					<div className="relative w-24 h-16 overflow-hidden shadow-sm rounded-xl shrink-0 bg-surface-2">

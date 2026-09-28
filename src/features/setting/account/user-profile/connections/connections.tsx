@@ -111,7 +111,7 @@ export function Connections() {
 							(platform.isActive || platform.connected) &&
 							handleConnectionClick(platform.id)
 						}
-						className={`group relative p-2.5 rounded-2xl border transition-all duration-200 bg-surface-2 border-surface-3
+						className={`group relative p-2.5 rounded-2xl border transition-ui duration-200 bg-surface-2 border-surface-3
                 ${
 					platform.connected ? '' : ' hover:bg-fill'
 				} ${!platform.isActive && !platform.connected ? 'opacity-50' : 'cursor-pointer active:scale-95'}`}
@@ -136,7 +136,7 @@ export function Connections() {
 							</div>
 
 							<div
-								className={`h-7 px-3 flex items-center justify-center rounded-lg text-3xs font-black shrink-0 transition-all
+								className={`h-7 px-3 flex items-center justify-center rounded-lg text-3xs font-black shrink-0 transition-ui
                     ${
 						platform.connected
 							? 'bg-danger-fill text-danger'

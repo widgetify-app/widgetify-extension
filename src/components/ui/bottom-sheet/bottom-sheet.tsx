@@ -108,7 +108,7 @@ export function BottomSheet({
 								{showBack && (
 									<button
 										onClick={onClickBack}
-										className="absolute p-2 transition-all duration-200 rounded-full right-6 active:scale-95"
+										className="absolute p-2 transition-ui duration-200 rounded-full right-6 active:scale-95"
 										aria-label="بستن"
 									>
 										<Icon

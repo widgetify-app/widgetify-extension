@@ -118,7 +118,7 @@ export function ExplorerContent() {
 												tabRefs.current[cat.id] = el
 											}}
 											onClick={() => scrollToCategory(cat.id)}
-											className={`relative flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium whitespace-nowrap rounded-xl transition-all duration-200 shrink-0 cursor-pointer ${
+											className={`relative flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium whitespace-nowrap rounded-xl transition-ui duration-200 shrink-0 cursor-pointer ${
 												active
 													? 'bg-surface-2 text-fg shadow-sm font-semibold'
 													: 'text-fg-muted hover:text-fg hover:bg-fill-2'

@@ -45,7 +45,7 @@ export const ActivityCard = ({
 					<div
 						className={`
 							w-full h-full text-3xs px-2 py-1 rounded-2xl 
-							leading-tight text-center overflow-hidden transition-all
+							leading-tight text-center overflow-hidden transition-ui
 							bg-surface-2 border border-line shadow-sm text-fg-muted
 							${onClick ? 'group-hover:scale-95 cursor-pointer z-10' : ''}
 						`}
@@ -73,7 +73,7 @@ export const ActivityCard = ({
 				<div className="-mt-1">
 					<div
 						className={`
-							rounded-full transition-all ring-2 ring-surface-3
+							rounded-full transition-ui ring-2 ring-surface-3
 							${onClick ? '' : ''}
 						`}
 					>
@@ -132,7 +132,7 @@ function ActivityReactionSelector({ reactions, activityId, index }: Prop) {
 		<Dropdown
 			trigger={
 				<div
-					className={`flex  items-center justify-center w-5 h-5 text-xs text-center transition-all duration-200 rounded-full shadow-sm active:scale-95 bg-fill ${reacted ? 'opacity-85' : 'opacity-50'}`}
+					className={`flex  items-center justify-center w-5 h-5 text-xs text-center transition-ui duration-200 rounded-full shadow-sm active:scale-95 bg-fill ${reacted ? 'opacity-85' : 'opacity-50'}`}
 					onClick={() => setEnable(true)}
 				>
 					{reacted

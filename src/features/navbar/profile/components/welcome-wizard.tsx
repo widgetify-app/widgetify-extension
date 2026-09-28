@@ -34,7 +34,7 @@ const StepImage = ({ src }: { src: string; alt: string }) => {
 	return (
 		<div className="relative flex items-center justify-center w-full overflow-hidden bg-fill-2 md:w-1/2 min-h-80 rounded-2xl group">
 			<div
-				className="absolute inset-0 transition-opacity duration-700 bg-center bg-cover"
+				className="absolute inset-0 transition-opacity duration-500 bg-center bg-cover"
 				style={{
 					backgroundImage: `url(${src})`,
 				}}

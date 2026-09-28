@@ -11,7 +11,7 @@ export const EmptyActivityCard = ({ avatar, name, onClick }: EmptyActivityCardPr
 	return (
 		<button
 			onClick={onClick}
-			className="flex flex-col items-center transition-all duration-150 cursor-pointer shrink-0 group active:scale-95"
+			className="flex flex-col items-center transition-ui duration-150 cursor-pointer shrink-0 group active:scale-95"
 			type="button"
 		>
 			<div className="relative flex flex-col items-center">
@@ -20,7 +20,7 @@ export const EmptyActivityCard = ({ avatar, name, onClick }: EmptyActivityCardPr
 						<div
 							className={`
 							w-full h-full text-3xs px-2 py-1 rounded-2xl 
-							leading-tight text-center overflow-hidden transition-all
+							leading-tight text-center overflow-hidden transition-ui
 							bg-surface-2 border border-line shadow-sm text-fg-muted
 							group-hover:scale-95 cursor-pointer z-10
 						`}
@@ -41,7 +41,7 @@ export const EmptyActivityCard = ({ avatar, name, onClick }: EmptyActivityCardPr
 
 				{/* Avatar */}
 				<div className="-mt-1">
-					<div className="transition-all rounded-full ring-2 ring-surface-3">
+					<div className="transition-ui rounded-full ring-2 ring-surface-3">
 						<AvatarComponent
 							url={avatar}
 							placeholder={name}

@@ -65,7 +65,7 @@ export function VipHeroBanner() {
 					{VIP_FEATURES.map((feature) => (
 						<div
 							key={feature.id}
-							className="flex items-start gap-3 p-3.5 rounded-2xl bg-surface-veil border border-line backdrop-blur-xs hover:bg-surface hover:border-vip-fill-2 transition-all duration-200 shadow-sm"
+							className="flex items-start gap-3 p-3.5 rounded-2xl bg-surface-veil border border-line backdrop-blur-xs hover:bg-surface hover:border-vip-fill-2 transition-ui duration-200 shadow-sm"
 						>
 							<div className="flex items-center justify-center w-8 h-8 rounded-xl bg-vip-fill text-vip shrink-0 mt-0.5">
 								<Icon name={feature.icon} size={16} />

@@ -22,7 +22,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 						return (
 							<div
 								key={index}
-								className={`relative overflow-hidden rounded-2xl transition-all duration-300 ${
+								className={`relative overflow-hidden rounded-2xl transition-ui duration-300 ${
 									taskItem.isDone
 										? 'bg-gradient-to-r from-success-fill to-success-fill border border-success-fill-2'
 										: 'bg-gradient-to-r from-surface to-surface-2 border border-surface-3'
@@ -31,7 +31,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 								<div className="relative flex items-center justify-between gap-3 p-3">
 									<div className="flex items-center flex-1 gap-3">
 										<div
-											className={`relative flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 ${
+											className={`relative flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center transition-ui duration-300 ${
 												taskItem.isDone
 													? 'bg-gradient-to-br from-success to-success shadow-md shadow-success-fill-2'
 													: 'bg-gradient-to-br from-brand to-brand shadow-sm shadow-brand-fill-2'
@@ -54,7 +54,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 										</div>
 										<div className="flex-1 min-w-0">
 											<p
-												className={`text-sm font-medium transition-all duration-200 ${
+												className={`text-sm font-medium transition-ui duration-200 ${
 													taskItem.isDone
 														? 'text-success line-through'
 														: 'text-fg-strong'
@@ -69,7 +69,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 															href={taskItem.button.url}
 															target="_blank"
 															rel="noopener noreferrer"
-															className="inline-flex items-center px-3 py-1 text-xs font-medium transition-all duration-200 rounded-lg bg-brand-fill text-brand hover:bg-brand-fill-2"
+															className="inline-flex items-center px-3 py-1 text-xs font-medium transition-ui duration-200 rounded-lg bg-brand-fill text-brand hover:bg-brand-fill-2"
 														>
 															<Icon
 																name="externalLink"

@@ -13,7 +13,7 @@ export function VoiceSearchButton({ onClick }: { onClick: () => void }) {
 				type="button"
 				onClick={onClickHandle}
 				aria-label="جستجوی گفتاری"
-				className="flex items-center justify-center p-0 transition-all duration-300 bg-transparent border-none rounded-full cursor-pointer h-9 w-9 shrink-0 hover:bg-surface-3 group"
+				className="flex items-center justify-center p-0 transition-ui duration-300 bg-transparent border-none rounded-full cursor-pointer h-9 w-9 shrink-0 hover:bg-surface-3 group"
 			>
 				<svg
 					className="w-6 h-6 transition-colors text-fg-faint"

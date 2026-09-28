@@ -40,7 +40,7 @@ export function FriendsListNavbar() {
 	return (
 		<>
 			<div
-				className="relative p-2 transition-all cursor-pointer text-nav hover:text-nav-hover active:scale-90"
+				className="relative p-2 transition-ui cursor-pointer text-nav hover:text-nav-hover active:scale-90"
 				onClick={() => clickToOpenSheet()}
 			>
 				<Icon name="friends" size={15} />

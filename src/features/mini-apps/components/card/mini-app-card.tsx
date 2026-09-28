@@ -14,7 +14,7 @@ export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
 			onClick={() => onLaunch(app)}
 			className={`
                 group relative flex items-center gap-3 p-2 rounded-2xl cursor-pointer
-                transition-all duration-200 active:scale-[0.98] select-none overflow-hidden
+                transition-ui duration-200 active:scale-[0.98] select-none overflow-hidden
                 border ${
 					isSelected
 						? `border-brand-fill-2 bg-linear-to-t from-brand-fill via-brand-fill to-transparent shadow-md shadow-brand-fill`
@@ -25,7 +25,7 @@ export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
 			<div
 				className={`
                     absolute right-0 top-1/2 -translate-y-1/2 h-6 w-1 rounded-full
-                    transition-all duration-200
+                    transition-ui duration-200
                     ${isSelected ? 'bg-brand opacity-100' : 'opacity-0'}
                 `}
 			/>
@@ -69,7 +69,7 @@ export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
 				<div
 					className={`
                         absolute px-2 py-0.5 text-xs left-0 w-32 text-center top-0 rounded-br-2xl
-                        transform transition-all duration-200 shadow-xl
+                        transform transition-ui duration-200 shadow-xl
                         ${app.badgeAnimate ? 'animate-bounce' : ''}
                         ${isSelected ? 'opacity-100' : 'opacity-90'}
                     `}

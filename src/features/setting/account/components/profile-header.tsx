@@ -127,12 +127,12 @@ export const ProfileHeader = ({
 							placeholder={user?.name || 'کاربر'}
 							size="xl"
 							onClick={() => setMenuOpen((prev) => !prev)}
-							className="w-16 h-16 text-2xl transition-all cursor-pointer ring-4 ring-brand-fill-2"
+							className="w-16 h-16 text-2xl transition-ui cursor-pointer ring-4 ring-brand-fill-2"
 						/>
 						<button
 							type="button"
 							onClick={() => setMenuOpen((prev) => !prev)}
-							className="absolute z-30 p-1 text-on-brand transition-all -translate-x-3 translate-y-3 rounded-full shadow-xl cursor-pointer bottom-2 -right-3 bg-brand hover:scale-110 active:scale-95"
+							className="absolute z-30 p-1 text-on-brand transition-ui -translate-x-3 translate-y-3 rounded-full shadow-xl cursor-pointer bottom-2 -right-3 bg-brand hover:scale-110 active:scale-95"
 						>
 							<Icon name="cameraPlus" size={12} />
 						</button>

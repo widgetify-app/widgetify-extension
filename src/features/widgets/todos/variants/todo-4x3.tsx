@@ -222,7 +222,7 @@ export function TodoBoard({
 							/>
 							<path
 								className={cn(
-									'transition-[stroke-dasharray] duration-700 ease-out',
+									'transition-[stroke-dasharray] duration-500 ease-out',
 									isAllDone ? 'text-success' : 'text-brand'
 								)}
 								stroke="currentColor"

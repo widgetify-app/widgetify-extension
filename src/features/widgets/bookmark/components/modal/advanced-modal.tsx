@@ -110,7 +110,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 					<button
 						key={url}
 						onClick={() => handleEmojiSelect(url)}
-						className={`flex items-center justify-center w-7 h-7 cursor-pointer rounded-lg transition-all duration-150 ease-in-out
+						className={`flex items-center justify-center w-7 h-7 cursor-pointer rounded-lg transition-ui duration-150 ease-in-out
 							${
 								sticker === url
 									? 'bg-brand-fill-2 border-2 border-brand transform scale-110'

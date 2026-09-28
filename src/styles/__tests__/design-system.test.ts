@@ -184,6 +184,32 @@ describe('shared states', () => {
 	})
 })
 
+describe('motion', () => {
+	it('lets transition-ui animate the properties Tailwind moves elements with', () => {
+		const utilities = readFileSync(join(STYLES, 'utilities.css'), 'utf8')
+		const block = utilities.slice(utilities.indexOf('@utility transition-ui'))
+		const properties = block.slice(block.indexOf(':') + 1, block.indexOf(';'))
+		const listed = properties.split(',').map((p) => p.trim())
+		expect(
+			['translate', 'scale', 'rotate', 'transform', 'opacity'].filter(
+				(p) => !listed.includes(p)
+			)
+		).toEqual([])
+	})
+
+	it('never transitions every property', () => {
+		expect(offenders(/(?<![\w-])(?:[a-z0-9-]+:)*!?transition-all(?![\w-])/)).toEqual(
+			[]
+		)
+	})
+
+	it('times transitions from the duration steps', () => {
+		const pattern =
+			/(?<![\w-])(?:[a-z0-9-]+:)*!?duration-(?!(150|200|300|500|1000)(?![\w-]))[\w[\].]+/
+		expect(offenders(pattern)).toEqual([])
+	})
+})
+
 describe('elevation', () => {
 	it('uses only the four shadow steps elevation.css defines', () => {
 		const pattern =

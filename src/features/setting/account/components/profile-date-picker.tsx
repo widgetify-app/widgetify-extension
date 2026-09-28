@@ -264,11 +264,11 @@ function ScrollWheel({ value, max, onChange, type, startYear }: ScrollWheelProps
 						<div
 							key={index}
 							onClick={() => handleItemClick(index)}
-							className="flex items-center justify-center transition-all cursor-pointer"
+							className="flex items-center justify-center transition-ui cursor-pointer"
 							style={{ height: `${ITEM_HEIGHT}px` }}
 						>
 							<span
-								className={`text-sm font-bold transition-all ${
+								className={`text-sm font-bold transition-ui ${
 									isActive
 										? 'text-brand scale-110'
 										: 'text-fg-muted scale-90 opacity-40'

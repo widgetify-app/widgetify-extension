@@ -29,7 +29,7 @@ export function NotificationNavbar() {
 			trigger={
 				<div
 					onClick={handleOpen}
-					className="relative p-2 transition-all cursor-pointer text-nav hover:text-nav-hover active:scale-90"
+					className="relative p-2 transition-ui cursor-pointer text-nav hover:text-nav-hover active:scale-90"
 					id="notifications-button"
 				>
 					<Icon name="notification" size={15} />

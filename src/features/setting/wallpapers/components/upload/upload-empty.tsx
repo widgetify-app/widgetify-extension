@@ -34,7 +34,7 @@ export function UploadEmpty({
 			onDragLeave={onDragLeave}
 			onDrop={onDrop}
 			className={cn(
-				'relative p-3 overflow-hidden transition-all border shadow-sm rounded-2xl border-surface-3 bg-surface-2',
+				'relative p-3 overflow-hidden transition-ui border shadow-sm rounded-2xl border-surface-3 bg-surface-2',
 				isDragging && 'border-brand bg-brand-fill'
 			)}
 		>
@@ -43,7 +43,7 @@ export function UploadEmpty({
 					<div
 						onClick={onFileSelect}
 						className={cn(
-							'relative flex items-center justify-center w-24 h-16 overflow-hidden rounded-xl border border-dashed cursor-pointer shrink-0 transition-all group bg-surface-2',
+							'relative flex items-center justify-center w-24 h-16 overflow-hidden rounded-xl border border-dashed cursor-pointer shrink-0 transition-ui group bg-surface-2',
 							isDragging
 								? 'border-brand bg-brand-fill text-brand'
 								: 'border-line hover:border-brand-muted text-fg-muted hover:text-fg'
@@ -115,7 +115,7 @@ export function UploadEmpty({
 												e.stopPropagation()
 												callEvent('openSettings', 'vip')
 											}}
-											className="inline-flex items-center gap-1 text-2xs font-bold text-vip bg-vip-fill border border-vip-fill-2 px-2.5 py-0.5 rounded-xl hover:bg-vip-fill-2 active:scale-95 transition-all cursor-pointer"
+											className="inline-flex items-center gap-1 text-2xs font-bold text-vip bg-vip-fill border border-vip-fill-2 px-2.5 py-0.5 rounded-xl hover:bg-vip-fill-2 active:scale-95 transition-ui cursor-pointer"
 										>
 											<Icon name="diamond" size={11} />
 											<span>ارتقا به پرو</span>

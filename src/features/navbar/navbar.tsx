@@ -65,7 +65,7 @@ function NavbarTabs() {
 				>
 					<span
 						className={`
-            relative z-10 transition-all duration-300 block
+            relative z-10 transition-ui duration-300 block
             ${page === tab.id ? 'text-brand scale-110' : 'text-nav-idle hover:text-nav-idle-hover'}
         `}
 					>
@@ -144,18 +144,18 @@ export function NavbarLayout(): JSX.Element {
 				onClick={() => onToggleNavbar()}
 				aria-hidden={showHandle ? undefined : true}
 				tabIndex={showHandle ? 0 : -1}
-				className={`fixed z-float bottom-0 left-1/2 -translate-x-1/2 w-28 py-2.5 bg-glass-surface-2 border-t border-x border-line rounded-t-widget shadow-[0_-0px_30px_rgba(0,0,0,0.3)] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] hover:bg-glass-fill-2 cursor-pointer group ${
+				className={`fixed z-float bottom-0 left-1/2 -translate-x-1/2 w-28 py-2.5 bg-glass-surface-2 border-t border-x border-line rounded-t-widget shadow-[0_-0px_30px_rgba(0,0,0,0.3)] transition-ui duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] hover:bg-glass-fill-2 cursor-pointer group ${
 					showHandle
 						? 'translate-y-0 opacity-100'
 						: 'translate-y-full opacity-0 pointer-events-none'
 				}`}
 			>
-				<div className="w-10 h-1 mx-auto transition-all duration-200 rounded-full bg-fill-3 group-hover:w-12" />
+				<div className="w-10 h-1 mx-auto transition-[width] duration-200 rounded-full bg-fill-3 group-hover:w-12" />
 				{hasCloseableNotifications && <NewBadge className="-top-1 left-3" />}
 			</button>
 
 			<div
-				className={`fixed z-nav  -translate-x-1/2 left-1/2 w-full px-2 md:px-8 lg:px-4 max-w-[1080px] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] 
+				className={`fixed z-nav  -translate-x-1/2 left-1/2 w-full px-2 md:px-8 lg:px-4 max-w-[1080px] transition-[bottom,scale] duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] 
 					${
 						showNavbar
 							? 'bottom-2 scale-100'
@@ -193,7 +193,7 @@ export function NavbarLayout(): JSX.Element {
 					<div className="flex items-center justify-end flex-1 gap-1 sm:gap-2">
 						<button
 							onClick={() => onToggleNavbar()}
-							className="p-2 transition-all cursor-pointer text-nav hover:text-nav-hover active:scale-90"
+							className="p-2 transition-ui cursor-pointer text-nav hover:text-nav-hover active:scale-90"
 						>
 							<Icon name="chevronDown" size={15} />
 						</button>

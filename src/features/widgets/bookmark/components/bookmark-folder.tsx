@@ -93,7 +93,7 @@ export const FolderBookmarkItem = memo(function FolderBookmarkItem({
 				onMouseLeave={() => setIsHovered(false)}
 				style={customStyles}
 				className={cn(
-					'relative flex group h-20 md:h-[5.9rem] border border-surface-3 w-full flex-col items-center justify-between px-2 py-1.5 transition-all duration-300 cursor-pointer rounded-widget shadow-sm ease-in-out',
+					'relative flex group h-20 md:h-[5.9rem] border border-surface-3 w-full flex-col items-center justify-between px-2 py-1.5 transition-ui duration-300 cursor-pointer rounded-widget shadow-sm ease-in-out',
 					!bookmark.customBackground
 						? 'bg-glass-surface-2 hover:bg-glass-surface-3 text-fg'
 						: 'before:bg-inherit '
@@ -118,7 +118,7 @@ export const FolderBookmarkItem = memo(function FolderBookmarkItem({
 							onMenuClick(e)
 						}}
 						className={
-							'absolute cursor-pointer top-1 right-1.5 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-fill-2 z-10'
+							'absolute cursor-pointer top-1 right-1.5 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-ui duration-200 hover:bg-fill-2 z-10'
 						}
 					>
 						<Icon name="menuOption" size={12} strokeWidth={2} />

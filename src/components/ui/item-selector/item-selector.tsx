@@ -30,7 +30,7 @@ export function ItemSelector({
 			type="button"
 			onClick={onClick}
 			className={cn(
-				'flex cursor-pointer flex-col items-start p-3 transition-all border rounded-xl w-full text-right outline-none',
+				'flex cursor-pointer flex-col items-start p-3 transition-ui border rounded-xl w-full text-right outline-none',
 				className,
 				isActive
 					? 'border-brand-fill-2 bg-brand-fill-2'

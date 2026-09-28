@@ -115,7 +115,7 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 
 	return (
 		<WidgetSettingWrapper>
-			<div className="flex flex-col gap-3 transition-all duration-300 ease-out">
+			<div className="flex flex-col gap-3 transition-ui duration-300 ease-out">
 				<SectionPanel
 					title={isCompact ? 'انتخاب ارز برای ویجت' : 'انتخاب ارزها'}
 					size="xs"

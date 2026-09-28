@@ -134,7 +134,7 @@ const NextEventSummary: React.FC<NextEventSummaryProps> = ({
 			onClick={() => hasAction && onEventClick(event)}
 			aria-label={`${isNow ? 'در حال جلسه' : 'برنامه بعدی'}: ${title}، ${startTimeStr} تا ${endTimeStr}`}
 			className={cn(
-				'flex flex-col w-full gap-1 p-1.5 text-start rounded-xl transition-all',
+				'flex flex-col w-full gap-1 p-1.5 text-start rounded-xl transition-ui',
 				'focus-visible:focus-ring',
 				hasAction && 'cursor-pointer hover:bg-fill active:scale-[0.99]',
 				isNow && 'bg-brand-fill border border-brand-fill-2'

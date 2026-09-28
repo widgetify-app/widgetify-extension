@@ -352,6 +352,8 @@ keeps those in sync and they go stale without anyone noticing.
 
 **Animation** uses `Motion` and `Presence` from `@/common/motion`, never raw `framer-motion`. The wrappers are what make optimisation mode work.
 
+**Transitions** use `transition-ui` for a state change and name the properties (`transition-[width]`) when size or position animates. `transition-all` and durations off the 150/200/300/500/1000 steps fail `design-system.test.ts`; `src/styles/README.md` explains why.
+
 **Storage** goes through `@/common/storage`, and every key is typed on the `StorageKV`
 interface. App-wide keys are declared in `src/common/constants/store-keys.ts`; a key whose
 value only one feature understands is declared by that feature, in its `types.ts`, by

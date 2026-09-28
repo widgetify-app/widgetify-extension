@@ -180,7 +180,7 @@ export const GoogleCalendarTimelineItem = ({
 			{isNow && (
 				<div className="absolute bottom-0 left-1 right-1 h-[1.5px] bg-brand-fill">
 					<div
-						className="h-full transition-all duration-1000 bg-brand-muted"
+						className="h-full transition-[width] duration-1000 bg-brand-muted"
 						style={{ width: `${elapsedPercent}%` }}
 					/>
 				</div>

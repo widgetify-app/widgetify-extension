@@ -41,7 +41,7 @@ export function AddWidgetSidebar({
 						type="button"
 						onClick={() => onSelectCategory(cat.id)}
 						className={cn(
-							'px-2.5 py-1 rounded-xl text-xs whitespace-nowrap transition-all cursor-pointer font-medium',
+							'px-2.5 py-1 rounded-xl text-xs whitespace-nowrap transition-ui cursor-pointer font-medium',
 							activeCategory === cat.id
 								? 'bg-brand text-on-brand font-bold shadow-sm'
 								: 'bg-fill-2 hover:bg-surface-2 text-fg-muted'
@@ -63,7 +63,7 @@ export function AddWidgetSidebar({
 							key={def.id}
 							onClick={() => onSelectWidget(def.id)}
 							className={cn(
-								'w-full flex items-center justify-between p-2.5 rounded-2xl border text-right transition-all duration-150 cursor-pointer',
+								'w-full flex items-center justify-between p-2.5 rounded-2xl border text-right transition-ui duration-150 cursor-pointer',
 								isSelected
 									? 'bg-brand-fill border-brand shadow-sm'
 									: 'bg-fill-2 hover:bg-surface-2 border-line'

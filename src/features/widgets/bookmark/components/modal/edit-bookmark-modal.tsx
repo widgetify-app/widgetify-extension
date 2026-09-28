@@ -185,7 +185,7 @@ export function EditBookmarkModal({
 									}
 									value={formData.title}
 									onChange={(value) => updateFormData('title', value)}
-									className="w-full px-3.5 py-2.5 text-right transition-all duration-200 rounded-xl"
+									className="w-full px-3.5 py-2.5 text-right transition-ui duration-200 rounded-xl"
 								/>
 							</div>
 						</div>
@@ -199,7 +199,7 @@ export function EditBookmarkModal({
 									placeholder="https://example.com"
 									value={formData.url || ''}
 									onChange={(value) => updateFormData('url', value)}
-									className="w-full px-3.5 py-2.5 text-left font-mono text-xs transition-all duration-200 rounded-xl"
+									className="w-full px-3.5 py-2.5 text-left font-mono text-xs transition-ui duration-200 rounded-xl"
 								/>
 							</div>
 						)}

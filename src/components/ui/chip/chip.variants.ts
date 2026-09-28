@@ -9,7 +9,7 @@ export const chipVariants = cva(
 		'text-xs',
 		'font-bold',
 		'border-2',
-		'transition-all',
+		'transition-ui',
 		'active:scale-95',
 		'disabled:cursor-not-allowed',
 		'disabled:active:scale-none!',

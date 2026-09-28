@@ -108,7 +108,7 @@ export const TabManager = ({
 												<button
 													key={value}
 													onClick={() => handleTabChange(value)}
-													className={`relative flex items-center gap-3 px-4 py-3 rounded-full transition-all duration-200 justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] ${getTabButtonStyle(
+													className={`relative flex items-center gap-3 px-4 py-3 rounded-full transition-ui duration-200 justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] ${getTabButtonStyle(
 														activeTab === value
 													)}`}
 												>
@@ -144,7 +144,7 @@ export const TabManager = ({
 					tab.children?.map(({ value, element }) => (
 						<div
 							key={value}
-							className={`absolute inset-0 p-1 rounded-lg transition-all duration-200 ${
+							className={`absolute inset-0 p-1 rounded-lg transition-ui duration-200 ${
 								activeTab === value
 									? 'opacity-100 translate-x-0 z-10'
 									: 'opacity-0 translate-x-5 z-0 pointer-events-none'

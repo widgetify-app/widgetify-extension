@@ -104,7 +104,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 			target={target}
 			type={type}
 			goTo={goTo}
-			className={`flex gap-2 p-2 transition-all duration-300 border rounded-2xl ${!isText && 'hover:scale-[0.99] hover:bg-surface-3  items-center active:scale-[0.99]'} ${link && 'cursor-pointer'}   border-surface-3 group relative ${prop.className || ''}`}
+			className={`flex gap-2 p-2 transition-ui duration-300 border rounded-2xl ${!isText && 'hover:scale-[0.99] hover:bg-surface-3  items-center active:scale-[0.99]'} ${link && 'cursor-pointer'}   border-surface-3 group relative ${prop.className || ''}`}
 		>
 			{icon && (
 				<div className="shrink-0 self-start mt-0.5">
@@ -135,7 +135,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 				{description && (
 					<div className="relative">
 						<p
-							className={`mt-0.5 text-4xs font-medium  text-fg-muted  leading-relaxed whitespace-pre-wrap wrap-break-word transition-all duration-300 ${!isExpanded && shouldShowReadMore ? 'line-clamp-2' : ''}`}
+							className={`mt-0.5 text-4xs font-medium  text-fg-muted  leading-relaxed whitespace-pre-wrap wrap-break-word transition-ui duration-300 ${!isExpanded && shouldShowReadMore ? 'line-clamp-2' : ''}`}
 						>
 							{description}
 						</p>

@@ -30,7 +30,7 @@ export function BlurModeButton() {
 		<>
 			<div
 				onClick={handleBlurModeToggle}
-				className="relative p-2 transition-all cursor-pointer text-nav hover:text-nav-hover active:scale-90"
+				className="relative p-2 transition-ui cursor-pointer text-nav hover:text-nav-hover active:scale-90"
 			>
 				{blurMode ? (
 					<Icon name="outlineEye" size={15} />

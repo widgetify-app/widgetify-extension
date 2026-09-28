@@ -357,7 +357,7 @@ export function ExpandableTodoInput({
 															setCategory(val)
 														}
 														placeholder="مثلا: کارهای خونه"
-														className="duration-75 border-0 bg-transparent!"
+														className="duration-150 border-0 bg-transparent!"
 													/>
 													<Button
 														size="xs"

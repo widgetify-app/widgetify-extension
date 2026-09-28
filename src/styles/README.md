@@ -198,6 +198,21 @@ Each step has a role. Pick it by what the element is, not by what looks close:
 it predates the table and is not yet held to it. `rounded-md`, `rounded-3xl`,
 `rounded-4xl`, bare `rounded` and arbitrary radii are rejected by a test.
 
+## Motion
+
+`transition-ui` is the transition for a state change: colours, borders, outline,
+shadow, opacity, filters, and `scale`, `rotate` and `translate`, which is what
+Tailwind 4's `scale-*`, `rotate-*` and `translate-*` write (not `transform`).
+It runs 150ms on `ease-standard`; add `duration-*` to slow it down.
+
+When an element animates its size or position, name the properties:
+`transition-[width]`, `transition-[stroke-dashoffset]`. `transition-all` is
+rejected by a test, because it also animates layout nobody meant to animate.
+
+Durations come from five steps: `150` for a hover or press, `200` and `300` for
+panels and reveals, `500` for a slow entrance, `1000` for progress that ticks
+once a second. A test rejects any other.
+
 ## Layers
 
 Stacking inside a component uses plain `z-10`, `z-20` and so on.

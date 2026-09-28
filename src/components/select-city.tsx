@@ -153,7 +153,7 @@ export function SelectCity({ size }: Prop) {
 								<div
 									key={city.cityId}
 									onClick={() => handleSelectCity(city)}
-									className="flex items-center w-full p-3 text-right transition-all duration-200 border-b cursor-pointer border-surface-3 last:border-b-0 group rounded-2xl hover:bg-brand-fill-2 hover:text-brand"
+									className="flex items-center w-full p-3 text-right transition-ui duration-200 border-b cursor-pointer border-surface-3 last:border-b-0 group rounded-2xl hover:bg-brand-fill-2 hover:text-brand"
 								>
 									<Icon
 										name="location"

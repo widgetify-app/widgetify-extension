@@ -156,7 +156,7 @@ export function DatePicker({
 				key={`${isCurrentMonth ? 'current' : isPrevMonth ? 'prev' : 'next'}-${day}`}
 				onClick={() => handleDateClick(day, isCurrentMonth, isPrevMonth)}
 				className={`
-					relative p-0 rounded-full text-xs transition-all cursor-pointer
+					relative p-0 rounded-full text-xs transition-ui cursor-pointer
 					h-6 w-6 mx-auto flex items-center justify-center hover:scale-110 hover:shadow-sm
 					${getDayTextStyle()}
 					${getHoverStyle()}

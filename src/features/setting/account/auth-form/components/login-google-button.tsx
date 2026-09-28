@@ -81,7 +81,7 @@ export default function LoginGoogleButton() {
 			type="button"
 			onClick={loginGoogle}
 			disabled={isLoading}
-			className="w-full h-11 px-4 rounded-xl text-xs md:text-sm font-medium flex items-center justify-center border border-surface-3 bg-surface hover:bg-fill-2 active:scale-[0.99] transition-all duration-150 gap-2.5 cursor-pointer text-fg shadow-sm"
+			className="w-full h-11 px-4 rounded-xl text-xs md:text-sm font-medium flex items-center justify-center border border-surface-3 bg-surface hover:bg-fill-2 active:scale-[0.99] transition-ui duration-150 gap-2.5 cursor-pointer text-fg shadow-sm"
 		>
 			<div className="relative flex items-center justify-center shrink-0">
 				{isLoading ? (

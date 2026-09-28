@@ -63,7 +63,7 @@ export function ShowAdvancedButton({
 			<Icon
 				name="chevronUp"
 				size={16}
-				className={`transition-all duration-300 ${showAdvanced ? 'rotate-0' : 'rotate-180'}`}
+				className={`transition-ui duration-300 ${showAdvanced ? 'rotate-0' : 'rotate-180'}`}
 			/>
 		</Button>
 	)

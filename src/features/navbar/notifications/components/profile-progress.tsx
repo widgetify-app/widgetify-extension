@@ -20,7 +20,7 @@ export function ProfileProgressNotification({ className }: Prop) {
 
 	return (
 		<div
-			className={`flex w-full gap-2 px-2 py-1 transition-all duration-300 border cursor-pointer rounded-xl  border-surface-3 hover:scale-[0.99] active:scale-[0.99] ${className}`}
+			className={`flex w-full gap-2 px-2 py-1 transition-ui duration-300 border cursor-pointer rounded-xl  border-surface-3 hover:scale-[0.99] active:scale-[0.99] ${className}`}
 			id="update_profile"
 			onClick={() => onClick()}
 		>
@@ -83,7 +83,7 @@ const RadialProgressSmall = ({ percentage }: any) => {
 					cy={size / 2}
 					r={radius}
 					fill="none"
-					className="transition-all duration-500 ease-out stroke-fg-faint"
+					className="transition-[stroke-dashoffset] duration-500 ease-out stroke-fg-faint"
 					strokeWidth={strokeWidth}
 					strokeDasharray={circumference}
 					strokeDashoffset={offset}

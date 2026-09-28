@@ -57,7 +57,7 @@ export function SelectFriendLayout({
 								onClick={() => handleToggleFriend(friend)}
 								className={`
 									w-full flex items-center gap-3 p-2 rounded-2xl
-									transition-all duration-200
+									transition-ui duration-200
 									border cursor-pointer
 									${
 										isSelected

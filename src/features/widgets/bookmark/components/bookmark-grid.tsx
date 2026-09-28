@@ -212,8 +212,8 @@ export function BookmarkGrid({
 			}}
 			className={
 				isAutoRows
-					? 'grid w-full auto-rows-[5.5rem] sm:auto-rows-[5.75rem] gap-2 p-0.5 transition-all duration-300 rounded-2xl'
-					: 'grid w-full h-full grid-flow-row gap-1.5 transition-all duration-300 rounded-2xl'
+					? 'grid w-full auto-rows-[5.5rem] sm:auto-rows-[5.75rem] gap-2 p-0.5 transition-[gap,padding] duration-300 rounded-2xl'
+					: 'grid w-full h-full grid-flow-row gap-1.5 transition-[gap,padding] duration-300 rounded-2xl'
 			}
 		>
 			<SortableContext items={sortableIds} strategy={rectSortingStrategy}>

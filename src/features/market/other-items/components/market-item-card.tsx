@@ -43,7 +43,7 @@ export function MarketItemCard({
 	}
 
 	return (
-		<div className="flex flex-col overflow-hidden transition-all duration-200 border bg-surface-veil rounded-2xl border-line hover:border-brand-fill-2 hover:shadow-sm group">
+		<div className="flex flex-col overflow-hidden transition-ui duration-200 border bg-surface-veil rounded-2xl border-line hover:border-brand-fill-2 hover:shadow-sm group">
 			{/* Preview area */}
 			<div className="relative overflow-hidden bg-fill flex-shrink-0 min-h-[80px]">
 				<RenderPreview
@@ -92,7 +92,7 @@ export function MarketItemCard({
 							onClick={handleBuy}
 							rounded={'lg'}
 							color={'brand'}
-							className="h-6 px-2.5 rounded-lg text-2xs active:scale-95 transition-all"
+							className="h-6 px-2.5 rounded-lg text-2xs active:scale-95 transition-ui"
 						>
 							<div className="flex items-center gap-1">
 								<Icon name="shoppingCart" size={10} />

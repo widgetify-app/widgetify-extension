@@ -85,7 +85,7 @@ function WallpaperItemFu({
 		<>
 			<div
 				ref={elementRef}
-				className={`relative w-full aspect-video rounded-xl overflow-hidden cursor-pointer group ${itemOutlineStyle} transition-all duration-200 active:scale-98`}
+				className={`relative w-full aspect-video rounded-xl overflow-hidden cursor-pointer group ${itemOutlineStyle} transition-ui duration-200 active:scale-98`}
 				onClick={handleSelect}
 			>
 				{!loaded && (

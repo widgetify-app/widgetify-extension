@@ -217,7 +217,7 @@ export function AddBookmarkModal({
 									}
 									value={formData.title}
 									onChange={(v) => updateFormData('title', v)}
-									className="w-full px-3.5 py-2.5 text-right transition-all duration-200 rounded-xl"
+									className="w-full px-3.5 py-2.5 text-right transition-ui duration-200 rounded-xl"
 								/>
 							</div>
 						</div>
@@ -231,7 +231,7 @@ export function AddBookmarkModal({
 									placeholder="https://example.com"
 									value={formData.url || ''}
 									onChange={(v) => handleUrlChange(v)}
-									className="w-full px-3.5 py-2.5 text-left font-mono text-xs transition-all duration-200 rounded-xl"
+									className="w-full px-3.5 py-2.5 text-left font-mono text-xs transition-ui duration-200 rounded-xl"
 								/>
 							</div>
 						)}

@@ -114,7 +114,7 @@ export function DayItem({
 					<img
 						src={eventIcon}
 						alt=""
-						className="object-contain w-6 h-6 transition-all rounded-full"
+						className="object-contain w-6 h-6 transition-ui rounded-full"
 						loading="lazy"
 					/>
 				) : shamsiEvents.length > 0 ? (

@@ -109,7 +109,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 								type="button"
 								onClick={() => setActiveTabId(tab.id)}
 								className={cn(
-									'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition-all cursor-pointer font-medium',
+									'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition-ui cursor-pointer font-medium',
 									isCurrent
 										? 'bg-brand text-on-brand font-bold shadow-sm'
 										: 'bg-fill-2 hover:bg-surface-3 text-fg-muted'
@@ -139,7 +139,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 				</div>
 
 				{/* Tab Detail Info */}
-				<div className="flex items-start gap-3 p-3.5 rounded-2xl bg-fill-2 border border-line transition-all">
+				<div className="flex items-start gap-3 p-3.5 rounded-2xl bg-fill-2 border border-line transition-ui">
 					<div className="w-9 h-9 rounded-xl bg-brand-fill text-brand flex items-center justify-center shrink-0 mt-0.5">
 						<Icon name={activeTab.icon} size={18} />
 					</div>

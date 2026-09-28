@@ -23,7 +23,7 @@ export function TourTooltip({
 						{Array.from({ length: size }).map((_, i) => (
 							<div
 								key={i}
-								className={`h-1.5 rounded-full transition-all duration-300 ${
+								className={`h-1.5 rounded-full transition-[width,background-color] duration-300 ${
 									i === index
 										? 'w-5 bg-brand'
 										: i < index
@@ -79,7 +79,7 @@ export function TourTooltip({
 					<button
 						type="button"
 						{...primaryProps}
-						className="px-4 py-1.5 rounded-xl bg-brand text-on-brand ring-0! outline-0! font-bold text-xs hover:bg-brand-hover transition-all shadow-md active:scale-95 cursor-pointer"
+						className="px-4 py-1.5 rounded-xl bg-brand text-on-brand ring-0! outline-0! font-bold text-xs hover:bg-brand-hover transition-ui shadow-md active:scale-95 cursor-pointer"
 					>
 						{isLastStep ? 'پایان' : 'بعدی'}
 					</button>

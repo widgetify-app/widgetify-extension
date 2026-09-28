@@ -154,7 +154,7 @@ function SearchFullContent() {
 				<form onSubmit={handleSubmit}>
 					<div
 						ref={searchRowRef}
-						className="relative flex items-center px-3 py-1.5 overflow-hidden transition-all duration-300 shadow-sm rounded-2xl bg-surface-2 group"
+						className="relative flex items-center px-3 py-1.5 overflow-hidden transition-ui duration-300 shadow-sm rounded-2xl bg-surface-2 group"
 					>
 						<EngineSelector onSelected={onEngineSelected} />
 
@@ -183,7 +183,7 @@ function SearchFullContent() {
 							type="button"
 							onClick={handleClearSearch}
 							aria-label="پاک کردن عبارت جستجو"
-							className={`h-9 w-9 shrink-0 flex items-center justify-center rounded-full cursor-pointer transition-all duration-300 ${searchQuery ? 'opacity-70 hover:opacity-100 hover:bg-surface-3' : 'opacity-0 pointer-events-none'}`}
+							className={`h-9 w-9 shrink-0 flex items-center justify-center rounded-full cursor-pointer transition-ui duration-300 ${searchQuery ? 'opacity-70 hover:opacity-100 hover:bg-surface-3' : 'opacity-0 pointer-events-none'}`}
 						>
 							<Icon
 								name="close"
@@ -194,7 +194,7 @@ function SearchFullContent() {
 						</button>
 
 						<div
-							className={`${searchQuery ? 'opacity-0 hidden' : 'flex'} items-center gap-0.5 ml-1 transition-all duration-300`}
+							className={`${searchQuery ? 'opacity-0 hidden' : 'flex'} items-center gap-0.5 ml-1 transition-ui duration-300`}
 						>
 							<ImageSearchButton onClick={() => setActivePortal('image')} />
 							<VoiceSearchButton onClick={() => setActivePortal('voice')} />
@@ -214,7 +214,7 @@ function SearchFullContent() {
 							/>
 						</button>
 
-						<div className="absolute inset-0 transition-all duration-300 border pointer-events-none rounded-2xl border-line" />
+						<div className="absolute inset-0 transition-ui duration-300 border pointer-events-none rounded-2xl border-line" />
 					</div>
 				</form>
 

@@ -29,7 +29,7 @@ export function MiniAppRunnerHeader({
 			<div className="relative flex items-center justify-between px-4 py-3">
 				<div className="flex items-center gap-2">
 					<button
-						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-fill-2 active:scale-95 group border-line"
+						className="flex items-center justify-center w-8 h-8 transition-ui duration-200 border rounded-lg cursor-pointer bg-fill-2 active:scale-95 group border-line"
 						aria-label="بازگشت"
 						onClick={() => onClickToBack()}
 					>
@@ -73,7 +73,7 @@ export function MiniAppRunnerHeader({
 					<button
 						onClick={() => onToggleFullScreen()}
 						disabled={isLoading || isConnecting}
-						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-fill-2 active:scale-95 group border-line disabled:opacity-40"
+						className="flex items-center justify-center w-8 h-8 transition-ui duration-200 border rounded-lg cursor-pointer bg-fill-2 active:scale-95 group border-line disabled:opacity-40"
 					>
 						{isFullScreen ? (
 							<Icon
@@ -92,7 +92,7 @@ export function MiniAppRunnerHeader({
 
 					<button
 						onClick={handleReload}
-						className="flex items-center justify-center w-8 h-8 transition-all duration-200 border rounded-lg cursor-pointer bg-fill-2 active:scale-95 group border-line disabled:opacity-40"
+						className="flex items-center justify-center w-8 h-8 transition-ui duration-200 border rounded-lg cursor-pointer bg-fill-2 active:scale-95 group border-line disabled:opacity-40"
 					>
 						<Icon
 							name="refresh"

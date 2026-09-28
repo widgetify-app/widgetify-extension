@@ -183,7 +183,7 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 				onDragEnd={handleDragEnd}
 			>
 				<div
-					className={`flex bookmarks  flex-col h-full w-full transition-all duration-300`}
+					className={`flex bookmarks  flex-col h-full w-full transition-ui duration-300`}
 				>
 					<div className={'h-full w-full'}>
 						<BookmarkGrid

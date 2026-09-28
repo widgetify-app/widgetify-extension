@@ -164,7 +164,7 @@ export function showToast(
 			<div
 				dir="rtl"
 				className={cn(
-					'w-full max-w-97.5 min-w-[320px] rounded-2xl p-3.5 flex items-center justify-between gap-3 shadow-xl backdrop-blur-xl border select-none transition-all duration-200 pointer-events-auto',
+					'w-full max-w-97.5 min-w-[320px] rounded-2xl p-3.5 flex items-center justify-between gap-3 shadow-xl backdrop-blur-xl border select-none transition-ui duration-200 pointer-events-auto',
 					theme.container,
 					t.visible
 						? 'opacity-100 translate-y-0 scale-100'
@@ -193,7 +193,7 @@ export function showToast(
 				<button
 					type="button"
 					onClick={() => toast.remove(t.id, t.toasterId)}
-					className="shrink-0 px-3.5 py-1.5 rounded-xl bg-[rgba(255,255,255,0.1)] hover:bg-image-fill active:scale-95 text-xs font-semibold text-white transition-all cursor-pointer select-none"
+					className="shrink-0 px-3.5 py-1.5 rounded-xl bg-[rgba(255,255,255,0.1)] hover:bg-image-fill active:scale-95 text-xs font-semibold text-white transition-ui cursor-pointer select-none"
 				>
 					{theme.actionText}
 				</button>
@@ -215,7 +215,7 @@ export function showPreviewToast(itemName: string, onCancel: () => void): string
 		(t) => (
 			<div
 				className={cn(
-					'pointer-events-auto rounded-2xl p-2.5 flex items-center justify-between gap-3 shadow-xl backdrop-blur-xl border border-[rgba(255,255,255,0.1)] bg-[#18181b]/95 text-white select-none transition-all duration-200',
+					'pointer-events-auto rounded-2xl p-2.5 flex items-center justify-between gap-3 shadow-xl backdrop-blur-xl border border-[rgba(255,255,255,0.1)] bg-[#18181b]/95 text-white select-none transition-ui duration-200',
 					t.visible
 						? 'opacity-100 translate-y-0 scale-100'
 						: 'opacity-0 -translate-y-2 scale-95'
@@ -241,7 +241,7 @@ export function showPreviewToast(itemName: string, onCancel: () => void): string
 						toast.remove(id)
 						onCancel()
 					}}
-					className="shrink-0 px-3.5 py-1.5 rounded-xl bg-[rgba(255,255,255,0.1)] hover:bg-[#fb2c3633] hover:text-[#ffa2a2] active:scale-95 text-xs font-semibold text-white transition-all cursor-pointer select-none flex items-center gap-1"
+					className="shrink-0 px-3.5 py-1.5 rounded-xl bg-[rgba(255,255,255,0.1)] hover:bg-[#fb2c3633] hover:text-[#ffa2a2] active:scale-95 text-xs font-semibold text-white transition-ui cursor-pointer select-none flex items-center gap-1"
 				>
 					<Icon name="close" size={11} />
 					<span>بازگشت</span>

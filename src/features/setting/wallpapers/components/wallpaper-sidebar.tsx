@@ -41,7 +41,7 @@ export function WallpaperSidebar({
 					<button
 						type="button"
 						onClick={() => onSelectCategory(null)}
-						className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all duration-200 cursor-pointer ${
+						className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-ui duration-200 cursor-pointer ${
 							selectedCategoryId === null
 								? 'bg-brand text-on-brand shadow-sm'
 								: 'text-fg hover:bg-fill'
@@ -71,7 +71,7 @@ export function WallpaperSidebar({
 								key={cat.id}
 								type="button"
 								onClick={() => onSelectCategory(cat.id)}
-								className={`relative w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all duration-200 cursor-pointer ${
+								className={`relative w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-ui duration-200 cursor-pointer ${
 									isSelected
 										? 'bg-brand text-on-brand shadow-sm'
 										: 'text-fg hover:bg-fill'

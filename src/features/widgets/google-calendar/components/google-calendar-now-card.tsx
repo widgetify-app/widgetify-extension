@@ -35,7 +35,7 @@ export const GoogleCalendarNowCard: React.FC<GoogleCalendarNowCardProps> = ({
 			aria-label={`در حال برگزاری: ${title}، ${minsRemaining} دقیقه مانده`}
 			className={cn(
 				'relative overflow-hidden flex flex-col w-full gap-1.5 p-2.5 text-start',
-				'rounded-2xl bg-brand-fill border border-brand-fill-2 transition-all',
+				'rounded-2xl bg-brand-fill border border-brand-fill-2 transition-ui',
 				'focus-visible:focus-ring',
 				hasAction && 'cursor-pointer hover:bg-brand-fill'
 			)}
@@ -75,7 +75,7 @@ export const GoogleCalendarNowCard: React.FC<GoogleCalendarNowCardProps> = ({
 				className="w-full h-1 rounded-full bg-brand-fill-2 overflow-hidden mt-0.5"
 			>
 				<div
-					className="h-full transition-all duration-1000 rounded-full bg-brand"
+					className="h-full transition-[width] duration-1000 rounded-full bg-brand"
 					style={{ width: `${elapsedPercent}%` }}
 				/>
 			</div>

@@ -16,7 +16,7 @@ export function CheckBoxWithDescription({
 	return (
 		<div
 			className={
-				'group flex items-start gap-3 p-2 transition-all duration-200 cursor-pointer rounded-sm'
+				'group flex items-start gap-3 p-2 transition-ui duration-200 cursor-pointer rounded-sm'
 			}
 			onClick={onToggle}
 		>

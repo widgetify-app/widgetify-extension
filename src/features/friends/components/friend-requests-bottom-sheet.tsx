@@ -45,7 +45,7 @@ export const FriendRequestsBottomSheet = ({ isOpen, onClose }: Prop) => {
 						size="sm"
 						onClick={() => acceptFriend(friend.id)}
 						disabled={isProcessing}
-						className="gap-1 h-9 px-3 rounded-lg transition-all active:scale-[0.97]"
+						className="gap-1 h-9 px-3 rounded-lg transition-ui active:scale-[0.97]"
 						variant="outline"
 						color="success"
 					>

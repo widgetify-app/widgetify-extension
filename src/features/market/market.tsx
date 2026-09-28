@@ -70,7 +70,7 @@ export function MarketContainer() {
 				{tabs.map(({ id, element }) => (
 					<div
 						key={id}
-						className={`absolute inset-0 transition-all duration-300 ease-out ${
+						className={`absolute inset-0 transition-ui duration-300 ease-out ${
 							activeTab === id
 								? 'opacity-100 translate-y-0 z-10'
 								: 'opacity-0 translate-y-4 z-0 pointer-events-none'

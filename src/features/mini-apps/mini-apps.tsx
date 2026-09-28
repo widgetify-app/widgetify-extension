@@ -71,7 +71,7 @@ export function MiniAppsLayout() {
 		<div className="w-full h-[calc(100vh-4rem)] overflow-hidden">
 			<div className="flex flex-row justify-between w-full h-full px-4 py-2 overflow-hidden">
 				<div
-					className={`flex-1 w-full h-full p-1 border-l border-surface-3 bg-glass-surface-2 rounded-tr-2xl rounded-br-2xl ${isFullScreen ? 'hidden' : ''} transition-all duration-200`}
+					className={`flex-1 w-full h-full p-1 border-l border-surface-3 bg-glass-surface-2 rounded-tr-2xl rounded-br-2xl ${isFullScreen ? 'hidden' : ''} transition-ui duration-200`}
 				>
 					<div className="flex justify-between px-1 py-2">
 						<p className="text-lg font-bold"> برنامک ها</p>

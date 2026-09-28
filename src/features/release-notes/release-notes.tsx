@@ -143,7 +143,7 @@ export const UpdateReleaseNotesModal = ({
 								key={step.id}
 								type="button"
 								onClick={() => setActiveStepIndex(index)}
-								className={`flex-1 h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+								className={`flex-1 h-1.5 rounded-full transition-ui duration-300 cursor-pointer ${
 									isCurrent
 										? 'bg-brand'
 										: isCompleted
@@ -184,7 +184,7 @@ export const UpdateReleaseNotesModal = ({
 								</span>
 							</div>
 
-							<div className="flex items-start gap-3 p-3 rounded-2xl bg-fill-2 border border-line transition-all">
+							<div className="flex items-start gap-3 p-3 rounded-2xl bg-fill-2 border border-line transition-ui">
 								<div className="w-8 h-8 rounded-xl bg-brand-fill text-brand flex items-center justify-center shrink-0 mt-0.5">
 									<Icon name={currentStep.icon} size={16} />
 								</div>
@@ -207,7 +207,7 @@ export const UpdateReleaseNotesModal = ({
 						</div>
 					) : (
 						<div className="flex flex-col justify-between h-full gap-2">
-							<div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-fill-2 border border-line transition-all">
+							<div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-fill-2 border border-line transition-ui">
 								<div className="w-9 h-9 rounded-xl bg-brand-fill text-brand flex items-center justify-center shrink-0 mt-0.5">
 									<Icon name={currentStep.icon} size={18} />
 								</div>

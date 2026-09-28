@@ -32,7 +32,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 		<div
 			ref={elementRef}
 			onClick={onClick}
-			className={`break-inside-avoid relative rounded-2xl cursor-pointer group overflow-hidden bg-fill-2 ${itemOutlineStyle} transition-all duration-200 active:scale-98`}
+			className={`break-inside-avoid relative rounded-2xl cursor-pointer group overflow-hidden bg-fill-2 ${itemOutlineStyle} transition-ui duration-200 active:scale-98`}
 		>
 			{!loaded && (
 				<div className="flex items-center justify-center w-full min-h-28 bg-fill">
