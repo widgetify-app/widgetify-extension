@@ -1,10 +1,12 @@
 import { callEvent } from '@/common/utils/call-event'
 import { Dropdown, DropdownItem } from '@/components/ui'
 import { useAppearance } from '@/context/appearance.context'
+import { Page, usePage } from '@/context/page.context'
 import { Icon } from '@/icons'
 
 export function LayoutDropdown() {
 	const { canvasMode, setCanvasMode } = useAppearance()
+	const { page, setPage } = usePage()
 
 	const handleAction = (action: () => void) => {
 		callEvent('closeAllDropdowns')
@@ -13,7 +15,21 @@ export function LayoutDropdown() {
 
 	const handleToggleEditMode = () => {
 		handleAction(() => {
-			setCanvasMode(canvasMode === 'edit' ? 'normal' : 'edit')
+			if (page !== Page.Home) {
+				setPage(Page.Home)
+				setCanvasMode('edit')
+			} else {
+				setCanvasMode(canvasMode === 'edit' ? 'normal' : 'edit')
+			}
+		})
+	}
+
+	const handleOpenWidgetManager = () => {
+		handleAction(() => {
+			if (page !== Page.Home) {
+				setPage(Page.Home)
+			}
+			callEvent('openAddCustomWidgetModal')
 		})
 	}
 
@@ -32,14 +48,16 @@ export function LayoutDropdown() {
 				<DropdownItem
 					icon={<Icon name="appsPlus" size={14} />}
 					label="مدیریت ویجت‌ها"
-					onClick={() =>
-						handleAction(() => callEvent('openAddCustomWidgetModal'))
-					}
+					onClick={handleOpenWidgetManager}
 				/>
 
 				<DropdownItem
 					icon={<Icon name="edit" size={14} />}
-					label={canvasMode === 'edit' ? 'پایان ویرایش' : 'حالت ویرایش'}
+					label={
+						page === Page.Home && canvasMode === 'edit'
+							? 'پایان ویرایش'
+							: 'حالت ویرایش'
+					}
 					onClick={handleToggleEditMode}
 				/>
 

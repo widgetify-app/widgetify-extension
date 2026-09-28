@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Analytics from '@/analytics'
 import { purgeDeprecatedStorageKeys } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
-import { Portal, StackedToaster } from '@/components/ui'
+import { StackedToaster } from '@/components/ui'
 import {
 	GeneralSettingProvider,
 	useGeneralSetting,
@@ -12,6 +12,7 @@ import { FreeWidgetProvider } from '@/context/free-widget/free-widget.context'
 import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
 import { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
 import { WidgetSettingsModal } from '@/layouts/widgets-settings/widget-settings-modal'
+import { AddWidgetModal } from '@/layouts/widgets-manager'
 import { Page, usePage } from '@/context/page.context'
 import { MotionConfig } from 'framer-motion'
 import { Motion as motion, Presence } from '@/common/motion'
@@ -51,8 +52,10 @@ function Main() {
 		instanceId?: string
 		size?: { w: number; h: number }
 	} | null>(null)
+	const [isAddWidgetModalOpen, setIsAddWidgetModalOpen] = useState(false)
+	const [addWidgetEditTarget, setAddWidgetEditTarget] = useState<any>(null)
 	const [showAuthRequired, setAuthRequired] = useState(false)
-	const { page } = usePage()
+	const { page, setPage } = usePage()
 	const { isOptimalMode } = useGeneralSetting()
 
 	useEffect(() => {
@@ -71,6 +74,19 @@ function Main() {
 			}
 		)
 
+		const openAddModalEvent = listenEvent(
+			'openAddCustomWidgetModal',
+			(payload?: any) => {
+				setPage(Page.Home)
+				if (payload?.instanceId && payload?.widgetId) {
+					setAddWidgetEditTarget(payload)
+				} else {
+					setAddWidgetEditTarget(null)
+				}
+				setIsAddWidgetModalOpen(true)
+			}
+		)
+
 		const openAuthRequireModal = listenEvent('open_require_auth_modal', () => {
 			setAuthRequired(true)
 		})
@@ -79,9 +95,10 @@ function Main() {
 
 		return () => {
 			openWidgetsSettingsEvent()
+			openAddModalEvent()
 			openAuthRequireModal()
 		}
-	}, [])
+	}, [setPage])
 
 	return (
 		<MotionConfig reducedMotion={isOptimalMode ? 'always' : 'never'}>
@@ -118,6 +135,14 @@ function Main() {
 						instanceId={activeSettingPayload?.instanceId}
 						size={activeSettingPayload?.size}
 						onCloseSetting={() => setActiveSettingPayload(null)}
+					/>
+					<AddWidgetModal
+						isOpen={isAddWidgetModalOpen}
+						editTarget={addWidgetEditTarget}
+						onClose={() => {
+							setIsAddWidgetModalOpen(false)
+							setAddWidgetEditTarget(null)
+						}}
 					/>
 				</WidgetVisibilityProvider>
 			</FreeWidgetProvider>
