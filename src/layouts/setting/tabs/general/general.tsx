@@ -1,8 +1,7 @@
-import { ToggleSwitch } from '@/components/ui'
+import { Badge, SectionPanel, ToggleSwitch } from '@/components/ui'
 import { SelectCity } from './components/select-city'
 import { TimezoneSettings } from './components/timezone-settings'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { SectionPanel } from '@/components/ui'
 import Analytics from '@/analytics'
 
 export function GeneralSettingTab() {
@@ -21,9 +20,7 @@ export function GeneralSettingTab() {
 				title={
 					<div className="flex items-center">
 						<p>حالت بهینه</p>
-						<span className="mr-2 text-white badge badge-error badge-xs outline-2 outline-error/20">
-							جدید
-						</span>
+						<Badge className="mr-2">جدید</Badge>
 					</div>
 				}
 				size="sm"

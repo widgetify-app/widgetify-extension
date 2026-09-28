@@ -1,6 +1,6 @@
 import type React from 'react'
 import { useEffect, useMemo, useState } from 'react'
-import { Button, Modal } from '@/components/ui'
+import { Badge, Button, Modal } from '@/components/ui'
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
 import { useOptionalFreeWidgets } from '@/context/free-widget/free-widget.context'
@@ -14,7 +14,7 @@ import { Icon } from '@/icons'
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
 import { WidgetHelpModal } from '../widget-help.modal'
 import { useWidgetVipResolver } from '@/services/hooks/widgets/widget-catalog.hook'
-import type { AddWidgetModalProps } from './types'
+import { CATEGORIES, type AddWidgetModalProps } from './types'
 import { AddWidgetSidebar } from './sidebar'
 import { AddWidgetOptions } from './options'
 import { AddWidgetPreview } from './preview'
@@ -27,6 +27,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 		isVariantVipOnly,
 		isSizeVipOnly,
 		isWidgetNew,
+		featuredWidgetKeys,
 		maxFreeWidgets,
 	} = useWidgetVipResolver(isOpen)
 	const freeWidgets = useOptionalFreeWidgets()
@@ -96,6 +97,18 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 
 	const handleCategoryChange = (categoryId: WidgetCategory) => {
 		setActiveCategory(categoryId)
+		if (!isEditMode) {
+			const nextList =
+				categoryId === 'new'
+					? allDefinitions.filter((def) => isWidgetNew(def.id))
+					: categoryId === 'all'
+						? allDefinitions
+						: allDefinitions.filter((def) => def.category === categoryId)
+
+			if (nextList.length > 0 && !nextList.some((def) => def.id === selectedId)) {
+				handleSelectWidget(nextList[0].id)
+			}
+		}
 	}
 
 	const handleSelectWidget = (id: string) => {
@@ -208,10 +221,47 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 		}
 	}
 
+	const hasNewWidgets = useMemo(() => {
+		return allDefinitions.some((def) => isWidgetNew(def.id))
+	}, [allDefinitions, isWidgetNew])
+
+	const categories = useMemo(() => {
+		if (!hasNewWidgets) return CATEGORIES
+		return [
+			CATEGORIES[0],
+			{ id: 'new' as WidgetCategory, label: 'جدید' },
+			...CATEGORIES.slice(1),
+		]
+	}, [hasNewWidgets])
+
 	const filteredDefinitions = useMemo(() => {
-		if (activeCategory === 'all') return allDefinitions
-		return allDefinitions.filter((def) => def.category === activeCategory)
-	}, [allDefinitions, activeCategory])
+		let list = allDefinitions
+		if (activeCategory === 'new') {
+			list = allDefinitions.filter((def) => isWidgetNew(def.id))
+		} else if (activeCategory !== 'all') {
+			list = allDefinitions.filter((def) => def.category === activeCategory)
+		}
+
+		if (
+			activeCategory === 'all' &&
+			featuredWidgetKeys &&
+			featuredWidgetKeys.length > 0
+		) {
+			const featuredIndexMap = new Map(
+				featuredWidgetKeys.map((key, idx) => [key, idx])
+			)
+			return [...list].sort((a, b) => {
+				const aIndex = featuredIndexMap.get(a.id)
+				const bIndex = featuredIndexMap.get(b.id)
+				if (aIndex !== undefined && bIndex !== undefined) return aIndex - bIndex
+				if (aIndex !== undefined) return -1
+				if (bIndex !== undefined) return 1
+				return 0
+			})
+		}
+
+		return list
+	}, [allDefinitions, activeCategory, isWidgetNew, featuredWidgetKeys])
 
 	const previewSize = selectedSize
 
@@ -250,6 +300,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 					<AddWidgetSidebar
 						activeCategory={activeCategory}
 						onSelectCategory={handleCategoryChange}
+						categories={categories}
 						definitions={filteredDefinitions}
 						selectedId={selectedId}
 						onSelectWidget={handleSelectWidget}
@@ -275,9 +326,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 														{selectedDef.label}
 													</h3>
 													{isWidgetNew?.(selectedDef.id) && (
-														<span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 shrink-0 select-none leading-none">
-															جدید
-														</span>
+														<Badge>جدید</Badge>
 													)}
 												</div>
 												<p className="text-[11px] text-muted">

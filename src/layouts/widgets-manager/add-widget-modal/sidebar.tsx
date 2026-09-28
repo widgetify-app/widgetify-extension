@@ -1,10 +1,10 @@
 import type React from 'react'
-import { Button, VipBadge } from '@/components/ui'
+import { Badge, Button, VipBadge } from '@/components/ui'
 import { cn } from '@/common/utils/cn'
 import type { WidgetCategory, WidgetDefinition } from '@widget/layout-engine/types'
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
 import { Icon } from '@/icons'
-import { CATEGORIES } from './types'
+import { CATEGORIES, type CategoryItem } from './types'
 
 interface AddWidgetSidebarProps {
 	activeCategory: WidgetCategory
@@ -16,6 +16,7 @@ interface AddWidgetSidebarProps {
 	isVip?: boolean
 	isWidgetVipOnly: (id: string) => boolean
 	isWidgetNew?: (id: string) => boolean
+	categories?: CategoryItem[]
 	onOpenWidgetSettings: (e: React.MouseEvent, settingsTab?: WidgetTabKeys) => void
 }
 
@@ -29,12 +30,13 @@ export function AddWidgetSidebar({
 	isVip = false,
 	isWidgetVipOnly,
 	isWidgetNew,
+	categories = CATEGORIES,
 	onOpenWidgetSettings,
 }: AddWidgetSidebarProps) {
 	return (
 		<div className="flex flex-col w-full pb-3 pl-0 border-b md:min-h-0 md:w-5/12 md:border-b-0 md:border-l border-base-content/10 md:pl-3 md:pb-0">
 			<div className="flex items-center gap-1 pb-2 mb-2 overflow-x-auto border-b shrink-0 scrollbar-none border-base-content/10">
-				{CATEGORIES.map((cat) => (
+				{categories.map((cat) => (
 					<button
 						key={cat.id}
 						type="button"
@@ -52,91 +54,93 @@ export function AddWidgetSidebar({
 			</div>
 
 			<div className="space-y-1.5 pr-0.5 scrollbar-none md:flex-1 md:overflow-y-auto">
-				{definitions.map((def) => {
-					const isSelected = def.id === selectedId
-					const count = runtimeLayout.filter((w) => w.id === def.id).length
-					const isActive = count > 0
+				{definitions.length === 0 ? (
+					<div className="flex items-center justify-center h-32 text-xs text-muted">
+						ویجتی در این دسته‌بندی یافت نشد
+					</div>
+				) : (
+					definitions.map((def) => {
+						const isSelected = def.id === selectedId
+						const count = runtimeLayout.filter((w) => w.id === def.id).length
+						const isActive = count > 0
 
-					return (
-						<div
-							key={def.id}
-							onClick={() => onSelectWidget(def.id)}
-							className={cn(
-								'w-full flex items-center justify-between p-2.5 rounded-2xl border text-right transition-all duration-150 cursor-pointer',
-								isSelected
-									? 'bg-primary/10 border-primary shadow-xs'
-									: 'bg-base-200/60 hover:bg-base-200 border-base-content/10'
-							)}
-						>
-							<div className="flex items-center min-w-0 gap-2">
-								<span
-									className={cn(
-										'flex items-center justify-center rounded-xl w-7 h-7 shrink-0 transition-ui',
-										isSelected
-											? 'bg-primary/15 text-primary'
-											: 'bg-base-content/5 text-muted'
-									)}
-								>
-									<Icon name={def.icon} size={15} />
-								</span>
-								<span
-									className={cn(
-										'text-xs truncate',
-										isSelected
-											? 'font-bold text-primary'
-											: 'font-medium text-content'
-									)}
-								>
-									{def.label}
-								</span>
-								{isWidgetNew?.(def.id) && (
-									<span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 shrink-0 select-none leading-none">
-										جدید
-									</span>
+						return (
+							<div
+								key={def.id}
+								onClick={() => onSelectWidget(def.id)}
+								className={cn(
+									'w-full flex items-center justify-between p-2.5 rounded-2xl border text-right transition-all duration-150 cursor-pointer',
+									isSelected
+										? 'bg-primary/10 border-primary shadow-xs'
+										: 'bg-base-200/60 hover:bg-base-200 border-base-content/10'
 								)}
-							</div>
-
-							<div className="flex items-center gap-1.5 shrink-0 mr-2">
-								{!isVip && isWidgetVipOnly(def.id) && (
-									<VipBadge size="xs" />
-								)}
-								{def.settingsTab && (
-									<Button
-										type="button"
-										onClick={(e) =>
-											onOpenWidgetSettings(e, def.settingsTab)
-										}
-										title="تنظیمات ویجت"
-										size={'xs'}
-										variant={'ghost'}
-										className="px-1!"
-										rounded={'full'}
-									>
-										<Icon name="settings" size={13} />
-									</Button>
-								)}
-								{def.canDuplicate ? (
+							>
+								<div className="flex items-center min-w-0 gap-2">
 									<span
 										className={cn(
-											'text-[10px] px-1.5 py-0.5 rounded-lg font-medium flex items-center gap-1',
-											isActive
+											'flex items-center justify-center rounded-xl w-7 h-7 shrink-0 transition-ui',
+											isSelected
 												? 'bg-primary/15 text-primary'
-												: 'bg-base-300 text-muted'
+												: 'bg-base-content/5 text-muted'
 										)}
 									>
-										<span>
-											{isActive ? `${count}` : 'قابل تکرار'}
+										<Icon name={def.icon} size={15} />
+									</span>
+									<span
+										className={cn(
+											'text-xs truncate',
+											isSelected
+												? 'font-bold text-primary'
+												: 'font-medium text-content'
+										)}
+									>
+										{def.label}
+									</span>
+									{isWidgetNew?.(def.id) && <Badge>جدید</Badge>}
+								</div>
+
+								<div className="flex items-center gap-1.5 shrink-0 mr-2">
+									{!isVip && isWidgetVipOnly(def.id) && (
+										<VipBadge size="xs" />
+									)}
+									{def.settingsTab && (
+										<Button
+											type="button"
+											onClick={(e) =>
+												onOpenWidgetSettings(e, def.settingsTab)
+											}
+											title="تنظیمات ویجت"
+											size={'xs'}
+											variant={'ghost'}
+											className="px-1!"
+											rounded={'full'}
+										>
+											<Icon name="settings" size={13} />
+										</Button>
+									)}
+									{def.canDuplicate ? (
+										<span
+											className={cn(
+												'text-[10px] px-1.5 py-0.5 rounded-lg font-medium flex items-center gap-1',
+												isActive
+													? 'bg-primary/15 text-primary'
+													: 'bg-base-300 text-muted'
+											)}
+										>
+											<span>
+												{isActive ? `${count}` : 'قابل تکرار'}
+											</span>
 										</span>
-									</span>
-								) : isActive ? (
-									<span className="text-[10px] px-1.5 py-0.5 rounded-lg bg-base-300 text-muted font-medium">
-										فعال
-									</span>
-								) : null}
+									) : isActive ? (
+										<span className="text-[10px] px-1.5 py-0.5 rounded-lg bg-base-300 text-muted font-medium">
+											فعال
+										</span>
+									) : null}
+								</div>
 							</div>
-						</div>
-					)
-				})}
+						)
+					})
+				)}
 			</div>
 		</div>
 	)

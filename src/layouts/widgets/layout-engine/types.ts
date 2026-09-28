@@ -61,7 +61,13 @@ export interface GridBreakpoint {
 import type { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
 import type { IconName } from '@/icons/types'
 
-export type WidgetCategory = 'all' | 'time' | 'productivity' | 'info' | 'lifestyle'
+export type WidgetCategory =
+	| 'all'
+	| 'new'
+	| 'time'
+	| 'productivity'
+	| 'info'
+	| 'lifestyle'
 
 export interface WidgetVariantOption {
 	id: string

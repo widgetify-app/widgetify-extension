@@ -36,6 +36,7 @@ export interface ServerWidgetCatalogItem {
 
 export interface ServerCatalogConfig {
 	maxFreeWidgets?: number
+	featuredWidgetKeys?: string[]
 }
 
 export interface ServerWidgetCatalogResponse {
@@ -143,10 +144,16 @@ export function useWidgetVipResolver(enabled = true) {
 		[serverCatalog]
 	)
 
+	const featuredWidgetKeys = useMemo(
+		() => serverCatalog?.config?.featuredWidgetKeys ?? [],
+		[serverCatalog]
+	)
+
 	return useMemo(
 		() => ({
 			serverWidgets: serverCatalog?.widgets,
 			maxFreeWidgets,
+			featuredWidgetKeys,
 			isWidgetVipOnly,
 			isVariantVipOnly,
 			isSizeVipOnly,
@@ -155,6 +162,7 @@ export function useWidgetVipResolver(enabled = true) {
 		[
 			serverCatalog,
 			maxFreeWidgets,
+			featuredWidgetKeys,
 			isWidgetVipOnly,
 			isVariantVipOnly,
 			isSizeVipOnly,

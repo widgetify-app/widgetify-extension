@@ -1,14 +1,33 @@
-import { twMerge } from 'tailwind-merge'
-interface Prop {
-	className: string
+import type React from 'react'
+import { cn } from '@/common/utils/cn'
+import { badgeVariants, type BadgeVariantProps } from './badge.variants'
+
+export interface BadgeProps
+	extends React.HTMLAttributes<HTMLSpanElement>,
+		BadgeVariantProps {
+	children?: React.ReactNode
 }
-export function NewBadge({ className }: Prop) {
+
+export function Badge({
+	variant = 'error',
+	size = 'xs',
+	className,
+	children,
+	...props
+}: BadgeProps) {
 	return (
 		<span
-			className={twMerge(
-				'absolute w-2 h-2 rounded-full bg-error animate-pulse ring-2 ring-error/20',
+			className={cn(
+				badgeVariants({ variant, size: variant === 'dot' ? undefined : size }),
 				className
 			)}
-		></span>
+			{...props}
+		>
+			{children}
+		</span>
 	)
+}
+
+export function NewBadge({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
+	return <Badge variant="dot" className={cn('absolute', className)} {...props} />
 }

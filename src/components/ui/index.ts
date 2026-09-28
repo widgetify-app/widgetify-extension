@@ -2,6 +2,7 @@ export * from './avatar/avatar'
 export * from './avatar/avatar.variants'
 
 export * from './badge/badge'
+export * from './badge/badge.variants'
 export * from './badge/vip-badge'
 export * from './badge/vip-badge.variants'
 export * from './badge/floating-badge'
