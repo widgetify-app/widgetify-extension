@@ -184,6 +184,25 @@ describe('shared states', () => {
 	})
 })
 
+describe('icons', () => {
+	it('draws every icon from Lucide, apart from the brand logos', () => {
+		const pack = readFileSync('src/icons/packs/default.tsx', 'utf8')
+		const others = [...pack.matchAll(/import \{([^}]*)\} from 'react-icons\/(\w+)'/g)]
+			.filter((m) => m[2] !== 'lu')
+			.flatMap((m) => m[1].split(',').map((name) => name.trim()))
+			.filter(Boolean)
+			.sort()
+		expect(others).toEqual(['BiLogoGoogle', 'FaTelegramPlane', 'FcGoogle'])
+	})
+
+	it('reaches react-icons only through Icon', () => {
+		const outside = sourceFiles()
+			.filter((path) => !path.startsWith('src/icons/'))
+			.filter((path) => /from 'react-icons/.test(readFileSync(path, 'utf8')))
+		expect(outside).toEqual([])
+	})
+})
+
 describe('motion', () => {
 	it('lets transition-ui animate the properties Tailwind moves elements with', () => {
 		const utilities = readFileSync(join(STYLES, 'utilities.css'), 'utf8')
