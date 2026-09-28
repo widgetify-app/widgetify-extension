@@ -5,4 +5,5 @@ export enum WidgetTabKeys {
 	weather_settings = 'weather_settings',
 	combo_settings = 'combo_settings',
 	Pet = 'pet_settings',
+	dot_calendar_settings = 'dot_calendar_settings',
 }

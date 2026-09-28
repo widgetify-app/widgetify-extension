@@ -66,6 +66,7 @@ export type IconName =
 	| 'githubLogo'
 	| 'globe'
 	| 'calendarDays'
+	| 'calendarDot'
 	| 'cameraPlus'
 	| 'location'
 	| 'archive'

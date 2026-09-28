@@ -18,6 +18,7 @@ export enum WidgetKeys {
 	googleCalendar = 'googleCalendar',
 	photo = 'photo',
 	clock = 'clock',
+	dotCalendar = 'dotCalendar',
 }
 
 export interface WidgetPosition {

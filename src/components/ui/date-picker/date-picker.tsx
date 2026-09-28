@@ -2,11 +2,14 @@ import { twMerge } from 'tailwind-merge'
 import { Icon } from '@/icons'
 import jalaliMoment from 'jalali-moment'
 import { useState } from 'react'
+import { datePickerDayVariants, datePickerVariants } from './date-picker.variants'
 
 interface DatePickerProps {
 	onDateSelect: (date: jalaliMoment.Moment) => void
 	selectedDate?: jalaliMoment.Moment
 	className?: string
+	size?: 'sm' | 'lg'
+	isDateDisabled?: (date: jalaliMoment.Moment) => boolean
 }
 
 const WEEKDAYS = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج']
@@ -15,6 +18,8 @@ export function DatePicker({
 	onDateSelect,
 	selectedDate,
 	className = '',
+	size = 'sm',
+	isDateDisabled,
 }: DatePickerProps) {
 	const [currentDate, setCurrentDate] = useState<jalaliMoment.Moment>(
 		selectedDate?.locale('fa') || jalaliMoment().locale('fa')
@@ -73,6 +78,7 @@ export function DatePicker({
 	const goToToday = () => {
 		const today = jalaliMoment().locale('fa')
 		setCurrentDate(today)
+		if (isDateDisabled?.(today)) return
 		onDateSelect(today)
 	}
 
@@ -114,10 +120,15 @@ export function DatePicker({
 		const isDayToday = isToday(cellDate)
 		const isDaySelected = isSelected(cellDate)
 		const isFriday = cellDate.day() === 5
+		const isDisabled = isDateDisabled?.(cellDate) ?? false
 
 		const getDayTextStyle = () => {
 			if (isDaySelected) {
 				return 'bg-primary text-primary-content font-medium'
+			}
+
+			if (isDisabled) {
+				return 'text-muted'
 			}
 
 			if (isFriday) {
@@ -132,7 +143,7 @@ export function DatePicker({
 		}
 
 		const getHoverStyle = () => {
-			if (isDaySelected) return ''
+			if (isDaySelected || isDisabled) return ''
 
 			if (isFriday) {
 				return 'hover:bg-error/10'
@@ -152,19 +163,20 @@ export function DatePicker({
 		}
 
 		return (
-			<div
+			<button
+				type="button"
 				key={`${isCurrentMonth ? 'current' : isPrevMonth ? 'prev' : 'next'}-${day}`}
+				disabled={isDisabled}
 				onClick={() => handleDateClick(day, isCurrentMonth, isPrevMonth)}
 				className={`
-					relative p-0 rounded-2xl text-xs transition-all cursor-pointer
-					h-6 w-6 mx-auto flex items-center justify-center hover:scale-110 hover:shadow
+					${datePickerDayVariants({ size })}
 					${getDayTextStyle()}
 					${getHoverStyle()}
 					${isDayToday ? `${getTodayRingStyle()} scale-110 shadow-lg` : ''}
 				`}
 			>
 				{day}
-			</div>
+			</button>
 		)
 	}
 
@@ -190,10 +202,7 @@ export function DatePicker({
 	return (
 		<div
 			data-date-picker
-			className={twMerge(
-				'bg-base-100 border border-base-300 rounded-xl p-3 w-64',
-				className
-			)}
+			className={twMerge(datePickerVariants({ size }), className)}
 		>
 			<div className="flex items-center justify-between mb-3">
 				<h3 className="text-xs font-medium text-content">

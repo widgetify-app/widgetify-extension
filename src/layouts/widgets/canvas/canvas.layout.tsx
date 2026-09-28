@@ -5,7 +5,7 @@ import { useFreeWidgets } from '@/context/free-widget/free-widget.context'
 import { useContainerSize } from '@/hooks/use-container-size'
 import { getCanvasHeight } from '../grid-geometry'
 import { WIDGET_DEFINITIONS } from '../widget-registry'
-import { AddWidgetModal, WidgetHelpModal } from '@/layouts/widgets-manager'
+import { WidgetHelpModal } from '@/layouts/widgets-manager'
 import { PresetLayoutModal } from '../presets'
 import { CanvasContextMenu } from './components/canvas-context-menu'
 import { CanvasWidgetOuter } from './components/canvas-widget-outer'
@@ -33,7 +33,6 @@ export function FreeWidgetCanvas() {
 		setMaxRows,
 	} = useFreeWidgets()
 
-	const [isAddModalOpen, setIsAddModalOpen] = useState(false)
 	const [isPresetModalOpen, setIsPresetModalOpen] = useState(false)
 	const [isHelpModalOpen, setIsHelpModalOpen] = useState(false)
 
@@ -44,10 +43,6 @@ export function FreeWidgetCanvas() {
 	const handleCloseHelpModal = useCallback(() => {
 		setIsHelpModalOpen(false)
 	}, [])
-	const [editTarget, setEditTarget] = useState<{
-		instanceId: string
-		widgetId: string
-	} | null>(null)
 	const [canvasContextMenuPos, setCanvasContextMenuPos] = useState<{
 		x: number
 		y: number
@@ -61,22 +56,10 @@ export function FreeWidgetCanvas() {
 	}, [containerSize.width, updateContainerWidth])
 
 	useEffect(() => {
-		const removeListener = listenEvent(
-			'openAddCustomWidgetModal',
-			(payload?: any) => {
-				if (payload?.instanceId && payload?.widgetId) {
-					setEditTarget(payload)
-				} else {
-					setEditTarget(null)
-				}
-				setIsAddModalOpen(true)
-			}
-		)
 		const removePresetListener = listenEvent('openPresetLayoutsModal', () => {
 			setIsPresetModalOpen(true)
 		})
 		return () => {
-			removeListener()
 			removePresetListener()
 		}
 	}, [])
@@ -214,7 +197,7 @@ export function FreeWidgetCanvas() {
 			>
 				{canvasMode === 'edit' && (
 					<CanvasEditToolbar
-						onAddWidget={() => setIsAddModalOpen(true)}
+						onAddWidget={() => callEvent('openAddCustomWidgetModal')}
 						onOpenPresets={() => setIsPresetModalOpen(true)}
 						onExitEditMode={() => {
 							setCanvasMode('normal')
@@ -264,7 +247,7 @@ export function FreeWidgetCanvas() {
 						setCanvasMode(canvasMode === 'edit' ? 'normal' : 'edit')
 						setSelectedInstanceId(null)
 					}}
-					onOpenAddWidget={() => setIsAddModalOpen(true)}
+					onOpenAddWidget={() => callEvent('openAddCustomWidgetModal')}
 					onOpenPresets={() => setIsPresetModalOpen(true)}
 					onOpenAppearanceSettings={() =>
 						callEvent('openSettings', 'appearance')
@@ -275,15 +258,6 @@ export function FreeWidgetCanvas() {
 					onOpenHelp={() => setIsHelpModalOpen(true)}
 				/>
 			)}
-
-			<AddWidgetModal
-				isOpen={isAddModalOpen}
-				editTarget={editTarget}
-				onClose={() => {
-					setIsAddModalOpen(false)
-					setEditTarget(null)
-				}}
-			/>
 
 			<PresetLayoutModal
 				isOpen={isPresetModalOpen}

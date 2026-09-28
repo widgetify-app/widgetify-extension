@@ -86,6 +86,7 @@ import {
 	TbMoodSmile,
 	TbPaw,
 	TbPhoto,
+	TbCalendarDot,
 } from 'react-icons/tb'
 import {
 	MdDragIndicator,
@@ -236,6 +237,7 @@ export const defaultIcons = {
 	telegramLogo: FaTelegramPlane,
 	globe: FaGlobe,
 	calendarDays: LuCalendarDays,
+	calendarDot: TbCalendarDot,
 	cameraPlus: TbCameraPlus,
 	githubLogo: FaGithub,
 	location: CiLocationOn,

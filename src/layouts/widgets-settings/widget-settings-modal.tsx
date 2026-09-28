@@ -5,6 +5,7 @@ import { RssFeedSetting } from '@widget/news/rss-feed-setting'
 import { WeatherSetting } from '@widget/weather/weather-setting'
 import { WigiArzSetting } from '@widget/wigi-arz/wigi-arz-setting'
 import { ComboSetting } from '@widget/combo-widget/combo-setting'
+import { DotCalendarSetting } from '@widget/dot-calendar/dot-calendar-setting'
 import { WidgetTabKeys } from './tab-keys'
 
 interface WidgetSettingModalConfig {
@@ -38,6 +39,11 @@ const WIDGET_SETTING_MODALS: Record<string, WidgetSettingModalConfig> = {
 		title: 'تنظیمات ویجت ترکیبی',
 		size: 'lg',
 		Component: ComboSetting,
+	},
+	[WidgetTabKeys.dot_calendar_settings]: {
+		title: 'تنظیمات تقویم نقطه‌ای',
+		size: 'lg',
+		Component: DotCalendarSetting,
 	},
 }
 
