@@ -1,8 +1,9 @@
+import { cn } from '@/common/utils/cn'
 import { useCurrencyStore } from '@/features/widgets/currency.context'
 import { useOptionalFreeWidgets } from '@/features/widgets/widgets.context'
 import type { WidgetSize } from '../utils/layout-engine/types'
 import { WidgetContainer } from '../components/widget-container'
-import { CurrencyEmptyState } from './components/currency-empty-state'
+import { CurrencyEmpty } from './components/currency-empty'
 import { CurrencyList } from './components/currency-list'
 import type { WigiArzMeta } from './types'
 import { CurrencyCompactSquare } from './variants/wigi-arz-1x1'
@@ -58,9 +59,14 @@ export function WigiArzLayout({
 
 	if (inComboWidget) {
 		return (
-			<div className="flex items-center justify-between pb-2 mt-1">
+			<div
+				className={cn(
+					'flex items-center justify-between pb-2 mt-1',
+					selectedCurrencies.length === 0 && 'h-full'
+				)}
+			>
 				{selectedCurrencies.length === 0 ? (
-					<CurrencyEmptyState compact />
+					<CurrencyEmpty compact />
 				) : (
 					<CurrencyList
 						currencies={selectedCurrencies}

@@ -237,7 +237,6 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 					</div>
 				}
 				size="xl"
-				direction="rtl"
 				closeOnBackdropClick
 				className="max-w-4xl md:max-w-5xl"
 			>

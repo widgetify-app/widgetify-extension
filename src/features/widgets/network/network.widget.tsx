@@ -9,12 +9,12 @@ import { Icon } from '@/icons'
 import { getIpInfo, measurePing } from '@/services/network/get-network-info'
 import type { WidgetSize } from '../utils/layout-engine/types'
 import { WidgetContainer } from '../components/widget-container'
-import { NetworkError } from './components/network-error'
 import { NetworkIPCard } from './components/network-ip-card'
 import { NetworkLoadingSkeleton } from './components/network-loading-skeleton'
 import { NetworkPingCard } from './components/network-ping-card'
 import { NetworkCompactSquare } from './variants/network-1x1'
 import { NetworkCompactRow } from './variants/network-2x1'
+import { WidgetError } from '@/features/widgets/components/widget-error'
 
 interface NetworkInfo {
 	ip: string | null
@@ -165,10 +165,8 @@ export function NetworkLayout({ size = { w: 2, h: 3 } }: Prop) {
 									name="refresh"
 									size={12}
 									aria-hidden="true"
-									className={cn(
-										'text-fg opacity-70 hover:opacity-100',
-										isLoading && 'animate-spin'
-									)}
+									className="text-fg opacity-70 hover:opacity-100"
+									spin={isLoading}
 								/>
 							</Button>
 						</Tooltip>
@@ -177,7 +175,10 @@ export function NetworkLayout({ size = { w: 2, h: 3 } }: Prop) {
 					{isInitialLoading ? (
 						<NetworkLoadingSkeleton />
 					) : showError ? (
-						<NetworkError onRetry={handleRefresh} />
+						<WidgetError
+							message="اطلاعات شبکه دریافت نشد"
+							onRetry={handleRefresh}
+						/>
 					) : (
 						<div className="flex-1 space-y-2">
 							<div className="relative overflow-hidden border border-surface-3 rounded-2xl">
@@ -254,7 +255,7 @@ export function NetworkLayout({ size = { w: 2, h: 3 } }: Prop) {
 									name="refresh"
 									size={12}
 									aria-hidden="true"
-									className={cn(isLoading && 'animate-spin')}
+									spin={isLoading}
 								/>
 								به‌روزرسانی شبکه
 							</Button>

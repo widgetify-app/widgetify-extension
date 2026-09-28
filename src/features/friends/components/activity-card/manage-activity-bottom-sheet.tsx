@@ -245,7 +245,7 @@ export function ManageActivityBottomSheet({
 						disabled={isSubmitting || !activity.trim()}
 						size="sm"
 						className="w-full mt-1"
-						color={'primary'}
+						color={'brand'}
 						rounded={'2xl'}
 						loading={isSubmitting}
 					>
@@ -257,7 +257,6 @@ export function ManageActivityBottomSheet({
 			<Modal
 				isOpen={showModal}
 				onClose={() => setShowModal(false)}
-				direction="rtl"
 				showCloseButton={false}
 				className="px-4"
 				title="قوانین"

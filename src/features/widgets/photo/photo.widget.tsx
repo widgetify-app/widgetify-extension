@@ -14,9 +14,10 @@ import { callEvent } from '@/common/utils/call-event'
 import { GalleryPickerModal } from '@/components/gallery'
 import {
 	PopoverMenu,
-	PopoverMenuItem,
 	PopoverMenuDivider,
 	PopoverMenuHeader,
+	PopoverMenuItem,
+	Spinner,
 	VipBadge,
 } from '@/components/ui'
 import type { AxiosError } from 'axios'
@@ -177,10 +178,7 @@ export function PhotoWidget({
 						role="status"
 						className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-glass-surface-2 rounded-widget"
 					>
-						<span
-							aria-hidden="true"
-							className="w-5 h-5 border-2 rounded-full border-brand-fill-2 border-t-brand animate-spin"
-						/>
+						<Spinner aria-hidden="true" />
 						<span className="text-xs font-medium text-fg">
 							در حال بارگذاری...
 						</span>

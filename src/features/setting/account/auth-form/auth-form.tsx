@@ -275,7 +275,7 @@ const AuthForm = () => {
 
 						<Button
 							type="submit"
-							color="primary"
+							color="brand"
 							size="md"
 							rounded="xl"
 							loading={isOtpSending}
@@ -354,7 +354,7 @@ const AuthForm = () => {
 							type="submit"
 							disabled={isSigningIn || !password}
 							loading={isSigningIn}
-							color="primary"
+							color="brand"
 							size="md"
 							rounded="xl"
 							className="w-full text-sm font-semibold transition-all shadow-sm h-11 hover:brightness-105"
@@ -432,7 +432,8 @@ const AuthForm = () => {
 								>
 									<Icon
 										name="refresh"
-										className={`w-3.5 h-3.5 ${isOtpSending ? 'animate-spin' : ''}`}
+										className="w-3.5 h-3.5"
+										spin={isOtpSending}
 									/>
 									<span>
 										{isOtpSending
@@ -467,7 +468,7 @@ const AuthForm = () => {
 
 						<Button
 							type="submit"
-							color="primary"
+							color="brand"
 							size="md"
 							rounded="xl"
 							loading={isOtpVerifying}

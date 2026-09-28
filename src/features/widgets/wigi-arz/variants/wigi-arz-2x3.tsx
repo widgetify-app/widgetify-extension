@@ -1,4 +1,4 @@
-import { CurrencyEmptyState } from '../components/currency-empty-state'
+import { CurrencyEmpty } from '../components/currency-empty'
 import { CurrencyList } from '../components/currency-list'
 
 interface WigiArz2x3Props {
@@ -9,7 +9,7 @@ interface WigiArz2x3Props {
 
 export function WigiArz2x3({ currencies, onReorder, instanceId }: WigiArz2x3Props) {
 	if (currencies.length === 0) {
-		return <CurrencyEmptyState instanceId={instanceId} />
+		return <CurrencyEmpty instanceId={instanceId} />
 	}
 
 	return (

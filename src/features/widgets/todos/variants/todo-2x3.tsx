@@ -11,10 +11,10 @@ import { Icon } from '@/icons'
 import type { Todo } from '@/services/todo/todo.interface'
 import { ExpandableTodoInput } from '../components/expandable-todo-input'
 import { TodosEmpty } from '../components/todo-empty'
-import { TodosError } from '../components/todo-error'
 import { TodoItem } from '../components/todo-item'
 import { TodoSkeleton } from '../components/todo-skeleton'
 import { DATE_FILTER_OPTIONS, SORT_OPTIONS, UNFILTERED_TAGS } from '../constants'
+import { WidgetError } from '@/features/widgets/components/widget-error'
 
 interface Todo2x3Props {
 	todos: Todo[]
@@ -136,10 +136,8 @@ export const Todo2x3: React.FC<Todo2x3Props> = ({
 							<Icon
 								name="refresh"
 								aria-hidden="true"
-								className={cn(
-									'text-fg opacity-50 group-hover:opacity-100',
-									isLoading && 'animate-spin'
-								)}
+								className="text-fg opacity-50 group-hover:opacity-100"
+								spin={isLoading}
 							/>
 						</Button>
 					</Tooltip>
@@ -158,7 +156,7 @@ export const Todo2x3: React.FC<Todo2x3Props> = ({
 							))}
 						</div>
 					) : isError ? (
-						<TodosError onRetry={onRefresh} />
+						<WidgetError message="تسک‌ها دریافت نشدند" onRetry={onRefresh} />
 					) : todos.length === 0 ? (
 						<TodosEmpty />
 					) : (

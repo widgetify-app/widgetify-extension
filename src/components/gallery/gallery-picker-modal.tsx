@@ -90,7 +90,6 @@ export function GalleryPickerModal({
 				title={title}
 				size="xl"
 				className=""
-				direction="rtl"
 				closeOnBackdropClick={true}
 			>
 				<div className="flex flex-col w-full gap-4 p-1 h-[70vh]">

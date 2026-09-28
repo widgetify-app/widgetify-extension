@@ -220,7 +220,7 @@ export function ImageSearchPortal({
 						<Button
 							onClick={handleUrlSearch}
 							size="sm"
-							color={'primary'}
+							color={'brand'}
 							rounded={'2xl'}
 							className="w-20"
 						>

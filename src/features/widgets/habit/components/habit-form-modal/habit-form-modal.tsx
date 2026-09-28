@@ -174,7 +174,6 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			direction="rtl"
 			size="lg"
 			closeOnBackdropClick={false}
 			showCloseButton={false}

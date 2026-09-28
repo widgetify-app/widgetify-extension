@@ -3,6 +3,7 @@ import { Icon } from '@/icons'
 import { UserCoin } from '@/components/user-coin'
 import { useLazyLoad } from '@/hooks/use-lazy-load'
 import type { GalleryAsset } from '@/services/gallery/get-gallery-assets.hook'
+import { Spinner } from '@/components/ui'
 
 interface GalleryBookmarkIconItemProps {
 	asset: GalleryAsset
@@ -47,7 +48,7 @@ export function GalleryBookmarkIconItem({
 			/>
 			{!loaded && (
 				<div className="flex items-center justify-center w-full h-full">
-					<div className="w-5 h-5 border-2 rounded-full border-brand-fill-2 border-t-brand animate-spin" />
+					<Spinner />
 				</div>
 			)}
 			{error && (

@@ -2,11 +2,11 @@ import type { WidgetSize } from '../utils/layout-engine/types'
 import { WidgetContainer } from '../components/widget-container'
 import { useWeatherSettings } from './hooks/use-weather-settings'
 import { useGetWeatherByLatLon } from '@/services/weather/get-weather-by-lat-lon.hook'
-import { WeatherError } from './components/weather-error'
 import { WeatherCompactSquare } from './variants/weather-1x1'
 import { WeatherCompactRow } from './variants/weather-2x1'
 import { Weather2x2 } from './variants/weather-2x2'
 import { Weather2x3 } from './variants/weather-2x3'
+import { WidgetError } from '@/features/widgets/components/widget-error'
 
 interface WeatherLayoutProps {
 	size?: WidgetSize
@@ -21,7 +21,8 @@ export function WeatherLayout({ size = { w: 2, h: 3 } }: WeatherLayoutProps = {}
 	if (isError && !fetchedWeather) {
 		return (
 			<WidgetContainer>
-				<WeatherError
+				<WidgetError
+					message="آب و هوا دریافت نشد"
 					compact={size.w === 1 && size.h === 1}
 					onRetry={() => refetch()}
 				/>

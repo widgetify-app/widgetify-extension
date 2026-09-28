@@ -43,7 +43,7 @@ export const ReferralCodeSection = ({ code, className }: ReferralCodeSectionProp
 						onClick={handleCopyCode}
 						size="sm"
 						rounded={'xl'}
-						color={'primary'}
+						color={'brand'}
 					>
 						کپی کد
 					</Button>

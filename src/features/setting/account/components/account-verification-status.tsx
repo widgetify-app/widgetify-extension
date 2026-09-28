@@ -1,4 +1,4 @@
-import { Button, SectionPanel } from '@/components/ui'
+import { Button, SectionPanel, Spinner } from '@/components/ui'
 import { Icon } from '@/icons'
 
 interface AccountVerificationStatusProps {
@@ -35,7 +35,7 @@ export const AccountVerificationStatus = ({
 				>
 					{sendVerificationMutation.isPending ? (
 						<>
-							<div className="w-4 h-4 border-2 rounded-full border-image-line border-t-white animate-spin" />
+							<Spinner size="sm" tone="image" />
 							در حال ارسال...
 						</>
 					) : (

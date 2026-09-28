@@ -62,9 +62,9 @@ export function UserCard({ user, className = '' }: UserCardProps) {
 										{!user.friendshipStatus && (
 											<Button
 												size="xs"
-												rounded="md"
+												rounded="lg"
 												className="flex items-center !text-3xs"
-												color="primary"
+												color="brand"
 												loading={isSending}
 												loadingText="در حال ارسال..."
 												onClick={() => onAddClick()}

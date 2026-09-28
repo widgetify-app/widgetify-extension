@@ -126,7 +126,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 								size="sm"
 								onClick={nextStep}
 								className="w-full h-12 text-base font-bold shadow-lg"
-								color={'primary'}
+								color={'brand'}
 								rounded={'2xl'}
 							>
 								بزن بریم
@@ -182,7 +182,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 									onClick={nextStep}
 									disabled={!selectedOccupation}
 									className="flex-1 h-12 font-bold"
-									color={'primary'}
+									color={'brand'}
 									rounded={'2xl'}
 								>
 									تایید و ادامه
@@ -250,7 +250,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 									onClick={nextStep}
 									disabled={selectedInterests.length === 0}
 									className="flex-1 h-12 font-bold"
-									color={'primary'}
+									color={'brand'}
 									rounded={'2xl'}
 								>
 									ادامه
@@ -327,7 +327,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 								disabled={!selectedReferralSource || isPending}
 								loading={isPending}
 								className="h-12 font-bold mt-4 w-full"
-								color={'primary'}
+								color={'brand'}
 								rounded={'2xl'}
 							>
 								ادامه
@@ -357,7 +357,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 								size="sm"
 								onClick={onClose}
 								className="h-12 font-bold w-full"
-								color={'primary'}
+								color={'brand'}
 								rounded={'2xl'}
 							>
 								شروع استفاده
@@ -373,7 +373,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 	}
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} size="xl" direction="rtl" title=" ">
+		<Modal isOpen={isOpen} onClose={onClose} size="xl" title=" ">
 			<div className="relative overflow-hidden rounded bg-surface">
 				{currentStep > 1 && currentStep < totalSteps && (
 					<button

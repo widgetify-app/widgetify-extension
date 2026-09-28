@@ -91,7 +91,7 @@ export function MarketItemCard({
 							size="xs"
 							onClick={handleBuy}
 							rounded={'lg'}
-							color={'primary'}
+							color={'brand'}
 							className="h-6 px-2.5 rounded-lg text-2xs active:scale-95 transition-all"
 						>
 							<div className="flex items-center gap-1">

@@ -85,7 +85,6 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 			title="اضافه کردن شماره موبایل"
 			isOpen={prop.isOpen}
 			onClose={() => prop.onClose()}
-			direction="rtl"
 		>
 			<section>
 				<div>
@@ -136,7 +135,7 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 					<InputTextError message={error.otp} className="justify-center" />
 					<Button
 						type="submit"
-						color={'primary'}
+						color={'brand'}
 						rounded={'2xl'}
 						size="md"
 						loading={isPending}

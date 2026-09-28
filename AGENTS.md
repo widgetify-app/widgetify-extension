@@ -376,7 +376,13 @@ logout clears it with `clearLocalStorage`, as it clears every other setting.
 
 **Cross component messaging** uses `callEvent` / `listenEvent` from `@/common/utils/call-event`, typed on the `EventName` interface — app-wide events in that file, a feature's own events in its `types.ts`, the same way as storage keys. A file that augments must stay a module (keep at least one export): a `declare module` in a file with no import or export replaces the module instead of extending it.
 
-**Icons** come from `Icon` in `@/icons`.
+**Icons** come from `Icon` in `@/icons`. An icon that turns while something loads (a refresh button) takes `spin`.
+
+**Loading** is `Spinner` from `@/components/ui`: `size` from `xs` (12px) to `2xl` (40px), `tone` `brand` by default, `current` inside a coloured button, `image` over a picture. It announces itself as a status; pass `aria-hidden` when the text beside it already says it is loading. `animate-spin` is written nowhere else, and a test holds that.
+
+**Modals are always right to left.** `Modal` has no direction prop; it labels itself from its `title` and its close button reads «بستن».
+
+**Buttons** take `color` from the token names: `base`, `brand`, `danger`, `success`, `warning`, `vip`. `brand` is the app's main action. `rounded` defaults to `2xl`.
 
 **Analytics** via `@/analytics`.
 
@@ -518,6 +524,12 @@ is not a missing state, it is two states that render identically:
 Prefer per-source errors where a widget has several: one dead RSS feed should not blank the
 other two. And never show an error over data you already have — a slightly stale price or
 temperature beats an error message.
+
+Draw the error with `WidgetError` and the empty state with `WidgetEmpty`, both in
+`features/widgets/components`. `WidgetError` takes the widget's own sentence and a retry,
+and `compact` for a cell too small for the button. `WidgetEmpty` takes the no-items
+illustration or an icon, a title, a description and at most one action. A widget file named
+`*-empty.tsx` or `*-error.tsx` that draws its own markup fails `design-system.test.ts`.
 
 ### Anything read back from storage is untrusted input
 

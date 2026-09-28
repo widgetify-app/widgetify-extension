@@ -1,5 +1,5 @@
 import { ConfigKey } from '@/common/constants/config-keys'
-import { SectionPanel } from '@/components/ui'
+import { SectionPanel, Spinner } from '@/components/ui'
 import type { Task } from '@/services/user/referrals-service.hook'
 import { Icon } from '@/icons'
 
@@ -14,7 +14,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 			<div className="flex flex-col gap-2 py-2">
 				{isLoading ? (
 					<div className="py-12 text-center">
-						<div className="w-8 h-8 mx-auto border-4 rounded-full border-brand-fill-2 border-t-brand animate-spin"></div>
+						<Spinner size="xl" className="mx-auto" />
 						<p className="mt-4 text-sm text-fg-muted">در حال بارگذاری...</p>
 					</div>
 				) : tasks.length > 0 ? (

@@ -4,7 +4,7 @@ import {
 	useGetFriends,
 	useRemoveFriend,
 } from '@/services/friends/friend-service.hook'
-import { AvatarComponent, ConfirmationModal } from '@/components/ui'
+import { AvatarComponent, ConfirmationModal, Spinner } from '@/components/ui'
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll'
 import { Icon } from '@/icons'
 import { translateError } from '@/common/utils/translate-error'
@@ -180,7 +180,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 
 						{isFetchingNextPage && (
 							<div className="flex justify-center py-1.5">
-								<div className="w-4 h-4 border-2 rounded-full border-brand-fill-2 border-t-brand animate-spin" />
+								<Spinner size="sm" />
 							</div>
 						)}
 					</>
@@ -196,7 +196,6 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 
 			<ConfirmationModal
 				isOpen={Boolean(selectedUserToDelete)}
-				direction="rtl"
 				isLoading={isRemoving}
 				onClose={() => setSelectedUserToDelete(null)}
 				onConfirm={() => handleRemoveFriend(selectedUserToDelete?.id || null)}

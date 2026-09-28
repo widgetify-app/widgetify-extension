@@ -41,7 +41,6 @@ export function RequestNotificationModal({
 			onClose={() => setShowRequireNotificationModal(false)}
 			size="sm"
 			title="فعال کردن اعلان‌ها"
-			direction="rtl"
 		>
 			<div className="p-4 max-h-[80vh] overflow-y-auto">
 				<article className="pb-4 border-b blog-post border-surface-3 animate-fade-in animate-slide-up">
@@ -78,7 +77,7 @@ export function RequestNotificationModal({
 
 				<div className="flex gap-3 mt-2">
 					<Button
-						color={'primary'}
+						color={'brand'}
 						rounded={'2xl'}
 						size="md"
 						onClick={onRequestPermission}

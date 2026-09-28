@@ -49,7 +49,6 @@ export function AvatarCropModal({
 			isOpen={show}
 			onClose={() => !isPending && onClose()}
 			title="برش تصویر"
-			direction="rtl"
 			showCloseButton={!isPending}
 		>
 			<div className="flex flex-col w-full h-96">

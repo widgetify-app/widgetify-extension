@@ -89,7 +89,6 @@ export const FriendsLayout = () => {
 
 			<ConfirmationModal
 				isOpen={!!selectedUser}
-				direction="rtl"
 				isLoading={isRemoving}
 				onClose={() => setSelectedUser(null)}
 				onConfirm={() => handleRemoveFriend(selectedUser?.id || null)}

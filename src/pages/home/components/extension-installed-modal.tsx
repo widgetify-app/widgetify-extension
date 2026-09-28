@@ -17,7 +17,6 @@ export function ExtensionInstalledModal({
 			isOpen={show}
 			onClose={() => {}}
 			size="sm"
-			direction="rtl"
 			showCloseButton={false}
 			closeOnBackdropClick={false}
 		>
@@ -70,7 +69,7 @@ const StepOne = ({ onGetStarted }: StepOneProps) => {
 				size="md"
 				onClick={onGetStarted}
 				className="w-full text-base font-light shadow-sm rounded-2xl shadow-brand outline-none!"
-				color="primary"
+				color="brand"
 			>
 				شروع کنید
 			</Button>

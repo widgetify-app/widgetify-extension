@@ -43,7 +43,7 @@ export function BlurModeButton() {
 				isOpen={showConfirm}
 				onClose={() => setShowConfirm(false)}
 				onConfirm={handleConfirm}
-				variant="primary"
+				variant="brand"
 				title="حالت مخفی فعال میشه!"
 				icon={<Icon name="userSecret" />}
 				message={

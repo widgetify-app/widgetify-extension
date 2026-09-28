@@ -132,13 +132,7 @@ export const SettingModal = ({
 	}, [isOpen])
 
 	return (
-		<Modal
-			isOpen={isOpen}
-			onClose={onClose}
-			size="2xl"
-			title="تنظیمات"
-			direction="rtl"
-		>
+		<Modal isOpen={isOpen} onClose={onClose} size="2xl" title="تنظیمات">
 			<TabManager
 				tabOwner="setting"
 				tabs={tabs}

@@ -32,12 +32,7 @@ export function ChangeNameModal({ show, onClose, currentValue }: Prop) {
 	}
 
 	return (
-		<Modal
-			isOpen={show}
-			onClose={onCloseHandler}
-			direction="rtl"
-			showCloseButton={false}
-		>
+		<Modal isOpen={show} onClose={onCloseHandler} showCloseButton={false}>
 			<div className="flex flex-col justify-between h-40 gap-4">
 				<SectionPanel title={'نام کامل'} size="xs">
 					<TextInput

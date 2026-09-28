@@ -12,7 +12,7 @@ export function FooterButtons({ handleCancel, handleConfirm, isPending }: Prop) 
 				size="sm"
 				type="submit"
 				disabled={isPending}
-				color={'primary'}
+				color={'brand'}
 				rounded={'2xl'}
 				onClick={() => handleConfirm()}
 				className="text-sm flex-2 h-10"

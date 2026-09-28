@@ -74,7 +74,6 @@ export const FriendRequestsBottomSheet = ({ isOpen, onClose }: Prop) => {
 			size="lg"
 			title="درخواست های دوستی"
 			closeOnBackdropClick
-			direction="rtl"
 		>
 			<FriendsList
 				status="PENDING"

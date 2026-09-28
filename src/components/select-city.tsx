@@ -126,7 +126,6 @@ export function SelectCity({ size }: Prop) {
 				}}
 				title="انتخاب شهر"
 				size="lg"
-				direction="rtl"
 			>
 				<div className="space-y-2 overflow-hidden">
 					<div className="relative">

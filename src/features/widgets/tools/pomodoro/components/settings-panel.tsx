@@ -64,12 +64,7 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 	}
 
 	return (
-		<Modal
-			isOpen={isOpen}
-			onClose={onClose}
-			title="تنظیمات تایمر پومودورو"
-			direction="rtl"
-		>
+		<Modal isOpen={isOpen} onClose={onClose} title="تنظیمات تایمر پومودورو">
 			<div className={'rounded-xl'}>
 				<h4
 					className={
@@ -128,7 +123,7 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 					<Button
 						size="md"
 						onClick={handleSaveAndClose}
-						color={'primary'}
+						color={'brand'}
 						rounded={'2xl'}
 						className="w-full"
 					>

@@ -37,7 +37,7 @@ export function Button({
 			{loading ? (
 				loadingText || (
 					<>
-						<Icon name="spinner" className="animate-spin" />
+						<Icon name="spinner" spin />
 						<span className="text-xs">صبر کنید...</span>
 					</>
 				)

@@ -4,10 +4,10 @@ import { useGeneralSetting } from '@/context/general-setting.context'
 import { useNotes } from '@/features/widgets/notes/notes.context'
 import { NoteEditor } from '../components/note-editor'
 import { NoteEmpty } from '../components/note-empty'
-import { NoteError } from '../components/note-error'
 import { NoteItem } from '../components/note-item'
 import { NoteNavigation } from '../components/note-navigation'
 import { NoteSkeleton } from '../components/note-skeleton'
+import { WidgetError } from '@/features/widgets/components/widget-error'
 
 const SKELETON_COUNT = 4
 
@@ -29,7 +29,7 @@ function NotesContent() {
 	}
 
 	if (isError && !notes.length) {
-		return <NoteError onRetry={refetch} />
+		return <WidgetError message="یادداشت‌ها دریافت نشدند" onRetry={refetch} />
 	}
 
 	if (!activeNote && !notes.length) {

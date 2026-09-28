@@ -72,7 +72,6 @@ export function WidgetSettings() {
 			onClose={() => setRequest(null)}
 			title={activeSettingConfig?.title}
 			size={activeSettingConfig?.size}
-			direction="rtl"
 			closeOnBackdropClick
 		>
 			{activeSettingConfig && (

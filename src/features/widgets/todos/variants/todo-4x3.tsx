@@ -6,9 +6,9 @@ import { Icon } from '@/icons'
 import type { Todo } from '@/services/todo/todo.interface'
 import { ExpandableTodoInput } from '../components/expandable-todo-input'
 import { TodosEmpty } from '../components/todo-empty'
-import { TodosError } from '../components/todo-error'
 import { TodoItem } from '../components/todo-item'
 import { DATE_FILTER_OPTIONS, SORT_OPTIONS } from '../constants'
+import { WidgetError } from '@/features/widgets/components/widget-error'
 
 interface TodoBoardProps {
 	todos: Todo[]
@@ -139,10 +139,8 @@ export function TodoBoard({
 								name="refresh"
 								size={13}
 								aria-hidden="true"
-								className={cn(
-									'text-fg opacity-50 transition-opacity group-hover:opacity-100',
-									isLoading && 'animate-spin'
-								)}
+								className="text-fg opacity-50 transition-opacity group-hover:opacity-100"
+								spin={isLoading}
 							/>
 						</Button>
 					</Tooltip>
@@ -161,7 +159,7 @@ export function TodoBoard({
 							))}
 						</div>
 					) : isError ? (
-						<TodosError onRetry={onRefresh} />
+						<WidgetError message="تسک‌ها دریافت نشدند" onRetry={onRefresh} />
 					) : total === 0 ? (
 						<div className="flex h-full">
 							<TodosEmpty />

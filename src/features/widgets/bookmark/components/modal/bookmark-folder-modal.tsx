@@ -184,7 +184,6 @@ export function BookmarkFolderModal({
 			}
 			size="md"
 			className="max-w-xl min-h-95 md:min-h-100 h-95 md:h-100 flex flex-col [&>div:last-child]:flex-1 [&>div:last-child]:min-h-0 [&>div:last-child]:flex [&>div:last-child]:flex-col"
-			direction="rtl"
 			closeOnBackdropClick={true}
 		>
 			<div className="flex flex-col flex-1 h-full min-h-0 gap-3 p-1 select-none">

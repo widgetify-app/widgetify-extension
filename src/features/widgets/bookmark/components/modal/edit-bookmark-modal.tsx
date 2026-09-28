@@ -148,7 +148,6 @@ export function EditBookmarkModal({
 				onClose={onClose}
 				size="md"
 				title={`ویرایش ${type === 'FOLDER' ? 'پوشه' : 'بوکمارک'}`}
-				direction="rtl"
 				className="overflow-y-hidden!"
 				closeOnBackdropClick={false}
 			>
@@ -232,7 +231,7 @@ export function EditBookmarkModal({
 								size="md"
 								loading={isUpdating}
 								className="transition-colors duration-300 ease-in-out border-none shadow-none w-28 rounded-2xl"
-								color="primary"
+								color="brand"
 							>
 								ذخیره
 							</Button>

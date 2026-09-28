@@ -1,4 +1,4 @@
-import { Button, Modal } from '@/components/ui'
+import { Button, Modal, Spinner } from '@/components/ui'
 import type { Platform } from './platform-config'
 
 interface ConnectionModalProps {
@@ -19,12 +19,7 @@ export function ConnectionModal({
 	if (!platform) return null
 
 	return (
-		<Modal
-			isOpen={isOpen}
-			onClose={onClose}
-			title={`مدیریت پلتفرم‌های متصل`}
-			direction="rtl"
-		>
+		<Modal isOpen={isOpen} onClose={onClose} title={`مدیریت پلتفرم‌های متصل`}>
 			<div className="p-4">
 				<div className="flex items-center gap-3 mb-4">
 					<div
@@ -103,13 +98,13 @@ export function ConnectionModal({
 						loading={isLoading}
 						loadingText={
 							<span className="flex items-center justify-center gap-2">
-								<div className="w-4 h-4 border-2 rounded-full border-image-line border-t-white animate-spin" />
+								<Spinner size="sm" tone="image" />
 								در حال پردازش
 							</span>
 						}
 						className="flex-2 h-9 text-sm"
 						rounded={'2xl'}
-						color={platform.connected ? 'danger' : 'primary'}
+						color={platform.connected ? 'danger' : 'brand'}
 					>
 						{platform.connected ? 'قطع اتصال' : 'تایید و شروع اتصال'}
 					</Button>

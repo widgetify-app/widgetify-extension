@@ -46,7 +46,7 @@ export function TodoSelectFriends({ selectedFriends, setSelectedFriends }: Prop)
 				</div>
 				<Button
 					size="sm"
-					color={'primary'}
+					color={'brand'}
 					rounded={'2xl'}
 					onClick={() => callEvent('closeAllDropdowns')}
 					className="w-full"

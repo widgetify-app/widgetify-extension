@@ -82,7 +82,7 @@ export function NoteEditor({ note }: NoteEditorProps) {
 						loading={isSaving}
 						disabled={isSaving}
 						loadingText={<IconLoading />}
-						color={'primary'}
+						color={'brand'}
 						rounded={'xl'}
 						className="w-24 h-6"
 					>

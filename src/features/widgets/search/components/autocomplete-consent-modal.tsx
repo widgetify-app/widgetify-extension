@@ -22,13 +22,7 @@ export function AutocompleteConsentModal({
 	}
 
 	return (
-		<Modal
-			isOpen={isOpen}
-			onClose={onClose}
-			title="پیشنهادهای جستجو"
-			size="sm"
-			direction="rtl"
-		>
+		<Modal isOpen={isOpen} onClose={onClose} title="پیشنهادهای جستجو" size="sm">
 			<div className="flex flex-col gap-4 pt-1 searchbox-item">
 				<p className="px-1 text-sm leading-relaxed text-fg">
 					با فعال کردن این گزینه، هنگام تایپ در باکس جستجو، پیشنهادها مستقیما از
@@ -49,7 +43,7 @@ export function AutocompleteConsentModal({
 						onClick={() => onUpdateStatus()}
 						disabled={isPending}
 						size="md"
-						color={'primary'}
+						color={'brand'}
 						rounded={'2xl'}
 						loading={isPending}
 						className="px-8"

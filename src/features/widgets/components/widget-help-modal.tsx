@@ -96,7 +96,6 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 			onClose={onClose}
 			title="راهنمای مدیریت و چیدمان ویجت‌ها"
 			size="lg"
-			direction="rtl"
 			closeOnBackdropClick
 		>
 			<div className="flex flex-col gap-4 p-1 select-none text-right" dir="rtl">
@@ -171,7 +170,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 					<Button
 						type="button"
 						onClick={onClose}
-						color="primary"
+						color="brand"
 						size="sm"
 						rounded="xl"
 						className="px-6 text-xs font-bold"

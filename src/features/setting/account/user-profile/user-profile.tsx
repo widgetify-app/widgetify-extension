@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Button, SectionPanel } from '@/components/ui'
+import { Button, SectionPanel, Spinner } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { useGetOrCreateReferralCode } from '@/services/user/referrals-service.hook'
 import {
@@ -58,7 +58,7 @@ export const UserProfile = () => {
 	if (isLoading) {
 		return (
 			<div className="flex items-center justify-center h-full">
-				<div className="w-10 h-10 border-4 rounded-full border-brand-fill-2 border-t-brand animate-spin"></div>
+				<Spinner size="2xl" />
 			</div>
 		)
 	}

@@ -288,7 +288,6 @@ export function BookmarkGrid({
 				cancelText="انصراف"
 				variant="danger"
 				isLoading={isRemoving}
-				direction="rtl"
 			/>
 			{selectedBookmark && (
 				<BookmarkContextMenu

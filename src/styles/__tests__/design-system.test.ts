@@ -151,6 +151,28 @@ describe('one vocabulary', () => {
 	})
 })
 
+describe('shared states', () => {
+	it('spins only through Spinner or Icon spin', () => {
+		const spinning = sourceFiles()
+			.filter(
+				(path) =>
+					path !== 'src/components/ui/loading/spinner.variants.ts' &&
+					path !== 'src/icons/icon.tsx'
+			)
+			.filter((path) => readFileSync(path, 'utf8').includes('animate-spin'))
+		expect(spinning).toEqual([])
+	})
+
+	it('draws a widget empty or error state with WidgetEmpty or WidgetError', () => {
+		const own = sourceFiles()
+			.filter((path) => path.startsWith('src/features/widgets/'))
+			.filter((path) => !path.startsWith('src/features/widgets/components/'))
+			.filter((path) => /-(empty|error)\.tsx$/.test(path))
+			.filter((path) => !/<Widget(Empty|Error)\b/.test(readFileSync(path, 'utf8')))
+		expect(own).toEqual([])
+	})
+})
+
 describe('elevation', () => {
 	it('uses only the four shadow steps elevation.css defines', () => {
 		const pattern =

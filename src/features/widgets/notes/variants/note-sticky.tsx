@@ -14,10 +14,10 @@ import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
-import { NoteError } from '../components/note-error'
 import { PRIORITY_OPTIONS, STICKY_COLOR_MAP } from '../constants'
 import type { NotePriority, NotesMeta } from '../types'
 import moment from 'jalali-moment'
+import { WidgetError } from '@/features/widgets/components/widget-error'
 
 interface NoteStickyProps {
 	meta?: NotesMeta
@@ -210,7 +210,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 	if (isError && !notes.length) {
 		return (
 			<div className={cn('h-full w-full rounded-2xl', colorTheme.bg)}>
-				<NoteError onRetry={refetch} />
+				<WidgetError message="یادداشت‌ها دریافت نشدند" onRetry={refetch} />
 			</div>
 		)
 	}
@@ -261,7 +261,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 							<Button
 								size="xs"
 								variant="ghost"
-								rounded="md"
+								rounded="lg"
 								onClick={handlePrevNote}
 								className="w-4 h-4 p-0 border-none shadow-none hover:opacity-100 opacity-70 text-inherit"
 								title="یادداشت قبلی"
@@ -271,7 +271,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 							<Button
 								size="xs"
 								variant="ghost"
-								rounded="md"
+								rounded="lg"
 								onClick={handleNextNote}
 								className="w-4 h-4 p-0 border-none shadow-none hover:opacity-100 opacity-70 text-inherit"
 								title="یادداشت بعدی"

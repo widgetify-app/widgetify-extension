@@ -112,10 +112,8 @@ export function NoteNavigation() {
 								name="refresh"
 								size={15}
 								aria-hidden="true"
-								className={cn(
-									'opacity-60 hover:opacity-100',
-									isRefetching && 'animate-spin'
-								)}
+								className="opacity-60 hover:opacity-100"
+								spin={isRefetching}
 							/>
 						</Button>
 					</Tooltip>

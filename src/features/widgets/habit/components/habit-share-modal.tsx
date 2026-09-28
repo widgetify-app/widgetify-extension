@@ -38,7 +38,6 @@ export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareMod
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			direction="rtl"
 			size="xl"
 			title={
 				<div className="flex items-center gap-2">
@@ -70,7 +69,7 @@ export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareMod
 						</Button>
 
 						<Button
-							color="primary"
+							color="brand"
 							size="md"
 							className="w-32"
 							rounded="2xl"

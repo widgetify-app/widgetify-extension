@@ -97,7 +97,8 @@ export function MiniAppRunnerHeader({
 						<Icon
 							name="refresh"
 							size={18}
-							className={`transition-colors duration-200 text-fg-muted group-hover:text-fg-strong ${isLoading || isConnecting ? 'animate-spin' : ''}`}
+							className="transition-colors duration-200 text-fg-muted group-hover:text-fg-strong"
+							spin={isLoading || isConnecting}
 						/>
 					</button>
 				</div>

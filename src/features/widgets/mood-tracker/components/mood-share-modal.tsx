@@ -43,7 +43,6 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			direction="rtl"
 			size="md"
 			title={
 				<div className="flex items-center gap-2">
@@ -98,7 +97,7 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 						</Button>
 
 						<Button
-							color="primary"
+							color="brand"
 							size="md"
 							rounded="2xl"
 							onClick={handleDownloadImage}

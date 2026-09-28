@@ -1,23 +1,9 @@
-import type React from 'react'
-import { Icon } from '@/icons'
+import { WidgetEmpty } from '@/features/widgets/components/widget-empty'
 
 interface GoogleCalendarEmptyProps {
-	message?: string
+	message: string
 }
 
-export const GoogleCalendarEmpty: React.FC<GoogleCalendarEmptyProps> = ({
-	message = 'برای این روز برنامه‌ای نداری',
-}) => {
-	return (
-		<div className="flex flex-col items-center justify-center h-full py-8 text-center select-none opacity-40">
-			<Icon
-				name="calendar"
-				size={24}
-				strokeWidth={1.5}
-				className="mb-2"
-				aria-hidden="true"
-			/>
-			<p className="text-2xs font-medium text-fg">{message}</p>
-		</div>
-	)
+export function GoogleCalendarEmpty({ message }: GoogleCalendarEmptyProps) {
+	return <WidgetEmpty art="calendar" description={message} />
 }

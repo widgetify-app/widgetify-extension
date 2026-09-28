@@ -56,7 +56,6 @@ export function MarketItemPurchaseModal({
 			onClose={() => onClose(false)}
 			title=" "
 			size="md"
-			direction="rtl"
 			closeOnBackdropClick={!isPending}
 			showCloseButton={!isPending}
 		>
@@ -103,7 +102,7 @@ export function MarketItemPurchaseModal({
 						loadingText="در حال خرید..."
 						className="flex-1"
 						rounded="2xl"
-						color={canAfford ? 'primary' : 'base'}
+						color={canAfford ? 'brand' : 'base'}
 					>
 						خرید دائمی
 					</Button>

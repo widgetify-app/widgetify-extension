@@ -188,7 +188,6 @@ export function AddBookmarkModal({
 				onClose={() => onCloseHandler()}
 				size="md"
 				title={`${type === 'FOLDER' ? 'پوشه جدید' : 'بوکمارک جدید'}`}
-				direction="rtl"
 				className="overflow-y-hidden!"
 				closeOnBackdropClick={false}
 			>
@@ -280,7 +279,7 @@ export function AddBookmarkModal({
 								size="md"
 								loading={isAdding}
 								className="transition-colors duration-300 ease-in-out border-none shadow-none w-28 rounded-2xl"
-								color="primary"
+								color="brand"
 							>
 								ذخیره
 							</Button>

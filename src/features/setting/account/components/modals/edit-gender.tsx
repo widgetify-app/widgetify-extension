@@ -46,12 +46,7 @@ export function ChangeGenderModal({ show, onClose, currentValue }: Prop) {
 	}
 
 	return (
-		<Modal
-			isOpen={show}
-			onClose={onCloseHandler}
-			direction="rtl"
-			showCloseButton={false}
-		>
+		<Modal isOpen={show} onClose={onCloseHandler} showCloseButton={false}>
 			<div className="flex flex-col justify-between h-40 gap-4">
 				<SectionPanel title="جنسیت (کاملا اختیاری)" size="xs">
 					<div className="flex gap-2 p-1.5 bg-surface-2 rounded-2xl">

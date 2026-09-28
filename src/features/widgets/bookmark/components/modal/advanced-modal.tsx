@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Analytics from '@/analytics'
-import { Button, Modal } from '@/components/ui'
+import { Button, Modal, Spinner } from '@/components/ui'
 import { ColorPicker } from '@/components/ui'
 import { TextInput } from '@/components/ui'
 import { getEmojiList } from '@/services/emoji/get-emoji-list'
@@ -99,7 +99,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 		if (isLoadingEmojis) {
 			return (
 				<div className="flex items-center justify-center w-full p-4">
-					<div className="w-6 h-6 border-2 rounded-full border-t-brand border-brand-fill-2 animate-spin"></div>
+					<Spinner size="lg" />
 				</div>
 			)
 		}
@@ -149,12 +149,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 	}
 
 	return (
-		<Modal
-			title={title}
-			isOpen={isOpen}
-			onClose={() => onClose(null)}
-			direction="rtl"
-		>
+		<Modal title={title} isOpen={isOpen} onClose={() => onClose(null)}>
 			<div className={'flex flex-col gap-4 rounded-lg'}>
 				<div className="relative z-30">
 					<label className={'block text-sm font-medium mb-1.5 text-fg'}>
@@ -228,7 +223,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							size="md"
 							type="button"
 							onClick={toggleEmojiPopover}
-							className={'btn !w-fit px-8'}
+							className={'!w-fit px-8'}
 							rounded={'2xl'}
 						>
 							{sticker ? (
@@ -333,7 +328,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						type="submit"
 						onClick={() => handleClose()}
 						size="md"
-						color={'primary'}
+						color={'brand'}
 						rounded={'2xl'}
 						className={'w-fit px-8  border-none'}
 					>

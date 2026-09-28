@@ -218,7 +218,7 @@ export const RssFeedSetting = () => {
 						size="md"
 						rounded={'2xl'}
 						onClick={addNewFeed}
-						color={'primary'}
+						color={'brand'}
 					>
 						<Icon name="plus" size={16} />
 						<span>افزودن فید جدید</span>

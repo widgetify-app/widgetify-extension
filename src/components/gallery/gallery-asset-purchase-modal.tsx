@@ -71,7 +71,6 @@ export function GalleryAssetPurchaseModal({
 			onClose={onClose}
 			title=" "
 			size="md"
-			direction="rtl"
 			closeOnBackdropClick={!isPending}
 			showCloseButton={!isPending}
 		>
@@ -124,7 +123,7 @@ export function GalleryAssetPurchaseModal({
 								size="md"
 								className="flex-1"
 								rounded="2xl"
-								color="primary"
+								color="brand"
 							>
 								استفاده رایگان با پرو
 							</Button>
@@ -152,7 +151,7 @@ export function GalleryAssetPurchaseModal({
 								loadingText="در حال خرید..."
 								className="flex-1"
 								rounded="2xl"
-								color={canAfford ? 'primary' : 'base'}
+								color={canAfford ? 'brand' : 'base'}
 							>
 								خرید دائمی
 							</Button>

@@ -7,8 +7,7 @@ export const confirmationIconVariants = cva(
 			variant: {
 				danger: ['bg-danger-fill', 'text-danger'],
 				warning: ['bg-warning-fill', 'text-warning'],
-				info: ['bg-info-fill', 'text-info'],
-				primary: ['bg-brand-fill', 'text-brand'],
+				brand: ['bg-brand-fill', 'text-brand'],
 			},
 		},
 		defaultVariants: { variant: 'danger' },

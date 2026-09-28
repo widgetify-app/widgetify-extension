@@ -68,13 +68,7 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 		onClose()
 	}
 	return (
-		<Modal
-			isOpen={isOpen}
-			onClose={handleClose}
-			size="lg"
-			title="افزودن دوست جدید"
-			direction="rtl"
-		>
+		<Modal isOpen={isOpen} onClose={handleClose} size="lg" title="افزودن دوست جدید">
 			<div className="flex flex-col gap-3 p-5">
 				<div className="flex items-center justify-center">
 					<div className="relative mb-2">

@@ -25,7 +25,7 @@ export const HabitFormActions: React.FC<HabitFormActionsProps> = React.memo(
 
 				<Button
 					type="button"
-					color="primary"
+					color="brand"
 					size="md"
 					rounded="2xl"
 					onClick={onSubmit}

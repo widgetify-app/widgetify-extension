@@ -6,7 +6,7 @@ import { Icon } from '@/icons'
 import { safeAwait } from '@/services/api'
 import type { Todo } from '@/services/todo/todo.interface'
 import { useUpdateTodo } from '@/services/todo/update-todo.hook'
-import { TodosError } from '../components/todo-error'
+import { WidgetError } from '@/features/widgets/components/widget-error'
 
 interface TodoCompactRowProps {
 	todos: Todo[]
@@ -62,7 +62,7 @@ export function TodoCompactRow({
 	}
 
 	if (isError) {
-		return <TodosError compact onRetry={onRefresh} />
+		return <WidgetError message="تسک‌ها دریافت نشدند" compact onRetry={onRefresh} />
 	}
 
 	return (

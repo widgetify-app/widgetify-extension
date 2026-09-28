@@ -5,6 +5,7 @@ import { CoinPurchaseModal } from '@/components/wallpaper/coin-purchase-modal'
 import { useLazyLoad } from '@/hooks/use-lazy-load'
 import { HoverPlayVideo } from './hover-play-video'
 import { Icon } from '@/icons'
+import { Spinner } from '@/components/ui'
 
 interface WallpaperItemProps {
 	wallpaper: Wallpaper
@@ -89,7 +90,7 @@ function WallpaperItemFu({
 			>
 				{!loaded && (
 					<div className="absolute inset-0 flex items-center justify-center bg-scrim rounded-xl">
-						<div className="w-5 h-5 border-2 rounded-full border-brand-fill-2 border-t-brand animate-spin"></div>
+						<Spinner />
 					</div>
 				)}
 				{error && (

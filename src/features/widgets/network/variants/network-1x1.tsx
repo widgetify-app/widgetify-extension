@@ -1,9 +1,9 @@
 import { cn } from '@/common/utils/cn'
 import { Button } from '@/components/ui'
 import { Icon } from '@/icons'
-import { NetworkError } from '../components/network-error'
 import { copyIpToClipboard } from '../utils/copy-ip'
 import { getPingTextClass } from '../utils/ping-quality'
+import { WidgetError } from '@/features/widgets/components/widget-error'
 
 interface NetworkCompactSquareProps {
 	status: 'online' | 'offline'
@@ -72,7 +72,9 @@ export function NetworkCompactSquare({
 	}
 
 	if (hasError && onRefresh) {
-		return <NetworkError compact onRetry={onRefresh} />
+		return (
+			<WidgetError message="اطلاعات شبکه دریافت نشد" compact onRetry={onRefresh} />
+		)
 	}
 
 	return (
@@ -91,10 +93,8 @@ export function NetworkCompactSquare({
 							name="refresh"
 							size={11}
 							aria-hidden="true"
-							className={cn(
-								'text-fg opacity-70',
-								isRefreshing && 'animate-spin'
-							)}
+							className="text-fg opacity-70"
+							spin={isRefreshing}
 						/>
 					</Button>
 				)}

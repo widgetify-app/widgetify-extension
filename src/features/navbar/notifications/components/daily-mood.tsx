@@ -12,6 +12,7 @@ import { Icon } from '@/icons'
 import { useIsMutating, useQueryClient } from '@tanstack/react-query'
 import type { AxiosError } from 'axios'
 import { moodLogKeys } from '@/services/mood-log/mood-log.keys'
+import { Spinner } from '@/components/ui'
 
 interface Prop {
 	className: string
@@ -110,7 +111,7 @@ export function DailyMoodNotification({ className }: Prop) {
 								}`}
 							>
 								{isAdding ? (
-									<div className="w-5 h-5 mx-auto border-2 border-current rounded-full border-t-transparent animate-spin" />
+									<Spinner tone="current" className="mx-auto" />
 								) : (
 									<div className="flex flex-col items-center gap-0.5 hover:scale-95">
 										<div className="text-lg leading-none">

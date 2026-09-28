@@ -54,7 +54,6 @@ export function CoinPackagePurchaseModal({
 			onClose={onClose}
 			title="تایید خرید پکیج"
 			size="md"
-			direction="rtl"
 			closeOnBackdropClick={!isPending}
 			showCloseButton={!isPending}
 		>
@@ -126,7 +125,7 @@ export function CoinPackagePurchaseModal({
 						loading={isPending}
 						loadingText="در حال انتقال..."
 						className="flex-1"
-						color={'primary'}
+						color={'brand'}
 						rounded={'2xl'}
 					>
 						<Icon name="check" size={15} className="ml-1" />

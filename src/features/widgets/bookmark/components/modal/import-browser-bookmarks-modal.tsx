@@ -286,7 +286,6 @@ export function ImportBrowserBookmarksModal({
 			onClose={onClose}
 			size="md"
 			title="درون‌ریزی از بوکمارک‌های مرورگر"
-			direction="rtl"
 			className="overflow-y-hidden!"
 			closeOnBackdropClick={!isImporting}
 		>
@@ -303,7 +302,7 @@ export function ImportBrowserBookmarksModal({
 						size="sm"
 						onClick={handlePermission}
 						rounded={'2xl'}
-						color={'primary'}
+						color={'brand'}
 					>
 						فعال‌سازی دسترسی
 					</Button>
@@ -323,7 +322,8 @@ export function ImportBrowserBookmarksModal({
 							<div className="flex items-center justify-center h-full">
 								<Icon
 									name="spinner"
-									className="animate-spin text-fg-muted"
+									className="text-fg-muted"
+									spin
 									size={20}
 								/>
 							</div>
@@ -358,7 +358,7 @@ export function ImportBrowserBookmarksModal({
 						<Button
 							onClick={handleImport}
 							size="md"
-							color={'primary'}
+							color={'brand'}
 							disabled={selectedIds.size === 0 || isImporting}
 							loading={isImporting}
 							loadingText={

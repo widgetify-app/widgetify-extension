@@ -33,6 +33,7 @@ export * from './input/input.variants'
 export * from './item-selector/item-selector'
 
 export * from './loading/loading'
+export * from './loading/spinner'
 
 export * from './modal/confirmation-modal'
 export * from './modal/confirmation-modal.variants'

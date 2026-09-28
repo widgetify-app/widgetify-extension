@@ -11,10 +11,10 @@ import { Icon } from '@/icons'
 import { safeAwait } from '@/services/api'
 import type { Habit } from '@/services/habit/habit.interface'
 import { useLogHabitProgress } from '@/services/habit/log-habit-progress.hook'
-import { HabitError } from '../components/habit-error'
 import { SegmentedProgressRing } from '../components/item/button-progress-ring'
 import { SimpleProgressRing } from '../components/item/button-simple-progress-ring'
 import { resolveHabitStep } from '../utils/habit-step'
+import { WidgetError } from '@/features/widgets/components/widget-error'
 
 const DEFAULT_HABIT_COLOR = '#536dfe'
 
@@ -77,7 +77,7 @@ export function HabitCompactWide({
 	}
 
 	if (isError && isAuthenticated) {
-		return <HabitError compact onRetry={onRefresh} />
+		return <WidgetError message="عادت‌ها دریافت نشدند" compact onRetry={onRefresh} />
 	}
 
 	const selectedHabit = habits.find((h) => h.id === selectedId) || null

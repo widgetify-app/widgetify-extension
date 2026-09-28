@@ -1,6 +1,7 @@
 import type React from 'react'
 import { type TopUsersType, useGetTopUsers } from '@/services/pomodoro/get-top-users.hook'
 import { TopUserItem } from './components/top-user-item'
+import { Spinner } from '@/components/ui'
 
 interface TopUsersTabProps {
 	type: TopUsersType
@@ -12,7 +13,7 @@ export const TopUsersTab: React.FC<TopUsersTabProps> = ({ type }) => {
 	if (isLoading) {
 		return (
 			<div className="flex items-center justify-center p-4">
-				<div className="w-8 h-8 border-b-2 border-brand rounded-full animate-spin"></div>
+				<Spinner size="xl" />
 			</div>
 		)
 	}

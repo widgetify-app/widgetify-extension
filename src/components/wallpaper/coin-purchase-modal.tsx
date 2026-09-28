@@ -45,7 +45,6 @@ export function CoinPurchaseModal({
 			isOpen={isOpen}
 			onClose={onClose}
 			size="md"
-			direction="rtl"
 			closeOnBackdropClick={!isPurchasing}
 			showCloseButton={!isPurchasing}
 			title=" "
@@ -119,7 +118,7 @@ export function CoinPurchaseModal({
 								className="flex-1"
 								rounded="2xl"
 								color={
-									canAfford || wallpaperPrice === 0 ? 'primary' : 'base'
+									canAfford || wallpaperPrice === 0 ? 'brand' : 'base'
 								}
 							>
 								خرید دائمی
@@ -139,7 +138,7 @@ export function CoinPurchaseModal({
 							size="md"
 							onClick={onLogin}
 							className="w-full"
-							color="primary"
+							color="brand"
 							rounded="2xl"
 						>
 							ورود به حساب کاربری

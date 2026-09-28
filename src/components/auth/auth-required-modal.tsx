@@ -30,7 +30,6 @@ export function AuthRequiredModal({
 			size="sm"
 			isOpen={isOpen}
 			onClose={onClose}
-			direction="rtl"
 			closeOnBackdropClick={true}
 			showCloseButton={true}
 			title=" "
@@ -51,7 +50,7 @@ export function AuthRequiredModal({
 					<Button
 						onClick={triggerAccountTabDisplay}
 						size="md"
-						color="primary"
+						color="brand"
 						className="flex-1 text-xs"
 						rounded={'2xl'}
 					>

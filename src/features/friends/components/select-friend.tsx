@@ -1,4 +1,4 @@
-import { AvatarComponent } from '@/components/ui'
+import { AvatarComponent, Spinner } from '@/components/ui'
 import { useGetFriends, type Friend } from '@/services/friends/friend-service.hook'
 import { FriendEmptyList } from './empty-friend-list'
 
@@ -42,7 +42,7 @@ export function SelectFriendLayout({
 		<div className="h-full pl-0.5 overflow-y-auto">
 			{isLoading ? (
 				<div className="flex items-center justify-center py-12">
-					<div className="w-6 h-6 border-2 rounded-full border-brand border-t-transparent animate-spin" />
+					<Spinner size="lg" />
 				</div>
 			) : friends.length === 0 ? (
 				<FriendEmptyList emptyMessage="هنوز دوستی نداری." />

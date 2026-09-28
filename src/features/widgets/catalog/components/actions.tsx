@@ -80,7 +80,7 @@ export function AddWidgetActions({
 				onClick={onSave}
 				className="w-full"
 				rounded={'2xl'}
-				color={'primary'}
+				color={'brand'}
 				loading={isLoading}
 				disabled={isLoading}
 			>
@@ -115,7 +115,7 @@ export function AddWidgetActions({
 				onClick={onSave}
 				className="w-full"
 				rounded={'2xl'}
-				color={'primary'}
+				color={'brand'}
 				loading={isLoading}
 				disabled={isLoading}
 			>
@@ -137,7 +137,7 @@ export function AddWidgetActions({
 			onClick={onSave}
 			className="w-full"
 			rounded={'2xl'}
-			color={'primary'}
+			color={'brand'}
 			loading={isLoading}
 			disabled={isLoading}
 		>

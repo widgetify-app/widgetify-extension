@@ -1,18 +1,18 @@
-import type React from 'react'
 import { Icon } from '@/icons'
 
-interface HabitErrorProps {
+interface WidgetErrorProps {
+	message: string
 	compact?: boolean
 	onRetry: () => void
 }
 
-export const HabitError: React.FC<HabitErrorProps> = ({ compact, onRetry }) => {
+export function WidgetError({ message, compact, onRetry }: WidgetErrorProps) {
 	return (
 		<div className="flex flex-col items-center justify-center w-full h-full gap-2 p-2 text-center select-none">
 			<Icon name="alert" size={16} className="text-fg-muted" aria-hidden="true" />
 
 			<p className="text-2xs leading-tight text-fg-muted">
-				{compact ? 'دریافت نشد' : 'عادت‌ها دریافت نشدند'}
+				{compact ? 'دریافت نشد' : message}
 			</p>
 
 			{!compact && (

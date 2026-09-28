@@ -14,24 +14,15 @@ interface ConfirmationModalProps {
 	message?: string | ReactNode
 	confirmText?: ReactNode
 	cancelText?: string
-	variant?: 'danger' | 'warning' | 'info' | 'primary'
+	variant?: 'danger' | 'warning' | 'brand'
 	isLoading?: boolean
 	icon?: ReactNode
-	direction?: 'rtl' | 'ltr'
 }
-
-const confirmButtonColor = {
-	danger: 'danger',
-	warning: 'warning',
-	info: 'info',
-	primary: 'primary',
-} as const
 
 const variantIcon = {
 	danger: <Icon name="trash" size={18} />,
 	warning: <Icon name="alert" size={18} />,
-	info: <Icon name="info" size={18} />,
-	primary: <Icon name="info" size={18} />,
+	brand: <Icon name="info" size={18} />,
 }
 
 export function ConfirmationModal({
@@ -45,7 +36,6 @@ export function ConfirmationModal({
 	variant = 'danger',
 	isLoading = false,
 	icon,
-	direction = 'rtl',
 }: ConfirmationModalProps) {
 	const displayIcon = icon || variantIcon[variant]
 
@@ -66,7 +56,6 @@ export function ConfirmationModal({
 			isOpen={isOpen}
 			onClose={handleCancel}
 			size="sm"
-			direction={direction}
 			closeOnBackdropClick={!isLoading}
 			showCloseButton={!isLoading}
 			title={
@@ -113,7 +102,7 @@ export function ConfirmationModal({
 								<span className="text-xs">در حال انجام...</span>
 							</div>
 						}
-						color={confirmButtonColor[variant]}
+						color={variant}
 						rounded="2xl"
 						className="w-fit px-8"
 					>

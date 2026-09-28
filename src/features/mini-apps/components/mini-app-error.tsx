@@ -35,7 +35,7 @@ export function MiniAppError({ handleReload, onClickToBack }: Prop) {
 					type="button"
 					className="w-full"
 					rounded={'2xl'}
-					color={'primary'}
+					color={'brand'}
 					onClick={handleReload}
 				>
 					تلاش مجدد

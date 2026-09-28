@@ -35,7 +35,7 @@ export function Pagination({
 				disabled={currentPage === 1 || isLoading}
 				size="xs"
 				rounded="2xl"
-				color={currentPage !== 1 ? 'primary' : 'base'}
+				color={currentPage !== 1 ? 'brand' : 'base'}
 			>
 				<Icon name="chevronRight" size={18} />
 			</Button>
@@ -48,7 +48,7 @@ export function Pagination({
 				onClick={onNextPage}
 				disabled={currentPage === totalPages || isLoading}
 				rounded="2xl"
-				color={'primary'}
+				color={'brand'}
 				size="xs"
 			>
 				<Icon name="chevronLeft" size={18} />

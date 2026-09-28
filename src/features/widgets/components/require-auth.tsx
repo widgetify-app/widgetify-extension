@@ -2,7 +2,7 @@ import { Motion as motion } from '@/common/motion'
 import type { ReactNode } from 'react'
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
-import { Button } from '@/components/ui'
+import { Button, Spinner } from '@/components/ui'
 
 interface RequireAuthProps {
 	children: ReactNode
@@ -21,7 +21,7 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 		return (
 			<div className="flex items-center justify-center h-full">
 				<div className="text-center">
-					<div className="w-10 h-10 mx-auto border-t-2 border-b-2 rounded-full animate-spin border-brand"></div>
+					<Spinner size="2xl" className="mx-auto" />
 					<p className="mt-2">در حال بارگذاری...</p>
 				</div>
 			</div>
@@ -49,7 +49,7 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 						<Button
 							onClick={handleAuthClick}
 							size="sm"
-							color="primary"
+							color="brand"
 							className="mt-2 w-fit px-6 border-none shadow-none rounded-3xl"
 						>
 							ورود به حساب
@@ -76,7 +76,7 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 				<Button
 					onClick={handleAuthClick}
 					size="sm"
-					color="primary"
+					color="brand"
 					className="mt-2 w-fit px-6 border-none shadow-none rounded-3xl"
 				>
 					ورود به حساب

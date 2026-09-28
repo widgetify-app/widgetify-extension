@@ -90,7 +90,7 @@ export const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) =>
 				<Button
 					onClick={handleConfirm}
 					size="md"
-					color="primary"
+					color="brand"
 					rounded="2xl"
 					className="flex-1 text-xs"
 				>

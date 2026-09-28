@@ -25,7 +25,6 @@ export function MarketModalListener() {
 			onClose={() => setShowMarket(false)}
 			title="فروشگاه"
 			size="xl"
-			direction="rtl"
 			closeOnBackdropClick={true}
 		>
 			<MarketContainer />

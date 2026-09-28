@@ -147,12 +147,7 @@ export function MiniAppsLayout() {
 				</div>
 			</div>
 
-			<Modal
-				title="برنامک ها"
-				isOpen={showInfo}
-				onClose={() => setShowInfo(false)}
-				direction="rtl"
-			>
+			<Modal title="برنامک ها" isOpen={showInfo} onClose={() => setShowInfo(false)}>
 				<div className="space-y-3 text-sm">
 					<p className="font-semibold">
 						برنامک‌ها برنامه‌های کوچیکی هستن که تو ویجتیفای اجرا می‌شن و راحت
@@ -175,7 +170,7 @@ export function MiniAppsLayout() {
 				<Button
 					size="sm"
 					type="button"
-					color={'primary'}
+					color={'brand'}
 					rounded={'2xl'}
 					onClick={() => setShowInfo(false)}
 					fullWidth

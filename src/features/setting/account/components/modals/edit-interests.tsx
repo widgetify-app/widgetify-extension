@@ -39,12 +39,7 @@ export function ChangeInterestsModal({ show, onClose, currentValue }: Prop) {
 	}, [currentValue])
 
 	return (
-		<Modal
-			isOpen={show}
-			onClose={onCloseHandler}
-			direction="rtl"
-			showCloseButton={false}
-		>
+		<Modal isOpen={show} onClose={onCloseHandler} showCloseButton={false}>
 			<SectionPanel title="به چی علاقه داری؟" size="xs">
 				<InterestsSelector
 					interests={fetchedInterests}

@@ -134,13 +134,7 @@ export function HabitDetailModal({
 
 	return (
 		<>
-			<Modal
-				isOpen={isOpen}
-				onClose={onClose}
-				direction="rtl"
-				size="lg"
-				title={title}
-			>
+			<Modal isOpen={isOpen} onClose={onClose} size="lg" title={title}>
 				{isLoading ? (
 					<div className="p-2">
 						<div className="w-full h-85 rounded-2xl skeleton" />

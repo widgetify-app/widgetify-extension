@@ -5,10 +5,10 @@ import { useGeneralSetting } from '@/context/general-setting.context'
 import { getCurrentDate } from '@/common/utils/date-events'
 import { Icon } from '@/icons'
 import { HabitEmpty } from '../components/habit-empty'
-import { HabitError } from '../components/habit-error'
 import { HabitItemSkeleton } from '../components/item/habit-item-skeleton'
 import { HabitItem } from '../components/item/habit-item'
 import type { useHabitActions } from '../hooks/use-habit-actions'
+import { WidgetError } from '@/features/widgets/components/widget-error'
 
 const SKELETON_COUNT = 3
 
@@ -62,10 +62,8 @@ export const Habit2x3: React.FC<Habit2x3Props> = ({ actions }) => {
 							name="refresh"
 							size={15}
 							aria-hidden="true"
-							className={cn(
-								'opacity-60 hover:opacity-100',
-								isWaiting && 'animate-spin'
-							)}
+							className="opacity-60 hover:opacity-100"
+							spin={isWaiting}
 						/>
 					</Button>
 				</Tooltip>
@@ -83,7 +81,7 @@ export const Habit2x3: React.FC<Habit2x3Props> = ({ actions }) => {
 							))}
 						</div>
 					) : isError && isAuthenticated ? (
-						<HabitError onRetry={onRefresh} />
+						<WidgetError message="عادت‌ها دریافت نشدند" onRetry={onRefresh} />
 					) : isEmpty ? (
 						<HabitEmpty />
 					) : (

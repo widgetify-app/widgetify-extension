@@ -76,7 +76,6 @@ export function ProfileNav() {
 				isOpen={showAuthModal}
 				onClose={authModalCloseHandler}
 				size="sm"
-				direction="rtl"
 				title=" "
 			>
 				<AuthForm />

@@ -6,6 +6,7 @@ import { ConnectionModal } from './components/connection-modal'
 import type { Platform } from './components/platform-config'
 import { PLATFORM_CONFIGS } from './components/platform-data'
 import { showToast } from '@/common/toast'
+import { Spinner } from '@/components/ui'
 
 export function Connections() {
 	const { data: profile } = useGetUserProfile()
@@ -143,7 +144,7 @@ export function Connections() {
 					} ${!platform.isActive && !platform.connected ? 'bg-surface-3! text-fg-muted' : ''}`}
 							>
 								{platform.isLoading ? (
-									<div className="w-3 h-3 border-2 border-current rounded-full animate-spin border-t-transparent" />
+									<Spinner size="xs" tone="current" />
 								) : platform.connected ? (
 									'قطع'
 								) : (

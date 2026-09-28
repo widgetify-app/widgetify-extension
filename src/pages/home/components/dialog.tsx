@@ -64,7 +64,6 @@ export function DialogChecker() {
 			isOpen={show}
 			onClose={() => onClose()}
 			title={dialog.dialogTitle || ' '}
-			direction="rtl"
 			showCloseButton={true}
 		>
 			<div className="flex flex-col gap-3 p-2">

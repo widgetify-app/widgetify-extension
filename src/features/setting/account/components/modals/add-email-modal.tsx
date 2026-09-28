@@ -86,7 +86,6 @@ export function AddEmailModal(prop: AddPhoneProp) {
 			title="اضافه کردن ایمیل"
 			isOpen={prop.show}
 			onClose={() => prop.onClose('cancel')}
-			direction="rtl"
 		>
 			<section>
 				<div>
@@ -138,7 +137,7 @@ export function AddEmailModal(prop: AddPhoneProp) {
 					<InputTextError message={error.otp} className="justify-center" />
 					<Button
 						type="submit"
-						color={'primary'}
+						color={'brand'}
 						size="md"
 						rounded={'2xl'}
 						loading={isPending}

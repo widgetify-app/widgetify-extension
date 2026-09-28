@@ -66,7 +66,6 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 				onClose={onClose}
 				size="xl"
 				className="w-[calc(100vw-2rem)] max-w-4xl h-[min(650px,calc(100dvh-4rem))] flex flex-col p-4 md:p-5"
-				direction="rtl"
 				showCloseButton={true}
 				title={
 					<span className="flex items-center gap-2">
@@ -189,7 +188,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 													fullWidth
 													size="sm"
 													rounded="xl"
-													color="primary"
+													color="brand"
 													className="font-bold shadow-sm"
 													aria-label={`اعمال چیدمان ${preset.title}`}
 												>

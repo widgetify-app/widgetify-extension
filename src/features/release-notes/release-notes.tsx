@@ -128,7 +128,6 @@ export const UpdateReleaseNotesModal = ({
 			onClose={onClose}
 			title={'نسخه 2 ویجتیفای با کلی تغییرات منتشر شد!!'}
 			size="lg"
-			direction="rtl"
 			closeOnBackdropClick={false}
 			className="min-h-[500px]"
 		>
@@ -283,7 +282,7 @@ export const UpdateReleaseNotesModal = ({
 							<Button
 								type="button"
 								size="sm"
-								color="primary"
+								color="brand"
 								onClick={handleNextStep}
 								className="h-10 px-5 text-xs font-bold flex items-center gap-1.5 shadow-sm"
 								rounded="xl"
@@ -295,7 +294,7 @@ export const UpdateReleaseNotesModal = ({
 							<Button
 								type="button"
 								size="sm"
-								color="primary"
+								color="brand"
 								onClick={handleEnterEditMode}
 								disabled={counter > 0}
 								className="h-10 px-5 text-xs font-bold flex items-center gap-2 shadow-sm animate-pulse"

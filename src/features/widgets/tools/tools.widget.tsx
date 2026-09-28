@@ -75,7 +75,6 @@ export const ToolsLayout: React.FC<ToolsLayoutProps> = ({ size = { w: 2, h: 3 } 
 					onClose={() => setActiveModalTool(null)}
 					title={activeModalTool ? TOOLS_TAB_TITLES[activeModalTool] : ''}
 					size="md"
-					direction="rtl"
 				>
 					{activeModalTool && renderTool(activeModalTool)}
 				</Modal>

@@ -1,4 +1,4 @@
-import { SectionPanel } from '@/components/ui'
+import { SectionPanel, Spinner } from '@/components/ui'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { useTimezones } from '@/services/timezone/get-timezones.hook'
 
@@ -22,7 +22,7 @@ export function TimezoneSettings() {
 					<div className="flex items-center gap-2">
 						{isLoading ? (
 							<div className="flex justify-center w-full p-3">
-								<div className="w-6 h-6 border-2 border-brand rounded-full border-t-brand animate-spin"></div>
+								<Spinner size="lg" />
 							</div>
 						) : error ? (
 							<div className="w-full p-3 text-center text-danger">

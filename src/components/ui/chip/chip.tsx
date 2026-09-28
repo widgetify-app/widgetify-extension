@@ -20,6 +20,7 @@ export const Chip: React.FC<ChipProps> = ({
 }) => {
 	return (
 		<button
+			type="button"
 			onClick={disabled ? undefined : onClick}
 			className={cn(chipVariants({ selected }), className)}
 			dir={dir}

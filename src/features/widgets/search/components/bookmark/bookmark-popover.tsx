@@ -112,7 +112,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 									size="sm"
 									onClick={handlePermission}
 									className="w-full"
-									color="primary"
+									color="brand"
 									rounded="2xl"
 								>
 									فعال‌سازی دسترسی

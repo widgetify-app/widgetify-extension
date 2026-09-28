@@ -144,7 +144,7 @@ export default function JalaliDatePicker({
 						onClick={handleConfirm}
 						size="sm"
 						rounded={'2xl'}
-						color={'primary'}
+						color={'brand'}
 						className="flex-1"
 					>
 						<Icon name="check" size={16} className="ml-1" />
