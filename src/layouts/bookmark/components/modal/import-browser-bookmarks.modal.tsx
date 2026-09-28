@@ -17,6 +17,7 @@ interface ImportBrowserBookmarksModalProps {
 	isOpen: boolean
 	onClose: () => void
 	parentId: string | null
+	widgetId?: string | null
 	onImported?: () => void
 }
 
@@ -174,6 +175,7 @@ export function ImportBrowserBookmarksModal({
 	isOpen,
 	onClose,
 	parentId,
+	widgetId,
 	onImported,
 }: ImportBrowserBookmarksModalProps) {
 	const { browserBookmarksEnabled, setBrowserBookmarksEnabled } = useGeneralSetting()
@@ -263,7 +265,7 @@ export function ImportBrowserBookmarksModal({
 
 		setIsImporting(true)
 
-		const result = await importBrowserBookmarks(importNodes, parentId)
+		const result = await importBrowserBookmarks(importNodes, parentId, widgetId)
 
 		setIsImporting(false)
 

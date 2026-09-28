@@ -240,6 +240,7 @@ export function BookmarkFolderModal({
 				isOpen={showImportModal}
 				onClose={() => setShowImportModal(false)}
 				parentId={currentFolderId}
+				widgetId={instanceId}
 			/>
 		</Modal>
 	)

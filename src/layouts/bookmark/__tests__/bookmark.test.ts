@@ -610,7 +610,11 @@ describe('Bookmark Legacy Compatibility & Layout Tests', () => {
 
 			// In 1x1 widget, total slots = 1
 			const dim1x1 = computeBookmarkGridDimensions({ w: 1, h: 1 })
-			const displayed = getDisplayedBookmarksForGrid(rootItems, null, dim1x1.totalBookmarks)
+			const displayed = getDisplayedBookmarksForGrid(
+				rootItems,
+				null,
+				dim1x1.totalBookmarks
+			)
 
 			// Only 1 item is displayed and it is strictly the lowest order item (پوشه کاری)
 			expect(displayed).toHaveLength(1)
@@ -621,7 +625,12 @@ describe('Bookmark Legacy Compatibility & Layout Tests', () => {
 			const mapped = mapBookmarks(mockDataset)
 
 			// In a duplicated or non-primary widget (isPrimary: false, widgetId: 'bookmarks-copy-1')
-			const nonPrimaryItems = getFolderItems(mapped, null, 'bookmarks-copy-1', false)
+			const nonPrimaryItems = getFolderItems(
+				mapped,
+				null,
+				'bookmarks-copy-1',
+				false
+			)
 
 			// All bookmarks have widgetId: null, so non-primary items count is 0
 			expect(nonPrimaryItems).toHaveLength(0)
@@ -664,8 +673,42 @@ describe('Bookmark Legacy Compatibility & Layout Tests', () => {
 			}
 
 			const isNonUuidValid = validate(nonUuidFolder.id)
-			const targetIdNonUuid = isNonUuidValid ? nonUuidFolder.id : nonUuidFolder.onlineId || nonUuidFolder.id
+			const targetIdNonUuid = isNonUuidValid
+				? nonUuidFolder.id
+				: nonUuidFolder.onlineId || nonUuidFolder.id
 			expect(targetIdNonUuid).toBe('6a9a2caafc0a15baf5d51b29')
+		})
+
+		it('scopes imported bookmarks to the specified widget instance', () => {
+			const importedData: any[] = [
+				...mockDataset,
+				{
+					id: 'imported-bm-1',
+					title: 'گوگل',
+					type: 'BOOKMARK',
+					parentId: null as any,
+					url: 'https://google.com',
+					order: 10,
+					widgetId: 'bookmarks-instance-2',
+					icon: '',
+					isManageable: true,
+					iconIsS3Hosted: false,
+					children: [],
+				},
+			]
+			const mapped = mapBookmarks(importedData)
+
+			const instance2Items = getFolderItems(
+				mapped,
+				null,
+				'bookmarks-instance-2',
+				false
+			)
+			expect(instance2Items).toHaveLength(1)
+			expect(instance2Items[0].title).toBe('گوگل')
+
+			const primaryItems = getFolderItems(mapped, null, 'bookmarks-default', true)
+			expect(primaryItems.find((b) => b.title === 'گوگل')).toBeUndefined()
 		})
 	})
 })

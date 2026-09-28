@@ -12,6 +12,7 @@ export interface BulkImportBookmarkNode {
 export interface BulkImportBookmarksPayload {
 	parentId: string | null
 	items: BulkImportBookmarkNode[]
+	widgetId?: string | null
 }
 
 export interface BulkImportBookmarksResult {
@@ -41,6 +42,7 @@ export async function ImportBrowserBookmarksApi(
 		{
 			parentId: input.parentId || undefined,
 			items: input.items,
+			widgetId: input.widgetId || undefined,
 		}
 	)
 

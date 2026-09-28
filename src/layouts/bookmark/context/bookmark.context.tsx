@@ -34,7 +34,8 @@ export interface BookmarkStoreContext {
 	addBookmark: (bookmark: BookmarkCreateFormFields, cb: () => void) => Promise<void>
 	importBrowserBookmarks: (
 		nodes: BrowserImportNode[],
-		parentId: string | null
+		parentId: string | null,
+		widgetId?: string | null
 	) => Promise<{ importedCount: number; createdFolders: number } | null>
 	editBookmark: (bookmark: BookmarkUpdateFormFields, cb: () => void) => void
 	deleteBookmark: (id: string, cb: () => void) => void
@@ -256,7 +257,8 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	const importBrowserBookmarks = async (
 		nodes: BrowserImportNode[],
-		parentId: string | null
+		parentId: string | null,
+		widgetId?: string | null
 	): Promise<{ importedCount: number; createdFolders: number } | null> => {
 		if (!isAuthenticated) {
 			showToast('برای درون‌ریزی بوکمارک‌ها باید وارد شوید.', 'error')
@@ -296,6 +298,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			importBrowserBookmarksAsync({
 				parentId: resolvedParentId,
 				items: nodes.map(toApiNode),
+				widgetId: widgetId || undefined,
 			})
 		)
 
@@ -315,11 +318,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 		if (!input.title?.trim() || !bookmarks) return
 
-		if (
-			input.icon &&
-			input.icon instanceof File &&
-			input.icon.size > MAX_ICON_SIZE
-		) {
+		if (input.icon && input.icon instanceof File && input.icon.size > MAX_ICON_SIZE) {
 			showToast('حجم فایل آیکون نباید بیشتر از ۲۵۰ کیلوبایت باشد', 'error')
 			return
 		}
