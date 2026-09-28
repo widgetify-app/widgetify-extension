@@ -84,7 +84,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 				{isOpen && (
 					<Motion.div
 						key="bookmark-popover"
-						className="fixed overflow-hidden border shadow-xl bookmark-popover z-popover w-72 border-line rounded-2xl origin-top-left bg-surface-2 bg-glass"
+						className="fixed overflow-hidden border shadow-xl bookmark-popover z-popover w-72 border-line rounded-2xl origin-top-left bg-glass-surface-2"
 						initial={{ opacity: 0, scale: 0.95 }}
 						animate={{ opacity: 1, scale: 1 }}
 						exit={{ opacity: 0, scale: 0.95 }}

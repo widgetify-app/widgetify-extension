@@ -1,8 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { scan } from 'react-scan'
-import './fonts.css'
-import './index.css'
+import '@/styles/index.css'
 import App from './app'
 
 if (import.meta.env.DEV) {

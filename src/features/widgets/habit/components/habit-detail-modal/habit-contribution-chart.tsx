@@ -192,10 +192,7 @@ export function HabitContributionChart({
 	return (
 		<div className="flex flex-col w-full gap-4 select-none">
 			<div className="flex flex-col p-3 overflow-hidden border rounded-2xl bg-fill border-line">
-				<div
-					ref={scrollContainerRef}
-					className="pb-1 pl-1 overflow-x-auto scrollbar-thin"
-				>
+				<div ref={scrollContainerRef} className="pb-1 pl-1 overflow-x-auto">
 					<div className="inline-flex flex-col min-w-full gap-1">
 						<div className="flex items-center gap-1 pr-6 h-4 mb-0.5">
 							{weeks.map((week) => (

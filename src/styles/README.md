@@ -14,15 +14,24 @@ a raw daisyUI base class (`bg-base-200`) and on a hex literal in a class.
 
 ## Which file owns what
 
+`index.css` is the entry: `main.tsx` imports it and nothing else, and it imports
+every other file. Each file holds one kind of thing, and the test rejects
+anything else in it.
+
 | file | holds |
 |---|---|
+| `primitives.css` | `@theme` values: the palette ban, fonts, the small type steps, the line heights, radius, motion, the page-wide layers, the vip colour. Plus the brand constants every theme builds its primary from. |
 | `tokens.css` | the colour vocabulary. Nothing else declares a colour name. |
-| `theme.css` | primitives: the palette ban, fonts, the small type steps, radius, motion, the page-wide layers, the vip brand colour. |
-| `theme/<name>.css` | one theme's daisyUI values, plus its channel block. |
-| `theme-colors.css` | the theme imports and the brand constants shared by every theme. |
-| `utilities.css` | utilities `@theme` cannot generate: `transition-ui`, `focus-ring` and the `z-*` layers. |
-| `elevation.css` | the shadow scale `shadow-sm` … `shadow-xl`, and its colour per theme. |
-| `typography.css`, `legacy.css` | line heights; Chrome 109 fallbacks. |
+| `elevation.css` | the shadow scale `shadow-sm` … `shadow-xl`, and its default colour. |
+| `animations.css` | every `@keyframes`. One that a class uses sits in `@theme` with its `--animate-*`, so it ships only while something uses it. |
+| `themes/<name>.css` | one theme: its daisyUI block and one block of variables. No selectors. |
+| `base.css` | element defaults, all inside `@layer base` so a utility always wins over them. |
+| `utilities.css` | `@utility` only: `transition-ui`, `focus-ring`, the `z-*` layers, the glass family, `scrollbar-none` and the blur-mode pair. |
+| `legacy.css` | Chrome 109 fallbacks for what daisyUI writes. |
+
+A class is only ever an `@utility`. A plain `.class {}` rule sits outside
+Tailwind's layers, so it beats every utility on the element and takes no
+variants: `hover:` on it compiles to nothing.
 
 ## The vocabulary
 
@@ -66,7 +75,7 @@ app actually uses:
 | `vip` | ✓ | ✓ | ✓ | ✓ | ✓ |
 
 `success`, `warning`, `info` and `secondary` are declared by daisyUI and `vip`
-by `theme.css`, under exactly those names, so `tokens.css` only adds their `on-`
+by `primitives.css`, under exactly those names, so `tokens.css` only adds their `on-`
 and tint names. Redeclaring one there would make it refer to itself.
 
 **Over imagery** — chrome drawn on a wallpaper or a photo follows no theme,
@@ -74,6 +83,29 @@ because the theme says nothing about the pixels behind it: `image-fg` (white) ·
 `image-fill` (white 20) · `image-line` (white 30) · `scrim` (black 60) ·
 `scrim-soft` (black 20). Text on a solid accent is never one of these: it is
 that accent's `on-` pair.
+
+**Navbar** — `nav` · `nav-hover` for the navbar's buttons, `nav-idle` ·
+`nav-idle-hover` for its inactive tabs. They default to `fg-faint` → `fg-strong`
+and `fg-ghost` → `fg-faint`; `light` points all four one step darker, because
+its navbar is near white.
+
+A theme may point any name in `tokens.css` somewhere else from its own variable
+block, as `light` does for the navbar. The default stays in `tokens.css`, so a
+theme that says nothing gets it.
+
+## Glass
+
+Glass and icy frost the surfaces that float over the wallpaper.
+`bg-glass-<token>` is that token in every theme that sets no glass, and the
+theme's glass tint and blur in one that does: `bg-glass-surface-2` is a panel,
+`bg-glass-surface` a widget. Give every state background on the same surface the
+same family (`hover:bg-glass-surface-3`), or glass themes swap the frost for the
+plain token on hover. `backdrop-glass` is the blur alone, for a surface whose
+children draw the background, and `bg-glass-modal` is the modal's heavier one.
+
+A theme opts in with four variables: `--glass-bg` and `--glass-filter`, and
+`--glass-modal-bg` and `--glass-modal-filter`. Leave out any of them and that
+part falls back to the plain token.
 
 ## Adding a colour
 
@@ -118,10 +150,26 @@ declare the full channel set, and none may put a channel back inside the
 `elevation.css` replaces Tailwind's scale with them, so the class names are the
 familiar ones but the values follow the theme: a light wash on light themes and
 a much heavier one on dark themes, where Tailwind's stock 10% black is
-invisible. They stay real Tailwind shadows, so they combine with `ring-*` on
+invisible. Each theme sets its own four `--elevation-*-color`; `elevation.css`
+holds the light default for a theme that sets none. They stay real Tailwind shadows, so they combine with `ring-*` on
 the same element and take a colour: `shadow-md shadow-brand-fill-2` is a brand
 glow. `shadow-xs`, `shadow-2xl` and `shadow-inner` compile to nothing, and a
 test rejects them.
+
+## Line height
+
+`html` and `body` use `leading-body` (1.5625, Vazirmatn's own box; `base.css`
+explains why it is stated at all). Headings and controls use `leading-control`
+(1.4), set through `--tw-leading`: Tailwind's `text-*` sizes read that variable
+before their own line height, so `text-sm` on a button keeps 1.4, while an
+explicit `leading-*` still wins. `leading-tight` is 1.25 and `leading-relaxed`
+1.75.
+
+## Scrollbars
+
+Every scrollbar is thin, with a `fg-ghost` thumb on a clear track. Set once in
+`base.css`, through `scrollbar-color` for current browsers and
+`::-webkit-scrollbar` for Chrome before 121. `scrollbar-none` hides one.
 
 ## Type
 

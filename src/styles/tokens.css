@@ -19,6 +19,11 @@
 
 	--color-line: rgba(var(--color-base-content-rgb), 0.15);
 
+	--color-nav: var(--color-fg-faint);
+	--color-nav-hover: var(--color-fg-strong);
+	--color-nav-idle: var(--color-fg-ghost);
+	--color-nav-idle-hover: var(--color-fg-faint);
+
 	--color-brand: var(--color-primary);
 	--color-on-brand: var(--color-primary-content);
 	--color-brand-fill: rgba(var(--color-primary-rgb), 0.1);

@@ -21,12 +21,6 @@
 	--color-warning-content: #271b06;
 	--color-error: rgba(239, 68, 68, 0.8);
 	--color-error-content: #4d0218;
-	--glass: true;
-	--glass-opacity: 25%;
-	--glass-border-opacity: 15%;
-	--glass-reflex-degree: 120%;
-	--glass-reflex-opacity: 8%;
-	--glass-blur: 32px;
 	--radius-selector: 0.5rem;
 	--radius-field: 0.25rem;
 	--radius-box: 0.5rem;
@@ -61,32 +55,11 @@
 	--color-success-rgb: 34, 197, 94;
 	--color-warning-rgb: 245, 158, 11;
 	--color-info-rgb: 59, 130, 246;
-}
-
-[data-theme="glass"] .menu,
-[data-theme="glass"] .modal-box {
-	-webkit-backdrop-filter: blur(16px) saturate(180%);
-	backdrop-filter: blur(16px) saturate(180%);
-}
-
-[data-theme="glass"] .bg-glass,
-[data-theme="glass"] .tooltip {
-	background-color: #171717b3;
-	-webkit-backdrop-filter: blur(16px) saturate(150%);
-	backdrop-filter: blur(16px) saturate(150%);
-}
-
-[data-theme="glass"] .widget-outer {
-	-webkit-backdrop-filter: none;
-	backdrop-filter: none;
-}
-
-[data-theme="glass"] .modal-box {
-	-webkit-backdrop-filter: blur(200px) saturate(200%);
-	backdrop-filter: blur(40px) saturate(10%);
-	background-color: #171717b3;
-}
-
-[data-theme="glass"] select:open {
-	background-color: #171717b3;
+	--elevation-sm-color: rgba(0, 0, 0, 0.32);
+	--elevation-md-color: rgba(0, 0, 0, 0.4);
+	--elevation-lg-color: rgba(0, 0, 0, 0.48);
+	--elevation-xl-color: rgba(0, 0, 0, 0.56);
+	--glass-bg: #171717b3;
+	--glass-filter: blur(16px) saturate(150%);
+	--glass-modal-filter: blur(40px) saturate(10%);
 }

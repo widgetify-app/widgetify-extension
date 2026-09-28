@@ -110,7 +110,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 
 										<div className="flex flex-col gap-2">
 											<div className="flex items-start justify-between gap-2">
-												<h4 className="text-sm font-bold leading-6 truncate text-fg">
+												<h4 className="text-sm font-bold truncate text-fg">
 													{preset.title}
 												</h4>
 

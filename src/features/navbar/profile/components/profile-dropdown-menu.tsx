@@ -34,7 +34,7 @@ export function ProfileDropdownMenu({
 	}
 
 	return (
-		<div className="bg-surface-2 py-2 bg-glass min-w-52 px-1" dir="rtl">
+		<div className="bg-glass-surface-2 py-2 min-w-52 px-1" dir="rtl">
 			{isAuthenticated ? (
 				<div
 					onClick={handleProfileClick}

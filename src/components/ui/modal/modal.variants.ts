@@ -3,6 +3,7 @@ import { cva } from 'class-variance-authority'
 export const modalBoxVariants = cva(
 	[
 		'modal-box',
+		'bg-glass-modal',
 		'overflow-hidden',
 		'max-h-[calc(100dvh-1rem)]',
 		'md:max-h-[calc(100dvh-2rem)]',

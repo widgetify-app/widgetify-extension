@@ -184,7 +184,7 @@ export const Tooltip = ({
 					<Presence>
 						<motion.div
 							ref={tooltipRef}
-							className={`tooltip fixed pointer-events-auto rounded-lg py-1.5 px-3 text-xs max-w-xs bg-surface-2 shadow-lg z-popover  ${contentClassName}`}
+							className={`fixed pointer-events-auto rounded-lg py-1.5 px-3 text-xs max-w-xs bg-glass-surface-2 shadow-lg z-popover ${contentClassName}`}
 							style={{
 								left: placement?.x ?? 0,
 								top: placement?.y ?? 0,

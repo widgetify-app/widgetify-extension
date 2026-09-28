@@ -43,7 +43,7 @@ export function Mood1x1({
 						type="button"
 						onClick={onOpenMenu}
 						aria-label="گزینه‌های حال روزانه"
-						className="p-1 leading-none transition-ui rounded-lg opacity-0 cursor-pointer text-fg-muted hover:text-fg-strong hover:bg-fill-2 group-hover:opacity-100 focus-visible:focus-ring"
+						className="p-1 transition-ui rounded-lg opacity-0 cursor-pointer text-fg-muted hover:text-fg-strong hover:bg-fill-2 group-hover:opacity-100 focus-visible:focus-ring"
 					>
 						<Icon name="menuOption" size={12} aria-hidden="true" />
 					</button>
@@ -73,7 +73,7 @@ export function Mood1x1({
 								onSelectMood(opt.value as MoodType)
 							}}
 							className={cn(
-								'flex items-center justify-center w-[22cqh] h-[22cqh] rounded-full leading-none',
+								'flex items-center justify-center w-[22cqh] h-[22cqh] rounded-full',
 								'text-[13cqh] transition-ui cursor-pointer',
 								'disabled:cursor-not-allowed disabled:opacity-60 focus-visible:focus-ring',
 								isSelected

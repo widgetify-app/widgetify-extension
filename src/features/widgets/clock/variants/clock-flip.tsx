@@ -53,7 +53,7 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 			}}
 		>
 			<div
-				className="absolute inset-x-0 top-0 flex items-end justify-center overflow-hidden border-b bg-surface-2 bg-glass border-line"
+				className="absolute inset-x-0 top-0 flex items-end justify-center overflow-hidden border-b bg-glass-surface-2 border-line"
 				style={{
 					height: 'var(--flip-h)',
 					borderRadius:
@@ -71,7 +71,7 @@ const FlipUnit = memo(function FlipUnit({ value }: FlipUnitProps) {
 				</span>
 			</div>
 			<div
-				className="absolute inset-x-0 bottom-0 flex items-start justify-center overflow-hidden bg-surface-2 bg-glass"
+				className="absolute inset-x-0 bottom-0 flex items-start justify-center overflow-hidden bg-glass-surface-2"
 				style={{
 					height: 'var(--flip-h)',
 					borderRadius:

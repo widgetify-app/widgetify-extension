@@ -10,7 +10,7 @@ function ExplorerSkeleton() {
 			{[1, 2, 3, 4, 5, 6].map((i) => (
 				<div
 					key={i}
-					className="flex flex-col gap-4 p-5 rounded-2xl bg-surface-2 bg-glass"
+					className="flex flex-col gap-4 p-5 rounded-2xl bg-glass-surface-2"
 				>
 					<div className="flex items-center gap-3">
 						<div className="w-5 h-5 rounded-lg skeleton opacity-40"></div>

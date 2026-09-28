@@ -42,7 +42,7 @@ export function UserCard({ user, className = '' }: UserCardProps) {
 		<div className={`${className}`}>
 			<div
 				className={
-					'flex flex-col overflow-hidden border border-surface-3 rounded-widget shadow-lg bg-surface-2 bg-glass'
+					'flex flex-col overflow-hidden border border-surface-3 rounded-widget shadow-lg bg-glass-surface-2'
 				}
 			>
 				<div className="w-full h-16 bg-surface-3"></div>
@@ -77,7 +77,7 @@ export function UserCard({ user, className = '' }: UserCardProps) {
 										{user.friendshipStatus === 'PENDING' && (
 											<p
 												className={
-													'text-sm text-fg opacity-70 bg-surface-2 bg-glass rounded-2xl px-1'
+													'text-sm text-fg opacity-70 bg-glass-surface-2 rounded-2xl px-1'
 												}
 											>
 												ارسال شده

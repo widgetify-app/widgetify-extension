@@ -156,7 +156,7 @@ export function PhotoWidget({
 					)}
 
 					{hasFailed && (
-						<span className="flex flex-col items-center justify-center w-full h-full gap-2 p-3 text-center select-none rounded-widget bg-surface-2 bg-glass">
+						<span className="flex flex-col items-center justify-center w-full h-full gap-2 p-3 text-center select-none rounded-widget bg-glass-surface-2">
 							<Icon
 								name="alert"
 								size={18}
@@ -175,7 +175,7 @@ export function PhotoWidget({
 				{isUploading && (
 					<div
 						role="status"
-						className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-surface-2 bg-glass rounded-widget"
+						className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-glass-surface-2 rounded-widget"
 					>
 						<span
 							aria-hidden="true"

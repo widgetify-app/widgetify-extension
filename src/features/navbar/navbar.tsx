@@ -61,12 +61,12 @@ function NavbarTabs() {
 				<button
 					key={tab.id}
 					onClick={() => handleTabClick(tab.id)}
-					className="relative p-1.5 sm:p-2 cursor-pointer group nav-btn"
+					className="relative p-1.5 sm:p-2 cursor-pointer group"
 				>
 					<span
 						className={`
             relative z-10 transition-all duration-300 block
-            ${page === tab.id ? 'text-brand scale-110' : 'nav-btn text-fg-ghost hover:text-fg-faint'}
+            ${page === tab.id ? 'text-brand scale-110' : 'text-nav-idle hover:text-nav-idle-hover'}
         `}
 					>
 						{page === tab.id && tab.activeIcon ? (
@@ -81,7 +81,7 @@ function NavbarTabs() {
 					</span>
 
 					{page === tab.id && (
-						<div className="absolute bottom-0 left-0 w-4 mx-auto right-0 h-1 bg-brand rounded-t-full shadow-[0_-4px_12px_rgba(var(--primary-rgb),0.8)]"></div>
+						<div className="absolute bottom-0 left-0 w-4 mx-auto right-0 h-1 bg-brand rounded-t-full shadow-[0_-4px_12px_rgba(var(--color-primary-rgb),0.8)]"></div>
 					)}
 				</button>
 			))}
@@ -146,7 +146,7 @@ export function NavbarLayout(): JSX.Element {
 				onClick={() => onToggleNavbar()}
 				aria-hidden={showHandle ? undefined : true}
 				tabIndex={showHandle ? 0 : -1}
-				className={`fixed z-float bottom-0 left-1/2 -translate-x-1/2 w-28 py-2.5 bg-surface-2 bg-glass border-t border-x border-line rounded-t-3xl shadow-[0_-0px_30px_rgba(0,0,0,0.3)] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] hover:bg-fill-2 cursor-pointer group ${
+				className={`fixed z-float bottom-0 left-1/2 -translate-x-1/2 w-28 py-2.5 bg-glass-surface-2 border-t border-x border-line rounded-t-3xl shadow-[0_-0px_30px_rgba(0,0,0,0.3)] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] hover:bg-glass-fill-2 cursor-pointer group ${
 					showHandle
 						? 'translate-y-0 opacity-100'
 						: 'translate-y-full opacity-0 pointer-events-none'
@@ -169,7 +169,7 @@ export function NavbarLayout(): JSX.Element {
 					id="chrome-footer"
 				></div>
 
-				<nav className="relative flex items-center p-1.5 sm:p-2 justify-between gap-1 sm:gap-2 bg-surface-2 bg-glass rounded-2xl sm:rounded-3xl h-12 sm:h-14">
+				<nav className="relative flex items-center p-1.5 sm:p-2 justify-between gap-1 sm:gap-2 bg-glass-surface-2 rounded-2xl sm:rounded-3xl h-12 sm:h-14">
 					<div className="relative z-10 flex items-center gap-1.5 sm:gap-2 pr-1 ml-0.5 flex-1">
 						<a
 							href={WIDGETIFY_URLS.website}
@@ -195,7 +195,7 @@ export function NavbarLayout(): JSX.Element {
 					<div className="flex items-center justify-end flex-1 gap-1 sm:gap-2">
 						<button
 							onClick={() => onToggleNavbar()}
-							className="p-2 transition-all cursor-pointer nav-btn text-fg-faint hover:text-fg-strong active:scale-90"
+							className="p-2 transition-all cursor-pointer text-nav hover:text-nav-hover active:scale-90"
 						>
 							<Icon name="chevronDown" size={15} />
 						</button>

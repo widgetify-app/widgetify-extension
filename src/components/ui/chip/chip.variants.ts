@@ -19,8 +19,7 @@ export const chipVariants = cva(
 			selected: {
 				true: ['bg-brand', 'border-brand', 'text-on-brand'],
 				false: [
-					'bg-surface',
-					'bg-glass',
+					'bg-glass-surface',
 					'border-surface-3',
 					'text-fg-muted',
 					'enabled:hover:border-brand-fill-2',

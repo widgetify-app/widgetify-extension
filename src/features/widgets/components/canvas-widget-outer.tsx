@@ -319,7 +319,8 @@ function CanvasWidgetOuterImpl({
 				className={cn(
 					'widget-outer absolute top-0 left-0 select-none rounded-widget',
 					isDragging ? 'z-50 shadow-xl cursor-grabbing' : 'z-10 cursor-default',
-					!isDragging && 'widget-canvas-item-transition'
+					!isDragging &&
+						'transition-[transform,width,height] duration-200 ease-out'
 				)}
 				style={{
 					width: `${pixelRect.width}px`,
@@ -384,7 +385,7 @@ function CanvasWidgetOuterImpl({
 					)}
 					{isLocked && canvasMode === 'normal' && (
 						<div
-							className="absolute inset-0 z-25 rounded-widget bg-surface-2 bg-glass border border-vip-fill-2 flex flex-col items-center justify-center p-2 text-center select-none cursor-pointer overflow-hidden group transition-all duration-200 hover:border-vip"
+							className="absolute inset-0 z-25 rounded-widget bg-glass-surface-2 border border-vip-fill-2 flex flex-col items-center justify-center p-2 text-center select-none cursor-pointer overflow-hidden group transition-all duration-200 hover:border-vip"
 							onClick={(e) => {
 								e.stopPropagation()
 								callEvent('openSettings', 'vip')

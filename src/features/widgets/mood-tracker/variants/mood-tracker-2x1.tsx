@@ -26,9 +26,7 @@ export function Mood2x1({
 			className="flex flex-col justify-between w-full h-full p-[10.4cqh] overflow-hidden text-right select-none group"
 		>
 			<header className="flex items-center justify-between px-0.5">
-				<h3 className="text-[11.5cqh] font-bold leading-none text-fg">
-					امروز چه حسی داری؟
-				</h3>
+				<h3 className="text-[11.5cqh] font-bold text-fg">امروز چه حسی داری؟</h3>
 
 				{onOpenMenu && (
 					<button
@@ -36,7 +34,7 @@ export function Mood2x1({
 						type="button"
 						onClick={onOpenMenu}
 						aria-label="گزینه‌های حال روزانه"
-						className="p-1 leading-none transition-ui rounded-lg opacity-0 cursor-pointer text-fg-muted hover:text-fg-strong hover:bg-fill-2 group-hover:opacity-100 focus-visible:focus-ring"
+						className="p-1 transition-ui rounded-lg opacity-0 cursor-pointer text-fg-muted hover:text-fg-strong hover:bg-fill-2 group-hover:opacity-100 focus-visible:focus-ring"
 					>
 						<Icon name="menuOption" size={13} aria-hidden="true" />
 					</button>

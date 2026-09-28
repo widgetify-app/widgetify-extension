@@ -149,7 +149,7 @@ function SearchFullContent() {
 		<div className="flex flex-col items-center justify-center w-full h-full">
 			<div
 				ref={searchRef}
-				className="relative w-full p-1 bg-surface-2 bg-glass rounded-widget"
+				className="relative w-full p-1 bg-glass-surface-2 rounded-widget"
 			>
 				<form onSubmit={handleSubmit}>
 					<div

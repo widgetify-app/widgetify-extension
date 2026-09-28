@@ -133,7 +133,7 @@ export function SearchCompactRow() {
 		<div className="flex items-center justify-center w-full h-full p-1 select-none">
 			<div ref={searchRef} className="relative w-full">
 				<form onSubmit={handleSubmit}>
-					<div className="relative flex items-center px-2 py-1.5 overflow-hidden transition-all duration-300 shadow-sm bg-surface-2 bg-glass rounded-2xl">
+					<div className="relative flex items-center px-2 py-1.5 overflow-hidden transition-all duration-300 shadow-sm bg-glass-surface-2 rounded-2xl">
 						<EngineSelector onSelected={onEngineSelected} />
 
 						<input

@@ -55,4 +55,8 @@
 	--color-success-rgb: 135, 208, 58;
 	--color-warning-rgb: 226, 213, 99;
 	--color-info-rgb: 103, 198, 255;
+	--elevation-sm-color: rgba(0, 0, 0, 0.32);
+	--elevation-md-color: rgba(0, 0, 0, 0.4);
+	--elevation-lg-color: rgba(0, 0, 0, 0.48);
+	--elevation-xl-color: rgba(0, 0, 0, 0.56);
 }

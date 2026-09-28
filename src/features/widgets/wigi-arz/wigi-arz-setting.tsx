@@ -139,7 +139,7 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 						/>
 					</div>
 
-					<div className="px-2 pr-1 overflow-x-hidden overflow-y-auto transition-opacity duration-300 ease-out min-h-64 max-h-64 scrollbar-thin scrollbar-thumb">
+					<div className="px-2 pr-1 overflow-x-hidden overflow-y-auto transition-opacity duration-300 ease-out min-h-64 max-h-64">
 						{filteredGroups.map((group) => (
 							<section key={group.label} className="mb-6">
 								<h3 className="mb-3 text-sm font-medium text-fg">

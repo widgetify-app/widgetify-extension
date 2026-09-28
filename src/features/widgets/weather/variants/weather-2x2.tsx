@@ -33,7 +33,7 @@ export const Weather2x2: React.FC<Weather2x2Props> = ({
 		<section
 			aria-label="آب و هوا"
 			aria-busy={!fetchedWeather}
-			className="flex flex-col justify-between w-full h-full my-auto p-3.5 select-none overflow-hidden text-right bg-surface-2 rounded-widget bg-glass"
+			className="flex flex-col justify-between w-full h-full my-auto p-3.5 select-none overflow-hidden text-right bg-glass-surface-2 rounded-widget"
 		>
 			<header className="flex items-center justify-between w-full gap-2">
 				<div className="flex items-center justify-center shrink-0">

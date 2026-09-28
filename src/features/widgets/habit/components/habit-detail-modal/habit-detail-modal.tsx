@@ -104,7 +104,7 @@ export function HabitDetailModal({
 								</Button>
 							}
 						>
-							<div className="flex flex-col p-2 border bg-surface-2 bg-glass border-line rounded-2xl">
+							<div className="flex flex-col p-2 border bg-glass-surface-2 border-line rounded-2xl">
 								<button
 									type="button"
 									className="w-full px-3 py-1.5 flex items-center gap-x-2 cursor-pointer rounded-lg transition-ui text-fg hover:bg-fill-2 focus-visible:focus-ring"

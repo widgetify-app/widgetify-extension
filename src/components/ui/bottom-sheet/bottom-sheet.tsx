@@ -64,7 +64,7 @@ export function BottomSheet({
 				{isOpen && (
 					<motion.div
 						key="bottom-sheet-panel"
-						className={`fixed left-0 right-0 ${isDragging ? 'z-10' : 'z-float'} bottom-16 min-w-2xl bg-surface-2 bg-glass rounded-t-3xl`}
+						className={`fixed left-0 right-0 ${isDragging ? 'z-10' : 'z-float'} bottom-16 min-w-2xl bg-glass-surface-2 rounded-t-3xl`}
 						style={{
 							height: sizes[size],
 							maxWidth: '390px',

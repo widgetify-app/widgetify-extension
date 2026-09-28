@@ -95,7 +95,7 @@ export const FolderBookmarkItem = memo(function FolderBookmarkItem({
 				className={cn(
 					'relative flex group h-20 md:h-[5.9rem] border border-surface-3 w-full flex-col items-center justify-between px-2 py-1.5 transition-all duration-300 cursor-pointer rounded-widget shadow-sm ease-in-out',
 					!bookmark.customBackground
-						? 'bg-surface-2 bg-glass hover:bg-surface-3 text-fg'
+						? 'bg-glass-surface-2 hover:bg-glass-surface-3 text-fg'
 						: 'before:bg-inherit '
 				)}
 			>

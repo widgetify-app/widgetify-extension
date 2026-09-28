@@ -1,0 +1,105 @@
+@theme {
+	--animate-widget-wiggle-a: widget-wiggle 0.46s ease-in-out infinite alternate;
+	--animate-widget-wiggle-b: widget-wiggle-alt 0.48s ease-in-out -0.15s infinite
+		alternate;
+	--animate-widget-wiggle-c: widget-wiggle 0.52s ease-in-out -0.3s infinite alternate;
+	--animate-bounce-slow: bounce-slow 2.8s ease-in-out infinite;
+	--animate-pet-tooltip-in: pet-tooltip-in 0.3s ease-out;
+	--animate-pet-tooltip-pulse: pet-tooltip-pulse 2s ease-in-out infinite;
+	--animate-pet-tooltip-wiggle: pet-tooltip-wiggle 1.5s ease-in-out infinite;
+
+	@keyframes widget-wiggle {
+		0% {
+			transform: rotate(-0.35deg);
+			transform-origin: 50% 10%;
+		}
+
+		100% {
+			transform: rotate(0.35deg);
+			transform-origin: 50% 10%;
+		}
+	}
+
+	@keyframes widget-wiggle-alt {
+		0% {
+			transform: rotate(0.3deg);
+			transform-origin: 50% 10%;
+		}
+
+		100% {
+			transform: rotate(-0.3deg);
+			transform-origin: 50% 10%;
+		}
+	}
+
+	@keyframes bounce-slow {
+		0%,
+		100% {
+			transform: translateY(-10%);
+			animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+		}
+
+		50% {
+			transform: translateY(0);
+			animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+		}
+	}
+
+	@keyframes pet-tooltip-in {
+		from {
+			opacity: 0;
+			transform: translateY(10px);
+		}
+
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes pet-tooltip-pulse {
+		0%,
+		100% {
+			transform: scale(1);
+		}
+
+		50% {
+			transform: scale(1.05);
+		}
+	}
+
+	@keyframes pet-tooltip-wiggle {
+		0%,
+		100% {
+			transform: rotate(0deg);
+		}
+
+		25% {
+			transform: rotate(10deg);
+		}
+
+		75% {
+			transform: rotate(-10deg);
+		}
+	}
+}
+
+@keyframes flip-fold-down {
+	0% {
+		transform: rotateX(0deg);
+	}
+
+	100% {
+		transform: rotateX(-90deg);
+	}
+}
+
+@keyframes flip-drop-down {
+	0% {
+		transform: rotateX(90deg);
+	}
+
+	100% {
+		transform: rotateX(0deg);
+	}
+}

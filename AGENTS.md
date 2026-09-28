@@ -425,18 +425,35 @@ The app renders over a user supplied wallpaper, and individual surfaces may carr
 
 `src/styles/tokens.css` names the colours this app actually uses — its surfaces, its text steps, its line, its fills, its brand and status tints. Use those rather than a daisyUI name (`text-primary`, `bg-error`) or an inline value. They are the single place a decision like "what is a muted foreground" can be changed, and a raw value at a call site opts that site out of any future change. A test rejects any colour class whose name is not declared there.
 
-### A variant on a plain CSS rule compiles to nothing
+### Every stylesheet has one role
 
-The colour names and everything declared with `@utility` are real utilities, so
-`hover:bg-fill-2` and `hover:transition-ui` work. A class that exists only as a plain rule —
-`.bg-glass`, `.z-popover`, a selector in a theme file — does not take variants, so
-**`hover:bg-glass` and the like generate no CSS at all** — the hover simply never happens,
-silently, with no warning from tsc, biome or the build.
+`src/styles/index.css` is the only stylesheet anything imports (`main.tsx`, as `@/styles/index.css`), and it imports every other one. Each file holds one kind of thing, and `design-system.test.ts` rejects anything else in it:
 
-Promote the rule to `@utility` if it needs a variant. The same trap catches any class name
-that does not exist, and nothing but the built CSS will tell you.
+| file | holds |
+|---|---|
+| `primitives.css` | `@theme` values and the brand constants: palette ban, fonts, type and line-height steps, radius, motion, layers |
+| `tokens.css` | the colour vocabulary, in `@theme` |
+| `elevation.css` | the shadow scale, and its default colour |
+| `animations.css` | every `@keyframes`, with its `--animate-*` in `@theme` when a class uses it |
+| `themes/<name>.css` | one `@plugin "daisyui/theme"` block and one `[data-theme="<name>"]` block of variables. No selectors |
+| `base.css` | element defaults, all inside `@layer base` |
+| `utilities.css` | `@utility` only |
+| `legacy.css` | Chrome 109 fallbacks for what daisyUI writes |
 
-Grep the built CSS rather than trusting the markup:
+Four rules follow from that, each with a test:
+
+- **A class is only ever an `@utility`.** A plain `.class {}` rule sits outside Tailwind's layers, so it silently beats every utility on the element and takes no variants: `hover:` on it generates no CSS at all. The one exception is a state on `html` (`html.optimal-mode`).
+- **A theme is variables.** It sets daisyUI's colours, their channels, its shadow colours, and optionally the glass material and a token override (`--color-nav`). A theme that needs a component to look different says so with a variable the component reads, never with a selector. This is what lets a theme fetched from the CDN do everything a built-in one can.
+- **Element defaults live in `@layer base`,** so a utility on the element always wins. Headings and controls keep their fixed line height (see `base.css`) through `--tw-leading`, which Tailwind's `text-*` sizes defer to, so `text-sm` on a button does not change it but `leading-none` does.
+- **Every `var()` resolves.** A variable read anywhere must be declared by a stylesheet, by Tailwind's theme or by an inline style.
+
+### Glass
+
+Glass and icy frost the surfaces that float over the wallpaper. A surface opts in with `bg-glass-<token>`: `bg-glass-surface-2` is `surface-2` in every theme that sets no glass, and the theme's glass tint and blur in one that does. Give every state background on that surface the same family (`hover:bg-glass-surface-3`), or glass themes swap the frost for the plain token on hover. `backdrop-glass` is the blur alone, for a surface whose background is drawn by its children; `bg-glass-modal` is the modal's heavier version.
+
+A theme sets `--glass-bg` and `--glass-filter`, and `--glass-modal-bg` and `--glass-modal-filter` for the modal. Nothing else about glass lives in a theme.
+
+The same trap as a plain rule catches any class name that does not exist, and nothing but the built CSS will tell you. Grep the built CSS rather than trusting the markup:
 
 ```
 grep -o 'hover\:bg-fill-2' .output/chrome-mv3/assets/newtab-*.css
@@ -459,7 +476,7 @@ One shape of debt remains. Do not treat it as fixed; do not sweep it inside an u
 
 - **`white`/`black` classes.** Some are content or drawn over imagery and must stay; the rest are chrome that predates the tokens.
 
-Opacity modifiers, palette classes, raw daisyUI base classes, colour names outside `tokens.css` and stylesheet rules for class names nothing writes are no longer debt: the tests reject every one of them.
+Opacity modifiers, palette classes, raw daisyUI base classes, colour names outside `tokens.css`, stylesheet rules for class names nothing writes, plain class rules and selectors in theme files are no longer debt: the tests reject every one of them.
 
 ---
 
@@ -586,7 +603,7 @@ Deliberate solutions that look wrong until you know why. Changing them reintrodu
 - The dialog must stay mounted and only toggle `open`. Unmounting it kills the exit.
 - `@starting-style` covers `.modal` but **not** `.modal-box`. A dialog that mounts already open skips the slide up, which is why `Modal` renders closed for one frame via `open={isOpen && isMounted}`. That line looks pointless. It is not.
 
-**Optimisation mode has two independent paths.** framer is handled by the `Motion` and `Presence` wrappers; CSS transitions are handled by the `html.optimal-mode` class and one rule in `index.css`. A new animation needs whichever path it belongs to. Keyframe animations are deliberately left running so spinners and the notification ping still work.
+**Optimisation mode has two independent paths.** framer is handled by the `Motion` and `Presence` wrappers; CSS transitions are handled by the `html.optimal-mode` class and one rule in `styles/base.css`. A new animation needs whichever path it belongs to. Keyframe animations are deliberately left running so spinners and the notification ping still work.
 
 **`voice-search-portal.tsx` starts the microphone in a mount effect.** Never convert it to always mounted, however tempting it is for animation consistency.
 

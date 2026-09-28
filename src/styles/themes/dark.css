@@ -1,25 +1,25 @@
 @plugin "daisyui/theme" {
-	name: "light";
-	color-scheme: "light";
-	--color-base-100: #fff;
-	--color-base-200: #f8fafc;
-	--color-base-300: #f1f5f9;
-	--color-base-content: #464647;
+	name: "dark";
+	color-scheme: "dark";
+	--color-base-100: #171717;
+	--color-base-200: #1a1a1a;
+	--color-base-300: #232323;
+	--color-base-content: #f9fafb;
 	--color-primary: var(--brand-primary);
 	--color-primary-content: #fff;
 	--color-secondary: var(--brand-secondary);
 	--color-secondary-content: #171717;
-	--color-accent: #00d3bb;
-	--color-accent-content: #084d49;
+	--color-accent: #f59e0b;
+	--color-accent-content: #271b06;
 	--color-neutral: #09090b;
 	--color-neutral-content: #e4e4e7;
-	--color-info: #00bafe;
+	--color-info: #60a5fa;
 	--color-info-content: #042e49;
-	--color-success: #00d390;
+	--color-success: #34d399;
 	--color-success-content: #004c39;
-	--color-warning: #fcb700;
-	--color-warning-content: #793205;
-	--color-error: #ff627d;
+	--color-warning: #fbbf24;
+	--color-warning-content: #271b06;
+	--color-error: #f7374f;
 	--color-error-content: #4d0218;
 	--radius-selector: 0.5rem;
 	--radius-field: 0.25rem;
@@ -38,21 +38,25 @@
    computed-value time, which makes the declaration vanish and the
    element fall back to an inherited colour (a border with no
    border-color falls back to currentColor, at full strength). */
-[data-theme="light"] {
+[data-theme="dark"] {
 	--color-base-100-a: 1;
 	--color-base-200-a: 1;
 	--color-base-300-a: 1;
 	--color-success-content-rgb: 0, 76, 57;
-	--color-warning-content-rgb: 121, 50, 5;
+	--color-warning-content-rgb: 39, 27, 6;
 	--color-error-content-rgb: 77, 2, 24;
-	--color-base-100-rgb: 255, 255, 255;
-	--color-base-200-rgb: 248, 250, 252;
-	--color-base-300-rgb: 241, 245, 249;
-	--color-base-content-rgb: 70, 70, 71;
+	--color-base-100-rgb: 23, 23, 23;
+	--color-base-200-rgb: 26, 26, 26;
+	--color-base-300-rgb: 35, 35, 35;
+	--color-base-content-rgb: 249, 250, 251;
 	--color-primary-rgb: 83, 109, 254;
 	--color-secondary-rgb: 124, 141, 240;
-	--color-error-rgb: 255, 98, 125;
-	--color-success-rgb: 0, 211, 144;
-	--color-warning-rgb: 252, 183, 0;
-	--color-info-rgb: 0, 186, 254;
+	--color-error-rgb: 247, 55, 79;
+	--color-success-rgb: 52, 211, 153;
+	--color-warning-rgb: 251, 191, 36;
+	--color-info-rgb: 96, 165, 250;
+	--elevation-sm-color: rgba(0, 0, 0, 0.32);
+	--elevation-md-color: rgba(0, 0, 0, 0.4);
+	--elevation-lg-color: rgba(0, 0, 0, 0.48);
+	--elevation-xl-color: rgba(0, 0, 0, 0.56);
 }

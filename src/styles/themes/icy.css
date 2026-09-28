@@ -21,14 +21,6 @@
 	--color-warning-content: #271b06;
 	--color-error: rgba(239, 68, 68, 0.85);
 	--color-error-content: #4d0218;
-	--glass: true;
-	--glass-opacity: 20%;
-	--glass-border-opacity: 20%;
-	--glass-reflex-degree: 135%;
-	--glass-reflex-opacity: 12%;
-	--glass-blur: 24px;
-	--glass-shadow: rgba(0, 0, 0, 0.1);
-	--glass-border: rgba(255, 255, 255, 0.18);
 	--radius-selector: 0.5rem;
 	--radius-field: 0.25rem;
 	--radius-box: 0.5rem;
@@ -63,60 +55,12 @@
 	--color-success-rgb: 34, 197, 94;
 	--color-warning-rgb: 245, 158, 11;
 	--color-info-rgb: 59, 130, 246;
-}
-
-[data-theme="icy"] .menu,
-[data-theme="icy"] .modal-box {
-	-webkit-backdrop-filter: blur(20px) saturate(180%) brightness(110%);
-	backdrop-filter: blur(20px) saturate(180%) brightness(110%);
-	border: 1px solid var(--glass-border);
-	box-shadow:
-		0 8px 32px var(--glass-shadow),
-		inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-[data-theme="icy"] .bg-glass,
-[data-theme="icy"] .tooltip {
-	background-color: rgba(23, 23, 23, 0.12);
-	-webkit-backdrop-filter: blur(3px) saturate(150%) brightness(108%);
-	backdrop-filter: blur(3px) saturate(150%) brightness(108%);
-	/* @apply bg-black/[0.002] backdrop-blur-xs; */
-	border: 1px solid rgba(255, 255, 255, 0.08);
-	box-shadow:
-		0 6px 24px rgba(0, 0, 0, 0.06),
-		inset 0 1px 0 rgba(255, 255, 255, 0.12);
-}
-
-[data-theme="icy"] .modal-box {
-	-webkit-backdrop-filter: blur(32px) saturate(180%) brightness(115%);
-	backdrop-filter: blur(32px) saturate(180%) brightness(115%);
-	background-color: rgba(23, 23, 23, 0.18);
-	border: 1px solid rgba(255, 255, 255, 0.2);
-	box-shadow:
-		0 16px 48px rgba(0, 0, 0, 0.15),
-		inset 0 1px 0 rgba(255, 255, 255, 0.15);
-}
-
-[data-theme="icy"] .card,
-[data-theme="icy"] .btn,
-[data-theme="icy"] .textarea {
-	border: 1px solid rgba(255, 255, 255, 0.08);
-	box-shadow:
-		0 4px 16px rgba(0, 0, 0, 0.05),
-		inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-[data-theme="icy"] .btn:hover,
-[data-theme="icy"] .card:hover {
-	border-color: rgba(255, 255, 255, 0.2);
-	box-shadow:
-		0 6px 20px rgba(0, 0, 0, 0.08),
-		inset 0 1px 0 rgba(255, 255, 255, 0.15);
-	-webkit-backdrop-filter: blur(24px) saturate(160%) brightness(112%);
-	backdrop-filter: blur(24px) saturate(160%) brightness(112%);
-}
-
-[data-theme="icy"] select:open {
-	background-color: #171717b3;
-	color: white;
+	--elevation-sm-color: rgba(0, 0, 0, 0.32);
+	--elevation-md-color: rgba(0, 0, 0, 0.4);
+	--elevation-lg-color: rgba(0, 0, 0, 0.48);
+	--elevation-xl-color: rgba(0, 0, 0, 0.56);
+	--glass-bg: rgba(23, 23, 23, 0.12);
+	--glass-filter: blur(3px) saturate(150%) brightness(108%);
+	--glass-modal-bg: rgba(23, 23, 23, 0.18);
+	--glass-modal-filter: blur(32px) saturate(180%) brightness(115%);
 }

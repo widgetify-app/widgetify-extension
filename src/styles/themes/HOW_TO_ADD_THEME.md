@@ -9,7 +9,7 @@ first one compiles, passes type-checking, renders — and has no working colour
 layer, because every `text-fg-muted`, `border-line` and accent tint in the app
 resolves to nothing. See the README for why.
 
-## 1. Create `src/styles/theme/<name>.css`
+## 1. Create `src/styles/themes/<name>.css`
 
 Copy `dark.css` and change the values. Every variable it declares must be
 present, in both blocks — `design-system.test.ts` compares all themes against
@@ -69,16 +69,30 @@ each other and fails on any that is missing one.
 	--color-success-content-rgb: 0, 76, 57;
 	--color-warning-content-rgb: 39, 27, 6;
 	--color-error-content-rgb: 77, 2, 24;
+	/* the shadow colour behind shadow-sm … shadow-xl */
+	--elevation-sm-color: rgba(0, 0, 0, 0.32);
+	--elevation-md-color: rgba(0, 0, 0, 0.4);
+	--elevation-lg-color: rgba(0, 0, 0, 0.48);
+	--elevation-xl-color: rgba(0, 0, 0, 0.56);
 }
 ```
+
+The file holds these two blocks and nothing else: no selectors, no other rules.
+A theme that needs something to look different says so with a variable. It may
+also set:
+
+- **the glass material**, `--glass-bg`, `--glass-filter`, `--glass-modal-bg`
+  and `--glass-modal-filter` (see `glass.css`), if its surfaces are translucent;
+- **any name from `tokens.css`**, to point it somewhere else in this theme only,
+  as `light.css` does for the navbar.
 
 Rules for the values:
 
 - **Write hex or `rgba()`, never `oklch()` or `color-mix()`.** Both landed in
   Chrome 111; Chrome 109 is the last version Windows 7/8.1 can run, and a
   colour those browsers cannot parse is dropped entirely. A test enforces this.
-- **The `-rgb` triples must match the colours above them.** Nothing checks the
-  arithmetic, only that they exist.
+- **The `-rgb` triples must match the colours above them.** A test compares
+  each one with the colour it splits.
 - **If a surface is translucent** (see `glass.css`, `icy.css`), put its base
   alpha in `--color-base-N-a` and the underlying channels in
   `--color-base-N-rgb`. `surface-veil` multiplies into it, so it thins your
@@ -86,10 +100,10 @@ Rules for the values:
 
 ## 2. Import it
 
-Add to `src/styles/theme-colors.css`:
+Add to `src/styles/index.css`, after the other themes:
 
 ```css
-@import "./theme/<name>.css";
+@import "./themes/<name>.css";
 ```
 
 ## 3. Register it

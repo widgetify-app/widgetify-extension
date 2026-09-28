@@ -202,7 +202,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 				)}
 
 				{dayEvents.length > 0 && (
-					<ul className="flex flex-col p-1 space-y-1 overflow-y-auto max-h-28 scrollbar-thin scrollbar-thumb">
+					<ul className="flex flex-col p-1 space-y-1 overflow-y-auto max-h-28">
 						{dayEvents.map((event, idx) => (
 							<li
 								key={`e-${idx}`}

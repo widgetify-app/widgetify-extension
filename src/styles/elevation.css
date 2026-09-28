@@ -16,14 +16,3 @@
 	--elevation-lg-color: rgba(23, 23, 23, 0.13);
 	--elevation-xl-color: rgba(23, 23, 23, 0.17);
 }
-
-[data-theme="dark"],
-[data-theme="glass"],
-[data-theme="icy"],
-[data-theme="zarna"],
-[data-theme="esteghlal"] {
-	--elevation-sm-color: rgba(0, 0, 0, 0.32);
-	--elevation-md-color: rgba(0, 0, 0, 0.4);
-	--elevation-lg-color: rgba(0, 0, 0, 0.48);
-	--elevation-xl-color: rgba(0, 0, 0, 0.56);
-}

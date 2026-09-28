@@ -1,11 +1,9 @@
 import { type ClassValue, clsx } from 'clsx'
 import { extendTailwindMerge } from 'tailwind-merge'
 
-const twMerge = extendTailwindMerge<'wg-backdrop'>({
+const twMerge = extendTailwindMerge({
 	extend: {
 		classGroups: {
-			'wg-backdrop': ['bg-glass'],
-
 			rounded: ['rounded-widget'],
 			transition: ['transition-ui'],
 			'outline-style': ['focus-ring'],
