@@ -30,8 +30,8 @@ const WIDGET_SETTING_MODALS: Record<string, WidgetSettingModalConfig> = {
 		Component: WigiArzSetting,
 	},
 	[WidgetTabKeys.news_settings]: {
-		title: 'تنظیمات ویجی نیوز',
-		size: 'lg',
+		title: 'تنظیمات اخبار',
+		size: 'md',
 		Component: RssFeedSetting,
 	},
 	[WidgetTabKeys.combo_settings]: {

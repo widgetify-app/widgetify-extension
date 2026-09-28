@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react'
-import { getFromStorage } from '@/common/storage'
-import { listenEvent } from '@/common/utils/call-event'
+import type React from 'react'
 import { WidgetContainer } from '../widget-container'
 import { NewsContainer } from './components/news-container'
-import type { WigiNewsSetting } from './rss.interface'
+import { useNewsSettings } from './hooks/use-news-settings'
 
 interface NewsLayoutProps {
 	inComboWidget: boolean
@@ -14,41 +12,14 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 	enableBackground = true,
 	inComboWidget,
 }) => {
-	const [rssState, setRssState] = useState<WigiNewsSetting>({
-		customFeeds: [],
-		useDefaultNews: true,
-	})
-
-	useEffect(() => {
-		async function loadInitialData() {
-			const data = await getFromStorage('rssOptions')
-			if (data) {
-				setRssState({
-					customFeeds: data.customFeeds,
-					useDefaultNews: data.useDefaultNews,
-				})
-			}
-		}
-
-		const event = listenEvent(
-			'wigiNewsSettingsChanged',
-			async (data: WigiNewsSetting) => {
-				setRssState(structuredClone(data))
-			}
-		)
-
-		loadInitialData()
-		return () => {
-			event()
-		}
-	}, [])
+	const { settings } = useNewsSettings()
 
 	if (inComboWidget) {
 		return (
 			<div className="flex flex-col gap-2 mt-1 overflow-y-auto min-h-52 scrollbar-none">
 				<NewsContainer
-					customFeeds={rssState.customFeeds}
-					useDefaultNews={rssState.useDefaultNews}
+					customFeeds={settings.customFeeds}
+					useDefaultNews={settings.useDefaultNews}
 				/>
 			</div>
 		)
@@ -62,8 +33,8 @@ export const NewsLayout: React.FC<NewsLayoutProps> = ({
 		>
 			<section aria-label="اخبار" className="flex flex-col h-full">
 				<NewsContainer
-					customFeeds={rssState.customFeeds}
-					useDefaultNews={rssState.useDefaultNews}
+					customFeeds={settings.customFeeds}
+					useDefaultNews={settings.useDefaultNews}
 				/>
 			</section>
 		</WidgetContainer>

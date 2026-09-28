@@ -1,6 +1,4 @@
-import moment from 'jalali-moment'
 import { useState } from 'react'
-import { Icon } from '@/icons'
 
 interface NewsItemProps {
 	title: string
@@ -9,29 +7,12 @@ interface NewsItemProps {
 		url: string
 	}
 	image_url?: string
-	publishedAt: string
+	publishedAt?: string
 	link?: string
 	onOpen: (url: string) => void
 }
 
-const toPersianDigits = (value: string) =>
-	value.replace(/[0-9]/g, (digit) => '۰۱۲۳۴۵۶۷۸۹'[Number(digit)])
-
-function formatRelativeTime(dateString: string) {
-	const date = new Date(dateString)
-	if (Number.isNaN(date.getTime())) return dateString
-
-	return toPersianDigits(moment(date).locale('fa').fromNow())
-}
-
-export const NewsItem = ({
-	title,
-	source,
-	publishedAt,
-	link,
-	image_url,
-	onOpen,
-}: NewsItemProps) => {
+export const NewsItem = ({ title, source, link, image_url, onOpen }: NewsItemProps) => {
 	const [imageError, setImageError] = useState(false)
 
 	const url = link || source.url
@@ -59,12 +40,8 @@ export const NewsItem = ({
 				<span className="text-[11.5px] font-medium leading-[1.4] text-content group-hover:text-primary transition-colors line-clamp-2">
 					{title}
 				</span>
-				<span className="flex items-center gap-1 mt-0.5 text-[10px] text-muted">
-					<span className="truncate max-w-[100px]">{source.name}</span>
-					<span aria-hidden="true" className="opacity-50">·</span>
-					<time dateTime={publishedAt} className="shrink-0 opacity-80">
-						{formatRelativeTime(publishedAt)}
-					</time>
+				<span className="mt-0.5 text-[10px] text-muted truncate">
+					{source.name}
 				</span>
 			</span>
 		</a>
