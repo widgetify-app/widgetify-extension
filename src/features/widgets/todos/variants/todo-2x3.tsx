@@ -4,7 +4,7 @@ import {
 	Button,
 	type FilterOption,
 	FilterTooltip,
-	IconLoading,
+	Spinner,
 	Tooltip,
 } from '@/components/ui'
 import { Icon } from '@/icons'
@@ -125,7 +125,7 @@ export const Todo2x3: React.FC<Todo2x3Props> = ({
 				</nav>
 
 				<div className="flex items-center gap-1">
-					{isLoading && <IconLoading />}
+					{isLoading && <Spinner size="sm" />}
 					<Tooltip content="بارگزاری مجدد">
 						<Button
 							size="sm"

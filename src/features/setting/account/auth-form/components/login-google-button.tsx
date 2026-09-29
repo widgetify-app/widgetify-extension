@@ -1,4 +1,4 @@
-import { IconLoading } from '@/components/ui'
+import { Spinner } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { type AuthResponse, useGoogleSignIn } from '@/services/auth/auth-service.hook'
 import { useState } from 'react'
@@ -84,7 +84,7 @@ export default function LoginGoogleButton() {
 		>
 			<div className="relative flex items-center justify-center shrink-0">
 				{isLoading ? (
-					<IconLoading className="h-4! w-4!" />
+					<Spinner size="sm" />
 				) : (
 					<img
 						src="https://cdn.widgetify.ir/sites/google.png"

@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import Analytics from '@/analytics'
-import { IconLoading } from '@/components/ui'
+import { Spinner } from '@/components/ui'
 import { Modal } from '@/components/ui'
 import { SectionPanel } from '@/components/ui'
 import { useGetCitiesList } from '@/services/cities/get-cities-list.hook'
@@ -90,14 +90,14 @@ export function SelectCity({ size }: Prop) {
 					className="flex items-center justify-between w-full p-3 text-right transition-colors border cursor-pointer rounded-2xl bg-surface border-surface-3 hover:bg-surface-2 disabled:opacity-50 disabled:cursor-not-allowed"
 				>
 					{isLoadingUser ? (
-						<IconLoading className="mx-auto text-center" />
+						<Spinner size="sm" className="mx-auto" />
 					) : selected ? (
 						selected.city
 					) : (
 						'انتخاب شهر...'
 					)}
 					{isSettingCity ? (
-						<IconLoading />
+						<Spinner size="sm" />
 					) : (
 						<Icon name="location" className="w-5 h-5 text-brand" />
 					)}
@@ -146,7 +146,7 @@ export function SelectCity({ size }: Prop) {
 					<div className="overflow-y-auto min-h-52 max-h-52">
 						{isLoading ? (
 							<div className="flex items-center justify-center p-4 text-center text-brand">
-								<IconLoading />
+								<Spinner size="sm" aria-hidden="true" />
 								در حال بارگذاری...
 							</div>
 						) : filteredCities?.length > 0 ? (

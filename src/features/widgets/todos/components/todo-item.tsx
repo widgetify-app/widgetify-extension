@@ -10,7 +10,7 @@ import { useRemoveTodo } from '@/services/todo/remove-todo.hook'
 import { safeAwait } from '@/services/api'
 import { translateError } from '@/common/utils/translate-error'
 import Analytics from '@/analytics'
-import { IconLoading } from '@/components/ui'
+import { Spinner } from '@/components/ui'
 import { parseTodoDate } from '../utils/parse-date'
 import { useUpdateTodo } from '@/services/todo/update-todo.hook'
 import { playAlarm } from '@/common/utils/play-alarm'
@@ -177,7 +177,7 @@ export function TodoItem({
 				</button>
 
 				<div className="flex relative items-center gap-0.5 shrink-0">
-					{isPending && <IconLoading />}
+					{isPending && <Spinner size="sm" />}
 					{hasFriends && (
 						<Tooltip content="مشترک">
 							<Icon
@@ -278,7 +278,7 @@ export function TodoItem({
 				isOpen={showConfirmation}
 				onClose={() => setShowConfirmation(false)}
 				onConfirm={onConfirmDelete}
-				confirmText={isPending ? <IconLoading /> : 'حذف'}
+				confirmText={isPending ? <Spinner size="sm" tone="current" /> : 'حذف'}
 				message="این عمل قابل بازگشت نیست و وظیفه برای همیشه حذف خواهد شد"
 				variant="danger"
 				title="حذف این تسک؟"

@@ -185,7 +185,7 @@ describe('shared states', () => {
 		const spinning = sourceFiles()
 			.filter(
 				(path) =>
-					path !== 'src/components/ui/loading/spinner.variants.ts' &&
+					path !== 'src/components/ui/spinner/spinner.variants.ts' &&
 					path !== 'src/icons/icon.tsx'
 			)
 			.filter((path) => readFileSync(path, 'utf8').includes('animate-spin'))

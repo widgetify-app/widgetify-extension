@@ -4,7 +4,7 @@ import { showToast } from '@/common/toast'
 import { getFaviconFromUrl } from '@/features/widgets/utils/icon'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { Icon } from '@/icons'
-import { Button, Modal } from '@/components/ui'
+import { Button, Modal, Spinner } from '@/components/ui'
 import { useBookmarkStore } from '../../bookmark.context'
 import { MAX_BROWSER_IMPORT_ITEMS } from '../../constants'
 import type { BrowserImportNode } from '../../types'
@@ -322,12 +322,7 @@ export function ImportBrowserBookmarksModal({
 					<div className="flex-1 p-1 overflow-y-auto border rounded-xl border-line">
 						{isLoadingTree ? (
 							<div className="flex items-center justify-center h-full">
-								<Icon
-									name="spinner"
-									className="text-fg-muted"
-									spin
-									size={20}
-								/>
+								<Spinner />
 							</div>
 						) : rootNodes.length > 0 ? (
 							rootNodes.map((node) => (

@@ -3,7 +3,7 @@ import type jalaliMoment from 'jalali-moment'
 import moment from 'moment'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { cn } from '@/common/utils/cn'
-import { IconLoading } from '@/components/ui'
+import { Spinner } from '@/components/ui'
 import type { WidgetifyDate } from '@/common/utils/date-events'
 import { useQueryClient } from '@tanstack/react-query'
 import { Icon } from '@/icons'
@@ -190,7 +190,7 @@ export function HabitCalendar({ habit, color, today }: HabitCalendarProps) {
 					{currentDate.format('jMMMM jYYYY')}
 				</h3>
 				<div className="flex gap-0.5 items-center">
-					{isUpdating ? <IconLoading /> : null}
+					{isUpdating ? <Spinner size="sm" /> : null}
 					{showTodayButton && (
 						<button
 							type="button"

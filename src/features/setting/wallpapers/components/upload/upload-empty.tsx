@@ -1,5 +1,5 @@
 import { Icon } from '@/icons'
-import { Button, IconLoading, Tooltip } from '@/components/ui'
+import { Button, Spinner, Tooltip } from '@/components/ui'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
 import { ProTooltipContent } from './pro-tooltip'
@@ -50,7 +50,7 @@ export function UploadEmpty({
 						)}
 					>
 						{isUploading ? (
-							<IconLoading className="w-5 h-5 text-brand" />
+							<Spinner />
 						) : (
 							<div className="flex flex-col items-center justify-center gap-0.5">
 								<Icon

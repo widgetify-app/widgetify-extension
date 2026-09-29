@@ -37,9 +37,6 @@ export * from './item-selector/item-selector'
 
 export * from './kbd/kbd'
 
-export * from './loading/loading'
-export * from './loading/spinner'
-
 export * from './modal/confirmation-modal'
 export * from './modal/confirmation-modal.variants'
 export * from './modal/modal'
@@ -61,6 +58,8 @@ export * from './section-panel/section-panel.variants'
 export * from './select/select'
 
 export * from './slider/slider'
+
+export * from './spinner/spinner'
 
 export * from './tabs/tabs'
 export * from './tabs/tabs.variants'

@@ -1,5 +1,5 @@
 import { cn } from '@/common/utils/cn'
-import { Button, IconLoading } from '@/components/ui'
+import { Button, Spinner } from '@/components/ui'
 import { TextInput } from '@/components/ui'
 import { Tooltip } from '@/components/ui'
 import { useNotes } from '@/features/widgets/notes/notes.context'
@@ -81,7 +81,7 @@ export function NoteEditor({ note }: NoteEditorProps) {
 						onClick={() => onSave()}
 						loading={isSaving}
 						disabled={isSaving}
-						loadingText={<IconLoading />}
+						loadingText={<Spinner size="sm" tone="current" />}
 						color={'brand'}
 						rounded={'xl'}
 						className="w-24 h-6"

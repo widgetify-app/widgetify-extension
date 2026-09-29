@@ -1,11 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import {
-	Button,
-	ConfirmationModal,
-	IconLoading,
-	TextInput,
-	Tooltip,
-} from '@/components/ui'
+import { Button, ConfirmationModal, Spinner, TextInput, Tooltip } from '@/components/ui'
 import { useNotes } from '@/features/widgets/notes/notes.context'
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
@@ -399,7 +393,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 				<div className="flex items-center gap-1.5">
 					{isSaving ? (
 						<div className="flex items-center gap-1 text-brand">
-							<IconLoading />
+							<Spinner size="sm" aria-hidden="true" />
 							<span className="text-4xs">درحال ذخیره</span>
 						</div>
 					) : currentNote ? (

@@ -5,7 +5,7 @@ import { playAlarm } from '@/common/utils/play-alarm'
 import { showToast } from '@/common/toast'
 import { cn } from '@/common/utils/cn'
 import { translateError } from '@/common/utils/translate-error'
-import { IconLoading } from '@/components/ui'
+import { Spinner } from '@/components/ui'
 import type { WidgetifyDate } from '@/common/utils/date-events'
 import { Icon } from '@/icons'
 import { safeAwait } from '@/services/api'
@@ -168,7 +168,7 @@ export function HabitCompactWide({
 
 					<span className="relative z-10 flex items-center justify-center w-10 h-10 rounded-full">
 						{isPending ? (
-							<IconLoading className="text-current" />
+							<Spinner size="sm" tone="current" />
 						) : isDone || isSimpleHabit ? (
 							<Icon
 								name="check"

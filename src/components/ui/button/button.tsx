@@ -1,6 +1,6 @@
 import type React from 'react'
 import { cn } from '@/common/utils/cn'
-import { Icon } from '@/icons'
+import { Spinner } from '../spinner/spinner'
 import { type ButtonVariantProps, buttonVariants } from './button.variants'
 
 interface ButtonProps
@@ -37,7 +37,7 @@ export function Button({
 			{loading ? (
 				loadingText || (
 					<>
-						<Icon name="spinner" spin />
+						<Spinner size="sm" tone="current" aria-hidden="true" />
 						<span className="text-xs">صبر کنید...</span>
 					</>
 				)

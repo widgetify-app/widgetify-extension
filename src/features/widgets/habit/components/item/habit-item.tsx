@@ -12,7 +12,7 @@ import { DEFAULT_HABIT_COLOR } from '../../constants'
 import { SegmentedProgressRing } from './button-progress-ring'
 import { SimpleProgressRing } from './button-simple-progress-ring'
 import { Icon } from '@/icons'
-import { IconLoading } from '@/components/ui'
+import { Spinner } from '@/components/ui'
 
 interface HabitItemProps {
 	habit: Habit
@@ -67,7 +67,7 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 						style={{ backgroundColor: `${color}22`, color }}
 					>
 						{isPending ? (
-							<IconLoading className="text-fg-muted" />
+							<Spinner size="sm" tone="current" />
 						) : (
 							habit.emoji || '🎯'
 						)}

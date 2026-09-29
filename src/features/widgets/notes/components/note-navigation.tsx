@@ -3,7 +3,7 @@ import { Button, ConfirmationModal, Tooltip } from '@/components/ui'
 import { useNotes } from '@/features/widgets/notes/notes.context'
 import { useAuth } from '@/context/auth.context'
 import Analytics from '@/analytics'
-import { IconLoading } from '@/components/ui'
+import { Spinner } from '@/components/ui'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
@@ -54,7 +54,11 @@ export function NoteNavigation() {
 				activeNoteId ? 'justify-end' : 'justify-between'
 			)}
 		>
-			{isSaving && <IconLoading title="درحال ذخیره..." />}
+			{isSaving && (
+				<Tooltip content="درحال ذخیره..." position="bottom">
+					<Spinner size="sm" aria-label="درحال ذخیره..." />
+				</Tooltip>
+			)}
 			{activeNoteId ? (
 				<>
 					<Button
@@ -94,7 +98,13 @@ export function NoteNavigation() {
 							aria-label="یادداشت جدید"
 							disabled={isCreatingNote}
 							loading={isCreatingNote}
-							loadingText={<IconLoading title="درحال ساخت..." />}
+							loadingText={
+								<Spinner
+									size="sm"
+									tone="current"
+									aria-label="درحال ساخت..."
+								/>
+							}
 							className="w-7 h-7 p-0! border-none! hover:text-brand rounded-xl shrink-0 active:scale-95 transition-colors"
 						>
 							<Icon name="plus" size={16} aria-hidden="true" />
