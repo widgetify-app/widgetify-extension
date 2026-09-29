@@ -271,7 +271,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 					{isEmojiPopoverOpen && (
 						<div
 							className={
-								'absolute mt-1 p-2 w-64 max-h-32 overflow-y-auto small-scrollbar rounded-xl backdrop-blur-lg border border-surface-3'
+								'absolute mt-1 p-2 w-64 max-h-32 overflow-y-auto rounded-xl backdrop-blur-lg border border-surface-3'
 							}
 							style={{ zIndex: 'var(--z-dropdown)' }}
 						>

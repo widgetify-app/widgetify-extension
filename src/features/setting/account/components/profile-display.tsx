@@ -349,10 +349,11 @@ const DisplayRow = ({
 				</div>
 				<span className="text-3xs font-medium opacity-60">{label}</span>
 			</div>
-			<div
-				className={`relative flex justify-end text-xs w-fit pr-1 font-semibold text-fg ${isLtr ? 'dir-ltr' : 'dir-rtl'}`}
-			>
-				<div className="overflow-y-auto max-h-12 scrollbar-none">
+			<div className="relative flex justify-end text-xs w-fit pr-1 font-semibold text-fg">
+				<div
+					dir={isLtr ? 'ltr' : undefined}
+					className="overflow-y-auto max-h-12 scrollbar-none"
+				>
 					{value || '-'}
 				</div>
 				{editable && (

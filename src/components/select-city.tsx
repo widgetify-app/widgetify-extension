@@ -103,7 +103,7 @@ export function SelectCity({ size }: Prop) {
 				</button>
 
 				{error && (
-					<div className="p-3 text-sm text-right duration-300 border rounded-lg border-danger-fill-2 bg-danger-fill backdrop-blur-sm animate-in fade-in-0">
+					<div className="p-3 text-sm text-right border rounded-lg border-danger-fill-2 bg-danger-fill backdrop-blur-sm">
 						<div className="font-medium text-danger">
 							خطا در دریافت اطلاعات
 						</div>
@@ -142,7 +142,7 @@ export function SelectCity({ size }: Prop) {
 						/>
 					</div>
 
-					<div className="overflow-y-auto min-h-52 max-h-52 custom-scrollbar">
+					<div className="overflow-y-auto min-h-52 max-h-52">
 						{isLoading ? (
 							<div className="flex items-center justify-center p-4 text-center text-brand">
 								<IconLoading />

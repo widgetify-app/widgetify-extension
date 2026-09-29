@@ -182,9 +182,7 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 				collisionDetection={closestCenter}
 				onDragEnd={handleDragEnd}
 			>
-				<div
-					className={`flex bookmarks  flex-col h-full w-full transition-ui duration-300`}
-				>
+				<div className="flex flex-col h-full w-full transition-ui duration-300">
 					<div className={'h-full w-full'}>
 						<BookmarkGrid
 							displayedBookmarks={displayedBookmarks}

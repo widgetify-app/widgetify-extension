@@ -227,7 +227,7 @@ export function ManageActivityBottomSheet({
 					</div>
 
 					{templates.length ? (
-						<div className="grid grid-flow-col p-2 overflow-x-auto overflow-y-hidden text-center grid-auto-flow-dense h-14 auto-cols-max rounded-2xl">
+						<div className="grid grid-flow-col p-2 overflow-x-auto overflow-y-hidden text-center h-14 auto-cols-max rounded-2xl">
 							{templates.map((text) => (
 								<Chip
 									onClick={() => setActivity(text)}

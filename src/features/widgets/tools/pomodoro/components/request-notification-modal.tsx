@@ -43,7 +43,7 @@ export function RequestNotificationModal({
 			title="فعال کردن اعلان‌ها"
 		>
 			<div className="p-4 max-h-[80vh] overflow-y-auto">
-				<article className="pb-4 border-b blog-post border-surface-3 animate-fade-in animate-slide-up">
+				<article className="pb-4 border-b border-surface-3">
 					{/* Type badge and title */}
 					<div className="flex items-start justify-between mb-3">
 						<h3 className="text-xl font-bold text-fg">
@@ -51,19 +51,17 @@ export function RequestNotificationModal({
 						</h3>
 					</div>
 
-					<div className="media-container">
-						<div className="my-2 overflow-hidden rounded-lg shadow-md">
-							<img
-								src={
-									'https://cdn.widgetify.ir/extension/pomodoroTimer-notification.png'
-								}
-								alt={'نمونه اعلان'}
-								className="object-cover w-full h-auto"
-							/>
-							<p className="p-2 text-xs text-center text-fg-muted bg-fill-2">
-								نمونه اعلان که دریافت خواهید کرد
-							</p>
-						</div>
+					<div className="my-2 overflow-hidden rounded-lg shadow-md">
+						<img
+							src={
+								'https://cdn.widgetify.ir/extension/pomodoroTimer-notification.png'
+							}
+							alt={'نمونه اعلان'}
+							className="object-cover w-full h-auto"
+						/>
+						<p className="p-2 text-xs text-center text-fg-muted bg-fill-2">
+							نمونه اعلان که دریافت خواهید کرد
+						</p>
 					</div>
 
 					<div className="mt-2">

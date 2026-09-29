@@ -278,7 +278,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 	}
 
 	return (
-		<div className="relative flex flex-col h-full min-h-0 overflow-hidden duration-300 rounded-xl animate-in fade-in-0 slide-in-from-bottom-24">
+		<div className="relative flex flex-col h-full min-h-0 overflow-hidden rounded-xl">
 			<div className="relative flex items-center justify-between flex-none mb-1 py-0.5">
 				<div className={`flex items-center gap-x-0.5`}>
 					{currentTab === 'timer' ? (

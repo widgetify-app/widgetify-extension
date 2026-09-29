@@ -310,7 +310,8 @@ const AuthForm = () => {
 						</h2>
 						<div className="flex items-center justify-center gap-1.5 mt-1 text-xs text-fg-muted">
 							<span
-								className="font-mono truncate text-fg dir-ltr max-w-50"
+								dir="ltr"
+								className="font-mono truncate text-fg max-w-50"
 								title={identifier}
 							>
 								{identifier}
@@ -386,7 +387,8 @@ const AuthForm = () => {
 						<p className="flex items-center justify-center gap-1 mt-1 text-xs text-fg-muted">
 							<span>کد ارسال شده به</span>
 							<span
-								className="font-mono font-semibold truncate text-fg dir-ltr max-w-44"
+								dir="ltr"
+								className="font-mono font-semibold truncate text-fg max-w-44"
 								title={identifier}
 							>
 								{identifier}

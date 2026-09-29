@@ -12,10 +12,6 @@ export const popoverMenuVariants = cva([
 	'flex',
 	'flex-col',
 	'gap-1',
-	'animate-in',
-	'fade-in',
-	'zoom-in-95',
-	'duration-150',
 ])
 
 export const popoverMenuItemVariants = cva(

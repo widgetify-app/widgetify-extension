@@ -319,7 +319,7 @@ export function ImportBrowserBookmarksModal({
 						</span>
 					</div>
 
-					<div className="flex-1 p-1 overflow-y-auto border rounded-xl border-line custom-scrollbar">
+					<div className="flex-1 p-1 overflow-y-auto border rounded-xl border-line">
 						{isLoadingTree ? (
 							<div className="flex items-center justify-center h-full">
 								<Icon

@@ -86,7 +86,7 @@ export function ImageSearchPortal({
 				style={portalStyles}
 				role="dialog"
 				aria-label="جستجوی تصویر با گوگل"
-				className="z-20 p-4 overflow-hidden duration-300 shadow-xl bg-glass-surface-2 -mt-26 rounded-2xl animate-in fade-in slide-in-from-top-2"
+				className="z-20 p-4 overflow-hidden shadow-xl bg-glass-surface-2 -mt-26 rounded-2xl"
 			>
 				<div className="flex items-center justify-between px-2 mb-4">
 					<span className="text-sm font-black text-fg-muted">
