@@ -63,7 +63,7 @@ export function UserCard({ user, className = '' }: UserCardProps) {
 											<Button
 												size="xs"
 												rounded="lg"
-												className="flex items-center !text-3xs"
+												className="flex items-center text-3xs!"
 												color="brand"
 												loading={isSending}
 												loadingText="در حال ارسال..."

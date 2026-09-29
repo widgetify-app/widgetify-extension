@@ -1,5 +1,5 @@
 import Analytics from '@/analytics'
-import { getContrastingTextColor } from '@/common/color'
+import { getContrastingTextColor } from '@/common/utils/color'
 import { callEvent } from '@/common/utils/call-event'
 import { Button, Modal } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
@@ -16,7 +16,7 @@ export function DialogChecker() {
 	const { mutateAsync: asSeen } = useNotifyAsSeen()
 
 	useEffect(() => {
-		const isDialogAvailable = document.querySelector('.modal')
+		const isDialogAvailable = document.querySelector('dialog[open]')
 		if (isDialogAvailable) return
 
 		let timer: any
@@ -63,7 +63,7 @@ export function DialogChecker() {
 		<Modal
 			isOpen={show}
 			onClose={() => onClose()}
-			title={dialog.dialogTitle || ' '}
+			title={dialog.dialogTitle}
 			showCloseButton={true}
 		>
 			<div className="flex flex-col gap-3 p-2">

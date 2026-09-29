@@ -22,13 +22,10 @@
 		"rules": {
 			"recommended": true,
 			"a11y": {
-				"useAltText": "off",
-				"useButtonType": "off",
-				"useKeyWithClickEvents": "off",
-				"noSvgWithoutTitle": "off",
-				"noLabelWithoutControl": "off",
-				"noStaticElementInteractions": "off",
-				"useAriaPropsSupportedByRole": "off"
+				"noLabelWithoutControl": {
+					"level": "error",
+					"options": { "inputComponents": ["ToggleSwitch"] }
+				}
 			},
 			"style": {
 				"useSelfClosingElements": "off",
@@ -43,7 +40,7 @@
 			},
 			"correctness": {
 				"useExhaustiveDependencies": "off",
-				"noUnusedVariables": "warn",
+				"noUnusedVariables": "error",
 				"noUnusedImports": "error",
 				"useUniqueElementIds": "off",
 				"noInvalidPositionAtImportRule": "off"
@@ -90,6 +87,21 @@
 		}
 	},
 	"overrides": [
+		{
+			"includes": [
+				"src/components/ui/dropdown/dropdown.tsx",
+				"src/components/ui/popover-menu/popover-menu.tsx",
+				"src/components/ui/tooltip/tooltip.tsx"
+			],
+			"linter": {
+				"rules": {
+					"a11y": {
+						"noStaticElementInteractions": "off",
+						"useKeyWithClickEvents": "off"
+					}
+				}
+			}
+		},
 		{
 			"includes": ["*.tsx", "*.jsx"],
 			"javascript": {

@@ -8,7 +8,7 @@ import { useGeneralSetting } from '@/context/general-setting.context'
 import { Icon } from '@/icons'
 import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
-import { safeAwait } from '@/services/api'
+import { type ApiError, safeAwait } from '@/services/api'
 import { uploadWidgetMediaApi } from '@/services/widgets/widget-media.hook'
 import { callEvent } from '@/common/utils/call-event'
 import { GalleryPickerModal } from '@/components/gallery'
@@ -20,7 +20,6 @@ import {
 	Spinner,
 	VipBadge,
 } from '@/components/ui'
-import type { AxiosError } from 'axios'
 import type { GalleryAsset } from '@/services/gallery/get-gallery-assets.hook'
 import { PhotoEmptyState } from './components/photo-empty-state'
 import { getPhotoFileError } from './utils/get-photo-file-error'
@@ -71,7 +70,7 @@ export function PhotoWidget({
 		if (!instanceId) return
 
 		setIsUploading(true)
-		const [err, res] = await safeAwait<AxiosError, { url: string }>(
+		const [err, res] = await safeAwait<ApiError, { url: string }>(
 			uploadWidgetMediaApi(instanceId, file)
 		)
 		setIsUploading(false)
@@ -160,7 +159,7 @@ export function PhotoWidget({
 						<span className="flex flex-col items-center justify-center w-full h-full gap-2 p-3 text-center select-none rounded-widget bg-glass-surface-2">
 							<Icon
 								name="alert"
-								size={18}
+								size={16}
 								className="text-fg-muted"
 								aria-hidden="true"
 							/>

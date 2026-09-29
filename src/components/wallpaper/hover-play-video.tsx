@@ -8,7 +8,6 @@ interface HoverPlayVideoProps {
 	style?: React.CSSProperties
 	onLoadedData?: () => void
 	onError?: () => void
-	onClick?: (e: React.MouseEvent) => void
 }
 
 export const HoverPlayVideo: React.FC<HoverPlayVideoProps> = ({
@@ -18,7 +17,6 @@ export const HoverPlayVideo: React.FC<HoverPlayVideoProps> = ({
 	style,
 	onLoadedData,
 	onError,
-	onClick,
 }) => {
 	const videoRef = useRef<HTMLVideoElement>(null)
 	const [isHovering, setIsHovering] = useState(false)
@@ -42,11 +40,10 @@ export const HoverPlayVideo: React.FC<HoverPlayVideoProps> = ({
 	const handleMouseEnter = () => setIsHovering(true)
 	const handleMouseLeave = () => setIsHovering(false)
 
-	const handleClick = (e: React.MouseEvent) => {
+	const handleClick = () => {
 		if (!useImageFallback && videoRef.current) {
 			videoRef.current.play().catch(() => {})
 		}
-		onClick?.(e)
 	}
 
 	if (useImageFallback) {
@@ -58,7 +55,6 @@ export const HoverPlayVideo: React.FC<HoverPlayVideoProps> = ({
 				style={style}
 				onLoad={onLoadedData}
 				onError={onError}
-				onClick={onClick}
 			/>
 		)
 	}

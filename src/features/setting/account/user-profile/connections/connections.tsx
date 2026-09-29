@@ -105,13 +105,15 @@ export function Connections() {
 		<div className="space-y-4">
 			<div className="grid grid-cols-1 gap-2 mt-3 sm:grid-cols-2">
 				{platforms.map((platform) => (
-					<div
+					<button
+						type="button"
+						disabled={!platform.isActive && !platform.connected}
 						key={platform.id}
 						onClick={() =>
 							(platform.isActive || platform.connected) &&
 							handleConnectionClick(platform.id)
 						}
-						className={`group relative p-2.5 rounded-2xl border transition-ui duration-200 bg-surface-2 border-surface-3
+						className={`group relative w-full text-start p-2.5 rounded-2xl border transition-ui duration-200 bg-surface-2 border-surface-3
                 ${
 					platform.connected ? '' : ' hover:bg-fill'
 				} ${!platform.isActive && !platform.connected ? 'opacity-50' : 'cursor-pointer active:scale-95'}`}
@@ -152,7 +154,7 @@ export function Connections() {
 								)}
 							</div>
 						</div>
-					</div>
+					</button>
 				))}
 			</div>
 

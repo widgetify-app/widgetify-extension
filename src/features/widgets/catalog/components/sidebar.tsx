@@ -1,5 +1,5 @@
 import type React from 'react'
-import { Badge, Button, VipBadge } from '@/components/ui'
+import { Badge, Button, Tooltip, VipBadge } from '@/components/ui'
 import { cn } from '@/common/utils/cn'
 import type {
 	WidgetCategory,
@@ -70,15 +70,19 @@ export function AddWidgetSidebar({
 						return (
 							<div
 								key={def.id}
-								onClick={() => onSelectWidget(def.id)}
 								className={cn(
-									'w-full flex items-center justify-between p-2.5 rounded-2xl border text-right transition-ui duration-150 cursor-pointer',
+									'relative w-full flex items-center justify-between p-2.5 rounded-2xl border text-right transition-ui duration-150',
 									isSelected
 										? 'bg-brand-fill border-brand shadow-sm'
 										: 'bg-fill-2 hover:bg-surface-2 border-line'
 								)}
 							>
-								<div className="flex items-center min-w-0 gap-2">
+								<button
+									type="button"
+									onClick={() => onSelectWidget(def.id)}
+									aria-pressed={isSelected}
+									className="flex items-center min-w-0 gap-2 text-start cursor-pointer after:absolute after:inset-0 after:rounded-2xl focus-visible:focus-ring"
+								>
 									<span
 										className={cn(
 											'flex items-center justify-center rounded-xl w-7 h-7 shrink-0 transition-ui',
@@ -87,7 +91,7 @@ export function AddWidgetSidebar({
 												: 'bg-fill text-fg-muted'
 										)}
 									>
-										<Icon name={def.icon} size={15} />
+										<Icon name={def.icon} size={16} />
 									</span>
 									<span
 										className={cn(
@@ -100,26 +104,31 @@ export function AddWidgetSidebar({
 										{def.label}
 									</span>
 									{isWidgetNew?.(def.id) && <Badge>جدید</Badge>}
-								</div>
+								</button>
 
 								<div className="flex items-center gap-1.5 shrink-0 mr-2">
 									{!isVip && isWidgetVipOnly(def.id) && (
 										<VipBadge size="xs" />
 									)}
 									{def.settingsTab && (
-										<Button
-											type="button"
-											onClick={(e) =>
-												onOpenWidgetSettings(e, def.settingsTab)
-											}
-											title="تنظیمات ویجت"
-											size={'xs'}
-											variant={'ghost'}
-											className="px-1!"
-											rounded={'full'}
-										>
-											<Icon name="settings" size={13} />
-										</Button>
+										<Tooltip content="تنظیمات ویجت">
+											<Button
+												type="button"
+												onClick={(e) =>
+													onOpenWidgetSettings(
+														e,
+														def.settingsTab
+													)
+												}
+												aria-label="تنظیمات ویجت"
+												size={'xs'}
+												variant={'ghost'}
+												className="relative z-10 px-1!"
+												rounded={'full'}
+											>
+												<Icon name="settings" size={12} />
+											</Button>
+										</Tooltip>
 									)}
 									{def.canDuplicate ? (
 										<span

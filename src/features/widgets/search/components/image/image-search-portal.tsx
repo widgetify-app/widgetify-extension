@@ -5,7 +5,7 @@ import Analytics from '@/analytics'
 import { RequireAuth } from '@/features/widgets/components/require-auth'
 import { uploadSearchImage } from '@/services/search/upload-search-image'
 import { translateError } from '@/common/utils/translate-error'
-import { Button, Portal } from '@/components/ui'
+import { Button, Portal, Spinner } from '@/components/ui'
 import { Icon } from '@/icons'
 
 interface ImageSearchPortalProps {
@@ -86,7 +86,7 @@ export function ImageSearchPortal({
 				style={portalStyles}
 				role="dialog"
 				aria-label="جستجوی تصویر با گوگل"
-				className="z-20 p-4 overflow-hidden duration-300 shadow-xl bg-glass-surface-2 -mt-26 rounded-2xl animate-in fade-in slide-in-from-top-2"
+				className="z-20 p-4 overflow-hidden shadow-xl bg-glass-surface-2 -mt-26 rounded-2xl"
 			>
 				<div className="flex items-center justify-between px-2 mb-4">
 					<span className="text-sm font-black text-fg-muted">
@@ -99,7 +99,7 @@ export function ImageSearchPortal({
 							target="_blank"
 							rel="noreferrer"
 						>
-							<Icon name="shieldEllipsis" size={18} />
+							<Icon name="shieldEllipsis" size={16} />
 						</a>
 						<button
 							type="button"
@@ -107,7 +107,7 @@ export function ImageSearchPortal({
 							aria-label="بستن جستجوی تصویر"
 							className="p-1 rounded-full cursor-pointer transition-ui hover:bg-fill-2 text-fg-faint focus-visible:focus-ring"
 						>
-							<Icon name="close" size={22} aria-hidden="true" />
+							<Icon name="close" size={20} aria-hidden="true" />
 						</button>
 					</div>
 				</div>
@@ -127,6 +127,7 @@ export function ImageSearchPortal({
 						>
 							<div className="flex items-center justify-center w-10 h-10 mb-2 transition-ui rounded-full bg-fill group-hover:text-brand">
 								<svg
+									aria-hidden="true"
 									width="36"
 									height="36"
 									viewBox="0 0 48 48"
@@ -180,7 +181,7 @@ export function ImageSearchPortal({
 									)}
 
 									<div className="relative flex flex-col items-center w-full gap-3 px-12">
-										<span className="loading loading-spinner loading-md text-brand"></span>
+										<Spinner size="lg" aria-hidden="true" />
 
 										<div className="flex flex-col items-center gap-1">
 											<span className="text-xs font-black text-fg-strong">

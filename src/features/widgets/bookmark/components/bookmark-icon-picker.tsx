@@ -3,7 +3,12 @@ import { getFaviconFromUrl } from '@/features/widgets/utils/icon'
 import { Icon } from '@/icons'
 import type React from 'react'
 import { useRef, useState } from 'react'
-import { PopoverMenu, PopoverMenuItem, PopoverMenuDivider } from '@/components/ui'
+import {
+	PopoverMenu,
+	PopoverMenuItem,
+	PopoverMenuDivider,
+	Tooltip,
+} from '@/components/ui'
 import { GalleryPickerModal } from '@/components/gallery'
 import type { GalleryAsset } from '@/services/gallery/get-gallery-assets.hook'
 
@@ -91,58 +96,69 @@ export function BookmarkIconPicker({ value, url, onChange, size = 'md' }: Props)
 			/>
 
 			<div className="relative inline-flex group">
-				<button
-					ref={triggerRef}
-					type="button"
-					onClick={openPicker}
-					onDragOver={(e) => {
-						e.preventDefault()
-						setIsDragging(true)
-					}}
-					onDragLeave={() => setIsDragging(false)}
-					onDrop={handleDrop}
-					className={`relative shrink-0 flex items-center justify-center cursor-pointer border-2 transition-ui duration-200 ${containerSizeClasses} ${
-						isDragging
-							? 'border-brand bg-brand-fill shadow-lg'
-							: 'border-surface-3 hover:border-brand-muted bg-surface hover:bg-surface-2'
-					}`}
-					title="انتخاب یا تغییر آیکون"
-				>
-					{iconSrc && !error ? (
-						<img
-							src={iconSrc}
-							alt="icon"
-							className={`w-full h-full object-contain p-2 transition-transform duration-200 group-hover:scale-105 ${
-								isLarge ? 'rounded-xl' : 'rounded-lg'
-							}`}
-							onError={() => setError(true)}
-						/>
-					) : (
-						<Icon
-							name="image"
-							size={isLarge ? 24 : 18}
-							className="transition-colors text-fg-muted group-hover:text-brand"
-						/>
-					)}
-
-					<div
-						className={`absolute inset-0 flex items-center justify-center transition-opacity duration-150 opacity-0 group-hover:opacity-100 bg-surface-veil ${
-							isLarge ? 'rounded-2xl' : 'rounded-xl'
+				<Tooltip content="انتخاب یا تغییر آیکون">
+					<button
+						ref={triggerRef}
+						type="button"
+						onClick={openPicker}
+						onDragOver={(e) => {
+							e.preventDefault()
+							setIsDragging(true)
+						}}
+						onDragLeave={() => setIsDragging(false)}
+						onDrop={handleDrop}
+						className={`relative shrink-0 flex items-center justify-center cursor-pointer border-2 transition-ui duration-200 ${containerSizeClasses} ${
+							isDragging
+								? 'border-brand bg-brand-fill shadow-lg'
+								: 'border-surface-3 hover:border-brand-muted bg-surface hover:bg-surface-2'
 						}`}
+						aria-label="انتخاب یا تغییر آیکون"
 					>
-						<Icon name="brush" size={isLarge ? 20 : 16} className="text-fg" />
-					</div>
-				</button>
+						{iconSrc && !error ? (
+							<img
+								src={iconSrc}
+								alt="icon"
+								className={`w-full h-full object-contain p-2 transition-transform duration-200 group-hover:scale-105 ${
+									isLarge ? 'rounded-xl' : 'rounded-lg'
+								}`}
+								onError={() => setError(true)}
+							/>
+						) : (
+							<Icon
+								name="image"
+								size={isLarge ? 24 : 16}
+								className="transition-colors text-fg-muted group-hover:text-brand"
+							/>
+						)}
+
+						<div
+							className={`absolute inset-0 flex items-center justify-center transition-opacity duration-150 opacity-0 group-hover:opacity-100 bg-surface-veil ${
+								isLarge ? 'rounded-2xl' : 'rounded-xl'
+							}`}
+						>
+							<Icon
+								name="brush"
+								size={isLarge ? 20 : 16}
+								className="text-fg"
+							/>
+						</div>
+					</button>
+				</Tooltip>
 
 				{Boolean(value) && (
-					<button
-						type="button"
-						onClick={handleRemove}
-						className="absolute -top-1 -right-1 flex items-center justify-center w-4.5 h-4.5 rounded-full bg-danger text-on-danger text-3xs shadow-md hover:scale-110 active:scale-95 transition-transform cursor-pointer z-10 border border-surface-3"
-						title="حذف آیکون"
+					<Tooltip
+						content="حذف آیکون"
+						className="absolute z-10 -top-1 -right-1"
 					>
-						<span className="mb-0.5">✕</span>
-					</button>
+						<button
+							type="button"
+							onClick={handleRemove}
+							aria-label="حذف آیکون"
+							className="flex items-center justify-center w-4.5 h-4.5 rounded-full bg-danger text-on-danger text-3xs shadow-md hover:scale-110 active:scale-95 transition-transform cursor-pointer border border-surface-3"
+						>
+							<span className="mb-0.5">✕</span>
+						</button>
+					</Tooltip>
 				)}
 			</div>
 

@@ -57,7 +57,7 @@ export const CurrencyConverter: React.FC = () => {
 						type="number"
 						value={amount.toString()}
 						onChange={(e) => setAmount(Number(e))}
-						className="flex-1 text-3xl font-black !bg-transparent border-none !p-0 focus:ring-0 text-fg"
+						className="flex-1 text-3xl font-black bg-transparent! border-none p-0! focus:ring-0 text-fg"
 					/>
 					<SelectBox
 						options={supportedCurrencies?.map((c) => ({
@@ -66,7 +66,7 @@ export const CurrencyConverter: React.FC = () => {
 						}))}
 						value={fromCurrency}
 						onChange={setFromCurrency}
-						className="!w-24 !h-11 rounded-2xl! !bg-surface border border-surface-3 shadow-sm font-bold text-xs"
+						className="w-24! h-11! rounded-2xl! bg-surface! border border-surface-3 shadow-sm font-bold text-xs"
 					/>
 				</div>
 
@@ -94,7 +94,7 @@ export const CurrencyConverter: React.FC = () => {
 						}))}
 						value={toCurrency}
 						onChange={setToCurrency}
-						className="!w-24 !h-11 !rounded-2xl  border border-brand-fill-2 shadow-sm font-bold text-xs"
+						className="w-24! h-11! rounded-2xl!  border border-brand-fill-2 shadow-sm font-bold text-xs"
 					/>
 				</div>
 			</div>

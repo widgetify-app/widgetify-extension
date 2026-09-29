@@ -1,7 +1,7 @@
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
 import { useIsMutating } from '@tanstack/react-query'
 import Analytics from '@/analytics'
-import { ConfirmationModal } from '@/components/ui'
+import { Alert, ConfirmationModal } from '@/components/ui'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import type { Bookmark } from '@/services/bookmark/bookmark.interface'
 import type { FolderPathItem } from '../types'
@@ -273,10 +273,10 @@ export function BookmarkGrid({
 					bookmarkToDelete?.type === 'FOLDER' ? (
 						<div>
 							<p>آیا از حذف پوشه "{bookmarkToDelete.title}" مطمئن هستی؟</p>
-							<p className="flex gap-1 px-2 py-1 mt-2 text-xs rounded-xl bg-danger-fill-2 text-danger">
+							<Alert tone="danger" className="mt-2">
 								با حذف این پوشه، تمام بوکمارک‌های داخلش هم برای همیشه حذف
 								میشن و این عمل قابل بازگشت نیست!
-							</p>
+							</Alert>
 						</div>
 					) : (
 						<p>

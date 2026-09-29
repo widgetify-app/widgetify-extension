@@ -7,6 +7,7 @@ import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { getCurrentDate } from '@/common/utils/date-events'
 import { formatHabitGoal } from '../../utils/habit-goal'
+import { DEFAULT_HABIT_COLOR } from '../../constants'
 import { Dropdown } from '@/components/ui'
 import type { Habit } from '@/services/habit/habit.interface'
 import { callEvent } from '@/common/utils/call-event'
@@ -58,7 +59,7 @@ export function HabitDetailModal({
 		error,
 	} = useGetHabitDetail(habitId || '', isOpen && isAuthenticated)
 
-	const color = habit?.color || '#536dfe'
+	const color = habit?.color || DEFAULT_HABIT_COLOR
 
 	const title =
 		isLoading || !habit ? (
@@ -93,7 +94,7 @@ export function HabitDetailModal({
 								>
 									<Icon
 										name="menuOption"
-										size={15}
+										size={16}
 										aria-hidden="true"
 									/>
 								</Button>
@@ -105,7 +106,7 @@ export function HabitDetailModal({
 									className="w-full px-3 py-1.5 flex items-center gap-x-2 cursor-pointer rounded-lg transition-ui text-fg hover:bg-fill-2 focus-visible:focus-ring"
 									onClick={onClickEdit}
 								>
-									<Icon name="pen" size={13} aria-hidden="true" />
+									<Icon name="pen" size={12} aria-hidden="true" />
 									<span className="font-medium">ویرایش</span>
 								</button>
 
@@ -167,7 +168,7 @@ export function HabitDetailModal({
 						rounded="xl"
 						onClick={() => setIsShareModalOpen(true)}
 					>
-						<Icon name="camera" size={15} />
+						<Icon name="camera" size={16} />
 						اشتراک گذاری
 					</Button>
 					<Button

@@ -3,7 +3,7 @@ import { showToast } from '@/common/toast'
 import { Button, Modal } from '@/components/ui'
 import { useRemoveActivity, useSetActivity } from '@/services/user/user-service.hook'
 import { translateError } from '@/common/utils/translate-error'
-import { playAlarm } from '@/common/play-alarm'
+import { playAlarm } from '@/common/utils/play-alarm'
 import {
 	type AttachmentReaction,
 	useGetActivityReactions,
@@ -227,7 +227,7 @@ export function ManageActivityBottomSheet({
 					</div>
 
 					{templates.length ? (
-						<div className="grid grid-flow-col p-2 overflow-x-auto overflow-y-hidden text-center grid-auto-flow-dense h-14 auto-cols-max rounded-2xl">
+						<div className="grid grid-flow-col p-2 overflow-x-auto overflow-y-hidden text-center h-14 auto-cols-max rounded-2xl">
 							{templates.map((text) => (
 								<Chip
 									onClick={() => setActivity(text)}

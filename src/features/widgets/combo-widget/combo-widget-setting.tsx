@@ -51,7 +51,7 @@ export function ComboSetting({ instanceId, size }: ComboSettingProps) {
 							icon: <Icon name="outlineNewspaper" size={14} />,
 						},
 					]}
-					size="medium"
+					size="md"
 					className="w-full"
 				/>
 

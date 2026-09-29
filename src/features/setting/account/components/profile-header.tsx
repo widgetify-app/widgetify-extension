@@ -39,7 +39,7 @@ export const ProfileHeader = ({
 }: ProfileHeaderProps) => {
 	const { user } = useAuth()
 	const [menuOpen, setMenuOpen] = useState(false)
-	const avatarAnchorRef = useRef<HTMLDivElement>(null)
+	const avatarAnchorRef = useRef<HTMLButtonElement>(null)
 	const fileInputRef = useRef<HTMLInputElement>(null)
 
 	const badges = user?.badges || []
@@ -87,7 +87,7 @@ export const ProfileHeader = ({
 							rounded="2xl"
 							className="px-2.5 font-bold"
 						>
-							<Icon name="diamond" size={13} />
+							<Icon name="diamond" size={12} />
 							<span>اعتبار پرو: {vipRemaining}</span>
 						</Button>
 					</Tooltip>
@@ -103,7 +103,7 @@ export const ProfileHeader = ({
 						rounded="2xl"
 						className="px-2.5 font-bold"
 					>
-						<Icon name="diamond" size={13} />
+						<Icon name="diamond" size={12} />
 						<span>اشتراک پرو</span>
 					</Button>
 				</div>
@@ -118,25 +118,28 @@ export const ProfileHeader = ({
 
 			<div className="z-10 flex flex-col items-center">
 				<div className="relative flex items-center justify-center w-52 h-42">
-					<div
+					<button
 						ref={avatarAnchorRef}
-						className="relative mb-8 rounded-full shadow-lg"
+						type="button"
+						aria-label="تغییر تصویر پروفایل"
+						aria-haspopup="menu"
+						aria-expanded={menuOpen}
+						onClick={() => setMenuOpen((prev) => !prev)}
+						className="relative mb-8 rounded-full shadow-lg cursor-pointer focus-visible:focus-ring"
 					>
 						<AvatarComponent
 							url={user?.avatar || ''}
 							placeholder={user?.name || 'کاربر'}
 							size="xl"
-							onClick={() => setMenuOpen((prev) => !prev)}
-							className="w-16 h-16 text-2xl transition-ui cursor-pointer ring-4 ring-brand-fill-2"
+							className="w-16 h-16 text-2xl transition-ui ring-4 ring-brand-fill-2"
 						/>
-						<button
-							type="button"
-							onClick={() => setMenuOpen((prev) => !prev)}
-							className="absolute z-30 p-1 text-on-brand transition-ui -translate-x-3 translate-y-3 rounded-full shadow-xl cursor-pointer bottom-2 -right-3 bg-brand hover:scale-110 active:scale-95"
+						<span
+							aria-hidden="true"
+							className="absolute z-30 p-1 text-on-brand transition-ui -translate-x-3 translate-y-3 rounded-full shadow-xl bottom-2 -right-3 bg-brand hover:scale-110 active:scale-95"
 						>
 							<Icon name="camera" size={12} />
-						</button>
-					</div>
+						</span>
+					</button>
 
 					<PopoverMenu
 						isOpen={menuOpen}

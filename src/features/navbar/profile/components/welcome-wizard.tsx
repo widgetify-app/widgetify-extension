@@ -373,10 +373,11 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 	}
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} size="xl" title=" ">
+		<Modal isOpen={isOpen} onClose={onClose} size="xl">
 			<div className="relative overflow-hidden rounded-sm bg-surface">
 				{currentStep > 1 && currentStep < totalSteps && (
 					<button
+						type="button"
 						onClick={prevStep}
 						className="absolute z-20 p-2 transition-colors rounded-full top-10 right-96 bg-fill-2 text-fg hover:bg-surface-3"
 					>

@@ -66,8 +66,6 @@ import {
 	LuLink,
 	LuListFilter,
 	LuListTodo,
-	LuLoader,
-	LuLoaderCircle,
 	LuLock,
 	LuLogOut,
 	LuMail,
@@ -158,7 +156,14 @@ function ProDiamondIcon({
 	const w = size ?? width ?? '1em'
 	const h = size ?? height ?? '1em'
 	return (
-		<svg viewBox="0 0 140 109" fill="currentColor" width={w} height={h} {...props}>
+		<svg
+			aria-hidden="true"
+			viewBox="0 0 140 109"
+			fill="currentColor"
+			width={w}
+			height={h}
+			{...props}
+		>
 			<path
 				d="M 17,11 L 10,18 L 1,24 L 5,29 L 10,41 L 12,38 L 17,34 L 25,30 L 21,24 L 18,17 Z M 26,11 L 27,15 L 30,21 L 33,24 L 35,28 L 35,31 L 33,35 L 30,38 L 23,41 L 19,44 L 18,46 L 20,48 L 24,57 L 33,71 L 36,78 L 50,102 L 53,105 L 60,108 L 66,108 L 69,107 L 86,97 L 89,94 L 114,80 L 122,74 L 130,70 L 136,65 L 139,58 L 139,51 L 136,44 L 134,42 L 131,33 L 126,24 L 118,19 L 93,12 L 89,12 L 74,8 L 67,5 L 48,0 L 40,1 L 32,6 Z M 121,58 L 118,61 L 78,88 L 75,87 L 91,64 L 98,57 L 104,55 L 112,55 Z M 69,47 L 82,51 L 86,55 L 86,60 L 68,86 L 64,90 L 61,89 L 60,84 L 58,64 L 58,51 L 62,47 Z M 103,26 L 106,25 L 117,28 L 119,30 L 122,35 L 126,45 L 123,49 L 110,49 L 106,48 L 102,45 L 101,43 L 101,29 Z M 70,16 L 73,16 L 85,19 L 93,22 L 95,26 L 94,39 L 90,44 L 87,45 L 70,41 L 65,39 L 61,35 L 61,30 L 67,19 Z"
 				fillRule="evenodd"
@@ -178,6 +183,7 @@ function solidWithCutout(path: string): IconType {
 		const h = size ?? height ?? '1em'
 		return (
 			<svg
+				aria-hidden="true"
 				viewBox="0 0 24 24"
 				fill="currentColor"
 				stroke="currentColor"
@@ -228,9 +234,7 @@ export const defaultIcons = {
 	outlineEye: LuEye,
 	outlineEyeSlash: LuEyeOff,
 	trash: LuTrash2,
-	spinner: LuLoaderCircle,
 	undo: LuUndo2,
-	loader: LuLoader,
 	usersPlus: LuUserRoundPlus,
 	bookmarkPlus: HiOutlineBookmark,
 	folder: filled(LuFolder),

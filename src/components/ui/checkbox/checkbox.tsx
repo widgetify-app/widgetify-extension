@@ -1,27 +1,26 @@
-import { memo } from 'react'
+import { memo, type ReactNode } from 'react'
+import { cn } from '@/common/utils/cn'
 
 interface CustomCheckboxProps {
 	checked: boolean
 	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-	label?: string
 	onClick?: (e: React.MouseEvent<HTMLInputElement>) => void
 	className?: string
 	disabled?: boolean
 	unCheckedCheckBoxClassName?: string
 	checkedCheckBoxClassName?: string
-	fontSize?: 'font-light' | 'font-normal' | 'font-bold'
+	children?: ReactNode
 }
 
 const CheckboxBase = ({
 	checked,
 	onChange,
-	label,
 	disabled = false,
-	fontSize = 'font-normal',
 	className = '',
 	unCheckedCheckBoxClassName = '',
 	checkedCheckBoxClassName = '',
 	onClick,
+	children,
 }: CustomCheckboxProps) => {
 	const getCheckboxStyle = () => {
 		if (checked) {
@@ -48,7 +47,12 @@ const CheckboxBase = ({
 	}
 
 	return (
-		<label className="relative flex items-center transition-transform cursor-pointer group active:scale95">
+		<label
+			className={cn(
+				'relative flex transition-transform cursor-pointer group',
+				children ? 'items-start gap-3' : 'items-center active:scale-95'
+			)}
+		>
 			<div className="relative">
 				<input
 					type="checkbox"
@@ -62,16 +66,18 @@ const CheckboxBase = ({
 					className={`w-5 h-5 border rounded-lg flex items-center justify-center transition-colors duration-200 ${getCheckboxStyle()} ${className}`}
 				>
 					<svg
-						className={`transition-ui duration-150 ${checked ? 'scale-100' : 'scale-0'}`}
+						className={`text-on-brand transition-ui duration-150 ${checked ? 'scale-100' : 'scale-0'}`}
 						width="12"
 						height="12"
 						viewBox="0 0 12 12"
 						fill="none"
+						aria-hidden="true"
 					>
 						<path
 							className="transition-[stroke-dashoffset] duration-200"
 							d="M2.5 6L5 8.5L9.5 4"
-							stroke="white"
+							pathLength="1"
+							stroke="currentColor"
 							strokeWidth="2"
 							strokeLinecap="round"
 							strokeLinejoin="round"
@@ -81,9 +87,7 @@ const CheckboxBase = ({
 					</svg>
 				</div>
 			</div>
-			{label && (
-				<span className={`ml-2 mr-2 ${fontSize} text-sm text-fg`}>{label}</span>
-			)}
+			{children}
 		</label>
 	)
 }

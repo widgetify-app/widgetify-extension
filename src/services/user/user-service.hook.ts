@@ -5,10 +5,10 @@ import {
 	useQueryClient,
 } from '@tanstack/react-query'
 import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
-import type { Wallpaper } from '@/common/wallpaper.interface'
+import type { Wallpaper } from '@/common/types/wallpaper.interface'
 import type { Theme } from '@/context/theme.context'
 import { getMainClient } from '@/services/api'
-import { CacheName, type SwEvent, SwEventType } from '@/common/types/sw-events'
+import { CacheName, type SwEvent, SwEventType } from '@/common/types/sw-events.interface'
 import { userKeys } from '@/services/user/user.keys'
 import { weatherKeys } from '@/services/weather/weather.keys'
 import { friendsKeys } from '@/services/friends/friends.keys'

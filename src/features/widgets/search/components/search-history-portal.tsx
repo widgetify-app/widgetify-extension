@@ -123,7 +123,7 @@ export function SearchHistoryPortal({
 							initial={{ opacity: 0, y: -8 }}
 							animate={{ opacity: 1, y: 0 }}
 							exit={{ opacity: 0, y: -8 }}
-							transition={{ duration: 0.18, ease: 'easeOut' }}
+							transition={{ duration: 0.2, ease: 'easeOut' }}
 							className="z-20 overflow-y-auto shadow-xl bg-glass-surface-2 max-h-60 rounded-2xl"
 						>
 							{isLoadingSuggestions ? (
@@ -140,7 +140,7 @@ export function SearchHistoryPortal({
 									<div className="flex items-center justify-center w-8 h-8 rounded-xl bg-fill">
 										<Icon
 											name="search"
-											size={15}
+											size={16}
 											className="text-fg-faint"
 										/>
 									</div>
@@ -159,7 +159,7 @@ export function SearchHistoryPortal({
 											e.preventDefault()
 											setShowConsentModal(true)
 										}}
-										className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-xl cursor-pointer bg-fill text-fg-muted transition-ui hover:text-brand hover:bg-brand-fill focus-visible:focus-ring searchbox-item"
+										className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-xl cursor-pointer bg-fill text-fg-muted transition-ui hover:text-brand hover:bg-brand-fill focus-visible:focus-ring"
 									>
 										فعال‌سازی
 									</button>

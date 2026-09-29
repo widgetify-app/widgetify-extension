@@ -1,9 +1,9 @@
-import type { AxiosError } from 'axios'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
-import type { StoredWallpaper, Wallpaper } from '@/common/wallpaper.interface'
-import { safeAwait } from '@/services/api'
+import type { StoredWallpaper, Wallpaper } from '@/common/types/wallpaper.interface'
+import { DEFAULT_WALLPAPER } from '@/common/constants/default-wallpaper'
+import { type ApiError, safeAwait } from '@/services/api'
 import { useChangeWallpaper } from '@/services/extension/update-setting.hook'
 import { translateError } from '@/common/utils/translate-error'
 import Analytics from '@/analytics'
@@ -147,18 +147,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 						previewSrc: '',
 						gradient: currentStoredWallpaper.gradient,
 					}
-				: {
-						id: 'gradient-a1c4fd-c2e9fb',
-						name: 'گرادیان',
-						type: 'GRADIENT',
-						src: '',
-						previewSrc: '',
-						gradient: {
-							from: '#a1c4fd',
-							to: '#c2e9fb',
-							direction: 'to-r',
-						},
-					})
+				: DEFAULT_WALLPAPER)
 
 		let isSet = false
 		if (!wallpaper.coin || wallpaper.isOwned) {
@@ -169,7 +158,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 		if (isAuthenticated) {
 			const wallpaperId =
 				wallpaper.type === 'GRADIENT' ? 'custom-wallpaper' : wallpaper.id
-			const [error, responseWallpaper] = await safeAwait<AxiosError, Wallpaper>(
+			const [error, responseWallpaper] = await safeAwait<ApiError, Wallpaper>(
 				mutateAsync({ wallpaperId })
 			)
 
@@ -207,18 +196,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 			if (randomWallpaper) {
 				handleSelectBackground(randomWallpaper)
 			} else {
-				handleSelectBackground({
-					id: 'gradient-a1c4fd-c2e9fb',
-					name: 'گرادیان',
-					type: 'GRADIENT',
-					src: '',
-					previewSrc: '',
-					gradient: {
-						from: '#a1c4fd',
-						to: '#c2e9fb',
-						direction: 'to-r',
-					},
-				})
+				handleSelectBackground(DEFAULT_WALLPAPER)
 			}
 		}
 	}

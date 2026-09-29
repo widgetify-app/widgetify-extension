@@ -1,5 +1,5 @@
 import { Icon } from '@/icons'
-import { Button, IconLoading, Tooltip } from '@/components/ui'
+import { Button, Spinner, Tooltip } from '@/components/ui'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
 import { ProTooltipContent } from './pro-tooltip'
@@ -28,7 +28,8 @@ export function UploadEmpty({
 	onDrop,
 }: UploadEmptyProps) {
 	return (
-		<div
+		<section
+			aria-label="بارگذاری تصویر زمینه"
 			onDragOver={onDragOver}
 			onDragEnter={onDragOver}
 			onDragLeave={onDragLeave}
@@ -40,7 +41,9 @@ export function UploadEmpty({
 		>
 			<div className="flex items-center justify-between gap-3">
 				<div className="flex items-center min-w-0 gap-3">
-					<div
+					<button
+						type="button"
+						disabled={isUploading}
 						onClick={onFileSelect}
 						className={cn(
 							'relative flex items-center justify-center w-24 h-16 overflow-hidden rounded-xl border border-dashed cursor-pointer shrink-0 transition-ui group bg-surface-2',
@@ -50,12 +53,12 @@ export function UploadEmpty({
 						)}
 					>
 						{isUploading ? (
-							<IconLoading className="w-5 h-5 text-brand" />
+							<Spinner />
 						) : (
 							<div className="flex flex-col items-center justify-center gap-0.5">
 								<Icon
 									name="uploadImage"
-									size={18}
+									size={16}
 									className="transition-transform group-hover:scale-110"
 								/>
 								<span className="text-3xs font-medium">
@@ -63,7 +66,7 @@ export function UploadEmpty({
 								</span>
 							</div>
 						)}
-					</div>
+					</button>
 
 					<div className="flex flex-col min-w-0 gap-1">
 						<p className="text-sm font-bold truncate text-fg">
@@ -117,7 +120,7 @@ export function UploadEmpty({
 											}}
 											className="inline-flex items-center gap-1 text-2xs font-bold text-vip bg-vip-fill border border-vip-fill-2 px-2.5 py-0.5 rounded-xl hover:bg-vip-fill-2 active:scale-95 transition-ui cursor-pointer"
 										>
-											<Icon name="diamond" size={11} />
+											<Icon name="diamond" size={12} />
 											<span>ارتقا به پرو</span>
 										</button>
 									</Tooltip>
@@ -140,6 +143,6 @@ export function UploadEmpty({
 					</Button>
 				</div>
 			</div>
-		</div>
+		</section>
 	)
 }

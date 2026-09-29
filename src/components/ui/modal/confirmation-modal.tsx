@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { Button } from '../button/button'
 import { Modal } from './modal'
-import { IconLoading } from '../loading/loading'
+import { Spinner } from '../spinner/spinner'
 import { Icon } from '@/icons'
 import { cn } from '@/common/utils/cn'
 import { confirmationIconVariants } from './confirmation-modal.variants'
@@ -20,9 +20,9 @@ interface ConfirmationModalProps {
 }
 
 const variantIcon = {
-	danger: <Icon name="trash" size={18} />,
-	warning: <Icon name="alert" size={18} />,
-	brand: <Icon name="info" size={18} />,
+	danger: <Icon name="trash" size={16} />,
+	warning: <Icon name="alert" size={16} />,
+	brand: <Icon name="info" size={16} />,
 }
 
 export function ConfirmationModal({
@@ -98,7 +98,7 @@ export function ConfirmationModal({
 						loading={isLoading}
 						loadingText={
 							<div className="flex items-center gap-1">
-								<IconLoading className="mx-0! text-current!" />
+								<Spinner size="sm" tone="current" aria-hidden="true" />
 								<span className="text-xs">در حال انجام...</span>
 							</div>
 						}

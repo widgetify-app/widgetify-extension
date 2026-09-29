@@ -6,7 +6,7 @@ import { MiniAppLoadingState } from './mini-app-loading'
 import { MiniAppRunnerHeader } from './runner-header'
 import { MiniAppIframe } from './mini-app-iframe-runner'
 import { WebAppAuthGate } from './mini-app-auth'
-import { IconLoading } from '@/components/ui'
+import { Spinner } from '@/components/ui'
 const LOAD_TIMEOUT = 8000
 
 interface Prop {
@@ -140,7 +140,9 @@ export function MiniAppRunner({ appId, onClickToExist, isFullScreen }: Prop) {
 						icon={app?.icon}
 						name={app?.name}
 						label={`در حال اجرای ${app?.name || 'برنامک'}...`}
-						labelIcon={<IconLoading className="ml-1!" />}
+						labelIcon={
+							<Spinner size="sm" aria-hidden="true" className="ml-1" />
+						}
 					/>
 				)}
 
@@ -154,7 +156,9 @@ export function MiniAppRunner({ appId, onClickToExist, isFullScreen }: Prop) {
 						icon={app?.icon}
 						name={app?.name}
 						label={`در حال اتصال به ${app?.name || 'برنامک'}...`}
-						labelIcon={<IconLoading className="ml-1!" />}
+						labelIcon={
+							<Spinner size="sm" aria-hidden="true" className="ml-1" />
+						}
 					/>
 				)}
 

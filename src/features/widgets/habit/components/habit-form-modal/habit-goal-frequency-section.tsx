@@ -102,7 +102,7 @@ const UnitSelectionRow = React.memo<UnitSelectionRowProps>(({ unit, onChangeUnit
 					<div className="flex items-center justify-between w-full px-1 text-xs">
 						<span>{opt.label}</span>
 						{unit === opt.id && (
-							<Icon name="check" size={13} className="text-brand" />
+							<Icon name="check" size={12} className="text-brand" />
 						)}
 					</div>
 				),
@@ -167,7 +167,7 @@ const FrequencyComparisonRow = React.memo<FrequencyComparisonRowProps>(
 						<div className="flex items-center justify-between w-full px-1 text-xs">
 							<span>{opt.label}</span>
 							{comparison === opt.value && (
-								<Icon name="check" size={13} className="text-brand" />
+								<Icon name="check" size={12} className="text-brand" />
 							)}
 						</div>
 					),
@@ -201,10 +201,13 @@ const FrequencyComparisonRow = React.memo<FrequencyComparisonRowProps>(
 
 				<Dropdown
 					trigger={
-						<div className="flex items-center gap-1 text-xs cursor-pointer text-fg-muted hover:text-fg-strong">
+						<button
+							type="button"
+							className="flex items-center gap-1 text-xs cursor-pointer text-fg-muted hover:text-fg-strong"
+						>
 							<span className="text-xs">{currentComparisonLabel}</span>
 							<Icon name="chevronDown" size={14} />
-						</div>
+						</button>
 					}
 					options={comparisonDropdownOptions}
 					position="bottom-left"

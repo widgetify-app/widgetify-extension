@@ -23,7 +23,7 @@ export const FloatingBadge: React.FC<FloatingBadgeProps> = ({
 	return (
 		<Tooltip content={name} position="top" delay={150}>
 			<div
-				className="transition-transform duration-300 ease-out hover:!scale-125 cursor-pointer"
+				className="transition-transform duration-300 ease-out hover:scale-125! cursor-pointer"
 				style={{
 					transform: `rotate(${rotate}deg) scale(${scale})`,
 					filter: glowColor

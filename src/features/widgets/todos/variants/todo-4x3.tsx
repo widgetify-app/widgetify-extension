@@ -98,7 +98,7 @@ export function TodoBoard({
 						icon={
 							<Icon
 								name="tags"
-								size={13}
+								size={12}
 								aria-hidden="true"
 								className={
 									tagFilter && tagFilter !== '-all-'
@@ -116,7 +116,7 @@ export function TodoBoard({
 						icon={
 							<Icon
 								name="sortDown"
-								size={13}
+								size={12}
 								aria-hidden="true"
 								className={
 									sort !== 'def' ? 'text-brand!' : 'text-fg-muted'
@@ -137,7 +137,7 @@ export function TodoBoard({
 						>
 							<Icon
 								name="refresh"
-								size={13}
+								size={12}
 								aria-hidden="true"
 								className="text-fg opacity-50 transition-opacity group-hover:opacity-100"
 								spin={isLoading}

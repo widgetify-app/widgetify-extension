@@ -1,4 +1,4 @@
-import { getContrastingTextColor } from '@/common/color'
+import { getContrastingTextColor } from '@/common/utils/color'
 import { NewBadge } from '@/components/ui'
 import type { MiniApp } from '@/services/mini-apps/mini-apps.interface'
 
@@ -10,10 +10,12 @@ interface MiniAppCardProps {
 
 export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
 	return (
-		<div
+		<button
+			type="button"
+			aria-pressed={isSelected}
 			onClick={() => onLaunch(app)}
 			className={`
-                group relative flex items-center gap-3 p-2 rounded-2xl cursor-pointer
+                group relative flex items-center w-full gap-3 p-2 text-right rounded-2xl cursor-pointer
                 transition-ui duration-200 active:scale-[0.98] select-none overflow-hidden
                 border ${
 					isSelected
@@ -74,8 +76,10 @@ export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
                         ${isSelected ? 'opacity-100' : 'opacity-90'}
                     `}
 					style={{
-						backgroundColor: app.badgeColor || '#536dfe',
-						color: getContrastingTextColor(app.badgeColor || '#536dfe'),
+						backgroundColor: app.badgeColor || 'var(--color-primary)',
+						color: app.badgeColor
+							? getContrastingTextColor(app.badgeColor)
+							: 'var(--color-primary-content)',
 					}}
 				>
 					<div className="relative z-10 font-normal tracking-wide">
@@ -85,6 +89,6 @@ export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
 			)}
 
 			{app.isNew ? <NewBadge className="bottom-1 right-8" /> : null}
-		</div>
+		</button>
 	)
 }

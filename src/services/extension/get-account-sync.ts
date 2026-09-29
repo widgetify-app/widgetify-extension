@@ -1,4 +1,4 @@
-import type { Wallpaper } from '@/common/wallpaper.interface'
+import type { Wallpaper } from '@/common/types/wallpaper.interface'
 import type { Theme } from '@/context/theme.context'
 import { getMainClient } from '@/services/api'
 import type { UserInventoryItem } from '@/services/market/market.interface'

@@ -94,7 +94,6 @@ export function EngineSelector({ trigger, onSelected }: EngineSelectorProps) {
 				)
 			}
 			onClose={() => setIsExpanded(false)}
-			dropdownClassName="engine-selector"
 		>
 			<div className="flex flex-col gap-1 p-2 border-2 rounded-2xl min-w-40 bg-surface-2 border-surface-3">
 				<p className="px-2 mb-1 text-xs font-medium text-fg-muted">

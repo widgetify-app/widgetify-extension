@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { Category } from '@/common/wallpaper.interface'
+import type { Category } from '@/common/types/wallpaper.interface'
 import { Icon } from '@/icons'
 import { NewBadge, TabNavigation } from '@/components/ui'
 
@@ -97,7 +97,7 @@ export function WallpaperSidebar({
 					className="w-full flex items-center justify-between px-2 py-1 text-xs font-semibold text-fg cursor-pointer"
 				>
 					<div className="flex items-center gap-1.5">
-						<Icon name="filter" size={13} className="text-brand" />
+						<Icon name="filter" size={12} className="text-brand" />
 						<span>فیلتر</span>
 					</div>
 					<Icon
@@ -132,7 +132,7 @@ export function WallpaperSidebar({
 								onTabClick={(id) => onTypeFilterChange(id as FilterType)}
 								tabMode="simple"
 								className="border-0"
-								size="small"
+								size="sm"
 							/>
 						</div>
 
@@ -161,7 +161,7 @@ export function WallpaperSidebar({
 								}
 								tabMode="simple"
 								className="border-0"
-								size="small"
+								size="sm"
 							/>
 						</div>
 					</div>

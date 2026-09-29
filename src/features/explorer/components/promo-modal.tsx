@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { showToast } from '@/common/toast'
-import { Button, ImageSlider, Modal } from '@/components/ui'
+import { Badge, Button, ImageSlider, Modal } from '@/components/ui'
 import { Icon } from '@/icons'
 import type { CatalogItem } from '../types'
 
@@ -65,7 +65,6 @@ export function ExplorerPromoModal({ isOpen, onClose, item }: ExplorerPromoModal
 			size="md"
 			closeOnBackdropClick={true}
 			showCloseButton={true}
-			title=" "
 		>
 			<div className="space-y-3.5 pt-0.5">
 				{/* Visual / Gallery Container */}
@@ -101,9 +100,9 @@ export function ExplorerPromoModal({ isOpen, onClose, item }: ExplorerPromoModal
 							</h3>
 						</div>
 						{isSponsor && (
-							<span className="badge badge-sm badge-neutral shrink-0 font-medium">
+							<Badge variant="neutral" size="sm">
 								اسپانسر
-							</span>
+							</Badge>
 						)}
 					</div>
 
@@ -159,7 +158,7 @@ export function ExplorerPromoModal({ isOpen, onClose, item }: ExplorerPromoModal
 								>
 									<Icon
 										name={isCopied ? 'check' : 'copy'}
-										size={13}
+										size={12}
 										className="ml-1"
 									/>
 									{isCopied ? 'کپی شد' : 'کپی'}

@@ -1,4 +1,5 @@
 import type React from 'react'
+import { useId } from 'react'
 import { Button, Checkbox } from '@/components/ui'
 import { Modal } from '@/components/ui'
 import { TextInput } from '@/components/ui'
@@ -12,11 +13,19 @@ interface SettingInputProps {
 }
 
 const SettingInput: React.FC<SettingInputProps> = ({ label, value, onChange, max }) => {
+	const inputId = useId()
+
 	return (
 		<div className="flex items-center justify-between gap-3 p-2 rounded-lg bg-fill">
-			<label className="flex-1 text-sm font-medium text-fg-strong">{label}</label>
+			<label
+				htmlFor={inputId}
+				className="flex-1 text-sm font-medium text-fg-strong"
+			>
+				{label}
+			</label>
 			<div className="relative w-20">
 				<TextInput
+					id={inputId}
 					type="number"
 					value={String(value)}
 					className="text-center"
@@ -92,32 +101,22 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 						}}
 						max={30}
 					/>
-					<div className="flex items-start gap-3">
-						<Checkbox
-							checked={settings.alarmEnabled}
-							onChange={() =>
-								handleSettingChange(
-									'alarmEnabled',
-									!settings.alarmEnabled
-								)
-							}
-						/>
-						<div
-							onClick={() =>
-								handleSettingChange(
-									'alarmEnabled',
-									!settings.alarmEnabled
-								)
-							}
-							className="cursor-pointer"
-						>
-							<p className={'font-medium text-fg'}>فعال‌سازی هشدار صوتی</p>
-							<p className={'text-sm font-light text-fg-muted'}>
+					<Checkbox
+						checked={settings.alarmEnabled}
+						onChange={() =>
+							handleSettingChange('alarmEnabled', !settings.alarmEnabled)
+						}
+					>
+						<span>
+							<span className="block font-medium text-fg">
+								فعال‌سازی هشدار صوتی
+							</span>
+							<span className="block text-sm font-light text-fg-muted">
 								با فعال‌سازی این گزینه، در پایان هر دوره کاری، یک هشدار
 								صوتی پخش خواهد شد.
-							</p>
-						</div>
-					</div>
+							</span>
+						</span>
+					</Checkbox>
 				</div>
 				<div className="text-center">
 					<Button

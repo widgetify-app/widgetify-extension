@@ -24,9 +24,7 @@ export type IconName =
 	| 'outlineEye'
 	| 'outlineEyeSlash'
 	| 'trash'
-	| 'spinner'
 	| 'undo'
-	| 'loader'
 	| 'usersPlus'
 	| 'bookmarkPlus'
 	| 'folder'
@@ -145,3 +143,5 @@ export type IconName =
 	| 'explorerOutline'
 	| 'layout'
 export type IconMap = Record<IconName, IconType>
+
+export type IconSize = 8 | 10 | 12 | 14 | 16 | 20 | 24 | 32

@@ -49,7 +49,7 @@ export function YadkarWidget({ size }: YadkarWidgetProps = {}) {
 					activeTab={tab}
 					onTabClick={onChangeTab}
 					tabs={navigationTabs}
-					size="small"
+					size="sm"
 					className="flex-none w-full border-none"
 				/>
 

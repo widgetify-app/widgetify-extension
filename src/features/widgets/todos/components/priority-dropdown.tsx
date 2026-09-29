@@ -46,13 +46,14 @@ export function PriorityDropdown({ priority, setPriority }: PriorityDropdownProp
 							: 'text-fg-faint hover:text-brand-muted'
 					}`}
 				>
-					<Icon name="outlineFilterList" size={18} />
+					<Icon name="outlineFilterList" size={16} />
 				</Button>
 			}
 			position="top-left"
 		>
 			<div className="flex flex-col gap-1 border min-w-32 bg-surface-2 border-surface-3 rounded-2xl p-1.5">
 				<button
+					type="button"
 					onClick={() => setPriority(undefined)}
 					className={`px-3 py-2 rounded-lg text-xs text-right cursor-pointer transition-colors ${
 						priority === undefined
@@ -65,6 +66,7 @@ export function PriorityDropdown({ priority, setPriority }: PriorityDropdownProp
 
 				{priorityOptions.map((option) => (
 					<button
+						type="button"
 						key={option.value}
 						onClick={() => setPriority(option.value)}
 						className={`px-3 py-2 rounded-lg text-xs text-right cursor-pointer transition-colors ${

@@ -1,6 +1,5 @@
 import moment from 'jalali-moment'
-import { Button } from '@/components/ui'
-import { OfflineIndicator } from '@/components/ui'
+import { Alert, Button } from '@/components/ui'
 import { ProfileHeader } from './profile-header'
 import type React from 'react'
 import { Chip } from '@/components/ui'
@@ -268,7 +267,10 @@ export const ProfileDisplay = () => {
 
 			{user?.inCache && (
 				<div className="pt-2">
-					<OfflineIndicator mode="notification" />
+					<Alert tone="danger" icon="offline">
+						اطلاعات کاربری از حافظه محلی بارگذاری شده‌اند. اتصال اینترنت خود را
+						بررسی کنید.
+					</Alert>
 				</div>
 			)}
 			{cropImage && (
@@ -344,19 +346,22 @@ const DisplayRow = ({
 				</div>
 				<span className="text-3xs font-medium opacity-60">{label}</span>
 			</div>
-			<div
-				className={`relative flex justify-end text-xs w-fit pr-1 font-semibold text-fg ${isLtr ? 'dir-ltr' : 'dir-rtl'}`}
-			>
-				<div className="overflow-y-auto max-h-12 scrollbar-none">
+			<div className="relative flex justify-end text-xs w-fit pr-1 font-semibold text-fg">
+				<div
+					dir={isLtr ? 'ltr' : undefined}
+					className="overflow-y-auto max-h-12 scrollbar-none"
+				>
 					{value || '-'}
 				</div>
 				{editable && (
-					<div
+					<button
+						type="button"
+						aria-label="ویرایش"
 						className="absolute p-1 -translate-y-1/2 cursor-pointer text-fg-muted -right-4 top-1/2 active:scale-95"
 						onClick={onClickEdit}
 					>
 						<Icon name="edit" />
-					</div>
+					</button>
 				)}
 			</div>
 

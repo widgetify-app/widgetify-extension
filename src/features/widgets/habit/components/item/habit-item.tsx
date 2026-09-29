@@ -1,5 +1,5 @@
 import Analytics from '@/analytics'
-import { playAlarm } from '@/common/play-alarm'
+import { playAlarm } from '@/common/utils/play-alarm'
 import { showToast } from '@/common/toast'
 import type { WidgetifyDate } from '@/common/utils/date-events'
 import { safeAwait } from '@/services/api'
@@ -8,10 +8,11 @@ import { useLogHabitProgress } from '@/services/habit/log-habit-progress.hook'
 import { translateError } from '@/common/utils/translate-error'
 import { formatHabitGoal } from '../../utils/habit-goal'
 import { resolveHabitStep } from '../../utils/habit-step'
+import { DEFAULT_HABIT_COLOR } from '../../constants'
 import { SegmentedProgressRing } from './button-progress-ring'
 import { SimpleProgressRing } from './button-simple-progress-ring'
 import { Icon } from '@/icons'
-import { IconLoading } from '@/components/ui'
+import { Spinner } from '@/components/ui'
 
 interface HabitItemProps {
 	habit: Habit
@@ -23,7 +24,7 @@ interface HabitItemProps {
 export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemProps) {
 	const { mutateAsync: logProgress, isPending } = useLogHabitProgress()
 
-	const color = habit.color || '#536dfe'
+	const color = habit.color || DEFAULT_HABIT_COLOR
 	const target = habit.target || 1
 	const value = habit.today.value
 	const isSimpleHabit = target === 1
@@ -66,7 +67,7 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 						style={{ backgroundColor: `${color}22`, color }}
 					>
 						{isPending ? (
-							<IconLoading className="text-fg-muted" />
+							<Spinner size="sm" tone="current" />
 						) : (
 							habit.emoji || '🎯'
 						)}

@@ -1,4 +1,4 @@
-import { AvatarComponent } from '@/components/ui'
+import { AvatarComponent, ProgressRing } from '@/components/ui'
 import type { UserProfile } from '@/services/user/user-service.hook'
 import { NavIconButton } from '../../components/nav-icon-button'
 
@@ -27,14 +27,11 @@ export function ProfileTrigger({
 			className="relative flex items-center justify-center cursor-pointer select-none group"
 		>
 			{profilePercentage ? (
-				<div
+				<ProgressRing
 					aria-hidden="true"
-					className="absolute z-10 outline-2 outline-brand-muted radial-progress text-brand pointer-events-none"
-					style={{
-						// @ts-expect-error
-						'--value': profilePercentage,
-						'--size': '2rem',
-					}}
+					value={profilePercentage}
+					size="2rem"
+					className="absolute z-10 outline-2 outline-brand-muted text-brand pointer-events-none"
 				/>
 			) : null}
 			<div className="relative flex items-center justify-center">

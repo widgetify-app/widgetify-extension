@@ -141,7 +141,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 				{/* Tab Detail Info */}
 				<div className="flex items-start gap-3 p-3.5 rounded-2xl bg-fill-2 border border-line transition-ui">
 					<div className="w-9 h-9 rounded-xl bg-brand-fill text-brand flex items-center justify-center shrink-0 mt-0.5">
-						<Icon name={activeTab.icon} size={18} />
+						<Icon name={activeTab.icon} size={16} />
 					</div>
 					<div className="flex flex-col gap-1 justify-center">
 						<span className="text-xs font-bold text-fg">

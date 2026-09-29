@@ -35,7 +35,7 @@ export function CoinPackageCard({ package: pkg, onPurchase }: CoinPackageCardPro
 			{/* Info */}
 			<div className="flex flex-col gap-2.5 px-3 py-2.5 border-t border-line">
 				<div>
-					<p className="text-xs font-semibold text-fg-strong leading-snug truncate">
+					<p className="text-xs font-semibold text-fg-strong leading-control truncate">
 						{pkg.title}
 					</p>
 					{pkg.description && (

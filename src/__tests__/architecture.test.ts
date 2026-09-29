@@ -719,3 +719,106 @@ describe('server state', () => {
 		expect(outside).toEqual([])
 	})
 })
+
+function importersOf(pkg: string): string[] {
+	return projectFiles
+		.filter((path) => !isTest(path))
+		.filter((path) =>
+			moduleSpecifiers(sourceFile(path)).some((specifier) => specifier.text === pkg)
+		)
+}
+
+describe('gateways', () => {
+	it('reach react-hot-toast only through common/toast and the toaster', () => {
+		const outside = importersOf('react-hot-toast').filter(
+			(path) =>
+				path !== 'src/common/toast.tsx' &&
+				!path.startsWith('src/components/ui/stacked-toaster/')
+		)
+		expect(outside).toEqual([])
+	})
+
+	it('reach framer-motion only through common/motion', () => {
+		expect(
+			importersOf('framer-motion').filter(
+				(path) => path !== 'src/common/motion.tsx'
+			)
+		).toEqual([])
+	})
+
+	it('reach axios only from src/services', () => {
+		expect(
+			importersOf('axios').filter((path) => !path.startsWith('src/services/'))
+		).toEqual([])
+	})
+})
+
+describe('global folders', () => {
+	it('keep src/common to its gateways and role folders', () => {
+		const gateways = ['motion.tsx', 'storage.ts', 'toast.tsx']
+		const roleFolders = ['constants', 'types', 'utils', '__tests__']
+		const stray = srcFiles
+			.filter((path) => path.startsWith('src/common/'))
+			.filter((path) => {
+				const parts = path.slice('src/common/'.length).split('/')
+				if (parts.length === 1) return !gateways.includes(parts[0])
+				return parts.length > 2 || !roleFolders.includes(parts[0])
+			})
+		expect(stray).toEqual([])
+	})
+
+	it('name every file in a global types folder as a .interface.ts shape', () => {
+		const misnamed = srcFiles
+			.filter((path) => /^src\/[^/]+\/types\//.test(path))
+			.filter((path) => !path.endsWith('.interface.ts'))
+		expect(misnamed).toEqual([])
+	})
+
+	it('keep only hooks in src/hooks and only providers at the root of src/context', () => {
+		const stray = [
+			...filesIn('src/hooks')
+				.filter((file) => !/^use-[a-z0-9-]+\.ts$/.test(file))
+				.map((file) => `src/hooks/${file}`),
+			...filesIn('src/context')
+				.filter((file) => !file.endsWith('.context.tsx'))
+				.map((file) => `src/context/${file}`),
+		]
+		expect(stray).toEqual([])
+	})
+
+	it('name each components/ui folder after its entry file', () => {
+		const roleFolders = ['utils', '__tests__']
+		const unnamed = readdirSync('src/components/ui', { withFileTypes: true })
+			.filter((entry) => entry.isDirectory() && !roleFolders.includes(entry.name))
+			.filter(
+				(entry) =>
+					!filesIn(`src/components/ui/${entry.name}`).includes(
+						`${entry.name}.tsx`
+					)
+			)
+			.map((entry) => entry.name)
+		expect(unnamed).toEqual([])
+	})
+})
+
+describe('assets', () => {
+	const spritesKeptForUnplayedAnimations = new Set([
+		'src/assets/animals/chicken/white_walk_8fps.webp',
+		'src/assets/animals/crab/red_walk_8fps.webp',
+		'src/assets/animals/dog/akita_with_ball_8fps.webp',
+	])
+
+	it('are each used by a component or a stylesheet', () => {
+		const sources = [
+			...projectFiles,
+			...srcFiles.filter((path) => path.endsWith('.css')),
+		]
+			.map((path) => readFileSync(path, 'utf8'))
+			.join('\n')
+		const unused = srcFiles
+			.filter((path) => path.startsWith('src/assets/'))
+			.filter((path) => !spritesKeptForUnplayedAnimations.has(path))
+			.filter((path) => !sources.includes(path.slice('src/'.length)))
+		expect(unused).toEqual([])
+	})
+})

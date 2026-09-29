@@ -16,7 +16,7 @@ interface Prop {
 }
 export function TodoFriends({ friends, owner, currentTodoCompleted }: Prop) {
 	return (
-		<div className="flex items-center py-1 mb-1 -space-x-2 avatar-group">
+		<div className="flex items-center py-1 mb-1 overflow-hidden -space-x-2">
 			{owner && (
 				<UserItem
 					isOwner

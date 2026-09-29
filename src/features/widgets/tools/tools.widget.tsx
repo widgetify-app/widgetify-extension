@@ -90,7 +90,7 @@ export const ToolsLayout: React.FC<ToolsLayoutProps> = ({ size = { w: 2, h: 3 } 
 					activeTab={activeTab}
 					onTabClick={onTabClick}
 					tabs={navigationTabs}
-					size="small"
+					size="sm"
 					className="flex-none w-full border-none"
 				/>
 

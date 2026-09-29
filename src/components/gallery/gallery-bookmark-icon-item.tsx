@@ -26,17 +26,19 @@ export function GalleryBookmarkIconItem({
 		}
 	}
 
-	const elementRef = useLazyLoad(loadContent)
+	const elementRef = useLazyLoad<HTMLButtonElement>(loadContent)
 
 	const itemOutlineStyle = isSelected
 		? 'ring-2 ring-brand ring-offset-2 ring-offset-surface border-brand'
 		: 'border-line hover:border-brand-muted hover:bg-fill-2'
 
 	return (
-		<div
+		<button
+			type="button"
+			aria-pressed={isSelected}
 			ref={elementRef}
 			onClick={onClick}
-			className={`relative aspect-square rounded-2xl cursor-pointer group flex flex-col items-center justify-center p-3 select-none transition-ui duration-200 active:scale-96 bg-fill border ${itemOutlineStyle}`}
+			className={`relative w-full aspect-square rounded-2xl cursor-pointer group flex flex-col items-center justify-center p-3 select-none transition-ui duration-200 active:scale-96 bg-fill border ${itemOutlineStyle}`}
 		>
 			<div
 				className="absolute inset-0 rounded-2xl pointer-events-none opacity-40"
@@ -96,19 +98,19 @@ export function GalleryBookmarkIconItem({
 					{asset.accessVip && !asset.isOwned && (
 						<div className="absolute top-1.5 left-1.5 z-20">
 							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip-hover backdrop-blur-xs text-on-vip text-4xs font-bold shadow-sm border border-image-line">
-								<Icon name="diamond" size={9} />
+								<Icon name="diamond" size={10} />
 								<span>رایگان با پرو</span>
 							</span>
 						</div>
 					)}
 					{asset.isOwned && !isSelected && (
 						<div className="absolute flex gap-0.5 px-1.5 rounded-tl-xl rounded-br-lg bg-success text-on-success shadow-sm items-center top-0 left-0 text-3xs h-4 z-20">
-							<Icon name="shoppingBag" size={9} />
+							<Icon name="shoppingBag" size={10} />
 							<span>خریداری شده</span>
 						</div>
 					)}
 				</>
 			)}
-		</div>
+		</button>
 	)
 }

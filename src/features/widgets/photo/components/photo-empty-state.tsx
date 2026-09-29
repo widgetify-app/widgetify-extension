@@ -16,7 +16,7 @@ export function PhotoEmptyState({ size }: PhotoEmptyStateProps) {
 			<span className="flex flex-col items-center justify-center w-full h-full p-2 text-center rounded-widget bg-glass-surface-2">
 				<Icon
 					name="imagePlus"
-					size={22}
+					size={20}
 					aria-hidden="true"
 					className="transition-ui text-fg-muted group-hover:text-brand group-hover:scale-110"
 				/>
@@ -36,7 +36,7 @@ export function PhotoEmptyState({ size }: PhotoEmptyStateProps) {
 				</span>
 
 				<span className="flex items-center justify-center gap-1.5 pt-2.5 shrink-0 text-fg-muted transition-colors duration-200 group-hover:text-brand">
-					<Icon name="imagePlus" size={15} aria-hidden="true" />
+					<Icon name="imagePlus" size={16} aria-hidden="true" />
 					<span className="text-xs font-medium">برای انتخاب عکس کلیک کن</span>
 				</span>
 			</span>

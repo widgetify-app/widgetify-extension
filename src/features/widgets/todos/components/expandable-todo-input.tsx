@@ -2,7 +2,7 @@ import { Motion as motion, Presence } from '@/common/motion'
 
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { TextInput } from '@/components/ui'
-import { Button, Dropdown, IconLoading } from '@/components/ui'
+import { Button, Dropdown, Spinner } from '@/components/ui'
 import jalaliMoment from 'jalali-moment'
 import Analytics from '@/analytics'
 import { Chip } from '@/components/ui'
@@ -240,7 +240,7 @@ export function ExpandableTodoInput({
 							defaultValue=""
 							onChange={handleTodoTextChange}
 							placeholder="عنوان تسک جدید..."
-							className="h-6! border-none! outline-none! shadow-none! ring-0! w-full p-0 pr-1 text-sm bg-transparent! rounded-2x focus:placeholder:text-line"
+							className="h-6! border-none! outline-none! shadow-none! ring-0! w-full p-0 pr-1 text-sm bg-transparent! rounded-2xl focus:placeholder:text-line"
 							onFocus={handleInputFocus}
 							onKeyDown={handleKeyDown}
 							id="expandable-todo-input"
@@ -265,7 +265,7 @@ export function ExpandableTodoInput({
 							onClick={() => handleSave()}
 							disabled={isPending}
 							loading={isPending}
-							loadingText={<IconLoading />}
+							loadingText={<Spinner size="sm" tone="current" />}
 							size="sm"
 							color={'brand'}
 							rounded={'full'}
@@ -368,7 +368,7 @@ export function ExpandableTodoInput({
 															callEvent('closeAllDropdowns')
 														}
 													>
-														<Icon name="plus" size={18} />
+														<Icon name="plus" size={16} />
 													</Button>
 												</div>
 												<div className="w-full h-0.5  rounded-full bg-surface-3" />

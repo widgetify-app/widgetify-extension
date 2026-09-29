@@ -49,7 +49,7 @@ export const FriendRequestsBottomSheet = ({ isOpen, onClose }: Prop) => {
 						variant="outline"
 						color="success"
 					>
-						<Icon name="userCheck" size={18} />
+						<Icon name="userCheck" size={16} />
 						<span className="text-xs font-medium">دوست شیم</span>
 					</Button>
 					<RemoveFriendButton

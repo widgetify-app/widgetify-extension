@@ -98,7 +98,8 @@ export function StackedToaster() {
 	const groups = groupByPosition(toasts)
 
 	return (
-		<div
+		<section
+			aria-label="اعلان‌ها"
 			style={{
 				position: 'fixed',
 				zIndex: CONTAINER_Z_INDEX,
@@ -148,6 +149,6 @@ export function StackedToaster() {
 					)
 				})
 			})}
-		</div>
+		</section>
 	)
 }

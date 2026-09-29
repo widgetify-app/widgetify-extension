@@ -198,6 +198,7 @@ export function Dropdown({
 			)}
 			{options.map((option) => (
 				<button
+					type="button"
 					key={option.id}
 					onClick={() => handleOptionClick(option)}
 					disabled={option.disabled}

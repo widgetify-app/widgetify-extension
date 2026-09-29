@@ -3,17 +3,13 @@ import Analytics from '@/analytics'
 import { purgeDeprecatedStorageKeys } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import { StackedToaster } from '@/components/ui'
-import {
-	GeneralSettingProvider,
-	useGeneralSetting,
-} from '@/context/general-setting.context'
+import { GeneralSettingProvider } from '@/context/general-setting.context'
 import { FreeWidgetProvider } from '@/features/widgets/widgets.context'
 import { NavbarLayout } from '@/features/navbar/navbar'
 import { WidgetSettings } from '@/features/widgets/widget-settings/widget-settings'
 import { AddWidgetModal } from '@/features/widgets/catalog/catalog'
 import { Page, usePage } from '@/context/page.context'
-import { MotionConfig } from 'framer-motion'
-import { Motion as motion, Presence } from '@/common/motion'
+import { Motion as motion, MotionPreferences, Presence } from '@/common/motion'
 import { AuthRequiredModal } from '@/components/auth/auth-required-modal'
 import { MiniAppPage } from '@/pages/mini-apps/mini-apps.page'
 import { ExplorerPage } from '@/pages/explorer/explorer.page'
@@ -21,7 +17,6 @@ import { HomePage } from '@/pages/home/home.page'
 import { useEffect } from 'react'
 import { useWallpaperApply } from '@/pages/hooks/use-wallpaper-apply'
 import { WallpaperProvider } from '@/context/wallpaper.context'
-import { IconProvider } from '@/icons'
 
 export function RootLayout() {
 	useWallpaperApply()
@@ -31,7 +26,7 @@ export function RootLayout() {
 	}, [])
 
 	return (
-		<IconProvider defaultTheme="default">
+		<>
 			<div className="w-full min-h-screen mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-screen overflow-y-auto scrollbar-none">
 				<GeneralSettingProvider>
 					<WallpaperProvider>
@@ -40,7 +35,7 @@ export function RootLayout() {
 				</GeneralSettingProvider>
 			</div>
 			<StackedToaster />
-		</IconProvider>
+		</>
 	)
 }
 
@@ -49,7 +44,6 @@ function Main() {
 	const [addWidgetEditTarget, setAddWidgetEditTarget] = useState<any>(null)
 	const [showAuthRequired, setAuthRequired] = useState(false)
 	const { page, setPage } = usePage()
-	const { isOptimalMode } = useGeneralSetting()
 
 	useEffect(() => {
 		const openAddModalEvent = listenEvent(
@@ -78,7 +72,7 @@ function Main() {
 	}, [setPage])
 
 	return (
-		<MotionConfig reducedMotion={isOptimalMode ? 'always' : 'never'}>
+		<MotionPreferences>
 			<FreeWidgetProvider>
 				<NavbarLayout />
 
@@ -118,6 +112,6 @@ function Main() {
 				isOpen={showAuthRequired}
 				onClose={() => setAuthRequired(false)}
 			/>
-		</MotionConfig>
+		</MotionPreferences>
 	)
 }

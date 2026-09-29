@@ -217,6 +217,7 @@ export function ExplorerContent() {
 
 							return (
 								<button
+									type="button"
 									key={cat.id}
 									ref={(el) => {
 										tabRefs.current[cat.id] = el
@@ -250,6 +251,7 @@ export function ExplorerContent() {
 							className="w-full bg-fill-2 text-xs text-fg-strong placeholder-fg-faint px-3 py-2 rounded-xl border border-line focus:outline-none focus:border-brand-muted focus:bg-surface-2 transition-ui pr-8"
 						/>
 						<svg
+							aria-hidden="true"
 							className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 text-fg-faint pointer-events-none"
 							fill="none"
 							stroke="currentColor"
@@ -265,6 +267,7 @@ export function ExplorerContent() {
 
 						{searchQuery && (
 							<button
+								type="button"
 								onClick={() => setSearchQuery('')}
 								className="absolute left-2.5 top-1/2 -translate-y-1/2 text-fg-faint hover:text-fg-strong text-xs p-0.5"
 							>
@@ -291,6 +294,7 @@ export function ExplorerContent() {
 								می‌توانید عنوان دیگری را جستجو کنید یا فیلتر را پاک کنید
 							</p>
 							<button
+								type="button"
 								onClick={() => setSearchQuery('')}
 								className="px-3 py-1.5 text-xs font-semibold rounded-xl bg-surface-2 hover:bg-surface-3 text-fg-strong transition-colors mt-2"
 							>

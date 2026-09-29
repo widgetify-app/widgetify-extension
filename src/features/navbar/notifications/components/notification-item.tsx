@@ -14,24 +14,9 @@ interface Prop {
 	link: string | undefined
 	className: string
 	children: React.ReactNode
-	type: NotificationItem['type']
-	target: NotificationItem['target']
-	goTo: NotificationItem['goTo']
 }
 
-function Wrapper({ link, children, className, type, goTo, target }: Prop) {
-	const isClickable = !!link || ['page', 'action'].includes(type || '---')
-
-	const handleClick = () => {
-		if (type === 'page' && goTo) {
-			callEvent('go_to_page', goTo as any)
-			Analytics.event('notifications_page')
-		} else if (type === 'action') {
-			callEvent(goTo as any, target as any)
-			Analytics.event('notifications_action')
-		}
-	}
-
+function Wrapper({ link, children, className }: Prop) {
 	if (link) {
 		return (
 			<a
@@ -45,14 +30,7 @@ function Wrapper({ link, children, className, type, goTo, target }: Prop) {
 		)
 	}
 
-	return (
-		<div
-			className={`${className} ${isClickable ? 'cursor-pointer' : ''}`}
-			onClick={handleClick}
-		>
-			{children}
-		</div>
-	)
+	return <div className={className}>{children}</div>
 }
 
 export function NotificationCardItem(prop: NotificationItemProps) {
@@ -83,6 +61,17 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 
 	const shouldShowReadMore = description && description.length > CHARACTER_LIMIT
 	const isText = type === 'text'
+	const isAction = !link && (type === 'page' || type === 'action')
+
+	const handleAction = () => {
+		if (type === 'page' && goTo) {
+			callEvent('go_to_page', goTo as any)
+			Analytics.event('notifications_page')
+		} else if (type === 'action') {
+			callEvent(goTo as any, target as any)
+			Analytics.event('notifications_action')
+		}
+	}
 
 	const headTitleStyle: React.CSSProperties = {
 		textDecoration: titleDecoration,
@@ -101,9 +90,6 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 	return (
 		<Wrapper
 			link={link}
-			target={target}
-			type={type}
-			goTo={goTo}
 			className={`flex gap-2 p-2 transition-ui duration-300 border rounded-2xl ${!isText && 'hover:scale-[0.99] hover:bg-surface-3  items-center active:scale-[0.99]'} ${link && 'cursor-pointer'}   border-surface-3 group relative ${prop.className || ''}`}
 		>
 			{icon && (
@@ -128,7 +114,17 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 						className="text-sm font-black tracking-tight text-fg"
 						style={headTitleStyle}
 					>
-						{title}
+						{isAction ? (
+							<button
+								type="button"
+								onClick={handleAction}
+								className="text-start cursor-pointer after:absolute after:inset-0 after:rounded-2xl focus-visible:focus-ring"
+							>
+								{title}
+							</button>
+						) : (
+							title
+						)}
 					</h4>
 				</div>
 
@@ -142,8 +138,9 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 
 						{shouldShowReadMore && (
 							<button
+								type="button"
 								onClick={toggleExpand}
-								className="mt-1 flex items-center gap-1 border border-line rounded-xl px-1 hover:border-brand-muted text-3xs font-light text-fg-muted hover:underline cursor-pointer"
+								className="relative z-10 mt-1 flex items-center gap-1 border border-line rounded-xl px-1 hover:border-brand-muted text-3xs font-light text-fg-muted hover:underline cursor-pointer"
 							>
 								{isExpanded ? 'نمایش کمتر' : 'مشاهده بیشتر'}
 								<Icon
@@ -168,7 +165,8 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 			{closeable && id && (
 				<button
 					type="button"
-					className="flex p-0.5 transition-opacity  self-start rounded-lg cursor-pointer top-2 left-2 bg-fill text-fg-faint hover:bg-danger-fill hover:text-danger"
+					aria-label="بستن"
+					className="relative z-10 flex p-0.5 transition-opacity  self-start rounded-lg cursor-pointer top-2 left-2 bg-fill text-fg-faint hover:bg-danger-fill hover:text-danger"
 					onClick={(e) => {
 						e.preventDefault()
 						e.stopPropagation()

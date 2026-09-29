@@ -60,7 +60,7 @@ export const Habit2x3: React.FC<Habit2x3Props> = ({ actions }) => {
 					>
 						<Icon
 							name="refresh"
-							size={15}
+							size={16}
 							aria-hidden="true"
 							className="opacity-60 hover:opacity-100"
 							spin={isWaiting}

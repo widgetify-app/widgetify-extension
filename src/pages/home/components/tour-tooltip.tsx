@@ -42,7 +42,6 @@ export function TourTooltip({
 					type="button"
 					{...skipProps}
 					className="p-1 transition-colors rounded-lg cursor-pointer text-fg-faint hover:text-fg-strong hover:bg-fill-2"
-					title="بستن"
 				>
 					<Icon name="close" size={14} />
 				</button>

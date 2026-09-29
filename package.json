@@ -8,7 +8,7 @@
     "dev:firefox": "wxt -b firefox",
     "build": "wxt build",
     "build:firefox": "wxt build -b firefox",
-    "clean": "node -e \"if (require('fs').existsSync('./dist')) require('fs').rmSync('./dist', { recursive: true, force: true })\"",
+    "clean": "node -e \"require('fs').rmSync('./.output', { recursive: true, force: true })\"",
     "build:firefox:clean": "npm run clean && wxt build -b firefox",
     "zip": "wxt zip",
     "zip:firefox": "wxt zip -b firefox",
@@ -16,7 +16,7 @@
     "compile": "tsc --noEmit",
     "lint": "biome check src background entrypoints wxt.config.ts",
     "test": "bun test",
-    "test:pre-push": ".git/hooks/pre-push.bat",
+    "check": "npm run compile && npm run lint && npm test && npm run build",
     "postinstall": "wxt prepare"
   },
   "dependencies": {

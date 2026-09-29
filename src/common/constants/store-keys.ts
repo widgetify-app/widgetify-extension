@@ -7,7 +7,7 @@ import type { ExtensionConfigResponse } from '@/services/config-data/config-data
 import type { FetchedCurrency } from '@/services/currency/get-currency-by-code.hook'
 import type { RecommendedSite, TrendItem } from '@/services/trends/get-trends.hook'
 import type { UserProfile } from '@/services/user/user-service.hook'
-import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
+import type { StoredWallpaper, Wallpaper } from '../types/wallpaper.interface'
 
 export interface StorageKV {
 	currencies: string[]

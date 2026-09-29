@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
-import type { Wallpaper } from '@/common/wallpaper.interface'
+import type { Wallpaper } from '@/common/types/wallpaper.interface'
 import { userKeys } from '@/services/user/user.keys'
 
 async function uploadCustomWallpaperApi(file: File): Promise<Wallpaper> {

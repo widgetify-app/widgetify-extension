@@ -37,7 +37,7 @@ export function Pagination({
 				rounded="2xl"
 				color={currentPage !== 1 ? 'brand' : 'base'}
 			>
-				<Icon name="chevronRight" size={18} />
+				<Icon name="chevronRight" size={16} />
 			</Button>
 
 			<span className="mx-2 text-sm text-fg-muted">
@@ -51,7 +51,7 @@ export function Pagination({
 				color={'brand'}
 				size="xs"
 			>
-				<Icon name="chevronLeft" size={18} />
+				<Icon name="chevronLeft" size={16} />
 			</Button>
 		</div>
 	)

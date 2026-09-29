@@ -14,7 +14,7 @@ import OtpInput from '../components/otp-input'
 import { callEvent } from '@/common/utils/call-event'
 import { sleep } from '@/common/utils/timeout'
 import { Icon } from '@/icons'
-import { Button } from '@/components/ui'
+import { Alert, Button } from '@/components/ui'
 import LoginGoogleButton from './components/login-google-button'
 import Analytics from '@/analytics'
 
@@ -233,10 +233,9 @@ const AuthForm = () => {
 	return (
 		<div className="flex flex-col w-full px-1 py-1">
 			{authStatus?.content && step === 'identifier' && (
-				<div className="px-3 py-2 mb-4 text-xs alert alert-warning rounded-2xl ring-4 ring-warning-fill">
-					<Icon name="alert" className="w-4 h-4 shrink-0" />
-					<span>{authStatus.content}</span>
-				</div>
+				<Alert tone="warning" className="mb-4">
+					{authStatus.content}
+				</Alert>
 			)}
 
 			{step === 'identifier' && (
@@ -266,7 +265,7 @@ const AuthForm = () => {
 								}}
 								placeholder="شماره موبایل یا ایمیل..."
 								disabled={isOtpSending}
-								className="w-full h-11 !rounded-xl text-sm"
+								className="w-full h-11 rounded-xl! text-sm"
 								autoComplete="on"
 								direction={!identifier ? 'rtl' : 'ltr'}
 							/>
@@ -310,7 +309,8 @@ const AuthForm = () => {
 						</h2>
 						<div className="flex items-center justify-center gap-1.5 mt-1 text-xs text-fg-muted">
 							<span
-								className="font-mono truncate text-fg dir-ltr max-w-50"
+								dir="ltr"
+								className="font-mono truncate text-fg max-w-50"
 								title={identifier}
 							>
 								{identifier}
@@ -327,9 +327,9 @@ const AuthForm = () => {
 					</div>
 
 					{error.api && (
-						<div className="px-3 py-2 mb-3 text-xs border bg-danger-fill text-danger border-danger-fill-2 rounded-xl">
+						<Alert tone="danger" className="mb-3">
 							{error.api}
-						</div>
+						</Alert>
 					)}
 
 					<form onSubmit={handlePasswordSubmit} className="flex flex-col gap-3">
@@ -344,7 +344,7 @@ const AuthForm = () => {
 								}}
 								placeholder="رمز عبورت رو وارد کن..."
 								disabled={isSigningIn}
-								className="w-full h-11 !rounded-xl text-sm"
+								className="w-full h-11 rounded-xl! text-sm"
 								direction={password ? 'ltr' : 'rtl'}
 							/>
 							<InputTextError message={error.password} />
@@ -386,7 +386,8 @@ const AuthForm = () => {
 						<p className="flex items-center justify-center gap-1 mt-1 text-xs text-fg-muted">
 							<span>کد ارسال شده به</span>
 							<span
-								className="font-mono font-semibold truncate text-fg dir-ltr max-w-44"
+								dir="ltr"
+								className="font-mono font-semibold truncate text-fg max-w-44"
 								title={identifier}
 							>
 								{identifier}

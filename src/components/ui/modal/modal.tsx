@@ -23,6 +23,7 @@ type ModalProps = VariantProps<typeof modalBoxVariants> & {
 	children: ReactNode
 	closeOnBackdropClick?: boolean
 	showCloseButton?: boolean
+	dismissible?: boolean
 	className?: string
 	zIndex?: number
 }
@@ -38,6 +39,7 @@ export function Modal({
 	children,
 	closeOnBackdropClick = true,
 	showCloseButton = true,
+	dismissible = true,
 	className,
 	zIndex: customZIndex,
 }: ModalProps) {
@@ -68,22 +70,16 @@ export function Modal({
 					: BASE_MODAL_Z_INDEX + globalModalCounter * 20
 			setAssignedZIndex(computedZ)
 			dialog.setAttribute('open', '')
-		} else {
-			dialog.removeAttribute('open')
-		}
-	}, [isOpen, customZIndex])
 
-	useEffect(() => {
-		const dialog = dialogRef.current
-		if (!dialog) return
-		const handleCancel = (e: Event) => {
-			if (e.target !== dialog) return
-			e.preventDefault() // keep it mounted so the exit animation can play
-			onClose()
+			const returnFocusTo = document.activeElement
+			if (!dialog.contains(returnFocusTo)) dialog.focus()
+			return () => {
+				if (returnFocusTo instanceof HTMLElement) returnFocusTo.focus()
+			}
 		}
-		dialog.addEventListener('cancel', handleCancel)
-		return () => dialog.removeEventListener('cancel', handleCancel)
-	}, [onClose])
+
+		dialog.removeAttribute('open')
+	}, [isOpen, customZIndex])
 
 	const modalBoxClasses = cn(modalBoxVariants({ size }), className)
 	const shouldRenderContent = useDelayedUnmount(isOpen, MODAL_EXIT_MS)
@@ -94,11 +90,22 @@ export function Modal({
 			dir="rtl"
 			aria-labelledby={title ? titleId : undefined}
 			aria-modal="true"
+			tabIndex={-1}
 			onClick={(e) => {
-				if (closeOnBackdropClick && e.target === dialogRef.current) onClose()
+				e.stopPropagation()
+				if (dismissible && closeOnBackdropClick && e.target === dialogRef.current)
+					onClose()
+			}}
+			onKeyDown={(e) => {
+				if (e.key !== 'Escape') return
+				e.stopPropagation()
+				if (dismissible) onClose()
 			}}
 			onContextMenu={(e) => e.stopPropagation()}
-			className={cn('flex items-center justify-center', modalDialogVariants())}
+			className={cn(
+				'flex items-center justify-center focus:outline-none',
+				modalDialogVariants()
+			)}
 			style={
 				{
 					'--modal-duration': `${modalDurationMs}ms`,
@@ -108,11 +115,7 @@ export function Modal({
 				} as React.CSSProperties
 			}
 		>
-			<div
-				onClick={(e) => e.stopPropagation()}
-				onContextMenu={(e) => e.stopPropagation()}
-				className={modalBoxClasses}
-			>
+			<div className={modalBoxClasses}>
 				{shouldRenderContent && (title || showCloseButton) && (
 					<div className="flex items-center justify-between gap-2 mb-2 md:mb-3 md:gap-4">
 						{title && (
@@ -127,13 +130,14 @@ export function Modal({
 							<button
 								type="button"
 								onClick={onClose}
-								className="flex items-center justify-center transition-ui cursor-pointer w-7 h-7 md:w-8 md:h-8 bg-surface-3 text-fg-muted hover:bg-fill-2 hover:scale-105 active:scale-95 shrink-0 border-0! rounded-lg focus-visible:focus-ring"
+								disabled={!dismissible}
+								className="flex items-center justify-center ms-auto transition-ui cursor-pointer w-7 h-7 md:w-8 md:h-8 bg-surface-3 text-fg-muted hover:bg-fill-2 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shrink-0 border-0! rounded-lg focus-visible:focus-ring"
 								aria-label="بستن"
 							>
 								<Icon name="close" size={16} className="md:hidden" />
 								<Icon
 									name="close"
-									size={18}
+									size={16}
 									className="hidden md:block"
 								/>
 							</button>

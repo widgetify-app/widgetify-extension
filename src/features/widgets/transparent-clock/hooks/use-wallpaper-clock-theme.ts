@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { getFromStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
-import type { StoredWallpaper } from '@/common/wallpaper.interface'
+import type { StoredWallpaper } from '@/common/types/wallpaper.interface'
 
 interface WallpaperClockTheme {
 	primaryColor: string

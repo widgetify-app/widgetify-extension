@@ -10,10 +10,10 @@ import { useRemoveTodo } from '@/services/todo/remove-todo.hook'
 import { safeAwait } from '@/services/api'
 import { translateError } from '@/common/utils/translate-error'
 import Analytics from '@/analytics'
-import { IconLoading } from '@/components/ui'
+import { Spinner } from '@/components/ui'
 import { parseTodoDate } from '../utils/parse-date'
 import { useUpdateTodo } from '@/services/todo/update-todo.hook'
-import { playAlarm } from '@/common/play-alarm'
+import { playAlarm } from '@/common/utils/play-alarm'
 import { Tooltip } from '@/components/ui'
 import { TodoFriends } from './friends'
 import { Icon } from '@/icons'
@@ -177,7 +177,7 @@ export function TodoItem({
 				</button>
 
 				<div className="flex relative items-center gap-0.5 shrink-0">
-					{isPending && <IconLoading />}
+					{isPending && <Spinner size="sm" />}
 					{hasFriends && (
 						<Tooltip content="مشترک">
 							<Icon
@@ -197,7 +197,7 @@ export function TodoItem({
 									aria-label="ویرایش تسک"
 									className="p-1 rounded-lg cursor-pointer text-brand-muted hover:bg-brand-fill hover:text-brand focus-visible:focus-ring"
 								>
-									<Icon name="edit" size={13} aria-hidden="true" />
+									<Icon name="edit" size={12} aria-hidden="true" />
 								</button>
 							)}
 							<button
@@ -206,7 +206,7 @@ export function TodoItem({
 								aria-label="حذف تسک"
 								className="p-1 rounded-lg cursor-pointer text-[rgba(var(--color-error-rgb),0.5)] hover:bg-danger-fill hover:text-danger focus-visible:focus-ring"
 							>
-								<Icon name="trash" size={13} aria-hidden="true" />
+								<Icon name="trash" size={12} aria-hidden="true" />
 							</button>
 						</div>
 					</div>
@@ -221,14 +221,14 @@ export function TodoItem({
 							expanded && 'rotate-180'
 						)}
 					>
-						<Icon name="chevronDown" size={15} aria-hidden="true" />
+						<Icon name="chevronDown" size={16} aria-hidden="true" />
 					</button>
 				</div>
 			</div>
 
 			{expanded && (
 				<div className="border-t border-line bg-fill px-2.5 py-2">
-					<p className="mb-0 text-2xs leading-snug text-fg-muted whitespace-pre-wrap">
+					<p className="mb-0 text-2xs leading-control text-fg-muted whitespace-pre-wrap">
 						{currentTodo.text}
 					</p>
 					{hasFriends && (
@@ -243,7 +243,7 @@ export function TodoItem({
 					<div className="flex items-center gap-2 text-3xs">
 						{currentTodo.category && (
 							<span className="flex text-3xs items-center gap-1 rounded-lg border border-dashed border-line px-1.5 text-fg-muted">
-								<Icon name="tags" size={9} aria-hidden="true" />
+								<Icon name="tags" size={10} aria-hidden="true" />
 								{currentTodo.category}
 							</span>
 						)}
@@ -278,7 +278,7 @@ export function TodoItem({
 				isOpen={showConfirmation}
 				onClose={() => setShowConfirmation(false)}
 				onConfirm={onConfirmDelete}
-				confirmText={isPending ? <IconLoading /> : 'حذف'}
+				confirmText={isPending ? <Spinner size="sm" tone="current" /> : 'حذف'}
 				message="این عمل قابل بازگشت نیست و وظیفه برای همیشه حذف خواهد شد"
 				variant="danger"
 				title="حذف این تسک؟"

@@ -121,9 +121,9 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 					</div>
 					{step === 'enter-otp' && (
 						<div>
-							<label className="block mb-2 md:mb-2.5 text-xs md:text-sm font-semibold text-fg ">
+							<p className="block mb-2 md:mb-2.5 text-xs md:text-sm font-semibold text-fg">
 								کد تایید
-							</label>
+							</p>
 
 							<OtpInput
 								otp={otpCode}

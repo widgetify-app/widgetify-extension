@@ -103,9 +103,7 @@ export function SearchCompactRow() {
 			if (
 				target.closest('[popover]') ||
 				target.closest('.modal') ||
-				target.closest('[role="dialog"]') ||
-				target.closest('.modal-backdrop') ||
-				target.closest('.searchbox-item')
+				target.closest('[role="dialog"]')
 			) {
 				return
 			}

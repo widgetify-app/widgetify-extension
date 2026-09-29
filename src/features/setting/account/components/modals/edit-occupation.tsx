@@ -65,7 +65,7 @@ export function ChangeOccupationModal({ show, onClose, currentValue }: Prop) {
 								</div>
 								<Icon
 									name="chevronRight"
-									size={18}
+									size={16}
 									className="text-fg-muted"
 								/>
 							</div>

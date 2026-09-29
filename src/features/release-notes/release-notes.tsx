@@ -179,7 +179,7 @@ export const UpdateReleaseNotesModal = ({
 						<div className="flex flex-col justify-between h-full gap-2">
 							<div className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-brand">
 								<span className="text-sm">💣</span>
-								<span className="text-lg font-bold leading-normal">
+								<span className="text-lg font-bold leading-body">
 									بزرگ‌ترین تحول: چیدمان کاملا آزاد و بی‌نهایت
 								</span>
 							</div>
@@ -209,7 +209,7 @@ export const UpdateReleaseNotesModal = ({
 						<div className="flex flex-col justify-between h-full gap-2">
 							<div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-fill-2 border border-line transition-ui">
 								<div className="w-9 h-9 rounded-xl bg-brand-fill text-brand flex items-center justify-center shrink-0 mt-0.5">
-									<Icon name={currentStep.icon} size={18} />
+									<Icon name={currentStep.icon} size={16} />
 								</div>
 								<div className="flex flex-col gap-1 justify-center">
 									<div className="flex items-center gap-2">
@@ -300,7 +300,7 @@ export const UpdateReleaseNotesModal = ({
 								className="h-10 px-5 text-xs font-bold flex items-center gap-2 shadow-sm animate-pulse"
 								rounded="xl"
 							>
-								<Icon name="edit" size={15} />
+								<Icon name="edit" size={16} />
 								<span>
 									{counter > 0
 										? `یه لحظه صبر کن (${counter})`

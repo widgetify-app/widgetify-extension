@@ -166,7 +166,7 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 														'focus-visible:focus-ring',
 														isSelected
 															? 'border-brand-fill-2 bg-brand-fill text-fg'
-															: 'border-surface-3 bg-surface-2 hover:!bg-brand-fill'
+															: 'border-surface-3 bg-surface-2 hover:bg-brand-fill!'
 													)}
 												>
 													<span

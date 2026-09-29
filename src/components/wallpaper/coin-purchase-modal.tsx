@@ -1,6 +1,6 @@
 import { callEvent } from '@/common/utils/call-event'
-import type { Wallpaper } from '@/common/wallpaper.interface'
-import { Button, Modal } from '@/components/ui'
+import type { Wallpaper } from '@/common/types/wallpaper.interface'
+import { Alert, Button, Modal } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { UserCoin } from '@/components/user-coin'
 import { HoverPlayVideo } from './hover-play-video'
@@ -41,14 +41,7 @@ export function CoinPurchaseModal({
 	}
 
 	return (
-		<Modal
-			isOpen={isOpen}
-			onClose={onClose}
-			size="md"
-			closeOnBackdropClick={!isPurchasing}
-			showCloseButton={!isPurchasing}
-			title=" "
-		>
+		<Modal isOpen={isOpen} onClose={onClose} size="md" dismissible={!isPurchasing}>
 			<div className="space-y-4">
 				<div className="relative flex items-center justify-center overflow-hidden rounded-2xl bg-fill-2 aspect-video">
 					{wallpaper.type === 'IMAGE' ? (
@@ -66,9 +59,6 @@ export function CoinPurchaseModal({
 							}
 							posterSrc={wallpaper.previewSrc}
 							className="object-cover w-full h-full rounded-2xl"
-							onClick={(e) => {
-								e.stopPropagation()
-							}}
 						/>
 					)}
 				</div>
@@ -89,19 +79,21 @@ export function CoinPurchaseModal({
 				</div>
 
 				{isAuthenticated && !canAfford && wallpaperPrice > 0 && (
-					<div className="flex items-center justify-between px-3 py-2 text-xs rounded-xl bg-danger-fill text-danger">
-						<span>
-							موجودی ویج‌کوین ناکافیه ({wallpaperPrice - userCoins} ویج‌کوین
-							کسری داری)
-						</span>
-						<button
-							type="button"
-							onClick={handleOpenCoins}
-							className="font-medium underline cursor-pointer"
-						>
-							خرید ویج‌کوین
-						</button>
-					</div>
+					<Alert
+						tone="danger"
+						action={
+							<button
+								type="button"
+								onClick={handleOpenCoins}
+								className="font-medium underline cursor-pointer"
+							>
+								خرید ویج‌کوین
+							</button>
+						}
+					>
+						موجودی ویج‌کوین ناکافیه ({wallpaperPrice - userCoins} ویج‌کوین کسری
+						داری)
+					</Alert>
 				)}
 
 				<div className="flex gap-2.5 pt-2">

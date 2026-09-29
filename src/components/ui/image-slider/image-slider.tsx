@@ -94,7 +94,7 @@ function ImageSliderArrows({
 				)}
 				aria-label="عکس قبلی"
 			>
-				<Icon name="chevronRight" size={13} />
+				<Icon name="chevronRight" size={12} />
 			</button>
 			<button
 				type="button"
@@ -111,7 +111,7 @@ function ImageSliderArrows({
 				)}
 				aria-label="عکس بعدی"
 			>
-				<Icon name="chevronLeft" size={13} />
+				<Icon name="chevronLeft" size={12} />
 			</button>
 		</div>
 	)
@@ -182,7 +182,9 @@ export function ImageSlider({
 	}
 
 	return (
-		<div
+		<section
+			aria-roledescription="اسلایدر"
+			aria-label={alt || 'تصاویر'}
 			className={cn(
 				'relative w-full h-full select-none overflow-hidden',
 				className
@@ -248,7 +250,7 @@ export function ImageSlider({
 			)}
 
 			{typeof children === 'function' ? children(slider) : children}
-		</div>
+		</section>
 	)
 }
 
