@@ -33,6 +33,7 @@ import {
 	LuCloudy,
 	LuCoffee,
 	LuCoins,
+	LuCompass,
 	LuCopy,
 	LuCrown,
 	LuDownload,
@@ -158,8 +159,45 @@ function ProDiamondIcon({
 	)
 }
 
+function solidWithCutout(path: string): IconType {
+	return function SolidWithCutoutIcon({
+		size,
+		width,
+		height,
+		...props
+	}: React.SVGProps<SVGSVGElement> & { size?: number | string }) {
+		const w = size ?? width ?? '1em'
+		const h = size ?? height ?? '1em'
+		return (
+			<svg
+				viewBox="0 0 24 24"
+				fill="currentColor"
+				stroke="currentColor"
+				strokeWidth={2}
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				width={w}
+				height={h}
+				{...props}
+			>
+				<path d={path} fillRule="evenodd" />
+			</svg>
+		)
+	}
+}
+
+const SolidHomeIcon = solidWithCutout(
+	'M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8 M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'
+)
+
+const SolidCompassIcon = solidWithCutout(
+	'M12 2a10 10 0 1 0 0 20a10 10 0 1 0 0-20z M16.24 7.76l-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z'
+)
+
 export const defaultIcons = {
-	home: filled(LuHouse),
+	home: SolidHomeIcon,
+	compass: SolidCompassIcon,
+	outlineCompass: LuCompass,
 	calendar: LuCalendar,
 	settings: LuSettings,
 	search: LuSearch,

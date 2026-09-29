@@ -2,6 +2,8 @@ import type { IconType } from 'react-icons'
 
 export type IconName =
 	| 'home'
+	| 'compass'
+	| 'outlineCompass'
 	| 'settings'
 	| 'search'
 	| 'user'
