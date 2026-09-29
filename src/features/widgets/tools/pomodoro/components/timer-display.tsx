@@ -26,7 +26,7 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 	}
 	return (
 		<div className="h-full aspect-square max-h-36">
-			<svg className="w-full h-full" viewBox="0 0 100 100">
+			<svg aria-hidden="true" className="w-full h-full" viewBox="0 0 100 100">
 				<circle
 					cx="50"
 					cy="50"

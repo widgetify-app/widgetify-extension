@@ -106,6 +106,7 @@ export const TabManager = ({
 										{visibleChildren.map(
 											({ label, value, icon, isNew }) => (
 												<button
+													type="button"
 													key={value}
 													onClick={() => handleTabChange(value)}
 													className={`relative flex items-center gap-3 px-4 py-3 rounded-full transition-ui duration-200 justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] ${getTabButtonStyle(

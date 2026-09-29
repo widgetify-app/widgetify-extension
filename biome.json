@@ -22,13 +22,8 @@
 		"rules": {
 			"recommended": true,
 			"a11y": {
-				"useAltText": "off",
-				"useButtonType": "off",
 				"useKeyWithClickEvents": "off",
-				"noSvgWithoutTitle": "off",
-				"noLabelWithoutControl": "off",
-				"noStaticElementInteractions": "off",
-				"useAriaPropsSupportedByRole": "off"
+				"noStaticElementInteractions": "off"
 			},
 			"style": {
 				"useSelfClosingElements": "off",

@@ -142,6 +142,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 
 						{shouldShowReadMore && (
 							<button
+								type="button"
 								onClick={toggleExpand}
 								className="mt-1 flex items-center gap-1 border border-line rounded-xl px-1 hover:border-brand-muted text-3xs font-light text-fg-muted hover:underline cursor-pointer"
 							>

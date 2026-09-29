@@ -81,6 +81,7 @@ export const FolderBookmarkItem = memo(function FolderBookmarkItem({
 			)}
 		>
 			<button
+				type="button"
 				onClick={onClick}
 				onAuxClick={onClick}
 				onMouseDown={handleMouseDown}

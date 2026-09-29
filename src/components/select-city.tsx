@@ -84,6 +84,7 @@ export function SelectCity({ size }: Prop) {
 		<SectionPanel title="انتخاب شهر" size={size ? size : 'sm'}>
 			<div className="space-y-2">
 				<button
+					type="button"
 					onClick={onModalOpen}
 					disabled={isSettingCity}
 					className="flex items-center justify-between w-full p-3 text-right transition-colors border cursor-pointer rounded-2xl bg-surface border-surface-3 hover:bg-surface-2 disabled:opacity-50 disabled:cursor-not-allowed"

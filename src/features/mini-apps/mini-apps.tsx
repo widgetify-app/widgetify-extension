@@ -134,6 +134,7 @@ export function MiniAppsLayout() {
 						<div className="flex flex-col items-center text-center">
 							<img
 								src={EmptyMiniAppImage}
+								alt=""
 								className="max-h-80 max-w-80"
 								onError={(e) => {
 									e.currentTarget.remove()

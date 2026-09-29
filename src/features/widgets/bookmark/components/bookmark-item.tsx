@@ -37,6 +37,7 @@ export const BookmarkItem = memo(function BookmarkItem({
 	return (
 		<div className={cn('relative w-full h-full', isDragging && 'opacity-50')}>
 			<button
+				type="button"
 				onClick={onClick}
 				onAuxClick={onClick}
 				onMouseDown={handleMouseDown}

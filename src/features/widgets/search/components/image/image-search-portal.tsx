@@ -127,6 +127,7 @@ export function ImageSearchPortal({
 						>
 							<div className="flex items-center justify-center w-10 h-10 mb-2 transition-ui rounded-full bg-fill group-hover:text-brand">
 								<svg
+									aria-hidden="true"
 									width="36"
 									height="36"
 									viewBox="0 0 48 48"

@@ -1,4 +1,5 @@
 import type React from 'react'
+import { useId } from 'react'
 import { Button, Checkbox } from '@/components/ui'
 import { Modal } from '@/components/ui'
 import { TextInput } from '@/components/ui'
@@ -12,11 +13,19 @@ interface SettingInputProps {
 }
 
 const SettingInput: React.FC<SettingInputProps> = ({ label, value, onChange, max }) => {
+	const inputId = useId()
+
 	return (
 		<div className="flex items-center justify-between gap-3 p-2 rounded-lg bg-fill">
-			<label className="flex-1 text-sm font-medium text-fg-strong">{label}</label>
+			<label
+				htmlFor={inputId}
+				className="flex-1 text-sm font-medium text-fg-strong"
+			>
+				{label}
+			</label>
 			<div className="relative w-20">
 				<TextInput
+					id={inputId}
 					type="number"
 					value={String(value)}
 					className="text-center"

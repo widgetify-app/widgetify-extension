@@ -199,7 +199,10 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 				<h4 id="pet-type-label" className="text-sm font-medium text-fg">
 					حیوان خانگی
 				</h4>
-				<div aria-labelledby="pet-type-label" className="grid grid-cols-5 gap-2">
+				<fieldset
+					aria-labelledby="pet-type-label"
+					className="grid grid-cols-5 gap-2"
+				>
 					{PET_LIST.map((type) => (
 						<PetOptionTile
 							key={type}
@@ -214,14 +217,14 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 							/>
 						</PetOptionTile>
 					))}
-				</div>
+				</fieldset>
 			</section>
 
 			<section className="flex flex-col gap-2">
 				<h4 id="pet-background-label" className="text-sm font-medium text-fg">
 					محیط
 				</h4>
-				<div
+				<fieldset
 					aria-labelledby="pet-background-label"
 					className="grid grid-cols-4 gap-2"
 				>
@@ -246,7 +249,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 							></div>
 						</PetOptionTile>
 					))}
-				</div>
+				</fieldset>
 			</section>
 
 			<section className="flex flex-col gap-2">

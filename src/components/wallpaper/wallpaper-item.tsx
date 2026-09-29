@@ -178,6 +178,7 @@ function WallpaperItemFu({
 
 						{!isSelected && !wallpaper.isOwned && wallpaper.coin ? (
 							<button
+								type="button"
 								onClick={(e) => {
 									e.stopPropagation()
 									onPreviewBackground(wallpaper)

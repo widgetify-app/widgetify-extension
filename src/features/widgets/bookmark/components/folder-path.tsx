@@ -18,6 +18,7 @@ export function FolderPath({ folderPath, onNavigate, className }: FolderPathProp
 			<ol className="flex flex-wrap items-center gap-y-1">
 				<li>
 					<button
+						type="button"
 						onClick={() => onNavigate(null, -1)}
 						className={
 							'cursor-pointer transition-colors text-fg opacity-70 hover:opacity-100'
@@ -32,6 +33,7 @@ export function FolderPath({ folderPath, onNavigate, className }: FolderPathProp
 					<li key={item.id} className="flex items-center">
 						<Icon name="chevronLeft" className="text-fg" size={14} />
 						<button
+							type="button"
 							onClick={() => onNavigate(item.id, index)}
 							className={
 								'cursor-pointer transition-colors text-brand hover:text-brand-hover'

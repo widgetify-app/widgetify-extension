@@ -46,13 +46,14 @@ export const CurrencyBox = ({ code, dragHandle }: CurrencyBoxProps) => {
 				className="group flex items-center gap-2 px-2.5 py-3 rounded-2xl border border-surface-3 bg-surface-2 hover:bg-fill-2 transition-ui active:scale-[0.98]"
 			>
 				{dragHandle && (
-					<span
+					<button
+						type="button"
 						{...dragHandle}
 						aria-label={`جابه‌جایی ${code}`}
 						className="flex items-center justify-center w-4 h-4 transition-opacity cursor-grab active:cursor-grabbing text-fg-muted opacity-40 group-hover:opacity-90 shrink-0"
 					>
 						<Icon name="dragIndicator" size={14} aria-hidden="true" />
-					</span>
+					</button>
 				)}
 
 				<button

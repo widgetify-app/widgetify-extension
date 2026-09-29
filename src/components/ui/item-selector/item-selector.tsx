@@ -44,6 +44,7 @@ export function ItemSelector({
 				>
 					{isActive && (
 						<svg
+							aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
 							className="w-full h-full p-0.5"
 							fill="none"

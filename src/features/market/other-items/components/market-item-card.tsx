@@ -63,6 +63,7 @@ export function MarketItemCard({
 
 				{!canPreview && (
 					<button
+						type="button"
 						onClick={handlePreview}
 						className="absolute bottom-1.5 left-1.5 flex items-center gap-1 px-2 py-1 rounded-lg bg-surface-veil border border-line text-fg-muted hover:text-brand transition-colors text-3xs font-medium backdrop-blur-sm cursor-pointer opacity-0 group-hover:opacity-100"
 					>

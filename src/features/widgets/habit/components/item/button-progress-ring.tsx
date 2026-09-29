@@ -59,7 +59,12 @@ export function SegmentedProgressRing({
 	}
 
 	return (
-		<svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+		<svg
+			aria-hidden="true"
+			width={size}
+			height={size}
+			viewBox={`0 0 ${size} ${size}`}
+		>
 			{segments}
 		</svg>
 	)

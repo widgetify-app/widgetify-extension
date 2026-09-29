@@ -11,7 +11,7 @@ interface ColorPickerProps {
 
 export const ColorPicker: React.FC<ColorPickerProps> = ({ color, onChange }) => {
 	const [isOpen, setIsOpen] = useState(false)
-	const triggerRef = useRef<HTMLDivElement>(null)
+	const triggerRef = useRef<HTMLButtonElement>(null)
 	const popupRef = useRef<HTMLDivElement>(null)
 	const [coords, setCoords] = useState<{ top: number; left: number } | null>(null)
 
@@ -98,10 +98,13 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ color, onChange }) => 
 
 	return (
 		<div className="relative inline-flex items-center">
-			<div
+			<button
 				ref={triggerRef}
+				type="button"
+				aria-label="انتخاب رنگ"
+				aria-expanded={isOpen}
 				onClick={() => setIsOpen((prev) => !prev)}
-				className="w-8 h-8 p-1 transition-transform border-0 shadow-sm cursor-pointer rounded-lg hover:scale-105 active:scale-95"
+				className="w-8 h-8 p-1 transition-transform border-0 shadow-sm cursor-pointer rounded-lg hover:scale-105 active:scale-95 focus-visible:focus-ring"
 				style={{ backgroundColor: displayColor }}
 			/>
 

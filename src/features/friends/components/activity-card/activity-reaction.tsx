@@ -11,7 +11,7 @@ export function GetContentFromReactions(
 
 export function RenderReactionContent(content: string) {
 	if (content.startsWith('https://'))
-		return <img src={content} className="object-center w-4 h-4" />
+		return <img src={content} alt="" className="object-center w-4 h-4" />
 
 	return content
 }

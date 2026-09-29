@@ -61,6 +61,7 @@ const RadialProgressSmall = ({ percentage }: any) => {
 			style={{ width: size, height: size }}
 		>
 			<svg
+				aria-hidden="true"
 				width={size}
 				height={size}
 				viewBox={`0 0 ${size} ${size}`}

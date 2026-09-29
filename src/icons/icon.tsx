@@ -21,5 +21,11 @@ export function Icon({ name, spin, className, ...props }: Props) {
 
 	if (!Component) return null
 
-	return <Component className={cn(className, spin && 'animate-spin')} {...props} />
+	return (
+		<Component
+			aria-hidden={props['aria-label'] || props.title ? undefined : true}
+			className={cn(className, spin && 'animate-spin')}
+			{...props}
+		/>
+	)
 }

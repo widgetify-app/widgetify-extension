@@ -159,6 +159,7 @@ function ActivityReactionSelector({ reactions, activityId, index }: Prop) {
 						))
 					: reactions.map((reaction, index) => (
 							<button
+								type="button"
 								key={index}
 								disabled={isUpdating}
 								onClick={() => handleReaction(reaction.id)}
