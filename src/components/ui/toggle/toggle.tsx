@@ -3,6 +3,7 @@ import { toggleThumbVariants, toggleTrackVariants } from './toggle.variants'
 
 interface ToggleSwitchProps {
 	enabled: boolean
+	label: string
 	disabled?: boolean
 	loading?: boolean
 	onToggle: () => void
@@ -11,6 +12,7 @@ interface ToggleSwitchProps {
 
 export const ToggleSwitch = ({
 	enabled,
+	label,
 	disabled = false,
 	loading = false,
 	onToggle,
@@ -19,11 +21,24 @@ export const ToggleSwitch = ({
 	const interactive = !disabled && !loading
 
 	return (
-		<div
-			className={cn(toggleTrackVariants({ enabled, interactive }), className)}
-			onClick={interactive ? onToggle : undefined}
+		<button
+			type="button"
+			role="switch"
+			aria-checked={enabled}
+			aria-label={label}
+			aria-busy={loading || undefined}
+			disabled={!interactive}
+			onClick={onToggle}
+			className={cn(
+				toggleTrackVariants({ enabled, interactive }),
+				'shrink-0 focus-visible:focus-ring',
+				className
+			)}
 		>
-			<span className={toggleThumbVariants({ enabled, loading })} />
-		</div>
+			<span
+				aria-hidden="true"
+				className={toggleThumbVariants({ enabled, loading })}
+			/>
+		</button>
 	)
 }

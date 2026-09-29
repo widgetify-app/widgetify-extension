@@ -47,6 +47,7 @@ export const RssFeedSetting = () => {
 						</div>
 						<div className="shrink-0" onClick={(e) => e.stopPropagation()}>
 							<ToggleSwitch
+								label="اخبار پیش‌فرض"
 								enabled={settings.useDefaultNews}
 								onToggle={toggleDefaultNews}
 							/>
@@ -112,6 +113,7 @@ export const RssFeedSetting = () => {
 										onClick={(e) => e.stopPropagation()}
 									>
 										<ToggleSwitch
+											label={feed.name}
 											enabled={isActive}
 											onToggle={() => toggleFeed(feed)}
 										/>
