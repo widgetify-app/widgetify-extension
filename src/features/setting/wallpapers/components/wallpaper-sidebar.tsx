@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { Category } from '@/common/wallpaper.interface'
+import type { Category } from '@/common/types/wallpaper.interface'
 import { Icon } from '@/icons'
 import { NewBadge, TabNavigation } from '@/components/ui'
 

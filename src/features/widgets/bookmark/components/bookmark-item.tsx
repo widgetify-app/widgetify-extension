@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { addOpacityToColor, getContrastingTextColor } from '@/common/color'
+import { addOpacityToColor, getContrastingTextColor } from '@/common/utils/color'
 import type { Bookmark } from '@/services/bookmark/bookmark.interface'
 import { BookmarkIcon } from './bookmark/bookmark-icon'
 import { RenderStickerPattern } from './bookmark/bookmark-sticker'

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import type { Wallpaper } from '@/common/wallpaper.interface'
+import type { Wallpaper } from '@/common/types/wallpaper.interface'
 import { UserCoin } from '@/components/user-coin'
 import { CoinPurchaseModal } from '@/components/wallpaper/coin-purchase-modal'
 import { useLazyLoad } from '@/hooks/use-lazy-load'

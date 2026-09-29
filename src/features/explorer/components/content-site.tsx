@@ -1,4 +1,4 @@
-import { getContrastingTextColor } from '@/common/color'
+import { getContrastingTextColor } from '@/common/utils/color'
 import { NewBadge } from '@/components/ui'
 import { Icon } from '@/icons'
 import type { CatalogItem } from '../types'

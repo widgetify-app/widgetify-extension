@@ -1,5 +1,5 @@
 import React from 'react'
-import { addOpacityToColor } from '@/common/color'
+import { addOpacityToColor } from '@/common/utils/color'
 import {
 	HABIT_FREQUENCY_OPTIONS,
 	HABIT_UNIT_OPTIONS,

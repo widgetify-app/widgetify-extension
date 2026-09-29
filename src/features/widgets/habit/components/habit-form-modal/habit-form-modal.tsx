@@ -16,7 +16,7 @@ import {
 import { useAddHabit } from '@/services/habit/add-habit.hook'
 import { useUpdateHabit } from '@/services/habit/update-habit.hook'
 import type { HabitIcon } from '@/services/habit/get-habits.hook'
-import { addOpacityToColor } from '@/common/color'
+import { addOpacityToColor } from '@/common/utils/color'
 import { safeAwait } from '@/services/api'
 import { translateError } from '@/common/utils/translate-error'
 import { HabitFormActions } from './habit-form-actions'

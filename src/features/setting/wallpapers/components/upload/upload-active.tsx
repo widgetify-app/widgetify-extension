@@ -1,4 +1,4 @@
-import type { Wallpaper } from '@/common/wallpaper.interface'
+import type { Wallpaper } from '@/common/types/wallpaper.interface'
 import { MediaPreview } from '../media-preview'
 import { Icon } from '@/icons'
 import { Button, Tooltip, VipBadge } from '@/components/ui'

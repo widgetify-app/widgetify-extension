@@ -1,4 +1,4 @@
-import { getContrastingTextColor } from '@/common/color'
+import { getContrastingTextColor } from '@/common/utils/color'
 import { NewBadge } from '@/components/ui'
 import type { MiniApp } from '@/services/mini-apps/mini-apps.interface'
 

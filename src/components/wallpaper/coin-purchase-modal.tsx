@@ -1,5 +1,5 @@
 import { callEvent } from '@/common/utils/call-event'
-import type { Wallpaper } from '@/common/wallpaper.interface'
+import type { Wallpaper } from '@/common/types/wallpaper.interface'
 import { Button, Modal } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { UserCoin } from '@/components/user-coin'

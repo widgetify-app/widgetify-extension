@@ -5,7 +5,7 @@ import { sleep } from '@/common/utils/timeout'
 import { Theme } from '@/context/theme.context'
 import { MarketItemType, type MarketItem } from '@/services/market/market.interface'
 import { autoFormatErrorToast, showPreviewToast } from '@/common/toast'
-import type { StoredWallpaper } from '@/common/wallpaper.interface'
+import type { StoredWallpaper } from '@/common/types/wallpaper.interface'
 import { fetchWallpaperPreviewUrl } from '@/services/wallpapers/get-wallpaper-preview-url.hook'
 
 interface PreviewState {

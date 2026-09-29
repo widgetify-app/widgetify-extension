@@ -1,5 +1,5 @@
 import Analytics from '@/analytics'
-import { getContrastingTextColor } from '@/common/color'
+import { getContrastingTextColor } from '@/common/utils/color'
 import { callEvent } from '@/common/utils/call-event'
 import { Button, Modal } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'

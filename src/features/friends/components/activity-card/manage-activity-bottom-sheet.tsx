@@ -3,7 +3,7 @@ import { showToast } from '@/common/toast'
 import { Button, Modal } from '@/components/ui'
 import { useRemoveActivity, useSetActivity } from '@/services/user/user-service.hook'
 import { translateError } from '@/common/utils/translate-error'
-import { playAlarm } from '@/common/play-alarm'
+import { playAlarm } from '@/common/utils/play-alarm'
 import {
 	type AttachmentReaction,
 	useGetActivityReactions,

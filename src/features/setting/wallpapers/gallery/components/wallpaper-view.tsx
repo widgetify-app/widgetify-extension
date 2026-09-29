@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react'
 import { preloadImages } from '@/features/setting/wallpapers/gallery/utils/preload-images'
-import type { Wallpaper } from '@/common/wallpaper.interface'
+import type { Wallpaper } from '@/common/types/wallpaper.interface'
 import { useGetWallpapersInfiniteQuery } from '@/services/wallpapers/get-wallpaper-categories.hook'
 import { useWallpaperContext } from '@/context/wallpaper.context'
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll'

@@ -1,5 +1,5 @@
 import Analytics from '@/analytics'
-import { playAlarm } from '@/common/play-alarm'
+import { playAlarm } from '@/common/utils/play-alarm'
 import { showToast } from '@/common/toast'
 import type { WidgetifyDate } from '@/common/utils/date-events'
 import { safeAwait } from '@/services/api'

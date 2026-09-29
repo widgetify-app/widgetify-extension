@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
-import type { StoredWallpaper, Wallpaper } from '@/common/wallpaper.interface'
+import type { StoredWallpaper, Wallpaper } from '@/common/types/wallpaper.interface'
 import { getRandomWallpaper } from '@/services/wallpapers/get-wallpaper-categories.hook'
 import { safeAwait } from '@/services/api'
-import { SwEventType } from '@/common/types/sw-events'
+import { SwEventType } from '@/common/types/sw-events.interface'
 
 function pinWallpaperForOffline(wallpaper: StoredWallpaper) {
 	if (wallpaper.type !== 'IMAGE' && wallpaper.type !== 'VIDEO') return

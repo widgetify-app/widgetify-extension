@@ -11,7 +11,7 @@ import { GetContentFromReactions, RenderReactionContent } from './activity-react
 import { safeAwait } from '@/services/api'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
-import { playAlarm } from '@/common/play-alarm'
+import { playAlarm } from '@/common/utils/play-alarm'
 
 interface ActivityCardProps {
 	id: string
