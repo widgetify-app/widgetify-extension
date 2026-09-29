@@ -1,4 +1,3 @@
-import type { AxiosError } from 'axios'
 import {
 	createContext,
 	type ReactNode,
@@ -9,7 +8,7 @@ import {
 } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage, watchStorage } from '@/common/storage'
-import { safeAwait } from '@/services/api'
+import { type ApiError, safeAwait } from '@/services/api'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
 import { useGetNotes } from '@/services/note/get-notes.hook'
@@ -95,7 +94,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 			updatedAt: Date.now(),
 		}
 
-		const [er, createdNote] = await safeAwait<AxiosError, FetchedNote>(
+		const [er, createdNote] = await safeAwait<ApiError, FetchedNote>(
 			upsertNoteAsync(newNote)
 		)
 
@@ -132,7 +131,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 			if (updates.body !== undefined) payload.body = updates.body
 			if (updates.priority !== undefined) payload.priority = updates.priority
 
-			const [error, updatedNote] = await safeAwait<AxiosError, FetchedNote>(
+			const [error, updatedNote] = await safeAwait<ApiError, FetchedNote>(
 				upsertNoteAsync(payload)
 			)
 			setIsSaving(false)

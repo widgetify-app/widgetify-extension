@@ -2,11 +2,10 @@ import { showToast } from '@/common/toast'
 import { Modal } from '@/components/ui'
 import { SectionPanel } from '@/components/ui'
 import { TextInput } from '@/components/ui'
-import { safeAwait } from '@/services/api'
+import { type ApiError, safeAwait } from '@/services/api'
 import { useUpdateUsername } from '@/services/auth/auth-service.hook'
 import type { UserProfile } from '@/services/user/user-service.hook'
 import { translateError } from '@/common/utils/translate-error'
-import type { AxiosError } from 'axios'
 import { useState } from 'react'
 import { FooterButtons } from './footer-buttons'
 
@@ -26,7 +25,7 @@ export function ChangeUsernameModal({ show, onClose, currentValue }: Prop) {
 	const onClickSave = async () => {
 		if (!value) return
 
-		const [err, _] = await safeAwait<AxiosError, UserProfile>(
+		const [err, _] = await safeAwait<ApiError, UserProfile>(
 			updateUsernameMutation.mutateAsync(value)
 		)
 		if (err) {

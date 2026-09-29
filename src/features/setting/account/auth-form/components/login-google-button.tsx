@@ -2,8 +2,7 @@ import { IconLoading } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { type AuthResponse, useGoogleSignIn } from '@/services/auth/auth-service.hook'
 import { useState } from 'react'
-import { safeAwait } from '@/services/api'
-import type { AxiosError } from 'axios'
+import { type ApiError, safeAwait } from '@/services/api'
 import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
 import Analytics from '@/analytics'
@@ -54,7 +53,7 @@ export default function LoginGoogleButton() {
 			const token = params.get('access_token')
 
 			if (token) {
-				const [err, response] = await safeAwait<AxiosError, AuthResponse>(
+				const [err, response] = await safeAwait<ApiError, AuthResponse>(
 					googleSignInMutation.mutateAsync({
 						token,
 						referralCode: undefined,

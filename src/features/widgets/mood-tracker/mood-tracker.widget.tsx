@@ -6,7 +6,7 @@ import { useAuth } from '@/context/auth.context'
 import { useGetMoods } from '@/services/mood-log/get-moods.hook'
 import { type MoodType, useUpsertMoodLog } from '@/services/mood-log/upsert-mood-log.hook'
 import { useQueryClient } from '@tanstack/react-query'
-import { safeAwait } from '@/services/api'
+import { type ApiError, safeAwait } from '@/services/api'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { WidgetContainer } from '../components/widget-container'
 import type { WidgetSize } from '../utils/layout-engine/types'
@@ -16,7 +16,6 @@ import { MoodShareModal } from './components/mood-share-modal'
 import { PopoverMenu, PopoverMenuItem, PopoverMenuHeader } from '@/components/ui'
 import { Icon } from '@/icons'
 import Analytics from '@/analytics'
-import type { AxiosError } from 'axios'
 import { callEvent } from '@/common/utils/call-event'
 import { moodLogKeys } from '@/services/mood-log/mood-log.keys'
 
@@ -68,7 +67,7 @@ export function MoodTrackerWidget({ size = { w: 2, h: 1 } }: MoodTrackerWidgetPr
 		}
 
 		const [error, response] = await safeAwait<
-			AxiosError,
+			ApiError,
 			{ action: 'added' | 'removed' }
 		>(
 			upsertMoodLog({

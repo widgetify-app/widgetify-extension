@@ -6,11 +6,10 @@ import { GetUserFirstName } from '@/features/navbar/utils/get-firstname'
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { getCurrentDate } from '@/common/utils/date-events'
-import { safeAwait } from '@/services/api'
+import { type ApiError, safeAwait } from '@/services/api'
 import { type MoodType, useUpsertMoodLog } from '@/services/mood-log/upsert-mood-log.hook'
 import { Icon } from '@/icons'
 import { useIsMutating, useQueryClient } from '@tanstack/react-query'
-import type { AxiosError } from 'axios'
 import { moodLogKeys } from '@/services/mood-log/mood-log.keys'
 import { Spinner } from '@/components/ui'
 
@@ -37,7 +36,7 @@ export function DailyMoodNotification({ className }: Prop) {
 		const currentGregorian = today.clone().doAsGregorian()
 
 		const [error, response] = await safeAwait<
-			AxiosError,
+			ApiError,
 			{ action: 'added' | 'removed' }
 		>(
 			upsertMoodLog({

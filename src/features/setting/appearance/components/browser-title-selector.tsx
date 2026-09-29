@@ -1,4 +1,3 @@
-import type { AxiosError } from 'axios'
 import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
@@ -6,7 +5,7 @@ import { callEvent } from '@/common/utils/call-event'
 import { ItemSelector } from '@/components/ui'
 import { renderBrowserTitlePreview } from '@/components/browser-title-preview'
 import { SectionPanel } from '@/components/ui'
-import { safeAwait } from '@/services/api'
+import { type ApiError, safeAwait } from '@/services/api'
 import { useChangeBrowserTitle } from '@/services/extension/update-setting.hook'
 import type { UserInventoryItem } from '@/services/market/market.interface'
 import { translateError } from '@/common/utils/translate-error'
@@ -42,7 +41,7 @@ export function BrowserTitleSelector({ fetched_browserTitles, isAuthenticated }:
 		Analytics.event('browser_title_selected')
 
 		if (isAuthenticated) {
-			const [error] = await safeAwait<AxiosError, any>(
+			const [error] = await safeAwait<ApiError, any>(
 				mutateAsync({ browserTitleId: item.id })
 			)
 			if (error) {

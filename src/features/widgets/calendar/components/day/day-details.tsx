@@ -1,7 +1,6 @@
 import type React from 'react'
 import { useEffect, useId, useState } from 'react'
 import { useIsMutating } from '@tanstack/react-query'
-import type { AxiosError } from 'axios'
 import Analytics from '@/analytics'
 import { moodOptions } from '@/common/constants/moods'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
@@ -9,7 +8,7 @@ import { cn } from '@/common/utils/cn'
 import { useAuth } from '@/context/auth.context'
 import { useDate } from '@/features/widgets/date.context'
 import { Icon } from '@/icons'
-import { safeAwait } from '@/services/api'
+import { type ApiError, safeAwait } from '@/services/api'
 import type { FetchedAllEvents } from '@/services/date/get-events.hook'
 import type { MoodEntry } from '@/services/mood-log/get-moods.hook'
 import { type MoodType, useUpsertMoodLog } from '@/services/mood-log/upsert-mood-log.hook'
@@ -72,7 +71,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 		}
 
 		const [error, response] = await safeAwait<
-			AxiosError,
+			ApiError,
 			{ action: 'added' | 'removed' }
 		>(
 			upsertMoodLog({

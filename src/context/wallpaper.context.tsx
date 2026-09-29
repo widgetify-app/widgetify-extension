@@ -1,9 +1,8 @@
-import type { AxiosError } from 'axios'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper, Wallpaper } from '@/common/types/wallpaper.interface'
-import { safeAwait } from '@/services/api'
+import { type ApiError, safeAwait } from '@/services/api'
 import { useChangeWallpaper } from '@/services/extension/update-setting.hook'
 import { translateError } from '@/common/utils/translate-error'
 import Analytics from '@/analytics'
@@ -169,7 +168,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 		if (isAuthenticated) {
 			const wallpaperId =
 				wallpaper.type === 'GRADIENT' ? 'custom-wallpaper' : wallpaper.id
-			const [error, responseWallpaper] = await safeAwait<AxiosError, Wallpaper>(
+			const [error, responseWallpaper] = await safeAwait<ApiError, Wallpaper>(
 				mutateAsync({ wallpaperId })
 			)
 
