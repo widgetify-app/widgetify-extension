@@ -91,11 +91,12 @@ export function ThemeSelector({ fetched_themes }: Props) {
 							key={item.id}
 							label={item.name}
 							onClick={() => onClick(item)}
+							className="bg-surface-2!"
 						/>
 					))}
 					<button
 						type="button"
-						className="flex items-center gap-1 justify-center w-full h-full text-xs border border-surface-3   text-fg-muted hover:text-brand! cursor-pointer hover:border-brand! transition-ui duration-200 rounded-xl"
+						className="flex items-center gap-1 justify-center w-full h-full text-xs border border-surface-3   text-fg-muted hover:text-brand! cursor-pointer hover:border-brand! transition-ui duration-200 rounded-xl bg-surface-2"
 						onClick={() => handleMoreClick()}
 					>
 						<Icon name="shoppingBag" size={16} />

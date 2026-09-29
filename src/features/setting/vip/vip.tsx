@@ -135,7 +135,7 @@ export function VipTab() {
 				)}
 			</div>
 
-			<div className="p-3.5 rounded-2xl border border-line bg-fill flex flex-col sm:flex-row items-center justify-between gap-3">
+			<div className="p-3.5 rounded-2xl border border-surface-3 bg-surface-2 flex flex-col sm:flex-row items-center justify-between gap-3">
 				<div className="flex items-center gap-2.5 w-full sm:w-auto">
 					<div className="flex items-center justify-center w-10 h-10 rounded-xl text-brand shrink-0">
 						<Icon name="shoppingBag" size={20} />

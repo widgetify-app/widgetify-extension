@@ -28,7 +28,7 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 					? 'opacity-65  border-line bg-fill cursor-not-allowed saturate-50'
 					: isSelected
 						? 'border-brand bg-brand-fill ring-1 ring-brand shadow-sm cursor-pointer'
-						: 'border-line bg-fill hover:border-brand-muted hover:bg-fill-2 cursor-pointer'
+						: 'border-surface-3 bg-surface-2 hover:border-brand-muted hover:bg-fill-2 cursor-pointer'
 			)}
 		>
 			{badge && !isClaimed && (

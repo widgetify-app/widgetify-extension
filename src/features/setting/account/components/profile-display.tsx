@@ -338,7 +338,7 @@ const DisplayRow = ({
 	return (
 		<div className="flex items-center justify-between p-2 transition-colors border-b last:border-b-0 border-surface-3 hover:bg-fill">
 			<div className="flex items-center gap-3">
-				<div className="relative flex items-center justify-center w-7 h-7 rounded-xl bg-fill-2">
+				<div className="relative flex items-center justify-center w-7 h-7 rounded-xl bg-fill">
 					{icon}
 					{showBadge && (
 						<span className="absolute w-2 h-2 rounded-full left-0.5 -top-0.5 bg-danger animate-pulse"></span>
