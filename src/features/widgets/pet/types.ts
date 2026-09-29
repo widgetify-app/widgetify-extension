@@ -10,7 +10,7 @@ export enum PetTypes {
 
 type PetSpecies = 'dog' | 'chicken' | 'crab' | 'frog' | 'cat'
 
-export type PetBackgroundId = 'none' | 'forest' | 'autumn' | 'beach'
+export type PetBackgroundId = 'none' | 'forest' | 'autumn' | 'beach' | 'tehran'
 
 export interface PetMeta {
 	petType?: PetTypes

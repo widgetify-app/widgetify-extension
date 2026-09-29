@@ -248,8 +248,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 					{notes.length > 1 && (
 						<div
 							className={cn(
-								'flex items-center gap-0.5 rounded-lg h-5 px-1 py-0.5 text-3xs',
-								colorTheme.headerBg
+								'flex items-center gap-0.5 rounded-lg h-5 px-1 py-0.5 text-3xs'
 							)}
 						>
 							<Tooltip content="یادداشت قبلی">
@@ -291,7 +290,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 						<Button
 							size="xs"
 							variant="ghost"
-							rounded="full"
+							rounded="lg"
 							onClick={handleCreateNote}
 							disabled={isCreatingNote}
 							className={cn(
@@ -308,7 +307,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 							<Button
 								size="xs"
 								variant="ghost"
-								rounded="full"
+								rounded="lg"
 								onClick={() => setShowDeleteConfirm(true)}
 								className={cn(
 									'h-6 w-6 p-0 transition-ui hover:scale-105 hover:bg-danger-fill-2 hover:text-on-danger border-none shadow-none text-inherit',

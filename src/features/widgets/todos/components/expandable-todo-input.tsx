@@ -233,14 +233,14 @@ export function ExpandableTodoInput({
 			<div
 				className={`overflow-hidden transition-shadow ${isExpanded ? 'shadow-xl' : ''} rounded-xl`}
 			>
-				<div className="flex items-center gap-1 p-2 border rounded-widget bg-surface-2 border-line">
+				<div className="flex items-center gap-1 p-2 border rounded-widget bg-surface-2 border-surface-3">
 					<div className="w-full grow">
 						<TextInput
 							ref={inputRef}
 							defaultValue=""
 							onChange={handleTodoTextChange}
 							placeholder="عنوان تسک جدید..."
-							className="h-6! border-none! outline-none! shadow-none! ring-0! w-full p-0 pr-1 text-sm bg-transparent! rounded-2xl"
+							className="h-6! border-none! outline-none! shadow-none! ring-0! w-full p-0 pr-1 text-sm bg-transparent! rounded-2x focus:placeholder:text-line"
 							onFocus={handleInputFocus}
 							onKeyDown={handleKeyDown}
 							id="expandable-todo-input"

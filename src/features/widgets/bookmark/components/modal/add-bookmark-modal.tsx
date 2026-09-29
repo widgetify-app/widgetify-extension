@@ -246,7 +246,7 @@ export function AddBookmarkModal({
 							<button
 								type="button"
 								onClick={onOpenImport}
-								className="flex items-center justify-center gap-1.5 px-3 py-1.5 text-2xs font-medium transition-colors rounded-xl cursor-pointer hover:text-brand text-fg-muted bg-fill-2 hover:bg-brand-fill"
+								className="flex items-center justify-center gap-1.5 px-3 py-1.5 text-2xs font-medium transition-colors rounded-xl cursor-pointer hover:text-brand text-fg-muted bg-fill hover:bg-brand-fill"
 							>
 								<Icon name="download" size={12} />
 								<span>درون‌ریزی از بوکمارک‌های مرورگر</span>

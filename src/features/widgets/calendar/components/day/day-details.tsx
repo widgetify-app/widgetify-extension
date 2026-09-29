@@ -3,6 +3,7 @@ import { useEffect, useId, useState } from 'react'
 import { useIsMutating } from '@tanstack/react-query'
 import Analytics from '@/analytics'
 import { moodOptions } from '@/common/constants/moods'
+import { MoodImage } from '@/components/mood-image'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { cn } from '@/common/utils/cn'
 import { useAuth } from '@/context/auth.context'
@@ -189,7 +190,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 									)}
 								>
 									<span className="block text-lg leading-none mb-0.5">
-										{option.emoji}
+										<MoodImage mood={option.value} />
 									</span>
 									<span className="block text-3xs leading-tight">
 										{option.label}

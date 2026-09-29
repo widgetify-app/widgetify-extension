@@ -19,7 +19,7 @@ export function NetworkIPCard({ ip, blurMode }: NetworkIPCardProps) {
 					onClick={() => copyIpToClipboard(ip)}
 					className={cn(
 						'text-lg font-bold text-fg bg-fill px-3 py-1.5 rounded-xl',
-						'transition-ui focus-visible:focus-ring',
+						'transition-ui focus-visible:focus-ring bg-surface-2',
 						ip
 							? 'cursor-pointer hover:bg-fill-2'
 							: 'cursor-default opacity-70',

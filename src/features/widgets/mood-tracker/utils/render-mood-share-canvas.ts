@@ -1,3 +1,7 @@
+import excited from '@/assets/images/moods/excited.webp'
+import happy from '@/assets/images/moods/happy.webp'
+import normal from '@/assets/images/moods/normal.webp'
+import sad from '@/assets/images/moods/sad.webp'
 import type { MoodStatsResponse } from '@/services/mood-log/get-mood-stats.hook'
 import { drawRoundedRect, fitText } from '@/features/widgets/utils/canvas'
 
@@ -7,30 +11,30 @@ const BG_BASE = '#05050a'
 const TEXT_LIGHT = '#f8fafc'
 const FONT_STACK = 'Vazir, Tahoma, Arial, sans-serif'
 
-const moodConfig: Record<string, { label: string; emoji: string; colors: string[] }> = {
+const moodConfig: Record<string, { label: string; image: string; colors: string[] }> = {
 	excited: {
 		label: 'سرحال',
-		emoji: '😄',
+		image: excited,
 		colors: ['#00ff87', '#60efff'],
 	},
 	happy: {
 		label: 'اوکی',
-		emoji: '🙂',
+		image: happy,
 		colors: ['#00f2fe', '#4facfe'],
 	},
 	normal: {
 		label: 'خسته',
-		emoji: '😴',
+		image: normal,
 		colors: ['#ffb020', '#e69500'],
 	},
 	tired: {
 		label: 'خسته',
-		emoji: '😴',
+		image: normal,
 		colors: ['#ffb020', '#e69500'],
 	},
 	sad: {
 		label: 'ناراحت',
-		emoji: '😔',
+		image: sad,
 		colors: ['#ff4a5a', '#ff1f36'],
 	},
 }
@@ -197,11 +201,8 @@ export async function renderMoodShareCanvas(
 	ctx.fillText(`حس و حال ثبت شده در ماه ${monthName}`, avatarX - 25, 175)
 	ctx.restore()
 
-	ctx.save()
-	ctx.textAlign = 'center'
-	ctx.font = '140px sans-serif'
-	ctx.fillText(dominantMoodConfig.emoji, W / 2, 430)
-	ctx.restore()
+	const moodImage = await loadImageAsync(dominantMoodConfig.image)
+	ctx.drawImage(moodImage, W / 2 - 70, 355, 140, 140)
 
 	ctx.save()
 	ctx.textAlign = 'center'

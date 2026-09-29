@@ -1,5 +1,6 @@
 import type React from 'react'
 import { moodOptions } from '@/common/constants/moods'
+import { MoodImage } from '@/components/mood-image'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
 import type { MoodEntry } from '@/services/mood-log/get-moods.hook'
@@ -69,7 +70,7 @@ export function Mood2x1({
 								aria-hidden="true"
 								className="text-[20.8cqh] leading-none transition-transform hover:scale-110"
 							>
-								{opt.emoji}
+								<MoodImage mood={opt.value} />
 							</span>
 							<span
 								aria-hidden="true"

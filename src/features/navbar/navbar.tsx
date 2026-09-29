@@ -51,8 +51,8 @@ const tabs = [
 
 	{
 		id: Page.Explorer,
-		icon: <Icon name="outlineCompass" size={20} />,
-		activeIcon: <Icon name="compass" size={20} />,
+		icon: <Icon name="explorerOutline" size={20} />,
+		activeIcon: <Icon name="explorerFill" size={20} />,
 		label: 'کاوش',
 	},
 	{

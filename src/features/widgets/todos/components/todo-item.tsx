@@ -114,7 +114,7 @@ export function TodoItem({
 	const hasFriends = currentTodo?.friends && currentTodo?.friends?.length > 0
 	return (
 		<div
-			className={`group overflow-hidden border rounded-xl border-surface-3 bg-surface-2 transition-ui hover:border-line hover:bg-fill-2 ${comfortable ? 'mb-1.5' : 'mb-1'} ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+			className={`group overflow-hidden border rounded-xl border-surface-3 bg-surface-2 hover:bg-surface-3 transition-ui ${comfortable ? 'mb-1.5' : 'mb-1'} ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
 		>
 			<div
 				className={`flex items-center ${comfortable ? 'gap-2.5 px-3 py-2' : 'gap-1.5 px-2 py-1'}`}

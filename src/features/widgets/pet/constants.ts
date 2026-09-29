@@ -1,6 +1,7 @@
 import autumnBackground from '@/assets/animals/backgrounds/autumn.png'
 import beachBackground from '@/assets/animals/backgrounds/beach.png'
 import forestBackground from '@/assets/animals/backgrounds/forest.png'
+import tehranBackground from '@/assets/animals/backgrounds/tehran.webp'
 import catIcon from '@/assets/animals/cat/zardaloo_lie_8fps.webp'
 import catPreview from '@/assets/animals/cat/zardaloo_swipe_8fps.webp'
 import chickenIcon from '@/assets/animals/chicken/white_idle_8fps.webp'
@@ -68,6 +69,12 @@ export const PET_BACKGROUNDS: Record<PetBackgroundId, PetBackground> = {
 		label: 'ساحل',
 		image: beachBackground,
 		groundOffsetPx: 10,
+	},
+	tehran: {
+		id: 'tehran',
+		label: 'تهران',
+		image: tehranBackground,
+		groundOffsetPx: 7,
 	},
 }
 

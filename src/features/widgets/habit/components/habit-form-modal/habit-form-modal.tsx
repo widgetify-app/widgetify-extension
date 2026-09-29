@@ -25,7 +25,6 @@ import { HabitFormHeader } from './habit-form-header'
 import { HabitFormPresets } from './habit-form-presets'
 import { HabitGoalFrequencySection } from './habit-goal-frequency-section'
 import { HabitIconColorPicker } from './habit-icon-color-picker'
-import { HabitLivePreview } from './habit-live-preview'
 
 interface HabitFormModalProps {
 	isOpen: boolean
@@ -193,7 +192,7 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 					<label htmlFor="habit-title" className="text-xs text-fg-muted">
 						عنوان
 					</label>
-					<div className="flex items-center px-3 py-2 transition-colors border rounded-2xl border-line bg-fill focus-within:border-brand">
+					<div className="flex items-center px-3 py-2 transition-colors border rounded-2xl border-surface-3 bg-surface-2 focus-within:border-brand">
 						<div
 							className="flex items-center justify-center w-8 h-8 text-lg transition-transform rounded-xl shrink-0"
 							style={{
@@ -235,16 +234,6 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 					onChangeCustomUnit={handleChangeCustomUnit}
 					onChangeFrequency={handleChangeFrequency}
 					onChangeComparison={handleChangeComparison}
-				/>
-
-				<HabitLivePreview
-					title={title}
-					emoji={emoji}
-					color={color}
-					target={target}
-					unit={unit}
-					customUnit={customUnit}
-					frequency={frequency}
 				/>
 
 				<HabitFormActions

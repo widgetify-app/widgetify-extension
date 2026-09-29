@@ -152,7 +152,7 @@ function SearchFullContent() {
 				<form onSubmit={handleSubmit}>
 					<div
 						ref={searchRowRef}
-						className="relative flex items-center px-3 py-1.5 overflow-hidden transition-ui duration-300 shadow-sm rounded-2xl bg-surface-2 group"
+						className="relative flex items-center px-3 py-1.5 overflow-hidden transition-ui duration-300 rounded-2xl bg-surface-2 group"
 					>
 						<EngineSelector onSelected={onEngineSelected} />
 
@@ -212,7 +212,7 @@ function SearchFullContent() {
 							/>
 						</button>
 
-						<div className="absolute inset-0 transition-ui duration-300 border pointer-events-none rounded-2xl border-line" />
+						<div className="absolute inset-0 transition-ui duration-300 border-2 pointer-events-none rounded-2xl border-base-content/2" />
 					</div>
 				</form>
 

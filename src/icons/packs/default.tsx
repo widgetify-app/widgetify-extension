@@ -2,6 +2,8 @@ import type { IconBaseProps, IconType } from 'react-icons'
 import { BiLogoGoogle } from 'react-icons/bi'
 import { FaTelegramPlane } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
+import { FaGlobe } from 'react-icons/fa'
+import { TbLayout2 } from 'react-icons/tb'
 import {
 	LuArrowDownWideNarrow,
 	LuArrowRightLeft,
@@ -11,7 +13,7 @@ import {
 	LuBell,
 	LuBlocks,
 	LuBookmark,
-	LuBookmarkPlus,
+	LuGlobe,
 	LuBriefcase,
 	LuBug,
 	LuBuilding2,
@@ -51,19 +53,16 @@ import {
 	LuFolderHeart,
 	LuFolderOpen,
 	LuGift,
-	LuGlobe,
 	LuGrid2X2Plus,
 	LuGripVertical,
 	LuHeart,
 	LuHistory,
-	LuHouse,
 	LuImage,
 	LuImagePlus,
 	LuImages,
 	LuInbox,
 	LuInfo,
 	LuKeyboard,
-	LuLayoutGrid,
 	LuLink,
 	LuListFilter,
 	LuListTodo,
@@ -133,6 +132,14 @@ import {
 	LuX,
 } from 'react-icons/lu'
 import type { IconMap } from '../types'
+import {
+	HiHome,
+	HiOutlineBookmark,
+	HiOutlineGlobeAlt,
+	HiOutlineHome,
+	HiOutlineSquares2X2,
+	HiSquares2X2,
+} from 'react-icons/hi2'
 
 function filled(Icon: IconType): IconType {
 	return function FilledIcon(props: IconBaseProps) {
@@ -193,16 +200,12 @@ function solidWithCutout(path: string): IconType {
 	}
 }
 
-const SolidHomeIcon = solidWithCutout(
-	'M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8 M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'
-)
-
 const SolidCompassIcon = solidWithCutout(
 	'M12 2a10 10 0 1 0 0 20a10 10 0 1 0 0-20z M16.24 7.76l-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z'
 )
 
 export const defaultIcons = {
-	home: SolidHomeIcon,
+	home: HiHome,
 	compass: SolidCompassIcon,
 	outlineCompass: LuCompass,
 	calendar: LuCalendar,
@@ -233,8 +236,9 @@ export const defaultIcons = {
 	trash: LuTrash2,
 	undo: LuUndo2,
 	usersPlus: LuUserRoundPlus,
-	bookmarkPlus: LuBookmarkPlus,
+	bookmarkPlus: HiOutlineBookmark,
 	folder: filled(LuFolder),
+	globe: LuGlobe,
 	folderOpen: LuFolderOpen,
 	menuOption: LuEllipsis,
 	uploadImage: LuCloudUpload,
@@ -264,7 +268,7 @@ export const defaultIcons = {
 	link: LuLink,
 	googleLogo: FcGoogle,
 	telegramLogo: FaTelegramPlane,
-	globe: LuGlobe,
+
 	calendarDays: LuCalendarDays,
 	calendarRange: LuCalendarRange,
 	camera: LuCamera,
@@ -275,9 +279,9 @@ export const defaultIcons = {
 	download: LuDownload,
 	wandSparkles: LuWandSparkles,
 	move: LuMove,
-	outlineHome: LuHouse,
-	outlineSquares2X2: LuLayoutGrid,
-	squares2X2: filled(LuLayoutGrid),
+	outlineHome: HiOutlineHome,
+	outlineSquares2X2: HiOutlineSquares2X2,
+	squares2X2: filled(HiSquares2X2),
 	viewGridAdd: LuGrid2X2Plus,
 	folderSpecial: LuFolderHeart,
 	history: LuHistory,
@@ -339,4 +343,7 @@ export const defaultIcons = {
 	mood: LuSmile,
 	paw: LuPawPrint,
 	cloudSun: LuCloudSun,
+	explorerFill: FaGlobe,
+	explorerOutline: HiOutlineGlobeAlt,
+	layout: TbLayout2,
 } satisfies IconMap

@@ -17,11 +17,11 @@ export function ToolsCompactRow({ onSelectTab }: ToolsCompactRowProps) {
 					key={tab.id}
 					type="button"
 					onClick={() => onSelectTab(tab.id)}
-					className="flex flex-col items-center justify-center gap-1 p-1.5 border rounded-xl cursor-pointer bg-fill border-line transition-ui hover:bg-fill-2 focus-visible:focus-ring"
+					className="flex flex-col items-center justify-center gap-1 p-1.5 rounded-xl cursor-pointer bg-surface-2 transition-ui hover:bg-fill-2 focus-visible:focus-ring"
 				>
 					<Icon
 						name={tab.icon}
-						className="w-4 h-4 text-brand"
+						className="w-4 h-4 text-fg"
 						aria-hidden="true"
 					/>
 					<span className="text-3xs font-medium text-fg">
