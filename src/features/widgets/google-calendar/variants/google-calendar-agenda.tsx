@@ -87,7 +87,7 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 			<header className="flex items-center justify-between pb-2 mb-2 border-b shrink-0 border-line">
 				<h3 className="flex items-center gap-1.5 min-w-0 text-xs font-bold text-fg">
 					<Icon
-						name="googleCalendar"
+						name="googleG"
 						size={16}
 						className="text-brand shrink-0"
 						aria-hidden="true"

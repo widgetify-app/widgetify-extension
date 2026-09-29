@@ -144,7 +144,7 @@ export function MoodTrackerWidget({ size = { w: 2, h: 1 } }: MoodTrackerWidgetPr
 					<span>حال روزانه</span>
 				</PopoverMenuHeader>
 				<PopoverMenuItem
-					icon={<Icon name="cameraPlus" size={14} aria-hidden="true" />}
+					icon={<Icon name="camera" size={14} aria-hidden="true" />}
 					label="اشتراک‌گذاری ماه"
 					onClick={handleOpenShare}
 				/>

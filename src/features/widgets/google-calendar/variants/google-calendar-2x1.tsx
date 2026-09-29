@@ -49,7 +49,7 @@ export const GoogleCalendar2x1: React.FC<GoogleCalendar2x1Props> = ({
 			<div className="flex flex-col justify-center w-20 min-w-0 shrink-0">
 				<div className="flex items-center gap-1 mb-0.5">
 					<Icon
-						name="googleCalendar"
+						name="googleG"
 						size={13}
 						className="text-brand shrink-0"
 						aria-hidden="true"

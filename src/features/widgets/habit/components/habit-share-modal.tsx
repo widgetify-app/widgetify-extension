@@ -41,7 +41,7 @@ export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareMod
 			size="xl"
 			title={
 				<div className="flex items-center gap-2">
-					<Icon name="cameraPlus" size={16} />
+					<Icon name="camera" size={16} />
 					<span className="text-sm font-bold text-fg">اشتراک‌گذاری پیشرفت</span>
 				</div>
 			}

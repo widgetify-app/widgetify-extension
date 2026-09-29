@@ -50,12 +50,7 @@ const MonthHeader: React.FC = () => {
 						aria-label="برو به امروز"
 						className={navButtonClass}
 					>
-						<Icon
-							name="backRight"
-							size={12}
-							strokeWidth={1}
-							aria-hidden="true"
-						/>
+						<Icon name="undo" size={12} strokeWidth={1} aria-hidden="true" />
 					</button>
 				)}
 
@@ -237,7 +232,7 @@ export function Calendar2x3() {
 					{
 						id: 'google',
 						label: 'تقویم گوگل',
-						icon: <Icon name="googleCalendar" size={12} />,
+						icon: <Icon name="googleG" size={12} />,
 					},
 				]}
 				size="small"

@@ -74,7 +74,7 @@ const tabs: TabItem[] = [
 			{
 				label: 'حریم خصوصی',
 				value: 'access',
-				icon: <Icon name="outlinePrivacyTip" size={20} />,
+				icon: <Icon name="shieldEllipsis" size={20} />,
 				element: <PrivacySettings key="privacy" />,
 			},
 			{

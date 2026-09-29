@@ -99,7 +99,7 @@ export function ImageSearchPortal({
 							target="_blank"
 							rel="noreferrer"
 						>
-							<Icon name="outlinePrivacyTip" size={18} />
+							<Icon name="shieldEllipsis" size={18} />
 						</a>
 						<button
 							type="button"

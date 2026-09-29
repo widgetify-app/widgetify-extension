@@ -143,7 +143,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		id: WidgetKeys.googleCalendar,
 		label: 'تقویم گوگل',
 		emoji: '📆',
-		icon: 'googleCalendar',
+		icon: 'googleG',
 		category: 'productivity',
 		order: 1,
 		canToggle: true,

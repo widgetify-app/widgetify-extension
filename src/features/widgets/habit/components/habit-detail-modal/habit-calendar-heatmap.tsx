@@ -198,7 +198,7 @@ export function HabitCalendar({ habit, color, today }: HabitCalendarProps) {
 							aria-label="برو به ماه جاری"
 							className="flex items-center justify-center rounded-full cursor-pointer h-7 w-7 text-fg-muted opacity-70 transition-ui hover:bg-fill-2 hover:opacity-100 focus-visible:focus-ring"
 						>
-							<Icon name="backRight" size={12} aria-hidden="true" />
+							<Icon name="undo" size={12} aria-hidden="true" />
 						</button>
 					)}
 					<button

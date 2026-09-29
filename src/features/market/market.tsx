@@ -19,7 +19,7 @@ const tabs = [
 	{
 		id: 'wallpapers',
 		label: 'تصویر زمینه‌ها',
-		icon: <Icon name="photoFilm" />,
+		icon: <Icon name="images" />,
 		element: <MarketWallpaper />,
 	},
 	{

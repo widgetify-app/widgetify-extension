@@ -26,7 +26,7 @@ export const EmptyActivityCard = ({ avatar, name, onClick }: EmptyActivityCardPr
 						`}
 						>
 							<div className="flex items-center justify-center w-full h-full overflow-y-auto wrap-break-word scrollbar-none">
-								<Icon name="penAI" className="w-5 h-5" />
+								<Icon name="wandSparkles" className="w-5 h-5" />
 							</div>
 						</div>
 

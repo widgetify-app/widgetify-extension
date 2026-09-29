@@ -46,7 +46,7 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 			size="md"
 			title={
 				<div className="flex items-center gap-2">
-					<Icon name="cameraPlus" size={16} />
+					<Icon name="camera" size={16} />
 					<span className="text-sm font-bold text-fg">
 						اشتراک‌گذاری حال این ماه
 					</span>

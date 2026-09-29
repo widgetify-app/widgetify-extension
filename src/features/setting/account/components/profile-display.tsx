@@ -255,7 +255,7 @@ export const ProfileDisplay = () => {
 				/>
 
 				<DisplayRow
-					icon={<Icon name="treeCity" className="text-brand-muted" />}
+					icon={<Icon name="building" className="text-brand-muted" />}
 					label="شهر"
 					value={user?.city?.name || '-'}
 					showBadge={showEditBadge('city')}

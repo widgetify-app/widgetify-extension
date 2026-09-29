@@ -134,7 +134,7 @@ export const ProfileHeader = ({
 							onClick={() => setMenuOpen((prev) => !prev)}
 							className="absolute z-30 p-1 text-on-brand transition-ui -translate-x-3 translate-y-3 rounded-full shadow-xl cursor-pointer bottom-2 -right-3 bg-brand hover:scale-110 active:scale-95"
 						>
-							<Icon name="cameraPlus" size={12} />
+							<Icon name="camera" size={12} />
 						</button>
 					</div>
 

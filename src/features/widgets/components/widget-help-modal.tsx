@@ -13,7 +13,7 @@ type TabType = 'move' | 'styles' | 'add' | 'presets'
 interface HelpTabItem {
 	id: TabType
 	label: string
-	icon: 'outlineDrag' | 'viewGridAdd' | 'plus' | 'squares2X2'
+	icon: 'move' | 'viewGridAdd' | 'plus' | 'squares2X2'
 	videoUrl: string
 	badge: string
 	title: string
@@ -27,7 +27,7 @@ const HELP_TABS: HelpTabItem[] = [
 	{
 		id: 'move',
 		label: 'جابه‌جایی آزاد',
-		icon: 'outlineDrag',
+		icon: 'move',
 		videoUrl: `${CDN_BASE_URL}JABEJAIE-WIDGET-HA.webm`,
 		badge: 'چیدمان آزاد',
 		title: 'جابجایی و درگ آزاد ویجت‌ها',

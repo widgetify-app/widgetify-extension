@@ -114,7 +114,7 @@ export function WidgetContextMenu({
 
 			{onMove && (
 				<PopoverMenuItem
-					icon={<Icon name="outlineDrag" size={14} />}
+					icon={<Icon name="move" size={14} />}
 					label="جابجایی"
 					onClick={() => {
 						onMove()

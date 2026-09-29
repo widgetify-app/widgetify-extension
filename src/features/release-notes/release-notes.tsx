@@ -15,7 +15,7 @@ interface ReleaseStep {
 	badge: string
 	description: string
 	videoUrl: string
-	icon: 'outlineDrag' | 'viewGridAdd' | 'plus' | 'squares2X2'
+	icon: 'move' | 'viewGridAdd' | 'plus' | 'squares2X2'
 }
 
 const CDN_BASE_URL = 'https://cdn.widgetify.ir/extension/help_videos/'
@@ -28,7 +28,7 @@ const RELEASE_STEPS: ReleaseStep[] = [
 		description:
 			'ویجت‌ها رو با درگ و دراپ به هر جای صفحه ببر و چیدمان دلخواهت رو بساز',
 		videoUrl: `${CDN_BASE_URL}JABEJAIE-WIDGET-HA.webm`,
-		icon: 'outlineDrag',
+		icon: 'move',
 	},
 	{
 		id: 'widget-styles',

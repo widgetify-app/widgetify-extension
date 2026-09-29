@@ -213,7 +213,7 @@ export function HabitDetailModal({
 						rounded="xl"
 						onClick={() => setIsShareModalOpen(true)}
 					>
-						<Icon name="cameraPlus" size={15} />
+						<Icon name="camera" size={15} />
 						اشتراک گذاری
 					</Button>
 					<Button

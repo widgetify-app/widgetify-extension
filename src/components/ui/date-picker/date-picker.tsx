@@ -205,7 +205,7 @@ export function DatePicker({
 							onClick={goToToday}
 							className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-fg-muted opacity-70 hover:bg-surface-3 hover:opacity-100"
 						>
-							<Icon name="backRight" size={12} />
+							<Icon name="undo" size={12} />
 						</button>
 					)}
 					<button
