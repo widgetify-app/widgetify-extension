@@ -1,5 +1,5 @@
 import { storage } from 'wxt/utils/storage'
-import type { StorageKV } from './constants/store.key'
+import type { StorageKV } from './constants/store-keys'
 
 export function sanitizeFirefoxStorageValue<T>(key: string, value: any): T {
 	if (typeof value === 'boolean' || typeof value === 'number') {
@@ -113,11 +113,25 @@ export async function clearStorage() {
 	await storage.clear('local')
 }
 
+const FAVICON_CONSENT_KEY = 'wxt_local:allowFaviconService'
+
+export function getFaviconConsent(): boolean {
+	return localStorage.getItem(FAVICON_CONSENT_KEY) === 'true'
+}
+
+export function setFaviconConsent(allowed: boolean) {
+	localStorage.setItem(FAVICON_CONSENT_KEY, String(allowed))
+}
+
+export function clearLocalStorage() {
+	localStorage.clear()
+}
+
 export async function removeFromStorage<K extends keyof StorageKV>(key: K) {
 	await storage.removeItem(`local:${key}`)
 }
 
-export const DEPRECATED_STORAGE_KEYS = [
+const DEPRECATED_STORAGE_KEYS = [
 	'petState',
 	'calendarDrawerState',
 	'compact_currencies',

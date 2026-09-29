@@ -1,7 +1,7 @@
 import { cn } from '@/common/utils/cn'
 import { popoverMenuItemVariants } from './popover-menu.variants'
 
-export interface PopoverMenuItemProps {
+interface PopoverMenuItemProps {
 	icon?: React.ReactNode
 	label: string
 	badge?: React.ReactNode
@@ -42,12 +42,12 @@ export function PopoverMenuItem({
 }
 
 export function PopoverMenuDivider() {
-	return <div className="h-px my-1 bg-base-content/10" />
+	return <div className="h-px my-1 bg-fill-2" />
 }
 
 export function PopoverMenuHeader({ children }: { children: React.ReactNode }) {
 	return (
-		<div className="px-2.5 py-1 text-[11px] font-semibold text-muted flex items-center justify-between">
+		<div className="px-2.5 py-1 text-2xs font-semibold text-fg-muted flex items-center justify-between">
 			{children}
 		</div>
 	)

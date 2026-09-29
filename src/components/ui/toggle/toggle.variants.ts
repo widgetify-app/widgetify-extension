@@ -5,8 +5,8 @@ export const toggleTrackVariants = cva(
 	{
 		variants: {
 			enabled: {
-				true: ['bg-primary'],
-				false: ['bg-base-300'],
+				true: ['bg-brand'],
+				false: ['bg-surface-3'],
 			},
 			interactive: {
 				true: ['cursor-pointer', 'active:scale-95'],
@@ -51,5 +51,3 @@ export const toggleThumbVariants = cva(
 		},
 	}
 )
-
-export type ToggleTrackVariant = typeof toggleTrackVariants

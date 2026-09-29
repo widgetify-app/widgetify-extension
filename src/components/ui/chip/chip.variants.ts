@@ -9,7 +9,7 @@ export const chipVariants = cva(
 		'text-xs',
 		'font-bold',
 		'border-2',
-		'transition-all',
+		'transition-ui',
 		'active:scale-95',
 		'disabled:cursor-not-allowed',
 		'disabled:active:scale-none!',
@@ -17,13 +17,12 @@ export const chipVariants = cva(
 	{
 		variants: {
 			selected: {
-				true: ['bg-primary', 'border-primary', 'text-white'],
+				true: ['bg-brand', 'border-brand', 'text-on-brand'],
 				false: [
-					'bg-base-100',
-					'bg-glass',
-					'border-base-300/30',
-					'text-base-content/80',
-					'enabled:hover:border-primary/30',
+					'bg-glass-surface',
+					'border-surface-3',
+					'text-fg-muted',
+					'enabled:hover:border-brand-fill-2',
 					'disabled:opacity-80',
 				],
 			},
@@ -33,5 +32,3 @@ export const chipVariants = cva(
 		},
 	}
 )
-
-export type ChipVariant = typeof chipVariants

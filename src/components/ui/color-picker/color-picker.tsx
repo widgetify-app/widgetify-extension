@@ -4,7 +4,7 @@ import { HexColorPicker, RgbaStringColorPicker } from 'react-colorful'
 import { Portal } from '../portal/portal'
 import { isAnchorInViewport } from '../utils/anchored-position'
 
-export interface ColorPickerProps {
+interface ColorPickerProps {
 	color: string
 	onChange: (color: string) => void
 	className?: string
@@ -108,7 +108,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
 			<div
 				ref={triggerRef}
 				onClick={() => setIsOpen((prev) => !prev)}
-				className="w-8 h-8 p-1 transition-transform border-0 shadow-xs cursor-pointer rounded-xl hover:scale-105 active:scale-95"
+				className="w-8 h-8 p-1 transition-transform border-0 shadow-sm cursor-pointer rounded-lg hover:scale-105 active:scale-95"
 				style={{ backgroundColor: displayColor }}
 			/>
 
@@ -117,7 +117,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
 					<div
 						ref={popupRef}
 						dir="ltr"
-						className="fixed p-2.5 shadow-2xl rounded-2xl bg-base-200 border border-base-content/15 backdrop-blur-xl z-[99999] pointer-events-auto"
+						className="fixed p-2.5 shadow-xl rounded-2xl bg-surface-2 border border-line backdrop-blur-xl z-dropdown pointer-events-auto"
 						style={{
 							top: `${coords.top}px`,
 							left: `${coords.left}px`,

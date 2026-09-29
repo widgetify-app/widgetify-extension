@@ -1,11 +1,6 @@
-import type { Bookmark } from '@/layouts/bookmark/types/bookmark.types'
-import type { PetBackgroundId, PetTypes } from '@widget/pet/types'
-import type { WigiNewsSetting } from '@widget/news/rss.interface'
-import type { WeatherSettings } from '@widget/weather/weather.interface'
-import type { ClockSettings } from '@widget/clock/clock-setting.interface'
-import type { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
+import type { Bookmark } from '@/services/bookmark/bookmark.interface'
 import type { StoredWallpaper, Wallpaper } from '../wallpaper.interface'
-import type { Todo } from '@/services/hooks/todo/todo.interface'
+import type { Todo } from '@/services/todo/todo.interface'
 import type { Page } from '@/context/page.context'
 
 export interface EventName {
@@ -27,18 +22,7 @@ export interface EventName {
 	todosChanged: Todo[]
 	wallpaper_change: StoredWallpaper
 	custom_wallpaper_sync: Wallpaper | null
-	openWidgetsSettings: {
-		tab: WidgetTabKeys | null
-		instanceId?: string
-		size?: { w: number; h: number }
-	}
 	bookmarksChanged: Bookmark[]
-	updatedPetSettings: {
-		instanceId?: string
-		petName?: string
-		petType: PetTypes
-		background?: PetBackgroundId
-	}
 	theme_change: {
 		theme: string
 		sync: boolean
@@ -52,12 +36,9 @@ export interface EventName {
 	}
 
 	// setting keys
-	clockSettingsChanged: ClockSettings
 	currencies_updated: {
 		currencies: string[]
 	}
-	wigiNewsSettingsChanged: WigiNewsSetting
-	weatherSettingsChanged: WeatherSettings
 	closeAllDropdowns: null
 	openProfile?: 'friends' | 'platforms' | 'vip' | 'pro'
 	openMarketModal: null

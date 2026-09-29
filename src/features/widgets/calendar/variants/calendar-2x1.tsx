@@ -1,0 +1,149 @@
+import { useRef } from 'react'
+import { cn } from '@/common/utils/cn'
+import { ClickableTooltip } from '@/components/ui'
+import { useAuth } from '@/context/auth.context'
+import { useDate } from '@/features/widgets/date.context'
+import { useGetMoods } from '@/services/mood-log/get-moods.hook'
+import { useGetEvents } from '@/services/date/get-events.hook'
+import { CalendarDayDetails } from '../components/day/day-details'
+import { PERSIAN_WEEKDAYS } from '@/features/widgets/constants'
+import { EMPTY_EVENTS } from '../constants'
+import { useDayDetailsPopup } from '../hooks/use-day-details-popup'
+import { toIsoDateKey } from '@/features/widgets/utils/jalali-date'
+import { getHijriEvents, getShamsiEvents } from '@/common/utils/date-events'
+
+export function Calendar2x1() {
+	const { today, selectedDate } = useDate()
+	const { isAuthenticated } = useAuth()
+	const { data: events } = useGetEvents()
+	const { anchor, popupDate, isOpen, openFor, setOpen } = useDayDetailsPopup()
+	const weekRef = useRef<HTMLUListElement>(null)
+
+	const startOfWeek = today.clone().startOf('week')
+	const weekDays = Array.from({ length: 7 }, (_, i) =>
+		startOfWeek.clone().add(i, 'days')
+	)
+
+	const { data: moodsData, refetch } = useGetMoods(
+		isAuthenticated,
+		toIsoDateKey(startOfWeek),
+		toIsoDateKey(startOfWeek.clone().add(6, 'days'))
+	)
+
+	const eventsForCalendar = events || EMPTY_EVENTS
+
+	return (
+		<>
+			<ul
+				ref={weekRef}
+				className="grid w-full h-full grid-cols-7 gap-1 p-1.5 select-none"
+			>
+				{weekDays.map((day, idx) => {
+					const isToday = day.isSame(today, 'day')
+					const isSelected = selectedDate && day.isSame(selectedDate, 'day')
+
+					const dayEvents = events
+						? [
+								...getShamsiEvents(events, day),
+								...getHijriEvents(events, day),
+							]
+						: []
+					const isHoliday =
+						day.day() === 5 || dayEvents.some((e) => e.isHoliday)
+					const dayLabel = day.format('dddd jD jMMMM jYYYY')
+
+					return (
+						<li key={idx} className="h-full">
+							<button
+								type="button"
+								title={dayLabel}
+								aria-label={dayLabel}
+								aria-pressed={isSelected}
+								aria-current={isToday ? 'date' : undefined}
+								onClick={(e) => openFor(day, e.currentTarget)}
+								className={cn(
+									'flex flex-col items-center justify-center gap-0.5',
+									'w-full h-full rounded-xl cursor-pointer transition-ui active:scale-95',
+									'focus-visible:focus-ring',
+									isSelected && 'font-bold shadow-sm',
+									isSelected &&
+										(isHoliday
+											? 'bg-danger text-on-danger'
+											: 'bg-brand text-on-brand'),
+									!isSelected && isToday && 'font-bold ring-1',
+									!isSelected &&
+										isToday &&
+										(isHoliday
+											? 'bg-danger-fill text-danger ring-danger-fill-2'
+											: 'bg-brand-fill text-brand ring-brand-fill-2'),
+									!isSelected && !isToday && 'bg-fill hover:bg-fill-2',
+									!isSelected &&
+										!isToday &&
+										(isHoliday ? 'text-danger' : 'text-fg')
+								)}
+							>
+								<span
+									className={cn(
+										'text-4xs font-medium leading-none',
+										isSelected
+											? 'opacity-90'
+											: isHoliday
+												? 'text-danger'
+												: 'text-fg-muted'
+									)}
+								>
+									{PERSIAN_WEEKDAYS[idx].short}
+								</span>
+
+								<time
+									dateTime={day
+										.clone()
+										.doAsGregorian()
+										.format('YYYY-MM-DD')}
+									className="text-sm font-extrabold leading-none tabular-nums"
+								>
+									{day.jDate()}
+								</time>
+
+								<span
+									className="flex items-center justify-center h-1"
+									aria-hidden="true"
+								>
+									{isToday && (
+										<span
+											className={cn(
+												'w-1 h-1 rounded-full',
+												isSelected
+													? 'bg-current'
+													: isHoliday
+														? 'bg-danger'
+														: 'bg-brand'
+											)}
+										/>
+									)}
+								</span>
+							</button>
+						</li>
+					)
+				})}
+			</ul>
+
+			{anchor && popupDate && (
+				<ClickableTooltip
+					triggerRef={{ current: anchor }}
+					boundaryRef={weekRef}
+					content={
+						<CalendarDayDetails
+							date={popupDate}
+							events={eventsForCalendar}
+							moods={moodsData?.moods ?? []}
+							onMoodChange={() => refetch()}
+						/>
+					}
+					isOpen={isOpen}
+					setIsOpen={setOpen}
+				/>
+			)}
+		</>
+	)
+}

@@ -1,8 +1,8 @@
-import { CacheName } from '@/common/types/sw-events'
+import { CacheName } from '../src/common/types/sw-events'
 
-export const CACHE_PREFIX = 'wgf-'
+const CACHE_PREFIX = 'wgf-'
 
-export const APP_VERSION: string = (() => {
+const APP_VERSION: string = (() => {
 	try {
 		return browser.runtime.getManifest().version
 	} catch {

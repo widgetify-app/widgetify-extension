@@ -1,0 +1,86 @@
+import {
+	type Friend,
+	useHandleFriendRequest,
+} from '@/services/friends/friend-service.hook'
+
+import { RemoveFriendButton } from './remove-button'
+import { FriendsList } from './friends-list'
+import { showToast } from '@/common/toast'
+import { Button, Modal } from '@/components/ui'
+import { Icon } from '@/icons'
+
+interface Prop {
+	isOpen: boolean
+	onClose: () => void
+}
+export const FriendRequestsBottomSheet = ({ isOpen, onClose }: Prop) => {
+	const { mutateAsync: handleFriendAction, isPending: isProcessing } =
+		useHandleFriendRequest()
+
+	const acceptFriend = async (friendId: string) => {
+		try {
+			await handleFriendAction({
+				friendId,
+				state: 'accepted',
+			})
+			showToast('دوست شدید!', 'success')
+		} catch {
+			showToast('خطا در پردازش', 'error')
+		}
+	}
+
+	const rejectFriend = (friendId: string) => {
+		handleFriendAction({
+			friendId,
+			state: 'rejected',
+		})
+	}
+
+	const renderFriendActions = (friend: Friend) => (
+		<div className="flex space-x-2">
+			{!friend.sendByMe ? (
+				<>
+					<Button
+						type="button"
+						size="sm"
+						onClick={() => acceptFriend(friend.id)}
+						disabled={isProcessing}
+						className="gap-1 h-9 px-3 rounded-lg transition-ui active:scale-[0.97]"
+						variant="outline"
+						color="success"
+					>
+						<Icon name="userCheck" size={18} />
+						<span className="text-xs font-medium">دوست شیم</span>
+					</Button>
+					<RemoveFriendButton
+						friend={friend}
+						onClick={() => rejectFriend(friend.id)}
+						disabled={isProcessing}
+						label="رد کردن"
+					/>
+				</>
+			) : (
+				<span className="flex items-center px-3 text-xs font-medium rounded-lg h-9 text-fg bg-surface-2">
+					ارسال شده
+				</span>
+			)}
+		</div>
+	)
+
+	return (
+		<Modal
+			isOpen={isOpen}
+			onClose={() => onClose()}
+			size="lg"
+			title="درخواست های دوستی"
+			closeOnBackdropClick
+		>
+			<FriendsList
+				status="PENDING"
+				renderFriendActions={renderFriendActions}
+				emptyMessage="درخواست دوستی جدیدی ندارید"
+				caching={false}
+			/>
+		</Modal>
+	)
+}

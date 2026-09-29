@@ -1,0 +1,18 @@
+@import "tailwindcss" source("../");
+@source not "../**/*.md";
+@source not "../**/__tests__";
+@plugin "daisyui";
+@import "./fonts.css";
+@import "./primitives.css";
+@import "./tokens.css";
+@import "./elevation.css";
+@import "./animations.css";
+@import "./themes/light.css";
+@import "./themes/dark.css";
+@import "./themes/glass.css";
+@import "./themes/icy.css";
+@import "./themes/zarna.css";
+@import "./themes/esteghlal.css";
+@import "./base.css";
+@import "./utilities.css";
+@import "./legacy.css";

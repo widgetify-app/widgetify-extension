@@ -9,7 +9,7 @@ import {
 	useGetGalleryCategories,
 	type GalleryAsset,
 	type GalleryAssetType,
-} from '@/services/hooks/gallery/get-gallery-assets.hook'
+} from '@/services/gallery/get-gallery-assets.hook'
 import { GalleryAssetPurchaseModal } from './gallery-asset-purchase-modal'
 import { GalleryPhotoItem } from './gallery-photo-item'
 import { GalleryBookmarkIconItem } from './gallery-bookmark-icon-item'
@@ -90,7 +90,6 @@ export function GalleryPickerModal({
 				title={title}
 				size="xl"
 				className=""
-				direction="rtl"
 				closeOnBackdropClick={true}
 			>
 				<div className="flex flex-col w-full gap-4 p-1 h-[70vh]">
@@ -141,7 +140,7 @@ export function GalleryPickerModal({
 								</div>
 							)
 						) : assets.length === 0 ? (
-							<div className="flex flex-col items-center justify-center h-full py-20 text-muted">
+							<div className="flex flex-col items-center justify-center h-full py-20 text-fg-muted">
 								<Icon
 									name="image"
 									size={40}

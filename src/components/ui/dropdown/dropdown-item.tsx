@@ -5,7 +5,7 @@ import {
 	type DropdownItemVariantProps,
 } from './dropdown-item.variants'
 
-export interface DropdownItemProps extends DropdownItemVariantProps {
+interface DropdownItemProps extends DropdownItemVariantProps {
 	icon?: React.ReactNode
 	label: React.ReactNode
 	badge?: React.ReactNode
@@ -49,5 +49,5 @@ export function DropdownItem({
 }
 
 export function DropdownDivider() {
-	return <div className="h-px my-1 bg-base-content/10" />
+	return <div className="h-px my-1 bg-fill-2" />
 }

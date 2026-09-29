@@ -3,13 +3,14 @@ import { cva } from 'class-variance-authority'
 export const modalBoxVariants = cva(
 	[
 		'modal-box',
+		'bg-glass-modal',
 		'overflow-hidden',
 		'max-h-[calc(100dvh-1rem)]',
 		'md:max-h-[calc(100dvh-2rem)]',
 		'rounded-widget',
 		'p-3',
 		'md:p-4',
-		'elevation-lg',
+		'shadow-lg',
 	],
 	{
 		variants: {
@@ -33,8 +34,6 @@ export const modalBoxVariants = cva(
 		},
 	}
 )
-
-export type ModalBoxVariant = typeof modalBoxVariants
 
 export const modalScrollVariants = cva(
 	['overflow-y-auto', 'overflow-x-hidden', 'px-0.5', 'md:px-1'],
@@ -70,13 +69,4 @@ export const modalScrollVariants = cva(
 	}
 )
 
-export type ModalScrollVariant = typeof modalScrollVariants
-
-export const modalDialogVariants = cva([
-	'modal',
-	'modal-middle',
-	'p-2',
-	'md:p-4',
-])
-
-export type ModalDialogVariant = typeof modalDialogVariants
+export const modalDialogVariants = cva(['modal', 'modal-middle', 'p-2', 'md:p-4'])

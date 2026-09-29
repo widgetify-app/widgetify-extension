@@ -19,10 +19,10 @@ export function ItemSelector({
 }: Props) {
 	const getRadioBorderStyle = (isSelected: boolean) => {
 		if (isSelected) {
-			return 'border-primary bg-primary'
+			return 'border-brand bg-brand'
 		}
 
-		return 'border-content bg-base-300/60'
+		return 'border-surface-3 bg-fill-2'
 	}
 
 	return (
@@ -30,17 +30,17 @@ export function ItemSelector({
 			type="button"
 			onClick={onClick}
 			className={cn(
-				'flex cursor-pointer flex-col items-start p-3 transition-all border rounded-xl w-full text-right outline-none',
+				'flex cursor-pointer flex-col items-start p-3 transition-ui border rounded-xl w-full text-right outline-none',
 				className,
 				isActive
-					? 'border-primary/25 bg-primary/20'
-					: 'bg-base-300/25 border-content hover:!border-primary/15 hover:!bg-primary/5'
+					? 'border-brand-fill-2 bg-brand-fill-2'
+					: 'bg-fill border-surface-3 hover:!border-brand-fill-2 hover:!bg-brand-fill'
 			)}
 			style={style}
 		>
 			<div className="flex items-center justify-center gap-0.5 mb-1">
 				<div
-					className={`w-4 h-4 rounded-full text-white border flex items-center justify-center ${getRadioBorderStyle(isActive)}`}
+					className={`w-4 h-4 rounded-full text-on-brand border flex items-center justify-center ${getRadioBorderStyle(isActive)}`}
 				>
 					{isActive && (
 						<svg
@@ -59,10 +59,10 @@ export function ItemSelector({
 						</svg>
 					)}
 				</div>
-				<span className="mr-1.5 text-sm font-medium text-content">{label}</span>
+				<span className="mr-1.5 text-sm font-medium text-fg">{label}</span>
 			</div>
 			{description && (
-				<div className="text-xs text-muted text-right">{description}</div>
+				<div className="text-xs text-fg-muted text-right">{description}</div>
 			)}
 		</button>
 	)

@@ -1,9 +1,9 @@
 import { useState, useRef } from 'react'
 import { Icon } from '@/icons'
-import { VipBadge } from '@/components/ui'
 import { UserCoin } from '@/components/user-coin'
 import { useLazyLoad } from '@/hooks/use-lazy-load'
-import type { GalleryAsset } from '@/services/hooks/gallery/get-gallery-assets.hook'
+import type { GalleryAsset } from '@/services/gallery/get-gallery-assets.hook'
+import { Spinner } from '@/components/ui'
 
 interface GalleryBookmarkIconItemProps {
 	asset: GalleryAsset
@@ -29,14 +29,14 @@ export function GalleryBookmarkIconItem({
 	const elementRef = useLazyLoad(loadContent)
 
 	const itemOutlineStyle = isSelected
-		? 'ring-2 ring-primary ring-offset-2 ring-offset-base-100 border-primary'
-		: 'border-base-content/10 hover:border-primary/50 hover:bg-base-300/40'
+		? 'ring-2 ring-brand ring-offset-2 ring-offset-surface border-brand'
+		: 'border-line hover:border-brand-muted hover:bg-fill-2'
 
 	return (
 		<div
 			ref={elementRef}
 			onClick={onClick}
-			className={`relative aspect-square rounded-2xl cursor-pointer group flex flex-col items-center justify-center p-3 select-none transition-all duration-200 active:scale-96 bg-base-300/20 border ${itemOutlineStyle}`}
+			className={`relative aspect-square rounded-2xl cursor-pointer group flex flex-col items-center justify-center p-3 select-none transition-ui duration-200 active:scale-96 bg-fill border ${itemOutlineStyle}`}
 		>
 			<div
 				className="absolute inset-0 rounded-2xl pointer-events-none opacity-40"
@@ -48,13 +48,13 @@ export function GalleryBookmarkIconItem({
 			/>
 			{!loaded && (
 				<div className="flex items-center justify-center w-full h-full">
-					<div className="w-5 h-5 border-2 rounded-full border-primary/30 border-t-primary animate-spin" />
+					<Spinner />
 				</div>
 			)}
 			{error && (
-				<div className="flex flex-col items-center justify-center w-full h-full text-error/80">
+				<div className="flex flex-col items-center justify-center w-full h-full text-danger">
 					<Icon name="alert" size={20} />
-					<p className="mt-1 text-[10px] text-muted">خطا در بارگذاری</p>
+					<p className="mt-1 text-3xs text-fg-muted">خطا در بارگذاری</p>
 				</div>
 			)}
 			<div className="relative z-10 flex items-center justify-center w-full h-full p-2">
@@ -76,8 +76,8 @@ export function GalleryBookmarkIconItem({
 			{loaded && !error && (
 				<>
 					{asset.title && (
-						<div className="absolute inset-x-1 bottom-1 px-1 py-0.5 rounded-lg bg-base-100/90 text-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-30 shadow-xs border border-base-content/10">
-							<span className="text-[10px] font-medium text-content truncate block">
+						<div className="absolute inset-x-1 bottom-1 px-1 py-0.5 rounded-lg bg-surface text-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-30 shadow-sm border border-line">
+							<span className="text-3xs font-medium text-fg truncate block">
 								{asset.title}
 							</span>
 						</div>
@@ -89,20 +89,20 @@ export function GalleryBookmarkIconItem({
 					)}
 
 					{isSelected && (
-						<div className="absolute p-1 text-primary-content rounded-full shadow-sm top-2 left-2 bg-primary z-20">
+						<div className="absolute p-1 text-on-brand rounded-full shadow-sm top-2 left-2 bg-brand z-20">
 							<Icon name="check" size={12} />
 						</div>
 					)}
 					{asset.accessVip && !asset.isOwned && (
 						<div className="absolute top-1.5 left-1.5 z-20">
-							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip/90 backdrop-blur-xs text-white text-[9px] font-bold shadow-xs border border-white/20">
+							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip-hover backdrop-blur-xs text-on-vip text-4xs font-bold shadow-sm border border-image-line">
 								<Icon name="diamond" size={9} />
 								<span>رایگان با پرو</span>
 							</span>
 						</div>
 					)}
 					{asset.isOwned && !isSelected && (
-						<div className="absolute flex gap-0.5 px-1.5 rounded-tl-xl rounded-br-md bg-success text-success-content shadow-xs items-center top-0 left-0 text-[10px] h-4 z-20">
+						<div className="absolute flex gap-0.5 px-1.5 rounded-tl-xl rounded-br-lg bg-success text-on-success shadow-sm items-center top-0 left-0 text-3xs h-4 z-20">
 							<Icon name="shoppingBag" size={9} />
 							<span>خریداری شده</span>
 						</div>

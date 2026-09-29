@@ -1,24 +1,27 @@
 import type React from 'react'
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import {
+	createContext,
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useState,
+} from 'react'
 import Analytics from '@/analytics'
 import { getMultipleFromStorage, setToStorage } from '@/common/storage'
-import {
-	useChangeFont,
-	useChangeUI,
-} from '@/services/hooks/extension/update-setting.hook'
+import { useChangeFont, useChangeUI } from '@/services/extension/update-setting.hook'
 import { useAuth } from './auth.context'
 import { safeAwait } from '@/services/api'
 import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
 import { listenEvent } from '@/common/utils/call-event'
 
-export enum UI {
-	DEFAULT = 'CUSTOM',
+enum UI {
 	ADVANCED = 'ADVANCED',
 	SIMPLE = 'SIMPLE',
 	CUSTOM = 'CUSTOM',
 }
-export interface AppearanceData {
+interface AppearanceData {
 	fontFamily: string
 	contentAlignment: 'center' | 'top'
 	ui: UI
@@ -48,7 +51,7 @@ const DEFAULT_SETTINGS: AppearanceData = {
 	contentAlignment: 'top',
 }
 
-export const AppearanceContext = createContext<AppearanceContextContextType | null>(null)
+const AppearanceContext = createContext<AppearanceContextContextType | null>(null)
 
 export function AppearanceProvider({ children }: { children: React.ReactNode }) {
 	const [settings, setSettings] = useState<AppearanceData>(DEFAULT_SETTINGS)

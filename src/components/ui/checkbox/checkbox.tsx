@@ -26,11 +26,11 @@ const CheckboxBase = ({
 	const getCheckboxStyle = () => {
 		if (checked) {
 			if (checkedCheckBoxClassName) return checkedCheckBoxClassName
-			return 'bg-primary border-primary'
+			return 'bg-brand border-brand'
 		}
 
 		if (unCheckedCheckBoxClassName) return unCheckedCheckBoxClassName
-		return 'border-content'
+		return 'border-surface-3'
 	}
 
 	const onChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,17 +59,17 @@ const CheckboxBase = ({
 					onClick={onClickEvent}
 				/>
 				<div
-					className={`w-5 h-5 border rounded-md flex items-center justify-center transition-colors duration-200 ${getCheckboxStyle()} ${className}`}
+					className={`w-5 h-5 border rounded-lg flex items-center justify-center transition-colors duration-200 ${getCheckboxStyle()} ${className}`}
 				>
 					<svg
-						className={`transition-all duration-150 ${checked ? 'scale-100' : 'scale-0'}`}
+						className={`transition-ui duration-150 ${checked ? 'scale-100' : 'scale-0'}`}
 						width="12"
 						height="12"
 						viewBox="0 0 12 12"
 						fill="none"
 					>
 						<path
-							className={`transition-all duration-200 ${checked ? 'stroke-dashoffset-0' : 'stroke-dashoffset-full'}`}
+							className="transition-[stroke-dashoffset] duration-200"
 							d="M2.5 6L5 8.5L9.5 4"
 							stroke="white"
 							strokeWidth="2"
@@ -82,9 +82,7 @@ const CheckboxBase = ({
 				</div>
 			</div>
 			{label && (
-				<span className={`ml-2 mr-2 ${fontSize} text-sm text-content`}>
-					{label}
-				</span>
+				<span className={`ml-2 mr-2 ${fontSize} text-sm text-fg`}>{label}</span>
 			)}
 		</label>
 	)

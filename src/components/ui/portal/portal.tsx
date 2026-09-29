@@ -7,7 +7,7 @@ import {
 } from 'react'
 import { createPortal } from 'react-dom'
 
-export interface PortalProps {
+interface PortalProps {
 	children: ReactNode
 	container?: Element | null
 	topLayer?: boolean
@@ -33,7 +33,7 @@ function topmostModalDialog(): HTMLElement | null {
 	return topmost
 }
 
-export function raiseToTopLayer(host: HTMLElement | null) {
+function raiseToTopLayer(host: HTMLElement | null) {
 	if (!host) return
 
 	const parent = topmostModalDialog() ?? document.body

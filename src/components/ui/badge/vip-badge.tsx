@@ -17,7 +17,7 @@ const ICON_ONLY_SIZES: Record<NonNullable<VipBadgeVariantProps['size']>, string>
 	lg: 'w-6.5 h-6.5 p-0',
 }
 
-export interface VipBadgeProps
+interface VipBadgeProps
 	extends React.HTMLAttributes<HTMLSpanElement>,
 		VipBadgeVariantProps {
 	iconOnly?: boolean
@@ -27,7 +27,6 @@ export interface VipBadgeProps
 export function VipBadge({
 	size = 'sm',
 	variant = 'indigo',
-	rounded = 'full',
 	iconOnly = false,
 	text = 'پرو',
 	className,
@@ -39,7 +38,7 @@ export function VipBadge({
 	return (
 		<span
 			className={cn(
-				vipBadgeVariants({ variant, size, rounded }),
+				vipBadgeVariants({ variant, size }),
 				iconOnly && [
 					'aspect-square shrink-0 justify-center items-center',
 					ICON_ONLY_SIZES[currentSize],
@@ -55,4 +54,3 @@ export function VipBadge({
 }
 
 export const ProBadge = VipBadge
-export type ProBadgeProps = VipBadgeProps

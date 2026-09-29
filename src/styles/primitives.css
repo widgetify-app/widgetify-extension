@@ -1,0 +1,86 @@
+/* ============================================
+   PRIMITIVES
+
+   The only place a raw colour may be written. Everything else in the
+   project refers to a step on one of these ramps, never to a literal
+   and never to an opacity modifier.
+
+   Every value is hex on purpose: oklch() and color-mix() both landed in
+   Chrome 111, and Chrome 109 is the last version Windows 7/8.1 can run.
+   A colour those browsers cannot parse is dropped at computed-value time,
+   which is why text lost its colour there.
+   ============================================ */
+@theme {
+	/* --------------------------------------------
+     RESTRICTION - removes Tailwind's stock palette so text-red-500,
+     bg-slate-200 and friends generate no CSS at all. Using one is a
+     build error, not a review comment. daisyUI's own semantic names
+     (base-100, primary, error ...) are declared by its plugin and are
+     deliberately left alone.
+     -------------------------------------------- */
+	--color-red-*: initial;
+	--color-orange-*: initial;
+	--color-amber-*: initial;
+	--color-yellow-*: initial;
+	--color-lime-*: initial;
+	--color-green-*: initial;
+	--color-emerald-*: initial;
+	--color-teal-*: initial;
+	--color-cyan-*: initial;
+	--color-sky-*: initial;
+	--color-blue-*: initial;
+	--color-indigo-*: initial;
+	--color-violet-*: initial;
+	--color-purple-*: initial;
+	--color-fuchsia-*: initial;
+	--color-pink-*: initial;
+	--color-rose-*: initial;
+	--color-slate-*: initial;
+	--color-gray-*: initial;
+	--color-zinc-*: initial;
+	--color-stone-*: initial;
+	--color-neutral-*: initial;
+
+	--font-sans: "Vazir", ui-sans-serif, system-ui, sans-serif;
+	--font-latin: "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+	--font-latin--font-feature-settings: normal;
+
+	--text-2xs: 0.6875rem;
+	--text-3xs: 0.625rem;
+	--text-4xs: 0.5625rem;
+
+	--leading-body: 1.5625;
+	--leading-control: 1.4;
+	--leading-tight: 1.25;
+	--leading-relaxed: 1.75;
+
+	/* --------------------------------------------
+     RADIUS
+     -------------------------------------------- */
+	--radius-md: initial;
+	--radius-4xl: initial;
+	--radius-widget: 1.5rem;
+
+	/* --------------------------------------------
+     MOTION
+     -------------------------------------------- */
+	--duration-fast: 150ms;
+	--ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+	--z-float: 50;
+	--z-nav: 60;
+	--z-toolbar: 70;
+	--z-popover: 9999;
+	--z-dropdown: 99999;
+
+	--color-vip: #6366f1;
+	--color-vip-rgb: 99, 102, 241;
+	--color-vip-content: #ffffff;
+}
+
+:root {
+	--brand-primary: #536dfe;
+	--brand-primary-rgb: 83, 109, 254;
+	--brand-secondary: #7c8df0;
+	--brand-secondary-rgb: 124, 141, 240;
+}

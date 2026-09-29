@@ -1,0 +1,15 @@
+import { useMutation } from '@tanstack/react-query'
+import { getMainClient } from '../api'
+import { noteKeys } from '@/services/note/note.keys'
+
+export const useRemoveNote = () => {
+	return useMutation({
+		mutationKey: noteKeys.remove,
+		mutationFn: (id: string) => deleteNote(id),
+	})
+}
+
+async function deleteNote(id: string) {
+	const api = getMainClient()
+	await api.delete(`/notes/${id}`)
+}

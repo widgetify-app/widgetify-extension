@@ -1,7 +1,7 @@
-export type StackAnchor = 'left' | 'center' | 'right'
+type StackAnchor = 'left' | 'center' | 'right'
 
 export const STACK_GAP = 10
-export const STACK_SCALE_STEP = 0.05
+const STACK_SCALE_STEP = 0.05
 export const STACK_VISIBLE_LAYERS = 3
 
 export function getStackAnchor(position: string): StackAnchor {

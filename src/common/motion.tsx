@@ -32,9 +32,7 @@ function cleanMotionProps<T extends object>(props: T): T {
 	} as T
 }
 
-function createMotionComponent<T extends keyof typeof motion, P extends object>(
-	Component: React.ComponentType<P>
-) {
+function createMotionComponent<P extends object>(Component: React.ComponentType<P>) {
 	return React.forwardRef<any, P>((props, ref) => {
 		const { isOptimalMode } = useGeneralSetting()
 
@@ -48,21 +46,21 @@ function createMotionComponent<T extends keyof typeof motion, P extends object>(
 }
 
 export const Motion = {
-	div: createMotionComponent<'div', HTMLMotionProps<'div'>>(motion.div),
+	div: createMotionComponent<HTMLMotionProps<'div'>>(motion.div),
 
-	span: createMotionComponent<'span', HTMLMotionProps<'span'>>(motion.span),
+	span: createMotionComponent<HTMLMotionProps<'span'>>(motion.span),
 
-	button: createMotionComponent<'button', HTMLMotionProps<'button'>>(motion.button),
+	button: createMotionComponent<HTMLMotionProps<'button'>>(motion.button),
 
-	img: createMotionComponent<'img', HTMLMotionProps<'img'>>(motion.img),
+	img: createMotionComponent<HTMLMotionProps<'img'>>(motion.img),
 
-	ul: createMotionComponent<'ul', HTMLMotionProps<'ul'>>(motion.ul),
+	ul: createMotionComponent<HTMLMotionProps<'ul'>>(motion.ul),
 
-	li: createMotionComponent<'li', HTMLMotionProps<'li'>>(motion.li),
+	li: createMotionComponent<HTMLMotionProps<'li'>>(motion.li),
 
-	svg: createMotionComponent<'svg', SVGMotionProps<SVGSVGElement>>(motion.svg),
+	svg: createMotionComponent<SVGMotionProps<SVGSVGElement>>(motion.svg),
 
-	path: createMotionComponent<'path', SVGMotionProps<SVGPathElement>>(motion.path),
+	path: createMotionComponent<SVGMotionProps<SVGPathElement>>(motion.path),
 }
 
 import { AnimatePresence } from 'framer-motion'

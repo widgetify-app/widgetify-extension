@@ -1,4 +1,4 @@
-import { getFromStorage } from '@/common/storage'
+import { getFromStorage } from '../src/common/storage'
 import { CacheNames } from './cache-names'
 
 export const activeWallpaperUrls = new Set<string>()

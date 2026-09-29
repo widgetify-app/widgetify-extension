@@ -1,0 +1,51 @@
+import { Button, SectionPanel, Spinner } from '@/components/ui'
+import { Icon } from '@/icons'
+
+interface AccountVerificationStatusProps {
+	sendVerificationMutation: {
+		isPending: boolean
+	}
+	onSendVerificationEmail: () => void
+}
+
+export const AccountVerificationStatus = ({
+	sendVerificationMutation,
+	onSendVerificationEmail,
+}: AccountVerificationStatusProps) => {
+	return (
+		<SectionPanel title="وضعیت تایید حساب" size="xs" delay={0.1}>
+			<div className="flex items-center justify-between p-3 border rounded-2xl bg-warning-fill border-warning-fill-2">
+				<div className="flex items-center gap-3">
+					<Icon name="mail" className="text-warning" size={24} />
+					<div>
+						<p className="text-sm font-medium text-warning">
+							⚠️ حساب شما تایید نشده است
+						</p>
+						<p className="text-xs text-warning">
+							لطفا ایمیل خود را بررسی کنید یا ایمیل جدید درخواست کنید.
+						</p>
+					</div>
+				</div>
+				<Button
+					onClick={onSendVerificationEmail}
+					disabled={sendVerificationMutation.isPending}
+					className="px-3 py-2 text-xs transition-colors rounded-2xl"
+					color="warning"
+					size="sm"
+				>
+					{sendVerificationMutation.isPending ? (
+						<>
+							<Spinner size="sm" tone="image" />
+							در حال ارسال...
+						</>
+					) : (
+						<>
+							<Icon name="mail" size={16} />
+							ارسال ایمیل تایید
+						</>
+					)}
+				</Button>
+			</div>
+		</SectionPanel>
+	)
+}

@@ -1,11 +1,6 @@
 import { useCallback } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
-import {
-	resolveValue,
-	useToaster,
-	type Toast,
-	type ToastPosition,
-} from 'react-hot-toast'
+import { resolveValue, useToaster, type Toast, type ToastPosition } from 'react-hot-toast'
 import {
 	STACK_VISIBLE_LAYERS,
 	getStackAnchor,
@@ -27,13 +22,7 @@ interface ToastLayerProps {
 	children: ReactNode
 }
 
-function ToastLayer({
-	id,
-	style,
-	className,
-	onHeightUpdate,
-	children,
-}: ToastLayerProps) {
+function ToastLayer({ id, style, className, onHeightUpdate, children }: ToastLayerProps) {
 	const measure = useCallback(
 		(el: HTMLElement | null) => {
 			if (!el) return
@@ -75,7 +64,11 @@ function getLayerStyle(
 		right: 0,
 		display: 'flex',
 		justifyContent:
-			anchor === 'center' ? 'center' : anchor === 'right' ? 'flex-end' : 'flex-start',
+			anchor === 'center'
+				? 'center'
+				: anchor === 'right'
+					? 'flex-end'
+					: 'flex-start',
 		...(fromTop ? { top: 0 } : { bottom: 0 }),
 		transform: `translateY(${fromTop ? shift : -shift}px) scale(${scale})`,
 		transformOrigin: `${fromTop ? 'top' : 'bottom'} ${anchor}`,
@@ -121,7 +114,9 @@ export function StackedToaster() {
 			{[...groups.values()].flatMap((group) => {
 				const tallestHeight = Math.max(
 					0,
-					...group.filter((item) => item.visible).map((item) => item.height ?? 0)
+					...group
+						.filter((item) => item.visible)
+						.map((item) => item.height ?? 0)
 				)
 
 				return group.map((item, index) => {

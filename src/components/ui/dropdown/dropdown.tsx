@@ -14,7 +14,7 @@ export interface DropdownOption {
 	disabled?: boolean
 }
 
-export interface DropdownProps {
+interface DropdownProps {
 	trigger: ReactNode
 	options?: DropdownOption[]
 	children?: ReactNode
@@ -192,14 +192,16 @@ export function Dropdown({
 	const dropdownContent = children || (
 		<>
 			{options.length === 0 && placeholder && (
-				<div className="px-3 py-2 text-sm italic text-muted">{placeholder}</div>
+				<div className="px-3 py-2 text-sm italic text-fg-muted">
+					{placeholder}
+				</div>
 			)}
 			{options.map((option) => (
 				<button
 					key={option.id}
 					onClick={() => handleOptionClick(option)}
 					disabled={option.disabled}
-					className="w-full px-3 py-2 text-sm text-left transition-colors hover:bg-primary/10 hover:text-primary disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-muted focus:outline-none focus:bg-primary/10 focus:text-primary"
+					className="w-full px-3 py-2 text-sm text-left transition-colors hover:bg-brand-fill hover:text-brand disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-fg-muted focus:outline-none focus:bg-brand-fill focus:text-brand"
 				>
 					{option.label}
 				</button>
@@ -222,11 +224,11 @@ export function Dropdown({
 						topLayer
 						key="dropdown-layer"
 						id={id}
-						style={{ zIndex: 99999 }}
+						style={{ zIndex: 'var(--z-dropdown)' }}
 					>
 						<Motion.div
 							ref={dropdownContentRef}
-							className={`fixed shadow-xl overflow-hidden rounded-2xl bg-base-200 backdrop-blur-xl ${isReady ? 'pointer-events-auto' : 'pointer-events-none'} ${dropdownClassName}`}
+							className={`fixed shadow-xl overflow-hidden rounded-2xl bg-surface-2 backdrop-blur-xl ${isReady ? 'pointer-events-auto' : 'pointer-events-none'} ${dropdownClassName}`}
 							initial={{ opacity: 0, scale: 0.95 }}
 							animate={{
 								opacity: isReady ? 1 : 0,
@@ -246,7 +248,7 @@ export function Dropdown({
 								top: dropdownPosition.top,
 								left: dropdownPosition.left,
 								visibility: isReady ? 'visible' : 'hidden',
-								zIndex: 99999,
+								zIndex: 'var(--z-dropdown)',
 							}}
 						>
 							<div

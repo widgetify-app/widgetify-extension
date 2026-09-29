@@ -35,9 +35,17 @@ Run all four before reporting anything as done:
 ```
 npm run compile      # tsc --noEmit
 npm test             # bun test
-npx biome check src
+npm run lint         # biome check, zero diagnostics
 npm run build        # wxt build, catches CSS and asset issues tsc cannot
 ```
+
+**Never run `npx biome`.** bun installs Biome's binary as `node_modules/.bin/biome.exe`, which npx
+does not look for, so npx quietly downloads an unrelated npm package that happens to be called
+`biome`, checks nothing and exits cleanly. Every Biome result in this repo was produced that way
+until it was noticed. `npm run lint` runs the pinned version (`biome --version` says 2.5.0) over
+`src`, `background`, `entrypoints` and `wxt.config.ts`, and reports nothing. Keep it at nothing:
+fix a diagnostic rather than suppress it. The one deliberate exception is in `biome.json` — tests
+may use a non-null assertion, because a missing value should fail the test.
 
 Checking the built CSS at `.output/chrome-mv3/assets/newtab-*.css` is often the fastest way to prove a styling claim. Use it — several bugs in this repo were classes that compile to nothing.
 
@@ -65,6 +73,13 @@ an animation or an icon, check that its definition is in the same commit.
 
 **A green build is not proof that nothing changed.** To show a refactor left behaviour alone, record the byte size and content hash of `.output/chrome-mv3/background.js` and the chunks under `.output/chrome-mv3/chunks/` before the change, then rebuild and compare. The hash is derived from the content, so an unchanged hash means the emitted code is identical. A deliberate change should move those numbers by an amount you can explain — inlining one nine line component moved a chunk by exactly 38 bytes.
 
+Two builds of the same tree do not hash the same. Two pairs of pet sprites are byte for byte
+identical (`chicken/white_run_8fps` and `white_walk_fast_8fps`, `crab/red_run_8fps` and
+`red_walk_fast_8fps`), Vite emits one file per pair, and which name it keeps changes from build to
+build — and with it every chunk that references it. Compare the output with asset and chunk
+names normalised away, and build the baseline from the same commit twice to confirm it matches
+itself before trusting a difference.
+
 ---
 
 ## Renaming and the published extension
@@ -73,7 +88,10 @@ Source file names do not reach the published extension. Everything under `src/` 
 and minified into `background.js` and a couple of chunks, `sourcemap` is off in
 `wxt.config.ts`, and grepping the built output for any source file name returns nothing. A
 rename that only moves files and rewrites imports produces a byte identical bundle, down to
-the content hash in the chunk filename.
+the content hash in the chunk filename. Two exceptions, both harmless and both explainable: a
+lazily imported module names its own chunk (`habit-share-modal-<hash>.js`), and replacing a
+barrel import with direct imports changes the order modules are evaluated in, which moves
+code around in the bundle without changing a single statement.
 
 Four things genuinely can break a published build, and none of them is a file name:
 
@@ -111,14 +129,22 @@ Two things override that, and only these two. A single-use piece large enough th
 
 **Flag it, don't silently fix it.** If while working you notice unrelated issues in code you touched or passed through — bad variable names, code that's harder to follow than it should be, logic that could be simplified — do not fix it as part of the current task. Mention it as a suggestion in your report instead. Only act on it if the owner then asks you to.
 
+**Dead code does not stay.** When a change leaves something unused, delete it in the same change.
+The tests enforce it: `src/__tests__/architecture.test.ts` fails on a file no entrypoint reaches,
+an export no other file imports and a runtime dependency nothing imports;
+`design-system.test.ts` fails on a CSS class no component writes; Biome fails on an unused
+import. Export a name only when another file imports it — a name used only in its own file
+stays unexported.
+
 **Say when you're unsure.** If the correct fix depends on something you don't actually understand yet, investigate or ask — don't guess and ship a plausible-looking change. If the uncertainty is about a package (an API that seems to have changed, an unfamiliar option, behaviour that doesn't match what you'd expect), check that package's official docs for the exact version pinned in this repo before implementing, rather than assuming from general knowledge.
 
 ---
 
 ## Project structure
 
-One structure, applied to everything. A new file that does not fit it means the
-structure is being worked around, not extended.
+One structure, applied to everything, and `src/__tests__/architecture.test.ts` checks it. A
+file that does not fit means the structure is being worked around, not extended: move the
+file, or change the rule here and the test together.
 
 ### Layers
 
@@ -126,13 +152,21 @@ structure is being worked around, not extended.
 src/components/ui/                                  presentational primitives, no app knowledge
 src/components/                                     cross cutting components that do know the app
 src/common/ src/hooks/ src/context/ src/services/   non component globals
-src/layouts/ src/pages/                             features
+src/features/ src/pages/                            features, and the pages that compose them
 ```
 
 Imports point upward through that list and never downward. **Nothing at or above
-`src/components/` may import from `src/layouts/**` or `src/pages/**`.** If it needs to,
-it is not global: either it belongs inside that one feature, or the thing it reaches
-for belongs further up.
+`src/components/` may import from `src/features/**` or `src/pages/**`,** type imports
+included. If it needs to, it is not global: either it belongs inside that one feature, or
+the thing it reaches for belongs further up. `src/components/ui` also never reaches
+`src/services` — a primitive does not fetch.
+
+**A feature reaches another feature only through its public files:** the entry (and what
+the entry re-exports), the `-setting.tsx` panel, and `*.context.tsx`. A feature may use
+anything in its own folder or in an ancestor's root and role folders — that is what the
+nearest common parent is for. When a sibling needs an internal piece, either the owner
+re-exports it from its entry (`friends.tsx` exports `SelectFriendLayout` for the todos
+widget) or the piece moves up to the common parent.
 
 ### Where a new file goes
 
@@ -146,7 +180,10 @@ import it:
 | Two or more unrelated areas | The matching global layer |
 
 Run the same count backwards before leaving something in a global folder. A global file
-with a single consumer is misplaced, not reusable.
+used from a single area is misplaced, not reusable — the test counts a feature, a page, a
+group under `src/components`, or a global folder as one area. `src/services` is the
+exception by design: everything that talks to the server lives there, however many
+features use it.
 
 **Then which folder inside that owner** — that is settled by the file's role, under
 "Shape of a feature folder" below, and never by the import count. A helper used once and
@@ -159,9 +196,9 @@ Every feature folder looks like this, at every depth:
 
 ```
 <feature>/
-  <feature>.<role>.tsx      entry
+  <feature>.tsx             entry — <feature>.widget.tsx for a widget, <feature>.page.tsx for a page
   <feature>-setting.tsx     settings panel, when it has one
-  <feature>.context.tsx     provider, when it has one
+  <name>.context.tsx        provider, when it has one
   types.ts constants.ts     this feature's own types and constants, flat
   components/               sub components of this feature
   variants/                 alternate renderers this feature registers
@@ -170,9 +207,10 @@ Every feature folder looks like this, at every depth:
   <sub-feature>/            only when it has its own entry file; same shape, recursively
 ```
 
-**Sub components go in `components/`,** never a folder named after what they happen to
-be. One level of nesting inside `components/` is fine for a named group that belongs to
-one sub feature.
+**Nothing else sits at a feature's root** — no helper, no second component, no
+`index.tsx`. `src/features/` holds only feature folders. `src/pages/` holds page folders
+and `root.tsx`, the shell that switches between them, with the shell's own role folders
+beside it (`src/pages/hooks/use-wallpaper-apply.ts`).
 
 **Every file sits in the folder for its role,** whether the feature has one of them or
 twenty. A helper goes in `utils/`, a hook in `hooks/`, a sub component in `components/`,
@@ -181,37 +219,54 @@ expected; a role folder that would be empty is simply absent. The point is that 
 feature folder can be read without opening it, and that the same kind of file is always
 found in the same place.
 
+**`components/` and `utils/` may hold one level of named group** — `components/modal/`,
+`utils/layout-engine/` — and a group holds files only. `hooks/`, `variants/` and
+`__tests__/` never nest. A hook is `use-<name>.ts` and lives in `hooks/`, and nothing else
+lives there.
+
 **Types and constants are the exception: inside a feature they stay flat** as `types.ts`
-and `constants.ts` in the feature root, because they describe the feature itself rather
-than being a collection of like things. They take a folder only in the global layer,
-where many unrelated features' shapes and values live side by side.
+and `constants.ts` in the feature root (`constants.tsx` when the values hold JSX), because
+they describe the feature itself rather than being a collection of like things. They take
+a folder only in the global layer, where many unrelated features' shapes and values live
+side by side.
 
 **No folder name outside that list.** Not a second word for something already named
 there, not a folder standing in for a single file's role.
 
 **A feature or sub feature folder's name matches its entry file's name,** plural or
 singular included: `habit/` holds `habit.widget.tsx`. This does not reach role folders or
-a named group inside `components/` — those hold a set of files and have no entry to match.
+a named group inside them — those hold a set of files and have no entry to match.
+
+**`src/features/widgets/` is itself a feature.** `widgets.tsx` is the canvas and
+`widgets.context.tsx` its state; `registry.tsx` registers every widget — the one root
+file beyond the list above, because only a feature that hosts sub features has one, and
+it cannot live in `constants.ts` without every widget importing a file that imports every
+widget. `types.ts`, `constants.ts`, `date.context.tsx` and `currency.context.tsx` hold what
+several widgets share, and `components/`, `hooks/` and `utils/` hold the platform — the
+container, the layout engine, migration, the VIP resolver. Each widget is a sub feature
+with a `<name>.widget.tsx` entry. The canvas's other sub features — `catalog/` (adding a
+widget), `widget-settings/`, `presets/` — take the plain `<name>.tsx`.
 
 ### Naming
 
-kebab-case for every file and folder. A file that exports no JSX is `.ts`, never `.tsx`.
+kebab-case for every file and folder. A file is `.tsx` exactly when it contains JSX.
 
 | Role | Pattern |
 |---|---|
-| Widget entry | `<name>.widget.tsx` |
-| Non widget area entry | `<name>.layout.tsx` |
-| Routed page | `<name>.page.tsx` |
+| Feature entry | `<name>.tsx` in the folder of the same name |
+| Widget entry | `<name>.widget.tsx`, directly under `src/features/widgets/<name>/` |
+| Routed page | `<name>.page.tsx`, directly under `src/pages/<name>/` |
 | Settings panel | `<name>-setting.tsx` |
 | Context provider | `<name>.context.tsx` |
-| Server state hook | `<verb>-<noun>.hook.ts` |
-| Local React hook | `use-<name>.ts` |
-| cva class variants | `<component>.variants.ts`, beside the component |
+| Server state hook | `<name>.hook.ts`, only in `src/services/<domain>/` |
+| Query and mutation keys | `<domain>.keys.ts`, one per domain in `src/services/<domain>/` |
+| Local React hook | `hooks/use-<name>.ts` |
+| cva class variants | `<component>.variants.ts`, beside the component in `src/components/ui` |
 | Alternate size or display renderer | `variants/<name>-<WxH>.tsx` |
-| Domain shape | `<name>.interface.ts`, or `types.ts` for a folder's own types |
+| Domain shape | `<name>.interface.ts` in a global layer; `types.ts` inside a feature |
 | Constants | `constants.ts` |
 | Helpers | `utils/<name>.ts`, named for what the helper does |
-| Test | `__tests__/<name>.test.ts` |
+| Test | `__tests__/<name>.test.ts`; `__tests__/` holds nothing else |
 
 Take the suffix from that table rather than inventing one. `variants` is the single word
 carrying two meanings, and they do not mix: as a file suffix it is cva classes beside a
@@ -223,6 +278,49 @@ component, as a folder it is the alternate renderers a feature registers.
 is closed — `.item`, `.badge`, `.modal`, `.dropdown`, `.skeleton` and the rest are not
 suffixes, they are the last word of the name.
 
+### Imports
+
+**One alias per top-level folder,** declared in `wxt.config.ts`: `@/common`,
+`@/components`, `@/context`, `@/hooks`, `@/icons`, `@/services`, `@/styles`, `@/assets`,
+`@/features`, `@/pages`, `@/analytics`. WXT also answers `@/src/...` and `~/...`; those
+spellings are a missing alias, not a convention, and the test rejects them.
+
+**A relative import stays inside the unit it starts in** — one feature
+(`src/features/<name>`), one page (`src/pages/<name>`), or one top-level folder under
+`src`. Anything that crosses goes through an alias, so a moved file never leaves a
+`../../..` pointing somewhere else.
+
+**There are exactly three barrels:** `@/components/ui`, `@/components/gallery` and
+`@/icons`. Import from the folder, never from the file behind it. The one exception is a
+file inside that same folder importing a sibling: `popover-menu.tsx` reaches
+`@/components/ui/portal/portal` directly because going through its own barrel would be a
+circular import. No other folder gets an `index.ts`.
+
+### Server state
+
+**Everything that talks to the server lives in `src/services/<domain>/`,** one flat folder
+per backend domain, however many features use it: the hooks (`*.hook.ts`), the shapes
+the server sends (`*.interface.ts`), a plain request that is not a hook
+(`<verb>-<noun>.ts`), and the domain's keys (`<domain>.keys.ts`). `src/services/api.ts`
+is the client, and only `src/services` calls `getMainClient` — a feature that needs a new
+request adds a function there rather than calling the client itself.
+
+**Every query and mutation key comes from a keys file.** A literal array passed as
+`queryKey`, `mutationKey` or to `setQueryData` anywhere else fails the test, because a key
+typed twice drifts: the profile was once invalidated as `['getUser']` after a purchase
+while every query cached it as `['userProfile']`, so the coin balance never refreshed.
+
+```ts
+export const habitKeys = {
+	list: (archived: boolean) => ['get-habits', archived] as const,
+	detail: (habitId: string) => ['get-habit-detail', habitId] as const,
+	add: ['addHabit'] as const,
+}
+```
+
+The strings are what TanStack Query caches by — renaming one is harmless, but never make
+two queries share a key they did not share before.
+
 ### Before adding a file
 
 1. Does it already exist? Check `src/components/ui`, `@/common/utils`, the feature folder.
@@ -233,7 +331,7 @@ suffixes, they are the last word of the name.
 4. Take the suffix from the naming table.
 5. Does the feature already have the role folder this file belongs in? Create it if
    not; a single file in it is fine.
-6. Re-read the import direction rule before calling it done.
+6. Run `npm test` — the architecture test names the rule a misplaced file breaks.
 
 Documentation lives in this file, not in a README beside the code it describes. Nothing
 keeps those in sync and they go stale without anyone noticing.
@@ -243,13 +341,6 @@ keeps those in sync and they go stale without anyone noticing.
 ## Conventions
 
 **Check `src/components/ui` first.** Before implementing any UI, look in `src/components/ui` for something that already covers it and import from `@/components/ui`. Do not hand roll a dialog or a popover. If the task genuinely needs a component that other parts of the app would reasonably reuse and it isn't in `src/components/ui` yet, build it there and use it from that location — don't leave a reusable component sitting in a feature folder.
-
-**Import through a barrel, not past it.** Where a folder has an `index.ts` —
-`@/components/ui`, `@/components/gallery` — import from the folder, never from the file
-behind it. The one exception is a file inside that same folder importing a sibling:
-`popover-menu.tsx` reaches `@/components/ui/portal/portal` directly because going through
-its own barrel would be a circular import. A deep path from outside is drift; a deep path
-from inside the barrel's own folder is deliberate, so leave it.
 
 **Responsiveness matters, down to 500px wide.** This is a desktop browser extension: it renders in a new tab on a computer, never on a phone. 500px is the narrowest width worth supporting, so a layout that holds from 500px up is done — do not spend effort on narrower breakpoints or phone specific behaviour.
 
@@ -261,13 +352,39 @@ from inside the barrel's own folder is deliberate, so leave it.
 
 **Animation** uses `Motion` and `Presence` from `@/common/motion`, never raw `framer-motion`. The wrappers are what make optimisation mode work.
 
-**Storage** goes through `@/common/storage`. Every key is typed in `src/common/constants/store.key.ts`. Deprecated keys get purged via `purgeDeprecatedStorageKeys`.
+**Transitions** use `transition-ui` for a state change and name the properties (`transition-[width]`) when size or position animates. `transition-all` and durations off the 150/200/300/500/1000 steps fail `design-system.test.ts`; `src/styles/README.md` explains why.
 
-**Cross component messaging** uses `callEvent` / `listenEvent` from `@/common/utils/call-event`, typed in the same file.
+**Storage** goes through `@/common/storage`, and every key is typed on the `StorageKV`
+interface. App-wide keys are declared in `src/common/constants/store-keys.ts`; a key whose
+value only one feature understands is declared by that feature, in its `types.ts`, by
+augmenting the interface:
 
-**Icons** come from `Icon` in `@/icons`.
+```ts
+declare module '@/common/constants/store-keys' {
+	interface StorageKV {
+		pets: PetSettings
+	}
+}
+```
 
-**Path aliases are declared one per folder** in `wxt.config.ts`, and `@` on its own resolves to the repo root, not to `src`. A folder with no alias there can only be reached as `@/src/<folder>` through WXT's generic `@/*` fallback. That spelling is a missing alias, not a convention — add the folder to the alias map instead of writing it.
+That keeps the global layer from importing feature types, and the compiler still rejects a
+key nobody declared. Grep `interface StorageKV` to see every key. Deprecated keys get
+purged via `purgeDeprecatedStorageKeys`.
+
+`localStorage` is touched only inside `src/common/storage.ts`. The one value it holds is the
+Firefox favicon consent, because `getFaviconFromUrl` reads it synchronously while
+rendering; `getFaviconConsent` and `setFaviconConsent` wrap it under its original key, and
+logout clears it with `clearLocalStorage`, as it clears every other setting.
+
+**Cross component messaging** uses `callEvent` / `listenEvent` from `@/common/utils/call-event`, typed on the `EventName` interface — app-wide events in that file, a feature's own events in its `types.ts`, the same way as storage keys. A file that augments must stay a module (keep at least one export): a `declare module` in a file with no import or export replaces the module instead of extending it.
+
+**Icons** come from `Icon` in `@/icons`, and nothing else imports `react-icons`. Every icon in the pack is Lucide (`react-icons/lu`) except the Google and Telegram logos and the custom SVGs (the diamond, and the solid home and compass, whose door and needle are cut out with `evenodd`, which `filled()` cannot do); a solid version is otherwise the same Lucide icon wrapped in `filled()`. A new icon is a Lucide name added to `src/icons/packs/default.tsx` and `types.ts`. An icon that turns while something loads (a refresh button) takes `spin`.
+
+**Loading** is `Spinner` from `@/components/ui`: `size` from `xs` (12px) to `2xl` (40px), `tone` `brand` by default, `current` inside a coloured button, `image` over a picture. It announces itself as a status; pass `aria-hidden` when the text beside it already says it is loading. `animate-spin` is written nowhere else, and a test holds that.
+
+**Modals are always right to left.** `Modal` has no direction prop; it labels itself from its `title` and its close button reads «بستن».
+
+**Buttons** take `color` from the token names: `base`, `brand`, `danger`, `success`, `warning`, `vip`. `brand` is the app's main action. `rounded` defaults to `xl`; every radius has a role, listed in `src/styles/README.md`.
 
 **Analytics** via `@/analytics`.
 
@@ -287,7 +404,7 @@ Before writing any colour, decide which of two kinds it is.
 
 **Content** is a colour that carries its own meaning and would be wrong to re-theme: a thing being depicted (artwork, an illustrated object), a palette the user picks a value out of, a colour derived from an image, or a fill handed to an API that cannot take a class. Content is correctly hardcoded, and converting it to a token breaks it.
 
-When the same non-token colour appears in more than a couple of places, it is neither — it is a missing token. Name it once in the theme layer and point every site at that name.
+When the same non-token colour appears in more than a couple of places, it is neither — it is a missing token. Name it once in `src/styles/tokens.css` and point every site at that name. The reverse holds too: a colour only one component needs is not a token. Write it inline from the theme channels (`border-[rgba(var(--color-error-rgb),0.5)]`), never as a hex. `src/styles/README.md` has the vocabulary and the order to work through before adding a name.
 
 ### Tokens come in pairs, and the pair is the unit
 
@@ -302,7 +419,7 @@ Every surface token has a matching content token that is the only safe foregroun
 
 Tailwind compiles `/N` to a `color-mix` against transparent, which **multiplies** whatever alpha the token already has. A theme is free to define its surfaces as translucent, and some do. The same class then lands anywhere between its nominal value and near zero depending on the theme, so an element styled this way disappears in exactly the themes where it mattered.
 
-To tint a surface, dilute the **content** token instead. A content token is near opaque in any sane theme and contrasts its own background by definition, so one class behaves the same everywhere: a light wash on dark themes, a dark wash on light ones.
+To tint a surface, dilute the **content** token instead. A content token is near opaque in any sane theme and contrasts its own background by definition, so one class behaves the same everywhere: a light wash on dark themes, a dark wash on light ones. That is what `fill`, `fill-2` and `fill-3` are.
 
 ### Anything drawn over an image is its own context
 
@@ -312,26 +429,42 @@ The app renders over a user supplied wallpaper, and individual surfaces may carr
 
 `dark:` and `light:` key off `prefers-color-scheme`, which is unrelated to `data-theme`. They fire for a user whose OS disagrees with the theme they chose. Grep for them rather than assuming one is load bearing: none belong in `src`, so every hit is something to remove.
 
-### Prefer the project's semantic class over the raw utility
+### Prefer the project's colour name over the raw one
 
-`src/index.css` defines short names for the combinations this app actually uses — its surfaces, its body and muted text, its border, its widget radius. Use those rather than the underlying utility. They are the single place a decision like "what is a muted foreground" can be changed, and a raw utility at a call site opts that site out of any future change. When a combination you need has no name yet, add one there rather than inventing a new opacity step inline.
+`src/styles/tokens.css` names the colours this app actually uses — its surfaces, its text steps, its line, its fills, its brand and status tints. Use those rather than a daisyUI name (`text-primary`, `bg-error`) or an inline value. They are the single place a decision like "what is a muted foreground" can be changed, and a raw value at a call site opts that site out of any future change. A test rejects any colour class whose name is not declared there.
 
-### A variant on a shortcut class compiles to nothing
+### Every stylesheet has one role
 
-`src/index.css` defines its shortcuts two different ways, and only one of them takes
-variants. `@utility transition-ui { ... }` registers a real utility, so `hover:transition-ui`
-works. A plain rule like `.text-content { @apply ... }` does not, so **`hover:text-content`,
-`focus:bg-content` and the like generate no CSS at all** — the hover simply never happens,
-silently, with no warning from tsc, biome or the build.
+`src/styles/index.css` is the only stylesheet anything imports (`main.tsx`, as `@/styles/index.css`), and it imports every other one. Each file holds one kind of thing, and `design-system.test.ts` rejects anything else in it:
 
-Use the token the shortcut wraps for the variant (`hover:text-base-content`), or promote the
-shortcut to `@utility`. The same trap catches any class name that does not exist:
-`bg-background` is used in three places in `src` and has never been defined.
+| file | holds |
+|---|---|
+| `primitives.css` | `@theme` values and the brand constants: palette ban, fonts, type and line-height steps, radius, motion, layers |
+| `tokens.css` | the colour vocabulary, in `@theme` |
+| `elevation.css` | the shadow scale, and its default colour |
+| `animations.css` | every `@keyframes`, with its `--animate-*` in `@theme` when a class uses it |
+| `themes/<name>.css` | one `@plugin "daisyui/theme"` block and one `[data-theme="<name>"]` block of variables. No selectors |
+| `base.css` | element defaults, all inside `@layer base` |
+| `utilities.css` | `@utility` only |
+| `legacy.css` | Chrome 109 fallbacks for what daisyUI writes |
 
-Grep the built CSS rather than trusting the markup:
+Four rules follow from that, each with a test:
+
+- **A class is only ever an `@utility`.** A plain `.class {}` rule sits outside Tailwind's layers, so it silently beats every utility on the element and takes no variants: `hover:` on it generates no CSS at all. The one exception is a state on `html` (`html.optimal-mode`).
+- **A theme is variables.** It sets daisyUI's colours, their channels, its shadow colours, and optionally the glass material and a token override (`--color-nav`). A theme that needs a component to look different says so with a variable the component reads, never with a selector. This is what lets a theme fetched from the CDN do everything a built-in one can.
+- **Element defaults live in `@layer base`,** so a utility on the element always wins. Headings and controls keep their fixed line height (see `base.css`) through `--tw-leading`, which Tailwind's `text-*` sizes defer to, so `text-sm` on a button does not change it but `leading-none` does.
+- **Every `var()` resolves.** A variable read anywhere must be declared by a stylesheet, by Tailwind's theme or by an inline style.
+
+### Glass
+
+Glass and icy frost the surfaces that float over the wallpaper. A surface opts in with `bg-glass-<token>`: `bg-glass-surface-2` is `surface-2` in every theme that sets no glass, and the theme's glass tint and blur in one that does. Give every state background on that surface the same family (`hover:bg-glass-surface-3`), or glass themes swap the frost for the plain token on hover. `backdrop-glass` is the blur alone, for a surface whose background is drawn by its children; `bg-glass-modal` is the modal's heavier version.
+
+A theme sets `--glass-bg` and `--glass-filter`, and `--glass-modal-bg` and `--glass-modal-filter` for the modal. Nothing else about glass lives in a theme.
+
+The same trap as a plain rule catches any class name that does not exist, and nothing but the built CSS will tell you. Grep the built CSS rather than trusting the markup:
 
 ```
-grep -o 'hover\:text-content' .output/chrome-mv3/assets/newtab-*.css
+grep -o 'hover\:bg-fill-2' .output/chrome-mv3/assets/newtab-*.css
 ```
 
 ### Verifying
@@ -347,18 +480,11 @@ No output means the class compiled to nothing. Note that the compiler merges sel
 
 ### Known debt
 
-Four shapes of debt exist in bulk. Do not treat them as fixed; do not sweep them inside an unrelated task; never add to them. Counts move every time work lands, so measure rather than quote a number from here:
+One shape of debt remains. Do not treat it as fixed; do not sweep it inside an unrelated task; never add to it. Counts move every time work lands, so measure rather than quote a number from here.
 
-```
-grep -rnoE '(bg|text|border|shadow|ring|from|to|via)-[a-z-]+/[0-9]+' src | wc -l
-```
+- **`white`/`black` classes.** Some are content or drawn over imagery and must stay; the rest are chrome that predates the tokens.
 
-That is a starting point, not an answer: it counts every opacity modifier, and the ones on content tokens are the prescribed way to tint. Narrow it to the token you are actually chasing before reporting a figure.
-
-- **Opacity modifiers on surface tokens.** Not swept because a theme that defines a surface translucent *means* it to be faint, so most sites read as thin rather than broken, and a blanket rewrite would change every theme to repair the handful that break. Fix them when you are already in the file.
-- **Hardcoded colours**, in five shapes: `white`/`black` classes, numbered palette classes, raw hex literals, `rgb()`/`rgba()` literals, and arbitrary-value classes. Counting only classes in `.tsx` misses more than half of it — scan `.ts` and raw literals too. A meaningful share of them are content by the test above and must stay as they are; the rest are chrome.
-- **Theme stylesheets carrying rules for class names that no longer exist.** A theme file outlives the markup it was written against, so a selector living there is not evidence the class is still used. Grep `src` before trusting one.
-- **The semantic class and its raw equivalent both in wide use for the same thing.** New code uses the semantic one.
+Opacity modifiers, palette classes, raw daisyUI base classes, colour names outside `tokens.css`, stylesheet rules for class names nothing writes, plain class rules and selectors in theme files are no longer debt: the tests reject every one of them.
 
 ---
 
@@ -401,6 +527,12 @@ Prefer per-source errors where a widget has several: one dead RSS feed should no
 other two. And never show an error over data you already have — a slightly stale price or
 temperature beats an error message.
 
+Draw the error with `WidgetError` and the empty state with `WidgetEmpty`, both in
+`features/widgets/components`. `WidgetError` takes the widget's own sentence and a retry,
+and `compact` for a cell too small for the button. `WidgetEmpty` takes the no-items
+illustration or an icon, a title, a description and at most one action. A widget file named
+`*-empty.tsx` or `*-error.tsx` that draws its own markup fails `design-system.test.ts`.
+
 ### Anything read back from storage is untrusted input
 
 Stored values outlive the code that wrote them. A tab id, a display model, a filter — all
@@ -439,9 +571,9 @@ do not merge them.
 
 When logic is worth covering, extract it into a dependency free module and test that. Precedents:
 
-- `src/layouts/widgets/layout-engine/` — grid collision maths
-- `src/layouts/widgets/pet/utils/pet-movement.ts` — pet movement maths
-- `src/common/utils/animation-timing.ts` — shared timing plus the retain predicate
+- `src/features/widgets/utils/layout-engine/` — grid collision maths
+- `src/features/widgets/pet/utils/pet-movement.ts` — pet movement maths
+- `src/components/ui/modal/animation-timing.ts` — shared timing plus the retain predicate
 
 A test file must not transitively import `@/services/api`; it reads `browser.runtime.getManifest()` at module scope and bun has no `browser` global. That is why timing constants live in their own module rather than next to the hook that uses them.
 
@@ -485,9 +617,9 @@ Deliberate solutions that look wrong until you know why. Changing them reintrodu
 - The dialog must stay mounted and only toggle `open`. Unmounting it kills the exit.
 - `@starting-style` covers `.modal` but **not** `.modal-box`. A dialog that mounts already open skips the slide up, which is why `Modal` renders closed for one frame via `open={isOpen && isMounted}`. That line looks pointless. It is not.
 
-**Optimisation mode has two independent paths.** framer is handled by the `Motion` and `Presence` wrappers; CSS transitions are handled by the `html.optimal-mode` class and one rule in `index.css`. A new animation needs whichever path it belongs to. Keyframe animations are deliberately left running so spinners and the notification ping still work.
+**Optimisation mode has two independent paths.** framer is handled by the `Motion` and `Presence` wrappers; CSS transitions are handled by the `html.optimal-mode` class and one rule in `styles/base.css`. A new animation needs whichever path it belongs to. Keyframe animations are deliberately left running so spinners and the notification ping still work.
 
-**`voice-search.portal.tsx` starts the microphone in a mount effect.** Never convert it to always mounted, however tempting it is for animation consistency.
+**`voice-search-portal.tsx` starts the microphone in a mount effect.** Never convert it to always mounted, however tempting it is for animation consistency.
 
 **`containerType: 'size'`** on widget containers is load bearing. Widgets size themselves in `cqh` and `cqw` units, which resolve against that container, so removing it collapses their type and spacing. It also makes those widgets a real hot spot — see "Never animate a container-query sized element".
 

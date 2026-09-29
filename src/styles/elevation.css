@@ -1,0 +1,18 @@
+/* ============================================
+   ELEVATION - shadow ladder. Dark themes need a heavier shadow to read
+   at all, which is why the same names carry different values there.
+   ============================================ */
+@theme {
+	--shadow-*: initial;
+	--shadow-sm: 0 1px 2px 0 var(--elevation-sm-color);
+	--shadow-md: 0 2px 8px 0 var(--elevation-md-color);
+	--shadow-lg: 0 8px 24px -4px var(--elevation-lg-color);
+	--shadow-xl: 0 16px 40px -8px var(--elevation-xl-color);
+}
+
+:root {
+	--elevation-sm-color: rgba(23, 23, 23, 0.06);
+	--elevation-md-color: rgba(23, 23, 23, 0.09);
+	--elevation-lg-color: rgba(23, 23, 23, 0.13);
+	--elevation-xl-color: rgba(23, 23, 23, 0.17);
+}

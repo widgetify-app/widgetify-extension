@@ -11,7 +11,8 @@ export function IconLoading({ title, className }: IconLoadingProps) {
 	const icon = (
 		<Icon
 			name="loader"
-			className={cn('mx-2 block w-4 h-4 animate-spin text-content', className)}
+			className={cn('mx-2 block w-4 h-4 text-fg', className)}
+			spin
 		/>
 	)
 

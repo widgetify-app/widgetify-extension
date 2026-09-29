@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
-import { useChangeTheme } from '@/services/hooks/extension/update-setting.hook'
+import { useChangeTheme } from '@/services/extension/update-setting.hook'
 import { useAuth } from './auth.context'
 
 interface ThemeContextType {
@@ -20,7 +20,7 @@ export enum Theme {
 }
 const freeThemes = [Theme.Light, Theme.Dark, Theme.Glass, Theme.Icy, Theme.Zarna]
 
-export const ThemeContext = createContext<ThemeContextType | null>(null)
+const ThemeContext = createContext<ThemeContextType | null>(null)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
 	const [theme, setTheme] = useState<string>('')
@@ -122,7 +122,7 @@ export function useTheme() {
 	return context
 }
 
-export async function loadRemoteTheme(themeName: string) {
+async function loadRemoteTheme(themeName: string) {
 	const url = `https://cdn.widgetify.ir/themes/${themeName}.css`
 
 	const css = await fetch(url).then((r) => r.text())

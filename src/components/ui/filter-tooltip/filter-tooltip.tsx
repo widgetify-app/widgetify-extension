@@ -8,7 +8,7 @@ export interface FilterOption {
 	label: string
 }
 
-export interface FilterTooltipProps {
+interface FilterTooltipProps {
 	options: FilterOption[]
 	value: string
 	onChange: (value: string) => void
@@ -43,7 +43,7 @@ export function FilterTooltip({
 				<Button
 					size="sm"
 					ref={filterButtonRef}
-					className={`px-2 border h-7! border-none! rounded-xl text-base-content/40 shrink-0 active:scale-95 ${buttonClassName || ''}`}
+					className={`px-2 border h-7! border-none! rounded-lg text-fg-faint shrink-0 active:scale-95 ${buttonClassName || ''}`}
 				>
 					{icon}
 				</Button>
@@ -55,15 +55,15 @@ export function FilterTooltip({
 				position="bottom"
 				contentClassName={tooltipClassName || ''}
 				content={
-					<div className="flex flex-col gap-1 p-2 overflow-y-auto border border-base-300 rounded-2xl min-w-25 bg-base-200 max-h-52">
+					<div className="flex flex-col gap-1 p-2 overflow-y-auto border border-surface-3 rounded-2xl min-w-25 bg-surface-2 max-h-52">
 						{options.map((option) => (
 							<button
 								key={option.value}
 								onClick={() => handleFilterSelect(option.value)}
-								className={`px-3 py-2 text-xs cursor-pointer text-right rounded-lg transition-colors ${
+								className={`px-3 py-2 text-xs cursor-pointer text-right rounded-xl transition-colors ${
 									value === option.value
-										? 'bg-primary/10 text-primary border border-primary/20'
-										: 'hover:bg-base-content/10 text-content'
+										? 'bg-brand-fill text-brand border border-brand-fill-2'
+										: 'hover:bg-fill-2 text-fg'
 								}`}
 							>
 								{option.label}

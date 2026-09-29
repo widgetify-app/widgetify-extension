@@ -1,11 +1,11 @@
-import { HomeContentCustom } from './ui/home-content-custom'
+import { HomeContentCustom } from './components/home-content-custom'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { ConfigKey } from '@/common/constants/config.key'
+import { ConfigKey } from '@/common/constants/config-keys'
 import { ExtensionInstalledModal } from './components/extension-installed-modal'
 import { Joyride, type Step } from 'react-joyride'
-import { UpdateReleaseNotesModal } from '@/components/update-release-notes-modal'
+import { UpdateReleaseNotesModal } from '@/features/release-notes/release-notes'
 import Analytics from '@/analytics'
-import { DialogChecker } from './dialog/dialog'
+import { DialogChecker } from './components/dialog'
 import { TourTooltip } from './components/tour-tooltip'
 import { useEffect, useState } from 'react'
 
@@ -14,17 +14,15 @@ const steps: Step[] = [
 		target: '#chrome-footer',
 		content: (
 			<div className="flex flex-col gap-2 text-center">
-				<h4 className="text-[13px] font-black text-primary">
-					خلوت کردن فضای مرورگر
-				</h4>
+				<h4 className="text-sm font-black text-brand">خلوت کردن فضای مرورگر</h4>
 
-				<p className="text-[12px] leading-5 text-base-content/80 font-medium">
+				<p className="text-xs leading-5 text-fg-muted font-medium">
 					برای مخفی کردن این نوار، کافیه روش{' '}
-					<span className="font-black text-error">راست‌کلیک</span> کنی و این
+					<span className="font-black text-danger">راست‌کلیک</span> کنی و این
 					گزینه رو بزنی:
 				</p>
 
-				<div className="relative overflow-hidden border rounded-xl border-base-content/10">
+				<div className="relative overflow-hidden border rounded-xl border-line">
 					<img
 						src="https://cdn.widgetify.ir/extension/how-to-disable-footer.png"
 						alt="نحوه مخفی کردن نوار پایین مرورگر"
@@ -32,8 +30,8 @@ const steps: Step[] = [
 					/>
 				</div>
 
-				<div className="p-1.5 border border-dashed rounded-lg bg-base-300/40 border-base-content/15">
-					<code className="text-[11px] font-bold text-base-content/70">
+				<div className="p-1.5 border border-dashed rounded-lg bg-fill border-line">
+					<code className="text-2xs font-bold text-fg-muted">
 						"Hide footer on New Tab page"
 					</code>
 				</div>
@@ -44,7 +42,7 @@ const steps: Step[] = [
 		target: '.widget-outer',
 		content: (
 			<div className="flex flex-col gap-2.5">
-				<div className="relative overflow-hidden border shadow-sm aspect-video rounded-xl border-base-content/10 bg-base-300/40">
+				<div className="relative overflow-hidden border shadow-sm aspect-video rounded-xl border-line bg-fill">
 					<video
 						src="https://cdn.widgetify.ir/extension/help_videos/WIDGET-STYLES.webm"
 						autoPlay
@@ -54,7 +52,7 @@ const steps: Step[] = [
 						className="object-cover w-full h-full"
 					/>
 				</div>
-				<p className="text-[12px] leading-relaxed text-base-content/85 font-medium">
+				<p className="text-xs leading-relaxed text-fg font-medium">
 					برای تغییر اندازه، جابه‌جایی، تغییر استایل، کپی یا حذف هر ویجت، کافیه
 					کافیه روش راست‌کلیک کنی تا منوی اختصاصی اون باز بشه
 				</p>

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button, ItemSelector } from '@/components/ui'
 import { Icon } from '@/icons'
-import { getFromStorage, setToStorage } from '@/common/storage'
+import { getFromStorage, setFaviconConsent, setToStorage } from '@/common/storage'
 
 interface StepFirefoxConsentProps {
 	onGetStarted: () => void
@@ -28,7 +28,7 @@ export const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) =>
 			...current,
 			analyticsEnabled: allowAnalytics,
 		})
-		localStorage.setItem('wxt_local:allowFaviconService', String(allowIcon))
+		setFaviconConsent(allowIcon)
 
 		onGetStarted()
 	}
@@ -37,12 +37,12 @@ export const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) =>
 		<div className="flex flex-col gap-3 text-right">
 			<div className="space-y-1">
 				<div className="flex items-center justify-between">
-					<h3 className="text-xl font-bold text-content">حریم خصوصی</h3>
-					<span className="text-[11px] font-medium px-2 py-0.5 rounded-lg bg-base-300/60 text-muted">
+					<h3 className="text-xl font-bold text-fg">حریم خصوصی</h3>
+					<span className="text-2xs font-medium px-2 py-0.5 rounded-lg bg-fill-2 text-fg-muted">
 						Privacy Notice
 					</span>
 				</div>
-				<p className="text-xs text-muted leading-relaxed">
+				<p className="text-xs text-fg-muted leading-relaxed">
 					تمام تنظیمات در مرورگر خودت ذخیره می‌شن، انتخاب کن کدوم موارد فعال باشن
 				</p>
 			</div>
@@ -63,20 +63,20 @@ export const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) =>
 				/>
 			</div>
 
-			<div className="flex items-center justify-between text-[11px] text-muted pt-1">
+			<div className="flex items-center justify-between text-2xs text-fg-muted pt-1">
 				<span>می‌تونی بعداً توی تنظیمات این موارد رو تغییر بدی</span>
 				<a
 					href="https://widgetify.ir/privacy"
 					target="_blank"
 					rel="noopener noreferrer"
-					className="flex items-center gap-1 text-primary hover:underline"
+					className="flex items-center gap-1 text-brand hover:underline"
 				>
 					<Icon name="externalLink" className="w-3 h-3" />
 					سیاست حریم خصوصی
 				</a>
 			</div>
 
-			<div className="flex items-center gap-2 pt-2 border-t border-base-content/10">
+			<div className="flex items-center gap-2 pt-2 border-t border-line">
 				<Button
 					onClick={handleDecline}
 					size="md"
@@ -90,7 +90,7 @@ export const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) =>
 				<Button
 					onClick={handleConfirm}
 					size="md"
-					color="primary"
+					color="brand"
 					rounded="2xl"
 					className="flex-1 text-xs"
 				>

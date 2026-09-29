@@ -3,7 +3,7 @@ import { Portal } from '@/components/ui/portal/portal'
 import { cn } from '@/common/utils/cn'
 import { popoverMenuVariants } from './popover-menu.variants'
 
-export interface PopoverMenuProps {
+interface PopoverMenuProps {
 	isOpen: boolean
 	onClose: () => void
 	position?: { x: number; y: number } | null
@@ -129,7 +129,7 @@ export function PopoverMenu({
 					top: coords.top,
 					left: coords.left,
 					width: typeof width === 'number' ? `${width}px` : width,
-					zIndex: 99999,
+					zIndex: 'var(--z-dropdown)',
 					pointerEvents: 'auto',
 				}}
 				className={cn(popoverMenuVariants(), className)}

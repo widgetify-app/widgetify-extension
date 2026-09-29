@@ -1,11 +1,14 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { createContext, type ReactNode, useContext, useEffect, useState } from 'react'
-import { clearStorage, getFromStorage, setToStorage } from '@/common/storage'
-import { listenEvent } from '@/common/utils/call-event'
 import {
-	type UserProfile,
-	useGetUserProfile,
-} from '@/services/hooks/user/user-service.hook'
+	clearLocalStorage,
+	clearStorage,
+	getFromStorage,
+	setToStorage,
+} from '@/common/storage'
+import { listenEvent } from '@/common/utils/call-event'
+import { type UserProfile, useGetUserProfile } from '@/services/user/user-service.hook'
+import { userKeys } from '@/services/user/user.keys'
 
 interface AuthContextType {
 	isAuthenticated: boolean
@@ -46,7 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 			console.error('Failed to clear storage:', err)
 		}
 		try {
-			localStorage.clear()
+			clearLocalStorage()
 		} catch {}
 		queryClient.clear()
 		setToken(null)
@@ -82,7 +85,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	const login = (newToken: string) => {
 		setToStorage('auth_token', newToken)
 		setToken(newToken)
-		queryClient.invalidateQueries({ queryKey: ['userProfile'] })
+		queryClient.invalidateQueries({ queryKey: userKeys.profile })
 	}
 
 	const refetchUser = async (): Promise<UserProfile | null> => {

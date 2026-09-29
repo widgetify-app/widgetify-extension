@@ -1,4 +1,4 @@
-import { ExplorerContent } from '@/layouts/explorer/explorer'
+import { ExplorerContent } from '@/features/explorer/explorer'
 
 export function ExplorerPage() {
 	return <ExplorerContent />

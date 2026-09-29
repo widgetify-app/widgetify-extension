@@ -196,12 +196,12 @@ const ClickableTooltip = ({
 				{isOpen && (
 					<motion.div
 						ref={tooltipRef}
-						className={`fixed text-xs pointer-events-auto max-w-xs  bg-transparent! shadow-md bg-glass rounded-2xl ${contentClassName}`}
+						className={`fixed text-xs pointer-events-auto max-w-xs shadow-md backdrop-glass rounded-2xl ${contentClassName}`}
 						style={{
 							left: placement?.x ?? 0,
 							top: placement?.y ?? 0,
 							visibility: isPlacedOnAnchor ? 'visible' : 'hidden',
-							zIndex: 9999,
+							zIndex: 'var(--z-popover)',
 						}}
 						initial="hidden"
 						animate="visible"

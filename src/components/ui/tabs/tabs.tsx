@@ -34,10 +34,9 @@ export const TabNavigation = <T,>({
 	const uniqueId = useId()
 
 	return (
-		<div
-			role="group"
+		<fieldset
 			className={cn(
-				'flex items-center p-1 bg-base-content/5 rounded-2xl border border-base-content/5 relative',
+				'flex items-center min-w-0 p-1 bg-surface-2 rounded-2xl border border-line relative',
 				className
 			)}
 		>
@@ -67,7 +66,7 @@ export const TabNavigation = <T,>({
 							<motion.div
 								layoutId={`active-pill-${uniqueId}`}
 								className={cn(
-									'absolute inset-0  bg-base-200/90 rounded-xl -z-10',
+									'absolute inset-0 shadow-sm bg-fill rounded-xl -z-10',
 									activeBgClass
 								)}
 								transition={{
@@ -81,6 +80,6 @@ export const TabNavigation = <T,>({
 					</button>
 				)
 			})}
-		</div>
+		</fieldset>
 	)
 }

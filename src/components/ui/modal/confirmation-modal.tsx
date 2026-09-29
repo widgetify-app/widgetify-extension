@@ -14,24 +14,15 @@ interface ConfirmationModalProps {
 	message?: string | ReactNode
 	confirmText?: ReactNode
 	cancelText?: string
-	variant?: 'danger' | 'warning' | 'info' | 'primary'
+	variant?: 'danger' | 'warning' | 'brand'
 	isLoading?: boolean
 	icon?: ReactNode
-	direction?: 'rtl' | 'ltr'
 }
-
-const confirmButtonColor = {
-	danger: 'danger',
-	warning: 'warning',
-	info: 'info',
-	primary: 'primary',
-} as const
 
 const variantIcon = {
 	danger: <Icon name="trash" size={18} />,
 	warning: <Icon name="alert" size={18} />,
-	info: <Icon name="info" size={18} />,
-	primary: <Icon name="info" size={18} />,
+	brand: <Icon name="info" size={18} />,
 }
 
 export function ConfirmationModal({
@@ -45,7 +36,6 @@ export function ConfirmationModal({
 	variant = 'danger',
 	isLoading = false,
 	icon,
-	direction = 'rtl',
 }: ConfirmationModalProps) {
 	const displayIcon = icon || variantIcon[variant]
 
@@ -66,7 +56,6 @@ export function ConfirmationModal({
 			isOpen={isOpen}
 			onClose={handleCancel}
 			size="sm"
-			direction={direction}
 			closeOnBackdropClick={!isLoading}
 			showCloseButton={!isLoading}
 			title={
@@ -80,17 +69,17 @@ export function ConfirmationModal({
 						<div>{displayIcon}</div>
 					</div>
 					{title && (
-						<h3 className="text-base font-semibold text-content">{title}</h3>
+						<h3 className="text-base font-semibold text-fg">{title}</h3>
 					)}
 				</div>
 			}
 		>
 			<div className="relative overflow-hidden">
-				<div className="pt-1 text-sm leading-relaxed text-muted">
+				<div className="pt-1 text-sm leading-relaxed text-fg-muted">
 					{typeof message === 'string' ? <p>{message}</p> : message}
 				</div>
 
-				<div className="mt-4 border-t border-base-content/10" />
+				<div className="mt-4 border-t border-line" />
 
 				<div className="flex items-center justify-end gap-2 pt-3">
 					<Button
@@ -113,7 +102,7 @@ export function ConfirmationModal({
 								<span className="text-xs">در حال انجام...</span>
 							</div>
 						}
-						color={confirmButtonColor[variant]}
+						color={variant}
 						rounded="2xl"
 						className="w-fit px-8"
 					>

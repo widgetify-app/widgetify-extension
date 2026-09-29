@@ -1,0 +1,102 @@
+import Analytics from '@/analytics'
+import { Button, Modal } from '@/components/ui'
+import { showToast } from '@/common/toast'
+
+interface Prop {
+	showRequireNotificationModal: boolean
+	setShowRequireNotificationModal: (value: boolean) => void
+	startPomodoro: () => void
+}
+export function RequestNotificationModal({
+	showRequireNotificationModal,
+	setShowRequireNotificationModal,
+	startPomodoro,
+}: Prop) {
+	useEffect(() => {
+		if (showRequireNotificationModal)
+			Analytics.event('view_request_notification_modal')
+	}, [showRequireNotificationModal])
+
+	async function onRequestPermission() {
+		try {
+			const perm = await Notification.requestPermission()
+			if (perm === 'granted') {
+				showToast('اعلان‌ها با موفقیت فعال شدند!', 'success')
+				setShowRequireNotificationModal(false)
+				startPomodoro()
+				Analytics.event('grant_notification_permission')
+			} else {
+				showToast('باشه، بدون اعلان ادامه می‌دیم.', 'info')
+				setShowRequireNotificationModal(false)
+				Analytics.event('deny_notification_permission')
+			}
+		} catch {
+			showToast('خطا در درخواست دسترسی اعلان‌ها.', 'error')
+		}
+	}
+
+	return (
+		<Modal
+			isOpen={showRequireNotificationModal}
+			onClose={() => setShowRequireNotificationModal(false)}
+			size="sm"
+			title="فعال کردن اعلان‌ها"
+		>
+			<div className="p-4 max-h-[80vh] overflow-y-auto">
+				<article className="pb-4 border-b blog-post border-surface-3 animate-fade-in animate-slide-up">
+					{/* Type badge and title */}
+					<div className="flex items-start justify-between mb-3">
+						<h3 className="text-xl font-bold text-fg">
+							می‌خواهیم به شما یادآوری کنیم!
+						</h3>
+					</div>
+
+					<div className="media-container">
+						<div className="my-2 overflow-hidden rounded-lg shadow-md">
+							<img
+								src={
+									'https://cdn.widgetify.ir/extension/pomodoroTimer-notification.png'
+								}
+								alt={'نمونه اعلان'}
+								className="object-cover w-full h-auto"
+							/>
+							<p className="p-2 text-xs text-center text-fg-muted bg-fill-2">
+								نمونه اعلان که دریافت خواهید کرد
+							</p>
+						</div>
+					</div>
+
+					<div className="mt-2">
+						<p className="leading-relaxed text-justify text-fg-muted">
+							برای اینکه به شما یادآوری کنیم، نیاز داریم اعلان‌ها را فعال
+							کنید. این کار باعث می‌شود هیچ تایمری یا یادآوری مهمی را از دست
+							ندهید.
+						</p>
+					</div>
+				</article>
+
+				<div className="flex gap-3 mt-2">
+					<Button
+						color={'brand'}
+						rounded={'2xl'}
+						size="md"
+						onClick={onRequestPermission}
+						className="flex-2 px-4 py-2 text-sm font-medium"
+					>
+						فعال کردن اعلان‌ها
+					</Button>
+					<Button
+						onClick={() => {
+							setShowRequireNotificationModal(false)
+						}}
+						className="flex-1 px-4 py-2 text-sm"
+						size="md"
+						rounded={'2xl'}
+					>
+						فعلا نه
+					</Button>
+				</div>
+			</div>
+		</Modal>
+	)
+}

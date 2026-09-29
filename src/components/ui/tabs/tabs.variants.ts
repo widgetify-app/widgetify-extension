@@ -16,8 +16,8 @@ export const tabTriggerVariants = cva(
 	{
 		variants: {
 			size: {
-				small: ['py-1', 'px-2', 'text-[10px]'],
-				medium: ['py-2', 'px-2', 'text-[10px]'],
+				small: ['py-1', 'px-2', 'text-3xs'],
+				medium: ['py-2', 'px-2', 'text-3xs'],
 				large: ['py-3', 'px-2', 'text-sm'],
 			},
 			tabMode: {
@@ -25,12 +25,8 @@ export const tabTriggerVariants = cva(
 				advanced: [],
 			},
 			active: {
-				true: ['text-base-content/60', 'font-bold', 'text-icy'],
-				false: [
-					'text-base-content/50',
-					'hover:bg-base-300',
-					'hover:text-base-content/30',
-				],
+				true: ['text-fg-muted', 'font-bold'],
+				false: ['text-fg-faint', 'hover:bg-surface-3'],
 			},
 		},
 		compoundVariants: [
@@ -47,5 +43,3 @@ export const tabTriggerVariants = cva(
 		},
 	}
 )
-
-export type TabTriggerVariant = typeof tabTriggerVariants

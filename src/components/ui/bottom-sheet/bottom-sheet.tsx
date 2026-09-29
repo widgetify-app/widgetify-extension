@@ -52,7 +52,7 @@ export function BottomSheet({
 				{isOpen && (
 					<motion.div
 						key="bottom-sheet-backdrop"
-						className={`fixed inset-0 z-50 ${isDragging ? '' : 'bg-black/50'}`}
+						className={`fixed inset-0 z-float ${isDragging ? '' : 'bg-scrim'}`}
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
@@ -64,7 +64,7 @@ export function BottomSheet({
 				{isOpen && (
 					<motion.div
 						key="bottom-sheet-panel"
-						className={`fixed left-0 right-0 ${isDragging ? 'z-10' : 'z-50'} bottom-16 min-w-2xl bg-base-200 bg-glass rounded-t-3xl`}
+						className={`fixed left-0 right-0 ${isDragging ? 'z-10' : 'z-float'} bottom-16 min-w-2xl bg-glass-surface-2 rounded-t-widget`}
 						style={{
 							height: sizes[size],
 							maxWidth: '390px',
@@ -74,7 +74,10 @@ export function BottomSheet({
 						}}
 						initial={{ y: '100%' }}
 						animate={{ y: 0 }}
-						exit={{ y: '100%', transition: { duration: 0.25, ease: 'easeIn' } }}
+						exit={{
+							y: '100%',
+							transition: { duration: 0.25, ease: 'easeIn' },
+						}}
 						transition={{
 							type: 'spring',
 							damping: 30,
@@ -90,7 +93,7 @@ export function BottomSheet({
 					>
 						<div className="flex justify-center pt-4 pb-1 cursor-grab active:cursor-grabbing">
 							<motion.div
-								className="rounded-full bg-base-content/10"
+								className="rounded-full bg-fill-2"
 								animate={{
 									scaleX: isDragging ? 0.57 : 1,
 									scaleY: isDragging ? 0.7 : 1,
@@ -105,17 +108,17 @@ export function BottomSheet({
 								{showBack && (
 									<button
 										onClick={onClickBack}
-										className="absolute p-2 transition-all duration-200 rounded-full right-6 active:scale-95"
+										className="absolute p-2 transition-ui duration-200 rounded-full right-6 active:scale-95"
 										aria-label="بستن"
 									>
 										<Icon
 											name="chevronRight"
 											size={20}
-											className="text-base-content/60"
+											className="text-fg-muted"
 										/>
 									</button>
 								)}
-								<h2 className="text-sm font-bold text-content">{title}</h2>
+								<h2 className="text-sm font-bold text-fg">{title}</h2>
 							</div>
 						)}
 

@@ -1,0 +1,66 @@
+@utility transition-ui {
+	transition-property:
+		color, background-color, border-color, outline-color, text-decoration-color,
+		fill, stroke, box-shadow, opacity, transform, translate, scale, rotate,
+		filter, backdrop-filter;
+	transition-timing-function: var(--ease-standard);
+	transition-duration: var(--duration-fast);
+}
+
+@utility focus-ring {
+	outline: 2px solid var(--color-primary);
+	outline-offset: 2px;
+}
+
+@utility z-float {
+	z-index: var(--z-float);
+}
+
+@utility z-nav {
+	z-index: var(--z-nav);
+}
+
+@utility z-toolbar {
+	z-index: var(--z-toolbar);
+}
+
+@utility z-popover {
+	z-index: var(--z-popover);
+}
+
+@utility z-dropdown {
+	z-index: var(--z-dropdown);
+}
+
+@utility bg-glass-* {
+	background-color: var(--glass-bg, --value(--color-*));
+	backdrop-filter: var(--glass-filter, none);
+}
+
+@utility bg-glass-modal {
+	background-color: var(--glass-modal-bg, var(--color-surface));
+	backdrop-filter: var(--glass-modal-filter, none);
+}
+
+@utility backdrop-glass {
+	backdrop-filter: var(--glass-filter, none);
+}
+
+@utility scrollbar-none {
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+@utility blur-mode {
+	filter: blur(8px);
+	pointer-events: none;
+	transition: filter 300ms ease-in;
+}
+
+@utility disabled-blur-mode {
+	filter: blur(0px);
+	transition: filter 300ms ease-in-out;
+}

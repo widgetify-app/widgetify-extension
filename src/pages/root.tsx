@@ -1,29 +1,27 @@
 import { useState } from 'react'
 import Analytics from '@/analytics'
 import { purgeDeprecatedStorageKeys } from '@/common/storage'
-import { callEvent, listenEvent } from '@/common/utils/call-event'
+import { listenEvent } from '@/common/utils/call-event'
 import { StackedToaster } from '@/components/ui'
 import {
 	GeneralSettingProvider,
 	useGeneralSetting,
 } from '@/context/general-setting.context'
-import { WidgetVisibilityProvider } from '@/context/widget-visibility.context'
-import { FreeWidgetProvider } from '@/context/free-widget/free-widget.context'
-import { NavbarLayout } from '@/layouts/navbar/navbar.layout'
-import { WidgetTabKeys } from '@/layouts/widgets-settings/tab-keys'
-import { WidgetSettingsModal } from '@/layouts/widgets-settings/widget-settings-modal'
-import { AddWidgetModal } from '@/layouts/widgets-manager'
+import { FreeWidgetProvider } from '@/features/widgets/widgets.context'
+import { NavbarLayout } from '@/features/navbar/navbar'
+import { WidgetSettings } from '@/features/widgets/widget-settings/widget-settings'
+import { AddWidgetModal } from '@/features/widgets/catalog/catalog'
 import { Page, usePage } from '@/context/page.context'
 import { MotionConfig } from 'framer-motion'
 import { Motion as motion, Presence } from '@/common/motion'
 import { AuthRequiredModal } from '@/components/auth/auth-required-modal'
-import { MiniAppPage } from './mini-apps/mini-app.page'
-import { ExplorerPage } from './explorer/explorer.page'
-import { HomePage } from './home/home.page'
+import { MiniAppPage } from '@/pages/mini-apps/mini-apps.page'
+import { ExplorerPage } from '@/pages/explorer/explorer.page'
+import { HomePage } from '@/pages/home/home.page'
 import { useEffect } from 'react'
-import { useWallpaperApply } from '@/layouts/setting/tabs/wallpapers/hooks/use-wallpaper-apply'
+import { useWallpaperApply } from '@/pages/hooks/use-wallpaper-apply'
 import { WallpaperProvider } from '@/context/wallpaper.context'
-import { IconProvider } from '../icons/icons.context'
+import { IconProvider } from '@/icons'
 
 export function RootLayout() {
 	useWallpaperApply()
@@ -47,11 +45,6 @@ export function RootLayout() {
 }
 
 function Main() {
-	const [activeSettingPayload, setActiveSettingPayload] = useState<{
-		tab: WidgetTabKeys | null
-		instanceId?: string
-		size?: { w: number; h: number }
-	} | null>(null)
 	const [isAddWidgetModalOpen, setIsAddWidgetModalOpen] = useState(false)
 	const [addWidgetEditTarget, setAddWidgetEditTarget] = useState<any>(null)
 	const [showAuthRequired, setAuthRequired] = useState(false)
@@ -59,21 +52,6 @@ function Main() {
 	const { isOptimalMode } = useGeneralSetting()
 
 	useEffect(() => {
-		const openWidgetsSettingsEvent = listenEvent(
-			'openWidgetsSettings',
-			(data: {
-				tab: WidgetTabKeys | null
-				instanceId?: string
-				size?: { w: number; h: number }
-			}) => {
-				if (!data.tab || data.tab === WidgetTabKeys.widget_management) {
-					callEvent('openAddCustomWidgetModal')
-				} else {
-					setActiveSettingPayload(data)
-				}
-			}
-		)
-
 		const openAddModalEvent = listenEvent(
 			'openAddCustomWidgetModal',
 			(payload?: any) => {
@@ -94,7 +72,6 @@ function Main() {
 		Analytics.pageView('Home', '/')
 
 		return () => {
-			openWidgetsSettingsEvent()
 			openAddModalEvent()
 			openAuthRequireModal()
 		}
@@ -103,48 +80,38 @@ function Main() {
 	return (
 		<MotionConfig reducedMotion={isOptimalMode ? 'always' : 'never'}>
 			<FreeWidgetProvider>
-				<WidgetVisibilityProvider>
-					<NavbarLayout />
+				<NavbarLayout />
 
-					<Presence mode="wait">
-						<motion.div
-							key={page}
-							initial={{ y: 10 }}
-							animate={{ y: 0 }}
-							exit={{ y: 10 }}
-							transition={{
-								duration: 0.2,
-								ease: [0.22, 1, 0.36, 1],
-							}}
-							className="flex w-full h-full"
-						>
-							{page === Page.Home ? (
-								<HomePage />
-							) : page === Page.Explorer ? (
-								<ExplorerPage />
-							) : (
-								<MiniAppPage />
-							)}
-						</motion.div>
-					</Presence>
-					<WidgetSettingsModal
-						isOpen={!!activeSettingPayload}
-						onClose={() => setActiveSettingPayload(null)}
-						selectedTab={null}
-						activeSettingTab={activeSettingPayload?.tab}
-						instanceId={activeSettingPayload?.instanceId}
-						size={activeSettingPayload?.size}
-						onCloseSetting={() => setActiveSettingPayload(null)}
-					/>
-					<AddWidgetModal
-						isOpen={isAddWidgetModalOpen}
-						editTarget={addWidgetEditTarget}
-						onClose={() => {
-							setIsAddWidgetModalOpen(false)
-							setAddWidgetEditTarget(null)
+				<Presence mode="wait">
+					<motion.div
+						key={page}
+						initial={{ y: 10 }}
+						animate={{ y: 0 }}
+						exit={{ y: 10 }}
+						transition={{
+							duration: 0.2,
+							ease: [0.22, 1, 0.36, 1],
 						}}
-					/>
-				</WidgetVisibilityProvider>
+						className="flex w-full h-full"
+					>
+						{page === Page.Home ? (
+							<HomePage />
+						) : page === Page.Explorer ? (
+							<ExplorerPage />
+						) : (
+							<MiniAppPage />
+						)}
+					</motion.div>
+				</Presence>
+				<WidgetSettings />
+				<AddWidgetModal
+					isOpen={isAddWidgetModalOpen}
+					editTarget={addWidgetEditTarget}
+					onClose={() => {
+						setIsAddWidgetModalOpen(false)
+						setAddWidgetEditTarget(null)
+					}}
+				/>
 			</FreeWidgetProvider>
 
 			<AuthRequiredModal

@@ -13,7 +13,7 @@ interface PageContextType {
 	setPage: (page: Page) => void
 }
 
-export const PageContext = createContext<PageContextType | null>(null)
+const PageContext = createContext<PageContextType | null>(null)
 export function PageProvider({ children }: { children: React.ReactNode }) {
 	const [page, setPage] = useState<Page>(Page.Home)
 

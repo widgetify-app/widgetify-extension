@@ -1,24 +1,26 @@
 import type { VariantProps } from 'class-variance-authority'
-import React, { type ReactNode, useEffect, useRef, useState } from 'react'
+import React, { type ReactNode, useEffect, useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { cn } from '@/common/utils/cn'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { Icon } from '@/icons'
-import { EXIT_ANIMATION_MS, useDelayedUnmount } from '@/hooks/use-delayed-unmount'
+import {
+	EXIT_ANIMATION_MS,
+	useDelayedUnmount,
+} from '@/components/ui/modal/use-delayed-unmount'
 import {
 	modalBoxVariants,
 	modalDialogVariants,
 	modalScrollVariants,
 } from './modal.variants'
 
-export const MODAL_EXIT_MS = EXIT_ANIMATION_MS
+const MODAL_EXIT_MS = EXIT_ANIMATION_MS
 
-export type ModalProps = VariantProps<typeof modalBoxVariants> & {
+type ModalProps = VariantProps<typeof modalBoxVariants> & {
 	isOpen: boolean
 	onClose: () => void
 	title?: React.ReactNode
 	children: ReactNode
-	direction?: 'rtl' | 'ltr'
 	closeOnBackdropClick?: boolean
 	showCloseButton?: boolean
 	className?: string
@@ -35,12 +37,12 @@ export function Modal({
 	size,
 	children,
 	closeOnBackdropClick = true,
-	direction = 'ltr',
 	showCloseButton = true,
 	className,
 	zIndex: customZIndex,
 }: ModalProps) {
 	const dialogRef = useRef<HTMLDialogElement>(null)
+	const titleId = useId()
 	const [assignedZIndex, setAssignedZIndex] = useState<number>(() => {
 		if (isOpen) {
 			globalModalCounter += 1
@@ -89,8 +91,8 @@ export function Modal({
 	return createPortal(
 		<dialog
 			ref={dialogRef}
-			dir={direction}
-			aria-labelledby={typeof title === 'string' ? title : 'modal-title'}
+			dir="rtl"
+			aria-labelledby={title ? titleId : undefined}
 			aria-modal="true"
 			onClick={(e) => {
 				if (closeOnBackdropClick && e.target === dialogRef.current) onClose()
@@ -115,7 +117,7 @@ export function Modal({
 					<div className="flex items-center justify-between gap-2 mb-2 md:mb-3 md:gap-4">
 						{title && (
 							<h3
-								id="modal-title"
+								id={titleId}
 								className="text-base font-semibold md:text-lg"
 							>
 								{title}
@@ -125,8 +127,8 @@ export function Modal({
 							<button
 								type="button"
 								onClick={onClose}
-								className="flex items-center justify-center transition-all cursor-pointer w-7 h-7 md:w-8 md:h-8 bg-base-300 text-muted hover:bg-base-content/10 hover:scale-105 active:scale-95 shrink-0 outline-0! border-0! rounded-xl"
-								aria-label="Close modal"
+								className="flex items-center justify-center transition-ui cursor-pointer w-7 h-7 md:w-8 md:h-8 bg-surface-3 text-fg-muted hover:bg-fill-2 hover:scale-105 active:scale-95 shrink-0 border-0! rounded-lg focus-visible:focus-ring"
+								aria-label="بستن"
 							>
 								<Icon name="close" size={16} className="md:hidden" />
 								<Icon

@@ -1,31 +1,11 @@
 import type React from 'react'
 import { cn } from '@/common/utils/cn'
-import { badgeVariants, type BadgeVariantProps } from './badge.variants'
+import { type BadgeVariantProps, badgeVariants } from './badge.variants'
 
-export interface BadgeProps
-	extends React.HTMLAttributes<HTMLSpanElement>,
-		BadgeVariantProps {
-	children?: React.ReactNode
-}
+interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement>, BadgeVariantProps {}
 
-export function Badge({
-	variant = 'error',
-	size = 'xs',
-	className,
-	children,
-	...props
-}: BadgeProps) {
-	return (
-		<span
-			className={cn(
-				badgeVariants({ variant, size: variant === 'dot' ? undefined : size }),
-				className
-			)}
-			{...props}
-		>
-			{children}
-		</span>
-	)
+export function Badge({ variant, className, ...props }: BadgeProps) {
+	return <span className={cn(badgeVariants({ variant }), className)} {...props} />
 }
 
 export function NewBadge({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {

@@ -20,8 +20,6 @@ export * from './chip/chip.variants'
 
 export * from './color-picker/color-picker'
 
-export * from './context-menu/context-menu'
-
 export * from './date-picker/date-picker'
 
 export * from './dropdown/dropdown'
@@ -38,6 +36,7 @@ export * from './input/input.variants'
 export * from './item-selector/item-selector'
 
 export * from './loading/loading'
+export * from './loading/spinner'
 
 export * from './modal/confirmation-modal'
 export * from './modal/confirmation-modal.variants'
@@ -48,7 +47,9 @@ export * from './offline-indicator/offline-indicator'
 
 export * from './pagination/pagination'
 
-export * from './popover-menu'
+export * from './popover-menu/popover-menu'
+export * from './popover-menu/popover-menu-item'
+export * from './popover-menu/popover-menu.variants'
 
 export * from './portal/portal'
 

@@ -175,7 +175,7 @@ const validationTranslations: Record<string, string> = {
 	CONTENT_CONTAINS_PROFANITY: 'محتوا شامل کلمات یا عبارات نامناسب است',
 }
 
-export function translateValidationMessage(message: string): string {
+function translateValidationMessage(message: string): string {
 	return validationTranslations[message] || message
 }
 

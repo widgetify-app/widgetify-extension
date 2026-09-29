@@ -1,0 +1,25 @@
+import { useQuery } from '@tanstack/react-query'
+import ms from 'ms'
+import { getMainClient } from '@/services/api'
+import type { FetchedWeather } from '@/services/weather/weather.interface'
+import { weatherKeys } from '@/services/weather/weather.keys'
+
+async function fetchWeatherByLatLon(addForecast: boolean): Promise<FetchedWeather> {
+	const client = getMainClient()
+	const params = new URLSearchParams()
+	if (addForecast) {
+		params.append('addForecast', 'true')
+	}
+
+	const response = await client.get<FetchedWeather>('/weather/current', { params })
+	return response.data
+}
+
+export function useGetWeatherByLatLon(addForecast: boolean) {
+	return useQuery({
+		queryKey: weatherKeys.byLatLon(addForecast),
+		queryFn: () => fetchWeatherByLatLon(addForecast),
+		staleTime: ms('5m'),
+		gcTime: ms('5m'),
+	})
+}

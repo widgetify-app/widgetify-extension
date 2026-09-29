@@ -1,0 +1,57 @@
+import { Button, SectionPanel } from '@/components/ui'
+import { showToast } from '@/common/toast'
+
+interface ReferralCodeSectionProps {
+	code: string
+	className?: string
+}
+
+export const ReferralCodeSection = ({ code, className }: ReferralCodeSectionProps) => {
+	const handleCopyCode = async () => {
+		try {
+			await navigator.clipboard.writeText(code)
+			showToast('کد دعوت کپی شد', 'success')
+		} catch (error) {
+			console.error('Failed to copy code:', error)
+			showToast('خطا در کپی کردن کد', 'error')
+		}
+	}
+
+	return (
+		<SectionPanel
+			title={
+				<div className="flex items-center gap-2">
+					<span>کد دعوت شما</span>
+				</div>
+			}
+			size="sm"
+		>
+			<div className="space-y-2">
+				<div
+					className={`flex items-center justify-between p-4 bg-surface-2 rounded-2xl ${className}`}
+				>
+					<div>
+						<p className="mb-1 text-sm text-fg-muted">کد دعوت</p>
+						<p
+							className="text-lg font-semibold cursor-pointer text-fg hover:underline"
+							onClick={handleCopyCode}
+						>
+							{code}
+						</p>
+					</div>
+					<Button
+						onClick={handleCopyCode}
+						size="sm"
+						rounded={'xl'}
+						color={'brand'}
+					>
+						کپی کد
+					</Button>
+				</div>
+				<p className="flex text-sm text-fg-muted gap-0.5 items-center">
+					با فرستادن این کد برای دوستات، هم خودت و هم دوستت ویج‌کوین می‌گیرید
+				</p>
+			</div>
+		</SectionPanel>
+	)
+}

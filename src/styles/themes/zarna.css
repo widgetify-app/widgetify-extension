@@ -1,0 +1,62 @@
+@plugin "daisyui/theme" {
+	name: "zarna";
+	color-scheme: "dark";
+	--color-base-100: #09090b;
+	--color-base-200: #171618;
+	--color-base-300: #1e1d1f;
+	--color-base-content: #dca54d;
+	--color-primary: #d08700;
+	--color-primary-content: #281700;
+	--color-secondary: #152747;
+	--color-secondary-content: #cbd0d7;
+	--color-accent: #513448;
+	--color-accent-content: #dad3d7;
+	--color-neutral: #331800;
+	--color-neutral-content: #ffe7a4;
+	--color-info: #67c6ff;
+	--color-info-content: #040e16;
+	--color-success: #87d03a;
+	--color-success-content: #061001;
+	--color-warning: #e2d563;
+	--color-warning-content: #121003;
+	--color-error: #ff6f6f;
+	--color-error-content: #160404;
+	--radius-selector: 1rem;
+	--radius-field: 0.5rem;
+	--radius-box: 1rem;
+	--size-selector: 0.25rem;
+	--size-field: 0.25rem;
+	--border: 1px;
+	--depth: 1;
+	--noise: 0;
+}
+
+/* The channel triples live out here on purpose. daisyUI parses the
+   @plugin block and drops any value with a comma in it, so a
+   `--color-...-rgb: 1, 2, 3` written inside it never reaches the
+   stylesheet - and every rgba() built on it is invalid at
+   computed-value time, which makes the declaration vanish and the
+   element fall back to an inherited colour (a border with no
+   border-color falls back to currentColor, at full strength). */
+[data-theme="zarna"] {
+	--color-base-100-a: 1;
+	--color-base-200-a: 1;
+	--color-base-300-a: 1;
+	--color-success-content-rgb: 6, 16, 1;
+	--color-warning-content-rgb: 18, 16, 3;
+	--color-error-content-rgb: 22, 4, 4;
+	--color-base-100-rgb: 9, 9, 11;
+	--color-base-200-rgb: 23, 22, 24;
+	--color-base-300-rgb: 30, 29, 31;
+	--color-base-content-rgb: 220, 165, 77;
+	--color-primary-rgb: 208, 135, 0;
+	--color-secondary-rgb: 21, 39, 71;
+	--color-error-rgb: 255, 111, 111;
+	--color-success-rgb: 135, 208, 58;
+	--color-warning-rgb: 226, 213, 99;
+	--color-info-rgb: 103, 198, 255;
+	--elevation-sm-color: rgba(0, 0, 0, 0.32);
+	--elevation-md-color: rgba(0, 0, 0, 0.4);
+	--elevation-lg-color: rgba(0, 0, 0, 0.48);
+	--elevation-xl-color: rgba(0, 0, 0, 0.56);
+}

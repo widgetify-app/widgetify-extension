@@ -44,7 +44,7 @@
 			"correctness": {
 				"useExhaustiveDependencies": "off",
 				"noUnusedVariables": "warn",
-				"noUnusedImports": "warn",
+				"noUnusedImports": "error",
 				"useUniqueElementIds": "off",
 				"noInvalidPositionAtImportRule": "off"
 			},
@@ -96,6 +96,16 @@
 				"formatter": {
 					"jsxQuoteStyle": "double",
 					"bracketSameLine": false
+				}
+			}
+		},
+		{
+			"includes": ["**/__tests__/**"],
+			"linter": {
+				"rules": {
+					"style": {
+						"noNonNullAssertion": "off"
+					}
 				}
 			}
 		},

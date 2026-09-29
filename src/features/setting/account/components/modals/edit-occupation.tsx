@@ -1,0 +1,84 @@
+import { Modal } from '@/components/ui'
+import { useUpdateUserProfile } from '@/services/auth/auth-service.hook'
+import { useState } from 'react'
+import { OccupationSelector } from '../occupation-selector'
+import { useGetOccupations } from '@/services/profile/get-profile-meta.hook'
+import { SectionPanel } from '@/components/ui'
+import { Icon } from '@/icons'
+import { FooterButtons } from './footer-buttons'
+
+interface Prop {
+	show: boolean
+	onClose: (type: 'success' | 'cancel') => void
+	currentValue?: any
+}
+export function ChangeOccupationModal({ show, onClose, currentValue }: Prop) {
+	const [occupation, setOccupations] = useState<string>(currentValue?.id || '')
+	const updateProfileMutation = useUpdateUserProfile()
+	const { data: FetchedOccupations = [], isLoading: occupationsLoading } =
+		useGetOccupations()
+
+	const onCloseHandler = () => {
+		onClose('cancel')
+	}
+
+	const onClickSave = async () => {
+		if (!occupation) return
+		const data = new FormData()
+
+		data.append('occupationId', occupation)
+
+		await updateProfileMutation.mutateAsync(data)
+		onClose('success')
+	}
+
+	const onCancel = () => {
+		onClose('cancel')
+	}
+
+	return (
+		<Modal isOpen={show} onClose={onCloseHandler} showCloseButton={false}>
+			<div className="flex flex-col justify-between h-40 gap-4">
+				<SectionPanel title="چه‌کاره‌ای؟" size="xs">
+					<OccupationSelector
+						occupations={FetchedOccupations}
+						selectedOccupation={occupation}
+						onSelect={(id) => setOccupations(id || '')}
+						isLoading={occupationsLoading}
+						triggerElement={
+							<div className="flex items-center justify-between w-full h-12 p-3 transition-colors border cursor-pointer border-surface-3 rounded-xl hover:border-brand-muted!">
+								<div className="flex items-center gap-3">
+									<Icon
+										name="briefcase"
+										size={14}
+										className="text-brand"
+									/>
+									<span
+										className={`text-sm ${occupation ? 'text-fg' : 'text-fg-muted'}`}
+									>
+										{occupation
+											? FetchedOccupations.find(
+													(o) => o.id === occupation
+												)?.title
+											: 'انتخاب شغل'}
+									</span>
+								</div>
+								<Icon
+									name="chevronRight"
+									size={18}
+									className="text-fg-muted"
+								/>
+							</div>
+						}
+					/>
+				</SectionPanel>
+
+				<FooterButtons
+					handleCancel={onCancel}
+					handleConfirm={onClickSave}
+					isPending={updateProfileMutation.isPending}
+				/>
+			</div>
+		</Modal>
+	)
+}

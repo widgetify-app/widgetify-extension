@@ -16,7 +16,7 @@ export function CheckBoxWithDescription({
 	return (
 		<div
 			className={
-				'group flex items-start gap-3 p-2 transition-all duration-200 cursor-pointer rounded'
+				'group flex items-start gap-3 p-2 transition-ui duration-200 cursor-pointer rounded-sm'
 			}
 			onClick={onToggle}
 		>
@@ -26,9 +26,11 @@ export function CheckBoxWithDescription({
 				className="active:scale-95"
 			/>
 			<div className="flex-1">
-				<p className={'font-bold text-content'}>{title}</p>
+				<p className={'font-bold text-fg'}>{title}</p>
 				{description ? (
-					<p className={'text-sm mt-1 font-light text-muted'}>{description}</p>
+					<p className={'text-sm mt-1 font-light text-fg-muted'}>
+						{description}
+					</p>
 				) : null}
 			</div>
 		</div>

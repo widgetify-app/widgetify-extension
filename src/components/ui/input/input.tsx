@@ -2,7 +2,7 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { cn } from '@/common/utils/cn'
 import { type TextInputSize, textInputVariants } from './input.variants'
 
-export interface TextInputProps {
+interface TextInputProps {
 	id?: string
 	value?: string
 	defaultValue?: string

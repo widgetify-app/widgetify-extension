@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { cn } from '@/common/utils/cn'
 import { avatarVariants } from './avatar.variants'
 
-export interface AvatarProps extends VariantProps<typeof avatarVariants> {
+interface AvatarProps extends VariantProps<typeof avatarVariants> {
 	url?: string | null
 	file?: File | null
 	placeholder?: string
@@ -59,7 +59,7 @@ export function AvatarComponent({
 					onError={handleImageError}
 				/>
 			) : (
-				<div className="font-medium text-muted">
+				<div className="font-medium text-fg-muted">
 					{placeholder.charAt(0)?.toUpperCase() || '?'}
 				</div>
 			)}

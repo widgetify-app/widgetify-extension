@@ -1,0 +1,17 @@
+export type BookmarkType = 'BOOKMARK' | 'FOLDER'
+
+export interface Bookmark {
+	id: string
+	title: string
+	type: BookmarkType
+	parentId: string | null
+	isLocal: boolean
+	onlineId: string | null
+	url: string | null
+	icon: string | null
+	customBackground: string | null
+	customTextColor: string | null
+	sticker: string | null
+	order: number | null
+	widgetId?: string | null
+}

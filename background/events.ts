@@ -4,7 +4,7 @@ import { removeFromStorage, setToStorage } from '../src/common/storage'
 import { enforceCacheBudget, purgeStaleCaches } from './utils'
 import { resolveCacheName } from './cache-names'
 import { initActiveWallpaper, setActiveWallpaper } from './wallpaper-cache'
-import { type SwEvent, SwEventType } from '@/common/types/sw-events'
+import { type SwEvent, SwEventType } from '../src/common/types/sw-events'
 
 export function setupEventListeners() {
 	if (!import.meta.env.FIREFOX) {

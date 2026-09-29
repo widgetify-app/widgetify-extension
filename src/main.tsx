@@ -1,7 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './fonts.css'
-import './index.css'
+import '@/styles/index.css'
 import App from './app'
 
 function loadRemoteFontsAsync() {
@@ -18,7 +17,10 @@ function loadRemoteFontsAsync() {
 
 loadRemoteFontsAsync()
 
-createRoot(document.getElementById('root')!).render(
+const container = document.getElementById('root')
+if (!container) throw new Error('newtab.html has no #root element')
+
+createRoot(container).render(
 	<StrictMode>
 		<App />
 	</StrictMode>
