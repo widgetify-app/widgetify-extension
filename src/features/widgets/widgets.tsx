@@ -166,7 +166,7 @@ export function FreeWidgetCanvas() {
 								</button>
 							</div>
 							<div className="w-full">
-								{def.node(widget.instanceId, widget.size)}
+								{def.node(widget.instanceId, widget.size, widget.meta)}
 							</div>
 						</div>
 					)

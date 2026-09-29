@@ -1,6 +1,6 @@
-import autumnBackground from '@/assets/animals/backgrounds/autumn.png'
-import beachBackground from '@/assets/animals/backgrounds/beach.png'
-import forestBackground from '@/assets/animals/backgrounds/forest.png'
+import autumnBackground from '@/assets/animals/backgrounds/autumn.webp'
+import beachBackground from '@/assets/animals/backgrounds/beach.webp'
+import forestBackground from '@/assets/animals/backgrounds/forest.webp'
 import tehranBackground from '@/assets/animals/backgrounds/tehran.webp'
 import catIcon from '@/assets/animals/cat/zardaloo_lie_8fps.webp'
 import catPreview from '@/assets/animals/cat/zardaloo_swipe_8fps.webp'
@@ -14,6 +14,8 @@ import frogIcon from '@/assets/animals/frog/ghoori_lie_8fps.webp'
 import frogPreview from '@/assets/animals/frog/ghoori_swipe_8fps.webp'
 import owlIcon from '@/assets/animals/owl/owl_idle_8fps.webp'
 import owlPreview from '@/assets/animals/owl/owl_swipe_8fps.webp'
+import sheepIcon from '@/assets/animals/sheep/sheep_idle_8fps.webp'
+import sheepPreview from '@/assets/animals/sheep/sheep_swipe_8fps.webp'
 import {
 	type PetBackground,
 	type PetBackgroundId,
@@ -28,6 +30,7 @@ export const PET_ICON: Record<PetTypes, string> = {
 	[PetTypes.FROG]: frogIcon,
 	[PetTypes.CAT]: catIcon,
 	[PetTypes.OWL]: owlIcon,
+	[PetTypes.SHEEP]: sheepIcon,
 }
 
 export const PET_PREVIEW: Record<PetTypes, string> = {
@@ -37,6 +40,7 @@ export const PET_PREVIEW: Record<PetTypes, string> = {
 	[PetTypes.FROG]: frogPreview,
 	[PetTypes.CAT]: catPreview,
 	[PetTypes.OWL]: owlPreview,
+	[PetTypes.SHEEP]: sheepPreview,
 }
 
 export const PET_SPECIES_LABEL: Record<PetTypes, string> = {
@@ -46,6 +50,7 @@ export const PET_SPECIES_LABEL: Record<PetTypes, string> = {
 	[PetTypes.FROG]: 'قورباغه',
 	[PetTypes.CAT]: 'گربه',
 	[PetTypes.OWL]: 'جغد',
+	[PetTypes.SHEEP]: 'گوسفند',
 }
 
 export const DEFAULT_PET_BACKGROUND: PetBackgroundId = 'none'
@@ -125,6 +130,11 @@ export const BASE_PET_OPTIONS: PetSettings = {
 		[PetTypes.OWL]: {
 			name: 'جغدو',
 			type: 'owl',
+			hungryState: { level: 100, lastHungerTick: null },
+		},
+		[PetTypes.SHEEP]: {
+			name: 'میشا',
+			type: 'sheep',
 			hungryState: { level: 100, lastHungerTick: null },
 		},
 	},

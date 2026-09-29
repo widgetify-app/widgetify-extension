@@ -5,67 +5,61 @@ import running from '@/assets/animals/cat/zardaloo_run_8fps.webp'
 import swipe from '@/assets/animals/cat/zardaloo_swipe_8fps.webp'
 import walking from '@/assets/animals/cat/zardaloo_walk_fast_8fps.webp'
 
-import { BasePetContainer, useBasePetLogic } from '../base-pet'
+import { useBasePetLogic } from '../../hooks/use-base-pet-logic'
+import { BasePetContainer } from '../base-pet'
 import { PetFood } from '../pet-food'
 import {
 	type PetAnimations,
 	type PetAssets,
 	type PetDimensions,
-	type PetDurations,
 	PetSpeed,
 } from '../../types'
 import { usePetContext } from '../../pet.context'
+import { PET_SEQUENCES } from '../../utils/species-sequences'
 import { PetTypes } from '../../types'
+
+const CAT_ANIMATIONS: PetAnimations = {
+	idle,
+	walk: walking,
+	run: running,
+	swipe: swipe,
+	sit: lie,
+}
+
+const CAT_DIMENSIONS: PetDimensions = {
+	size: 25,
+	width: 50,
+	walkSpeed: PetSpeed.SLOW,
+	runSpeed: PetSpeed.NORMAL,
+	maxHeight: 100,
+}
+
+const CAT_ASSETS: PetAssets = {
+	collectibleIcon: <PetFood src={catFood} />,
+	collectibleSize: 24,
+	collectibleFallSpeed: 2,
+}
 
 export const CatComponent = ({ className }: { className?: string }) => {
 	const { getCurrentPetName, isPetHungry, levelUpHungryState, levelDownHungryState } =
 		usePetContext()
-	const catAnimations: PetAnimations = {
-		idle,
-		walk: walking,
-		run: running,
-		swipe: swipe,
-		stand: lie,
-		sit: lie,
-		climb: walking,
-	}
 
-	const catDimensions: PetDimensions = {
-		size: 25,
-		width: 50,
-		walkSpeed: PetSpeed.SLOW,
-		runSpeed: PetSpeed.NORMAL,
-		climbSpeed: PetSpeed.NORMAL,
-		maxHeight: 100,
-	}
-	const catDurations: PetDurations = {
-		walk: { min: 4000, max: 9000 },
-		run: { min: 2000, max: 5000 },
-		rest: { min: 6000, max: 12000 },
-		climb: { min: 3000, max: 6000 },
-	}
-
-	const catAssets: PetAssets = {
-		collectibleIcon: <PetFood src={catFood} />,
-		collectibleSize: 24,
-		collectibleFallSpeed: 2,
-	}
 	const {
 		containerRef,
 		petRef,
-		position,
 		direction,
 		showName,
+		airborne,
 		collectibles,
-		getAnimationForCurrentAction,
+		animationSrc,
 		dimensions,
 		assets,
 	} = useBasePetLogic({
 		name: getCurrentPetName(PetTypes.CAT),
-		animations: catAnimations,
-		dimensions: catDimensions,
-		durations: catDurations,
-		assets: catAssets,
+		animations: CAT_ANIMATIONS,
+		dimensions: CAT_DIMENSIONS,
+		sequence: PET_SEQUENCES[PetTypes.CAT],
+		assets: CAT_ASSETS,
 		isHungry: isPetHungry(PetTypes.CAT),
 		onCollectibleCollection: () => levelUpHungryState(PetTypes.CAT),
 		onLevelDownHungryState: () => levelDownHungryState(PetTypes.CAT),
@@ -77,11 +71,11 @@ export const CatComponent = ({ className }: { className?: string }) => {
 			name={getCurrentPetName(PetTypes.CAT)}
 			containerRef={containerRef}
 			petRef={petRef}
-			position={position}
 			direction={direction}
 			showName={showName}
+			airborne={airborne}
 			collectibles={collectibles}
-			getAnimationForCurrentAction={getAnimationForCurrentAction}
+			animationSrc={animationSrc}
 			dimensions={dimensions}
 			assets={assets}
 			isHungry={isPetHungry(PetTypes.CAT)}

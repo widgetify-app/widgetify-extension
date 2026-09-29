@@ -3,18 +3,18 @@ import lie from '@/assets/animals/frog/ghoori_lie_8fps.webp'
 import running from '@/assets/animals/frog/ghoori_run_8fps.webp'
 import swipe from '@/assets/animals/frog/ghoori_swipe_8fps.webp'
 import walking from '@/assets/animals/frog/ghoori_walk_8fps.webp'
-import walking_fast from '@/assets/animals/frog/ghoori_walk_fast_8fps.webp'
 import { useMemo } from 'react'
 import { Icon } from '@/icons'
-import { BasePetContainer, useBasePetLogic } from '../base-pet'
+import { useBasePetLogic } from '../../hooks/use-base-pet-logic'
+import { BasePetContainer } from '../base-pet'
 import {
 	type PetAnimations,
 	type PetAssets,
 	type PetDimensions,
-	type PetDurations,
 	PetSpeed,
 } from '../../types'
 import { usePetContext } from '../../pet.context'
+import { PET_SEQUENCES } from '../../utils/species-sequences'
 import { PetTypes } from '../../types'
 
 const COLLECTIBLE_COLORS = [
@@ -30,63 +30,63 @@ const COLLECTIBLE_COLORS = [
 	'#3b82f6',
 ]
 
+const FROG_ANIMATIONS: PetAnimations = {
+	idle,
+	walk: walking,
+	run: running,
+	swipe,
+	sit: lie,
+}
+
+const FROG_DIMENSIONS: PetDimensions = {
+	size: 32,
+	width: 50,
+	walkSpeed: PetSpeed.SLOW,
+	runSpeed: PetSpeed.NORMAL,
+	maxHeight: 80,
+	hop: {
+		distance: { min: 35, max: 60 },
+		height: { min: 12, max: 22 },
+		durationMs: 450,
+		crouchMs: { min: 500, max: 1200 },
+	},
+}
+
 export const FrogComponent = ({ className }: { className?: string }) => {
 	const { getCurrentPetName, isPetHungry, levelUpHungryState, levelDownHungryState } =
 		usePetContext()
-	const frogAnimations: PetAnimations = {
-		idle,
-		walk: walking,
-		run: running,
-		swipe,
-		stand: swipe,
-		sit: lie,
-		climb: walking_fast,
-	}
-
-	const frogDimensions: PetDimensions = {
-		size: 32,
-		width: 50,
-		walkSpeed: PetSpeed.SLOW,
-		runSpeed: PetSpeed.NORMAL,
-		climbSpeed: PetSpeed.NORMAL,
-		maxHeight: 80,
-	}
-
-	const frogDurations: PetDurations = {
-		walk: { min: 4000, max: 9000 },
-		run: { min: 2000, max: 5000 },
-		rest: { min: 6000, max: 12000 },
-		climb: { min: 3000, max: 6000 },
-	}
 
 	const collectibleColor = useMemo(
 		() => COLLECTIBLE_COLORS[Math.floor(Math.random() * COLLECTIBLE_COLORS.length)],
 		[]
 	)
 
-	const frogAssets: PetAssets = {
-		collectibleIcon: (
-			<Icon name="bug" style={{ color: collectibleColor }} size={24} />
-		),
-		collectibleSize: 24,
-		collectibleFallSpeed: 2,
-	}
+	const frogAssets: PetAssets = useMemo(
+		() => ({
+			collectibleIcon: (
+				<Icon name="bug" style={{ color: collectibleColor }} size={24} />
+			),
+			collectibleSize: 24,
+			collectibleFallSpeed: 2,
+		}),
+		[collectibleColor]
+	)
 
 	const {
 		containerRef,
 		petRef,
-		position,
 		direction,
 		showName,
+		airborne,
 		collectibles,
-		getAnimationForCurrentAction,
+		animationSrc,
 		dimensions,
 		assets,
 	} = useBasePetLogic({
 		name: getCurrentPetName(PetTypes.FROG),
-		animations: frogAnimations,
-		dimensions: frogDimensions,
-		durations: frogDurations,
+		animations: FROG_ANIMATIONS,
+		dimensions: FROG_DIMENSIONS,
+		sequence: PET_SEQUENCES[PetTypes.FROG],
 		assets: frogAssets,
 		isHungry: isPetHungry(PetTypes.FROG),
 		onCollectibleCollection: () => levelUpHungryState(PetTypes.FROG),
@@ -99,11 +99,11 @@ export const FrogComponent = ({ className }: { className?: string }) => {
 			name={getCurrentPetName(PetTypes.FROG)}
 			containerRef={containerRef}
 			petRef={petRef}
-			position={position}
 			direction={direction}
 			showName={showName}
+			airborne={airborne}
 			collectibles={collectibles}
-			getAnimationForCurrentAction={getAnimationForCurrentAction}
+			animationSrc={animationSrc}
 			dimensions={dimensions}
 			assets={assets}
 			isHungry={isPetHungry(PetTypes.FROG)}

@@ -1,8 +1,9 @@
-import crabFood from '@/assets/animals/crab/crab-food.png'
-import idle from '@/assets/animals/crab/red_idle_8fps.webp'
-import running from '@/assets/animals/crab/red_run_8fps.webp'
-import swipe from '@/assets/animals/crab/red_swipe_8fps.webp'
-import walking from '@/assets/animals/crab/red_walk_fast_8fps.webp'
+import sheepFood from '@/assets/animals/sheep/sheep-food.png'
+import idle from '@/assets/animals/sheep/sheep_idle_8fps.webp'
+import lie from '@/assets/animals/sheep/sheep_lie_8fps.webp'
+import running from '@/assets/animals/sheep/sheep_run_8fps.webp'
+import swipe from '@/assets/animals/sheep/sheep_swipe_8fps.webp'
+import walking from '@/assets/animals/sheep/sheep_walk_8fps.webp'
 
 import { useBasePetLogic } from '../../hooks/use-base-pet-logic'
 import { BasePetContainer } from '../base-pet'
@@ -17,29 +18,29 @@ import { usePetContext } from '../../pet.context'
 import { PET_SEQUENCES } from '../../utils/species-sequences'
 import { PetTypes } from '../../types'
 
-const CRAB_ANIMATIONS: PetAnimations = {
+const SHEEP_ANIMATIONS: PetAnimations = {
 	idle,
 	walk: walking,
 	run: running,
 	swipe,
+	sit: lie,
 }
 
-const CRAB_DIMENSIONS: PetDimensions = {
+const SHEEP_DIMENSIONS: PetDimensions = {
 	size: 32,
 	width: 50,
 	walkSpeed: PetSpeed.SLOW,
 	runSpeed: PetSpeed.NORMAL,
-	maxHeight: 80,
-	sidestep: true,
+	maxHeight: 100,
 }
 
-const CRAB_ASSETS: PetAssets = {
-	collectibleIcon: <PetFood src={crabFood} />,
+const SHEEP_ASSETS: PetAssets = {
+	collectibleIcon: <PetFood src={sheepFood} />,
 	collectibleSize: 24,
 	collectibleFallSpeed: 2,
 }
 
-export const CrabComponent = ({ className }: { className?: string }) => {
+export const SheepComponent = ({ className }: { className?: string }) => {
 	const { getCurrentPetName, isPetHungry, levelUpHungryState, levelDownHungryState } =
 		usePetContext()
 
@@ -54,20 +55,20 @@ export const CrabComponent = ({ className }: { className?: string }) => {
 		dimensions,
 		assets,
 	} = useBasePetLogic({
-		name: getCurrentPetName(PetTypes.CRAB),
-		animations: CRAB_ANIMATIONS,
-		dimensions: CRAB_DIMENSIONS,
-		sequence: PET_SEQUENCES[PetTypes.CRAB],
-		assets: CRAB_ASSETS,
-		isHungry: isPetHungry(PetTypes.CRAB),
-		onCollectibleCollection: () => levelUpHungryState(PetTypes.CRAB),
-		onLevelDownHungryState: () => levelDownHungryState(PetTypes.CRAB),
+		name: getCurrentPetName(PetTypes.SHEEP),
+		animations: SHEEP_ANIMATIONS,
+		dimensions: SHEEP_DIMENSIONS,
+		sequence: PET_SEQUENCES[PetTypes.SHEEP],
+		assets: SHEEP_ASSETS,
+		isHungry: isPetHungry(PetTypes.SHEEP),
+		onCollectibleCollection: () => levelUpHungryState(PetTypes.SHEEP),
+		onLevelDownHungryState: () => levelDownHungryState(PetTypes.SHEEP),
 	})
 
 	return (
 		<BasePetContainer
 			className={className}
-			name={getCurrentPetName(PetTypes.CRAB)}
+			name={getCurrentPetName(PetTypes.SHEEP)}
 			containerRef={containerRef}
 			petRef={petRef}
 			direction={direction}
@@ -77,7 +78,7 @@ export const CrabComponent = ({ className }: { className?: string }) => {
 			animationSrc={animationSrc}
 			dimensions={dimensions}
 			assets={assets}
-			isHungry={isPetHungry(PetTypes.CRAB)}
+			isHungry={isPetHungry(PetTypes.SHEEP)}
 		/>
 	)
 }

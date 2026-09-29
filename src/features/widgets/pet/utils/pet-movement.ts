@@ -11,7 +11,6 @@ interface MovementBounds {
 }
 
 const EDGE_PADDING = 10
-const NEAR_WALL_THRESHOLD = 5
 const REFERENCE_FRAME_MS = 16.67
 
 export function getMovementBounds(
@@ -37,22 +36,6 @@ export function clampToBounds(position: Position, bounds: MovementBounds): Posit
 		x: Math.max(bounds.minX, Math.min(bounds.maxX, position.x)),
 		y: Math.max(bounds.minY, Math.min(bounds.maxY, position.y)),
 	}
-}
-
-export function isNearWall(x: number, bounds: MovementBounds): boolean {
-	return (
-		x <= bounds.minX + NEAR_WALL_THRESHOLD || x >= bounds.maxX - NEAR_WALL_THRESHOLD
-	)
-}
-
-export function pickClimbWall(x: number, bounds: MovementBounds): number {
-	const distanceToMin = Math.abs(x - bounds.minX)
-	const distanceToMax = Math.abs(bounds.maxX - x)
-	return distanceToMax < distanceToMin ? bounds.maxX : bounds.minX
-}
-
-export function directionTowardWall(wallX: number, bounds: MovementBounds): number {
-	return wallX === bounds.maxX ? 1 : -1
 }
 
 export function stepWalk(

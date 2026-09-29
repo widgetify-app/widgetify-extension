@@ -10,13 +10,8 @@ import {
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import { BASE_PET_OPTIONS, HUNGER_GAIN_STEPS, HUNGER_TICK_MS } from './constants'
-import {
-	type PetBackgroundId,
-	type PetHungerState,
-	type PetMeta,
-	type PetSettings,
-	PetTypes,
-} from './types'
+import { mergePetMeta, resolvePetSettings } from './utils/resolve-pet-settings'
+import { type PetHungerState, type PetMeta, type PetSettings, PetTypes } from './types'
 
 interface PetSettingsContextType extends PetSettings {
 	getCurrentPetName: (petType: PetTypes) => string
@@ -35,159 +30,34 @@ interface PetProviderProps {
 }
 
 export function PetProvider({ children, meta, instanceId }: PetProviderProps) {
-	const [settings, setSettings] = useState<PetSettings>({
-		...BASE_PET_OPTIONS,
-		petType: meta?.petType || BASE_PET_OPTIONS.petType,
-		background: meta?.background || BASE_PET_OPTIONS.background,
-		petOptions: {
-			...BASE_PET_OPTIONS.petOptions,
-			...(meta?.petType && meta?.petName
-				? {
-						[meta.petType]: {
-							...BASE_PET_OPTIONS.petOptions[meta.petType],
-							name: meta.petName,
-						},
-					}
-				: {}),
-		},
-	})
-	const pendingPersistRef = useRef<PetSettings | null>(null)
+	const [stored, setStored] = useState<PetSettings | null>(null)
+	const [live, setLive] = useState<PetMeta>({})
+	const storedRef = useRef<PetSettings | null>(null)
+	const pendingHungerRef = useRef<PetSettings | null>(null)
+
+	const applyStored = useCallback((next: PetSettings) => {
+		storedRef.current = next
+		setStored(next)
+	}, [])
 
 	useEffect(() => {
-		if (meta) {
-			setSettings((prev) => {
-				const activeType = meta.petType || prev.petType || PetTypes.DOG
-				return {
-					...prev,
-					petType: activeType,
-					background: meta.background ?? prev.background,
-					petOptions: {
-						...prev.petOptions,
-						...(meta.petName
-							? {
-									[activeType]: {
-										...prev.petOptions[activeType],
-										name: meta.petName,
-									},
-								}
-							: {}),
-					},
-				}
-			})
-		}
+		setLive({})
 	}, [meta])
-
-	useEffect(() => {
-		const pending = pendingPersistRef.current
-		if (!pending) return
-		pendingPersistRef.current = null
-
-		if (instanceId) {
-			getFromStorage('pets').then((storedPets) => {
-				const mergedPetOptions = {
-					...(storedPets?.petOptions || BASE_PET_OPTIONS.petOptions),
-				}
-				for (const type of Object.values(PetTypes)) {
-					if (pending.petOptions[type]?.hungryState) {
-						mergedPetOptions[type] = {
-							...(mergedPetOptions[type] ||
-								BASE_PET_OPTIONS.petOptions[type]),
-							hungryState: pending.petOptions[type].hungryState,
-						}
-					}
-				}
-				setToStorage('pets', {
-					...(storedPets || BASE_PET_OPTIONS),
-					petOptions: mergedPetOptions,
-				})
-			})
-		} else {
-			setToStorage('pets', pending)
-		}
-	})
 
 	useEffect(() => {
 		let cancelled = false
 
 		async function load() {
-			const storedPets = await getFromStorage('pets')
+			const persisted = await getFromStorage('pets')
 			if (cancelled) return
 
-			if (storedPets) {
-				if (!storedPets.petOptions?.[PetTypes.DOG]?.hungryState) {
-					setToStorage('pets', {
-						...BASE_PET_OPTIONS,
-					})
-					setSettings(() => ({
-						...BASE_PET_OPTIONS,
-						petType: meta?.petType || BASE_PET_OPTIONS.petType,
-						background: meta?.background || BASE_PET_OPTIONS.background,
-						petOptions: {
-							...BASE_PET_OPTIONS.petOptions,
-							...(meta?.petType && meta?.petName
-								? {
-										[meta.petType]: {
-											...BASE_PET_OPTIONS.petOptions[meta.petType],
-											name: meta.petName,
-										},
-									}
-								: {}),
-						},
-					}))
-				} else {
-					setSettings((prev) => {
-						const mergedOptions = {
-							...BASE_PET_OPTIONS.petOptions,
-							...(storedPets.petOptions || {}),
-						}
-						// If running as an instance, isolate petType, background, and petName in meta
-						const resolvedType: PetTypes =
-							(instanceId
-								? meta?.petType || BASE_PET_OPTIONS.petType
-								: meta?.petType ||
-									storedPets.petType ||
-									prev.petType ||
-									PetTypes.DOG) || PetTypes.DOG
-
-						const resolvedBackground: PetBackgroundId =
-							(instanceId
-								? meta?.background || BASE_PET_OPTIONS.background
-								: meta?.background ||
-									storedPets.background ||
-									prev.background) || BASE_PET_OPTIONS.background
-
-						if (instanceId) {
-							if (meta?.petName) {
-								mergedOptions[resolvedType] = {
-									...mergedOptions[resolvedType],
-									name: meta.petName,
-								}
-							}
-						} else if (meta?.petName) {
-							mergedOptions[resolvedType] = {
-								...mergedOptions[resolvedType],
-								name: meta.petName,
-							}
-						}
-
-						return {
-							...BASE_PET_OPTIONS,
-							...(instanceId ? {} : storedPets),
-							petType: resolvedType,
-							background: resolvedBackground,
-							petOptions: mergedOptions,
-						}
-					})
-				}
-			} else {
-				const initialSettings = {
-					...BASE_PET_OPTIONS,
-					petType: meta?.petType || PetTypes.DOG,
-					background: meta?.background || BASE_PET_OPTIONS.background,
-				}
-				setSettings(initialSettings)
-				await setToStorage('pets', initialSettings)
+			if (persisted?.petOptions?.[PetTypes.DOG]?.hungryState) {
+				applyStored(persisted)
+				return
 			}
+
+			applyStored(BASE_PET_OPTIONS)
+			await setToStorage('pets', BASE_PET_OPTIONS)
 		}
 
 		load().catch((err) => {
@@ -197,120 +67,114 @@ export function PetProvider({ children, meta, instanceId }: PetProviderProps) {
 		return () => {
 			cancelled = true
 		}
-	}, [meta])
+	}, [applyStored])
 
-	useEffect(() => {
-		const event = listenEvent('updatedPetSettings', (data) => {
-			if (data) {
-				if (data.instanceId && instanceId && data.instanceId !== instanceId) {
+	useEffect(
+		() =>
+			listenEvent('updatedPetSettings', (data) => {
+				if (!data) return
+
+				if (data.instanceId) {
+					if (data.instanceId !== instanceId) return
+					setLive((previous) =>
+						mergePetMeta(previous, {
+							petType: data.petType,
+							petName: data.petName,
+							background: data.background,
+						})
+					)
 					return
 				}
 
-				setSettings((prevSettings) => {
-					const newSettings = { ...prevSettings }
-
-					if (data.petName && data.petType) {
-						newSettings.petOptions = {
-							...newSettings.petOptions,
-							[data.petType]: {
-								...newSettings.petOptions[data.petType],
-								name: data.petName,
-							},
-						}
-					}
-
-					const updatedSettings: PetSettings = {
-						...newSettings,
-						petType:
-							data.petType !== undefined
-								? data.petType
-								: newSettings.petType,
-						background:
-							data.background !== undefined
-								? data.background
-								: newSettings.background,
-					}
-
-					if (!data.instanceId) {
-						setToStorage('pets', updatedSettings)
-					}
-
-					return updatedSettings
+				getFromStorage('pets').then((persisted) => {
+					if (persisted) applyStored(persisted)
 				})
-			}
-		})
+			}),
+		[instanceId, applyStored]
+	)
 
-		return () => {
-			event()
-		}
-	}, [instanceId])
+	useEffect(() => {
+		const pending = pendingHungerRef.current
+		if (!pending) return
+		pendingHungerRef.current = null
+
+		getFromStorage('pets').then((persisted) => {
+			const base = persisted ?? BASE_PET_OPTIONS
+			const petOptions = { ...base.petOptions }
+			for (const type of Object.values(PetTypes)) {
+				const hungryState = pending.petOptions[type]?.hungryState
+				if (hungryState) {
+					petOptions[type] = {
+						...(petOptions[type] ?? BASE_PET_OPTIONS.petOptions[type]),
+						hungryState,
+					}
+				}
+			}
+			setToStorage('pets', { ...base, petOptions })
+		})
+	})
+
+	const settings = useMemo(
+		() => resolvePetSettings(BASE_PET_OPTIONS, stored, mergePetMeta(meta, live)),
+		[stored, meta, live]
+	)
+
+	const updateHunger = useCallback(
+		(
+			petType: PetTypes,
+			change: (current: PetHungerState) => PetHungerState | null
+		) => {
+			const base = storedRef.current ?? BASE_PET_OPTIONS
+			const pet = base.petOptions[petType]
+			if (!pet?.hungryState) return
+
+			const hungryState = change(pet.hungryState)
+			if (!hungryState) return
+
+			const next: PetSettings = {
+				...base,
+				petOptions: { ...base.petOptions, [petType]: { ...pet, hungryState } },
+			}
+			pendingHungerRef.current = next
+			applyStored(next)
+		},
+		[applyStored]
+	)
 
 	const getCurrentPetName = useCallback(
 		(petType: PetTypes) => settings.petOptions[petType]?.name ?? '',
 		[settings]
 	)
 
-	const levelUpHungryState = useCallback((petType: PetTypes) => {
-		setSettings((prevSettings) => {
-			const pet = prevSettings.petOptions[petType]
-			if (!pet?.hungryState) return prevSettings
+	const levelUpHungryState = useCallback(
+		(petType: PetTypes) => {
+			updateHunger(petType, (current) => {
+				const gain =
+					HUNGER_GAIN_STEPS[
+						Math.floor(Math.random() * HUNGER_GAIN_STEPS.length)
+					]
+				const level = Math.min(100, current.level + gain)
+				return level === current.level ? null : { ...current, level }
+			})
+		},
+		[updateHunger]
+	)
 
-			const gain =
-				HUNGER_GAIN_STEPS[Math.floor(Math.random() * HUNGER_GAIN_STEPS.length)]
-			const nextLevel = Math.min(100, pet.hungryState.level + gain)
-			if (nextLevel === pet.hungryState.level) return prevSettings
-
-			const newSettings: PetSettings = {
-				...prevSettings,
-				petOptions: {
-					...prevSettings.petOptions,
-					[petType]: {
-						...pet,
-						hungryState: { ...pet.hungryState, level: nextLevel },
-					},
-				},
-			}
-
-			pendingPersistRef.current = newSettings
-			return newSettings
-		})
-	}, [])
-
-	const levelDownHungryState = useCallback((petType: PetTypes) => {
-		setSettings((prevSettings) => {
-			if (!prevSettings.petType) return prevSettings
-
-			const pet = prevSettings.petOptions[petType]
-			if (!pet?.hungryState) return prevSettings
-
-			if (pet.hungryState.lastHungerTick) {
-				const sinceLastTick = Date.now() - pet.hungryState.lastHungerTick
-				if (sinceLastTick < HUNGER_TICK_MS) {
-					return prevSettings
+	const levelDownHungryState = useCallback(
+		(petType: PetTypes) => {
+			updateHunger(petType, (current) => {
+				if (
+					current.lastHungerTick &&
+					Date.now() - current.lastHungerTick < HUNGER_TICK_MS
+				) {
+					return null
 				}
-			}
-
-			if (pet.hungryState.level <= 0) return prevSettings
-
-			const newSettings: PetSettings = {
-				...prevSettings,
-				petOptions: {
-					...prevSettings.petOptions,
-					[petType]: {
-						...pet,
-						hungryState: {
-							...pet.hungryState,
-							level: pet.hungryState.level - 1,
-							lastHungerTick: Date.now(),
-						},
-					},
-				},
-			}
-
-			pendingPersistRef.current = newSettings
-			return newSettings
-		})
-	}, [])
+				if (current.level <= 0) return null
+				return { level: current.level - 1, lastHungerTick: Date.now() }
+			})
+		},
+		[updateHunger]
+	)
 
 	const getPetHungryState = useCallback(
 		(petType: PetTypes) => settings.petOptions[petType]?.hungryState ?? null,

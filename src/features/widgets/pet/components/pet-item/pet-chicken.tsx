@@ -3,68 +3,60 @@ import idle from '@/assets/animals/chicken/white_idle_8fps.webp'
 import running from '@/assets/animals/chicken/white_run_8fps.webp'
 import swipe from '@/assets/animals/chicken/white_swipe_8fps.webp'
 import walking from '@/assets/animals/chicken/white_walk_fast_8fps.webp'
-import { BasePetContainer, useBasePetLogic } from '../base-pet'
+import { useBasePetLogic } from '../../hooks/use-base-pet-logic'
+import { BasePetContainer } from '../base-pet'
 import { PetFood } from '../pet-food'
 import {
 	type PetAnimations,
 	type PetAssets,
 	type PetDimensions,
-	type PetDurations,
 	PetSpeed,
 } from '../../types'
 import { usePetContext } from '../../pet.context'
+import { PET_SEQUENCES } from '../../utils/species-sequences'
 import { PetTypes } from '../../types'
+
+const CHICKEN_ANIMATIONS: PetAnimations = {
+	idle,
+	walk: walking,
+	run: running,
+	swipe,
+}
+
+const CHICKEN_DIMENSIONS: PetDimensions = {
+	size: 32,
+	width: 50,
+	walkSpeed: PetSpeed.SLOW,
+	runSpeed: PetSpeed.FAST,
+	maxHeight: 100,
+}
+
+const CHICKEN_ASSETS: PetAssets = {
+	collectibleIcon: <PetFood src={chickenFood} />,
+	collectibleSize: 24,
+	collectibleFallSpeed: 2,
+}
 
 export const ChickenComponent = ({ className }: { className?: string }) => {
 	const { getCurrentPetName, isPetHungry, levelUpHungryState, levelDownHungryState } =
 		usePetContext()
 
-	const chickenAnimations: PetAnimations = {
-		idle,
-		walk: walking,
-		run: running,
-		swipe,
-		stand: swipe,
-		climb: walking,
-	}
-
-	const chickenDimensions: PetDimensions = {
-		size: 32,
-		width: 50,
-		walkSpeed: PetSpeed.SLOW,
-		runSpeed: PetSpeed.FAST,
-		climbSpeed: 1.2,
-		maxHeight: 100,
-	}
-
-	const chickenDurations: PetDurations = {
-		walk: { min: 3000, max: 8000 },
-		run: { min: 1500, max: 4000 },
-		rest: { min: 5000, max: 10000 },
-		climb: { min: 4000, max: 7000 },
-	}
-	const chickenAssets: PetAssets = {
-		collectibleIcon: <PetFood src={chickenFood} />,
-		collectibleSize: 24,
-		collectibleFallSpeed: 2,
-	}
-
 	const {
 		containerRef,
 		petRef,
-		position,
 		direction,
 		showName,
+		airborne,
 		collectibles,
-		getAnimationForCurrentAction,
+		animationSrc,
 		dimensions,
 		assets,
 	} = useBasePetLogic({
 		name: getCurrentPetName(PetTypes.CHICKEN),
-		animations: chickenAnimations,
-		dimensions: chickenDimensions,
-		durations: chickenDurations,
-		assets: chickenAssets,
+		animations: CHICKEN_ANIMATIONS,
+		dimensions: CHICKEN_DIMENSIONS,
+		sequence: PET_SEQUENCES[PetTypes.CHICKEN],
+		assets: CHICKEN_ASSETS,
 		onCollectibleCollection: () => levelUpHungryState(PetTypes.CHICKEN),
 		onLevelDownHungryState: () => levelDownHungryState(PetTypes.CHICKEN),
 		isHungry: isPetHungry(PetTypes.CHICKEN),
@@ -76,11 +68,11 @@ export const ChickenComponent = ({ className }: { className?: string }) => {
 			name={getCurrentPetName(PetTypes.CHICKEN)}
 			containerRef={containerRef}
 			petRef={petRef}
-			position={position}
 			direction={direction}
 			showName={showName}
+			airborne={airborne}
 			collectibles={collectibles}
-			getAnimationForCurrentAction={getAnimationForCurrentAction}
+			animationSrc={animationSrc}
 			dimensions={dimensions}
 			assets={assets}
 			isHungry={isPetHungry(PetTypes.CHICKEN)}
