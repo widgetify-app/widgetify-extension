@@ -3,7 +3,7 @@ import { Icon } from '@/icons'
 import { cn } from '@/common/utils/cn'
 import { useImageSlider, type UseImageSliderOptions } from './use-image-slider'
 
-export interface ImageSliderDotsProps {
+interface ImageSliderDotsProps {
 	count: number
 	currentIndex: number
 	onSelect: (index: number) => void
@@ -12,7 +12,7 @@ export interface ImageSliderDotsProps {
 	variant?: 'light' | 'dark'
 }
 
-export function ImageSliderDots({
+function ImageSliderDots({
 	count,
 	currentIndex,
 	onSelect,
@@ -27,8 +27,8 @@ export function ImageSliderDots({
 			className={cn(
 				'flex items-center gap-1 px-2 py-1 rounded-full backdrop-blur-md pointer-events-auto',
 				variant === 'light'
-					? 'bg-black/50 border border-white/10'
-					: 'bg-base-200/80 border border-content',
+					? 'bg-[rgba(0,0,0,0.5)] border border-[rgba(255,255,255,0.1)]'
+					: 'bg-surface-veil border border-surface-3',
 				className
 			)}
 		>
@@ -42,15 +42,15 @@ export function ImageSliderDots({
 						onSelect(idx)
 					}}
 					className={cn(
-						'rounded-full transition-all duration-300 cursor-pointer',
+						'rounded-full transition-[width,background-color] duration-300 cursor-pointer',
 						size === 'sm' ? 'h-1.5' : 'h-2',
 						idx === currentIndex
 							? variant === 'light'
-								? 'w-4 bg-white'
-								: 'w-3.5 bg-primary'
+								? 'w-4 bg-image-fg'
+								: 'w-3.5 bg-brand'
 							: variant === 'light'
-								? 'w-1.5 bg-white/40 hover:bg-white/70'
-								: 'w-1 bg-base-content/30 hover:bg-base-content/60'
+								? 'w-1.5 bg-[rgba(255,255,255,0.4)] hover:bg-[rgba(255,255,255,0.7)]'
+								: 'w-1 bg-[rgba(var(--color-base-content-rgb),0.3)] hover:bg-[rgba(var(--color-base-content-rgb),0.6)]'
 					)}
 					aria-label={`اسلاید ${idx + 1}`}
 				/>
@@ -59,14 +59,14 @@ export function ImageSliderDots({
 	)
 }
 
-export interface ImageSliderArrowsProps {
+interface ImageSliderArrowsProps {
 	onPrev: (e: React.MouseEvent) => void
 	onNext: (e: React.MouseEvent) => void
 	className?: string
 	variant?: 'dark' | 'glass'
 }
 
-export function ImageSliderArrows({
+function ImageSliderArrows({
 	onPrev,
 	onNext,
 	className,
@@ -87,10 +87,10 @@ export function ImageSliderArrows({
 					onPrev(e)
 				}}
 				className={cn(
-					'pointer-events-auto w-7 h-7 rounded-xl flex items-center justify-center transition-all active:scale-95 shadow-xs cursor-pointer',
+					'pointer-events-auto w-7 h-7 rounded-xl flex items-center justify-center transition-ui active:scale-95 shadow-sm cursor-pointer',
 					variant === 'dark'
-						? 'bg-black/60 hover:bg-black/80 text-white backdrop-blur-md border border-white/20'
-						: 'bg-base-100/80 hover:bg-base-100 text-content backdrop-blur-xs border border-content'
+						? 'bg-scrim hover:bg-[rgba(0,0,0,0.8)] text-image-fg backdrop-blur-md border border-image-fill'
+						: 'bg-surface-veil hover:bg-surface text-fg backdrop-blur-xs border border-surface-3'
 				)}
 				aria-label="عکس قبلی"
 			>
@@ -104,10 +104,10 @@ export function ImageSliderArrows({
 					onNext(e)
 				}}
 				className={cn(
-					'pointer-events-auto w-7 h-7 rounded-xl flex items-center justify-center transition-all active:scale-95 shadow-xs cursor-pointer',
+					'pointer-events-auto w-7 h-7 rounded-xl flex items-center justify-center transition-ui active:scale-95 shadow-sm cursor-pointer',
 					variant === 'dark'
-						? 'bg-black/60 hover:bg-black/80 text-white backdrop-blur-md border border-white/20'
-						: 'bg-base-100/80 hover:bg-base-100 text-content backdrop-blur-xs border border-content'
+						? 'bg-scrim hover:bg-[rgba(0,0,0,0.8)] text-image-fg backdrop-blur-md border border-image-fill'
+						: 'bg-surface-veil hover:bg-surface text-fg backdrop-blur-xs border border-surface-3'
 				)}
 				aria-label="عکس بعدی"
 			>
@@ -117,7 +117,7 @@ export function ImageSliderArrows({
 	)
 }
 
-export interface ImageSliderProps extends UseImageSliderOptions {
+interface ImageSliderProps extends UseImageSliderOptions {
 	alt?: string
 	mode?: 'background' | 'image'
 	showArrows?: boolean
@@ -193,7 +193,7 @@ export function ImageSlider({
 			{mode === 'background' ? (
 				<div
 					className={cn(
-						'absolute inset-0 bg-cover bg-center transition-all duration-700 ease-out group-hover:scale-105',
+						'absolute inset-0 bg-cover bg-center transition-ui duration-500 ease-out group-hover:scale-105',
 						imageClassName
 					)}
 					style={{

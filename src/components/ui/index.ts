@@ -28,7 +28,8 @@ export * from './dropdown/dropdown-item.variants'
 
 export * from './filter-tooltip/filter-tooltip'
 
-export * from './image-slider'
+export * from './image-slider/image-slider'
+export * from './image-slider/use-image-slider'
 
 export * from './input/input'
 export * from './input/input.variants'
