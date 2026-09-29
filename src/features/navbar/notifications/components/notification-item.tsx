@@ -40,7 +40,6 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 		title,
 		closeable,
 		id,
-
 		description,
 		target,
 		goTo,
@@ -90,7 +89,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 	return (
 		<Wrapper
 			link={link}
-			className={`flex gap-2 p-2 transition-ui duration-300 border rounded-2xl ${!isText && 'hover:scale-[0.99] hover:bg-surface-3  items-center active:scale-[0.99]'} ${link && 'cursor-pointer'}   border-surface-3 group relative ${prop.className || ''}`}
+			className={`flex gap-2 p-2 transition-ui duration-300 border rounded-2xl ${!isText && 'hover:scale-[0.99] cursor-pointer hover:bg-surface-3  items-center active:scale-[0.99]'} border-surface-3 group relative ${prop.className || ''}`}
 		>
 			{icon && (
 				<div className="shrink-0 self-start mt-0.5">
