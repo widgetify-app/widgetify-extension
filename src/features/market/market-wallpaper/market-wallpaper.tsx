@@ -5,7 +5,7 @@ import { WallpaperItem } from '@/components/wallpaper/wallpaper-item'
 import { useGetWallpapers } from '@/services/wallpapers/get-wallpaper-categories.hook'
 import { useWallpaperContext } from '@/context/wallpaper.context'
 import { usePreviewHandler } from '@/hooks/use-preview-handler'
-import type { Wallpaper } from '@/common/wallpaper.interface'
+import type { Wallpaper } from '@/common/types/wallpaper.interface'
 import { MarketItemType } from '@/services/market/market.interface'
 
 export function MarketWallpaper() {

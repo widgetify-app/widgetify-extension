@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { getMultipleFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
-import type { StoredWallpaper, Wallpaper } from '@/common/wallpaper.interface'
+import type { StoredWallpaper, Wallpaper } from '@/common/types/wallpaper.interface'
 import { useAuth } from '@/context/auth.context'
 import { getAccountSync } from '@/services/extension/get-account-sync'
 import type { UserInventoryItem } from '@/services/market/market.interface'

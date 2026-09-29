@@ -15,7 +15,7 @@ export function TopUserItem({
 	activeProfileId,
 	setActiveProfileId,
 }: TopUserItemProps) {
-	const containerRef = useRef<HTMLDivElement>(null)
+	const containerRef = useRef<HTMLButtonElement>(null)
 	const isActive = activeProfileId === user.id
 	const crownColors: Record<number, string> = {
 		1: 'text-[#fdc700]',
@@ -36,8 +36,9 @@ export function TopUserItem({
 
 	return (
 		<>
-			<div
-				className={`relative flex items-center gap-2 p-2 cursor-pointer rounded-2xl bg-surface-2 transition-ui hover:scale-95 shadow-md hover:shadow-none`}
+			<button
+				type="button"
+				className={`relative flex items-center w-full gap-2 p-2 text-start cursor-pointer rounded-2xl bg-surface-2 transition-ui hover:scale-95 shadow-md hover:shadow-none`}
 				onClick={() => setActiveProfileId(user.id)}
 				ref={containerRef}
 			>
@@ -62,7 +63,7 @@ export function TopUserItem({
 				>
 					<span className="text-xs font-bold">{rank}</span>
 				</div>
-			</div>
+			</button>
 
 			<UserCardPortal
 				user={{

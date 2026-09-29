@@ -32,7 +32,6 @@ export function TodoSelectFriends({ selectedFriends, setSelectedFriends }: Prop)
 					)}
 				</Button>
 			}
-			dropdownClassName="select-friends"
 			position="top-right"
 		>
 			<div className="p-2 border min-w-xs min-h-80 max-h-80 bg-surface-2 border-surface-3 rounded-2xl">

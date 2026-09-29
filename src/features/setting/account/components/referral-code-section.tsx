@@ -32,12 +32,7 @@ export const ReferralCodeSection = ({ code, className }: ReferralCodeSectionProp
 				>
 					<div>
 						<p className="mb-1 text-sm text-fg-muted">کد دعوت</p>
-						<p
-							className="text-lg font-semibold cursor-pointer text-fg hover:underline"
-							onClick={handleCopyCode}
-						>
-							{code}
-						</p>
+						<p className="text-lg font-semibold text-fg">{code}</p>
 					</div>
 					<Button
 						onClick={handleCopyCode}

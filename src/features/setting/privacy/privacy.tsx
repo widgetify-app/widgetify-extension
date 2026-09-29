@@ -42,6 +42,7 @@ export function PrivacySettings() {
 						</div>
 						<div className="shrink-0 pt-0.5">
 							<ToggleSwitch
+								label="آمار و عملکرد افزونه"
 								enabled={analyticsEnabled}
 								onToggle={handleToggleAnalytics}
 							/>
@@ -61,6 +62,7 @@ export function PrivacySettings() {
 							</div>
 							<div className="shrink-0 pt-0.5">
 								<ToggleSwitch
+									label="نمایش آیکون‌های بوکمارک‌ها"
 									enabled={allowFavicon}
 									onToggle={handleToggleFavicon}
 								/>
@@ -80,6 +82,7 @@ export function PrivacySettings() {
 						</div>
 						<div className="shrink-0 pt-0.5">
 							<ToggleSwitch
+								label="دسترسی به بوکمارک‌های مرورگر"
 								enabled={browserBookmarksEnabled}
 								onToggle={() =>
 									setBrowserBookmarksEnabled(!browserBookmarksEnabled)
@@ -100,6 +103,7 @@ export function PrivacySettings() {
 						</div>
 						<div className="shrink-0 pt-0.5">
 							<ToggleSwitch
+								label="دسترسی به تب‌ها"
 								enabled={browserTabsEnabled}
 								onToggle={() =>
 									setBrowserTabsEnabled(!browserTabsEnabled)

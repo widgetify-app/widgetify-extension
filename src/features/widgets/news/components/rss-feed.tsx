@@ -33,7 +33,7 @@ export function RssFeedComponent({ url, sourceName, label }: Prop) {
 		return (
 			<div className="flex items-center justify-between gap-2 p-2 border rounded-2xl border-line bg-fill">
 				<span className="flex items-center gap-1.5 min-w-0 text-2xs text-fg-muted">
-					<Icon name="alert" size={13} aria-hidden="true" />
+					<Icon name="alert" size={12} aria-hidden="true" />
 					<span className="truncate">{label} دریافت نشد</span>
 				</span>
 				<button

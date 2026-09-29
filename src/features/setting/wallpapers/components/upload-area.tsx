@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import type { Wallpaper } from '@/common/wallpaper.interface'
+import type { Wallpaper } from '@/common/types/wallpaper.interface'
 import { useWallpaperUpload } from '../hooks/use-wallpaper-upload'
 import { useRemoveCustomWallpaper } from '@/services/wallpapers/upload-custom-wallpaper.hook'
 import { safeAwait } from '@/services/api'

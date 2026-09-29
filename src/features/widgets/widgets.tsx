@@ -14,6 +14,7 @@ import { GridOverlay } from './components/grid-overlay'
 
 export function FreeWidgetCanvas() {
 	const containerRef = useRef<HTMLDivElement>(null)
+	const backgroundRef = useRef<HTMLDivElement>(null)
 	const containerSize = useContainerSize(containerRef)
 
 	const {
@@ -77,14 +78,13 @@ export function FreeWidgetCanvas() {
 	}, [canvasMode, setSelectedInstanceId])
 
 	const isBackgroundTarget = (target: EventTarget | null) =>
-		target === containerRef.current ||
-		(target as HTMLElement)?.classList?.contains('canvas-background')
+		target === containerRef.current || target === backgroundRef.current
 
 	const handleCanvasPointerDown = (e: React.PointerEvent) => {
 		pressStartedOnBackgroundRef.current = isBackgroundTarget(e.target)
 	}
 
-	const handleCanvasClick = (e: React.MouseEvent) => {
+	const handleCanvasPointerUp = (e: React.PointerEvent) => {
 		const startedOnBackground = pressStartedOnBackgroundRef.current
 		pressStartedOnBackgroundRef.current = false
 
@@ -97,11 +97,7 @@ export function FreeWidgetCanvas() {
 	}
 
 	const handleCanvasContextMenu = (e: React.MouseEvent) => {
-		const target = e.target as HTMLElement
-		if (
-			target === containerRef.current ||
-			target.classList.contains('canvas-background')
-		) {
+		if (isBackgroundTarget(e.target)) {
 			e.preventDefault()
 			setCanvasContextMenuPos({ x: e.clientX, y: e.clientY })
 		}
@@ -180,16 +176,18 @@ export function FreeWidgetCanvas() {
 	}
 
 	return (
-		<div
+		<section
+			aria-label="ویجت‌ها"
 			ref={containerRef}
 			id="widgets-canvas"
 			className="relative w-full select-none"
 			onPointerDown={handleCanvasPointerDown}
-			onClick={handleCanvasClick}
+			onPointerUp={handleCanvasPointerUp}
 			onContextMenu={handleCanvasContextMenu}
 		>
 			<div
-				className="relative w-full transition-colors duration-300 canvas-background rounded-widget"
+				ref={backgroundRef}
+				className="relative w-full transition-colors duration-300 rounded-widget"
 				style={{
 					minHeight: `${canvasPixelHeight}px`,
 					height: `${canvasPixelHeight}px`,
@@ -265,6 +263,6 @@ export function FreeWidgetCanvas() {
 			/>
 
 			<WidgetHelpModal isOpen={isHelpModalOpen} onClose={handleCloseHelpModal} />
-		</div>
+		</section>
 	)
 }

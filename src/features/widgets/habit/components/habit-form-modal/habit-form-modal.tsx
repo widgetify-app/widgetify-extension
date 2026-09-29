@@ -16,7 +16,7 @@ import {
 import { useAddHabit } from '@/services/habit/add-habit.hook'
 import { useUpdateHabit } from '@/services/habit/update-habit.hook'
 import type { HabitIcon } from '@/services/habit/get-habits.hook'
-import { addOpacityToColor } from '@/common/color'
+import { addOpacityToColor } from '@/common/utils/color'
 import { safeAwait } from '@/services/api'
 import { translateError } from '@/common/utils/translate-error'
 import { HabitFormActions } from './habit-form-actions'
@@ -45,7 +45,7 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 
 	const [title, setTitle] = useState('')
 	const [emoji, setEmoji] = useState(HABIT_EMOJI_PRESETS[0] || '💧')
-	const [color, setColor] = useState(HABIT_COLOR_PRESETS[0] || '#3b82f6')
+	const [color, setColor] = useState(HABIT_COLOR_PRESETS[0])
 	const [comparison, setComparison] = useState<HabitComparison>(
 		HabitComparison.AT_LEAST
 	)
@@ -77,7 +77,7 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 		} else {
 			setTitle('')
 			setEmoji(HABIT_EMOJI_PRESETS[0] || '💧')
-			setColor(HABIT_COLOR_PRESETS[0] || '#3b82f6')
+			setColor(HABIT_COLOR_PRESETS[0])
 			setComparison(HabitComparison.AT_LEAST)
 			setUnit(HabitUnit.TIMES)
 			setCustomUnit('')
@@ -189,7 +189,9 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 				)}
 
 				<div className="flex flex-col gap-1.5">
-					<label className="text-xs text-fg-muted">عنوان</label>
+					<label htmlFor="habit-title" className="text-xs text-fg-muted">
+						عنوان
+					</label>
 					<div className="flex items-center px-3 py-2 transition-colors border rounded-2xl border-surface-3 bg-surface-2 focus-within:border-brand">
 						<div
 							className="flex items-center justify-center w-8 h-8 text-lg transition-transform rounded-xl shrink-0"
@@ -202,6 +204,7 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 						</div>
 
 						<TextInput
+							id="habit-title"
 							value={title}
 							onChange={(val) => {
 								setTitle(val)

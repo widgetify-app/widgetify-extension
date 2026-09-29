@@ -143,7 +143,7 @@ export function GalleryPickerModal({
 							<div className="flex flex-col items-center justify-center h-full py-20 text-fg-muted">
 								<Icon
 									name="image"
-									size={40}
+									size={32}
 									className="mb-2 opacity-30"
 								/>
 								<p className="text-sm font-medium">هیچ تصویری پیدا نشد</p>

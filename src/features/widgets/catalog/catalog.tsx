@@ -1,6 +1,6 @@
 import type React from 'react'
 import { useEffect, useMemo, useState } from 'react'
-import { Badge, Button, Modal } from '@/components/ui'
+import { Badge, Button, Modal, Tooltip } from '@/components/ui'
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
 import { useOptionalFreeWidgets } from '@/features/widgets/widgets.context'
@@ -277,18 +277,19 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 								? 'تغییر مدل و استایل ویجت'
 								: 'مدیریت و افزودن ویجت‌ها'}
 						</span>
-						<Button
-							type="button"
-							size="xs"
-							rounded="xl"
-							onClick={() => setIsHelpOpen(true)}
-							variant="ghost"
-							className="gap-1 text-xs px-2.5 py-1 border-line font-normal"
-							title="راهنمای مدیریت ویجت‌ها"
-						>
-							<Icon name="help" size={13} />
-							<span>راهنما</span>
-						</Button>
+						<Tooltip content="راهنمای مدیریت ویجت‌ها">
+							<Button
+								type="button"
+								size="xs"
+								rounded="xl"
+								onClick={() => setIsHelpOpen(true)}
+								variant="ghost"
+								className="gap-1 text-xs px-2.5 py-1 border-line font-normal"
+							>
+								<Icon name="help" size={12} />
+								<span>راهنما</span>
+							</Button>
+						</Tooltip>
 					</div>
 				}
 				size="xl"
@@ -317,7 +318,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 									<div className="flex items-center justify-between pb-2 border-b border-line">
 										<div className="flex items-center gap-2">
 											<span className="flex items-center justify-center rounded-xl w-9 h-9 shrink-0 bg-brand-fill text-brand">
-												<Icon name={selectedDef.icon} size={19} />
+												<Icon name={selectedDef.icon} size={20} />
 											</span>
 											<div>
 												<div className="flex items-center gap-1.5">

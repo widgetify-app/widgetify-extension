@@ -28,7 +28,7 @@ export function RenderPreview({ item }: RenderPreviewProps) {
 			<div className={`${base} bg-fill px-2`}>
 				{renderBrowserTitlePreview({
 					template: item.meta?.template || item.name,
-					className: '!w-96 !max-w-96',
+					className: 'w-96! max-w-96!',
 				})}
 			</div>
 		)

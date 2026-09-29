@@ -33,6 +33,7 @@ export function SearchAutocompleteSwitch() {
 			</div>
 			<div className="shrink-0 pt-0.5">
 				<ToggleSwitch
+					label="پیشنهادهای جستجو"
 					enabled={user?.searchAutocompleteEnabled || false}
 					onToggle={onToggle}
 					disabled={isPending}

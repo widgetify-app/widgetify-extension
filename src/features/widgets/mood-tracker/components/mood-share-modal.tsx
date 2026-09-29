@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Button, Modal } from '@/components/ui'
+import { Button, Modal, Spinner } from '@/components/ui'
 import { Icon } from '@/icons'
 import { useAuth } from '@/context/auth.context'
 import {
@@ -65,7 +65,7 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 
 				{isAuthenticated && isLoading && (
 					<div className="flex flex-col items-center justify-center h-64 gap-2 text-fg-muted">
-						<span className="loading loading-spinner loading-md text-brand" />
+						<Spinner size="lg" aria-hidden="true" />
 						<span className="text-xs">در حال آماده‌سازی تصویر...</span>
 					</div>
 				)}

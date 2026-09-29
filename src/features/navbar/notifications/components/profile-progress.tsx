@@ -20,18 +20,22 @@ export function ProfileProgressNotification({ className }: Prop) {
 
 	return (
 		<div
-			className={`flex w-full gap-2 px-2 py-1 transition-ui duration-300 border cursor-pointer rounded-xl  border-surface-3 hover:scale-[0.99] active:scale-[0.99] ${className}`}
-			onClick={() => onClick()}
+			className={`flex w-full gap-2 px-2 py-1 transition-ui duration-300 border rounded-xl  border-surface-3 hover:scale-[0.99] active:scale-[0.99] ${className}`}
 		>
-			<div className="flex flex-row items-center w-full gap-2 rounded-xl ">
+			<button
+				type="button"
+				onClick={onClick}
+				className="flex flex-row items-center w-full gap-2 text-start cursor-pointer rounded-xl focus-visible:focus-ring"
+			>
 				<RadialProgressSmall percentage={profilePercentage} size={15} />
 				<p className="text-2xs w-fit font-normal text-fg-muted">
 					پروفایلت رو کامل کن و پاداش بگیر!
 				</p>
-			</div>
+			</button>
 			<div className="flex items-start justify-between">
 				<button
 					type="button"
+					aria-label="بستن"
 					className="flex p-0.5 transition-opacity rounded-lg cursor-pointer top-2 left-2 bg-fill text-fg-faint hover:bg-danger-fill hover:text-danger"
 					onClick={(e) => {
 						e.preventDefault()
@@ -61,6 +65,7 @@ const RadialProgressSmall = ({ percentage }: any) => {
 			style={{ width: size, height: size }}
 		>
 			<svg
+				aria-hidden="true"
 				width={size}
 				height={size}
 				viewBox={`0 0 ${size} ${size}`}

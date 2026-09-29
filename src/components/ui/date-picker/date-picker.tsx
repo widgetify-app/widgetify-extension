@@ -211,6 +211,7 @@ export function DatePicker({
 				<div className="flex gap-0.5">
 					{showTodayButton && (
 						<button
+							type="button"
 							onClick={goToToday}
 							className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-fg-muted opacity-70 hover:bg-surface-3 hover:opacity-100"
 						>
@@ -218,12 +219,14 @@ export function DatePicker({
 						</button>
 					)}
 					<button
+						type="button"
 						onClick={() => changeMonth(-1)}
 						className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-fg-muted opacity-70 hover:bg-surface-3 hover:opacity-100"
 					>
 						<Icon name="chevronRight" size={12} />
 					</button>
 					<button
+						type="button"
 						onClick={() => changeMonth(1)}
 						className="flex items-center justify-center transition-colors duration-300 rounded-full cursor-pointer h-7 w-7 text-fg-muted opacity-70 hover:bg-surface-3 hover:opacity-100"
 					>

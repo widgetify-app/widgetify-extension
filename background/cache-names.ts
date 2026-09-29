@@ -1,4 +1,4 @@
-import { CacheName } from '../src/common/types/sw-events'
+import { CacheName } from '../src/common/types/sw-events.interface'
 
 const CACHE_PREFIX = 'wgf-'
 

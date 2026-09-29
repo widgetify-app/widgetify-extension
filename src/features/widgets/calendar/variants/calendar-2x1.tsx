@@ -56,7 +56,6 @@ export function Calendar2x1() {
 						<li key={idx} className="h-full">
 							<button
 								type="button"
-								title={dayLabel}
 								aria-label={dayLabel}
 								aria-pressed={isSelected}
 								aria-current={isToday ? 'date' : undefined}

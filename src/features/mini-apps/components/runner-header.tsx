@@ -29,6 +29,7 @@ export function MiniAppRunnerHeader({
 			<div className="relative flex items-center justify-between px-4 py-3">
 				<div className="flex items-center gap-2">
 					<button
+						type="button"
 						className="flex items-center justify-center w-8 h-8 transition-ui duration-200 border rounded-lg cursor-pointer bg-fill-2 active:scale-95 group border-line"
 						aria-label="بازگشت"
 						onClick={() => onClickToBack()}
@@ -71,6 +72,7 @@ export function MiniAppRunnerHeader({
 
 				<div className="flex gap-1">
 					<button
+						type="button"
 						onClick={() => onToggleFullScreen()}
 						disabled={isLoading || isConnecting}
 						className="flex items-center justify-center w-8 h-8 transition-ui duration-200 border rounded-lg cursor-pointer bg-fill-2 active:scale-95 group border-line disabled:opacity-40"
@@ -78,25 +80,26 @@ export function MiniAppRunnerHeader({
 						{isFullScreen ? (
 							<Icon
 								name="minimize"
-								size={18}
+								size={16}
 								className={`transition-colors duration-200 text-fg-muted group-hover:text-fg-strong`}
 							/>
 						) : (
 							<Icon
 								name="maximize"
-								size={18}
+								size={16}
 								className={`transition-colors duration-200 text-fg-muted group-hover:text-fg-strong`}
 							/>
 						)}
 					</button>
 
 					<button
+						type="button"
 						onClick={handleReload}
 						className="flex items-center justify-center w-8 h-8 transition-ui duration-200 border rounded-lg cursor-pointer bg-fill-2 active:scale-95 group border-line disabled:opacity-40"
 					>
 						<Icon
 							name="refresh"
-							size={18}
+							size={16}
 							className="transition-colors duration-200 text-fg-muted group-hover:text-fg-strong"
 							spin={isLoading || isConnecting}
 						/>

@@ -1,5 +1,5 @@
 import Analytics from '@/analytics'
-import { Button, Modal } from '@/components/ui'
+import { Alert, Button, Modal } from '@/components/ui'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
 import { ConfigKey } from '@/common/constants/config-keys'
@@ -101,12 +101,10 @@ export function CoinPackagePurchaseModal({
 					</div>
 				</div>
 
-				<div className="px-3 py-2.5 rounded-2xl border border-info-fill-2 bg-info-fill">
-					<p className="text-2xs text-info">
-						💡 سکه‌های خریداری شده بلافاصله پس از پرداخت موفق به حساب شما اضافه
-						می‌شوند.
-					</p>
-				</div>
+				<Alert tone="info">
+					سکه‌های خریداری شده بلافاصله پس از پرداخت موفق به حساب شما اضافه
+					می‌شوند.
+				</Alert>
 
 				<div className="flex gap-2 pt-1">
 					<Button
@@ -128,7 +126,7 @@ export function CoinPackagePurchaseModal({
 						color={'brand'}
 						rounded={'2xl'}
 					>
-						<Icon name="check" size={15} className="ml-1" />
+						<Icon name="check" size={16} className="ml-1" />
 						تایید و پرداخت
 					</Button>
 				</div>

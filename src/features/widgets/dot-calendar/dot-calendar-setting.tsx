@@ -81,7 +81,7 @@ export function DotCalendarSetting({ instanceId }: DotCalendarSettingProps = {})
 							icon: <Icon name="target" size={14} />,
 						},
 					]}
-					size="medium"
+					size="md"
 					className="w-full"
 				/>
 

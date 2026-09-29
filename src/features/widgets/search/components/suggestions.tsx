@@ -42,7 +42,7 @@ export function Suggestions({
 						>
 							<Icon
 								name={item.isRecent ? 'history' : 'search'}
-								size={15}
+								size={16}
 								aria-hidden="true"
 								className={`shrink-0 ${isSelected ? 'text-brand' : 'text-fg-faint'}`}
 							/>

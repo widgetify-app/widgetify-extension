@@ -1,7 +1,7 @@
 import type React from 'react'
 import { useMemo } from 'react'
 import { cn } from '@/common/utils/cn'
-import { Icon } from '@/icons'
+import { Icon, type IconSize } from '@/icons'
 import { WIDGET_DEFINITIONS } from '../../registry'
 import type { PresetLayout } from '../types'
 import { resolvePresetWidgetsForViewport } from '../utils/viewport'
@@ -9,9 +9,9 @@ import { resolvePresetWidgetsForViewport } from '../utils/viewport'
 const PREVIEW_ROWS = 6
 const PREVIEW_COLS = 8
 
-function getIconSize(cellCount: number): number {
+function getIconSize(cellCount: number): IconSize {
 	if (cellCount >= 6) return 20
-	if (cellCount >= 4) return 17
+	if (cellCount >= 4) return 16
 	if (cellCount >= 2) return 14
 	return 12
 }

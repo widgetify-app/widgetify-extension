@@ -1,10 +1,11 @@
 import { useEffect } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
-import type { StoredWallpaper, Wallpaper } from '@/common/wallpaper.interface'
+import type { StoredWallpaper, Wallpaper } from '@/common/types/wallpaper.interface'
+import { DEFAULT_WALLPAPER } from '@/common/constants/default-wallpaper'
 import { getRandomWallpaper } from '@/services/wallpapers/get-wallpaper-categories.hook'
 import { safeAwait } from '@/services/api'
-import { SwEventType } from '@/common/types/sw-events'
+import { SwEventType } from '@/common/types/sw-events.interface'
 
 function pinWallpaperForOffline(wallpaper: StoredWallpaper) {
 	if (wallpaper.type !== 'IMAGE' && wallpaper.type !== 'VIDEO') return
@@ -122,17 +123,6 @@ function applyWallpaper(wallpaper: StoredWallpaper) {
 	}
 }
 
-const DEFAULT_GRADIENT: StoredWallpaper = {
-	id: 'gradient-a1c4fd-c2e9fb',
-	type: 'GRADIENT',
-	src: '',
-	gradient: {
-		from: '#a1c4fd',
-		to: '#c2e9fb',
-		direction: 'to-r',
-	},
-}
-
 export function useWallpaperApply() {
 	useEffect(() => {
 		async function loadWallpaper() {
@@ -147,8 +137,8 @@ export function useWallpaperApply() {
 				getRandomWallpaper()
 			)
 			if (error || !randomWallpaper) {
-				applyWallpaper(DEFAULT_GRADIENT)
-				setToStorage('wallpaper', DEFAULT_GRADIENT)
+				applyWallpaper(DEFAULT_WALLPAPER)
+				setToStorage('wallpaper', DEFAULT_WALLPAPER)
 				return
 			}
 

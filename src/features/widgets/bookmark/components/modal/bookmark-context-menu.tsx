@@ -21,7 +21,7 @@ export function BookmarkContextMenu({
 		<PopoverMenu isOpen={true} onClose={onClose} position={position} width={160}>
 			{onOpenInNewTab && (
 				<PopoverMenuItem
-					icon={<Icon name="plus" size={13} />}
+					icon={<Icon name="plus" size={12} />}
 					label="در تب جدید"
 					onClick={() => {
 						onOpenInNewTab()
@@ -31,7 +31,7 @@ export function BookmarkContextMenu({
 			)}
 
 			<PopoverMenuItem
-				icon={<Icon name="pen" size={13} />}
+				icon={<Icon name="pen" size={12} />}
 				label="ویرایش"
 				onClick={() => {
 					onEdit()
@@ -42,7 +42,7 @@ export function BookmarkContextMenu({
 			<PopoverMenuDivider />
 
 			<PopoverMenuItem
-				icon={<Icon name="trash" size={13} />}
+				icon={<Icon name="trash" size={12} />}
 				label="حذف"
 				variant="danger"
 				onClick={() => {

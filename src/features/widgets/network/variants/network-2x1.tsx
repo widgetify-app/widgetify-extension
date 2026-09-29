@@ -1,5 +1,5 @@
 import { cn } from '@/common/utils/cn'
-import { Button } from '@/components/ui'
+import { Button, Tooltip } from '@/components/ui'
 import { Icon } from '@/icons'
 import { copyIpToClipboard } from '../utils/copy-ip'
 import { getPingTextClass } from '../utils/ping-quality'
@@ -115,7 +115,7 @@ export function NetworkCompactRow({
 						>
 							<Icon
 								name="wifi"
-								size={13}
+								size={12}
 								aria-hidden="true"
 								className="shrink-0"
 							/>
@@ -128,7 +128,7 @@ export function NetworkCompactRow({
 						<div className="flex items-center gap-1 text-2xs font-bold text-danger shrink-0">
 							<Icon
 								name="wifiOff"
-								size={13}
+								size={12}
 								aria-hidden="true"
 								className="shrink-0"
 							/>
@@ -138,23 +138,24 @@ export function NetworkCompactRow({
 
 					<span className="text-xs select-none text-fg-ghost shrink-0">•</span>
 
-					<button
-						type="button"
-						onClick={handleCopyIp}
-						disabled={!ip}
-						title="کپی آدرس IP"
-						aria-label={ip ? `کپی آدرس ${ip}` : undefined}
-						className={cn(
-							'flex items-center gap-1 font-mono text-xs font-semibold tracking-tight text-fg transition-ui truncate',
-							ip
-								? 'cursor-pointer hover:text-brand focus-visible:focus-ring'
-								: 'cursor-default',
-							blurMode ? 'blur-mode' : 'disabled-blur-mode'
-						)}
-						dir="ltr"
-					>
-						<span>{ip || '---'}</span>
-					</button>
+					<Tooltip content={ip ? 'کپی آدرس IP' : null} className="min-w-0">
+						<button
+							type="button"
+							onClick={handleCopyIp}
+							disabled={!ip}
+							aria-label={ip ? `کپی آدرس ${ip}` : undefined}
+							className={cn(
+								'flex items-center max-w-full gap-1 font-mono text-xs font-semibold tracking-tight text-fg transition-ui truncate',
+								ip
+									? 'cursor-pointer hover:text-brand focus-visible:focus-ring'
+									: 'cursor-default',
+								blurMode ? 'blur-mode' : 'disabled-blur-mode'
+							)}
+							dir="ltr"
+						>
+							<span>{ip || '---'}</span>
+						</button>
+					</Tooltip>
 				</div>
 
 				<div className="flex items-center gap-1.5 text-2xs text-fg-muted truncate">

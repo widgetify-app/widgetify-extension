@@ -1,4 +1,4 @@
-import type { Wallpaper } from '@/common/wallpaper.interface'
+import type { Wallpaper } from '@/common/types/wallpaper.interface'
 import { MediaPreview } from '../media-preview'
 import { Icon } from '@/icons'
 import { Button, Tooltip, VipBadge } from '@/components/ui'
@@ -34,7 +34,7 @@ export function UploadActive({
 
 						{isCloudWallpaper && (
 							<div className="absolute top-1.5 left-1.5">
-								<VipBadge variant="indigo" iconOnly size="xs" />
+								<VipBadge variant="solid" iconOnly size="xs" />
 							</div>
 						)}
 					</div>
@@ -48,7 +48,7 @@ export function UploadActive({
 						<div className="flex items-center gap-1.5 flex-wrap">
 							{isCloudWallpaper ? (
 								<span className="inline-flex items-center gap-1 text-2xs font-medium text-fg-muted bg-fill px-2 py-0.5 rounded-xl cursor-default">
-									<Icon name="save" size={11} />
+									<Icon name="save" size={12} />
 									<span>همگام‌سازی شده با سرور</span>
 								</span>
 							) : (
@@ -77,17 +77,19 @@ export function UploadActive({
 						<span>تغییر</span>
 					</Button>
 
-					<Button
-						onClick={onRemove}
-						size="sm"
-						rounded="xl"
-						variant="ghost"
-						color="danger"
-						loading={isRemoving}
-						title="حذف پس‌زمینه"
-					>
-						<Icon name="trash" size={15} />
-					</Button>
+					<Tooltip content="حذف پس‌زمینه">
+						<Button
+							onClick={onRemove}
+							size="sm"
+							rounded="xl"
+							variant="ghost"
+							color="danger"
+							loading={isRemoving}
+							aria-label="حذف پس‌زمینه"
+						>
+							<Icon name="trash" size={16} />
+						</Button>
+					</Tooltip>
 				</div>
 			</div>
 		</div>

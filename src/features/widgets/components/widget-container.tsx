@@ -22,7 +22,8 @@ export function WidgetContainer({
 
 	return (
 		<div
-			className={`widget-outer relative h-full w-full overflow-hidden ${className}`}
+			data-tour="widget"
+			className={`relative h-full w-full overflow-hidden ${className}`}
 		>
 			<div
 				className={`h-full w-full m-auto flex flex-col overflow-hidden ${background ? `bg-glass-surface ${padding ? 'p-2' : 'p-0'} rounded-widget` : ''} ${contentClassName} ${canvasMode === 'edit' ? 'pointer-events-none select-none' : ''}`}

@@ -78,12 +78,7 @@ export function ProfileNav() {
 				/>
 			</Dropdown>
 
-			<Modal
-				isOpen={showAuthModal}
-				onClose={authModalCloseHandler}
-				size="sm"
-				title=" "
-			>
+			<Modal isOpen={showAuthModal} onClose={authModalCloseHandler} size="sm">
 				<Suspense
 					fallback={
 						<div className="flex justify-center py-16">

@@ -1,47 +1,23 @@
 import { useState, type ReactNode } from 'react'
 import { Presence, Motion as motion } from '@/common/motion'
 import { Portal } from '../portal/portal'
-import { Icon } from '@/icons'
 
-type SheetSize = 'small' | 'medium' | 'large' | 'full' | 'screen'
+const SHEET_HEIGHT = '50vh'
+const CLOSE_DRAG_DISTANCE = 100
 
 interface BottomSheetProps {
 	isOpen: boolean
 	onClose: () => void
-	size?: SheetSize
-	title?: ReactNode
-	showBack?: boolean
-	onClickBack?: () => void
 	children: ReactNode
-	closeOnBackdrop?: boolean
-	dragThreshold?: number
 }
 
-export function BottomSheet({
-	isOpen,
-	onClose,
-	size = 'medium',
-	title,
-	children,
-	closeOnBackdrop = true,
-	dragThreshold = 100,
-	onClickBack,
-	showBack,
-}: BottomSheetProps) {
+export function BottomSheet({ isOpen, onClose, children }: BottomSheetProps) {
 	const [isDragging, setIsDragging] = useState(false)
-
-	const sizes: Record<SheetSize, string> = {
-		small: '30vh',
-		medium: '50vh',
-		large: '75vh',
-		full: '90vh',
-		screen: '98vh',
-	}
 
 	const handleDragEnd = (_: any, info: any) => {
 		setIsDragging(false)
 
-		if (info.offset.y > dragThreshold) {
+		if (info.offset.y > CLOSE_DRAG_DISTANCE) {
 			onClose()
 		}
 	}
@@ -56,8 +32,8 @@ export function BottomSheet({
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
-						transition={{ duration: 0.25, ease: 'easeOut' }}
-						onClick={closeOnBackdrop ? onClose : undefined}
+						transition={{ duration: 0.3, ease: 'easeOut' }}
+						onClick={onClose}
 					/>
 				)}
 
@@ -66,7 +42,7 @@ export function BottomSheet({
 						key="bottom-sheet-panel"
 						className={`fixed left-0 right-0 ${isDragging ? 'z-10' : 'z-float'} bottom-16 min-w-2xl bg-glass-surface-2 rounded-t-widget`}
 						style={{
-							height: sizes[size],
+							height: SHEET_HEIGHT,
 							maxWidth: '390px',
 							margin: '0 auto',
 							touchAction: 'none',
@@ -76,7 +52,7 @@ export function BottomSheet({
 						animate={{ y: 0 }}
 						exit={{
 							y: '100%',
-							transition: { duration: 0.25, ease: 'easeIn' },
+							transition: { duration: 0.3, ease: 'easeIn' },
 						}}
 						transition={{
 							type: 'spring',
@@ -103,31 +79,10 @@ export function BottomSheet({
 							/>
 						</div>
 
-						{title && (
-							<div className="relative flex items-center justify-center px-6 py-2">
-								{showBack && (
-									<button
-										onClick={onClickBack}
-										className="absolute p-2 transition-ui duration-200 rounded-full right-6 active:scale-95"
-										aria-label="بستن"
-									>
-										<Icon
-											name="chevronRight"
-											size={20}
-											className="text-fg-muted"
-										/>
-									</button>
-								)}
-								<h2 className="text-sm font-bold text-fg">{title}</h2>
-							</div>
-						)}
-
 						<div
 							className="px-4 pt-2 pb-4 mt-1 overflow-y-auto scrollbar-none"
 							style={{
-								height: title
-									? `calc(${sizes[size]} - 44px)`
-									: `calc(${sizes[size]} - 30px)`,
+								height: `calc(${SHEET_HEIGHT} - 30px)`,
 								WebkitOverflowScrolling: 'touch',
 							}}
 						>

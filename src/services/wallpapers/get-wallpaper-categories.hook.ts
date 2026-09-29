@@ -1,5 +1,9 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
-import type { Category, Wallpaper, WallpaperResponse } from '@/common/wallpaper.interface'
+import type {
+	Category,
+	Wallpaper,
+	WallpaperResponse,
+} from '@/common/types/wallpaper.interface'
 import { getMainClient } from '@/services/api'
 import { wallpapersKeys } from '@/services/wallpapers/wallpapers.keys'
 

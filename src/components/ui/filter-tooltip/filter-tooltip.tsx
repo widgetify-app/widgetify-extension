@@ -58,6 +58,7 @@ export function FilterTooltip({
 					<div className="flex flex-col gap-1 p-2 overflow-y-auto border border-surface-3 rounded-2xl min-w-25 bg-surface-2 max-h-52">
 						{options.map((option) => (
 							<button
+								type="button"
 								key={option.value}
 								onClick={() => handleFilterSelect(option.value)}
 								className={`px-3 py-2 text-xs cursor-pointer text-right rounded-xl transition-colors ${

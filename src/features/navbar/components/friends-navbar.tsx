@@ -47,7 +47,7 @@ export function FriendsListNavbar() {
 				)}
 			</NavIconButton>
 
-			<BottomSheet isOpen={isOpen} onClose={() => setIsOpen(false)} size="medium">
+			<BottomSheet isOpen={isOpen} onClose={() => setIsOpen(false)}>
 				<div className="pt-2 h-[calc(50vh-2rem)]">
 					<FriendsDirectView />
 				</div>

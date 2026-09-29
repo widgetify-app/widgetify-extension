@@ -1,4 +1,4 @@
-import type { Wallpaper } from '@/common/wallpaper.interface'
+import type { Wallpaper } from '@/common/types/wallpaper.interface'
 
 interface MediaPreviewProps {
 	customWallpaper: Wallpaper

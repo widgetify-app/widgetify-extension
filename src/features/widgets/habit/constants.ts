@@ -19,6 +19,8 @@ export const HABIT_FREQUENCY_OPTIONS = [
 	{ value: 'MONTHLY', label: 'ماهانه' },
 ]
 
+export const DEFAULT_HABIT_COLOR = '#536dfe'
+
 export const HABIT_COLOR_PRESETS = [
 	'#ef4444',
 	'#f97316',

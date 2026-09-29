@@ -52,7 +52,7 @@ export function VoiceSearchPortal({
 				style={portalStyles}
 				role="dialog"
 				aria-label="جستجوی صوتی"
-				className="z-20 p-5 overflow-hidden duration-300 shadow-xl -mt-26 bg-glass-surface-2 rounded-2xl animate-in fade-in slide-in-from-top-2"
+				className="z-20 p-5 overflow-hidden shadow-xl -mt-26 bg-glass-surface-2 rounded-2xl"
 			>
 				<div className="flex items-center justify-between px-1 mb-6">
 					<div className="flex items-center gap-2">
@@ -73,7 +73,7 @@ export function VoiceSearchPortal({
 						aria-label="بستن جستجوی صوتی"
 						className="p-2 rounded-full cursor-pointer transition-ui hover:bg-fill-2 text-fg-muted focus-visible:focus-ring"
 					>
-						<Icon name="close" size={22} aria-hidden="true" />
+						<Icon name="close" size={20} aria-hidden="true" />
 					</button>
 				</div>
 
@@ -86,7 +86,7 @@ export function VoiceSearchPortal({
 							>
 								<Icon
 									name="alert"
-									size={18}
+									size={16}
 									className="mt-0.5 shrink-0"
 									aria-hidden="true"
 								/>
@@ -109,7 +109,7 @@ export function VoiceSearchPortal({
 						<Dropdown
 							position="top-right"
 							width="120px"
-							dropdownClassName="text-xs font-bold searchbox-item"
+							dropdownClassName="text-xs font-bold"
 							trigger={
 								<div className="flex cursor-pointer items-center gap-2 px-3 py-1.5 hover:bg-fill-2 rounded-xl transition-ui text-xs font-bold text-fg-muted">
 									<Icon name="settings" size={14} aria-hidden="true" />

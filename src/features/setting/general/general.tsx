@@ -31,6 +31,7 @@ export function GeneralSettingTab() {
 						برخی افکت‌های بصری غیرفعال می‌شوند.
 					</p>
 					<ToggleSwitch
+						label="حالت بهینه"
 						enabled={isOptimalMode}
 						onToggle={() => toggleOptimal()}
 					/>

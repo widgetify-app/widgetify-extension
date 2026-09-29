@@ -247,7 +247,6 @@ export function HabitContributionChart({
 													type="button"
 													disabled={day.isFuture}
 													aria-label={dayLabel}
-													title={dayLabel}
 													onClick={() => handleDayClick(day)}
 													onFocus={() => setHoveredDay(day)}
 													onBlur={() => setHoveredDay(null)}

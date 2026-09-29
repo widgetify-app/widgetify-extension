@@ -28,7 +28,6 @@ export const toggleThumbVariants = cva(
 		'top-1',
 		'left-1',
 		'rounded-full',
-		'bg-white',
 		'shadow-sm',
 		'transition-transform',
 		'duration-300',
@@ -37,8 +36,8 @@ export const toggleThumbVariants = cva(
 	{
 		variants: {
 			enabled: {
-				true: ['translate-x-0'],
-				false: ['translate-x-4'],
+				true: ['translate-x-0', 'bg-on-brand'],
+				false: ['translate-x-4', 'bg-fg-muted'],
 			},
 			loading: {
 				true: ['animate-bounce'],

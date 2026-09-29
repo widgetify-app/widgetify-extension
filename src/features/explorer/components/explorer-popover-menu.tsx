@@ -1,5 +1,6 @@
 import { showToast } from '@/common/toast'
 import {
+	Badge,
 	PopoverMenu,
 	PopoverMenuDivider,
 	PopoverMenuHeader,
@@ -66,9 +67,9 @@ export function ExplorerPopoverMenu({
 					<span className="font-bold text-fg text-xs truncate">{title}</span>
 				</div>
 				{item.badge || meta?.badge || promo?.badge ? (
-					<span className="badge badge-xs badge-neutral shrink-0">
+					<Badge variant="neutral">
 						{item.badge || meta?.badge || promo?.badge}
-					</span>
+					</Badge>
 				) : null}
 			</PopoverMenuHeader>
 
@@ -87,13 +88,11 @@ export function ExplorerPopoverMenu({
 					label={mItem.title}
 					badge={
 						mItem.badge ? (
-							<span className="badge badge-xs badge-ghost">
-								{mItem.badge}
-							</span>
+							<Badge variant="ghost">{mItem.badge}</Badge>
 						) : undefined
 					}
 					icon={
-						<Icon name="externalLink" size={13} className="text-fg-muted" />
+						<Icon name="externalLink" size={12} className="text-fg-muted" />
 					}
 					onClick={() => handleItemClick(mItem.url)}
 				/>
@@ -135,7 +134,7 @@ export function ExplorerPopoverMenu({
 			{menuItems.length === 0 && item.url && (
 				<PopoverMenuItem
 					label="مشاهده و ورود"
-					icon={<Icon name="externalLink" size={13} />}
+					icon={<Icon name="externalLink" size={12} />}
 					onClick={() => handleItemClick(item.url)}
 				/>
 			)}

@@ -20,7 +20,12 @@ export function SimpleProgressRing({
 	const dashOffset = circumference * (1 - progress)
 
 	return (
-		<svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+		<svg
+			aria-hidden="true"
+			width={size}
+			height={size}
+			viewBox={`0 0 ${size} ${size}`}
+		>
 			<circle
 				cx={center}
 				cy={center}

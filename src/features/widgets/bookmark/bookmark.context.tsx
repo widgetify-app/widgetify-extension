@@ -5,14 +5,13 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import type { Bookmark } from '@/services/bookmark/bookmark.interface'
 import type { BrowserImportNode } from '@/features/widgets/bookmark/types'
-import { safeAwait } from '@/services/api'
+import { type ApiError, safeAwait } from '@/services/api'
 import { useRemoveBookmark } from '@/services/bookmark/remove-bookmark.hook'
 import { translateError } from '@/common/utils/translate-error'
 import { useAuth } from '@/context/auth.context'
 import { useAddBookmark } from '@/services/bookmark/add-bookmark.hook'
 import { useImportBrowserBookmarks } from '@/services/bookmark/import-browser-bookmarks.hook'
 import type { BulkImportBookmarkNode } from '@/services/bookmark/import-browser-bookmarks.hook'
-import type { AxiosError } from 'axios'
 import type { BookmarkCreateFormFields } from './components/modal/add-bookmark-modal'
 import type { BookmarkUpdateFormFields } from './components/modal/edit-bookmark-modal'
 import { useUpdateBookmark } from '@/services/bookmark/update-bookmark.hook'
@@ -228,7 +227,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 					parentId = parentBookmark.onlineId
 				}
 			}
-			const [err, _] = await safeAwait<AxiosError, Bookmark>(
+			const [err, _] = await safeAwait<ApiError, Bookmark>(
 				addBookmarkAsync({
 					order: maxOrder + 1,
 					parentId: parentId,
@@ -293,7 +292,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		})
 
 		const [err, result] = await safeAwait<
-			AxiosError,
+			ApiError,
 			{ importedCount: number; createdFolders: number }
 		>(
 			importBrowserBookmarksAsync({
@@ -348,7 +347,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 			return
 		}
 
-		const [error, _] = await safeAwait<AxiosError, Bookmark>(
+		const [error, _] = await safeAwait<ApiError, Bookmark>(
 			updateBookmarkAsync({
 				id: bookmarkIdToEdit,
 				customBackground: input.customBackground,

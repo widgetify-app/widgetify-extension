@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import Analytics from '@/analytics'
-import { IconLoading } from '@/components/ui'
+import { Alert, Spinner } from '@/components/ui'
 import { Modal } from '@/components/ui'
 import { SectionPanel } from '@/components/ui'
 import { useGetCitiesList } from '@/services/cities/get-cities-list.hook'
@@ -84,33 +84,29 @@ export function SelectCity({ size }: Prop) {
 		<SectionPanel title="انتخاب شهر" size={size ? size : 'sm'}>
 			<div className="space-y-2">
 				<button
+					type="button"
 					onClick={onModalOpen}
 					disabled={isSettingCity}
 					className="flex items-center justify-between w-full p-3 text-right transition-colors border cursor-pointer rounded-2xl bg-surface border-surface-3 hover:bg-surface-2 disabled:opacity-50 disabled:cursor-not-allowed"
 				>
 					{isLoadingUser ? (
-						<IconLoading className="mx-auto text-center" />
+						<Spinner size="sm" className="mx-auto" />
 					) : selected ? (
 						selected.city
 					) : (
 						'انتخاب شهر...'
 					)}
 					{isSettingCity ? (
-						<IconLoading />
+						<Spinner size="sm" />
 					) : (
 						<Icon name="location" className="w-5 h-5 text-brand" />
 					)}
 				</button>
 
 				{error && (
-					<div className="p-3 text-sm text-right duration-300 border rounded-lg border-danger-fill-2 bg-danger-fill backdrop-blur-sm animate-in fade-in-0">
-						<div className="font-medium text-danger">
-							خطا در دریافت اطلاعات
-						</div>
-						<div className="mt-1 text-danger">
-							لطفا اتصال اینترنت خود را بررسی کرده و مجددا تلاش کنید.
-						</div>
-					</div>
+					<Alert tone="danger" title="خطا در دریافت اطلاعات">
+						لطفا اتصال اینترنت خود را بررسی کرده و مجددا تلاش کنید.
+					</Alert>
 				)}
 			</div>
 			<AuthRequiredModal
@@ -142,15 +138,16 @@ export function SelectCity({ size }: Prop) {
 						/>
 					</div>
 
-					<div className="overflow-y-auto min-h-52 max-h-52 custom-scrollbar">
+					<div className="overflow-y-auto min-h-52 max-h-52">
 						{isLoading ? (
 							<div className="flex items-center justify-center p-4 text-center text-brand">
-								<IconLoading />
+								<Spinner size="sm" aria-hidden="true" />
 								در حال بارگذاری...
 							</div>
 						) : filteredCities?.length > 0 ? (
 							filteredCities.map((city) => (
-								<div
+								<button
+									type="button"
 									key={city.cityId}
 									onClick={() => handleSelectCity(city)}
 									className="flex items-center w-full p-3 text-right transition-ui duration-200 border-b cursor-pointer border-surface-3 last:border-b-0 group rounded-2xl hover:bg-brand-fill-2 hover:text-brand"
@@ -162,7 +159,7 @@ export function SelectCity({ size }: Prop) {
 									<span className="flex-1 font-medium">
 										{city.city}
 									</span>
-								</div>
+								</button>
 							))
 						) : searchTerm ? (
 							<div className="p-4 text-center text-fg-muted">

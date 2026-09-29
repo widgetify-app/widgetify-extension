@@ -2,12 +2,14 @@ import type React from 'react'
 import { type TopUsersType, useGetTopUsers } from '@/services/pomodoro/get-top-users.hook'
 import { TopUserItem } from './components/top-user-item'
 import { Spinner } from '@/components/ui'
+import { WidgetEmpty } from '@/features/widgets/components/widget-empty'
+import { WidgetError } from '@/features/widgets/components/widget-error'
 
 interface TopUsersTabProps {
 	type: TopUsersType
 }
 export const TopUsersTab: React.FC<TopUsersTabProps> = ({ type }) => {
-	const { data, isLoading, error } = useGetTopUsers(type)
+	const { data, isLoading, error, refetch } = useGetTopUsers(type)
 	const [activeProfileId, setActiveProfileId] = useState<string | null>(null)
 
 	if (isLoading) {
@@ -20,18 +22,12 @@ export const TopUsersTab: React.FC<TopUsersTabProps> = ({ type }) => {
 
 	if (error) {
 		return (
-			<div className="p-4 font-bold text-center text-danger bg-danger-fill-2 rounded-2xl">
-				خطا در بارگذاری داده‌ها
-			</div>
+			<WidgetError message="فهرست برترین‌ها دریافت نشد" onRetry={() => refetch()} />
 		)
 	}
 
 	if (!data?.tops || data.tops.length === 0) {
-		return (
-			<div className="p-4 font-bold text-center text-brand bg-brand-fill-2 rounded-2xl">
-				لیست کاربران خالی است
-			</div>
-		)
+		return <WidgetEmpty art="users" title="هنوز کسی در این فهرست نیست" />
 	}
 
 	return (

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Motion, Presence } from '@/common/motion'
 import { getFaviconFromUrl } from '@/features/widgets/utils/icon'
 import { Button, Portal } from '@/components/ui'
@@ -22,6 +22,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 	const { browserBookmarksEnabled, setBrowserBookmarksEnabled } = useGeneralSetting()
 	const [fetchedBookmarks, setFetchedBookmarks] = useState<FetchedBrowserBookmark[]>([])
 	const [currentFolderId, setCurrentFolderId] = useState<string | null>(null)
+	const popoverRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
 		async function fetchBookmarks() {
@@ -37,7 +38,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 		if (!isOpen) return
 
 		const handleClickOutside = (e: MouseEvent) => {
-			if (!(e.target as Element).closest('.bookmark-popover')) {
+			if (!popoverRef.current?.contains(e.target as Node)) {
 				onClose()
 				setCurrentFolderId(null)
 			}
@@ -84,7 +85,8 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 				{isOpen && (
 					<Motion.div
 						key="bookmark-popover"
-						className="fixed overflow-hidden border shadow-xl bookmark-popover z-popover w-72 border-line rounded-2xl origin-top-left bg-glass-surface-2"
+						ref={popoverRef}
+						className="fixed overflow-hidden border shadow-xl z-popover w-72 border-line rounded-2xl origin-top-left bg-glass-surface-2"
 						initial={{ opacity: 0, scale: 0.95 }}
 						animate={{ opacity: 1, scale: 1 }}
 						exit={{ opacity: 0, scale: 0.95 }}
@@ -97,7 +99,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 									<Icon
 										name="lock"
 										className="text-brand"
-										size={18}
+										size={16}
 										aria-hidden="true"
 									/>
 								</div>
@@ -153,7 +155,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 														<Icon
 															name="folder"
 															className="text-brand shrink-0"
-															size={18}
+															size={16}
 															aria-hidden="true"
 														/>
 													) : (

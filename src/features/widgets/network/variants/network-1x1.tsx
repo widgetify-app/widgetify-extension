@@ -91,7 +91,7 @@ export function NetworkCompactSquare({
 					>
 						<Icon
 							name="refresh"
-							size={11}
+							size={12}
 							aria-hidden="true"
 							className="text-fg opacity-70"
 							spin={isRefreshing}

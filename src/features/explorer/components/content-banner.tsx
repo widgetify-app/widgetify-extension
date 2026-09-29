@@ -98,7 +98,7 @@ export function RenderContentBanner({ link, onOpenPromoModal }: BannerProp) {
 						{link.name}
 					</h3>
 					{link.description && (
-						<p className="text-2xs text-[rgba(255,255,255,0.75)] line-clamp-1 mt-0.5 drop-shadow-xs leading-normal font-normal">
+						<p className="text-2xs text-[rgba(255,255,255,0.75)] line-clamp-1 mt-0.5 drop-shadow-xs leading-body font-normal">
 							{link.description}
 						</p>
 					)}
@@ -106,9 +106,9 @@ export function RenderContentBanner({ link, onOpenPromoModal }: BannerProp) {
 
 				<div className="w-7 h-7 rounded-xl bg-image-fill hover:bg-image-line backdrop-blur-md border border-image-fill flex items-center justify-center text-image-fg shrink-0 group-hover:scale-105 transition-ui shadow-sm">
 					{isModalAction ? (
-						<Icon name="chevronDown" size={13} />
+						<Icon name="chevronDown" size={12} />
 					) : (
-						<Icon name="chevronLeft" size={13} />
+						<Icon name="chevronLeft" size={12} />
 					)}
 				</div>
 			</div>

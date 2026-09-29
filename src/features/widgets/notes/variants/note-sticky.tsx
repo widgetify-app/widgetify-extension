@@ -1,11 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import {
-	Button,
-	ConfirmationModal,
-	IconLoading,
-	TextInput,
-	Tooltip,
-} from '@/components/ui'
+import { Button, ConfirmationModal, Spinner, TextInput, Tooltip } from '@/components/ui'
 import { useNotes } from '@/features/widgets/notes/notes.context'
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
@@ -257,26 +251,38 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 								'flex items-center gap-0.5 rounded-lg h-5 px-1 py-0.5 text-3xs'
 							)}
 						>
-							<Button
-								size="xs"
-								variant="ghost"
-								rounded="lg"
-								onClick={handlePrevNote}
-								className="w-4 h-4 p-0 border-none shadow-none hover:opacity-100 opacity-70 text-inherit"
-								title="یادداشت قبلی"
-							>
-								<Icon name="chevronRight" size={11} aria-hidden="true" />
-							</Button>
-							<Button
-								size="xs"
-								variant="ghost"
-								rounded="lg"
-								onClick={handleNextNote}
-								className="w-4 h-4 p-0 border-none shadow-none hover:opacity-100 opacity-70 text-inherit"
-								title="یادداشت بعدی"
-							>
-								<Icon name="chevronLeft" size={11} aria-hidden="true" />
-							</Button>
+							<Tooltip content="یادداشت قبلی">
+								<Button
+									size="xs"
+									variant="ghost"
+									rounded="lg"
+									onClick={handlePrevNote}
+									className="w-4 h-4 p-0 border-none shadow-none hover:opacity-100 opacity-70 text-inherit"
+									aria-label="یادداشت قبلی"
+								>
+									<Icon
+										name="chevronRight"
+										size={12}
+										aria-hidden="true"
+									/>
+								</Button>
+							</Tooltip>
+							<Tooltip content="یادداشت بعدی">
+								<Button
+									size="xs"
+									variant="ghost"
+									rounded="lg"
+									onClick={handleNextNote}
+									className="w-4 h-4 p-0 border-none shadow-none hover:opacity-100 opacity-70 text-inherit"
+									aria-label="یادداشت بعدی"
+								>
+									<Icon
+										name="chevronLeft"
+										size={12}
+										aria-hidden="true"
+									/>
+								</Button>
+							</Tooltip>
 						</div>
 					)}
 
@@ -340,7 +346,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 					>
 						<Icon
 							name="pen"
-							size={18}
+							size={16}
 							aria-hidden="true"
 							className="mb-1 opacity-60"
 						/>
@@ -398,7 +404,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 				<div className="flex items-center gap-1.5">
 					{isSaving ? (
 						<div className="flex items-center gap-1 text-brand">
-							<IconLoading />
+							<Spinner size="sm" aria-hidden="true" />
 							<span className="text-4xs">درحال ذخیره</span>
 						</div>
 					) : currentNote ? (

@@ -3,7 +3,7 @@ import { Icon } from '@/icons'
 import { UserCoin } from '@/components/user-coin'
 import { useLazyLoad } from '@/hooks/use-lazy-load'
 import type { GalleryAsset } from '@/services/gallery/get-gallery-assets.hook'
-import { Spinner } from '@/components/ui'
+import { Spinner, Tooltip } from '@/components/ui'
 
 interface GalleryPhotoItemProps {
 	asset: GalleryAsset
@@ -22,17 +22,19 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 		}
 	}
 
-	const elementRef = useLazyLoad(loadContent)
+	const elementRef = useLazyLoad<HTMLButtonElement>(loadContent)
 
 	const itemOutlineStyle = isSelected
 		? 'ring-2 ring-brand ring-offset-2 ring-offset-surface'
 		: 'ring-1 ring-line hover:ring-brand'
 
 	return (
-		<div
+		<button
+			type="button"
+			aria-pressed={isSelected}
 			ref={elementRef}
 			onClick={onClick}
-			className={`break-inside-avoid relative rounded-2xl cursor-pointer group overflow-hidden bg-fill-2 ${itemOutlineStyle} transition-ui duration-200 active:scale-98`}
+			className={`block w-full text-start break-inside-avoid relative rounded-2xl cursor-pointer group overflow-hidden bg-fill-2 ${itemOutlineStyle} transition-ui duration-200 active:scale-98`}
 		>
 			{!loaded && (
 				<div className="flex items-center justify-center w-full min-h-28 bg-fill">
@@ -83,19 +85,19 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 					)}
 
 					{asset.accessVip && !asset.isOwned && (
-						<div
-							className="absolute top-1.5 left-1.5 z-10"
-							title={
+						<Tooltip
+							content={
 								asset.price > 0
 									? 'رایگان برای کاربران پرو یا قابل خرید با کوین'
 									: 'رایگان برای کاربران پرو'
 							}
+							className="absolute top-1.5 left-1.5 z-10"
 						>
 							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip-hover backdrop-blur-xs text-on-vip text-3xs font-bold shadow-sm border border-image-line">
 								<Icon name="diamond" size={10} />
 								<span>رایگان با پرو</span>
 							</span>
-						</div>
+						</Tooltip>
 					)}
 
 					{asset.isOwned && !isSelected && (
@@ -106,6 +108,6 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 					)}
 				</>
 			)}
-		</div>
+		</button>
 	)
 }

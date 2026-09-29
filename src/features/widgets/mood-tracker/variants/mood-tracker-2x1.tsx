@@ -37,7 +37,7 @@ export function Mood2x1({
 						aria-label="گزینه‌های حال روزانه"
 						className="p-1 transition-ui rounded-lg opacity-0 cursor-pointer text-fg-muted hover:text-fg-strong hover:bg-fill-2 group-hover:opacity-100 focus-visible:focus-ring"
 					>
-						<Icon name="menuOption" size={13} aria-hidden="true" />
+						<Icon name="menuOption" size={12} aria-hidden="true" />
 					</button>
 				)}
 			</header>

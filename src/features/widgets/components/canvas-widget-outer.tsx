@@ -12,7 +12,7 @@ import {
 } from '../utils/layout-engine/types'
 import { cn } from '@/common/utils/cn'
 import { useAuth } from '@/context/auth.context'
-import { ProBadge } from '@/components/ui'
+import { VipBadge, Tooltip } from '@/components/ui'
 import { useWidgetVipResolver } from '@/features/widgets/hooks/use-widget-vip-resolver'
 import { WidgetContextMenu } from './widget-context-menu'
 import { BookmarkDeleteModal } from './bookmark-delete-modal'
@@ -165,8 +165,7 @@ function CanvasWidgetOuterImpl({
 			target.closest('select') ||
 			target.closest('a') ||
 			target.closest('[role="button"]') ||
-			target.closest('.cursor-pointer') ||
-			target.closest('.no-drag')
+			target.closest('.cursor-pointer')
 		) {
 			return
 		}
@@ -314,10 +313,11 @@ function CanvasWidgetOuterImpl({
 
 	return (
 		<>
-			<div
+			<article
+				aria-label={definition.label}
 				ref={outerRef}
 				className={cn(
-					'widget-outer absolute top-0 left-0 select-none rounded-widget',
+					'absolute top-0 left-0 select-none rounded-widget',
 					isDragging ? 'z-50 shadow-xl cursor-grabbing' : 'z-10 cursor-default',
 					!isDragging &&
 						'transition-[transform,width,height] duration-200 ease-out'
@@ -339,33 +339,30 @@ function CanvasWidgetOuterImpl({
 				onClickCapture={(e) => {
 					if (canvasMode === 'edit') {
 						const target = e.target as HTMLElement
-						if (
-							target.closest('.widget-delete-btn') ||
-							target.closest('button[title="حذف ویجت"]') ||
-							target.closest('.widget-size-toolbar')
-						) {
-							return
-						}
+						if (target.closest('[data-widget-delete]')) return
 						e.preventDefault()
 						e.stopPropagation()
 					}
 				}}
 			>
 				{canvasMode === 'edit' && (
-					<button
-						type="button"
-						title="حذف ویجت"
-						onPointerDown={(e) => e.stopPropagation()}
-						onPointerUp={(e) => e.stopPropagation()}
-						onClick={(e) => {
-							e.preventDefault()
-							e.stopPropagation()
-							handleDelete()
-						}}
-						className="absolute z-50 flex items-center justify-center w-6 h-6 text-xs font-bold text-on-danger transition-transform rounded-full shadow-lg cursor-pointer widget-delete-btn -top-2 -right-2 bg-danger hover:scale-110 active:scale-95"
-					>
-						✕
-					</button>
+					<Tooltip content="حذف ویجت" className="absolute z-50 -top-2 -right-2">
+						<button
+							type="button"
+							aria-label="حذف ویجت"
+							data-widget-delete
+							onPointerDown={(e) => e.stopPropagation()}
+							onPointerUp={(e) => e.stopPropagation()}
+							onClick={(e) => {
+								e.preventDefault()
+								e.stopPropagation()
+								handleDelete()
+							}}
+							className="flex items-center justify-center w-6 h-6 text-xs font-bold text-on-danger transition-transform rounded-full shadow-lg cursor-pointer bg-danger hover:scale-110 active:scale-95"
+						>
+							✕
+						</button>
+					</Tooltip>
 				)}
 
 				<div
@@ -384,7 +381,9 @@ function CanvasWidgetOuterImpl({
 						/>
 					)}
 					{isLocked && canvasMode === 'normal' && (
-						<div
+						<button
+							type="button"
+							aria-label="ارتقا به اشتراک پرو"
 							className="absolute inset-0 z-25 rounded-widget bg-glass-surface-2 border border-vip-fill-2 flex flex-col items-center justify-center p-2 text-center select-none cursor-pointer overflow-hidden group transition-ui duration-200 hover:border-vip"
 							onClick={(e) => {
 								e.stopPropagation()
@@ -392,9 +391,9 @@ function CanvasWidgetOuterImpl({
 							}}
 						>
 							<div className="flex flex-col items-center gap-1.5 transition-transform duration-200 group-hover:scale-105">
-								<ProBadge
+								<VipBadge
 									size={isCompactSize ? 'xs' : 'sm'}
-									variant="indigo"
+									variant="solid"
 								/>
 								{!isCompactSize && (
 									<span className="text-2xs font-medium text-fg-muted transition-colors duration-200 group-hover:text-fg">
@@ -402,13 +401,13 @@ function CanvasWidgetOuterImpl({
 									</span>
 								)}
 							</div>
-						</div>
+						</button>
 					)}
 					{canvasMode === 'edit' && (
 						<div className="absolute inset-0 z-30 bg-transparent pointer-events-auto cursor-grab" />
 					)}
 				</div>
-			</div>
+			</article>
 
 			{contextMenuPos && (
 				<WidgetContextMenu

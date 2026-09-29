@@ -2,24 +2,22 @@ import { defaultIcons } from './packs/default'
 
 import type { IconBaseProps } from 'react-icons'
 import { cn } from '@/common/utils/cn'
-import type { IconName } from './types'
-import { useIconPack } from './icons.context'
+import type { IconName, IconSize } from './types'
 
-const packs = {
-	default: defaultIcons,
-}
-
-interface Props extends IconBaseProps {
+interface Props extends Omit<IconBaseProps, 'size'> {
 	name: IconName
+	size?: IconSize
 	spin?: boolean
 }
 
 export function Icon({ name, spin, className, ...props }: Props) {
-	const { pack } = useIconPack()
+	const Component = defaultIcons[name]
 
-	const Component = packs[pack][name] ?? defaultIcons[name]
-
-	if (!Component) return null
-
-	return <Component className={cn(className, spin && 'animate-spin')} {...props} />
+	return (
+		<Component
+			aria-hidden={props['aria-label'] || props.title ? undefined : true}
+			className={cn(className, spin && 'animate-spin')}
+			{...props}
+		/>
+	)
 }

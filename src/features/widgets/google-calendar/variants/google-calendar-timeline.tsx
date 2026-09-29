@@ -8,6 +8,7 @@ import { GoogleCalendarTimelineItem } from '../components/google-calendar-timeli
 import { GoogleCalendarTimelineItemSkeleton } from '../components/google-calendar-timeline-item-skeleton'
 import type { ClassifiedCalendarEvent } from '../types'
 import { isSameJalaliDay, toIsoDateKey } from '@/features/widgets/utils/jalali-date'
+import { Tooltip } from '@/components/ui'
 
 const SKELETON_ROWS = 4
 
@@ -52,44 +53,47 @@ export const GoogleCalendarTimeline: React.FC<GoogleCalendarTimelineProps> = ({
 				className="flex items-center justify-between shrink-0"
 				aria-label="پیمایش روز"
 			>
-				<button
-					type="button"
-					onClick={() => goToDay(-1, 'google_calendar_prev_day')}
-					title="روز قبل"
-					aria-label="روز قبل"
-					className={navButtonClass}
-				>
-					<Icon name="chevronRight" size={16} aria-hidden="true" />
-				</button>
-
-				<button
-					type="button"
-					onClick={handleResetDay}
-					title="برو به امروز"
-					className="flex flex-col items-center px-2 py-1 rounded-lg cursor-pointer select-none transition-ui hover:bg-surface-3 focus-visible:focus-ring"
-				>
-					<time
-						dateTime={toIsoDateKey(selectedDay)}
-						className="text-xs font-black leading-tight text-fg"
+				<Tooltip content="روز قبل">
+					<button
+						type="button"
+						onClick={() => goToDay(-1, 'google_calendar_prev_day')}
+						aria-label="روز قبل"
+						className={navButtonClass}
 					>
-						{isSelectedToday
-							? `امروز، ${selectedDay.format('dddd')}`
-							: selectedDay.format('dddd')}
-					</time>
-					<span className="text-4xs leading-none mt-0.5 text-fg-muted">
-						{selectedDay.format('jD jMMMM jYYYY')}
-					</span>
-				</button>
+						<Icon name="chevronRight" size={16} aria-hidden="true" />
+					</button>
+				</Tooltip>
 
-				<button
-					type="button"
-					onClick={() => goToDay(1, 'google_calendar_next_day')}
-					title="روز بعد"
-					aria-label="روز بعد"
-					className={navButtonClass}
-				>
-					<Icon name="chevronLeft" size={16} aria-hidden="true" />
-				</button>
+				<Tooltip content="برو به امروز">
+					<button
+						type="button"
+						onClick={handleResetDay}
+						className="flex flex-col items-center px-2 py-1 rounded-lg cursor-pointer select-none transition-ui hover:bg-surface-3 focus-visible:focus-ring"
+					>
+						<time
+							dateTime={toIsoDateKey(selectedDay)}
+							className="text-xs font-black leading-tight text-fg"
+						>
+							{isSelectedToday
+								? `امروز، ${selectedDay.format('dddd')}`
+								: selectedDay.format('dddd')}
+						</time>
+						<span className="text-4xs leading-none mt-0.5 text-fg-muted">
+							{selectedDay.format('jD jMMMM jYYYY')}
+						</span>
+					</button>
+				</Tooltip>
+
+				<Tooltip content="روز بعد">
+					<button
+						type="button"
+						onClick={() => goToDay(1, 'google_calendar_next_day')}
+						aria-label="روز بعد"
+						className={navButtonClass}
+					>
+						<Icon name="chevronLeft" size={16} aria-hidden="true" />
+					</button>
+				</Tooltip>
 			</nav>
 
 			<div

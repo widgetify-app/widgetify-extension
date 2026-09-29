@@ -52,7 +52,9 @@ export function SelectFriendLayout({
 						const isSelected = selectedFriendIds.includes(friend.id)
 
 						return (
-							<div
+							<button
+								type="button"
+								aria-pressed={isSelected}
 								key={friend.id}
 								onClick={() => handleToggleFriend(friend)}
 								className={`
@@ -94,7 +96,7 @@ export function SelectFriendLayout({
 										@{friend.user.username}
 									</div>
 								</div>
-							</div>
+							</button>
 						)
 					})}
 				</div>

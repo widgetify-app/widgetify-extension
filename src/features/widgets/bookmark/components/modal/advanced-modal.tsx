@@ -108,6 +108,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 			<div className="grid grid-cols-8 gap-1.5">
 				{emojiUrls.map((url) => (
 					<button
+						type="button"
 						key={url}
 						onClick={() => handleEmojiSelect(url)}
 						className={`flex items-center justify-center w-7 h-7 cursor-pointer rounded-lg transition-ui duration-150 ease-in-out
@@ -152,11 +153,15 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 		<Modal title={title} isOpen={isOpen} onClose={() => onClose(null)}>
 			<div className={'flex flex-col gap-4 rounded-lg'}>
 				<div className="relative z-30">
-					<label className={'block text-sm font-medium mb-1.5 text-fg'}>
+					<label
+						htmlFor="bookmark-background-color"
+						className={'block text-sm font-medium mb-1.5 text-fg'}
+					>
 						رنگ پس زمینه (اختیاری)
 					</label>
 					<div className="relative flex flex-1 gap-0.5">
 						<TextInput
+							id="bookmark-background-color"
 							type="text"
 							value={background || ''}
 							onChange={setBackground}
@@ -183,11 +188,15 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 				</div>
 
 				<div className="relative z-20">
-					<label className={'block text-sm  font-medium mb-1.5 text-fg'}>
+					<label
+						htmlFor="bookmark-text-color"
+						className={'block text-sm font-medium mb-1.5 text-fg'}
+					>
 						رنگ متن (اختیاری)
 					</label>
 					<div className="relative flex flex-1 gap-0.5">
 						<TextInput
+							id="bookmark-text-color"
 							type="text"
 							value={textColor || ''}
 							onChange={setTextColor}
@@ -214,16 +223,16 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 				</div>
 
 				<div className="relative z-10" ref={emojiPopoverRef}>
-					<label className={'block text-sm font-medium mb-1.5 text-fg'}>
+					<p className={'block text-sm font-medium mb-1.5 text-fg'}>
 						انتخاب استیکر (اختیاری)
-					</label>
+					</p>
 
 					<div className="flex items-center gap-2 mt-1">
 						<Button
 							size="md"
 							type="button"
 							onClick={toggleEmojiPopover}
-							className={'!w-fit px-8'}
+							className={'w-fit! px-8'}
 							rounded={'2xl'}
 						>
 							{sticker ? (
@@ -271,7 +280,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 					{isEmojiPopoverOpen && (
 						<div
 							className={
-								'absolute mt-1 p-2 w-64 max-h-32 overflow-y-auto small-scrollbar rounded-xl backdrop-blur-lg border border-surface-3'
+								'absolute mt-1 p-2 w-64 max-h-32 overflow-y-auto rounded-xl backdrop-blur-lg border border-surface-3'
 							}
 							style={{ zIndex: 'var(--z-dropdown)' }}
 						>
@@ -281,9 +290,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 				</div>
 
 				<div className="pt-2 space-y-2">
-					<label className={'block text-sm font-medium text-fg'}>
-						پیش‌نمایش:
-					</label>
+					<p className={'block text-sm font-medium text-fg'}>پیش‌نمایش:</p>
 					<div
 						className="flex justify-center p-4 overflow-hidden rounded-lg"
 						style={{

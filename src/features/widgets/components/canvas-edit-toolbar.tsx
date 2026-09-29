@@ -13,7 +13,7 @@ export function CanvasEditToolbar({
 	onExitEditMode,
 }: CanvasEditToolbarProps) {
 	return createPortal(
-		<div className="fixed bottom-2 left-1/2 -translate-x-1/2 z-toolbar flex items-center gap-3 px-4 py-2 rounded-2xl bg-surface-2 backdrop-blur-xl border border-line shadow-xl animate-in slide-in-from-bottom-5 fade-in duration-200 select-none">
+		<div className="fixed bottom-2 left-1/2 -translate-x-1/2 z-toolbar flex items-center gap-3 px-4 py-2 rounded-2xl bg-surface-2 backdrop-blur-xl border border-line shadow-xl select-none">
 			<div className="flex items-center gap-2 pl-2 border-l border-line">
 				<span className="relative flex h-2 w-2">
 					<span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand opacity-75" />
@@ -39,7 +39,7 @@ export function CanvasEditToolbar({
 						onClick={onOpenPresets}
 						className="px-3 py-1.5 text-xs font-bold rounded-xl bg-surface-3 hover:bg-fill-2 text-fg active:scale-95 transition-ui flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
 					>
-						<Icon name="squares2X2" size={13} />
+						<Icon name="squares2X2" size={12} />
 						<span>چیدمان‌های آماده</span>
 					</button>
 				)}

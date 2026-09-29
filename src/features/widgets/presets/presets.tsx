@@ -116,7 +116,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 												{preset.isVip ? (
 													<VipBadge
 														size="xs"
-														variant="indigo-subtle"
+														variant="subtle"
 														className="mt-0.5"
 													/>
 												) : (
@@ -143,7 +143,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 														>
 															<Icon
 																name={definition.icon}
-																size={11}
+																size={12}
 															/>
 															<span className="truncate max-w-20">
 																{definition.label}
@@ -174,7 +174,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 													color="vip"
 													className="font-bold"
 													icon={
-														<Icon name="diamond" size={13} />
+														<Icon name="diamond" size={12} />
 													}
 													aria-label={`ارتقا به پرو برای چیدمان ${preset.title}`}
 												>

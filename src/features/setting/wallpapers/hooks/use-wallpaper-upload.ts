@@ -1,13 +1,12 @@
-import type { Wallpaper } from '@/common/wallpaper.interface'
+import type { Wallpaper } from '@/common/types/wallpaper.interface'
 import Analytics from '@/analytics'
 import { showToast } from '@/common/toast'
 import { useAuth } from '@/context/auth.context'
 import { useUploadCustomWallpaper } from '@/services/wallpapers/upload-custom-wallpaper.hook'
 import { useGetWallpaperConfig } from '@/services/wallpapers/get-wallpaper-config.hook'
-import { safeAwait } from '@/services/api'
+import { type ApiError, safeAwait } from '@/services/api'
 import { translateError } from '@/common/utils/translate-error'
 import { callEvent } from '@/common/utils/call-event'
-import type { AxiosError } from 'axios'
 
 const DEFAULT_FREE_MAX_SIZE = 2
 const DEFAULT_VIP_MAX_SIZE = 40
@@ -41,7 +40,7 @@ export function useWallpaperUpload({ onWallpaperChange }: UseWallpaperUploadProp
 				return
 			}
 
-			const [error, uploadedWallpaper] = await safeAwait<AxiosError, Wallpaper>(
+			const [error, uploadedWallpaper] = await safeAwait<ApiError, Wallpaper>(
 				uploadCustomWallpaper(file)
 			)
 

@@ -50,7 +50,7 @@ export const GoogleCalendar2x1: React.FC<GoogleCalendar2x1Props> = ({
 				<div className="flex items-center gap-1 mb-0.5">
 					<Icon
 						name="googleG"
-						size={13}
+						size={12}
 						className="text-brand shrink-0"
 						aria-hidden="true"
 					/>
@@ -165,13 +165,13 @@ const NextEventSummary: React.FC<NextEventSummaryProps> = ({
 
 				{event.hangoutLink && (
 					<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-brand text-on-brand text-[8.3cqh] font-bold shrink-0">
-						<Icon name="videoCamera" size={9} aria-hidden="true" />
+						<Icon name="videoCamera" size={10} aria-hidden="true" />
 						<span>ورود</span>
 					</span>
 				)}
 			</span>
 
-			<span className="block text-[11.5cqh] font-bold text-fg truncate leading-snug">
+			<span className="block text-[11.5cqh] font-bold text-fg truncate leading-control">
 				{title}
 			</span>
 

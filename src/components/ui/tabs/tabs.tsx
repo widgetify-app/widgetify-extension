@@ -14,7 +14,7 @@ interface TabNavigationProps<T> {
 	tabs: TabItem<T>[]
 	activeTab: T | null
 	onTabClick: (tab: T) => void
-	size?: 'small' | 'medium' | 'large'
+	size?: 'sm' | 'md'
 	className?: string
 	activeBgClass?: string
 	activeTextClass?: string
@@ -25,7 +25,7 @@ export const TabNavigation = <T,>({
 	tabs,
 	activeTab,
 	onTabClick,
-	size = 'medium',
+	size = 'md',
 	className = '',
 	tabMode,
 	activeBgClass,
@@ -66,7 +66,7 @@ export const TabNavigation = <T,>({
 							<motion.div
 								layoutId={`active-pill-${uniqueId}`}
 								className={cn(
-									'absolute inset-0 shadow-xs bg-fill rounded-xl -z-10',
+									'absolute inset-0 bg-fill rounded-xl -z-10',
 									activeBgClass
 								)}
 								transition={{

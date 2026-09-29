@@ -94,7 +94,7 @@ export const UserProfile = () => {
 			{referralCode?.referralCode && (
 				<ReferralCodeSection
 					code={referralCode.referralCode}
-					className="!p-2 !px-4"
+					className="p-2! px-4!"
 				/>
 			)}
 

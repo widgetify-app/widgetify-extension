@@ -136,7 +136,7 @@ export function NotificationCenter({ hasBorder }: Prop = { hasBorder: true }) {
 			{notifications.length === 0 && pushed.length === 0 && (
 				<div className="flex flex-col items-center justify-center py-8 text-center text-fg-muted">
 					<div className="flex items-center justify-center w-10 h-10 mb-2 text-fg-muted">
-						<Icon name="notification" size={18} />
+						<Icon name="notification" size={16} />
 					</div>
 					<span className="text-xs font-bold text-fg">اعلان جدیدی نداری</span>
 					<span className="text-3xs text-fg-muted mt-0.5">

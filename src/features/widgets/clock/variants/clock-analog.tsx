@@ -51,7 +51,13 @@ export function ClockAnalog({ size = 76, time: propTime }: ClockAnalogProps) {
 				style={{ width: `${size}px`, height: `${size}px` }}
 				className="relative shrink-0 rounded-full"
 			>
-				<svg width="100%" height="100%" viewBox="0 0 100 100">
+				<svg
+					role="img"
+					aria-label={`ساعت ${time.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' })}`}
+					width="100%"
+					height="100%"
+					viewBox="0 0 100 100"
+				>
 					<defs>
 						<filter
 							id={filterId}

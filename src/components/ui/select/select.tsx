@@ -23,6 +23,7 @@ const optionClass =
 
 interface SelectBoxProps {
 	options: Array<{ value: string; label: string; disabled?: boolean }>
+	label?: string
 	optionalText?: string
 	onChange?: (value: any) => void
 	value?: string
@@ -33,6 +34,7 @@ interface SelectBoxProps {
 
 export function SelectBox({
 	options,
+	label,
 	optionalText,
 	value,
 	onChange,
@@ -208,6 +210,7 @@ export function SelectBox({
 				ref={triggerRef}
 				disabled={disabled}
 				role="combobox"
+				aria-label={label}
 				aria-haspopup="listbox"
 				aria-expanded={isOpen}
 				aria-controls={listboxId}
@@ -234,11 +237,11 @@ export function SelectBox({
 							ref={panelRef}
 							id={listboxId}
 							role="listbox"
-							aria-label={optionalText}
+							aria-label={label ?? optionalText}
 							initial={{ opacity: 0, y: -4 }}
 							animate={{ opacity: 1, y: 0 }}
 							exit={{ opacity: 0, y: -4 }}
-							transition={{ duration: 0.12, ease: 'easeOut' }}
+							transition={{ duration: 0.15, ease: 'easeOut' }}
 							style={{
 								left: placement?.x ?? 0,
 								top: placement?.y ?? 0,
@@ -276,7 +279,7 @@ export function SelectBox({
 										{isSelected && (
 											<Icon
 												name="check"
-												size={11}
+												size={12}
 												className="shrink-0"
 												aria-hidden="true"
 											/>
