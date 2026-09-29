@@ -17,7 +17,6 @@
     "lint": "biome check src background entrypoints wxt.config.ts",
     "test": "bun test",
     "check": "npm run compile && npm run lint && npm test && npm run build",
-    "test:pre-push": ".git/hooks/pre-push.bat",
     "postinstall": "wxt prepare"
   },
   "dependencies": {
