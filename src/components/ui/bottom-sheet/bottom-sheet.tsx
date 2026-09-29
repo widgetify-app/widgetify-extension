@@ -32,7 +32,7 @@ export function BottomSheet({ isOpen, onClose, children }: BottomSheetProps) {
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
-						transition={{ duration: 0.25, ease: 'easeOut' }}
+						transition={{ duration: 0.3, ease: 'easeOut' }}
 						onClick={onClose}
 					/>
 				)}
@@ -52,7 +52,7 @@ export function BottomSheet({ isOpen, onClose, children }: BottomSheetProps) {
 						animate={{ y: 0 }}
 						exit={{
 							y: '100%',
-							transition: { duration: 0.25, ease: 'easeIn' },
+							transition: { duration: 0.3, ease: 'easeIn' },
 						}}
 						transition={{
 							type: 'spring',

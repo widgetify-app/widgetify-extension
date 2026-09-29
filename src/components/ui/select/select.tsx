@@ -241,7 +241,7 @@ export function SelectBox({
 							initial={{ opacity: 0, y: -4 }}
 							animate={{ opacity: 1, y: 0 }}
 							exit={{ opacity: 0, y: -4 }}
-							transition={{ duration: 0.12, ease: 'easeOut' }}
+							transition={{ duration: 0.15, ease: 'easeOut' }}
 							style={{
 								left: placement?.x ?? 0,
 								top: placement?.y ?? 0,

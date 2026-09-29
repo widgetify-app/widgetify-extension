@@ -244,6 +244,12 @@ describe('motion', () => {
 			/(?<![\w-])(?:[a-z0-9-]+:)*!?duration-(?!(150|200|300|500|1000)(?![\w-]))[\w[\].]+/
 		expect(offenders(pattern)).toEqual([])
 	})
+
+	it('times framer-motion from the same steps, in seconds', () => {
+		const pattern =
+			/\bduration:\s*(?!(?:0|0\.15|0\.2|0\.3|0\.5|1)(?![\d.]))(?:0?\.\d+|\d(?:\.\d+)?)(?![\d.])/
+		expect(offenders(pattern)).toEqual([])
+	})
 })
 
 describe('elevation', () => {

@@ -123,7 +123,7 @@ export function SearchHistoryPortal({
 							initial={{ opacity: 0, y: -8 }}
 							animate={{ opacity: 1, y: 0 }}
 							exit={{ opacity: 0, y: -8 }}
-							transition={{ duration: 0.18, ease: 'easeOut' }}
+							transition={{ duration: 0.2, ease: 'easeOut' }}
 							className="z-20 overflow-y-auto shadow-xl bg-glass-surface-2 max-h-60 rounded-2xl"
 						>
 							{isLoadingSuggestions ? (
