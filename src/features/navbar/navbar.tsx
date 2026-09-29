@@ -21,7 +21,7 @@ import { useAuth } from '@/context/auth.context'
 import { useAppearance } from '@/context/appearance.context'
 import { BlurModeButton } from './components/blur-mode-button'
 import type { UserProfile } from '@/services/user/user-service.hook'
-import { NewBadge, Tooltip } from '@/components/ui'
+import { NewBadge } from '@/components/ui'
 import { useSyncAccount } from './hooks/use-sync-account'
 import { getCurrentDate } from '@/common/utils/date-events'
 import { useBirthdayConfetti } from './hooks/use-birthday-confetti'
@@ -72,35 +72,33 @@ function NavbarTabs() {
 	}
 
 	return (
-		<nav aria-label="صفحه‌های اصلی">
+		<nav>
 			<ul className="flex items-center gap-2 sm:gap-4">
 				{tabs.map((tab) => {
 					const isActive = page === tab.id
 
 					return (
 						<li key={tab.id}>
-							<Tooltip content={tab.label} position="bottom">
-								<button
-									type="button"
-									aria-label={tab.label}
-									aria-current={isActive ? 'page' : undefined}
-									onClick={() => handleTabClick(tab.id)}
-									className="relative p-1.5 sm:p-2 cursor-pointer group"
+							<button
+								type="button"
+								aria-label={tab.label}
+								aria-current={isActive ? 'page' : undefined}
+								onClick={() => handleTabClick(tab.id)}
+								className="relative p-1.5 sm:p-2 cursor-pointer group"
+							>
+								<span
+									className={`relative z-10 transition-ui duration-300 block text-lg sm:text-xl ${isActive ? 'text-brand scale-110' : 'text-nav-idle hover:text-nav-idle-hover'}`}
 								>
-									<span
-										className={`relative z-10 transition-ui duration-300 block text-lg sm:text-xl ${isActive ? 'text-brand scale-110' : 'text-nav-idle hover:text-nav-idle-hover'}`}
-									>
-										{isActive ? tab.activeIcon : tab.icon}
-									</span>
+									{isActive ? tab.activeIcon : tab.icon}
+								</span>
 
-									{isActive && (
-										<div
-											aria-hidden="true"
-											className="absolute bottom-0 left-0 w-4 mx-auto right-0 h-1 bg-brand rounded-t-full shadow-[0_-4px_12px_rgba(var(--color-primary-rgb),0.8)]"
-										></div>
-									)}
-								</button>
-							</Tooltip>
+								{isActive && (
+									<div
+										aria-hidden="true"
+										className="absolute bottom-0 left-0 w-4 mx-auto right-0 h-1 bg-brand rounded-t-full shadow-[0_-4px_12px_rgba(var(--color-primary-rgb),0.8)]"
+									></div>
+								)}
+							</button>
 						</li>
 					)
 				})}

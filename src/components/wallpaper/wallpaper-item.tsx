@@ -131,7 +131,7 @@ function WallpaperItemFu({
 							<div
 								className={`absolute flex  justify-between inset-x-0 bottom-0 p-2 rounded-xl transition-opacity duration-300 bg-linear-to-t from-scrim to-transparent items-center`}
 							>
-								{wallpaper.name ? (
+								{wallpaper.name && wallpaper.name !== '-' ? (
 									<div className="flex-1 text-3xs font-medium text-image-fg">
 										{wallpaper.name}
 									</div>
