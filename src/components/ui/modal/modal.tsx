@@ -70,22 +70,16 @@ export function Modal({
 					: BASE_MODAL_Z_INDEX + globalModalCounter * 20
 			setAssignedZIndex(computedZ)
 			dialog.setAttribute('open', '')
-		} else {
-			dialog.removeAttribute('open')
-		}
-	}, [isOpen, customZIndex])
 
-	useEffect(() => {
-		const dialog = dialogRef.current
-		if (!dialog) return
-		const handleCancel = (e: Event) => {
-			if (e.target !== dialog) return
-			e.preventDefault() // keep it mounted so the exit animation can play
-			onClose()
+			const returnFocusTo = document.activeElement
+			if (!dialog.contains(returnFocusTo)) dialog.focus()
+			return () => {
+				if (returnFocusTo instanceof HTMLElement) returnFocusTo.focus()
+			}
 		}
-		dialog.addEventListener('cancel', handleCancel)
-		return () => dialog.removeEventListener('cancel', handleCancel)
-	}, [onClose])
+
+		dialog.removeAttribute('open')
+	}, [isOpen, customZIndex])
 
 	const modalBoxClasses = cn(modalBoxVariants({ size }), className)
 	const shouldRenderContent = useDelayedUnmount(isOpen, MODAL_EXIT_MS)
@@ -96,12 +90,22 @@ export function Modal({
 			dir="rtl"
 			aria-labelledby={title ? titleId : undefined}
 			aria-modal="true"
+			tabIndex={-1}
 			onClick={(e) => {
+				e.stopPropagation()
 				if (dismissible && closeOnBackdropClick && e.target === dialogRef.current)
 					onClose()
 			}}
+			onKeyDown={(e) => {
+				if (e.key !== 'Escape') return
+				e.stopPropagation()
+				if (dismissible) onClose()
+			}}
 			onContextMenu={(e) => e.stopPropagation()}
-			className={cn('flex items-center justify-center', modalDialogVariants())}
+			className={cn(
+				'flex items-center justify-center focus:outline-none',
+				modalDialogVariants()
+			)}
 			style={
 				{
 					'--modal-duration': `${modalDurationMs}ms`,
@@ -111,11 +115,7 @@ export function Modal({
 				} as React.CSSProperties
 			}
 		>
-			<div
-				onClick={(e) => e.stopPropagation()}
-				onContextMenu={(e) => e.stopPropagation()}
-				className={modalBoxClasses}
-			>
+			<div className={modalBoxClasses}>
 				{shouldRenderContent && (title || showCloseButton) && (
 					<div className="flex items-center justify-between gap-2 mb-2 md:mb-3 md:gap-4">
 						{title && (
