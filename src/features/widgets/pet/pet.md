@@ -4,7 +4,7 @@ Agent reference for `src/features/widgets/pet/`. Read this before changing anyth
 
 ## Summary
 
-A single sprite pet lives inside a fixed 2x1 widget cell. It follows a per-species state tree (walk to a wall, turn, walk back, sit, lie, run), chases and eats food the user drops with a click, and slowly gets hungry. Six species: dog, cat, chicken, crab, frog, owl. Five backgrounds: none, forest, autumn, beach, tehran. Free tier, no server calls.
+A single sprite pet lives inside a fixed 2x1 widget cell. It follows a per-species state tree (walk to a wall, turn, walk back, sit, lie, run), chases and eats food the user drops with a click, and slowly gets hungry. Seven species: dog, cat, chicken, crab, frog, owl, sheep. Five backgrounds: none, forest, autumn, beach, tehran. Free tier, no server calls.
 
 ## File map
 
@@ -83,7 +83,7 @@ Each pet also gets a random speed multiplier `1 +/- 0.25`, fixed for the lifetim
 
 Chosen by fields on `PetDimensions`. A pet has at most one of `hop` / `flight`.
 
-- **Plain walk** (dog, cat, chicken, crab): `stepWalk` moves horizontally at `walkSpeed` or `runSpeed` times the variance and pulls any residual height down at `FALL_SPEED = 1.5`.
+- **Plain walk** (dog, cat, chicken, crab, sheep): `stepWalk` moves horizontally at `walkSpeed` or `runSpeed` times the variance and pulls any residual height down at `FALL_SPEED = 1.5`.
 - **Hop** (`hop`, frog): `stepHop` alternates `crouch` (timer, still) and `air` (parabola: `y = 4 * height * p * (1 - p)`, `x` lerps to a clamped target). Hops never leave the bounds and a hop that would move less than 0.5 px stays crouched (that is how the pet rests against a wall). Running (`fast`) multiplies crouch time by 0.4, distance by 1.5, height by 1.2 and duration by 0.75. While chasing, the hop direction points at the food, the distance is capped at the remaining distance so it lands on the target, and arrival is within `HOP_ARRIVAL = 2` px. Animation: `run` while airborne, `idle` while crouching.
 - **Flight** (`flight`, owl): `stepFlight` moves horizontally and eases height toward `cruiseAltitude + bob` at `climbRate`. Bob is a sine (`bobAmplitude`, `bobPeriodMs`). Still states descend at `landRate`. Chasing food dives with `stepDive`: the allowed height is capped by `distanceX * diveSlope` and falls at most `diveRate` per frame. Food can only be collected when height is at most `COLLECT_HEIGHT = 6`. Animation: `fly` whenever height is above 0.5, otherwise the state's usual animation.
 - **Sidestep** (`sidestep`, crab): only affects rendering. The reported direction is always `1`, so the sprite never flips while it travels either way.
@@ -101,6 +101,7 @@ All: `width` 50, `size` 32 unless noted, sprites face right and are flipped with
 | chicken | قدقدپور | SLOW / FAST | 100 | plain | no `lie` (no sit animation) |
 | crab | چنگولی | SLOW / NORMAL | 80 | plain + sidestep | no `lie` |
 | frog | قوری | SLOW / NORMAL | 80 | hop: distance 35-60, height 12-22, 450 ms, crouch 500-1200 ms | can `lie` after a left trip |
+| sheep | میشا | SLOW / NORMAL | 100 | plain, `size` 32 | can `lie`; like the cat it walks far more than it runs; art from the owner's own drawing |
 | owl | جغدو | 1.3 / 2.4 | 100 | flight: cruise 12-56, bob 3 over 900 ms, climb 0.9, land 0.7, dive 1.4, slope 0.5 | can `lie`; walk and run both use the `fly` clip |
 
 The cat's `size: 25` predates this work and was left alone.
@@ -170,6 +171,8 @@ The container is a `button` labelled `غذا دادن به <name>`. Keyboard act
 - Owl: 64x64, 8 frames of 125 ms (drawn at 32x32 and scaled 2x with nearest neighbour, which is exactly twice the size it is displayed at; it was 160x160 before, which decoded six times more pixels for the same picture), clips `owl_idle`, `owl_swipe`, `owl_lie`, `owl_fly`. Food is `owl-food.png` (24x24, like every species). Lossless WebP; identical consecutive frames collapse in the file but the total duration stays 1000 ms.
 - `swipe` is the eating clip, not a greeting or attack. `sit` is the lying pose. Do not reuse them for other meanings.
 - The owl art was drawn in Aseprite through a Lua script that lives outside the repo; the editable sources are not committed. Redrawing means starting from the exported WebPs or recreating the script.
+- Sheep: 64x64, 8 frames of 125 ms per clip (`sheep_idle`, `sheep_walk`, `sheep_run`, `sheep_swipe`, `sheep_lie`), food `sheep-food.png` (a 24x24 canvas holding a 12x9 grass tuft with a flower, standing on the bottom row). It was built from the owner's own `sheep.aseprite` (32x32, 4 frames): the body, head and legs are that artist's pixels, and only the poses were added by moving parts of them (leg swing and knee step for walk and run, a lowered head with grass for eat, the body dropped to the ground for lie, the ground line at the bottom row). The editable source of the added poses is not in the repo.
+- Food art is small and bottom-aligned inside its 24x24 canvas: the existing foods are 9-18 px tall, the sheep's is 9. The canvas size is the pickup and layout size (`collectibleSize`), not the size of the picture, so never fill the canvas, and draw the food at the same pixel scale as the pet (one art pixel per screen pixel for the sheep).
 - Every species needs `idle`, `walk`, `run`, and optionally `swipe`, `sit`, `fly`.
 
 ## Adding a species
@@ -214,7 +217,7 @@ What this does not show: the remaining commits are real visual changes (sprite s
 
 ## Tests
 
-`bun test` covers only the pure modules: state facts, hold times, wall detection, `chooseNextState` (including hunger), all six species trees, hop arcs (landing on the floor, bounds, direction, chase without overshoot, wall behaviour, running vs walking), flight maths, movement bounds, the tick-mode rule, and settings resolution. It does not render `use-base-pet-logic.ts` or any component; there is no React test setup in this repo. `architecture.test.ts` allows one `<feature>.md` at a feature root, added for this file.
+`bun test` covers only the pure modules: state facts, hold times, wall detection, `chooseNextState` (including hunger), all seven species trees, hop arcs (landing on the floor, bounds, direction, chase without overshoot, wall behaviour, running vs walking), flight maths, movement bounds, the tick-mode rule, and settings resolution. It does not render `use-base-pet-logic.ts` or any component; there is no React test setup in this repo. `architecture.test.ts` allows one `<feature>.md` at a feature root, added for this file.
 
 ## Invariants
 
@@ -226,6 +229,7 @@ What this does not show: the remaining commits are real visual changes (sprite s
 - `swipe` = eating. Do not play it while idle.
 - No wall climbing. It was removed because there is no climb art and the pet floated. Do not reintroduce it without dedicated sprites.
 - Pets never leave `[minX, maxX]` or go below `y = 0`; hops and flight clamp to the bounds.
+- A walking sprite's legs stay under its body in every frame, including the widest stride. The sheep's four legs stand at columns 6, 11, 15 and 19 of its 32-column frame because its belly line spans columns 5-23.
 - A `chase` must always be able to end: it ends when food disappears, and the food falls out of the list two seconds after collection.
 - Pure modules stay dependency-free so they remain testable (no asset imports, no `@/services/api`).
 - Storage key `pets`, widget id and species ids are data. Never rename the strings.
@@ -270,3 +274,5 @@ Not yet checked on screen: that the pet still looks the same and moves as smooth
 7. Owl ear tufts reshaped: they stuck straight up and read as horns, and the head crown was a single pointed pixel. They are now short, tilted outward, with a darker outer and lighter inner feather, on a flattened crown. All four owl clips were re-exported.
 8. User report: a changed pet or name showed in settings but the widget stayed, or reset to the dog named Akita after a refresh. Root cause: two settings entry points and two stores. The catalog's entry saved only to the global store while every canvas widget read only its own `meta` (falling back to a hard-coded dog), and the narrow list view dropped `meta` altogether. Also fixed: a debounced name save could restore a stale species, and every widget wrote the whole global object on a change. Fix: one resolution rule (`resolvePetSettings`), the settings panel as the only global writer, providers write only hunger, `meta` passed in the list view.
 9. Performance pass. Root causes, measured: the position lived in React state, so every movement tick was a full React commit (30-40 per second, more on high refresh rate displays); the container size was read from the DOM about 190 times per second, even when the pet sat still; and the loop woke on every frame regardless. Now: the position is painted directly on the element, the size is cached from the `ResizeObserver`, the loop drops to a 100 ms poll while the pet rests on the ground and stops when the widget is off screen, species configuration is hoisted so `BasePetContainer` can be `memo`, sprite loading no longer costs a second commit, the owl clips are 64x64 and the three older backgrounds are lossless WebP (about 14% smaller, identical pixels).
+10. Sheep added («میشا»): a seventh species from the owner's own pixel art, with a walk/run cycle whose legs bend at a knee step, a grazing pose for eating, and a lying pose. Its tree is the cat's shape (mostly walking, some lying).
+11. Sheep fixes after review: the legs were moved under the belly (the owner's original spacing put the last leg outside the body), and the food was redrawn much smaller (it filled the whole 24x24 canvas and was drawn at twice the pet's pixel scale).

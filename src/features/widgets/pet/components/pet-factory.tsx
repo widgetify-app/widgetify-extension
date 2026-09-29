@@ -9,6 +9,7 @@ import { CrabComponent } from './pet-item/pet-crab'
 import { DogComponent } from './pet-item/pet-dog'
 import { FrogComponent } from './pet-item/pet-frog'
 import { OwlComponent } from './pet-item/pet-owl'
+import { SheepComponent } from './pet-item/pet-sheep'
 
 interface Prop {
 	className?: string
@@ -37,6 +38,9 @@ export const PetFactory: React.FC<Prop> = ({ className }) => {
 			break
 		case PetTypes.OWL:
 			PetComponent = OwlComponent
+			break
+		case PetTypes.SHEEP:
+			PetComponent = SheepComponent
 			break
 		default:
 			return null

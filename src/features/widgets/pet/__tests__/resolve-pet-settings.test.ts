@@ -2,41 +2,34 @@ import { describe, expect, it } from 'bun:test'
 import { type PetSettings, PetTypes } from '../types'
 import { mergePetMeta, resolvePetSettings } from '../utils/resolve-pet-settings'
 
+function defaultOption(type: PetTypes, name: string) {
+	return {
+		name,
+		type: type as PetSettings['petOptions'][PetTypes]['type'],
+		hungryState: { level: 100, lastHungerTick: null },
+	}
+}
+
 const defaults: PetSettings = {
 	petType: PetTypes.DOG,
 	background: 'none',
-	petOptions: {
-		[PetTypes.DOG]: {
-			name: 'Akita',
-			type: 'dog',
-			hungryState: { level: 100, lastHungerTick: null },
-		},
-		[PetTypes.CHICKEN]: {
-			name: 'Chicken',
-			type: 'chicken',
-			hungryState: { level: 100, lastHungerTick: null },
-		},
-		[PetTypes.CRAB]: {
-			name: 'Crab',
-			type: 'crab',
-			hungryState: { level: 100, lastHungerTick: null },
-		},
-		[PetTypes.CAT]: {
-			name: 'Cat',
-			type: 'cat',
-			hungryState: { level: 100, lastHungerTick: null },
-		},
-		[PetTypes.FROG]: {
-			name: 'Frog',
-			type: 'frog',
-			hungryState: { level: 100, lastHungerTick: null },
-		},
-		[PetTypes.OWL]: {
-			name: 'Owl',
-			type: 'owl',
-			hungryState: { level: 100, lastHungerTick: null },
-		},
-	},
+	petOptions: Object.fromEntries(
+		Object.values(PetTypes).map((type) => [
+			type,
+			defaultOption(
+				type,
+				{
+					dog: 'Akita',
+					chicken: 'Chicken',
+					crab: 'Crab',
+					cat: 'Cat',
+					frog: 'Frog',
+					owl: 'Owl',
+					sheep: 'Sheep',
+				}[type]
+			),
+		])
+	) as PetSettings['petOptions'],
 }
 
 function stored(overrides: Partial<PetSettings> = {}): PetSettings {

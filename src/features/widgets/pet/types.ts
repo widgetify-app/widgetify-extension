@@ -7,9 +7,10 @@ export enum PetTypes {
 	FROG = 'frog',
 	CAT = 'cat',
 	OWL = 'owl',
+	SHEEP = 'sheep',
 }
 
-type PetSpecies = 'dog' | 'chicken' | 'crab' | 'frog' | 'cat' | 'owl'
+type PetSpecies = 'dog' | 'chicken' | 'crab' | 'frog' | 'cat' | 'owl' | 'sheep'
 
 export type PetBackgroundId = 'none' | 'forest' | 'autumn' | 'beach' | 'tehran'
 
