@@ -1,6 +1,6 @@
 import { DOT_FILL_RATIO } from '../constants'
 
-export interface DotGridLayout {
+interface DotGridLayout {
 	columns: number
 	cellSize: number
 	dotSize: number

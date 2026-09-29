@@ -33,7 +33,7 @@ export function DotCalendarSetting({ instanceId }: DotCalendarSettingProps = {})
 	if (!instanceId || !targetWidget) {
 		return (
 			<WidgetSettingWrapper>
-				<p className="text-sm leading-relaxed text-muted">
+				<p className="text-sm leading-relaxed text-fg-muted">
 					اول ویجت رو به صفحه اضافه کن، بعد از منوی خود ویجت تنظیمش کن.
 				</p>
 			</WidgetSettingWrapper>
@@ -93,11 +93,11 @@ export function DotCalendarSetting({ instanceId }: DotCalendarSettingProps = {})
 						)}
 					>
 						<SectionPanel title="روزهای سال" size="xs">
-							<p className="text-xs leading-relaxed text-muted">
+							<p className="text-xs leading-relaxed text-fg-muted">
 								هر روز امسال یک نقطه است؛ روزهای گذشته پررنگ‌اند و امروز با
 								یک حلقه مشخص می‌شه.
 							</p>
-							<p className="mt-2 text-xs text-content">
+							<p className="mt-2 text-xs text-fg">
 								{`${yearProgress.passedDays.toLocaleString('fa-IR')} روز از سال ${yearProgress.year.toLocaleString('fa-IR', { useGrouping: false })} گذشته و ${yearProgress.daysLeft.toLocaleString('fa-IR')} روز مانده.`}
 							</p>
 						</SectionPanel>
@@ -136,7 +136,7 @@ export function DotCalendarSetting({ instanceId }: DotCalendarSettingProps = {})
 								onDateSelect={onSelectGoalDate}
 								isDateDisabled={(date) => !isGoalDateAllowed(date, today)}
 							/>
-							<p aria-live="polite" className="mt-2 text-xs text-muted">
+							<p aria-live="polite" className="mt-2 text-xs text-fg-muted">
 								{goalProgress && goalDate
 									? `${goalProgress.daysLeft.toLocaleString('fa-IR')} روز مانده تا ${goalDate.format('jD jMMMM jYYYY')}`
 									: 'از فردا تا یک سال بعد رو می‌تونی انتخاب کنی.'}

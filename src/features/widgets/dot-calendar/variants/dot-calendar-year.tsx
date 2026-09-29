@@ -23,7 +23,7 @@ export function DotCalendarYear({ today }: DotCalendarYearProps) {
 			/>
 
 			<footer className="flex items-end justify-between px-0.5">
-				<h3 className="text-[12cqh] font-black leading-none tabular-nums text-content">
+				<h3 className="text-[12cqh] font-black leading-none tabular-nums text-fg">
 					{yearLabel}
 				</h3>
 				<DaysLeft daysLeft={daysLeft} />

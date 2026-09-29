@@ -11,9 +11,9 @@ interface DotGridProps {
 }
 
 function getDotClassName(index: number, passedDays: number): string {
-	if (index < passedDays) return 'bg-primary/45'
-	if (index === passedDays) return 'bg-primary ring-2 ring-primary/30'
-	return 'bg-base-content/10'
+	if (index < passedDays) return 'bg-brand-muted'
+	if (index === passedDays) return 'bg-brand ring-2 ring-brand-fill-2'
+	return 'bg-fill-2'
 }
 
 function DotGridImpl({ totalDays, passedDays, label }: DotGridProps) {

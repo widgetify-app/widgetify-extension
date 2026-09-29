@@ -1,6 +1,5 @@
 import jalaliMoment from 'jalali-moment'
-import { Button } from '@/components/ui'
-import { Icon } from '@/icons'
+import { WidgetEmpty } from '@/features/widgets/components/widget-empty'
 import { GOAL_DATE_FORMAT } from '../constants'
 import { DaysLeft } from '../components/days-left'
 import { DotGrid } from '../components/dot-grid'
@@ -19,21 +18,12 @@ export function DotCalendarGoal({ today, meta, onOpenSettings }: DotCalendarGoal
 
 	if (!progress) {
 		return (
-			<section
-				aria-label="روزشمار هدف"
-				className="flex flex-col items-center justify-center w-full h-full gap-[5cqh] p-[6cqh] text-center select-none"
-			>
-				<Icon
-					name="target"
-					className="w-[16cqh] h-[16cqh] text-primary"
-					aria-hidden="true"
+			<section aria-label="روزشمار هدف" className="w-full h-full">
+				<WidgetEmpty
+					art="target"
+					description="یه هدف با تاریخش تعیین کن تا روزهاش رو نقطه به نقطه ببینی"
+					action={{ label: 'تعیین هدف', onClick: onOpenSettings }}
 				/>
-				<p className="text-[7cqh] leading-relaxed text-muted">
-					یه هدف با تاریخش تعیین کن تا روزهاش رو نقطه به نقطه ببینی
-				</p>
-				<Button size="xs" rounded="xl" variant="outline" onClick={onOpenSettings}>
-					تعیین هدف
-				</Button>
 			</section>
 		)
 	}
@@ -49,10 +39,10 @@ export function DotCalendarGoal({ today, meta, onOpenSettings }: DotCalendarGoal
 			className="flex flex-col w-full h-full gap-[4cqh] p-[5cqh] select-none"
 		>
 			<header className="flex items-center justify-between gap-2 px-0.5">
-				<h3 className="text-[7.5cqh] font-bold leading-none truncate text-content">
+				<h3 className="text-[7.5cqh] font-bold leading-none truncate text-fg">
 					{title}
 				</h3>
-				<span className="text-[6cqh] leading-none shrink-0 text-muted">
+				<span className="text-[6cqh] leading-none shrink-0 text-fg-muted">
 					تا {endDateLabel}
 				</span>
 			</header>
