@@ -84,7 +84,7 @@ export default function LoginGoogleButton() {
 		>
 			<div className="relative flex items-center justify-center shrink-0">
 				{isLoading ? (
-					<IconLoading className="!h-4 !w-4" />
+					<IconLoading className="h-4! w-4!" />
 				) : (
 					<img
 						src="https://cdn.widgetify.ir/sites/google.png"

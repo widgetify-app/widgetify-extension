@@ -34,7 +34,7 @@ export function ItemSelector({
 				className,
 				isActive
 					? 'border-brand-fill-2 bg-brand-fill-2'
-					: 'bg-fill border-surface-3 hover:!border-brand-fill-2 hover:!bg-brand-fill'
+					: 'bg-fill border-surface-3 hover:border-brand-fill-2! hover:bg-brand-fill!'
 			)}
 			style={style}
 		>

@@ -78,14 +78,14 @@ export function FontSelector({ fetched_fonts }: FontSelectorProps) {
 							isActive={fontFamily === font.value}
 							onClick={() => setFontFamily(font.value)}
 							key={font.value}
-							className="w-full !h-20 !max-h-20 !min-h-20"
+							className="w-full h-20! max-h-20! min-h-20!"
 							label={font.label}
 							description={renderFontPreview(font)}
 							style={{ fontFamily: font.value }}
 						/>
 					))}
 					<div
-						className="flex items-center justify-center w-full h-20 text-xs border border-surface-3 gap-0.5 text-fg-muted hover:!text-brand cursor-pointer hover:!border-brand transition-ui duration-200 rounded-xl"
+						className="flex items-center justify-center w-full h-20 text-xs border border-surface-3 gap-0.5 text-fg-muted hover:text-brand! cursor-pointer hover:border-brand! transition-ui duration-200 rounded-xl"
 						onClick={() => handleMoreClick()}
 					>
 						<Icon name="shoppingBag" size={18} />

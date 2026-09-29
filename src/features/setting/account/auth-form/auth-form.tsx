@@ -266,7 +266,7 @@ const AuthForm = () => {
 								}}
 								placeholder="شماره موبایل یا ایمیل..."
 								disabled={isOtpSending}
-								className="w-full h-11 !rounded-xl text-sm"
+								className="w-full h-11 rounded-xl! text-sm"
 								autoComplete="on"
 								direction={!identifier ? 'rtl' : 'ltr'}
 							/>
@@ -345,7 +345,7 @@ const AuthForm = () => {
 								}}
 								placeholder="رمز عبورت رو وارد کن..."
 								disabled={isSigningIn}
-								className="w-full h-11 !rounded-xl text-sm"
+								className="w-full h-11 rounded-xl! text-sm"
 								direction={password ? 'ltr' : 'rtl'}
 							/>
 							<InputTextError message={error.password} />

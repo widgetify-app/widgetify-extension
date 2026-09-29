@@ -133,7 +133,7 @@ export const CurrencyModalComponent = ({
 							onChange={(e) =>
 								handleCurrencyAmountChange(parseFormattedNumber(e))
 							}
-							className="!rounded-2xl !px-4 border-surface-3"
+							className="rounded-2xl! px-4! border-surface-3"
 							placeholder="مبلغ"
 						/>
 					</div>
@@ -148,7 +148,7 @@ export const CurrencyModalComponent = ({
 							onChange={(value) =>
 								handleTomanAmountChange(parseFormattedNumber(value))
 							}
-							className="!rounded-2xl !px-4 border-surface-3"
+							className="rounded-2xl! px-4! border-surface-3"
 							placeholder="مبلغ"
 						/>
 					</div>

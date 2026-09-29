@@ -223,7 +223,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 							size="md"
 							type="button"
 							onClick={toggleEmojiPopover}
-							className={'!w-fit px-8'}
+							className={'w-fit! px-8'}
 							rounded={'2xl'}
 						>
 							{sticker ? (
