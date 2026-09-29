@@ -45,8 +45,6 @@ export * from './modal/confirmation-modal.variants'
 export * from './modal/modal'
 export * from './modal/modal.variants'
 
-export * from './offline-indicator/offline-indicator'
-
 export * from './pagination/pagination'
 
 export * from './popover-menu/popover-menu'

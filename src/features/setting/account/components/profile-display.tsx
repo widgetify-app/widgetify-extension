@@ -1,6 +1,5 @@
 import moment from 'jalali-moment'
 import { Button } from '@/components/ui'
-import { OfflineIndicator } from '@/components/ui'
 import { ProfileHeader } from './profile-header'
 import type React from 'react'
 import { Chip } from '@/components/ui'
@@ -268,7 +267,13 @@ export const ProfileDisplay = () => {
 
 			{user?.inCache && (
 				<div className="pt-2">
-					<OfflineIndicator mode="notification" />
+					<div className="flex items-center gap-2 p-3 text-sm font-bold border rounded-2xl bg-danger-fill-2 text-danger border-danger-fill-2">
+						<Icon name="offline" className="text-lg shrink-0" />
+						<p>
+							اطلاعات کاربری از حافظه محلی بارگذاری شده‌اند. اتصال اینترنت
+							خود را بررسی کنید.
+						</p>
+					</div>
 				</div>
 			)}
 			{cropImage && (
