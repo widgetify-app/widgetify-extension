@@ -1,6 +1,7 @@
 import type React from 'react'
 import { moodOptions } from '@/common/constants/moods'
 import { cn } from '@/common/utils/cn'
+import { MoodImage } from '@/components/mood-image'
 import { Icon } from '@/icons'
 import type { MoodEntry } from '@/services/mood-log/get-moods.hook'
 import type { MoodType } from '@/services/mood-log/upsert-mood-log.hook'
@@ -54,7 +55,7 @@ export function Mood1x1({
 				aria-hidden="true"
 				className="my-auto text-[28cqh] leading-none transition-transform duration-200 hover:scale-110 active:scale-95"
 			>
-				{currentOption ? currentOption.emoji : '🤍'}
+				<MoodImage mood={currentOption?.value} />
 			</span>
 
 			<div className="flex items-center justify-center w-full gap-1.5 p-[4cqh] rounded-full bg-surface-2">
@@ -81,7 +82,7 @@ export function Mood1x1({
 									: 'hover:bg-fill-2 hover:scale-105 opacity-70 hover:opacity-100'
 							)}
 						>
-							<span aria-hidden="true">{opt.emoji}</span>
+							<MoodImage mood={opt.value} />
 						</button>
 					)
 				})}

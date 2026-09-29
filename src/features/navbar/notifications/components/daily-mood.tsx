@@ -1,5 +1,6 @@
 import Analytics from '@/analytics'
 import { moodOptions } from '@/common/constants/moods'
+import { MoodImage } from '@/components/mood-image'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { callEvent } from '@/common/utils/call-event'
 import { GetUserFirstName } from '@/features/navbar/utils/get-firstname'
@@ -114,7 +115,7 @@ export function DailyMoodNotification({ className }: Prop) {
 								) : (
 									<div className="flex flex-col items-center gap-0.5 hover:scale-95">
 										<div className="text-lg leading-none">
-											{option.emoji}
+											<MoodImage mood={option.value} />
 										</div>
 										<div className="text-3xs leading-tight">
 											{option.label}
