@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { getFromStorage } from '@/common/storage'
+import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import { TextInput, Tooltip } from '@/components/ui'
 import { Icon } from '@/icons'
@@ -16,6 +16,7 @@ import {
 } from './constants'
 import { type PetBackgroundId, type PetMeta, PetTypes } from './types'
 import { getPetBackground } from './utils/get-pet-background'
+import { resolvePetSettings } from './utils/resolve-pet-settings'
 
 const PET_LIST = Object.keys(BASE_PET_OPTIONS.petOptions) as PetTypes[]
 
@@ -44,73 +45,107 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 	)
 
 	useEffect(() => {
+		let cancelled = false
+
 		async function load() {
-			if (instanceId) {
-				const type = targetMeta?.petType || PetTypes.DOG
-				setPetType(type)
-				setPetName(targetMeta?.petName || BASE_PET_OPTIONS.petOptions[type].name)
-				setBackground(targetMeta?.background || DEFAULT_PET_BACKGROUND)
-				return
-			}
-
 			const stored = await getFromStorage('pets')
-			if (!stored?.petOptions) return
+			if (cancelled) return
 
-			const type = stored.petType || PetTypes.DOG
+			const resolved = resolvePetSettings(
+				BASE_PET_OPTIONS,
+				stored ?? null,
+				targetMeta
+			)
+			const type = resolved.petType ?? PetTypes.DOG
 			setPetType(type)
-			setPetName(stored.petOptions[type].name)
-			setBackground(stored.background || DEFAULT_PET_BACKGROUND)
+			setPetName(resolved.petOptions[type].name)
+			setBackground(resolved.background)
 		}
 
 		load()
-	}, [instanceId, targetMeta])
+		return () => {
+			cancelled = true
+		}
+	}, [targetMeta])
+
+	const latestRef = useRef({ petType, petName, background, targetMeta })
+	latestRef.current = { petType, petName, background, targetMeta }
 
 	const saveNameTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-	useEffect(() => {
-		return () => {
-			if (saveNameTimerRef.current) clearTimeout(saveNameTimerRef.current)
-		}
+	const cancelPendingNameSave = useCallback(() => {
+		if (saveNameTimerRef.current) clearTimeout(saveNameTimerRef.current)
+		saveNameTimerRef.current = null
+	}, [])
+
+	useEffect(() => cancelPendingNameSave, [cancelPendingNameSave])
+
+	const saveToWidget = useCallback(
+		(changes: PetMeta) => {
+			if (!instanceId) return
+			const latest = latestRef.current
+			updateWidgetSettings(instanceId, {
+				...latest.targetMeta,
+				petType: latest.petType,
+				petName: latest.petName,
+				background: latest.background,
+				...changes,
+			})
+		},
+		[instanceId, updateWidgetSettings]
+	)
+
+	const saveGlobal = useCallback(async (changes: PetMeta) => {
+		const persisted = (await getFromStorage('pets')) ?? BASE_PET_OPTIONS
+		const type = changes.petType ?? persisted.petType ?? PetTypes.DOG
+		const current = persisted.petOptions?.[type] ?? BASE_PET_OPTIONS.petOptions[type]
+
+		await setToStorage('pets', {
+			...persisted,
+			petType: type,
+			background: changes.background ?? persisted.background,
+			petOptions: changes.petName
+				? {
+						...persisted.petOptions,
+						[type]: { ...current, name: changes.petName },
+					}
+				: persisted.petOptions,
+		})
 	}, [])
 
 	const onChangePetName = useCallback(
 		(value: string) => {
 			setPetName(value)
+
+			if (!instanceId) {
+				saveGlobal({ petName: value, petType }).then(() =>
+					callEvent('updatedPetSettings', { petName: value, petType })
+				)
+				return
+			}
+
 			callEvent('updatedPetSettings', { instanceId, petName: value, petType })
-
-			if (!instanceId) return
-
-			if (saveNameTimerRef.current) clearTimeout(saveNameTimerRef.current)
+			cancelPendingNameSave()
 			saveNameTimerRef.current = setTimeout(() => {
 				saveNameTimerRef.current = null
-				updateWidgetSettings(instanceId, {
-					...targetMeta,
-					petType,
-					petName: value,
-					background,
-				})
+				saveToWidget({ petName: value })
 			}, PET_NAME_SAVE_DEBOUNCE_MS)
 		},
-		[instanceId, petType, background, targetMeta, updateWidgetSettings]
+		[instanceId, petType, cancelPendingNameSave, saveToWidget, saveGlobal]
 	)
 
 	async function onChangePetType(value: PetTypes) {
 		const stored = await getFromStorage('pets')
-
 		const fallbackName =
-			stored?.petOptions[value]?.name ?? BASE_PET_OPTIONS.petOptions[value].name
+			stored?.petOptions?.[value]?.name ?? BASE_PET_OPTIONS.petOptions[value].name
 
+		cancelPendingNameSave()
 		setPetType(value)
 		setPetName(fallbackName)
 
-		if (instanceId) {
-			updateWidgetSettings(instanceId, {
-				...targetMeta,
-				petType: value,
-				petName: fallbackName,
-				background,
-			})
-		}
+		if (instanceId) saveToWidget({ petType: value, petName: fallbackName })
+		else await saveGlobal({ petType: value, petName: fallbackName })
+
 		callEvent('updatedPetSettings', {
 			instanceId,
 			petType: value,
@@ -118,16 +153,12 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 		})
 	}
 
-	function onChangeBackground(value: PetBackgroundId) {
+	async function onChangeBackground(value: PetBackgroundId) {
 		setBackground(value)
-		if (instanceId) {
-			updateWidgetSettings(instanceId, {
-				...targetMeta,
-				petType,
-				petName,
-				background: value,
-			})
-		}
+
+		if (instanceId) saveToWidget({ background: value })
+		else await saveGlobal({ background: value, petType })
+
 		callEvent('updatedPetSettings', {
 			instanceId,
 			petType,

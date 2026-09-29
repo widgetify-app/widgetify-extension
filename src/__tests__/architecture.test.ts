@@ -351,10 +351,14 @@ describe('feature folders', () => {
 		expect(missing).toEqual([])
 	})
 
-	it('keep only the entry, settings, contexts, types and constants at their root', () => {
+	it('keep only the entry, settings, contexts, types, constants and one document at their root', () => {
 		const stray: string[] = []
 		for (const dir of featureFolders) {
-			const allowed = [...entryNames(dir), `${nameOf(dir)}-setting.tsx`]
+			const allowed = [
+				...entryNames(dir),
+				`${nameOf(dir)}-setting.tsx`,
+				`${nameOf(dir)}.md`,
+			]
 			for (const file of filesIn(dir)) {
 				const fits =
 					allowed.includes(file) ||

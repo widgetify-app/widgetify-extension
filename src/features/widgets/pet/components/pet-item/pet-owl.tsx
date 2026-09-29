@@ -4,16 +4,12 @@ import idle from '@/assets/animals/owl/owl_idle_8fps.webp'
 import lie from '@/assets/animals/owl/owl_lie_8fps.webp'
 import swipe from '@/assets/animals/owl/owl_swipe_8fps.webp'
 
-import { BasePetContainer, useBasePetLogic } from '../base-pet'
+import { useBasePetLogic } from '../../hooks/use-base-pet-logic'
+import { BasePetContainer } from '../base-pet'
 import { PetFood } from '../pet-food'
-import {
-	type PetAnimations,
-	type PetAssets,
-	type PetDimensions,
-	type PetDurations,
-	PetSpeed,
-} from '../../types'
+import type { PetAnimations, PetAssets, PetDimensions } from '../../types'
 import { usePetContext } from '../../pet.context'
+import { PET_SEQUENCES } from '../../utils/species-sequences'
 import { PetTypes } from '../../types'
 
 export const OwlComponent = ({ className }: { className?: string }) => {
@@ -25,7 +21,6 @@ export const OwlComponent = ({ className }: { className?: string }) => {
 		run: fly,
 		fly,
 		swipe: swipe,
-		stand: idle,
 		sit: lie,
 	}
 
@@ -34,11 +29,10 @@ export const OwlComponent = ({ className }: { className?: string }) => {
 		width: 50,
 		walkSpeed: 1.3,
 		runSpeed: 2.4,
-		climbSpeed: PetSpeed.NORMAL,
 		maxHeight: 100,
 		flight: {
 			cruiseMin: 12,
-			cruiseMax: 28,
+			cruiseMax: 56,
 			bobAmplitude: 3,
 			bobPeriodMs: 900,
 			climbRate: 0.9,
@@ -46,12 +40,6 @@ export const OwlComponent = ({ className }: { className?: string }) => {
 			diveRate: 1.4,
 			diveSlope: 0.5,
 		},
-	}
-	const owlDurations: PetDurations = {
-		walk: { min: 4000, max: 9000 },
-		run: { min: 2000, max: 5000 },
-		rest: { min: 6000, max: 12000 },
-		climb: { min: 3000, max: 6000 },
 	}
 
 	const owlAssets: PetAssets = {
@@ -73,7 +61,7 @@ export const OwlComponent = ({ className }: { className?: string }) => {
 		name: getCurrentPetName(PetTypes.OWL),
 		animations: owlAnimations,
 		dimensions: owlDimensions,
-		durations: owlDurations,
+		sequence: PET_SEQUENCES[PetTypes.OWL],
 		assets: owlAssets,
 		isHungry: isPetHungry(PetTypes.OWL),
 		onCollectibleCollection: () => levelUpHungryState(PetTypes.OWL),

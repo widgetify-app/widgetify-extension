@@ -3,16 +3,17 @@ import idle from '@/assets/animals/chicken/white_idle_8fps.webp'
 import running from '@/assets/animals/chicken/white_run_8fps.webp'
 import swipe from '@/assets/animals/chicken/white_swipe_8fps.webp'
 import walking from '@/assets/animals/chicken/white_walk_fast_8fps.webp'
-import { BasePetContainer, useBasePetLogic } from '../base-pet'
+import { useBasePetLogic } from '../../hooks/use-base-pet-logic'
+import { BasePetContainer } from '../base-pet'
 import { PetFood } from '../pet-food'
 import {
 	type PetAnimations,
 	type PetAssets,
 	type PetDimensions,
-	type PetDurations,
 	PetSpeed,
 } from '../../types'
 import { usePetContext } from '../../pet.context'
+import { PET_SEQUENCES } from '../../utils/species-sequences'
 import { PetTypes } from '../../types'
 
 export const ChickenComponent = ({ className }: { className?: string }) => {
@@ -24,8 +25,6 @@ export const ChickenComponent = ({ className }: { className?: string }) => {
 		walk: walking,
 		run: running,
 		swipe,
-		stand: swipe,
-		climb: walking,
 	}
 
 	const chickenDimensions: PetDimensions = {
@@ -33,16 +32,9 @@ export const ChickenComponent = ({ className }: { className?: string }) => {
 		width: 50,
 		walkSpeed: PetSpeed.SLOW,
 		runSpeed: PetSpeed.FAST,
-		climbSpeed: 1.2,
 		maxHeight: 100,
 	}
 
-	const chickenDurations: PetDurations = {
-		walk: { min: 3000, max: 8000 },
-		run: { min: 1500, max: 4000 },
-		rest: { min: 5000, max: 10000 },
-		climb: { min: 4000, max: 7000 },
-	}
 	const chickenAssets: PetAssets = {
 		collectibleIcon: <PetFood src={chickenFood} />,
 		collectibleSize: 24,
@@ -63,7 +55,7 @@ export const ChickenComponent = ({ className }: { className?: string }) => {
 		name: getCurrentPetName(PetTypes.CHICKEN),
 		animations: chickenAnimations,
 		dimensions: chickenDimensions,
-		durations: chickenDurations,
+		sequence: PET_SEQUENCES[PetTypes.CHICKEN],
 		assets: chickenAssets,
 		onCollectibleCollection: () => levelUpHungryState(PetTypes.CHICKEN),
 		onLevelDownHungryState: () => levelDownHungryState(PetTypes.CHICKEN),

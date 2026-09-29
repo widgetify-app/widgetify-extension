@@ -5,16 +5,17 @@ import running from '@/assets/animals/cat/zardaloo_run_8fps.webp'
 import swipe from '@/assets/animals/cat/zardaloo_swipe_8fps.webp'
 import walking from '@/assets/animals/cat/zardaloo_walk_fast_8fps.webp'
 
-import { BasePetContainer, useBasePetLogic } from '../base-pet'
+import { useBasePetLogic } from '../../hooks/use-base-pet-logic'
+import { BasePetContainer } from '../base-pet'
 import { PetFood } from '../pet-food'
 import {
 	type PetAnimations,
 	type PetAssets,
 	type PetDimensions,
-	type PetDurations,
 	PetSpeed,
 } from '../../types'
 import { usePetContext } from '../../pet.context'
+import { PET_SEQUENCES } from '../../utils/species-sequences'
 import { PetTypes } from '../../types'
 
 export const CatComponent = ({ className }: { className?: string }) => {
@@ -25,9 +26,7 @@ export const CatComponent = ({ className }: { className?: string }) => {
 		walk: walking,
 		run: running,
 		swipe: swipe,
-		stand: lie,
 		sit: lie,
-		climb: walking,
 	}
 
 	const catDimensions: PetDimensions = {
@@ -35,14 +34,7 @@ export const CatComponent = ({ className }: { className?: string }) => {
 		width: 50,
 		walkSpeed: PetSpeed.SLOW,
 		runSpeed: PetSpeed.NORMAL,
-		climbSpeed: PetSpeed.NORMAL,
 		maxHeight: 100,
-	}
-	const catDurations: PetDurations = {
-		walk: { min: 4000, max: 9000 },
-		run: { min: 2000, max: 5000 },
-		rest: { min: 6000, max: 12000 },
-		climb: { min: 3000, max: 6000 },
 	}
 
 	const catAssets: PetAssets = {
@@ -64,7 +56,7 @@ export const CatComponent = ({ className }: { className?: string }) => {
 		name: getCurrentPetName(PetTypes.CAT),
 		animations: catAnimations,
 		dimensions: catDimensions,
-		durations: catDurations,
+		sequence: PET_SEQUENCES[PetTypes.CAT],
 		assets: catAssets,
 		isHungry: isPetHungry(PetTypes.CAT),
 		onCollectibleCollection: () => levelUpHungryState(PetTypes.CAT),

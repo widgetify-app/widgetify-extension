@@ -50,13 +50,6 @@ export enum PetSpeed {
 	VERY_FAST = 3.5,
 }
 
-export enum PetBehavior {
-	ROAMING = 'roaming',
-	RESTING = 'resting',
-	CLIMBING = 'climbing',
-	CHASING = 'chasing',
-}
-
 export interface Position {
 	x: number
 	y: number
@@ -75,9 +68,7 @@ export interface PetAnimations {
 	walk: string
 	run: string
 	swipe?: string
-	climb?: string
 	sit?: string
-	stand?: string
 	fly?: string
 }
 
@@ -92,21 +83,41 @@ export interface PetFlight {
 	diveSlope: number
 }
 
+interface PetRange {
+	min: number
+	max: number
+}
+
+export interface PetHop {
+	distance: PetRange
+	height: PetRange
+	durationMs: number
+	crouchMs: PetRange
+}
+
 export interface PetDimensions {
 	size: number
 	width: number
 	walkSpeed: number
 	runSpeed: number
-	climbSpeed: number
 	maxHeight: number
 	flight?: PetFlight
+	hop?: PetHop
+	sidestep?: boolean
 }
 
-export interface PetDurations {
-	walk: { min: number; max: number }
-	run: { min: number; max: number }
-	rest: { min: number; max: number }
-	climb: { min: number; max: number }
+export type PetState =
+	| 'sit-idle'
+	| 'lie'
+	| 'walk-right'
+	| 'walk-left'
+	| 'run-right'
+	| 'run-left'
+	| 'chase'
+	| 'eat'
+
+export interface PetSequence {
+	next: Partial<Record<PetState, PetState[]>>
 }
 
 export interface PetAssets {

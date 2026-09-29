@@ -28,6 +28,16 @@ function approach(current: number, target: number, maxStep: number): number {
 	return current + Math.sign(target - current) * maxStep
 }
 
+function stepAltitude(
+	currentY: number,
+	altitude: number,
+	climbStep: number,
+	bounds: { minY: number; maxY: number }
+): number {
+	const targetY = Math.max(bounds.minY, Math.min(bounds.maxY, altitude))
+	return approach(currentY, targetY, climbStep)
+}
+
 export function stepFlight(
 	position: Position,
 	direction: number,
@@ -47,8 +57,7 @@ export function stepFlight(
 		x = bounds.minX
 	}
 
-	const targetY = Math.max(bounds.minY, Math.min(bounds.maxY, altitude))
-	const y = approach(position.y, targetY, climbStep)
+	const y = stepAltitude(position.y, altitude, climbStep, bounds)
 
 	return { position: { x, y }, direction: nextDirection }
 }

@@ -1,11 +1,8 @@
 import { describe, expect, it } from 'bun:test'
 import {
 	clampToBounds,
-	directionTowardWall,
 	frameScale,
 	getMovementBounds,
-	isNearWall,
-	pickClimbWall,
 	stepWalk,
 } from '../utils/pet-movement'
 
@@ -49,56 +46,6 @@ describe('getMovementBounds', () => {
 		const b = bounds(30, 10)
 		expect(b.maxX).toBeGreaterThanOrEqual(b.minX)
 		expect(b.maxY).toBe(0)
-	})
-})
-
-describe('pickClimbWall', () => {
-	it('picks the right wall when the pet just bounced off it', () => {
-		const b = bounds()
-		expect(pickClimbWall(b.maxX, b)).toBe(b.maxX)
-	})
-
-	it('picks the left wall when the pet just bounced off it', () => {
-		const b = bounds()
-		expect(pickClimbWall(b.minX, b)).toBe(b.minX)
-	})
-
-	it('does not teleport a pet that bounced off the right wall', () => {
-		const b = bounds()
-		const afterBounce = stepWalk({ x: b.maxX - 1, y: 0 }, 1, 3.5, 1.5, b)
-
-		expect(afterBounce.position.x).toBe(b.maxX)
-		expect(afterBounce.direction).toBe(-1)
-		expect(pickClimbWall(afterBounce.position.x, b)).toBe(b.maxX)
-	})
-
-	it('does not teleport a pet that bounced off the left wall', () => {
-		const b = bounds()
-		const afterBounce = stepWalk({ x: b.minX + 1, y: 0 }, -1, 3.5, 1.5, b)
-
-		expect(afterBounce.position.x).toBe(b.minX)
-		expect(afterBounce.direction).toBe(1)
-		expect(pickClimbWall(afterBounce.position.x, b)).toBe(b.minX)
-	})
-
-	it('always resolves to the nearer wall across the whole track', () => {
-		const b = bounds()
-		const middle = (b.minX + b.maxX) / 2
-
-		for (let x = b.minX; x <= b.maxX; x++) {
-			const wall = pickClimbWall(x, b)
-			expect(wall === b.minX || wall === b.maxX).toBe(true)
-			if (x < middle) expect(wall).toBe(b.minX)
-			if (x > middle) expect(wall).toBe(b.maxX)
-		}
-	})
-})
-
-describe('directionTowardWall', () => {
-	it('faces the pet at the wall it climbs', () => {
-		const b = bounds()
-		expect(directionTowardWall(b.maxX, b)).toBe(1)
-		expect(directionTowardWall(b.minX, b)).toBe(-1)
 	})
 })
 
@@ -187,15 +134,6 @@ describe('narrow containers', () => {
 		const clamped = clampToBounds({ x: 999, y: 999 }, b)
 		expect(clamped.x).toBe(b.minX)
 		expect(clamped.y).toBe(0)
-	})
-})
-
-describe('isNearWall', () => {
-	it('detects both walls', () => {
-		const b = bounds()
-		expect(isNearWall(b.minX, b)).toBe(true)
-		expect(isNearWall(b.maxX, b)).toBe(true)
-		expect(isNearWall((b.minX + b.maxX) / 2, b)).toBe(false)
 	})
 })
 

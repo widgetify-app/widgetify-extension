@@ -3,18 +3,18 @@ import lie from '@/assets/animals/frog/ghoori_lie_8fps.webp'
 import running from '@/assets/animals/frog/ghoori_run_8fps.webp'
 import swipe from '@/assets/animals/frog/ghoori_swipe_8fps.webp'
 import walking from '@/assets/animals/frog/ghoori_walk_8fps.webp'
-import walking_fast from '@/assets/animals/frog/ghoori_walk_fast_8fps.webp'
 import { useMemo } from 'react'
 import { Icon } from '@/icons'
-import { BasePetContainer, useBasePetLogic } from '../base-pet'
+import { useBasePetLogic } from '../../hooks/use-base-pet-logic'
+import { BasePetContainer } from '../base-pet'
 import {
 	type PetAnimations,
 	type PetAssets,
 	type PetDimensions,
-	type PetDurations,
 	PetSpeed,
 } from '../../types'
 import { usePetContext } from '../../pet.context'
+import { PET_SEQUENCES } from '../../utils/species-sequences'
 import { PetTypes } from '../../types'
 
 const COLLECTIBLE_COLORS = [
@@ -38,9 +38,7 @@ export const FrogComponent = ({ className }: { className?: string }) => {
 		walk: walking,
 		run: running,
 		swipe,
-		stand: swipe,
 		sit: lie,
-		climb: walking_fast,
 	}
 
 	const frogDimensions: PetDimensions = {
@@ -48,15 +46,13 @@ export const FrogComponent = ({ className }: { className?: string }) => {
 		width: 50,
 		walkSpeed: PetSpeed.SLOW,
 		runSpeed: PetSpeed.NORMAL,
-		climbSpeed: PetSpeed.NORMAL,
 		maxHeight: 80,
-	}
-
-	const frogDurations: PetDurations = {
-		walk: { min: 4000, max: 9000 },
-		run: { min: 2000, max: 5000 },
-		rest: { min: 6000, max: 12000 },
-		climb: { min: 3000, max: 6000 },
+		hop: {
+			distance: { min: 35, max: 60 },
+			height: { min: 12, max: 22 },
+			durationMs: 450,
+			crouchMs: { min: 500, max: 1200 },
+		},
 	}
 
 	const collectibleColor = useMemo(
@@ -86,7 +82,7 @@ export const FrogComponent = ({ className }: { className?: string }) => {
 		name: getCurrentPetName(PetTypes.FROG),
 		animations: frogAnimations,
 		dimensions: frogDimensions,
-		durations: frogDurations,
+		sequence: PET_SEQUENCES[PetTypes.FROG],
 		assets: frogAssets,
 		isHungry: isPetHungry(PetTypes.FROG),
 		onCollectibleCollection: () => levelUpHungryState(PetTypes.FROG),

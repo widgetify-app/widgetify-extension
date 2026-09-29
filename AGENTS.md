@@ -663,15 +663,21 @@ out view or a light theme with no wallpaper.
 
 ## Per widget documentation
 
-The owner keeps one plain-language document per widget, for the whole team rather than for
-developers. When you finish a widget, rewrite its document from the code you just read.
+Each widget has one document, written for AI agents, in English. It sits at the root of the
+widget's feature folder as `<feature>.md` (`src/features/widgets/pet/pet.md`); the architecture
+test allows exactly that one Markdown file there. When you finish work on a widget, rewrite its
+document from the code you just read, so the next agent does not have to rediscover it.
 
-- Plain Persian, no file names, no class names, no code.
-- Describe what the widget does, its sizes, its data and privacy, its states, its keyboard
-  and screen reader behaviour, its settings and its place in the paid tiers.
-- End with three sections, in this order: **what is left** (open bugs and improvements, each
-  one marked "needs a decision" when it is the owner's call rather than yours), **what was
-  fixed** (say what the user actually experienced before, not what the patch was), and
-  **correct as it is** (things that look like bugs and must not be "fixed").
-- Correct the old document where the code disagrees with it, and say so. Several documents
-  described behaviour that had already changed.
+- Write for someone who is about to change the code. File and function names, exact constants
+  and short code identifiers are welcome; marketing prose is not.
+- Cover: what the widget does and its sizes, a file map, the runtime model and state machine,
+  data flow and storage (and which key strings must never change), settings, states and
+  accessibility, its place in the paid tiers, how to extend it, the tuning knobs, and which
+  pure modules the tests cover.
+- Include an **invariants** section (rules that must keep holding) and a **design decisions**
+  section (things that look like bugs and must not be "fixed").
+- End with **open questions** (each one an owner decision, not yours) and a **verification
+  status** that separates what was proved from the code and by tests from what nobody has
+  looked at on screen.
+- Correct the old document where the code disagrees with it, and say so in a short change
+  history. Several documents described behaviour that had already changed.

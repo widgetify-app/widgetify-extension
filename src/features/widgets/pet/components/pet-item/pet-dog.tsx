@@ -6,15 +6,16 @@ import walking from '@/assets/animals/dog/akita_walk_fast_8fps.webp'
 import dogFood from '@/assets/animals/dog/dog-food.png'
 import { PetFood } from '../pet-food'
 
-import { BasePetContainer, useBasePetLogic } from '../base-pet'
+import { useBasePetLogic } from '../../hooks/use-base-pet-logic'
+import { BasePetContainer } from '../base-pet'
 import {
 	type PetAnimations,
 	type PetAssets,
 	type PetDimensions,
-	type PetDurations,
 	PetSpeed,
 } from '../../types'
 import { usePetContext } from '../../pet.context'
+import { PET_SEQUENCES } from '../../utils/species-sequences'
 import { PetTypes } from '../../types'
 
 export const DogComponent = ({ className }: { className?: string }) => {
@@ -26,9 +27,7 @@ export const DogComponent = ({ className }: { className?: string }) => {
 		walk: walking,
 		run: running,
 		swipe,
-		stand: swipe,
 		sit: lie,
-		climb: walking,
 	}
 
 	const dogDimensions: PetDimensions = {
@@ -36,16 +35,9 @@ export const DogComponent = ({ className }: { className?: string }) => {
 		width: 50,
 		walkSpeed: PetSpeed.NORMAL,
 		runSpeed: PetSpeed.VERY_FAST,
-		climbSpeed: 1.2,
 		maxHeight: 100,
 	}
 
-	const dogDurations: PetDurations = {
-		walk: { min: 3000, max: 8000 },
-		run: { min: 1500, max: 4000 },
-		rest: { min: 5000, max: 10000 },
-		climb: { min: 2000, max: 5000 },
-	}
 	const dogAssets: PetAssets = {
 		collectibleIcon: <PetFood src={dogFood} />,
 		collectibleSize: 24,
@@ -66,7 +58,7 @@ export const DogComponent = ({ className }: { className?: string }) => {
 		name: getCurrentPetName(PetTypes.DOG),
 		animations: dogAnimations,
 		dimensions: dogDimensions,
-		durations: dogDurations,
+		sequence: PET_SEQUENCES[PetTypes.DOG],
 		assets: dogAssets,
 		isHungry: isPetHungry(PetTypes.DOG),
 		onCollectibleCollection: () => levelUpHungryState(PetTypes.DOG),
