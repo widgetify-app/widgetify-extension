@@ -159,7 +159,7 @@ export function SearchHistoryPortal({
 											e.preventDefault()
 											setShowConsentModal(true)
 										}}
-										className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-xl cursor-pointer bg-fill text-fg-muted transition-ui hover:text-brand hover:bg-brand-fill focus-visible:focus-ring searchbox-item"
+										className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-xl cursor-pointer bg-fill text-fg-muted transition-ui hover:text-brand hover:bg-brand-fill focus-visible:focus-ring"
 									>
 										فعال‌سازی
 									</button>

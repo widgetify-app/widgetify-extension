@@ -109,7 +109,7 @@ export function VoiceSearchPortal({
 						<Dropdown
 							position="top-right"
 							width="120px"
-							dropdownClassName="text-xs font-bold searchbox-item"
+							dropdownClassName="text-xs font-bold"
 							trigger={
 								<div className="flex cursor-pointer items-center gap-2 px-3 py-1.5 hover:bg-fill-2 rounded-xl transition-ui text-xs font-bold text-fg-muted">
 									<Icon name="settings" size={14} aria-hidden="true" />

@@ -165,8 +165,7 @@ function CanvasWidgetOuterImpl({
 			target.closest('select') ||
 			target.closest('a') ||
 			target.closest('[role="button"]') ||
-			target.closest('.cursor-pointer') ||
-			target.closest('.no-drag')
+			target.closest('.cursor-pointer')
 		) {
 			return
 		}
@@ -317,7 +316,7 @@ function CanvasWidgetOuterImpl({
 			<div
 				ref={outerRef}
 				className={cn(
-					'widget-outer absolute top-0 left-0 select-none rounded-widget',
+					'absolute top-0 left-0 select-none rounded-widget',
 					isDragging ? 'z-50 shadow-xl cursor-grabbing' : 'z-10 cursor-default',
 					!isDragging &&
 						'transition-[transform,width,height] duration-200 ease-out'
@@ -339,13 +338,7 @@ function CanvasWidgetOuterImpl({
 				onClickCapture={(e) => {
 					if (canvasMode === 'edit') {
 						const target = e.target as HTMLElement
-						if (
-							target.closest('.widget-delete-btn') ||
-							target.closest('button[title="حذف ویجت"]') ||
-							target.closest('.widget-size-toolbar')
-						) {
-							return
-						}
+						if (target.closest('[data-widget-delete]')) return
 						e.preventDefault()
 						e.stopPropagation()
 					}
@@ -355,6 +348,7 @@ function CanvasWidgetOuterImpl({
 					<button
 						type="button"
 						title="حذف ویجت"
+						data-widget-delete
 						onPointerDown={(e) => e.stopPropagation()}
 						onPointerUp={(e) => e.stopPropagation()}
 						onClick={(e) => {
@@ -362,7 +356,7 @@ function CanvasWidgetOuterImpl({
 							e.stopPropagation()
 							handleDelete()
 						}}
-						className="absolute z-50 flex items-center justify-center w-6 h-6 text-xs font-bold text-on-danger transition-transform rounded-full shadow-lg cursor-pointer widget-delete-btn -top-2 -right-2 bg-danger hover:scale-110 active:scale-95"
+						className="absolute z-50 flex items-center justify-center w-6 h-6 text-xs font-bold text-on-danger transition-transform rounded-full shadow-lg cursor-pointer -top-2 -right-2 bg-danger hover:scale-110 active:scale-95"
 					>
 						✕
 					</button>

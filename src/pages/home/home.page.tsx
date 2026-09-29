@@ -39,7 +39,7 @@ const steps: Step[] = [
 		),
 	},
 	{
-		target: '.widget-outer',
+		target: '[data-tour="widget"]',
 		content: (
 			<div className="flex flex-col gap-2.5">
 				<div className="relative overflow-hidden border shadow-sm aspect-video rounded-xl border-line bg-fill">

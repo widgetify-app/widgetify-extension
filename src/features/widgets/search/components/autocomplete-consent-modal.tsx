@@ -23,12 +23,12 @@ export function AutocompleteConsentModal({
 
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} title="پیشنهادهای جستجو" size="sm">
-			<div className="flex flex-col gap-4 pt-1 searchbox-item">
+			<div className="flex flex-col gap-4 pt-1">
 				<p className="px-1 text-sm leading-relaxed text-fg">
 					با فعال کردن این گزینه، هنگام تایپ در باکس جستجو، پیشنهادها مستقیما از
 					گوگل دریافت می‌شوند. هیچ اطلاعاتی ذخیره نمی‌شود.
 				</p>
-				<div className="flex items-center justify-end gap-2 searchbox-item">
+				<div className="flex items-center justify-end gap-2">
 					<Button
 						onClick={() => onClose()}
 						size="md"
