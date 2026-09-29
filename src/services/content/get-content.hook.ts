@@ -2,14 +2,7 @@ import { getMainClient } from '@/services/api'
 import { useQuery } from '@tanstack/react-query'
 import { contentKeys } from '@/services/content/content.keys'
 
-export interface ExplorerCategoryBadge {
-	label?: string
-	iconSrc?: string
-	bgColor?: string
-	textColor?: string
-	url?: string
-}
-export interface CatalogItemPromo {
+interface CatalogItemPromo {
 	title?: string
 	code?: string
 	discount?: string
@@ -19,7 +12,7 @@ export interface CatalogItemPromo {
 	highlights?: string[]
 }
 
-export interface CatalogItemMenuItem {
+interface CatalogItemMenuItem {
 	id?: string
 	title: string
 	url: string
@@ -28,7 +21,7 @@ export interface CatalogItemMenuItem {
 	isExternal?: boolean
 }
 
-export interface CatalogItemMeta {
+interface CatalogItemMeta {
 	type?: 'POPOVER_MENU'
 	action?: 'OPEN_MODAL' | 'OPEN_POPOVER' | 'DIRECT_URL'
 	title?: string

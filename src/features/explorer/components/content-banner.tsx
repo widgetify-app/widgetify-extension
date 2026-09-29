@@ -47,16 +47,16 @@ export function RenderContentBanner({ link, onOpenPromoModal }: BannerProp) {
 			onClick={handleClick}
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
-			className="col-span-2 row-span-2 group relative rounded-2xl overflow-hidden border border-base-content/10 hover:border-base-content/25 transition-all duration-300 flex flex-col justify-between p-4 shadow-xs hover:shadow-sm active:scale-[0.99] select-none h-full cursor-pointer"
+			className="col-span-2 row-span-2 group relative rounded-2xl overflow-hidden border border-surface-3 hover:border-line transition-ui duration-300 flex flex-col justify-between p-4 shadow-sm hover:shadow-md active:scale-[0.99] select-none h-full cursor-pointer"
 		>
 			<div
-				className="absolute inset-0 bg-cover bg-center transition-all duration-700 ease-out group-hover:scale-105"
+				className="absolute inset-0 bg-cover bg-center transition-ui duration-500 ease-out group-hover:scale-105"
 				style={{
 					backgroundImage: currentImage ? `url(${currentImage})` : undefined,
 				}}
 			/>
 
-			<div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent transition-opacity group-hover:opacity-90" />
+			<div className="absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.95)] via-[rgba(0,0,0,0.5)] to-transparent transition-opacity group-hover:opacity-90" />
 
 			{hasMultiple && (
 				<ImageSlider.Arrows
@@ -71,7 +71,7 @@ export function RenderContentBanner({ link, onOpenPromoModal }: BannerProp) {
 				<div className="flex items-center gap-2">
 					{badge && (
 						<span
-							className="px-2 py-0.5 rounded-lg text-[10px] font-bold text-white shadow-xs border border-white/20 backdrop-blur-md"
+							className="px-2 py-0.5 rounded-lg text-3xs font-bold text-image-fg shadow-sm border border-image-fill backdrop-blur-md"
 							style={{
 								backgroundColor:
 									link.badgeColor || 'var(--color-primary)',
@@ -94,17 +94,17 @@ export function RenderContentBanner({ link, onOpenPromoModal }: BannerProp) {
 
 			<div className="relative z-10 flex items-end justify-between gap-3">
 				<div className="min-w-0 flex-1">
-					<h3 className="text-xs font-bold text-white group-hover:text-primary-focus transition-colors drop-shadow-sm truncate">
+					<h3 className="text-xs font-bold text-image-fg drop-shadow-sm truncate">
 						{link.name}
 					</h3>
 					{link.description && (
-						<p className="text-[11px] text-white/75 line-clamp-1 mt-0.5 drop-shadow-xs leading-normal font-normal">
+						<p className="text-2xs text-[rgba(255,255,255,0.75)] line-clamp-1 mt-0.5 drop-shadow-xs leading-normal font-normal">
 							{link.description}
 						</p>
 					)}
 				</div>
 
-				<div className="w-7 h-7 rounded-xl bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shrink-0 group-hover:scale-105 transition-transform shadow-xs">
+				<div className="w-7 h-7 rounded-xl bg-image-fill hover:bg-image-line backdrop-blur-md border border-image-fill flex items-center justify-center text-image-fg shrink-0 group-hover:scale-105 transition-ui shadow-sm">
 					{isModalAction ? (
 						<Icon name="chevronDown" size={13} />
 					) : (

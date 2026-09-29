@@ -8,7 +8,7 @@ import {
 import { Icon } from '@/icons'
 import type { CatalogItem } from '../types'
 
-export interface ExplorerPopoverMenuProps {
+interface ExplorerPopoverMenuProps {
 	isOpen: boolean
 	onClose: () => void
 	item: CatalogItem | null
@@ -60,12 +60,10 @@ export function ExplorerPopoverMenu({
 						<img
 							src={item.icon}
 							alt={title}
-							className="w-4 h-4 rounded-md object-contain shrink-0"
+							className="w-4 h-4 rounded-lg object-contain shrink-0"
 						/>
 					)}
-					<span className="font-bold text-content text-xs truncate">
-						{title}
-					</span>
+					<span className="font-bold text-fg text-xs truncate">{title}</span>
 				</div>
 				{item.badge || meta?.badge || promo?.badge ? (
 					<span className="badge badge-xs badge-neutral shrink-0">
@@ -75,7 +73,7 @@ export function ExplorerPopoverMenu({
 			</PopoverMenuHeader>
 
 			{meta?.description && (
-				<p className="px-2.5 py-0.5 text-[10px] text-muted leading-tight truncate">
+				<p className="px-2.5 py-0.5 text-3xs text-fg-muted leading-tight truncate">
 					{meta.description}
 				</p>
 			)}
@@ -94,7 +92,9 @@ export function ExplorerPopoverMenu({
 							</span>
 						) : undefined
 					}
-					icon={<Icon name="externalLink" size={13} className="text-muted" />}
+					icon={
+						<Icon name="externalLink" size={13} className="text-fg-muted" />
+					}
 					onClick={() => handleItemClick(mItem.url)}
 				/>
 			))}
@@ -102,19 +102,19 @@ export function ExplorerPopoverMenu({
 			{promo?.code && (
 				<>
 					<PopoverMenuDivider />
-					<div className="p-2 rounded-xl bg-base-200/70 border border-content my-1 space-y-1.5">
-						<div className="flex items-center justify-between text-[11px]">
-							<span className="font-medium text-content">
+					<div className="p-2 rounded-xl bg-fill-2 border border-surface-3 my-1 space-y-1.5">
+						<div className="flex items-center justify-between text-2xs">
+							<span className="font-medium text-fg">
 								{promo.title || 'کد تخفیف'}
 							</span>
 							{promo.discount && (
-								<span className="font-bold text-primary text-[10px]">
+								<span className="font-bold text-brand text-3xs">
 									{promo.discount}
 								</span>
 							)}
 						</div>
-						<div className="flex items-center justify-between bg-base-100 border border-content rounded-lg px-2 py-1 gap-2">
-							<span className="font-mono text-xs font-bold text-primary tracking-wider select-all">
+						<div className="flex items-center justify-between bg-surface border border-surface-3 rounded-lg px-2 py-1 gap-2">
+							<span className="font-mono text-xs font-bold text-brand tracking-wider select-all">
 								{promo.code}
 							</span>
 							<button
@@ -123,7 +123,7 @@ export function ExplorerPopoverMenu({
 									e.stopPropagation()
 									handleCopy(promo.code)
 								}}
-								className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-base-200 hover:bg-base-300 text-content transition-colors cursor-pointer"
+								className="text-3xs font-medium px-2 py-0.5 rounded-lg bg-surface-2 hover:bg-surface-3 text-fg transition-colors cursor-pointer"
 							>
 								کپی
 							</button>

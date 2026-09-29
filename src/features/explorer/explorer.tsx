@@ -11,9 +11,9 @@ function ExplorerSkeleton() {
 		<div className="flex flex-col gap-8 w-full max-w-5xl mx-auto py-2">
 			{[1, 2, 3].map((i) => (
 				<div key={i} className="flex flex-col gap-3">
-					<div className="flex items-center gap-2.5 pb-3 border-b border-base-200/80">
+					<div className="flex items-center gap-2.5 pb-3 border-b border-surface-3">
 						<div className="w-8 h-8 rounded-xl skeleton opacity-30" />
-						<div className="h-4 w-32 skeleton rounded-md opacity-30" />
+						<div className="h-4 w-32 skeleton rounded-lg opacity-30" />
 					</div>
 					<div className="grid grid-cols-2 md:grid-cols-4 gap-3 auto-rows-[68px]">
 						<div className="col-span-2 row-span-2 skeleton rounded-2xl opacity-20" />
@@ -209,8 +209,8 @@ export function ExplorerContent() {
 
 	return (
 		<div className="relative z-10 w-full h-[calc(100vh-4.75rem)] max-w-270 mx-auto pt-2 px-3 sm:px-4 flex flex-col overflow-hidden">
-			<div className="w-full h-full rounded-3xl bg-base-100/70 bg-content bg-glass backdrop-blur-2xl border border-base-200/80  overflow-hidden flex flex-col">
-				<header className="shrink-0 w-full px-4 py-3 border-b border-base-200/80 bg-base-100/90 backdrop-blur-xl flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 z-30">
+			<div className="w-full h-full rounded-widget bg-glass-surface-2 border border-surface-3 overflow-hidden flex flex-col">
+				<header className="shrink-0 w-full px-4 py-3 border-b border-surface-3 bg-surface backdrop-blur-xl flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 z-30">
 					<div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-0.5 flex-1">
 						{categories.map((cat: CategoryItem) => {
 							const active = activeCategory === cat.id
@@ -222,10 +222,10 @@ export function ExplorerContent() {
 										tabRefs.current[cat.id] = el
 									}}
 									onClick={() => scrollToCategory(cat.id)}
-									className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold whitespace-nowrap rounded-xl transition-all duration-200 shrink-0 cursor-pointer ${
+									className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold whitespace-nowrap rounded-xl transition-ui duration-200 shrink-0 cursor-pointer ${
 										active
-											? 'bg-primary/15 text-primary border border-primary/30 shadow-xs font-bold'
-											: 'text-base-content/60 hover:text-base-content hover:bg-base-200/60 border border-transparent'
+											? 'bg-brand-fill text-brand border border-brand-fill-2 shadow-sm font-bold'
+											: 'text-fg-muted hover:text-fg-strong hover:bg-fill-2 border border-transparent'
 									}`}
 								>
 									{cat.icon && (
@@ -247,10 +247,10 @@ export function ExplorerContent() {
 							value={searchQuery}
 							onChange={(e) => setSearchQuery(e.target.value)}
 							placeholder="جستجو در تمام سایت‌ها و دسته‌ها..."
-							className="w-full bg-base-200/50 text-xs text-base-content placeholder-base-content/40 px-3 py-2 rounded-xl border border-base-content/10 focus:outline-none focus:border-primary/50 focus:bg-base-200 transition-all pr-8"
+							className="w-full bg-fill-2 text-xs text-fg-strong placeholder-fg-faint px-3 py-2 rounded-xl border border-line focus:outline-none focus:border-brand-muted focus:bg-surface-2 transition-ui pr-8"
 						/>
 						<svg
-							className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 text-base-content/40 pointer-events-none"
+							className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 text-fg-faint pointer-events-none"
 							fill="none"
 							stroke="currentColor"
 							viewBox="0 0 24 24"
@@ -266,7 +266,7 @@ export function ExplorerContent() {
 						{searchQuery && (
 							<button
 								onClick={() => setSearchQuery('')}
-								className="absolute left-2.5 top-1/2 -translate-y-1/2 text-base-content/40 hover:text-base-content text-xs p-0.5"
+								className="absolute left-2.5 top-1/2 -translate-y-1/2 text-fg-faint hover:text-fg-strong text-xs p-0.5"
 							>
 								✕
 							</button>
@@ -284,15 +284,15 @@ export function ExplorerContent() {
 					) : filteredContents.length === 0 ? (
 						<div className="flex flex-col items-center justify-center gap-3 py-24 text-center">
 							<div className="text-4xl opacity-40">🔍</div>
-							<p className="text-sm font-bold text-base-content">
+							<p className="text-sm font-bold text-fg-strong">
 								نتیجه‌ای برای «{searchQuery}» پیدا نشد
 							</p>
-							<p className="text-xs text-base-content/50">
+							<p className="text-xs text-fg-faint">
 								می‌توانید عنوان دیگری را جستجو کنید یا فیلتر را پاک کنید
 							</p>
 							<button
 								onClick={() => setSearchQuery('')}
-								className="px-3 py-1.5 text-xs font-semibold rounded-xl bg-base-200 hover:bg-base-300 text-base-content transition-colors mt-2"
+								className="px-3 py-1.5 text-xs font-semibold rounded-xl bg-surface-2 hover:bg-surface-3 text-fg-strong transition-colors mt-2"
 							>
 								پاک کردن جستجو
 							</button>

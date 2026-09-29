@@ -22,9 +22,9 @@ export function ExplorerCategory({ category, categoryRefs, onOpenPromoModal }: P
 			}}
 			className="w-full scroll-mt-20 mb-8"
 		>
-			<div className="flex items-center justify-between pb-3 mb-3 border-b border-base-200/80">
+			<div className="flex items-center justify-between pb-3 mb-3 border-b border-surface-3">
 				<div className="flex items-center gap-2.5">
-					<div className="w-8 h-8 rounded-xl bg-base-200/80 border border-base-content/10 p-1.5 flex items-center justify-center shrink-0 shadow-inner">
+					<div className="w-8 h-8 rounded-xl bg-fill-2 border border-line p-1.5 flex items-center justify-center shrink-0">
 						{category.icon ? (
 							<img
 								src={category.icon}
@@ -32,11 +32,11 @@ export function ExplorerCategory({ category, categoryRefs, onOpenPromoModal }: P
 								alt=""
 							/>
 						) : (
-							<div className="w-2 h-2 rounded-full bg-primary" />
+							<div className="w-2 h-2 rounded-full bg-brand" />
 						)}
 					</div>
 					<div>
-						<h2 className="text-sm font-bold text-base-content tracking-wide">
+						<h2 className="text-sm font-bold text-fg-strong tracking-wide">
 							{category.category}
 						</h2>
 					</div>
@@ -61,7 +61,7 @@ export function ExplorerCategory({ category, categoryRefs, onOpenPromoModal }: P
 						/>
 					) : (
 						<div
-							className="flex items-center justify-center w-full h-full text-[10px] border border-dashed border-base-content/20 rounded-2xl text-base-content/40"
+							className="flex items-center justify-center w-full h-full text-3xs border border-dashed border-line rounded-2xl text-fg-faint"
 							key={link.url}
 						>
 							نیازمند بروزرسانی

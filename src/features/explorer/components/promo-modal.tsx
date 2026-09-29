@@ -4,7 +4,7 @@ import { Button, ImageSlider, Modal } from '@/components/ui'
 import { Icon } from '@/icons'
 import type { CatalogItem } from '../types'
 
-export interface ExplorerPromoModalProps {
+interface ExplorerPromoModalProps {
 	isOpen: boolean
 	onClose: () => void
 	item: CatalogItem | null
@@ -23,7 +23,6 @@ export function ExplorerPromoModal({ isOpen, onClose, item }: ExplorerPromoModal
 		: item.backgroundSrc
 			? [item.backgroundSrc]
 			: []
-	const hasGallery = gallery.length > 1
 	const title = meta?.title || item.name
 	const description = meta?.description || item.description
 	const highlights: string[] = Array.isArray(meta?.highlights) ? meta.highlights : []
@@ -80,9 +79,9 @@ export function ExplorerPromoModal({ isOpen, onClose, item }: ExplorerPromoModal
 						arrowsVisibility="always"
 						dotsPosition="bottom-center"
 						dotsVariant="dark"
-						className="w-full h-36 rounded-2xl bg-base-200 border border-content group"
+						className="w-full h-36 rounded-2xl bg-surface-2 border border-surface-3 group"
 						overlay={
-							<div className="absolute inset-0 bg-gradient-to-t from-base-100/80 via-transparent to-transparent pointer-events-none" />
+							<div className="absolute inset-0 bg-gradient-to-t from-surface-veil via-transparent to-transparent pointer-events-none" />
 						}
 					/>
 				)}
@@ -94,10 +93,10 @@ export function ExplorerPromoModal({ isOpen, onClose, item }: ExplorerPromoModal
 								<img
 									src={item.icon}
 									alt={item.name}
-									className="w-6 h-6 rounded-xl object-contain shrink-0 bg-base-200 border border-content p-0.5"
+									className="w-6 h-6 rounded-xl object-contain shrink-0 bg-surface-2 border border-surface-3 p-0.5"
 								/>
 							)}
-							<h3 className="text-base font-bold text-content truncate">
+							<h3 className="text-base font-bold text-fg truncate">
 								{title}
 							</h3>
 						</div>
@@ -109,7 +108,7 @@ export function ExplorerPromoModal({ isOpen, onClose, item }: ExplorerPromoModal
 					</div>
 
 					{description && (
-						<p className="text-xs text-muted leading-relaxed">
+						<p className="text-xs text-fg-muted leading-relaxed">
 							{description}
 						</p>
 					)}
@@ -120,12 +119,12 @@ export function ExplorerPromoModal({ isOpen, onClose, item }: ExplorerPromoModal
 						{highlights.map((h, i) => (
 							<div
 								key={i}
-								className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-base-200 border border-content text-[11px] text-muted font-medium"
+								className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-surface-2 border border-surface-3 text-2xs text-fg-muted font-medium"
 							>
 								<Icon
 									name="check"
 									size={12}
-									className="text-primary shrink-0"
+									className="text-brand shrink-0"
 								/>
 								<span>{h}</span>
 							</div>
@@ -134,20 +133,20 @@ export function ExplorerPromoModal({ isOpen, onClose, item }: ExplorerPromoModal
 				)}
 
 				{promo && (
-					<div className="p-3 rounded-2xl bg-base-200 border border-content space-y-2">
+					<div className="p-3 rounded-2xl bg-surface-2 border border-surface-3 space-y-2">
 						<div className="flex items-center justify-between text-xs">
-							<span className="font-semibold text-content">
+							<span className="font-semibold text-fg">
 								{promo.title || 'کد تخفیف اختصاصی'}
 							</span>
 							{promo.discount && (
-								<span className="text-[11px] font-bold text-primary">
+								<span className="text-2xs font-bold text-brand">
 									{promo.discount}
 								</span>
 							)}
 						</div>
 						{promo.code && (
-							<div className="flex items-center justify-between gap-2 p-1.5 pr-3 pl-1.5 rounded-xl bg-base-100 border border-content">
-								<span className="font-mono text-xs font-bold text-primary tracking-wider select-all">
+							<div className="flex items-center justify-between gap-2 p-1.5 pr-3 pl-1.5 rounded-xl bg-surface border border-surface-3">
+								<span className="font-mono text-xs font-bold text-brand tracking-wider select-all">
 									{promo.code}
 								</span>
 								<Button
