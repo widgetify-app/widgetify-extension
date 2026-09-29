@@ -76,7 +76,7 @@ export const FolderBookmarkItem = memo(function FolderBookmarkItem({
 	return (
 		<div
 			className={cn(
-				'relative flex w-full h-full overflow-hidden',
+				'relative flex w-full h-full overflow-hidden group/menu',
 				isDragging && 'opacity-50'
 			)}
 		>
@@ -111,21 +111,21 @@ export const FolderBookmarkItem = memo(function FolderBookmarkItem({
 						customTextColor={bookmark.customTextColor || ''}
 					/>
 				</div>
-
-				{onMenuClick && (
-					<div
-						onClick={(e) => {
-							e.stopPropagation()
-							onMenuClick(e)
-						}}
-						className={
-							'absolute cursor-pointer top-1 right-1.5 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-ui duration-200 hover:bg-fill-2 z-10'
-						}
-					>
-						<Icon name="menuOption" size={12} strokeWidth={2} />
-					</div>
-				)}
 			</button>
+
+			{onMenuClick && (
+				<button
+					type="button"
+					aria-label="گزینه‌های پوشه"
+					onClick={(e) => {
+						e.stopPropagation()
+						onMenuClick(e)
+					}}
+					className="absolute z-10 p-1 transition-ui duration-200 rounded-full opacity-0 cursor-pointer top-1 right-1.5 group-hover/menu:opacity-100 focus-visible:opacity-100 hover:bg-fill-2"
+				>
+					<Icon name="menuOption" size={12} strokeWidth={2} />
+				</button>
+			)}
 		</div>
 	)
 })

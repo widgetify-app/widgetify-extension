@@ -70,15 +70,19 @@ export function AddWidgetSidebar({
 						return (
 							<div
 								key={def.id}
-								onClick={() => onSelectWidget(def.id)}
 								className={cn(
-									'w-full flex items-center justify-between p-2.5 rounded-2xl border text-right transition-ui duration-150 cursor-pointer',
+									'relative w-full flex items-center justify-between p-2.5 rounded-2xl border text-right transition-ui duration-150',
 									isSelected
 										? 'bg-brand-fill border-brand shadow-sm'
 										: 'bg-fill-2 hover:bg-surface-2 border-line'
 								)}
 							>
-								<div className="flex items-center min-w-0 gap-2">
+								<button
+									type="button"
+									onClick={() => onSelectWidget(def.id)}
+									aria-pressed={isSelected}
+									className="flex items-center min-w-0 gap-2 text-start cursor-pointer after:absolute after:inset-0 after:rounded-2xl focus-visible:focus-ring"
+								>
 									<span
 										className={cn(
 											'flex items-center justify-center rounded-xl w-7 h-7 shrink-0 transition-ui',
@@ -100,7 +104,7 @@ export function AddWidgetSidebar({
 										{def.label}
 									</span>
 									{isWidgetNew?.(def.id) && <Badge>جدید</Badge>}
-								</div>
+								</button>
 
 								<div className="flex items-center gap-1.5 shrink-0 mr-2">
 									{!isVip && isWidgetVipOnly(def.id) && (

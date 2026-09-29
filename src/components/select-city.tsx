@@ -146,7 +146,8 @@ export function SelectCity({ size }: Prop) {
 							</div>
 						) : filteredCities?.length > 0 ? (
 							filteredCities.map((city) => (
-								<div
+								<button
+									type="button"
 									key={city.cityId}
 									onClick={() => handleSelectCity(city)}
 									className="flex items-center w-full p-3 text-right transition-ui duration-200 border-b cursor-pointer border-surface-3 last:border-b-0 group rounded-2xl hover:bg-brand-fill-2 hover:text-brand"
@@ -158,7 +159,7 @@ export function SelectCity({ size }: Prop) {
 									<span className="flex-1 font-medium">
 										{city.city}
 									</span>
-								</div>
+								</button>
 							))
 						) : searchTerm ? (
 							<div className="p-4 text-center text-fg-muted">

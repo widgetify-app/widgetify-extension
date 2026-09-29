@@ -182,7 +182,9 @@ export function ImageSlider({
 	}
 
 	return (
-		<div
+		<section
+			aria-roledescription="اسلایدر"
+			aria-label={alt || 'تصاویر'}
 			className={cn(
 				'relative w-full h-full select-none overflow-hidden',
 				className
@@ -248,7 +250,7 @@ export function ImageSlider({
 			)}
 
 			{typeof children === 'function' ? children(slider) : children}
-		</div>
+		</section>
 	)
 }
 

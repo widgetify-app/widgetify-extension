@@ -97,7 +97,10 @@ export function DailyMoodNotification({ className }: Prop) {
 					{moodOptions
 						.filter((f) => f.label)
 						.map((option) => (
-							<div
+							<button
+								type="button"
+								disabled={isAdding}
+								aria-pressed={mood === option.value}
 								key={option.value}
 								onClick={() =>
 									!isAdding && handleMoodChange(option.value)
@@ -120,7 +123,7 @@ export function DailyMoodNotification({ className }: Prop) {
 										</div>
 									</div>
 								)}
-							</div>
+							</button>
 						))}
 				</div>
 			</div>

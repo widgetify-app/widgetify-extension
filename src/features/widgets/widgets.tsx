@@ -84,7 +84,7 @@ export function FreeWidgetCanvas() {
 		pressStartedOnBackgroundRef.current = isBackgroundTarget(e.target)
 	}
 
-	const handleCanvasClick = (e: React.MouseEvent) => {
+	const handleCanvasPointerUp = (e: React.PointerEvent) => {
 		const startedOnBackground = pressStartedOnBackgroundRef.current
 		pressStartedOnBackgroundRef.current = false
 
@@ -176,12 +176,13 @@ export function FreeWidgetCanvas() {
 	}
 
 	return (
-		<div
+		<section
+			aria-label="ویجت‌ها"
 			ref={containerRef}
 			id="widgets-canvas"
 			className="relative w-full select-none"
 			onPointerDown={handleCanvasPointerDown}
-			onClick={handleCanvasClick}
+			onPointerUp={handleCanvasPointerUp}
 			onContextMenu={handleCanvasContextMenu}
 		>
 			<div
@@ -262,6 +263,6 @@ export function FreeWidgetCanvas() {
 			/>
 
 			<WidgetHelpModal isOpen={isHelpModalOpen} onClose={handleCloseHelpModal} />
-		</div>
+		</section>
 	)
 }

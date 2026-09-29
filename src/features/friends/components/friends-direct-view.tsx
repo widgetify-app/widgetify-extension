@@ -133,10 +133,13 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 						{allFriends.map((friend) => (
 							<div
 								key={`friend-direct-${friend.id}`}
-								onClick={() => onSelectFriend?.(friend)}
-								className="group flex items-center justify-between p-2 transition-colors duration-150 rounded-xl hover:bg-fill-2 border border-transparent hover:border-line cursor-pointer"
+								className="group flex items-center justify-between p-2 transition-colors duration-150 rounded-xl hover:bg-fill-2 border border-transparent hover:border-line"
 							>
-								<div className="flex items-center gap-2.5 min-w-0 flex-1">
+								<button
+									type="button"
+									onClick={() => onSelectFriend?.(friend)}
+									className="flex items-center gap-2.5 min-w-0 flex-1 text-start cursor-pointer rounded-lg focus-visible:focus-ring"
+								>
 									<div className="relative shrink-0">
 										<div className="w-8 h-8 overflow-hidden rounded-full ring-1 ring-line">
 											<AvatarComponent
@@ -159,9 +162,9 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 											@{friend.user.username}
 										</div>
 									</div>
-								</div>
+								</button>
 
-								<div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+								<div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity">
 									<Tooltip content="حذف دوست">
 										<button
 											type="button"

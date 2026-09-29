@@ -28,7 +28,8 @@ export function UploadEmpty({
 	onDrop,
 }: UploadEmptyProps) {
 	return (
-		<div
+		<section
+			aria-label="بارگذاری تصویر زمینه"
 			onDragOver={onDragOver}
 			onDragEnter={onDragOver}
 			onDragLeave={onDragLeave}
@@ -40,7 +41,9 @@ export function UploadEmpty({
 		>
 			<div className="flex items-center justify-between gap-3">
 				<div className="flex items-center min-w-0 gap-3">
-					<div
+					<button
+						type="button"
+						disabled={isUploading}
 						onClick={onFileSelect}
 						className={cn(
 							'relative flex items-center justify-center w-24 h-16 overflow-hidden rounded-xl border border-dashed cursor-pointer shrink-0 transition-ui group bg-surface-2',
@@ -63,7 +66,7 @@ export function UploadEmpty({
 								</span>
 							</div>
 						)}
-					</div>
+					</button>
 
 					<div className="flex flex-col min-w-0 gap-1">
 						<p className="text-sm font-bold truncate text-fg">
@@ -140,6 +143,6 @@ export function UploadEmpty({
 					</Button>
 				</div>
 			</div>
-		</div>
+		</section>
 	)
 }

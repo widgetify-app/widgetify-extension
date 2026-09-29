@@ -22,8 +22,10 @@
 		"rules": {
 			"recommended": true,
 			"a11y": {
-				"useKeyWithClickEvents": "off",
-				"noStaticElementInteractions": "off"
+				"noLabelWithoutControl": {
+					"level": "error",
+					"options": { "inputComponents": ["ToggleSwitch"] }
+				}
 			},
 			"style": {
 				"useSelfClosingElements": "off",
@@ -85,6 +87,21 @@
 		}
 	},
 	"overrides": [
+		{
+			"includes": [
+				"src/components/ui/dropdown/dropdown.tsx",
+				"src/components/ui/popover-menu/popover-menu.tsx",
+				"src/components/ui/tooltip/tooltip.tsx"
+			],
+			"linter": {
+				"rules": {
+					"a11y": {
+						"noStaticElementInteractions": "off",
+						"useKeyWithClickEvents": "off"
+					}
+				}
+			}
+		},
 		{
 			"includes": ["*.tsx", "*.jsx"],
 			"javascript": {

@@ -84,13 +84,14 @@ export function FontSelector({ fetched_fonts }: FontSelectorProps) {
 							style={{ fontFamily: font.value }}
 						/>
 					))}
-					<div
+					<button
+						type="button"
 						className="flex items-center justify-center w-full h-20 text-xs border border-surface-3 gap-0.5 text-fg-muted hover:text-brand! cursor-pointer hover:border-brand! transition-ui duration-200 rounded-xl"
 						onClick={() => handleMoreClick()}
 					>
 						<Icon name="shoppingBag" size={18} />
 						<span>فروشگاه</span>
-					</div>
+					</button>
 				</div>
 			</div>
 		</SectionPanel>

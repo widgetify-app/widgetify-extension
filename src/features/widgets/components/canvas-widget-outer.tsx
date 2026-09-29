@@ -313,7 +313,8 @@ function CanvasWidgetOuterImpl({
 
 	return (
 		<>
-			<div
+			<article
+				aria-label={definition.label}
 				ref={outerRef}
 				className={cn(
 					'absolute top-0 left-0 select-none rounded-widget',
@@ -380,7 +381,9 @@ function CanvasWidgetOuterImpl({
 						/>
 					)}
 					{isLocked && canvasMode === 'normal' && (
-						<div
+						<button
+							type="button"
+							aria-label="ارتقا به اشتراک پرو"
 							className="absolute inset-0 z-25 rounded-widget bg-glass-surface-2 border border-vip-fill-2 flex flex-col items-center justify-center p-2 text-center select-none cursor-pointer overflow-hidden group transition-ui duration-200 hover:border-vip"
 							onClick={(e) => {
 								e.stopPropagation()
@@ -398,13 +401,13 @@ function CanvasWidgetOuterImpl({
 									</span>
 								)}
 							</div>
-						</div>
+						</button>
 					)}
 					{canvasMode === 'edit' && (
 						<div className="absolute inset-0 z-30 bg-transparent pointer-events-auto cursor-grab" />
 					)}
 				</div>
-			</div>
+			</article>
 
 			{contextMenuPos && (
 				<WidgetContextMenu

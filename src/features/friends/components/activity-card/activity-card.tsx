@@ -34,12 +34,8 @@ export const ActivityCard = ({
 	isSelf,
 	reactions,
 }: ActivityCardProps) => {
-	return (
-		<button
-			onClick={onClick}
-			className="flex flex-col items-center shrink-0 group"
-			type="button"
-		>
+	const content = (
+		<>
 			<div className="relative flex flex-col items-center">
 				<div className="relative w-24 h-16">
 					<div
@@ -90,6 +86,16 @@ export const ActivityCard = ({
 			<p className="w-full px-1 mt-2 text-xs font-medium text-center truncate text-fg">
 				{name}
 			</p>
+		</>
+	)
+
+	const className = 'flex flex-col items-center shrink-0 group'
+
+	if (!onClick) return <div className={className}>{content}</div>
+
+	return (
+		<button type="button" onClick={onClick} className={className}>
+			{content}
 		</button>
 	)
 }
@@ -131,7 +137,9 @@ function ActivityReactionSelector({ reactions, activityId, index }: Prop) {
 	return (
 		<Dropdown
 			trigger={
-				<div
+				<button
+					type="button"
+					aria-label="واکنش به این فعالیت"
 					className={`flex  items-center justify-center w-5 h-5 text-xs text-center transition-ui duration-200 rounded-full shadow-sm active:scale-95 bg-fill ${reacted ? 'opacity-85' : 'opacity-50'}`}
 					onClick={() => setEnable(true)}
 				>
@@ -143,7 +151,7 @@ function ActivityReactionSelector({ reactions, activityId, index }: Prop) {
 								)?.content || ''
 							)
 						: reactions[0]?.content}
-				</div>
+				</button>
 			}
 			className="absolute! top-0! left-0!"
 		>

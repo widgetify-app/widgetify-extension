@@ -26,17 +26,19 @@ export function GalleryBookmarkIconItem({
 		}
 	}
 
-	const elementRef = useLazyLoad(loadContent)
+	const elementRef = useLazyLoad<HTMLButtonElement>(loadContent)
 
 	const itemOutlineStyle = isSelected
 		? 'ring-2 ring-brand ring-offset-2 ring-offset-surface border-brand'
 		: 'border-line hover:border-brand-muted hover:bg-fill-2'
 
 	return (
-		<div
+		<button
+			type="button"
+			aria-pressed={isSelected}
 			ref={elementRef}
 			onClick={onClick}
-			className={`relative aspect-square rounded-2xl cursor-pointer group flex flex-col items-center justify-center p-3 select-none transition-ui duration-200 active:scale-96 bg-fill border ${itemOutlineStyle}`}
+			className={`relative w-full aspect-square rounded-2xl cursor-pointer group flex flex-col items-center justify-center p-3 select-none transition-ui duration-200 active:scale-96 bg-fill border ${itemOutlineStyle}`}
 		>
 			<div
 				className="absolute inset-0 rounded-2xl pointer-events-none opacity-40"
@@ -109,6 +111,6 @@ export function GalleryBookmarkIconItem({
 					)}
 				</>
 			)}
-		</div>
+		</button>
 	)
 }

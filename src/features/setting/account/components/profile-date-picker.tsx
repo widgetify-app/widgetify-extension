@@ -249,7 +249,6 @@ function ScrollWheel({ value, max, onChange, type, startYear }: ScrollWheelProps
 				ref={containerRef}
 				onScroll={handleScroll}
 				className="h-full overflow-y-scroll scrollbar-none"
-				onClick={(e) => e.stopPropagation()}
 			>
 				<div style={{ height: `${ITEM_HEIGHT * 2}px` }} />
 				{items.map((item, index) => {
@@ -261,10 +260,15 @@ function ScrollWheel({ value, max, onChange, type, startYear }: ScrollWheelProps
 					}
 
 					return (
-						<div
+						<button
+							type="button"
 							key={index}
-							onClick={() => handleItemClick(index)}
-							className="flex items-center justify-center transition-ui cursor-pointer"
+							onClick={(e) => {
+								e.stopPropagation()
+								handleItemClick(index)
+							}}
+							aria-pressed={isActive}
+							className="flex items-center justify-center w-full transition-ui cursor-pointer"
 							style={{ height: `${ITEM_HEIGHT}px` }}
 						>
 							<span
@@ -276,7 +280,7 @@ function ScrollWheel({ value, max, onChange, type, startYear }: ScrollWheelProps
 							>
 								{item}
 							</span>
-						</div>
+						</button>
 					)
 				})}
 				<div style={{ height: `${ITEM_HEIGHT * 2}px` }} />

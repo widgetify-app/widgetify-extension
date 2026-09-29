@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 
-export function useLazyLoad(onVisible: () => void) {
-	const elementRef = useRef<HTMLDivElement>(null)
+export function useLazyLoad<T extends HTMLElement>(onVisible: () => void) {
+	const elementRef = useRef<T>(null)
 	const observer = useRef<IntersectionObserver | null>(null)
 
 	useEffect(() => {

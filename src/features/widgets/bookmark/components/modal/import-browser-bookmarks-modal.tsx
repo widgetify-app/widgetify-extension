@@ -98,18 +98,16 @@ function TreeNode({
 	return (
 		<div>
 			<div
-				className="flex items-center gap-2 py-1.5 px-1.5 rounded-lg hover:bg-brand-fill cursor-pointer transition-colors"
+				className="flex items-center gap-2 py-1.5 px-1.5 rounded-lg hover:bg-brand-fill transition-colors"
 				style={{ paddingRight: depth * 16 }}
-				onClick={() => onToggleSelect(node)}
 			>
 				{isFolder ? (
 					<button
 						type="button"
-						onClick={(e) => {
-							e.stopPropagation()
-							onToggleExpand(node.id)
-						}}
-						className="flex items-center justify-center w-4 h-4 shrink-0 text-fg-muted"
+						onClick={() => onToggleExpand(node.id)}
+						aria-expanded={isExpanded}
+						aria-label={isExpanded ? 'بستن پوشه' : 'باز کردن پوشه'}
+						className="flex items-center justify-center w-4 h-4 shrink-0 text-fg-muted cursor-pointer"
 					>
 						<Icon
 							name="chevronLeft"
@@ -123,37 +121,44 @@ function TreeNode({
 					<span className="w-4 h-4 shrink-0" />
 				)}
 
-				<span
-					className={`flex items-center justify-center w-4 h-4 rounded-lg border shrink-0 transition-colors ${
-						isChecked
-							? 'bg-brand border-brand'
-							: isIndeterminate
-								? 'bg-brand-fill-2 border-brand'
-								: 'border-line'
-					}`}
+				<button
+					type="button"
+					onClick={() => onToggleSelect(node)}
+					aria-pressed={isIndeterminate ? 'mixed' : isChecked}
+					className="flex items-center flex-1 min-w-0 gap-2 text-start cursor-pointer"
 				>
-					{(isChecked || isIndeterminate) && (
-						<Icon
-							name="check"
-							size={9}
-							className={isChecked ? 'text-on-brand' : 'text-brand'}
+					<span
+						className={`flex items-center justify-center w-4 h-4 rounded-lg border shrink-0 transition-colors ${
+							isChecked
+								? 'bg-brand border-brand'
+								: isIndeterminate
+									? 'bg-brand-fill-2 border-brand'
+									: 'border-line'
+						}`}
+					>
+						{(isChecked || isIndeterminate) && (
+							<Icon
+								name="check"
+								size={10}
+								className={isChecked ? 'text-on-brand' : 'text-brand'}
+							/>
+						)}
+					</span>
+
+					{isFolder ? (
+						<Icon name="folder" size={16} className="text-brand shrink-0" />
+					) : (
+						<img
+							src={getFaviconFromUrl(node.url || '')}
+							className="w-3.5 h-3.5 rounded-sm shrink-0"
+							alt=""
 						/>
 					)}
-				</span>
 
-				{isFolder ? (
-					<Icon name="folder" size={15} className="text-brand shrink-0" />
-				) : (
-					<img
-						src={getFaviconFromUrl(node.url || '')}
-						className="w-3.5 h-3.5 rounded-sm shrink-0"
-						alt=""
-					/>
-				)}
-
-				<span className="flex-1 text-xs font-medium truncate">
-					{node.title || 'بدون عنوان'}
-				</span>
+					<span className="flex-1 text-xs font-medium truncate">
+						{node.title || 'بدون عنوان'}
+					</span>
+				</button>
 			</div>
 
 			{isFolder && isExpanded && node.children && node.children.length > 0 && (

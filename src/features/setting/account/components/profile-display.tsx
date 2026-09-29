@@ -354,12 +354,14 @@ const DisplayRow = ({
 					{value || '-'}
 				</div>
 				{editable && (
-					<div
+					<button
+						type="button"
+						aria-label="ویرایش"
 						className="absolute p-1 -translate-y-1/2 cursor-pointer text-fg-muted -right-4 top-1/2 active:scale-95"
 						onClick={onClickEdit}
 					>
 						<Icon name="edit" />
-					</div>
+					</button>
 				)}
 			</div>
 

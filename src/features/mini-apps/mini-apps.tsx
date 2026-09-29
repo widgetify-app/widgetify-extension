@@ -75,12 +75,14 @@ export function MiniAppsLayout() {
 				>
 					<div className="flex justify-between px-1 py-2">
 						<p className="text-lg font-bold"> برنامک ها</p>
-						<div
+						<button
+							type="button"
+							aria-label="درباره‌ی برنامک‌ها"
 							onClick={() => onClickToShowInfo()}
 							className="p-1 text-lg font-bold cursor-pointer text-fg-muted hover:text-fg-strong active:scale-95"
 						>
 							<Icon name="info" className="m-auto text-center" />
-						</div>
+						</button>
 					</div>
 					<div className="flex flex-col gap-1 mt-4 overflow-y-auto  h-[calc(100vh-10rem)]">
 						{isEmpty && (

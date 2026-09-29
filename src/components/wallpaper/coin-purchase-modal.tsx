@@ -59,9 +59,6 @@ export function CoinPurchaseModal({
 							}
 							posterSrc={wallpaper.previewSrc}
 							className="object-cover w-full h-full rounded-2xl"
-							onClick={(e) => {
-								e.stopPropagation()
-							}}
 						/>
 					)}
 				</div>

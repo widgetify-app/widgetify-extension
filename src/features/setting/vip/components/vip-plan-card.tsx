@@ -17,10 +17,13 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 	const isClaimed = Boolean(plan.isClaimed)
 
 	return (
-		<div
+		<button
+			type="button"
+			disabled={isClaimed}
+			aria-pressed={isSelected}
 			onClick={() => !isClaimed && onSelect(plan)}
 			className={cn(
-				'relative flex flex-col justify-between p-3.5 rounded-2xl border transition-ui text-right min-h-24 group',
+				'relative flex flex-col justify-between w-full p-3.5 rounded-2xl border transition-ui text-right min-h-24 group',
 				isClaimed
 					? 'opacity-65  border-line bg-fill cursor-not-allowed saturate-50'
 					: isSelected
@@ -107,6 +110,6 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 					)}
 				</div>
 			</div>
-		</div>
+		</button>
 	)
 }

@@ -22,17 +22,19 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 		}
 	}
 
-	const elementRef = useLazyLoad(loadContent)
+	const elementRef = useLazyLoad<HTMLButtonElement>(loadContent)
 
 	const itemOutlineStyle = isSelected
 		? 'ring-2 ring-brand ring-offset-2 ring-offset-surface'
 		: 'ring-1 ring-line hover:ring-brand'
 
 	return (
-		<div
+		<button
+			type="button"
+			aria-pressed={isSelected}
 			ref={elementRef}
 			onClick={onClick}
-			className={`break-inside-avoid relative rounded-2xl cursor-pointer group overflow-hidden bg-fill-2 ${itemOutlineStyle} transition-ui duration-200 active:scale-98`}
+			className={`block w-full text-start break-inside-avoid relative rounded-2xl cursor-pointer group overflow-hidden bg-fill-2 ${itemOutlineStyle} transition-ui duration-200 active:scale-98`}
 		>
 			{!loaded && (
 				<div className="flex items-center justify-center w-full min-h-28 bg-fill">
@@ -106,6 +108,6 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 					)}
 				</>
 			)}
-		</div>
+		</button>
 	)
 }

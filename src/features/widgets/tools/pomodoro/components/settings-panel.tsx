@@ -101,32 +101,22 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 						}}
 						max={30}
 					/>
-					<div className="flex items-start gap-3">
-						<Checkbox
-							checked={settings.alarmEnabled}
-							onChange={() =>
-								handleSettingChange(
-									'alarmEnabled',
-									!settings.alarmEnabled
-								)
-							}
-						/>
-						<div
-							onClick={() =>
-								handleSettingChange(
-									'alarmEnabled',
-									!settings.alarmEnabled
-								)
-							}
-							className="cursor-pointer"
-						>
-							<p className={'font-medium text-fg'}>فعال‌سازی هشدار صوتی</p>
-							<p className={'text-sm font-light text-fg-muted'}>
+					<Checkbox
+						checked={settings.alarmEnabled}
+						onChange={() =>
+							handleSettingChange('alarmEnabled', !settings.alarmEnabled)
+						}
+					>
+						<span>
+							<span className="block font-medium text-fg">
+								فعال‌سازی هشدار صوتی
+							</span>
+							<span className="block text-sm font-light text-fg-muted">
 								با فعال‌سازی این گزینه، در پایان هر دوره کاری، یک هشدار
 								صوتی پخش خواهد شد.
-							</p>
-						</div>
-					</div>
+							</span>
+						</span>
+					</Checkbox>
 				</div>
 				<div className="text-center">
 					<Button

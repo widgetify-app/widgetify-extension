@@ -1,4 +1,5 @@
-import { memo } from 'react'
+import { memo, type ReactNode } from 'react'
+import { cn } from '@/common/utils/cn'
 
 interface CustomCheckboxProps {
 	checked: boolean
@@ -8,6 +9,7 @@ interface CustomCheckboxProps {
 	disabled?: boolean
 	unCheckedCheckBoxClassName?: string
 	checkedCheckBoxClassName?: string
+	children?: ReactNode
 }
 
 const CheckboxBase = ({
@@ -18,6 +20,7 @@ const CheckboxBase = ({
 	unCheckedCheckBoxClassName = '',
 	checkedCheckBoxClassName = '',
 	onClick,
+	children,
 }: CustomCheckboxProps) => {
 	const getCheckboxStyle = () => {
 		if (checked) {
@@ -44,7 +47,12 @@ const CheckboxBase = ({
 	}
 
 	return (
-		<label className="relative flex items-center transition-transform cursor-pointer group active:scale-95">
+		<label
+			className={cn(
+				'relative flex transition-transform cursor-pointer group',
+				children ? 'items-start gap-3' : 'items-center active:scale-95'
+			)}
+		>
 			<div className="relative">
 				<input
 					type="checkbox"
@@ -79,6 +87,7 @@ const CheckboxBase = ({
 					</svg>
 				</div>
 			</div>
+			{children}
 		</label>
 	)
 }

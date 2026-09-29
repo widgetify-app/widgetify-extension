@@ -35,24 +35,21 @@ export const RssFeedSetting = () => {
 		<WidgetSettingWrapper>
 			<div className="space-y-3">
 				<SectionPanel title="تنظیمات کلی" size="xs">
-					<div
-						onClick={toggleDefaultNews}
-						className="flex items-center justify-between p-3 transition-ui rounded-xl border border-line bg-fill hover:bg-fill-2 cursor-pointer select-none"
-					>
+					<label className="flex items-center justify-between p-3 transition-ui rounded-xl border border-line bg-fill hover:bg-fill-2 cursor-pointer select-none">
 						<div className="space-y-0.5">
 							<h4 className="text-xs font-medium text-fg">اخبار پیش‌فرض</h4>
 							<p className="text-2xs text-fg-muted">
 								نمایش تیترهای روز از خبرگزاری‌های معتبر
 							</p>
 						</div>
-						<div className="shrink-0" onClick={(e) => e.stopPropagation()}>
+						<div className="shrink-0">
 							<ToggleSwitch
 								label="اخبار پیش‌فرض"
 								enabled={settings.useDefaultNews}
 								onToggle={toggleDefaultNews}
 							/>
 						</div>
-					</div>
+					</label>
 				</SectionPanel>
 
 				<SectionPanel title="منابع خبری" size="xs">
@@ -78,9 +75,8 @@ export const RssFeedSetting = () => {
 						{filteredFeeds.map((feed) => {
 							const isActive = isFeedActive(feed.url)
 							return (
-								<div
+								<label
 									key={feed.url}
-									onClick={() => toggleFeed(feed)}
 									className={cn(
 										'flex items-center justify-between p-2.5 transition-ui rounded-xl border cursor-pointer select-none',
 										isActive
@@ -108,17 +104,14 @@ export const RssFeedSetting = () => {
 											</p>
 										</div>
 									</div>
-									<div
-										className="shrink-0"
-										onClick={(e) => e.stopPropagation()}
-									>
+									<div className="shrink-0">
 										<ToggleSwitch
 											label={feed.name}
 											enabled={isActive}
 											onToggle={() => toggleFeed(feed)}
 										/>
 									</div>
-								</div>
+								</label>
 							)
 						})}
 					</div>
