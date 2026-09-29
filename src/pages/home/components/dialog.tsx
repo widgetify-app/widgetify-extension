@@ -16,7 +16,7 @@ export function DialogChecker() {
 	const { mutateAsync: asSeen } = useNotifyAsSeen()
 
 	useEffect(() => {
-		const isDialogAvailable = document.querySelector('.modal')
+		const isDialogAvailable = document.querySelector('dialog[open]')
 		if (isDialogAvailable) return
 
 		let timer: any
