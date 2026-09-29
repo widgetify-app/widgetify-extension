@@ -1,6 +1,6 @@
 import { AvatarComponent } from '@/components/ui'
-import { Icon } from '@/icons'
 import type { UserProfile } from '@/services/user/user-service.hook'
+import { NavIconButton } from '../../components/nav-icon-button'
 
 interface ProfileTriggerProps {
 	user: UserProfile | null
@@ -14,44 +14,36 @@ export function ProfileTrigger({
 	profilePercentage,
 }: ProfileTriggerProps) {
 	if (!isAuthenticated) {
-		return (
-			<div
-				id="profile-button"
-				className="relative flex items-center justify-center cursor-pointer select-none"
-			>
-				<div className="relative p-2 transition-ui cursor-pointer text-nav hover:text-nav-hover active:scale-90">
-					<Icon name="user" size={15} />
-				</div>
-			</div>
-		)
+		return <NavIconButton id="profile-button" icon="user" label="ورود یا ثبت‌نام" />
 	}
 
 	return (
-		<div
+		<button
+			type="button"
 			id="profile-button"
-			className="relative flex items-center justify-center cursor-pointer select-none"
+			aria-label={
+				profilePercentage ? `پروفایل، ${profilePercentage}٪ تکمیل شده` : 'پروفایل'
+			}
+			className="relative flex items-center justify-center cursor-pointer select-none group"
 		>
-			<div className="relative flex items-center justify-center cursor-pointer group">
-				{profilePercentage ? (
-					<div
-						className="absolute z-10 outline-2 outline-brand-muted radial-progress text-brand pointer-events-none"
-						style={{
-							// @ts-expect-error
-							'--value': profilePercentage,
-							'--size': '2rem',
-						}}
-						aria-valuenow={0}
-						role="progressbar"
-					/>
-				) : null}
-				<div className="relative flex items-center justify-center">
-					<AvatarComponent
-						url={user?.avatar}
-						size="sm"
-						isPro={!profilePercentage && Boolean(user?.isVip)}
-					/>
-				</div>
+			{profilePercentage ? (
+				<div
+					aria-hidden="true"
+					className="absolute z-10 outline-2 outline-brand-muted radial-progress text-brand pointer-events-none"
+					style={{
+						// @ts-expect-error
+						'--value': profilePercentage,
+						'--size': '2rem',
+					}}
+				/>
+			) : null}
+			<div className="relative flex items-center justify-center">
+				<AvatarComponent
+					url={user?.avatar}
+					size="sm"
+					isPro={!profilePercentage && Boolean(user?.isVip)}
+				/>
 			</div>
-		</div>
+		</button>
 	)
 }

@@ -7,6 +7,7 @@ import { LayoutDropdown } from './components/layout-dropdown'
 import { ProfileNav } from './profile/profile'
 import { NotificationNavbar } from './notifications/notifications'
 import { MarketModalListener } from './components/market-modal-listener'
+import { NavIconButton } from './components/nav-icon-button'
 import Analytics from '@/analytics'
 import { Page, usePage } from '@/context/page.context'
 import { useAuth } from '@/context/auth.context'
@@ -16,9 +17,9 @@ import type { UserProfile } from '@/services/user/user-service.hook'
 import { NewBadge } from '@/components/ui'
 import { useSyncAccount } from './hooks/use-sync-account'
 import { getCurrentDate } from '@/common/utils/date-events'
-import { useBirthdayConfetti } from '@/features/navbar/hooks/use-birthday-confetti'
+import { useBirthdayConfetti } from './hooks/use-birthday-confetti'
 import { Icon } from '@/icons'
-import { GetUserFirstName } from '@/features/navbar/utils/get-firstname'
+import { GetUserFirstName } from './utils/get-firstname'
 import { useGetNotifications } from '@/services/extension/get-notifications.hook'
 
 const WIDGETIFY_URLS = {
@@ -56,34 +57,39 @@ function NavbarTabs() {
 	}
 
 	return (
-		<div className="flex items-center gap-2 sm:gap-4">
-			{tabs.map((tab) => (
-				<button
-					key={tab.id}
-					onClick={() => handleTabClick(tab.id)}
-					className="relative p-1.5 sm:p-2 cursor-pointer group"
-				>
-					<span
-						className={`
-            relative z-10 transition-ui duration-300 block
-            ${page === tab.id ? 'text-brand scale-110' : 'text-nav-idle hover:text-nav-idle-hover'}
-        `}
-					>
-						{page === tab.id && tab.activeIcon ? (
-							<span className="block text-lg sm:text-xl">
-								{tab.activeIcon}
-							</span>
-						) : (
-							<span className="block text-lg sm:text-xl">{tab.icon}</span>
-						)}
-					</span>
+		<nav aria-label="صفحه‌های اصلی">
+			<ul className="flex items-center gap-2 sm:gap-4">
+				{tabs.map((tab) => {
+					const isActive = page === tab.id
 
-					{page === tab.id && (
-						<div className="absolute bottom-0 left-0 w-4 mx-auto right-0 h-1 bg-brand rounded-t-full shadow-[0_-4px_12px_rgba(var(--color-primary-rgb),0.8)]"></div>
-					)}
-				</button>
-			))}
-		</div>
+					return (
+						<li key={tab.id}>
+							<button
+								type="button"
+								aria-label={tab.label}
+								aria-current={isActive ? 'page' : undefined}
+								title={tab.label}
+								onClick={() => handleTabClick(tab.id)}
+								className="relative p-1.5 sm:p-2 cursor-pointer group"
+							>
+								<span
+									className={`relative z-10 transition-ui duration-300 block text-lg sm:text-xl ${isActive ? 'text-brand scale-110' : 'text-nav-idle hover:text-nav-idle-hover'}`}
+								>
+									{isActive ? tab.activeIcon : tab.icon}
+								</span>
+
+								{isActive && (
+									<div
+										aria-hidden="true"
+										className="absolute bottom-0 left-0 w-4 mx-auto right-0 h-1 bg-brand rounded-t-full shadow-[0_-4px_12px_rgba(var(--color-primary-rgb),0.8)]"
+									></div>
+								)}
+							</button>
+						</li>
+					)
+				})}
+			</ul>
+		</nav>
 	)
 }
 
@@ -141,9 +147,10 @@ export function NavbarLayout(): JSX.Element {
 	return (
 		<>
 			<button
+				type="button"
 				onClick={() => onToggleNavbar()}
-				aria-hidden={showHandle ? undefined : true}
-				tabIndex={showHandle ? 0 : -1}
+				aria-label="باز کردن نوار"
+				inert={!showHandle}
 				className={`fixed z-float bottom-0 left-1/2 -translate-x-1/2 w-28 py-2.5 bg-glass-surface-2 border-t border-x border-line rounded-t-widget shadow-[0_-0px_30px_rgba(0,0,0,0.3)] transition-ui duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] hover:bg-glass-surface-3 cursor-pointer group ${
 					showHandle
 						? 'translate-y-0 opacity-100'
@@ -155,6 +162,7 @@ export function NavbarLayout(): JSX.Element {
 			</button>
 
 			<div
+				inert={!showNavbar}
 				className={`fixed z-nav  -translate-x-1/2 left-1/2 w-full px-2 md:px-8 lg:px-4 max-w-[1080px] transition-[bottom,scale] duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] 
 					${
 						showNavbar
@@ -167,7 +175,7 @@ export function NavbarLayout(): JSX.Element {
 					id="chrome-footer"
 				></div>
 
-				<nav className="relative flex items-center p-1.5 sm:p-2 justify-between gap-1 sm:gap-2 bg-glass-surface-2 rounded-2xl sm:rounded-widget h-12 sm:h-14">
+				<div className="relative flex items-center p-1.5 sm:p-2 justify-between gap-1 sm:gap-2 bg-glass-surface-2 rounded-2xl sm:rounded-widget h-12 sm:h-14">
 					<div className="relative z-10 flex items-center gap-1.5 sm:gap-2 pr-1 ml-0.5 flex-1">
 						<a
 							href={WIDGETIFY_URLS.website}
@@ -177,7 +185,7 @@ export function NavbarLayout(): JSX.Element {
 						>
 							<img
 								src={'https://cdn.widgetify.ir/extension/logo.png'}
-								alt="Logo"
+								alt="ویجتیفای"
 								className="object-contain w-7 h-7 sm:w-8 sm:h-8"
 							/>
 						</a>
@@ -186,24 +194,21 @@ export function NavbarLayout(): JSX.Element {
 						</p>
 					</div>
 
-					<div className="">
-						<NavbarTabs />
-					</div>
+					<NavbarTabs />
 
 					<div className="flex items-center justify-end flex-1 gap-1 sm:gap-2">
-						<button
+						<NavIconButton
+							icon="chevronDown"
+							label="بستن نوار"
 							onClick={() => onToggleNavbar()}
-							className="p-2 transition-ui cursor-pointer text-nav hover:text-nav-hover active:scale-90"
-						>
-							<Icon name="chevronDown" size={15} />
-						</button>
+						/>
 						<NotificationNavbar />
 						<BlurModeButton />
 						<FriendsListNavbar />
 						<LayoutDropdown />
 						<ProfileNav />
 					</div>
-				</nav>
+				</div>
 			</div>
 
 			<MarketModalListener />

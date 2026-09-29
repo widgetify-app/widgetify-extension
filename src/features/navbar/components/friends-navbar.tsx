@@ -4,7 +4,7 @@ import { BottomSheet } from '@/components/ui'
 import { FriendsDirectView } from '@/features/friends/friends'
 import { listenEvent } from '@/common/utils/call-event'
 import Analytics from '@/analytics'
-import { Icon } from '@/icons'
+import { NavIconButton } from './nav-icon-button'
 
 export function FriendsListNavbar() {
 	const { user, isAuthenticated } = useAuth()
@@ -34,18 +34,18 @@ export function FriendsListNavbar() {
 
 	return (
 		<>
-			<div
-				className="relative p-2 transition-ui cursor-pointer text-nav hover:text-nav-hover active:scale-90"
-				onClick={() => clickToOpenSheet()}
+			<NavIconButton
+				icon="friends"
+				label={hasPendingRequests ? 'دوستان، درخواست دوستی جدید داری' : 'دوستان'}
+				onClick={clickToOpenSheet}
 			>
-				<Icon name="friends" size={15} />
 				{hasPendingRequests && (
 					<span
 						aria-hidden="true"
 						className="absolute z-20 w-2 h-2 rounded-full bg-danger top-1 right-1"
 					/>
 				)}
-			</div>
+			</NavIconButton>
 
 			<BottomSheet isOpen={isOpen} onClose={() => setIsOpen(false)} size="medium">
 				<div className="pt-2 h-[calc(50vh-2rem)]">

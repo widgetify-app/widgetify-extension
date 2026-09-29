@@ -4,6 +4,7 @@ import { Icon } from '@/icons'
 import { useGetNotifications } from '@/services/extension/get-notifications.hook'
 import { NotificationCenter } from '@/features/navbar/notifications/components/notification-center'
 import Analytics from '@/analytics'
+import { NavIconButton } from '../components/nav-icon-button'
 
 export function NotificationNavbar() {
 	const { data: notificationsData } = useGetNotifications()
@@ -22,14 +23,16 @@ export function NotificationNavbar() {
 			maxHeight="420px"
 			dropdownClassName="w-80 sm:w-96 rounded-2xl"
 			trigger={
-				<div
-					onClick={handleOpen}
-					className="relative p-2 transition-ui cursor-pointer text-nav hover:text-nav-hover active:scale-90"
+				<NavIconButton
 					id="notifications-button"
+					icon="notification"
+					label={
+						hasCloseableNotifications ? 'اعلان‌ها، اعلان جدید داری' : 'اعلان‌ها'
+					}
+					onClick={handleOpen}
 				>
-					<Icon name="notification" size={15} />
 					{hasCloseableNotifications && <NewBadge className="top-1 right-1" />}
-				</div>
+				</NavIconButton>
 			}
 		>
 			<div className="flex flex-col p-3 w-80 bg-glass-surface-2" dir="rtl">

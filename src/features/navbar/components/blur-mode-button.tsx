@@ -3,6 +3,7 @@ import { useGeneralSetting } from '@/context/general-setting.context'
 import { Icon } from '@/icons'
 import { ConfirmationModal } from '@/components/ui'
 import Analytics from '@/analytics'
+import { NavIconButton } from './nav-icon-button'
 
 export function BlurModeButton() {
 	const { blurMode, updateSetting } = useGeneralSetting()
@@ -28,16 +29,12 @@ export function BlurModeButton() {
 
 	return (
 		<>
-			<div
+			<NavIconButton
+				icon={blurMode ? 'outlineEye' : 'outlineEyeSlash'}
+				label="حالت مخفی"
+				pressed={blurMode}
 				onClick={handleBlurModeToggle}
-				className="relative p-2 transition-ui cursor-pointer text-nav hover:text-nav-hover active:scale-90"
-			>
-				{blurMode ? (
-					<Icon name="outlineEye" size={15} />
-				) : (
-					<Icon name="outlineEyeSlash" size={15} />
-				)}
-			</div>
+			/>
 
 			<ConfirmationModal
 				isOpen={showConfirm}

@@ -2,6 +2,7 @@ import { callEvent } from '@/common/utils/call-event'
 import { Dropdown, DropdownItem } from '@/components/ui'
 import { useAppearance } from '@/context/appearance.context'
 import { Icon } from '@/icons'
+import { NavIconButton } from './nav-icon-button'
 
 export function LayoutDropdown() {
 	const { canvasMode, setCanvasMode } = useAppearance()
@@ -20,12 +21,11 @@ export function LayoutDropdown() {
 	return (
 		<Dropdown
 			trigger={
-				<div
-					className="relative p-2 transition-ui cursor-pointer text-nav hover:text-nav-hover active:scale-90"
+				<NavIconButton
 					id="layout-menu-button"
-				>
-					<Icon name="outlineSquares2X2" size={15} />
-				</div>
+					icon="outlineSquares2X2"
+					label="چیدمان ویجت‌ها"
+				/>
 			}
 		>
 			<div className="bg-glass-surface-2 py-2 min-w-48 px-1" dir="rtl">
