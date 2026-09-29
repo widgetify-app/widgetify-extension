@@ -74,8 +74,10 @@ export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
                         ${isSelected ? 'opacity-100' : 'opacity-90'}
                     `}
 					style={{
-						backgroundColor: app.badgeColor || '#536dfe',
-						color: getContrastingTextColor(app.badgeColor || '#536dfe'),
+						backgroundColor: app.badgeColor || 'var(--color-primary)',
+						color: app.badgeColor
+							? getContrastingTextColor(app.badgeColor)
+							: 'var(--color-primary-content)',
 					}}
 				>
 					<div className="relative z-10 font-normal tracking-wide">

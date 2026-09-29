@@ -14,9 +14,8 @@ import { useLogHabitProgress } from '@/services/habit/log-habit-progress.hook'
 import { SegmentedProgressRing } from '../components/item/button-progress-ring'
 import { SimpleProgressRing } from '../components/item/button-simple-progress-ring'
 import { resolveHabitStep } from '../utils/habit-step'
+import { DEFAULT_HABIT_COLOR } from '../constants'
 import { WidgetError } from '@/features/widgets/components/widget-error'
-
-const DEFAULT_HABIT_COLOR = '#536dfe'
 
 interface HabitCompactWideProps {
 	habits: Habit[]

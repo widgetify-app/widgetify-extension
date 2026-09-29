@@ -46,7 +46,7 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 
 	const [title, setTitle] = useState('')
 	const [emoji, setEmoji] = useState(HABIT_EMOJI_PRESETS[0] || '💧')
-	const [color, setColor] = useState(HABIT_COLOR_PRESETS[0] || '#3b82f6')
+	const [color, setColor] = useState(HABIT_COLOR_PRESETS[0])
 	const [comparison, setComparison] = useState<HabitComparison>(
 		HabitComparison.AT_LEAST
 	)
@@ -78,7 +78,7 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 		} else {
 			setTitle('')
 			setEmoji(HABIT_EMOJI_PRESETS[0] || '💧')
-			setColor(HABIT_COLOR_PRESETS[0] || '#3b82f6')
+			setColor(HABIT_COLOR_PRESETS[0])
 			setComparison(HabitComparison.AT_LEAST)
 			setUnit(HabitUnit.TIMES)
 			setCustomUnit('')

@@ -8,6 +8,7 @@ import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { getCurrentDate } from '@/common/utils/date-events'
 import { formatHabitGoal } from '../../utils/habit-goal'
+import { DEFAULT_HABIT_COLOR } from '../../constants'
 import { Dropdown } from '@/components/ui'
 import type { Habit } from '@/services/habit/habit.interface'
 import { callEvent } from '@/common/utils/call-event'
@@ -63,7 +64,7 @@ export function HabitDetailModal({
 		error,
 	} = useGetHabitDetail(habitId || '', isOpen && isAuthenticated)
 
-	const color = habit?.color || '#536dfe'
+	const color = habit?.color || DEFAULT_HABIT_COLOR
 
 	const title =
 		isLoading || !habit ? (
