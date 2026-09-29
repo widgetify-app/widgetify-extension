@@ -153,11 +153,8 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 										<div className="text-xs font-medium truncate text-fg-strong">
 											{friend.user.name}
 										</div>
-										<div
-											className="text-3xs truncate text-fg-faint"
-											dir="ltr"
-										>
-											@{friend.user.username}
+										<div className="text-3xs truncate text-fg-faint">
+											<span dir="ltr">@{friend.user.username}</span>
 										</div>
 									</div>
 								</button>

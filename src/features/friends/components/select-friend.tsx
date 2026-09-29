@@ -91,9 +91,8 @@ export function SelectFriendLayout({
 										className={`text-sm truncate ${
 											isSelected ? 'text-brand' : 'text-fg'
 										}`}
-										dir="ltr"
 									>
-										@{friend.user.username}
+										<span dir="ltr">@{friend.user.username}</span>
 									</div>
 								</div>
 							</button>

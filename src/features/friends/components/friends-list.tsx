@@ -95,7 +95,7 @@ export const FriendsList = ({
 								{friend.user.name}
 							</div>
 							<div className="text-xs truncate text-fg-muted">
-								{friend.user.username}@
+								<span dir="ltr">@{friend.user.username}</span>
 							</div>
 						</div>
 					</div>

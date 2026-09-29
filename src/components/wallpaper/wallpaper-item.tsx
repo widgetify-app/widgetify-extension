@@ -128,28 +128,24 @@ function WallpaperItemFu({
 
 					{loaded && !error && (
 						<>
-							<div
-								className={`absolute flex  justify-between inset-x-0 bottom-0 p-2 rounded-xl transition-opacity duration-300 bg-linear-to-t from-scrim to-transparent items-center`}
-							>
-								{wallpaper.name && wallpaper.name !== '-' ? (
-									<div className="flex-1 text-3xs font-medium text-image-fg">
-										{wallpaper.name}
+							<div className="absolute inset-x-0 bottom-0 flex items-center justify-between p-2 transition-opacity duration-300 rounded-xl bg-linear-to-t from-scrim to-transparent">
+								<div className="flex-1 min-w-0 text-3xs font-medium text-image-fg truncate">
+									{wallpaper.name && wallpaper.name !== '-'
+										? wallpaper.name
+										: ''}
+								</div>
+								{wallpaper.coin ? (
+									<div className="flex items-center gap-1 origin-bottom-left scale-75 ms-auto shrink-0">
+										<UserCoin
+											coins={wallpaper.coin || 0}
+											title={
+												wallpaper.isOwned
+													? 'باز شده'
+													: 'قیمت باز کردن'
+											}
+										/>
 									</div>
 								) : null}
-								<div className="flex items-center gap-1">
-									{wallpaper.coin ? (
-										<div className="origin-bottom-left scale-75">
-											<UserCoin
-												coins={wallpaper.coin || 0}
-												title={
-													wallpaper.isOwned
-														? 'باز شده'
-														: 'قیمت باز کردن'
-												}
-											/>
-										</div>
-									) : null}
-								</div>
 							</div>
 
 							{isSelected && (
