@@ -252,26 +252,38 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 								colorTheme.headerBg
 							)}
 						>
-							<Button
-								size="xs"
-								variant="ghost"
-								rounded="lg"
-								onClick={handlePrevNote}
-								className="w-4 h-4 p-0 border-none shadow-none hover:opacity-100 opacity-70 text-inherit"
-								title="یادداشت قبلی"
-							>
-								<Icon name="chevronRight" size={11} aria-hidden="true" />
-							</Button>
-							<Button
-								size="xs"
-								variant="ghost"
-								rounded="lg"
-								onClick={handleNextNote}
-								className="w-4 h-4 p-0 border-none shadow-none hover:opacity-100 opacity-70 text-inherit"
-								title="یادداشت بعدی"
-							>
-								<Icon name="chevronLeft" size={11} aria-hidden="true" />
-							</Button>
+							<Tooltip content="یادداشت قبلی">
+								<Button
+									size="xs"
+									variant="ghost"
+									rounded="lg"
+									onClick={handlePrevNote}
+									className="w-4 h-4 p-0 border-none shadow-none hover:opacity-100 opacity-70 text-inherit"
+									aria-label="یادداشت قبلی"
+								>
+									<Icon
+										name="chevronRight"
+										size={12}
+										aria-hidden="true"
+									/>
+								</Button>
+							</Tooltip>
+							<Tooltip content="یادداشت بعدی">
+								<Button
+									size="xs"
+									variant="ghost"
+									rounded="lg"
+									onClick={handleNextNote}
+									className="w-4 h-4 p-0 border-none shadow-none hover:opacity-100 opacity-70 text-inherit"
+									aria-label="یادداشت بعدی"
+								>
+									<Icon
+										name="chevronLeft"
+										size={12}
+										aria-hidden="true"
+									/>
+								</Button>
+							</Tooltip>
 						</div>
 					)}
 

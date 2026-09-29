@@ -1,5 +1,5 @@
 import type React from 'react'
-import { Badge, Button, VipBadge } from '@/components/ui'
+import { Badge, Button, Tooltip, VipBadge } from '@/components/ui'
 import { cn } from '@/common/utils/cn'
 import type {
 	WidgetCategory,
@@ -107,19 +107,24 @@ export function AddWidgetSidebar({
 										<VipBadge size="xs" />
 									)}
 									{def.settingsTab && (
-										<Button
-											type="button"
-											onClick={(e) =>
-												onOpenWidgetSettings(e, def.settingsTab)
-											}
-											title="تنظیمات ویجت"
-											size={'xs'}
-											variant={'ghost'}
-											className="px-1!"
-											rounded={'full'}
-										>
-											<Icon name="settings" size={13} />
-										</Button>
+										<Tooltip content="تنظیمات ویجت">
+											<Button
+												type="button"
+												onClick={(e) =>
+													onOpenWidgetSettings(
+														e,
+														def.settingsTab
+													)
+												}
+												aria-label="تنظیمات ویجت"
+												size={'xs'}
+												variant={'ghost'}
+												className="relative z-10 px-1!"
+												rounded={'full'}
+											>
+												<Icon name="settings" size={12} />
+											</Button>
+										</Tooltip>
 									)}
 									{def.canDuplicate ? (
 										<span

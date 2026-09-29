@@ -4,7 +4,7 @@ import {
 	useGetFriends,
 	useRemoveFriend,
 } from '@/services/friends/friend-service.hook'
-import { AvatarComponent, ConfirmationModal, Spinner } from '@/components/ui'
+import { AvatarComponent, ConfirmationModal, Spinner, Tooltip } from '@/components/ui'
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll'
 import { Icon } from '@/icons'
 import { translateError } from '@/common/utils/translate-error'
@@ -78,15 +78,16 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 						size="small"
 						pendingCount={user?.friendshipStats?.pending || 0}
 					/>
-					<button
-						type="button"
-						onClick={() => setIsAddFriendOpen(true)}
-						className="flex items-center justify-center w-8 h-8 transition-ui rounded-xl bg-fill hover:bg-fill-2 active:scale-90 cursor-pointer border border-line text-fg-muted hover:text-fg-strong"
-						title="افزودن دوست"
-						aria-label="افزودن دوست"
-					>
-						<Icon name="usersPlus" size={15} />
-					</button>
+					<Tooltip content="افزودن دوست">
+						<button
+							type="button"
+							onClick={() => setIsAddFriendOpen(true)}
+							className="flex items-center justify-center w-8 h-8 transition-ui rounded-xl bg-fill hover:bg-fill-2 active:scale-90 cursor-pointer border border-line text-fg-muted hover:text-fg-strong"
+							aria-label="افزودن دوست"
+						>
+							<Icon name="usersPlus" size={16} />
+						</button>
+					</Tooltip>
 				</div>
 			</div>
 
@@ -161,17 +162,19 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 								</div>
 
 								<div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-									<button
-										type="button"
-										onClick={(e) => {
-											e.stopPropagation()
-											setSelectedUserToDelete(friend)
-										}}
-										className="p-1 text-fg-faint hover:text-danger hover:bg-danger-fill rounded-lg transition-colors cursor-pointer"
-										title="حذف دوست"
-									>
-										<Icon name="trash" size={13} />
-									</button>
+									<Tooltip content="حذف دوست">
+										<button
+											type="button"
+											onClick={(e) => {
+												e.stopPropagation()
+												setSelectedUserToDelete(friend)
+											}}
+											className="p-1 text-fg-faint hover:text-danger hover:bg-danger-fill rounded-lg transition-colors cursor-pointer"
+											aria-label="حذف دوست"
+										>
+											<Icon name="trash" size={12} />
+										</button>
+									</Tooltip>
 								</div>
 							</div>
 						))}

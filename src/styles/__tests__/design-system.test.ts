@@ -1072,3 +1072,31 @@ describe('classes', () => {
 		expect(front).toEqual([])
 	})
 })
+
+describe('tooltips', () => {
+	it('come from Tooltip, never from a native title on a button or link', () => {
+		const titled: string[] = []
+		for (const path of sourceFiles().filter((p) => p.endsWith('.tsx'))) {
+			const visit = (node: ts.Node) => {
+				if (
+					(ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) &&
+					['a', 'button', 'Button'].includes(node.tagName.getText()) &&
+					node.attributes.properties.some(
+						(attribute) =>
+							ts.isJsxAttribute(attribute) &&
+							attribute.name.getText() === 'title'
+					)
+				) {
+					const line =
+						node
+							.getSourceFile()
+							.getLineAndCharacterOfPosition(node.getStart()).line + 1
+					titled.push(`${path}:${line}`)
+				}
+				ts.forEachChild(node, visit)
+			}
+			visit(parsed(path).file)
+		}
+		expect(titled).toEqual([])
+	})
+})

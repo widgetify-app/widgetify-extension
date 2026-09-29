@@ -145,6 +145,14 @@ export function HomePage() {
 				run={showTour}
 				continuous
 				tooltipComponent={TourTooltip}
+				locale={{
+					back: 'قبلی',
+					close: 'بستن',
+					last: 'پایان',
+					next: 'بعدی',
+					nextWithProgress: 'بعدی',
+					skip: 'رد کردن',
+				}}
 				options={{
 					showProgress: true,
 					skipBeacon: true,

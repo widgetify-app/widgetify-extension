@@ -2,7 +2,7 @@ import type React from 'react'
 import { cn } from '@/common/utils/cn'
 import { useRef, useState } from 'react'
 import Analytics from '@/analytics'
-import { ClickableTooltip, TabNavigation } from '@/components/ui'
+import { ClickableTooltip, TabNavigation, Tooltip } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { useDate } from '@/features/widgets/date.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
@@ -43,46 +43,54 @@ const MonthHeader: React.FC = () => {
 
 			<nav className="flex gap-0.5 shrink-0" aria-label="پیمایش ماه">
 				{showTodayButton && (
-					<button
-						type="button"
-						onClick={goToToday}
-						title="برو به امروز"
-						aria-label="برو به امروز"
-						className={navButtonClass}
-					>
-						<Icon name="undo" size={12} strokeWidth={1} aria-hidden="true" />
-					</button>
+					<Tooltip content="برو به امروز">
+						<button
+							type="button"
+							onClick={goToToday}
+							aria-label="برو به امروز"
+							className={navButtonClass}
+						>
+							<Icon
+								name="undo"
+								size={12}
+								strokeWidth={1}
+								aria-hidden="true"
+							/>
+						</button>
+					</Tooltip>
 				)}
 
-				<button
-					type="button"
-					onClick={() => changeMonth(-1)}
-					title="ماه قبل"
-					aria-label="ماه قبل"
-					className={navButtonClass}
-				>
-					<Icon
-						name="chevronRight"
-						size={12}
-						strokeWidth={1}
-						aria-hidden="true"
-					/>
-				</button>
+				<Tooltip content="ماه قبل">
+					<button
+						type="button"
+						onClick={() => changeMonth(-1)}
+						aria-label="ماه قبل"
+						className={navButtonClass}
+					>
+						<Icon
+							name="chevronRight"
+							size={12}
+							strokeWidth={1}
+							aria-hidden="true"
+						/>
+					</button>
+				</Tooltip>
 
-				<button
-					type="button"
-					onClick={() => changeMonth(1)}
-					title="ماه بعد"
-					aria-label="ماه بعد"
-					className={navButtonClass}
-				>
-					<Icon
-						name="chevronLeft"
-						size={12}
-						strokeWidth={1}
-						aria-hidden="true"
-					/>
-				</button>
+				<Tooltip content="ماه بعد">
+					<button
+						type="button"
+						onClick={() => changeMonth(1)}
+						aria-label="ماه بعد"
+						className={navButtonClass}
+					>
+						<Icon
+							name="chevronLeft"
+							size={12}
+							strokeWidth={1}
+							aria-hidden="true"
+						/>
+					</button>
+				</Tooltip>
 			</nav>
 		</header>
 	)

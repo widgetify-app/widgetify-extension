@@ -77,17 +77,19 @@ export function UploadActive({
 						<span>تغییر</span>
 					</Button>
 
-					<Button
-						onClick={onRemove}
-						size="sm"
-						rounded="xl"
-						variant="ghost"
-						color="danger"
-						loading={isRemoving}
-						title="حذف پس‌زمینه"
-					>
-						<Icon name="trash" size={15} />
-					</Button>
+					<Tooltip content="حذف پس‌زمینه">
+						<Button
+							onClick={onRemove}
+							size="sm"
+							rounded="xl"
+							variant="ghost"
+							color="danger"
+							loading={isRemoving}
+							aria-label="حذف پس‌زمینه"
+						>
+							<Icon name="trash" size={16} />
+						</Button>
+					</Tooltip>
 				</div>
 			</div>
 		</div>
