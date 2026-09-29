@@ -1,18 +1,17 @@
 import type { Bookmark } from '@/services/bookmark/bookmark.interface'
 
+const COLORS = [
+	'blue',
+	'cyan',
+	'green',
+	'grey',
+	'orange',
+	'pink',
+	'purple',
+	'red',
+	'yellow',
+]
 export async function openBookmarksOptimized(bookmark: Bookmark, children: Bookmark[]) {
-	const COLORS = [
-		'blue',
-		'cyan',
-		'green',
-		'grey',
-		'orange',
-		'pink',
-		'purple',
-		'red',
-		'yellow',
-	]
-
 	const nonEmptyUrls = children.filter((b) => b.url && b.url.trim().length > 0)
 	if (nonEmptyUrls.length === 0) return
 

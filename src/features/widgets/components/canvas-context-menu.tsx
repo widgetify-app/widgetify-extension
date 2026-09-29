@@ -48,7 +48,7 @@ export function CanvasContextMenu({
 
 			{onOpenPresets && (
 				<PopoverMenuItem
-					icon={<Icon name="squares2X2" size={14} />}
+					icon={<Icon name="layout" size={14} />}
 					label="چیدمان‌های آماده"
 					onClick={() => {
 						onOpenPresets()

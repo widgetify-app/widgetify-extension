@@ -76,7 +76,7 @@ export function Calendar2x1() {
 										(isHoliday
 											? 'bg-danger-fill text-danger ring-danger-fill-2'
 											: 'bg-brand-fill text-brand ring-brand-fill-2'),
-									!isSelected && !isToday && 'bg-fill hover:bg-fill-2',
+									!isSelected && !isToday && ' hover:bg-fill-2',
 									!isSelected &&
 										!isToday &&
 										(isHoliday ? 'text-danger' : 'text-fg')

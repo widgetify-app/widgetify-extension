@@ -44,7 +44,7 @@ export const CurrencyBox = ({ code, dragHandle }: CurrencyBoxProps) => {
 		<>
 			<div
 				dir="ltr"
-				className="group flex items-center gap-2 px-2.5 py-3 rounded-2xl border border-surface-3 bg-surface-2 hover:bg-fill-2 transition-ui active:scale-[0.98]"
+				className="group flex items-center gap-2 px-2.5 py-3 rounded-2xl border border-surface-3 bg-surface-2 hover:bg-surface-3 transition-ui active:scale-[0.98]"
 			>
 				{dragHandle && (
 					<span

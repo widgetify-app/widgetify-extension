@@ -37,7 +37,7 @@ export const RssFeedSetting = () => {
 				<SectionPanel title="تنظیمات کلی" size="xs">
 					<div
 						onClick={toggleDefaultNews}
-						className="flex items-center justify-between p-3 transition-ui rounded-xl border border-line bg-fill hover:bg-fill-2 cursor-pointer select-none"
+						className="flex items-center justify-between p-3 transition-ui rounded-2xl border border-surface-3 bg-surface-2 hover:bg-surface-3 cursor-pointer select-none"
 					>
 						<div className="space-y-0.5">
 							<h4 className="text-xs font-medium text-fg">اخبار پیش‌فرض</h4>
@@ -55,17 +55,17 @@ export const RssFeedSetting = () => {
 				</SectionPanel>
 
 				<SectionPanel title="منابع خبری" size="xs">
-					<div className="flex items-center gap-1.5 mb-2 overflow-x-auto pb-0.5 scrollbar-none">
+					<div className="flex items-center gap-1 mb-2 overflow-x-auto pb-0.5 scrollbar-none">
 						{CATEGORIES.map((cat) => (
 							<button
 								key={cat.id}
 								type="button"
 								onClick={() => setActiveCategory(cat.id)}
 								className={cn(
-									'px-2.5 py-1 text-xs rounded-lg transition-ui cursor-pointer shrink-0',
+									'px-2.5 py-1 text-xs rounded-xl transition-ui cursor-pointer shrink-0',
 									activeCategory === cat.id
 										? 'bg-brand text-on-brand font-medium'
-										: 'bg-fill-2 text-fg-muted hover:bg-surface-2 hover:text-fg'
+										: 'bg-fill text-fg-muted hover:bg-surface-2 hover:text-fg'
 								)}
 							>
 								{cat.name}
@@ -81,10 +81,10 @@ export const RssFeedSetting = () => {
 									key={feed.url}
 									onClick={() => toggleFeed(feed)}
 									className={cn(
-										'flex items-center justify-between p-2.5 transition-ui rounded-xl border cursor-pointer select-none',
+										'flex items-center justify-between p-2.5 transition-ui rounded-2xl border cursor-pointer select-none',
 										isActive
 											? 'border-brand-fill-2 bg-brand-fill hover:bg-brand-fill-2'
-											: 'border-line bg-fill hover:bg-fill-2'
+											: 'border-surface-3 bg-surface-2 hover:bg-surface-3'
 									)}
 								>
 									<div className="flex items-center gap-2.5 min-w-0">

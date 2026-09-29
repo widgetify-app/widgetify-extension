@@ -14,7 +14,7 @@ export const buttonVariants = cva(
 			variant: {
 				solid: 'border-transparent',
 				outline: 'bg-transparent hover:bg-fill-2',
-				ghost: 'bg-transparent border-transparent hover:bg-fill-2',
+				ghost: 'bg-transparent! border-transparent hover:bg-fill-2!',
 			},
 			color: {
 				base: 'text-fg',
@@ -31,6 +31,8 @@ export const buttonVariants = cva(
 				lg: 'h-12 px-5 text-lg',
 			},
 			rounded: {
+				sm: 'rounded-sm',
+				md: 'rounded-md',
 				lg: 'rounded-lg',
 				xl: 'rounded-xl',
 				'2xl': 'rounded-2xl',

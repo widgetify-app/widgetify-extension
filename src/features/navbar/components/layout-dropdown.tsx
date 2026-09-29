@@ -39,7 +39,7 @@ export function LayoutDropdown() {
 			trigger={
 				<NavIconButton
 					id="layout-menu-button"
-					icon="outlineSquares2X2"
+					icon="layout"
 					label="چیدمان ویجت‌ها"
 				/>
 			}

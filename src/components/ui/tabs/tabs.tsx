@@ -36,7 +36,7 @@ export const TabNavigation = <T,>({
 	return (
 		<fieldset
 			className={cn(
-				'flex items-center min-w-0 p-1 bg-surface-2 rounded-2xl border border-line relative',
+				'flex items-center min-w-0 p-1 bg-surface-2 rounded-2xl border border-surface-3 relative',
 				className
 			)}
 		>
@@ -66,7 +66,7 @@ export const TabNavigation = <T,>({
 							<motion.div
 								layoutId={`active-pill-${uniqueId}`}
 								className={cn(
-									'absolute inset-0 shadow-sm bg-fill rounded-xl -z-10',
+									'absolute inset-0 shadow-xs bg-fill rounded-xl -z-10',
 									activeBgClass
 								)}
 								transition={{

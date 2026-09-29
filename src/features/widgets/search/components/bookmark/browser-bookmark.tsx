@@ -65,7 +65,7 @@ export function BrowserBookmark() {
 					>
 						<div className="relative flex items-center justify-center w-fit px-1.5 gap-1 h-6 p-0.5 rounded-xl bg-surface-3 group-hover:scale-95 transition-transform">
 							<Icon
-								name="globe"
+								name="explorerOutline"
 								size={14}
 								className="text-fg-muted"
 								aria-hidden="true"
