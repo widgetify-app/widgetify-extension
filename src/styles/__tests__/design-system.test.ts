@@ -1,7 +1,8 @@
-import { describe, expect, it } from 'bun:test'
+import { beforeAll, describe, expect, it } from 'bun:test'
 import { readdirSync, readFileSync, statSync } from 'node:fs'
-import { join, sep } from 'node:path'
+import { dirname, join, resolve, sep } from 'node:path'
 import { compile } from 'tailwindcss'
+import ts from 'typescript'
 
 const STYLES = 'src/styles'
 const THEMES = join(STYLES, 'themes')
@@ -155,6 +156,23 @@ describe('one vocabulary', () => {
 			'src/features/widgets/tools/pomodoro/top-users/components/top-user-item.tsx',
 		]
 		const allowed = ['src/common/toast.tsx', ...paintsContent]
+		const bad = offenders(pattern).filter(
+			(o) => !allowed.some((path) => o.startsWith(`${path}:`))
+		)
+		expect(bad).toEqual([])
+	})
+})
+
+describe('white and black', () => {
+	it('are written only where they depict something', () => {
+		const alwaysDark = ['src/common/toast.tsx']
+		const depictsBrands = [
+			'src/features/setting/account/user-profile/connections/connections.tsx',
+		]
+		const awaitingDecision = ['src/components/ui/toggle/toggle.variants.ts']
+		const allowed = [...alwaysDark, ...depictsBrands, ...awaitingDecision]
+		const pattern =
+			/(?<![\w-])(?:[a-z0-9/-]+:)*!?(bg|text|border|ring|from|to|via|fill|stroke|outline|divide|shadow|placeholder|decoration)-(white|black)(?![\w-])/
 		const bad = offenders(pattern).filter(
 			(o) => !allowed.some((path) => o.startsWith(`${path}:`))
 		)
@@ -666,5 +684,392 @@ describe('typography', () => {
 			'@theme { --text-sm: 0.875rem; --text-sm--line-height: 1.25rem; } @tailwind utilities;'
 		)
 		expect(compiler.build(['text-sm'])).toContain('line-height: var(--tw-leading,')
+	})
+})
+
+interface WrittenClass {
+	token: string
+	at: string
+}
+
+interface ParsedFile {
+	file: ts.SourceFile
+	declared: Map<string, ts.Node[]>
+	imported: Map<string, { from: string; name: string }>
+}
+
+const CLASS_CALLS = new Set(['cn', 'clsx', 'twJoin', 'twMerge'])
+const HOLDS_CLASSES = /class(es|name)?$/i
+
+function tokensOf(text: string, openStart: boolean, openEnd: boolean): string[] {
+	const parts = text.split(/\s+/)
+	return parts.filter(
+		(part, i) =>
+			part && !(i === 0 && openStart) && !(i === parts.length - 1 && openEnd)
+	)
+}
+
+const parsedFiles = new Map<string, ParsedFile>()
+
+function parsed(path: string): ParsedFile {
+	const cached = parsedFiles.get(path)
+	if (cached) return cached
+	const file = ts.createSourceFile(
+		path,
+		readFileSync(path, 'utf8'),
+		ts.ScriptTarget.Latest,
+		true,
+		path.endsWith('.tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS
+	)
+	const declared = new Map<string, ts.Node[]>()
+	const imported = new Map<string, { from: string; name: string }>()
+	const remember = (name: string, node: ts.Node) =>
+		declared.set(name, [...(declared.get(name) ?? []), node])
+	const visit = (node: ts.Node) => {
+		if (
+			ts.isVariableDeclaration(node) &&
+			ts.isIdentifier(node.name) &&
+			node.initializer
+		) {
+			remember(node.name.text, node.initializer)
+		} else if (ts.isFunctionDeclaration(node) && node.name) {
+			remember(node.name.text, node)
+		} else if (
+			ts.isImportDeclaration(node) &&
+			ts.isStringLiteral(node.moduleSpecifier) &&
+			node.importClause?.namedBindings &&
+			ts.isNamedImports(node.importClause.namedBindings)
+		) {
+			for (const element of node.importClause.namedBindings.elements) {
+				imported.set(element.name.text, {
+					from: node.moduleSpecifier.text,
+					name: (element.propertyName ?? element.name).text,
+				})
+			}
+		}
+		ts.forEachChild(node, visit)
+	}
+	visit(file)
+	const result = { file, declared, imported }
+	parsedFiles.set(path, result)
+	return result
+}
+
+function moduleFile(specifier: string, from: string): string | undefined {
+	const base = specifier.startsWith('@/')
+		? `src/${specifier.slice(2)}`
+		: specifier.startsWith('.')
+			? join(dirname(from), specifier).split(sep).join('/')
+			: undefined
+	if (!base) return undefined
+	return [`${base}.ts`, `${base}.tsx`, `${base}/index.ts`].find((path) => {
+		try {
+			return statSync(path).isFile()
+		} catch {
+			return false
+		}
+	})
+}
+
+function definitionsOf(name: string, path: string): ts.Node[] {
+	const { declared, imported } = parsed(path)
+	const local = declared.get(name)
+	if (local) return local
+	const source = imported.get(name)
+	if (!source) return []
+	const target = moduleFile(source.from, path)
+	return target ? (parsed(target).declared.get(source.name) ?? []) : []
+}
+
+function isFunctionLike(node: ts.Node): node is ts.FunctionLikeDeclaration {
+	return (
+		ts.isFunctionDeclaration(node) ||
+		ts.isArrowFunction(node) ||
+		ts.isFunctionExpression(node)
+	)
+}
+
+function returnedValues(fn: ts.FunctionLikeDeclaration): ts.Node[] {
+	if (fn.body && !ts.isBlock(fn.body)) return [fn.body]
+	const values: ts.Node[] = []
+	const visit = (node: ts.Node) => {
+		if (isFunctionLike(node)) return
+		if (ts.isReturnStatement(node) && node.expression) values.push(node.expression)
+		ts.forEachChild(node, visit)
+	}
+	if (fn.body) ts.forEachChild(fn.body, visit)
+	return values
+}
+
+function writtenClasses(): WrittenClass[] {
+	const found: WrittenClass[] = []
+	const seen = new Set<ts.Node>()
+
+	const add = (text: string, node: ts.Node, openStart = false, openEnd = false) => {
+		const file = node.getSourceFile()
+		const line = file.getLineAndCharacterOfPosition(node.getStart()).line + 1
+		for (const token of tokensOf(text, openStart, openEnd)) {
+			found.push({ token, at: `${file.fileName}:${line}` })
+		}
+	}
+
+	const fromValue = (node: ts.Node, keysAreClasses: boolean): void => {
+		if (seen.has(node)) return
+		seen.add(node)
+		const path = node.getSourceFile().fileName
+		if (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)) {
+			add(node.text, node)
+		} else if (ts.isTemplateExpression(node)) {
+			const pieces = [node.head, ...node.templateSpans.map((span) => span.literal)]
+			pieces.forEach((piece, i) => {
+				add(
+					piece.text,
+					node,
+					i > 0 && !/^\s/.test(piece.text),
+					i < pieces.length - 1 && !/\s$/.test(piece.text)
+				)
+			})
+			for (const span of node.templateSpans)
+				fromValue(span.expression, keysAreClasses)
+		} else if (ts.isConditionalExpression(node)) {
+			fromValue(node.whenTrue, keysAreClasses)
+			fromValue(node.whenFalse, keysAreClasses)
+		} else if (ts.isBinaryExpression(node)) {
+			const operator = node.operatorToken.kind
+			if (operator === ts.SyntaxKind.AmpersandAmpersandToken) {
+				fromValue(node.right, keysAreClasses)
+			} else if (
+				operator === ts.SyntaxKind.BarBarToken ||
+				operator === ts.SyntaxKind.QuestionQuestionToken
+			) {
+				fromValue(node.left, keysAreClasses)
+				fromValue(node.right, keysAreClasses)
+			}
+		} else if (
+			ts.isParenthesizedExpression(node) ||
+			ts.isJsxExpression(node) ||
+			ts.isAsExpression(node)
+		) {
+			if (node.expression) fromValue(node.expression, keysAreClasses)
+		} else if (ts.isArrayLiteralExpression(node)) {
+			for (const element of node.elements) fromValue(element, keysAreClasses)
+		} else if (ts.isObjectLiteralExpression(node)) {
+			for (const property of node.properties) {
+				if (!ts.isPropertyAssignment(property)) continue
+				if (!keysAreClasses) fromValue(property.initializer, false)
+				else if (
+					ts.isStringLiteral(property.name) ||
+					ts.isIdentifier(property.name)
+				)
+					add(property.name.text, property)
+			}
+		} else if (ts.isIdentifier(node)) {
+			for (const definition of definitionsOf(node.text, path)) {
+				if (!isFunctionLike(definition)) fromValue(definition, keysAreClasses)
+			}
+		} else if (ts.isElementAccessExpression(node)) {
+			fromValue(node.expression, false)
+		} else if (
+			ts.isPropertyAccessExpression(node) &&
+			ts.isIdentifier(node.expression)
+		) {
+			for (const definition of definitionsOf(node.expression.text, path)) {
+				if (!ts.isObjectLiteralExpression(definition)) continue
+				for (const property of definition.properties) {
+					if (
+						ts.isPropertyAssignment(property) &&
+						property.name.getText() === node.name.text
+					) {
+						fromValue(property.initializer, false)
+					}
+				}
+			}
+		} else if (ts.isCallExpression(node) && ts.isIdentifier(node.expression)) {
+			if (CLASS_CALLS.has(node.expression.text)) {
+				for (const argument of node.arguments) fromValue(argument, true)
+			} else {
+				for (const definition of definitionsOf(node.expression.text, path)) {
+					if (isFunctionLike(definition)) {
+						for (const value of returnedValues(definition))
+							fromValue(value, false)
+					}
+				}
+			}
+		}
+	}
+
+	const fromCva = (call: ts.CallExpression) => {
+		const [base, config] = call.arguments
+		if (base) fromValue(base, false)
+		if (!config || !ts.isObjectLiteralExpression(config)) return
+		for (const property of config.properties) {
+			if (!ts.isPropertyAssignment(property)) continue
+			const key = property.name.getText()
+			if (
+				key === 'variants' &&
+				ts.isObjectLiteralExpression(property.initializer)
+			) {
+				for (const variant of property.initializer.properties) {
+					if (
+						ts.isPropertyAssignment(variant) &&
+						ts.isObjectLiteralExpression(variant.initializer)
+					) {
+						fromValue(variant.initializer, false)
+					}
+				}
+			}
+			if (
+				key === 'compoundVariants' &&
+				ts.isArrayLiteralExpression(property.initializer)
+			) {
+				for (const entry of property.initializer.elements) {
+					if (!ts.isObjectLiteralExpression(entry)) continue
+					for (const part of entry.properties) {
+						if (
+							ts.isPropertyAssignment(part) &&
+							/^(class|className)$/.test(part.name.getText())
+						) {
+							fromValue(part.initializer, false)
+						}
+					}
+				}
+			}
+		}
+	}
+
+	for (const path of sourceFiles()) {
+		const visit = (node: ts.Node) => {
+			if (
+				ts.isJsxAttribute(node) &&
+				HOLDS_CLASSES.test(node.name.getText()) &&
+				node.initializer
+			) {
+				fromValue(node.initializer, true)
+				return
+			}
+			if (ts.isCallExpression(node) && ts.isIdentifier(node.expression)) {
+				if (node.expression.text === 'cva') {
+					fromCva(node)
+					return
+				}
+				if (CLASS_CALLS.has(node.expression.text)) {
+					fromValue(node, true)
+					return
+				}
+			}
+			if (
+				(ts.isVariableDeclaration(node) || ts.isPropertyAssignment(node)) &&
+				node.initializer &&
+				HOLDS_CLASSES.test(node.name.getText())
+			) {
+				fromValue(node.initializer, false)
+				return
+			}
+			ts.forEachChild(node, visit)
+		}
+		visit(parsed(path).file)
+	}
+	return found
+}
+
+const DAISY_COLOURS = [
+	...[
+		'primary',
+		'secondary',
+		'accent',
+		'neutral',
+		'info',
+		'success',
+		'warning',
+		'error',
+	].flatMap((name) => [name, `${name}-content`]),
+	'base-100',
+	'base-200',
+	'base-300',
+	'base-content',
+]
+
+async function stylesheetFor(candidates: string[], withDaisy: boolean): Promise<string> {
+	const strip = (css: string) =>
+		withDaisy ? css : css.replace(/@plugin\s+"daisyui[^"]*"\s*(\{[^}]*\})?;?/g, '')
+	const colourStandIns = withDaisy
+		? ''
+		: `@theme { ${DAISY_COLOURS.map((name) => `--color-${name}: #000;`).join(' ')} }`
+	const entry = strip(readFileSync(join(STYLES, 'index.css'), 'utf8')) + colourStandIns
+	const compiler = await compile(entry, {
+		base: resolve(STYLES),
+		loadStylesheet: async (id, base) => {
+			const path =
+				id === 'tailwindcss'
+					? resolve('node_modules/tailwindcss/index.css')
+					: resolve(base, id)
+			return {
+				path,
+				base: dirname(path),
+				content: strip(readFileSync(path, 'utf8')),
+			}
+		},
+		loadModule: async (id, base) => {
+			const module = await import(id)
+			return { path: id, base, module: module.default ?? module }
+		},
+	})
+	return compiler.build(candidates)
+}
+
+function selectorOf(token: string): string {
+	let escaped = ''
+	for (let i = 0; i < token.length; i++) {
+		const char = token[i]
+		const code = token.charCodeAt(i)
+		if (i === 0 && code >= 0x30 && code <= 0x39) escaped += `\\${code.toString(16)} `
+		else if (/[\w-]/.test(char) || code >= 0x80) escaped += char
+		else escaped += `\\${char}`
+	}
+	return `.${escaped}`
+}
+
+describe('classes', () => {
+	const written = writtenClasses()
+	const candidates = [...new Set(written.map((w) => w.token))]
+	let full = ''
+	let bare = ''
+
+	beforeAll(async () => {
+		full = await stylesheetFor(candidates, true)
+		bare = await stylesheetFor(candidates, false)
+	})
+
+	const compiles = (token: string, css: string) => css.includes(selectorOf(token))
+	const isMarker = (token: string) => /^(group|peer)(\/[\w-]+)?$/.test(token)
+
+	it('are only ones that compile to CSS', () => {
+		const dead = written
+			.filter(({ token }) => !isMarker(token) && !compiles(token, full))
+			.map(({ token, at }) => `${at} ${token}`)
+		expect(dead).toEqual([])
+	})
+
+	it('reach daisyUI components only inside components/ui', () => {
+		const placeholder = 'skeleton'
+		const awaitingAComponent: Record<string, string> = {
+			alert: 'src/features/setting/account/auth-form/auth-form.tsx',
+			'alert-warning': 'src/features/setting/account/auth-form/auth-form.tsx',
+			select: 'src/features/setting/general/components/timezone-settings.tsx',
+		}
+		const outside = written
+			.filter(({ at }) => !at.startsWith('src/components/ui/'))
+			.filter(({ token }) => token !== placeholder)
+			.filter(({ token }) => compiles(token, full) && !compiles(token, bare))
+			.filter(({ token, at }) => !at.startsWith(`${awaitingAComponent[token]}:`))
+			.map(({ token, at }) => `${at} ${token}`)
+		expect(outside).toEqual([])
+	})
+
+	it('put the important mark at the end, never at the front', () => {
+		const front = written
+			.filter(({ token }) => /^(?:[\w/[\]-]+:)*!/.test(token))
+			.map(({ token, at }) => `${at} ${token}`)
+		expect(front).toEqual([])
 	})
 })
