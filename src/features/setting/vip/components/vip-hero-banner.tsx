@@ -11,7 +11,7 @@ interface VipFeatureItem {
 const VIP_FEATURES: VipFeatureItem[] = [
 	{
 		id: 'unlimited_widgets',
-		icon: 'appsPlus',
+		icon: 'outlineSquares2X2',
 		title: 'آزادی بیشتر در چیدمان',
 		description: 'ویجت‌هات رو هرجور دوست داری بچین، حتی چندتا از یک ویجت',
 	},
@@ -30,7 +30,7 @@ const VIP_FEATURES: VipFeatureItem[] = [
 	},
 	{
 		id: 'gallery_assets',
-		icon: 'outlineShoppingBag',
+		icon: 'shoppingBag',
 		title: 'دسترسی کامل به گالری',
 		description: 'به مجموعه کامل تم‌ها، والپیپرها و طرح‌های ویژه دسترسی داشته باش',
 	},

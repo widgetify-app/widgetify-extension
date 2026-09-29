@@ -84,7 +84,7 @@ export function ProfileDropdownMenu({
 				/>
 
 				<DropdownItem
-					icon={<Icon name="outlineShoppingBag" size={14} />}
+					icon={<Icon name="shoppingBag" size={14} />}
 					label="فروشگاه"
 					onClick={() => handleAction(() => callEvent('openMarketModal'))}
 				/>

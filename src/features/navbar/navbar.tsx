@@ -35,7 +35,7 @@ const tabs = [
 
 	{
 		id: Page.Explorer,
-		icon: <Icon name="outlineGlobe" size={22} />,
+		icon: <Icon name="globe" size={22} />,
 		activeIcon: <Icon name="globe" size={22} />,
 		label: 'کاوش',
 	},

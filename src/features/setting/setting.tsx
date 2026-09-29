@@ -146,7 +146,11 @@ export const SettingModal = ({
 						className={`relative items-center  flex gap-3 px-4 py-3 rounded-full transition-ui duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-fg-muted hover:bg-surface-3 w-42`}
 						onClick={() => openWidgetSettings()}
 					>
-						<Icon name="appsPlus" size={20} className="text-fg-muted" />
+						<Icon
+							name="outlineSquares2X2"
+							size={20}
+							className="text-fg-muted"
+						/>
 						<span className="text-sm font-light">مدیریت ویجت ها</span>
 					</button>
 					<button

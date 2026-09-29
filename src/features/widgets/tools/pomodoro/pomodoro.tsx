@@ -329,7 +329,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 							}
 							className={`px-2 py-0! border-none! rounded-xl text-fg-faint shrink-0 active:scale-95 h-7!`}
 						>
-							<Icon name="cup" size={12} />
+							<Icon name="coffee" size={12} />
 						</Button>
 					</Tooltip>
 					<Tooltip content="شخصی سازی">

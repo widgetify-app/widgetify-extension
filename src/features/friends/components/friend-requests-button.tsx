@@ -33,7 +33,7 @@ export function FriendRequestsButton({ size, pendingCount }: Prop) {
 					title="درخواست‌های دوستی"
 				>
 					<Icon
-						name="outlineInbox"
+						name="inbox"
 						size={15}
 						className="text-fg-muted hover:text-fg-strong"
 					/>

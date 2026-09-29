@@ -24,13 +24,13 @@ export function LayoutDropdown() {
 					className="relative p-2 transition-ui cursor-pointer text-nav hover:text-nav-hover active:scale-90"
 					id="layout-menu-button"
 				>
-					<Icon name="appsPlus" size={15} />
+					<Icon name="outlineSquares2X2" size={15} />
 				</div>
 			}
 		>
 			<div className="bg-glass-surface-2 py-2 min-w-48 px-1" dir="rtl">
 				<DropdownItem
-					icon={<Icon name="appsPlus" size={14} />}
+					icon={<Icon name="outlineSquares2X2" size={14} />}
 					label="مدیریت ویجت‌ها"
 					onClick={() =>
 						handleAction(() => callEvent('openAddCustomWidgetModal'))

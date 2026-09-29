@@ -76,7 +76,7 @@ export function NetworkCompactRow({
 		return (
 			<div className="flex items-center justify-center w-full h-full gap-2 px-3 text-center select-none">
 				<Icon
-					name="network"
+					name="wifi"
 					size={14}
 					className="text-fg-muted"
 					aria-hidden="true"

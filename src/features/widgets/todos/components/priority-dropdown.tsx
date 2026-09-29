@@ -46,7 +46,7 @@ export function PriorityDropdown({ priority, setPriority }: PriorityDropdownProp
 							: 'text-fg-faint hover:text-brand-muted'
 					}`}
 				>
-					<Icon name="filterLeft" size={18} />
+					<Icon name="outlineFilterList" size={18} />
 				</Button>
 			}
 			position="top-left"

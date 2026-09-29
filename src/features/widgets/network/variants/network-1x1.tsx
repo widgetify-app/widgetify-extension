@@ -59,7 +59,7 @@ export function NetworkCompactSquare({
 		return (
 			<div className="flex flex-col items-center justify-center w-full h-full gap-1 p-2 text-center select-none">
 				<Icon
-					name="network"
+					name="wifi"
 					size={16}
 					className="text-fg-muted"
 					aria-hidden="true"
@@ -110,7 +110,7 @@ export function NetworkCompactSquare({
 						/>
 					) : (
 						<Icon
-							name="network"
+							name="wifi"
 							aria-hidden="true"
 							className="w-3.5 h-3.5 text-fg-muted shrink-0"
 						/>
