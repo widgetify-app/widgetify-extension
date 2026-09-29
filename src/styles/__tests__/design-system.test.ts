@@ -202,14 +202,14 @@ describe('shared states', () => {
 })
 
 describe('icons', () => {
-	it('draws every icon from Lucide, apart from the brand logos', () => {
+	it('draws every icon from react-icons, or from an SVG drawn in the pack', () => {
 		const pack = readFileSync('src/icons/packs/default.tsx', 'utf8')
-		const others = [...pack.matchAll(/import \{([^}]*)\} from 'react-icons\/(\w+)'/g)]
-			.filter((m) => m[2] !== 'lu')
-			.flatMap((m) => m[1].split(',').map((name) => name.trim()))
-			.filter(Boolean)
-			.sort()
-		expect(others).toEqual(['BiLogoGoogle', 'FaTelegramPlane', 'FcGoogle'])
+		const sources = [...pack.matchAll(/from '([^']+)'/g)].map((m) => m[1])
+		expect(
+			sources.filter(
+				(source) => !/^react-icons(\/\w+)?$/.test(source) && source !== '../types'
+			)
+		).toEqual([])
 	})
 
 	it('reaches react-icons only through Icon', () => {
