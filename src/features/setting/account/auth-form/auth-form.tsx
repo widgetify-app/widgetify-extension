@@ -14,7 +14,7 @@ import OtpInput from '../components/otp-input'
 import { callEvent } from '@/common/utils/call-event'
 import { sleep } from '@/common/utils/timeout'
 import { Icon } from '@/icons'
-import { Button } from '@/components/ui'
+import { Alert, Button } from '@/components/ui'
 import LoginGoogleButton from './components/login-google-button'
 import Analytics from '@/analytics'
 
@@ -233,10 +233,9 @@ const AuthForm = () => {
 	return (
 		<div className="flex flex-col w-full px-1 py-1">
 			{authStatus?.content && step === 'identifier' && (
-				<div className="px-3 py-2 mb-4 text-xs alert alert-warning rounded-2xl ring-4 ring-warning-fill">
-					<Icon name="alert" className="w-4 h-4 shrink-0" />
-					<span>{authStatus.content}</span>
-				</div>
+				<Alert tone="warning" className="mb-4">
+					{authStatus.content}
+				</Alert>
 			)}
 
 			{step === 'identifier' && (
@@ -328,9 +327,9 @@ const AuthForm = () => {
 					</div>
 
 					{error.api && (
-						<div className="px-3 py-2 mb-3 text-xs border bg-danger-fill text-danger border-danger-fill-2 rounded-xl">
+						<Alert tone="danger" className="mb-3">
 							{error.api}
-						</div>
+						</Alert>
 					)}
 
 					<form onSubmit={handlePasswordSubmit} className="flex flex-col gap-3">

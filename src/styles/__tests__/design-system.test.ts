@@ -1051,15 +1051,10 @@ describe('classes', () => {
 
 	it('reach daisyUI components only inside components/ui', () => {
 		const placeholder = 'skeleton'
-		const awaitingAComponent: Record<string, string> = {
-			alert: 'src/features/setting/account/auth-form/auth-form.tsx',
-			'alert-warning': 'src/features/setting/account/auth-form/auth-form.tsx',
-		}
 		const outside = written
 			.filter(({ at }) => !at.startsWith('src/components/ui/'))
 			.filter(({ token }) => token !== placeholder)
 			.filter(({ token }) => compiles(token, full) && !compiles(token, bare))
-			.filter(({ token, at }) => !at.startsWith(`${awaitingAComponent[token]}:`))
 			.map(({ token, at }) => `${at} ${token}`)
 		expect(outside).toEqual([])
 	})

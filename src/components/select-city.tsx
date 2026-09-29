@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import Analytics from '@/analytics'
-import { Spinner } from '@/components/ui'
+import { Alert, Spinner } from '@/components/ui'
 import { Modal } from '@/components/ui'
 import { SectionPanel } from '@/components/ui'
 import { useGetCitiesList } from '@/services/cities/get-cities-list.hook'
@@ -104,14 +104,9 @@ export function SelectCity({ size }: Prop) {
 				</button>
 
 				{error && (
-					<div className="p-3 text-sm text-right border rounded-lg border-danger-fill-2 bg-danger-fill backdrop-blur-sm">
-						<div className="font-medium text-danger">
-							خطا در دریافت اطلاعات
-						</div>
-						<div className="mt-1 text-danger">
-							لطفا اتصال اینترنت خود را بررسی کرده و مجددا تلاش کنید.
-						</div>
-					</div>
+					<Alert tone="danger" title="خطا در دریافت اطلاعات">
+						لطفا اتصال اینترنت خود را بررسی کرده و مجددا تلاش کنید.
+					</Alert>
 				)}
 			</div>
 			<AuthRequiredModal

@@ -1,5 +1,5 @@
 import Analytics from '@/analytics'
-import { Button, Modal } from '@/components/ui'
+import { Alert, Button, Modal } from '@/components/ui'
 import { UserCoin } from '@/components/user-coin'
 import type { MarketItem } from '@/services/market/market.interface'
 import { usePurchaseMarketItem } from '@/services/market/purchase-market-item.hook'
@@ -76,19 +76,21 @@ export function MarketItemPurchaseModal({
 				</div>
 
 				{!canAfford && (
-					<div className="flex items-center justify-between px-3 py-2 text-xs rounded-xl bg-danger-fill text-danger">
-						<span>
-							موجودی ویج‌کوین ناکافیه ({item.price - userCoins} ویج‌کوین کسری
-							داری)
-						</span>
-						<button
-							type="button"
-							onClick={() => onClose(true)}
-							className="font-medium underline cursor-pointer"
-						>
-							خرید ویج‌کوین
-						</button>
-					</div>
+					<Alert
+						tone="danger"
+						action={
+							<button
+								type="button"
+								onClick={() => onClose(true)}
+								className="font-medium underline cursor-pointer"
+							>
+								خرید ویج‌کوین
+							</button>
+						}
+					>
+						موجودی ویج‌کوین ناکافیه ({item.price - userCoins} ویج‌کوین کسری
+						داری)
+					</Alert>
 				)}
 
 				<div className="flex gap-2.5 pt-2">

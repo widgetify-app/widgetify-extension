@@ -1,3 +1,5 @@
+export * from './alert/alert'
+
 export * from './avatar/avatar'
 export * from './avatar/avatar.variants'
 

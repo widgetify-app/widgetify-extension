@@ -1,4 +1,4 @@
-import { Button, Modal } from '@/components/ui'
+import { Alert, Button, Modal } from '@/components/ui'
 import { UserCoin } from '@/components/user-coin'
 import { callEvent } from '@/common/utils/call-event'
 import { showToast } from '@/common/toast'
@@ -93,19 +93,21 @@ export function GalleryAssetPurchaseModal({
 				</div>
 
 				{!isVipUnlocked && !canAfford && (
-					<div className="flex items-center justify-between px-3 py-2 text-xs rounded-xl bg-danger-fill text-danger">
-						<span>
-							موجودی ویج‌کوین ناکافیه ({asset.price - userCoins} ویج‌کوین کسری
-							داری)
-						</span>
-						<button
-							type="button"
-							onClick={handleOpenCoins}
-							className="font-medium underline cursor-pointer"
-						>
-							خرید ویج‌کوین
-						</button>
-					</div>
+					<Alert
+						tone="danger"
+						action={
+							<button
+								type="button"
+								onClick={handleOpenCoins}
+								className="font-medium underline cursor-pointer"
+							>
+								خرید ویج‌کوین
+							</button>
+						}
+					>
+						موجودی ویج‌کوین ناکافیه ({asset.price - userCoins} ویج‌کوین کسری
+						داری)
+					</Alert>
 				)}
 
 				<div className="flex flex-col gap-2 pt-2">

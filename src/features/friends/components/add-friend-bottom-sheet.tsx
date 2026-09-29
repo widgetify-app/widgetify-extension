@@ -4,7 +4,7 @@ import { useAuth } from '@/context/auth.context'
 import { useSendFriendRequest } from '@/services/friends/friend-service.hook'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
-import { Button, Modal } from '@/components/ui'
+import { Alert, Button, Modal } from '@/components/ui'
 import { Icon } from '@/icons'
 
 interface AddFriendBottomSheetProps {
@@ -86,16 +86,10 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 				</div>
 
 				{!canSendRequest && (
-					<div className="flex items-start gap-3 p-4 border rounded-xl bg-warning-fill border-warning-fill-2">
-						<Icon
-							name="alert"
-							className="w-5 h-5 text-warning flex-shrink-0 mt-0.5"
-						/>
-						<p className="text-sm leading-relaxed text-warning">
-							برای ارسال درخواست دوستی، ابتدا باید نام کاربری خود را در بخش
-							پروفایل تنظیم کنید.
-						</p>
-					</div>
+					<Alert tone="warning">
+						برای ارسال درخواست دوستی، ابتدا باید نام کاربری خود را در بخش
+						پروفایل تنظیم کنید.
+					</Alert>
 				)}
 
 				<div className="space-y-4">
