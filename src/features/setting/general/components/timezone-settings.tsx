@@ -1,12 +1,12 @@
-import { SectionPanel, Spinner } from '@/components/ui'
+import { SectionPanel, SelectBox, Spinner } from '@/components/ui'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { useTimezones } from '@/services/timezone/get-timezones.hook'
 
 export function TimezoneSettings() {
 	const { selected_timezone: timezone, setTimezone } = useGeneralSetting()
 	const { data: timezones, isLoading, error } = useTimezones()
-	const handleSelectTimezone = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		const selectedTimezone = timezones?.find((tz) => tz.value === e.target.value)
+	const handleSelectTimezone = (value: string) => {
+		const selectedTimezone = timezones?.find((tz) => tz.value === value)
 		if (!selectedTimezone) return
 		setTimezone(selectedTimezone)
 	}
@@ -29,26 +29,17 @@ export function TimezoneSettings() {
 								خطا در دریافت اطلاعات مناطق زمانی
 							</div>
 						) : (
-							<select
+							<SelectBox
+								label="منطقه‌ی زمانی"
+								optionalText="انتخاب منطقه زمانی..."
+								options={(timezones ?? []).map((tz) => ({
+									value: tz.value,
+									label: `${tz.label} (${tz.offset})`,
+								}))}
 								value={timezone.value}
 								onChange={handleSelectTimezone}
-								className={
-									'w-full rounded-lg appearance-none border-surface-3 border select focus:outline-none focus:ring-2 focus:ring-brand'
-								}
-							>
-								{!timezone && (
-									<option value="">انتخاب منطقه زمانی...</option>
-								)}
-								{timezones?.map((tz) => (
-									<option
-										key={tz.value}
-										value={tz.value}
-										className={'bg-surface-2 text-fg opacity-55'}
-									>
-										{tz.label} ({tz.offset})
-									</option>
-								))}
-							</select>
+								className="w-full text-xs"
+							/>
 						)}
 					</div>
 				</div>

@@ -1054,7 +1054,6 @@ describe('classes', () => {
 		const awaitingAComponent: Record<string, string> = {
 			alert: 'src/features/setting/account/auth-form/auth-form.tsx',
 			'alert-warning': 'src/features/setting/account/auth-form/auth-form.tsx',
-			select: 'src/features/setting/general/components/timezone-settings.tsx',
 		}
 		const outside = written
 			.filter(({ at }) => !at.startsWith('src/components/ui/'))
