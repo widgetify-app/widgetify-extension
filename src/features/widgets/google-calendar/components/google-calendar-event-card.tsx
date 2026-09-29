@@ -74,7 +74,7 @@ export const GoogleCalendarEventCard: React.FC<GoogleCalendarEventCardProps> = (
 						<span className="truncate max-w-22.5">
 							<Icon
 								name="location"
-								size={9}
+								size={10}
 								className="inline align-[-1px]"
 								aria-hidden="true"
 							/>{' '}

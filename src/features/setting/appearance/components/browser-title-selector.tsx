@@ -116,7 +116,7 @@ export function BrowserTitleSelector({ fetched_browserTitles, isAuthenticated }:
 						className="flex items-center justify-center w-full h-20 text-xs border border-surface-3 gap-0.5  text-fg-muted hover:text-brand! cursor-pointer hover:border-brand! transition-ui duration-200  rounded-xl"
 						onClick={() => handleMoreClick()}
 					>
-						<Icon name="shoppingBag" size={18} />
+						<Icon name="shoppingBag" size={16} />
 						<span>فروشگاه</span>
 					</button>
 				</div>

@@ -58,7 +58,7 @@ export function UploadEmpty({
 							<div className="flex flex-col items-center justify-center gap-0.5">
 								<Icon
 									name="uploadImage"
-									size={18}
+									size={16}
 									className="transition-transform group-hover:scale-110"
 								/>
 								<span className="text-3xs font-medium">
@@ -120,7 +120,7 @@ export function UploadEmpty({
 											}}
 											className="inline-flex items-center gap-1 text-2xs font-bold text-vip bg-vip-fill border border-vip-fill-2 px-2.5 py-0.5 rounded-xl hover:bg-vip-fill-2 active:scale-95 transition-ui cursor-pointer"
 										>
-											<Icon name="diamond" size={11} />
+											<Icon name="diamond" size={12} />
 											<span>ارتقا به پرو</span>
 										</button>
 									</Tooltip>

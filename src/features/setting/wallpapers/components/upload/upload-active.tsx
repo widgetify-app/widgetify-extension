@@ -48,7 +48,7 @@ export function UploadActive({
 						<div className="flex items-center gap-1.5 flex-wrap">
 							{isCloudWallpaper ? (
 								<span className="inline-flex items-center gap-1 text-2xs font-medium text-fg-muted bg-fill px-2 py-0.5 rounded-xl cursor-default">
-									<Icon name="save" size={11} />
+									<Icon name="save" size={12} />
 									<span>همگام‌سازی شده با سرور</span>
 								</span>
 							) : (

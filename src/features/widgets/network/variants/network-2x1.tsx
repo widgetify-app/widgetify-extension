@@ -115,7 +115,7 @@ export function NetworkCompactRow({
 						>
 							<Icon
 								name="wifi"
-								size={13}
+								size={12}
 								aria-hidden="true"
 								className="shrink-0"
 							/>
@@ -128,7 +128,7 @@ export function NetworkCompactRow({
 						<div className="flex items-center gap-1 text-2xs font-bold text-danger shrink-0">
 							<Icon
 								name="wifiOff"
-								size={13}
+								size={12}
 								aria-hidden="true"
 								className="shrink-0"
 							/>

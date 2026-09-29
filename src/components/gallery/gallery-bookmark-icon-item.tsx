@@ -98,14 +98,14 @@ export function GalleryBookmarkIconItem({
 					{asset.accessVip && !asset.isOwned && (
 						<div className="absolute top-1.5 left-1.5 z-20">
 							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip-hover backdrop-blur-xs text-on-vip text-4xs font-bold shadow-sm border border-image-line">
-								<Icon name="diamond" size={9} />
+								<Icon name="diamond" size={10} />
 								<span>رایگان با پرو</span>
 							</span>
 						</div>
 					)}
 					{asset.isOwned && !isSelected && (
 						<div className="absolute flex gap-0.5 px-1.5 rounded-tl-xl rounded-br-lg bg-success text-on-success shadow-sm items-center top-0 left-0 text-3xs h-4 z-20">
-							<Icon name="shoppingBag" size={9} />
+							<Icon name="shoppingBag" size={10} />
 							<span>خریداری شده</span>
 						</div>
 					)}

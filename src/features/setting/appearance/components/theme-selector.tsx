@@ -98,7 +98,7 @@ export function ThemeSelector({ fetched_themes }: Props) {
 						className="flex items-center gap-1 justify-center w-full h-full text-xs border border-surface-3   text-fg-muted hover:text-brand! cursor-pointer hover:border-brand! transition-ui duration-200 rounded-xl"
 						onClick={() => handleMoreClick()}
 					>
-						<Icon name="shoppingBag" size={18} />
+						<Icon name="shoppingBag" size={16} />
 						<span>فروشگاه</span>
 					</button>
 				</div>

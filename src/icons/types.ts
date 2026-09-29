@@ -140,3 +140,5 @@ export type IconName =
 	| 'paw'
 	| 'cloudSun'
 export type IconMap = Record<IconName, IconType>
+
+export type IconSize = 8 | 10 | 12 | 14 | 16 | 20 | 24 | 32

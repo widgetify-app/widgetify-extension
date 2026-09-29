@@ -318,7 +318,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 									<div className="flex items-center justify-between pb-2 border-b border-line">
 										<div className="flex items-center gap-2">
 											<span className="flex items-center justify-center rounded-xl w-9 h-9 shrink-0 bg-brand-fill text-brand">
-												<Icon name={selectedDef.icon} size={19} />
+												<Icon name={selectedDef.icon} size={20} />
 											</span>
 											<div>
 												<div className="flex items-center gap-1.5">

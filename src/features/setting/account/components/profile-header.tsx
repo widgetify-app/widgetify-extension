@@ -87,7 +87,7 @@ export const ProfileHeader = ({
 							rounded="2xl"
 							className="px-2.5 font-bold"
 						>
-							<Icon name="diamond" size={13} />
+							<Icon name="diamond" size={12} />
 							<span>اعتبار پرو: {vipRemaining}</span>
 						</Button>
 					</Tooltip>
@@ -103,7 +103,7 @@ export const ProfileHeader = ({
 						rounded="2xl"
 						className="px-2.5 font-bold"
 					>
-						<Icon name="diamond" size={13} />
+						<Icon name="diamond" size={12} />
 						<span>اشتراک پرو</span>
 					</Button>
 				</div>

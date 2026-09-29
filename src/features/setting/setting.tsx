@@ -67,7 +67,7 @@ const tabs: TabItem[] = [
 			{
 				label: 'عمومی',
 				value: 'general',
-				icon: <Icon name="settings" size={18} />,
+				icon: <Icon name="settings" size={16} />,
 				element: <GeneralSettingTab />,
 			},
 

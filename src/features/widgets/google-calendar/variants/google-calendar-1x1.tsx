@@ -68,7 +68,7 @@ export const GoogleCalendar1x1: React.FC<GoogleCalendar1x1Props> = ({
 				<div className="flex flex-col items-center justify-center my-auto text-center opacity-60">
 					<Icon
 						name="check"
-						size={18}
+						size={16}
 						className="mb-1 text-brand"
 						aria-hidden="true"
 					/>
@@ -119,7 +119,7 @@ export const GoogleCalendar1x1: React.FC<GoogleCalendar1x1Props> = ({
 					) : (
 						<Icon
 							name="googleG"
-							size={13}
+							size={12}
 							className="text-brand"
 							aria-hidden="true"
 						/>

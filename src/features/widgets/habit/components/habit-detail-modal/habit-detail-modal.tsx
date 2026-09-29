@@ -99,7 +99,7 @@ export function HabitDetailModal({
 								>
 									<Icon
 										name="menuOption"
-										size={15}
+										size={16}
 										aria-hidden="true"
 									/>
 								</Button>
@@ -111,7 +111,7 @@ export function HabitDetailModal({
 									className="w-full px-3 py-1.5 flex items-center gap-x-2 cursor-pointer rounded-lg transition-ui text-fg hover:bg-fill-2 focus-visible:focus-ring"
 									onClick={onClickEdit}
 								>
-									<Icon name="pen" size={13} aria-hidden="true" />
+									<Icon name="pen" size={12} aria-hidden="true" />
 									<span className="font-medium">ویرایش</span>
 								</button>
 
@@ -171,7 +171,7 @@ export function HabitDetailModal({
 												: 'text-fg-muted hover:text-fg-strong'
 										)}
 									>
-										<Icon name="squares2X2" size={13} />
+										<Icon name="squares2X2" size={12} />
 										<span>نمودار فعالیت</span>
 									</button>
 									<button
@@ -184,7 +184,7 @@ export function HabitDetailModal({
 												: 'text-fg-muted hover:text-fg-strong'
 										)}
 									>
-										<Icon name="calendar" size={13} />
+										<Icon name="calendar" size={12} />
 										<span>تقویم ماهانه</span>
 									</button>
 								</div>
@@ -214,7 +214,7 @@ export function HabitDetailModal({
 						rounded="xl"
 						onClick={() => setIsShareModalOpen(true)}
 					>
-						<Icon name="camera" size={15} />
+						<Icon name="camera" size={16} />
 						اشتراک گذاری
 					</Button>
 					<Button

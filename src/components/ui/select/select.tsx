@@ -279,7 +279,7 @@ export function SelectBox({
 										{isSelected && (
 											<Icon
 												name="check"
-												size={11}
+												size={12}
 												className="shrink-0"
 												aria-hidden="true"
 											/>

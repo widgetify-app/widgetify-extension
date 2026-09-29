@@ -1,9 +1,9 @@
 import type React from 'react'
-import { Icon } from '@/icons'
+import { Icon, type IconSize } from '@/icons'
 import { cn } from '@/common/utils/cn'
 import { vipBadgeVariants, type VipBadgeVariantProps } from './vip-badge.variants'
 
-const ICON_SIZES: Record<NonNullable<VipBadgeVariantProps['size']>, number> = {
+const ICON_SIZES: Record<NonNullable<VipBadgeVariantProps['size']>, IconSize> = {
 	xs: 8,
 	sm: 10,
 }

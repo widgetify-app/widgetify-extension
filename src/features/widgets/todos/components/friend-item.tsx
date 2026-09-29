@@ -33,7 +33,7 @@ export function UserItem({ avatar, completed, isOwner, name }: UserItemProp) {
 
 					{isOwner && (
 						<div className="absolute flex items-center justify-center w-2 h-2 -translate-x-1/2 rounded-full shadow-md left-1/2 -bottom-1.5 bg-warning text-on-warning ring-2 ring-surface">
-							<Icon name="crown" size={6} />
+							<Icon name="crown" size={8} />
 						</div>
 					)}
 				</div>

@@ -137,7 +137,7 @@ export function Modal({
 								<Icon name="close" size={16} className="md:hidden" />
 								<Icon
 									name="close"
-									size={18}
+									size={16}
 									className="hidden md:block"
 								/>
 							</button>

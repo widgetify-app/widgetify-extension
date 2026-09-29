@@ -92,7 +92,7 @@ export function ExplorerPopoverMenu({
 						) : undefined
 					}
 					icon={
-						<Icon name="externalLink" size={13} className="text-fg-muted" />
+						<Icon name="externalLink" size={12} className="text-fg-muted" />
 					}
 					onClick={() => handleItemClick(mItem.url)}
 				/>
@@ -134,7 +134,7 @@ export function ExplorerPopoverMenu({
 			{menuItems.length === 0 && item.url && (
 				<PopoverMenuItem
 					label="مشاهده و ورود"
-					icon={<Icon name="externalLink" size={13} />}
+					icon={<Icon name="externalLink" size={12} />}
 					onClick={() => handleItemClick(item.url)}
 				/>
 			)}

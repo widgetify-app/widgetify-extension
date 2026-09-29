@@ -99,7 +99,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 									<Icon
 										name="lock"
 										className="text-brand"
-										size={18}
+										size={16}
 										aria-hidden="true"
 									/>
 								</div>
@@ -155,7 +155,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 														<Icon
 															name="folder"
 															className="text-brand shrink-0"
-															size={18}
+															size={16}
 															aria-hidden="true"
 														/>
 													) : (

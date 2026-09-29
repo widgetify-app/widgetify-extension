@@ -159,7 +159,7 @@ export function PhotoWidget({
 						<span className="flex flex-col items-center justify-center w-full h-full gap-2 p-3 text-center select-none rounded-widget bg-glass-surface-2">
 							<Icon
 								name="alert"
-								size={18}
+								size={16}
 								className="text-fg-muted"
 								aria-hidden="true"
 							/>

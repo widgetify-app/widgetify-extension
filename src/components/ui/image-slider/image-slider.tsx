@@ -94,7 +94,7 @@ function ImageSliderArrows({
 				)}
 				aria-label="عکس قبلی"
 			>
-				<Icon name="chevronRight" size={13} />
+				<Icon name="chevronRight" size={12} />
 			</button>
 			<button
 				type="button"
@@ -111,7 +111,7 @@ function ImageSliderArrows({
 				)}
 				aria-label="عکس بعدی"
 			>
-				<Icon name="chevronLeft" size={13} />
+				<Icon name="chevronLeft" size={12} />
 			</button>
 		</div>
 	)

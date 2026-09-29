@@ -73,7 +73,7 @@ export function VoiceSearchPortal({
 						aria-label="بستن جستجوی صوتی"
 						className="p-2 rounded-full cursor-pointer transition-ui hover:bg-fill-2 text-fg-muted focus-visible:focus-ring"
 					>
-						<Icon name="close" size={22} aria-hidden="true" />
+						<Icon name="close" size={20} aria-hidden="true" />
 					</button>
 				</div>
 
@@ -86,7 +86,7 @@ export function VoiceSearchPortal({
 							>
 								<Icon
 									name="alert"
-									size={18}
+									size={16}
 									className="mt-0.5 shrink-0"
 									aria-hidden="true"
 								/>

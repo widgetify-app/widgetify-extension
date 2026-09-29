@@ -44,21 +44,21 @@ const SettingModal = lazy(() =>
 const tabs = [
 	{
 		id: Page.Home,
-		icon: <Icon name="outlineHome" size={22} />,
-		activeIcon: <Icon name="home" size={22} />,
+		icon: <Icon name="outlineHome" size={20} />,
+		activeIcon: <Icon name="home" size={20} />,
 		label: 'ویجتیفای',
 	},
 
 	{
 		id: Page.Explorer,
-		icon: <Icon name="outlineCompass" size={22} />,
-		activeIcon: <Icon name="compass" size={22} />,
+		icon: <Icon name="outlineCompass" size={20} />,
+		activeIcon: <Icon name="compass" size={20} />,
 		label: 'کاوش',
 	},
 	{
 		id: Page.MiniApps,
-		icon: <Icon name="outlineSquares2X2" size={22} />,
-		activeIcon: <Icon name="squares2X2" size={22} />,
+		icon: <Icon name="outlineSquares2X2" size={20} />,
+		activeIcon: <Icon name="squares2X2" size={20} />,
 		label: 'برنامک‌ها',
 	},
 ]

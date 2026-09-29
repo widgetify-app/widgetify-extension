@@ -56,7 +56,7 @@ export const GoogleCalendarAuth: React.FC<GoogleCalendarAuthProps> = ({
 			<div className="flex items-center justify-between w-full h-full gap-2 p-3 select-none">
 				<div className="flex items-center gap-2.5 min-w-0">
 					<span className="flex items-center justify-center w-9 h-9 rounded-2xl bg-brand-fill text-brand shrink-0">
-						<Icon name="googleG" size={18} aria-hidden="true" />
+						<Icon name="googleG" size={16} aria-hidden="true" />
 					</span>
 					<div className="flex flex-col min-w-0">
 						<span className="text-xs font-bold leading-tight text-fg">
@@ -84,7 +84,7 @@ export const GoogleCalendarAuth: React.FC<GoogleCalendarAuthProps> = ({
 	return (
 		<div className="flex flex-col items-center justify-center h-full p-4 text-center select-none">
 			<span className="flex items-center justify-center w-12 h-12 mb-3 rounded-2xl bg-brand-fill text-brand">
-				<Icon name="googleG" size={26} aria-hidden="true" />
+				<Icon name="googleG" size={24} aria-hidden="true" />
 			</span>
 			<p className="mb-1 text-xs font-bold text-fg">تقویم گوگل</p>
 			<p className="text-2xs text-fg-muted leading-relaxed max-w-50 mb-4">

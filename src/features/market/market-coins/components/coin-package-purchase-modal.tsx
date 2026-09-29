@@ -126,7 +126,7 @@ export function CoinPackagePurchaseModal({
 						color={'brand'}
 						rounded={'2xl'}
 					>
-						<Icon name="check" size={15} className="ml-1" />
+						<Icon name="check" size={16} className="ml-1" />
 						تایید و پرداخت
 					</Button>
 				</div>

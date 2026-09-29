@@ -97,7 +97,7 @@ export function WallpaperSidebar({
 					className="w-full flex items-center justify-between px-2 py-1 text-xs font-semibold text-fg cursor-pointer"
 				>
 					<div className="flex items-center gap-1.5">
-						<Icon name="filter" size={13} className="text-brand" />
+						<Icon name="filter" size={12} className="text-brand" />
 						<span>فیلتر</span>
 					</div>
 					<Icon

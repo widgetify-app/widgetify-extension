@@ -76,9 +76,9 @@ export function RenderContentSite({ link, onOpenPromoModal }: SiteProp) {
 
 			<div className="flex items-center justify-center text-fg-ghost group-hover:text-fg-strong group-hover:-translate-x-1 transition-ui duration-200 shrink-0">
 				{isModalAction ? (
-					<Icon name="chevronDown" size={13} />
+					<Icon name="chevronDown" size={12} />
 				) : (
-					<Icon name="chevronLeft" size={13} />
+					<Icon name="chevronLeft" size={12} />
 				)}
 			</div>
 		</a>

@@ -20,9 +20,9 @@ interface ConfirmationModalProps {
 }
 
 const variantIcon = {
-	danger: <Icon name="trash" size={18} />,
-	warning: <Icon name="alert" size={18} />,
-	brand: <Icon name="info" size={18} />,
+	danger: <Icon name="trash" size={16} />,
+	warning: <Icon name="alert" size={16} />,
+	brand: <Icon name="info" size={16} />,
 }
 
 export function ConfirmationModal({

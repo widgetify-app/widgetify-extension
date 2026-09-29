@@ -2,10 +2,11 @@ import { defaultIcons } from './packs/default'
 
 import type { IconBaseProps } from 'react-icons'
 import { cn } from '@/common/utils/cn'
-import type { IconName } from './types'
+import type { IconName, IconSize } from './types'
 
-interface Props extends IconBaseProps {
+interface Props extends Omit<IconBaseProps, 'size'> {
 	name: IconName
+	size?: IconSize
 	spin?: boolean
 }
 

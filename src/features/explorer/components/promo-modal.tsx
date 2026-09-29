@@ -158,7 +158,7 @@ export function ExplorerPromoModal({ isOpen, onClose, item }: ExplorerPromoModal
 								>
 									<Icon
 										name={isCopied ? 'check' : 'copy'}
-										size={13}
+										size={12}
 										className="ml-1"
 									/>
 									{isCopied ? 'کپی شد' : 'کپی'}

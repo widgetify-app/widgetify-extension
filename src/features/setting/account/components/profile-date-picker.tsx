@@ -107,7 +107,7 @@ export default function JalaliDatePicker({
 								{value || 'انتخاب تاریخ'}
 							</span>
 						</div>
-						<Icon name="chevronRight" size={18} className="text-fg-muted" />
+						<Icon name="chevronRight" size={16} className="text-fg-muted" />
 					</div>
 				</button>
 			}

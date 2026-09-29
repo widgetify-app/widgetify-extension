@@ -368,7 +368,7 @@ export function ExpandableTodoInput({
 															callEvent('closeAllDropdowns')
 														}
 													>
-														<Icon name="plus" size={18} />
+														<Icon name="plus" size={16} />
 													</Button>
 												</div>
 												<div className="w-full h-0.5  rounded-full bg-surface-3" />

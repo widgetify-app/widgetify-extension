@@ -347,7 +347,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 					>
 						<Icon
 							name="pen"
-							size={18}
+							size={16}
 							aria-hidden="true"
 							className="mb-1 opacity-60"
 						/>

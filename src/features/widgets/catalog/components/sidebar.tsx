@@ -91,7 +91,7 @@ export function AddWidgetSidebar({
 												: 'bg-fill text-fg-muted'
 										)}
 									>
-										<Icon name={def.icon} size={15} />
+										<Icon name={def.icon} size={16} />
 									</span>
 									<span
 										className={cn(

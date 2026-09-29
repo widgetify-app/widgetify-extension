@@ -115,7 +115,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 				) : allFriends.length === 0 ? (
 					<div className="flex flex-col items-center justify-center py-6 text-center text-fg-faint">
 						<div className="flex items-center justify-center w-10 h-10 mb-1.5 rounded-xl bg-surface-2 text-fg-faint">
-							<Icon name="users" size={18} />
+							<Icon name="users" size={16} />
 						</div>
 						<p className="text-xs font-normal text-fg-muted">
 							هنوز دوستی نداری

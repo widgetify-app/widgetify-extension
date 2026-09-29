@@ -106,20 +106,20 @@ export const GoogleCalendarTimelineItem = ({
 
 					{isNow && event.hangoutLink ? (
 						<span className="flex items-center gap-1 px-2 py-0.5 mb-1 rounded-lg bg-brand text-on-brand text-4xs font-medium shrink-0">
-							<Icon name="videoCamera" size={9} aria-hidden="true" />
+							<Icon name="videoCamera" size={10} aria-hidden="true" />
 							ورود به جلسه
 						</span>
 					) : event.hangoutLink ? (
 						<Icon
 							name="videoCamera"
-							size={11}
+							size={12}
 							className="shrink-0 text-fg-muted"
 							aria-hidden="true"
 						/>
 					) : event.location ? (
 						<Icon
 							name="location"
-							size={11}
+							size={12}
 							className="shrink-0 text-fg-muted"
 							aria-hidden="true"
 						/>

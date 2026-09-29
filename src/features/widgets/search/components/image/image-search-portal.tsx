@@ -99,7 +99,7 @@ export function ImageSearchPortal({
 							target="_blank"
 							rel="noreferrer"
 						>
-							<Icon name="shieldEllipsis" size={18} />
+							<Icon name="shieldEllipsis" size={16} />
 						</a>
 						<button
 							type="button"
@@ -107,7 +107,7 @@ export function ImageSearchPortal({
 							aria-label="بستن جستجوی تصویر"
 							className="p-1 rounded-full cursor-pointer transition-ui hover:bg-fill-2 text-fg-faint focus-visible:focus-ring"
 						>
-							<Icon name="close" size={22} aria-hidden="true" />
+							<Icon name="close" size={20} aria-hidden="true" />
 						</button>
 					</div>
 				</div>

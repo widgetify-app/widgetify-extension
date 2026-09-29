@@ -17,7 +17,7 @@ export function WidgetEmpty({ art, title, description, action }: WidgetEmptyProp
 			{art === 'illustration' ? (
 				<img src={ILLUSTRATION_SRC} alt="" className="object-contain w-12 h-12" />
 			) : (
-				<Icon name={art} size={22} className="text-fg-muted" aria-hidden="true" />
+				<Icon name={art} size={20} className="text-fg-muted" aria-hidden="true" />
 			)}
 
 			{title && <p className="text-xs font-bold text-fg">{title}</p>}

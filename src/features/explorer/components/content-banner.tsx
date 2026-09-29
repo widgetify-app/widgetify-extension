@@ -106,9 +106,9 @@ export function RenderContentBanner({ link, onOpenPromoModal }: BannerProp) {
 
 				<div className="w-7 h-7 rounded-xl bg-image-fill hover:bg-image-line backdrop-blur-md border border-image-fill flex items-center justify-center text-image-fg shrink-0 group-hover:scale-105 transition-ui shadow-sm">
 					{isModalAction ? (
-						<Icon name="chevronDown" size={13} />
+						<Icon name="chevronDown" size={12} />
 					) : (
-						<Icon name="chevronLeft" size={13} />
+						<Icon name="chevronLeft" size={12} />
 					)}
 				</div>
 			</div>

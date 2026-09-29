@@ -197,7 +197,7 @@ export function TodoItem({
 									aria-label="ویرایش تسک"
 									className="p-1 rounded-lg cursor-pointer text-brand-muted hover:bg-brand-fill hover:text-brand focus-visible:focus-ring"
 								>
-									<Icon name="edit" size={13} aria-hidden="true" />
+									<Icon name="edit" size={12} aria-hidden="true" />
 								</button>
 							)}
 							<button
@@ -206,7 +206,7 @@ export function TodoItem({
 								aria-label="حذف تسک"
 								className="p-1 rounded-lg cursor-pointer text-[rgba(var(--color-error-rgb),0.5)] hover:bg-danger-fill hover:text-danger focus-visible:focus-ring"
 							>
-								<Icon name="trash" size={13} aria-hidden="true" />
+								<Icon name="trash" size={12} aria-hidden="true" />
 							</button>
 						</div>
 					</div>
@@ -221,7 +221,7 @@ export function TodoItem({
 							expanded && 'rotate-180'
 						)}
 					>
-						<Icon name="chevronDown" size={15} aria-hidden="true" />
+						<Icon name="chevronDown" size={16} aria-hidden="true" />
 					</button>
 				</div>
 			</div>
@@ -243,7 +243,7 @@ export function TodoItem({
 					<div className="flex items-center gap-2 text-3xs">
 						{currentTodo.category && (
 							<span className="flex text-3xs items-center gap-1 rounded-lg border border-dashed border-line px-1.5 text-fg-muted">
-								<Icon name="tags" size={9} aria-hidden="true" />
+								<Icon name="tags" size={10} aria-hidden="true" />
 								{currentTodo.category}
 							</span>
 						)}

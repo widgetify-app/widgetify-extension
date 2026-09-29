@@ -80,13 +80,13 @@ export function MiniAppRunnerHeader({
 						{isFullScreen ? (
 							<Icon
 								name="minimize"
-								size={18}
+								size={16}
 								className={`transition-colors duration-200 text-fg-muted group-hover:text-fg-strong`}
 							/>
 						) : (
 							<Icon
 								name="maximize"
-								size={18}
+								size={16}
 								className={`transition-colors duration-200 text-fg-muted group-hover:text-fg-strong`}
 							/>
 						)}
@@ -99,7 +99,7 @@ export function MiniAppRunnerHeader({
 					>
 						<Icon
 							name="refresh"
-							size={18}
+							size={16}
 							className="transition-colors duration-200 text-fg-muted group-hover:text-fg-strong"
 							spin={isLoading || isConnecting}
 						/>

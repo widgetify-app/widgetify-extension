@@ -172,14 +172,14 @@ export function HabitCompactWide({
 						) : isDone || isSimpleHabit ? (
 							<Icon
 								name="check"
-								size={13}
+								size={12}
 								strokeWidth={2.5}
 								aria-hidden="true"
 							/>
 						) : (
 							<Icon
 								name="plus"
-								size={13}
+								size={12}
 								strokeWidth={3}
 								aria-hidden="true"
 							/>
@@ -206,7 +206,7 @@ export function HabitCompactWide({
 					aria-hidden="true"
 					className="flex items-center justify-center cursor-pointer w-6 h-6 rounded-lg text-fg-muted shrink-0"
 				>
-					<Icon name="chevronLeft" size={13} />
+					<Icon name="chevronLeft" size={12} />
 				</span>
 			</div>
 

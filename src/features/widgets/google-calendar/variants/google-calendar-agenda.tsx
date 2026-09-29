@@ -244,7 +244,7 @@ const AgendaItem: React.FC<AgendaItemProps> = ({ classified, onEventClick }) => 
 
 			{event.hangoutLink && (
 				<span className="flex items-center justify-center w-6 h-6 rounded-lg bg-brand-fill text-brand shrink-0">
-					<Icon name="videoCamera" size={11} aria-hidden="true" />
+					<Icon name="videoCamera" size={12} aria-hidden="true" />
 				</span>
 			)}
 		</button>

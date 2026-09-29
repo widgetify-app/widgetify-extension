@@ -81,7 +81,7 @@ export function NoteNavigation() {
 						>
 							<Icon
 								name="chevronLeft"
-								size={18}
+								size={16}
 								aria-hidden="true"
 								className="text-fg"
 							/>
@@ -120,7 +120,7 @@ export function NoteNavigation() {
 						>
 							<Icon
 								name="refresh"
-								size={15}
+								size={16}
 								aria-hidden="true"
 								className="opacity-60 hover:opacity-100"
 								spin={isRefetching}

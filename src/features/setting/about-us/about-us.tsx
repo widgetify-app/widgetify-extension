@@ -37,7 +37,7 @@ export function AboutUsTab() {
 					>
 						<div className="flex items-center gap-3">
 							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-brand-fill text-brand group-hover:scale-110">
-								<Icon name="globe" size={18} />
+								<Icon name="globe" size={16} />
 							</div>
 							<div className="text-right">
 								<h3 className="text-xs font-bold text-fg-strong">
@@ -63,7 +63,7 @@ export function AboutUsTab() {
 					>
 						<div className="flex items-center gap-3">
 							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-secondary-fill text-secondary group-hover:scale-110">
-								<Icon name="externalLink" size={18} />
+								<Icon name="externalLink" size={16} />
 							</div>
 							<div className="text-right">
 								<h3 className="text-xs font-bold text-fg-strong">
@@ -89,7 +89,7 @@ export function AboutUsTab() {
 					>
 						<div className="flex items-center gap-3">
 							<div className="flex items-center justify-center w-10 h-10 transition-transform rounded-xl bg-info-fill text-info group-hover:scale-110">
-								<Icon name="telegramLogo" size={18} />
+								<Icon name="telegramLogo" size={16} />
 							</div>
 							<div className="text-right">
 								<h3 className="text-xs font-bold text-fg-strong">

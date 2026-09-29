@@ -63,7 +63,7 @@ export function ProfileDropdownMenu({
 					className="flex items-center w-full gap-3 px-3.5 py-2.5 text-start cursor-pointer border-b border-line transition-colors hover:bg-fill-2"
 				>
 					<div className="w-8 h-8 rounded-xl bg-brand-fill text-brand flex items-center justify-center shrink-0">
-						<Icon name="user" size={15} />
+						<Icon name="user" size={16} />
 					</div>
 					<div className="flex flex-col flex-1">
 						<span className="text-xs font-bold text-fg">ورود یا ثبت‌نام</span>

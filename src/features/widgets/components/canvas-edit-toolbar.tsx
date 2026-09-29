@@ -39,7 +39,7 @@ export function CanvasEditToolbar({
 						onClick={onOpenPresets}
 						className="px-3 py-1.5 text-xs font-bold rounded-xl bg-surface-3 hover:bg-fill-2 text-fg active:scale-95 transition-ui flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
 					>
-						<Icon name="squares2X2" size={13} />
+						<Icon name="squares2X2" size={12} />
 						<span>چیدمان‌های آماده</span>
 					</button>
 				)}

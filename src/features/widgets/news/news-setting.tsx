@@ -93,7 +93,7 @@ export const RssFeedSetting = () => {
 													: 'bg-fill-2 text-fg-muted'
 											)}
 										>
-											<Icon name="outlineNewspaper" size={15} />
+											<Icon name="outlineNewspaper" size={16} />
 										</div>
 										<div className="space-y-0.5 min-w-0">
 											<h4 className="text-xs font-medium text-fg truncate">

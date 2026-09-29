@@ -108,7 +108,7 @@ const TOAST_THEMES: Record<
 		container: 'bg-[#18181b]/95 border-[rgba(255,255,255,0.1)] text-white',
 		icon: (
 			<div className="flex items-center justify-center w-8 h-8 text-white rounded-full select-none shrink-0 bg-[rgba(255,255,255,0.1)]">
-				<Icon name="atSign" size={15} />
+				<Icon name="atSign" size={16} />
 			</div>
 		),
 		title: 'نکته',
@@ -119,7 +119,7 @@ const TOAST_THEMES: Record<
 		container: 'bg-[#2a1317]/95 border-[#fb2c3640] text-white',
 		icon: (
 			<div className="flex items-center justify-center w-8 h-8 text-white bg-[#fb2c36] rounded-full shadow-sm select-none shrink-0">
-				<Icon name="exclamation" size={13} />
+				<Icon name="exclamation" size={12} />
 			</div>
 		),
 		title: 'خطا',
@@ -130,7 +130,7 @@ const TOAST_THEMES: Record<
 		container: 'bg-[#142618]/95 border-[#00bc7d40] text-white',
 		icon: (
 			<div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-[#22c55e] text-black shadow-sm select-none">
-				<Icon name="check" size={15} className="stroke-3" />
+				<Icon name="check" size={16} className="stroke-3" />
 			</div>
 		),
 		title: 'موفقیت آمیز',
@@ -141,7 +141,7 @@ const TOAST_THEMES: Record<
 		container: 'bg-[#2b2210]/95 border-[#fe9a0040] text-white',
 		icon: (
 			<div className="flex items-center justify-center w-8 h-8 text-black rounded-full shadow-sm select-none shrink-0 bg-[#fe9a00]">
-				<Icon name="exclamation" size={13} />
+				<Icon name="exclamation" size={12} />
 			</div>
 		),
 		title: 'هشدار',
@@ -243,7 +243,7 @@ export function showPreviewToast(itemName: string, onCancel: () => void): string
 					}}
 					className="shrink-0 px-3.5 py-1.5 rounded-xl bg-[rgba(255,255,255,0.1)] hover:bg-[#fb2c3633] hover:text-[#ffa2a2] active:scale-95 text-xs font-semibold text-white transition-ui cursor-pointer select-none flex items-center gap-1"
 				>
-					<Icon name="close" size={11} />
+					<Icon name="close" size={12} />
 					<span>بازگشت</span>
 				</button>
 			</div>
