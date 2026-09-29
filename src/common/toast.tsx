@@ -254,6 +254,14 @@ export function showPreviewToast(itemName: string, onCancel: () => void): string
 	return id
 }
 
+export function dismissToasts() {
+	toast.dismiss()
+}
+
+export function removeToast(id: string) {
+	toast.remove(id)
+}
+
 export function autoFormatErrorToast(err: any) {
 	const message = translateError(err)
 	showToast(

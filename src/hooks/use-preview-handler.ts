@@ -1,10 +1,9 @@
 import { useState, useCallback, useRef } from 'react'
-import toast from 'react-hot-toast'
 import { callEvent } from '@/common/utils/call-event'
 import { sleep } from '@/common/utils/timeout'
 import { Theme } from '@/context/theme.context'
 import { MarketItemType, type MarketItem } from '@/services/market/market.interface'
-import { autoFormatErrorToast, showPreviewToast } from '@/common/toast'
+import { autoFormatErrorToast, removeToast, showPreviewToast } from '@/common/toast'
 import type { StoredWallpaper } from '@/common/types/wallpaper.interface'
 import { fetchWallpaperPreviewUrl } from '@/services/wallpapers/get-wallpaper-preview-url.hook'
 
@@ -54,7 +53,7 @@ export function usePreviewHandler() {
 	const cancelPreview = useCallback(async () => {
 		const state = currentPreviewRef.current
 		if (!state) return console.log('not found state')
-		toast.remove(state.toastId)
+		removeToast(state.toastId)
 		restorePreview(state)
 		currentPreviewRef.current = null
 		setCurrentPreview(null)
@@ -63,7 +62,7 @@ export function usePreviewHandler() {
 	const previewHandler = useCallback(
 		async (item: MarketItem, currentValues: CurrentValues) => {
 			if (currentPreviewRef.current?.toastId) {
-				toast.remove(currentPreviewRef.current.toastId)
+				removeToast(currentPreviewRef.current.toastId)
 				restorePreview(currentPreviewRef.current)
 				await sleep(150)
 			}
@@ -114,7 +113,7 @@ export function usePreviewHandler() {
 						}
 						callEvent('wallpaper_change', tempWallpaper)
 					} catch (error: any) {
-						toast.remove(toastId)
+						removeToast(toastId)
 						autoFormatErrorToast(error)
 						return
 					}

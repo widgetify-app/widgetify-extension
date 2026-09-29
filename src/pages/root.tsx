@@ -3,17 +3,13 @@ import Analytics from '@/analytics'
 import { purgeDeprecatedStorageKeys } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import { StackedToaster } from '@/components/ui'
-import {
-	GeneralSettingProvider,
-	useGeneralSetting,
-} from '@/context/general-setting.context'
+import { GeneralSettingProvider } from '@/context/general-setting.context'
 import { FreeWidgetProvider } from '@/features/widgets/widgets.context'
 import { NavbarLayout } from '@/features/navbar/navbar'
 import { WidgetSettings } from '@/features/widgets/widget-settings/widget-settings'
 import { AddWidgetModal } from '@/features/widgets/catalog/catalog'
 import { Page, usePage } from '@/context/page.context'
-import { MotionConfig } from 'framer-motion'
-import { Motion as motion, Presence } from '@/common/motion'
+import { Motion as motion, MotionPreferences, Presence } from '@/common/motion'
 import { AuthRequiredModal } from '@/components/auth/auth-required-modal'
 import { MiniAppPage } from '@/pages/mini-apps/mini-apps.page'
 import { ExplorerPage } from '@/pages/explorer/explorer.page'
@@ -49,7 +45,6 @@ function Main() {
 	const [addWidgetEditTarget, setAddWidgetEditTarget] = useState<any>(null)
 	const [showAuthRequired, setAuthRequired] = useState(false)
 	const { page, setPage } = usePage()
-	const { isOptimalMode } = useGeneralSetting()
 
 	useEffect(() => {
 		const openAddModalEvent = listenEvent(
@@ -78,7 +73,7 @@ function Main() {
 	}, [setPage])
 
 	return (
-		<MotionConfig reducedMotion={isOptimalMode ? 'always' : 'never'}>
+		<MotionPreferences>
 			<FreeWidgetProvider>
 				<NavbarLayout />
 
@@ -118,6 +113,6 @@ function Main() {
 				isOpen={showAuthRequired}
 				onClose={() => setAuthRequired(false)}
 			/>
-		</MotionConfig>
+		</MotionPreferences>
 	)
 }

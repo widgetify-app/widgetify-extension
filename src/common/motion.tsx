@@ -1,5 +1,11 @@
-import React from 'react'
-import { motion, type HTMLMotionProps, type SVGMotionProps } from 'framer-motion'
+import React, { type ReactNode } from 'react'
+import {
+	AnimatePresence,
+	MotionConfig,
+	motion,
+	type HTMLMotionProps,
+	type SVGMotionProps,
+} from 'framer-motion'
 import { useGeneralSetting } from '@/context/general-setting.context'
 
 function cleanMotionProps<T extends object>(props: T): T {
@@ -63,8 +69,6 @@ export const Motion = {
 	path: createMotionComponent<SVGMotionProps<SVGPathElement>>(motion.path),
 }
 
-import { AnimatePresence } from 'framer-motion'
-
 export function Presence({
 	children,
 	...props
@@ -76,4 +80,14 @@ export function Presence({
 	}
 
 	return <AnimatePresence {...props}>{children}</AnimatePresence>
+}
+
+export function MotionPreferences({ children }: { children: ReactNode }) {
+	const { isOptimalMode } = useGeneralSetting()
+
+	return (
+		<MotionConfig reducedMotion={isOptimalMode ? 'always' : 'never'}>
+			{children}
+		</MotionConfig>
+	)
 }

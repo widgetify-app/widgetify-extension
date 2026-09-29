@@ -1,8 +1,7 @@
 import type React from 'react'
 import { useState } from 'react'
-import toast from 'react-hot-toast'
 import Analytics from '@/analytics'
-import { showToast } from '@/common/toast'
+import { dismissToasts, showToast } from '@/common/toast'
 import { Icon } from '@/icons'
 import { useCurrencyPrice } from '../hooks/use-currency-price'
 import { getPrice } from '../utils/get-price'
@@ -23,7 +22,7 @@ export const CurrencyBox = ({ code, dragHandle }: CurrencyBoxProps) => {
 		if (currency?.url && currency?.isPartnerShip) {
 			showToast('🔗 درحال انتقال به سایت همکار...', 'success')
 			setTimeout(() => {
-				toast.dismiss()
+				dismissToasts()
 				Analytics.event('currency_sponsor', {
 					currency: currency.name.en,
 					url: currency.url,
