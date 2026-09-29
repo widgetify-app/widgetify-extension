@@ -1,5 +1,5 @@
 import { callEvent } from '@/common/utils/call-event'
-import { Dropdown, DropdownItem } from '@/components/ui'
+import { Dropdown, DropdownItem, Tooltip } from '@/components/ui'
 import { useAppearance } from '@/context/appearance.context'
 import { Page, usePage } from '@/context/page.context'
 import { Icon } from '@/icons'
@@ -36,12 +36,14 @@ export function LayoutDropdown() {
 	return (
 		<Dropdown
 			trigger={
-				<div
-					className="relative p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
-					id="layout-menu-button"
-				>
-					<Icon name="appsPlus" size={15} />
-				</div>
+				<Tooltip content="مدیریت چیدمان">
+					<div
+						className="relative p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
+						id="layout-menu-button"
+					>
+						<Icon name="appsPlus" size={15} />
+					</div>
+				</Tooltip>
 			}
 		>
 			<div className="bg-content py-2 bg-glass min-w-48 px-1" dir="rtl">
