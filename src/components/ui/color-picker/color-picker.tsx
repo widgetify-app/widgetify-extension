@@ -1,22 +1,15 @@
 import type React from 'react'
 import { useEffect, useRef, useState } from 'react'
-import { HexColorPicker, RgbaStringColorPicker } from 'react-colorful'
+import { HexColorPicker } from 'react-colorful'
 import { Portal } from '../portal/portal'
 import { isAnchorInViewport } from '../utils/anchored-position'
 
 interface ColorPickerProps {
 	color: string
 	onChange: (color: string) => void
-	className?: string
-	mode?: 'hex' | 'rgba'
 }
 
-export const ColorPicker: React.FC<ColorPickerProps> = ({
-	color,
-	onChange,
-	className = '',
-	mode = 'hex',
-}) => {
+export const ColorPicker: React.FC<ColorPickerProps> = ({ color, onChange }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const triggerRef = useRef<HTMLDivElement>(null)
 	const popupRef = useRef<HTMLDivElement>(null)
@@ -104,7 +97,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
 	}, [isOpen])
 
 	return (
-		<div className={`relative inline-flex items-center ${className}`}>
+		<div className="relative inline-flex items-center">
 			<div
 				ref={triggerRef}
 				onClick={() => setIsOpen((prev) => !prev)}
@@ -124,14 +117,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
 							width: '220px',
 						}}
 					>
-						{mode === 'hex' ? (
-							<HexColorPicker color={displayColor} onChange={onChange} />
-						) : (
-							<RgbaStringColorPicker
-								color={displayColor}
-								onChange={onChange}
-							/>
-						)}
+						<HexColorPicker color={displayColor} onChange={onChange} />
 					</div>
 				</Portal>
 			)}

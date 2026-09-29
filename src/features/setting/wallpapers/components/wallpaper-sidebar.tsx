@@ -132,7 +132,7 @@ export function WallpaperSidebar({
 								onTabClick={(id) => onTypeFilterChange(id as FilterType)}
 								tabMode="simple"
 								className="border-0"
-								size="small"
+								size="sm"
 							/>
 						</div>
 
@@ -161,7 +161,7 @@ export function WallpaperSidebar({
 								}
 								tabMode="simple"
 								className="border-0"
-								size="small"
+								size="sm"
 							/>
 						</div>
 					</div>

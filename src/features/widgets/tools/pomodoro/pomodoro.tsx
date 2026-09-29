@@ -296,7 +296,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 									id: 'short-break',
 								},
 							]}
-							size="small"
+							size="sm"
 							className="h-8 mb-0! border-none w-28"
 						/>
 					) : (

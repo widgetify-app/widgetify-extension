@@ -42,7 +42,7 @@ export function ComboWidget() {
 				activeTab={activeTab}
 				onTabClick={onTabClick}
 				tabs={navigationTabs}
-				size="small"
+				size="sm"
 				className="flex-none w-full border-none"
 			/>
 

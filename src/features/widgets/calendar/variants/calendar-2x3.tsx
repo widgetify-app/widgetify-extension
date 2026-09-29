@@ -235,7 +235,7 @@ export function Calendar2x3() {
 						icon: <Icon name="googleG" size={12} />,
 					},
 				]}
-				size="small"
+				size="sm"
 				className="flex-none m-2 mt-0"
 			/>
 		</>

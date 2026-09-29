@@ -48,9 +48,7 @@ export function ProfileDropdownMenu({
 							<span className="text-xs font-bold text-fg truncate">
 								{user?.name || user?.username || 'کاربر ویجتیفای'}
 							</span>
-							{isVip && (
-								<VipBadge size="xs" variant="indigo-subtle" iconOnly />
-							)}
+							{isVip && <VipBadge size="xs" variant="subtle" iconOnly />}
 						</div>
 						<span className="text-2xs text-fg-muted truncate leading-normal">
 							مشاهده پروفایل

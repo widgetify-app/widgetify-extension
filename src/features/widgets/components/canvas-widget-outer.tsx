@@ -12,7 +12,7 @@ import {
 } from '../utils/layout-engine/types'
 import { cn } from '@/common/utils/cn'
 import { useAuth } from '@/context/auth.context'
-import { ProBadge } from '@/components/ui'
+import { VipBadge } from '@/components/ui'
 import { useWidgetVipResolver } from '@/features/widgets/hooks/use-widget-vip-resolver'
 import { WidgetContextMenu } from './widget-context-menu'
 import { BookmarkDeleteModal } from './bookmark-delete-modal'
@@ -392,9 +392,9 @@ function CanvasWidgetOuterImpl({
 							}}
 						>
 							<div className="flex flex-col items-center gap-1.5 transition-transform duration-200 group-hover:scale-105">
-								<ProBadge
+								<VipBadge
 									size={isCompactSize ? 'xs' : 'sm'}
-									variant="indigo"
+									variant="solid"
 								/>
 								{!isCompactSize && (
 									<span className="text-2xs font-medium text-fg-muted transition-colors duration-200 group-hover:text-fg">

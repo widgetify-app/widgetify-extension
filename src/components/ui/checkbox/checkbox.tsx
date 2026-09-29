@@ -3,21 +3,17 @@ import { memo } from 'react'
 interface CustomCheckboxProps {
 	checked: boolean
 	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-	label?: string
 	onClick?: (e: React.MouseEvent<HTMLInputElement>) => void
 	className?: string
 	disabled?: boolean
 	unCheckedCheckBoxClassName?: string
 	checkedCheckBoxClassName?: string
-	fontSize?: 'font-light' | 'font-normal' | 'font-bold'
 }
 
 const CheckboxBase = ({
 	checked,
 	onChange,
-	label,
 	disabled = false,
-	fontSize = 'font-normal',
 	className = '',
 	unCheckedCheckBoxClassName = '',
 	checkedCheckBoxClassName = '',
@@ -81,9 +77,6 @@ const CheckboxBase = ({
 					</svg>
 				</div>
 			</div>
-			{label && (
-				<span className={`ml-2 mr-2 ${fontSize} text-sm text-fg`}>{label}</span>
-			)}
 		</label>
 	)
 }

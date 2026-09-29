@@ -57,7 +57,7 @@ export function AddWidgetOptions({
 								{isVipBadge && (
 									<VipBadge
 										size="xs"
-										variant={isCurrent ? 'white' : 'indigo-subtle'}
+										variant={isCurrent ? 'inverse' : 'subtle'}
 									/>
 								)}
 							</button>
@@ -97,7 +97,7 @@ export function AddWidgetOptions({
 							{isVipBadge && (
 								<VipBadge
 									size="xs"
-									variant={isCurrentSize ? 'white' : 'indigo-subtle'}
+									variant={isCurrentSize ? 'inverse' : 'subtle'}
 								/>
 							)}
 							{isDefault && !isCurrentSize && !isVipBadge && (

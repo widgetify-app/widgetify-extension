@@ -116,7 +116,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 												{preset.isVip ? (
 													<VipBadge
 														size="xs"
-														variant="indigo-subtle"
+														variant="subtle"
 														className="mt-0.5"
 													/>
 												) : (

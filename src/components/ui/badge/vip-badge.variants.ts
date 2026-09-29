@@ -5,19 +5,18 @@ export const vipBadgeVariants = cva(
 	{
 		variants: {
 			variant: {
-				indigo: 'bg-vip text-on-vip shadow-sm shadow-vip-fill-2',
-				'indigo-subtle': 'bg-vip-fill text-vip border border-vip-fill-2',
-				white: 'bg-image-fill text-image-fg backdrop-blur-md border border-image-line shadow-sm',
+				solid: 'bg-vip text-on-vip shadow-sm shadow-vip-fill-2',
+				subtle: 'bg-vip-fill text-vip border border-vip-fill-2',
+				inverse:
+					'bg-image-fill text-image-fg backdrop-blur-md border border-image-line shadow-sm',
 			},
 			size: {
 				xs: 'text-4xs px-2 py-0.5 gap-1',
 				sm: 'text-3xs px-2 py-1 gap-1',
-				md: 'text-xs px-2.5 py-1 gap-1.5',
-				lg: 'text-sm px-3 py-1.5 gap-1.5',
 			},
 		},
 		defaultVariants: {
-			variant: 'indigo',
+			variant: 'solid',
 			size: 'sm',
 		},
 	}

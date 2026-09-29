@@ -34,7 +34,7 @@ export function UploadActive({
 
 						{isCloudWallpaper && (
 							<div className="absolute top-1.5 left-1.5">
-								<VipBadge variant="indigo" iconOnly size="xs" />
+								<VipBadge variant="solid" iconOnly size="xs" />
 							</div>
 						)}
 					</div>

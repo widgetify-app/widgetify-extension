@@ -56,7 +56,7 @@ export function MarketContainer() {
 					onTabClick={(va) => handleTabChange(va)}
 					tabs={tabs}
 					tabMode="simple"
-					size="medium"
+					size="md"
 				/>
 
 				{isAuthenticated && (

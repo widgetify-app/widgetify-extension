@@ -98,9 +98,7 @@ export function WidgetContextMenu({
 										<VipBadge
 											size="xs"
 											iconOnly
-											variant={
-												isCurrent ? 'white' : 'indigo-subtle'
-											}
+											variant={isCurrent ? 'inverse' : 'subtle'}
 										/>
 									)}
 								</Chip>
