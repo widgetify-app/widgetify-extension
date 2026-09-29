@@ -257,7 +257,7 @@ export function HabitCompactWide({
 						type="button"
 						onClick={onAddHabit}
 						aria-label="عادت جدید"
-						className="flex items-center justify-center w-[18px] h-[18px] rounded-full shrink-0 cursor-pointer text-fg-muted bg-fill-2 transition-ui hover:text-fg-strong hover:bg-fill-3 focus-visible:focus-ring"
+						className="flex items-center justify-center w-[18px] h-[18px] rounded-full shrink-0 cursor-pointer text-fg-muted bg-fill transition-ui hover:text-fg-strong hover:bg-fill-3 focus-visible:focus-ring"
 					>
 						<Icon name="plus" size={12} aria-hidden="true" />
 					</button>
