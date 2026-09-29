@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import Cropper, { type Area, type Point } from 'react-easy-crop'
-import { Modal } from '@/components/ui'
+import { Modal, Slider } from '@/components/ui'
 import { FooterButtons } from './footer-buttons'
 import { getCroppedImageFile } from '../../utils/avatar-crop'
 
@@ -68,14 +68,13 @@ export function AvatarCropModal({
 
 				<div className="flex items-center gap-3 px-2 mt-4">
 					<span className="text-xs text-fg-muted">بزرگنمایی</span>
-					<input
-						type="range"
+					<Slider
+						label="بزرگنمایی"
 						min={1}
 						max={3}
 						step={0.1}
 						value={zoom}
-						onChange={(e) => setZoom(Number(e.target.value))}
-						className="w-full range range-xs"
+						onChange={setZoom}
 					/>
 				</div>
 

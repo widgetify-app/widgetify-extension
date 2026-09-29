@@ -11,7 +11,7 @@ interface UserItemProp {
 export function UserItem({ avatar, completed, isOwner, name }: UserItemProp) {
 	return (
 		<Tooltip content={name}>
-			<div className="overflow-visible avatar">
+			<div className="relative inline-flex align-middle overflow-visible border-4 rounded-full border-surface">
 				<div className="relative w-5 h-5 overflow-visible ">
 					<div
 						className={`w-full h-full rounded-full overflow-hidden ${

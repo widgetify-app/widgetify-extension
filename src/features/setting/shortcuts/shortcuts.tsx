@@ -1,4 +1,4 @@
-import { SectionPanel } from '@/components/ui'
+import { Kbd, SectionPanel } from '@/components/ui'
 import React from 'react'
 import { useEffect, useState } from 'react'
 
@@ -14,7 +14,7 @@ interface Shortcut {
 const formatShortcut = (shortcutText: string) => {
 	return shortcutText.split('+').map((key, index, array) => (
 		<React.Fragment key={index}>
-			<kbd className="kbd">{key.trim()}</kbd>
+			<Kbd>{key.trim()}</Kbd>
 			{index < array.length - 1 && ' + '}
 		</React.Fragment>
 	))

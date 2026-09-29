@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { showToast } from '@/common/toast'
-import { Button, ImageSlider, Modal } from '@/components/ui'
+import { Badge, Button, ImageSlider, Modal } from '@/components/ui'
 import { Icon } from '@/icons'
 import type { CatalogItem } from '../types'
 
@@ -100,9 +100,9 @@ export function ExplorerPromoModal({ isOpen, onClose, item }: ExplorerPromoModal
 							</h3>
 						</div>
 						{isSponsor && (
-							<span className="badge badge-sm badge-neutral shrink-0 font-medium">
+							<Badge variant="neutral" size="sm">
 								اسپانسر
-							</span>
+							</Badge>
 						)}
 					</div>
 

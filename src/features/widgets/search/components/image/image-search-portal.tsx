@@ -5,7 +5,7 @@ import Analytics from '@/analytics'
 import { RequireAuth } from '@/features/widgets/components/require-auth'
 import { uploadSearchImage } from '@/services/search/upload-search-image'
 import { translateError } from '@/common/utils/translate-error'
-import { Button, Portal } from '@/components/ui'
+import { Button, Portal, Spinner } from '@/components/ui'
 import { Icon } from '@/icons'
 
 interface ImageSearchPortalProps {
@@ -180,7 +180,7 @@ export function ImageSearchPortal({
 									)}
 
 									<div className="relative flex flex-col items-center w-full gap-3 px-12">
-										<span className="loading loading-spinner loading-md text-brand"></span>
+										<Spinner size="lg" aria-hidden="true" />
 
 										<div className="flex flex-col items-center gap-1">
 											<span className="text-xs font-black text-fg-strong">
