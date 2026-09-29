@@ -3,6 +3,14 @@ import { PetTooltip } from './pet-tooltip'
 import { MAX_ACTIVE_PET_FOOD } from '../constants'
 import { cn } from '@/common/utils/cn'
 import {
+	COLLECT_HEIGHT,
+	flightBob,
+	pickCruiseAltitude,
+	stepDive,
+	stepFlight,
+	stepLanding,
+} from '../utils/pet-flight'
+import {
 	clampToBounds,
 	directionTowardWall,
 	frameScale,
@@ -200,6 +208,7 @@ export function useBasePetLogic({
 	const collectiblesRef = useRef<CollectibleItem[]>([])
 	const collectibleIdRef = useRef(0)
 	const climbWallXRef = useRef<number | null>(null)
+	const cruiseAltitudeRef = useRef(0)
 	const behaviorStateRef = useRef(behaviorState)
 	const timeoutsRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set())
 	const onCollectibleCollectionRef = useRef(onCollectibleCollection)
@@ -273,6 +282,11 @@ export function useBasePetLogic({
 		})
 	}, [])
 
+	const canReachFood = useCallback(
+		() => dimensions.flight !== undefined || positionRef.current.y === 0,
+		[dimensions.flight]
+	)
+
 	const dropFood = useCallback(
 		(dropAtX: number) => {
 			const container = containerRef.current
@@ -299,7 +313,7 @@ export function useBasePetLogic({
 
 			applyCollectibles([...collectiblesRef.current, newCollectible])
 
-			if (positionRef.current.y === 0) {
+			if (canReachFood()) {
 				if (action === 'sit' || action === 'idle') {
 					updateAction('stand')
 					scheduleTimeout(() => {
@@ -315,6 +329,7 @@ export function useBasePetLogic({
 		[
 			assets.collectibleSize,
 			action,
+			canReachFood,
 			updateAction,
 			updateBehaviorState,
 			applyCollectibles,
@@ -395,6 +410,8 @@ export function useBasePetLogic({
 			const fallStep = assets.collectibleFallSpeed * scale
 			const petCenter = positionRef.current.x + dimensions.width / 2
 			const collectRadius = dimensions.width / 2
+			const lowEnoughToEat =
+				!dimensions.flight || positionRef.current.y <= COLLECT_HEIGHT
 
 			let changed = false
 			let collectedId: number | null = null
@@ -411,7 +428,7 @@ export function useBasePetLogic({
 					return { ...collectible, y: newY }
 				}
 
-				if (collectedId === null) {
+				if (collectedId === null && lowEnoughToEat) {
 					const distance = Math.abs(
 						collectible.x + assets.collectibleSize / 2 - petCenter
 					)
@@ -437,6 +454,7 @@ export function useBasePetLogic({
 			assets.collectibleFallSpeed,
 			assets.collectibleSize,
 			dimensions.width,
+			dimensions.flight,
 			applyCollectibles,
 			handleCollectibleCollection,
 		]
@@ -494,6 +512,13 @@ export function useBasePetLogic({
 			}
 		} else {
 			updateBehaviorState(PetBehavior.ROAMING)
+			if (dimensions.flight) {
+				cruiseAltitudeRef.current = pickCruiseAltitude(
+					dimensions.flight,
+					getBounds(),
+					Math.random()
+				)
+			}
 			const shouldRun = Math.random() > 0.6
 			updateAction(shouldRun ? 'run' : 'walk')
 			setActionTimer(randomDuration(shouldRun ? durations.run : durations.walk))
@@ -508,6 +533,7 @@ export function useBasePetLogic({
 		animations.climb,
 		animations.sit,
 		durations,
+		dimensions.flight,
 		updateAction,
 		updateBehaviorState,
 	])
@@ -516,7 +542,7 @@ export function useBasePetLogic({
 		(elapsed: number) => {
 			const nearestCollectible = findNearestCollectible(collectiblesRef.current)
 
-			if (nearestCollectible && positionRef.current.y === 0) {
+			if (nearestCollectible && canReachFood()) {
 				if (behaviorState !== PetBehavior.CHASING) {
 					updateBehaviorState(PetBehavior.CHASING)
 					updateAction('run')
@@ -550,6 +576,7 @@ export function useBasePetLogic({
 		},
 		[
 			findNearestCollectible,
+			canReachFood,
 			behaviorState,
 			isMovingToTarget,
 			actionTimer,
@@ -565,13 +592,23 @@ export function useBasePetLogic({
 	const movePet = useCallback(
 		(currentPosition: Position, currentDirection: number, scale: number) => {
 			const bounds = getBounds()
-			const result = stepWalk(
-				currentPosition,
-				currentDirection,
-				getCurrentSpeed() * scale,
-				FALL_SPEED * scale,
-				bounds
-			)
+			const flight = dimensions.flight
+			const result = flight
+				? stepFlight(
+						currentPosition,
+						currentDirection,
+						getCurrentSpeed() * scale,
+						cruiseAltitudeRef.current + flightBob(flight, performance.now()),
+						flight.climbRate * scale,
+						bounds
+					)
+				: stepWalk(
+						currentPosition,
+						currentDirection,
+						getCurrentSpeed() * scale,
+						FALL_SPEED * scale,
+						bounds
+					)
 
 			if (result.direction !== currentDirection) {
 				setDirection(result.direction)
@@ -579,7 +616,7 @@ export function useBasePetLogic({
 
 			return result.position
 		},
-		[getBounds, getCurrentSpeed]
+		[getBounds, getCurrentSpeed, dimensions.flight]
 	)
 
 	const moveToTarget = useCallback(
@@ -591,6 +628,16 @@ export function useBasePetLogic({
 			const distance = Math.abs(delta)
 			const speed =
 				(action === 'run' ? dimensions.runSpeed : dimensions.walkSpeed) * scale
+			const flight = dimensions.flight
+			const heightAfterDive = (remaining: number) =>
+				flight
+					? stepDive(
+							currentPosition.y,
+							remaining,
+							flight.diveRate * scale,
+							flight.diveSlope
+						)
+					: currentPosition.y
 
 			if (distance <= speed) {
 				setIsMovingToTarget(false)
@@ -608,7 +655,7 @@ export function useBasePetLogic({
 					updateAction('idle')
 				}
 
-				return clampToBounds({ x: targetX, y: currentPosition.y }, bounds)
+				return clampToBounds({ x: targetX, y: heightAfterDive(0) }, bounds)
 			}
 
 			const newDirection = delta > 0 ? 1 : -1
@@ -619,7 +666,7 @@ export function useBasePetLogic({
 			const newX = currentPosition.x + newDirection * speed
 			return {
 				x: Math.max(bounds.minX, Math.min(bounds.maxX, newX)),
-				y: currentPosition.y,
+				y: heightAfterDive(distance),
 			}
 		},
 		[
@@ -627,6 +674,7 @@ export function useBasePetLogic({
 			action,
 			dimensions.runSpeed,
 			dimensions.walkSpeed,
+			dimensions.flight,
 			behaviorState,
 			direction,
 			getBounds,
@@ -671,15 +719,21 @@ export function useBasePetLogic({
 	)
 
 	/** Safety net for a pet ever left with y > 0 outside an active climb. */
-	const applyGravity = useCallback((currentPosition: Position, scale: number) => {
-		if (currentPosition.y > 0) {
-			return {
-				...currentPosition,
-				y: Math.max(0, currentPosition.y - FALL_SPEED * scale),
+	const applyGravity = useCallback(
+		(currentPosition: Position, scale: number) => {
+			if (currentPosition.y > 0) {
+				return {
+					...currentPosition,
+					y: stepLanding(
+						currentPosition.y,
+						(dimensions.flight?.landRate ?? FALL_SPEED) * scale
+					),
+				}
 			}
-		}
-		return currentPosition
-	}, [])
+			return currentPosition
+		},
+		[dimensions.flight]
+	)
 
 	const physicsUpdate = useCallback(
 		(elapsed: number) => {
@@ -792,9 +846,12 @@ export function useBasePetLogic({
 		}
 	}, [petRef])
 
+	const isAirborne = dimensions.flight !== undefined && position.y > 0.5
+
 	const getAnimationForCurrentAction = useCallback(() => {
+		if (isAirborne && animations.fly) return animations.fly
 		return animations[action] || animations.idle
-	}, [animations, action])
+	}, [animations, action, isAirborne])
 
 	return {
 		containerRef,

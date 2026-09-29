@@ -6,9 +6,10 @@ export enum PetTypes {
 	CRAB = 'crab',
 	FROG = 'frog',
 	CAT = 'cat',
+	OWL = 'owl',
 }
 
-type PetSpecies = 'dog' | 'chicken' | 'crab' | 'frog' | 'cat'
+type PetSpecies = 'dog' | 'chicken' | 'crab' | 'frog' | 'cat' | 'owl'
 
 export type PetBackgroundId = 'none' | 'forest' | 'autumn' | 'beach' | 'tehran'
 
@@ -77,6 +78,18 @@ export interface PetAnimations {
 	climb?: string
 	sit?: string
 	stand?: string
+	fly?: string
+}
+
+export interface PetFlight {
+	cruiseMin: number
+	cruiseMax: number
+	bobAmplitude: number
+	bobPeriodMs: number
+	climbRate: number
+	landRate: number
+	diveRate: number
+	diveSlope: number
 }
 
 export interface PetDimensions {
@@ -86,6 +99,7 @@ export interface PetDimensions {
 	runSpeed: number
 	climbSpeed: number
 	maxHeight: number
+	flight?: PetFlight
 }
 
 export interface PetDurations {

@@ -12,6 +12,8 @@ import dogIcon from '@/assets/animals/dog/akita_lie_8fps.webp'
 import dogPreview from '@/assets/animals/dog/akita_idle_8fps.webp'
 import frogIcon from '@/assets/animals/frog/ghoori_lie_8fps.webp'
 import frogPreview from '@/assets/animals/frog/ghoori_swipe_8fps.webp'
+import owlIcon from '@/assets/animals/owl/owl_idle_8fps.webp'
+import owlPreview from '@/assets/animals/owl/owl_swipe_8fps.webp'
 import {
 	type PetBackground,
 	type PetBackgroundId,
@@ -25,6 +27,7 @@ export const PET_ICON: Record<PetTypes, string> = {
 	[PetTypes.CRAB]: crabIcon,
 	[PetTypes.FROG]: frogIcon,
 	[PetTypes.CAT]: catIcon,
+	[PetTypes.OWL]: owlIcon,
 }
 
 export const PET_PREVIEW: Record<PetTypes, string> = {
@@ -33,6 +36,7 @@ export const PET_PREVIEW: Record<PetTypes, string> = {
 	[PetTypes.CRAB]: crabPreview,
 	[PetTypes.FROG]: frogPreview,
 	[PetTypes.CAT]: catPreview,
+	[PetTypes.OWL]: owlPreview,
 }
 
 export const PET_SPECIES_LABEL: Record<PetTypes, string> = {
@@ -41,6 +45,7 @@ export const PET_SPECIES_LABEL: Record<PetTypes, string> = {
 	[PetTypes.CRAB]: 'خرچنگ',
 	[PetTypes.FROG]: 'قورباغه',
 	[PetTypes.CAT]: 'گربه',
+	[PetTypes.OWL]: 'جغد',
 }
 
 export const DEFAULT_PET_BACKGROUND: PetBackgroundId = 'none'
@@ -115,6 +120,11 @@ export const BASE_PET_OPTIONS: PetSettings = {
 		[PetTypes.FROG]: {
 			name: 'قوری',
 			type: 'frog',
+			hungryState: { level: 100, lastHungerTick: null },
+		},
+		[PetTypes.OWL]: {
+			name: 'جغدو',
+			type: 'owl',
 			hungryState: { level: 100, lastHungerTick: null },
 		},
 	},
