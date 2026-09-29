@@ -3,7 +3,7 @@ import { Icon } from '@/icons'
 import { UserCoin } from '@/components/user-coin'
 import { useLazyLoad } from '@/hooks/use-lazy-load'
 import type { GalleryAsset } from '@/services/gallery/get-gallery-assets.hook'
-import { Spinner, Tooltip } from '@/components/ui'
+import { Spinner } from '@/components/ui'
 
 interface GalleryPhotoItemProps {
 	asset: GalleryAsset
@@ -85,19 +85,12 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 					)}
 
 					{asset.accessVip && !asset.isOwned && (
-						<Tooltip
-							content={
-								asset.price > 0
-									? 'رایگان برای کاربران پرو یا قابل خرید با کوین'
-									: 'رایگان برای کاربران پرو'
-							}
-							className="absolute top-1.5 left-1.5 z-10"
-						>
+						<div className="absolute top-1.5 left-1.5 z-10">
 							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip-hover backdrop-blur-xs text-on-vip text-3xs font-bold shadow-sm border border-image-line">
 								<Icon name="diamond" size={10} />
 								<span>رایگان با پرو</span>
 							</span>
-						</Tooltip>
+						</div>
 					)}
 
 					{asset.isOwned && !isSelected && (
