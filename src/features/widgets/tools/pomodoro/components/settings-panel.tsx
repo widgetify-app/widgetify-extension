@@ -16,7 +16,7 @@ const SettingInput: React.FC<SettingInputProps> = ({ label, value, onChange, max
 	const inputId = useId()
 
 	return (
-		<div className="flex items-center justify-between gap-3 p-2 rounded-lg bg-fill">
+		<div className="flex items-center justify-between gap-3 p-2 border-surface-3 bg-surface-3 rounded-2xl">
 			<label
 				htmlFor={inputId}
 				className="flex-1 text-sm font-medium text-fg-strong"
@@ -83,7 +83,7 @@ export const PomodoroSettingsPanel: React.FC<PomodoroSettingsPanelProps> = ({
 					تنظیمات زمان (دقیقه)
 				</h4>
 
-				<div className="my-2">
+				<div className="my-2 flex gap-2 flex-col">
 					<SettingInput
 						label="زمان کار:"
 						value={settings.workTime}
