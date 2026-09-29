@@ -1,8 +1,13 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { listenEvent } from '@/common/utils/call-event'
-import { Modal } from '@/components/ui'
-import { MarketContainer } from '@/features/market/market'
+import { Modal, Spinner } from '@/components/ui'
+
+const MarketContainer = lazy(() =>
+	import('@/features/market/market').then((module) => ({
+		default: module.MarketContainer,
+	}))
+)
 
 export function MarketModalListener() {
 	const [showMarket, setShowMarket] = useState(false)
@@ -27,7 +32,15 @@ export function MarketModalListener() {
 			size="xl"
 			closeOnBackdropClick={true}
 		>
-			<MarketContainer />
+			<Suspense
+				fallback={
+					<div className="flex justify-center py-16">
+						<Spinner size="lg" />
+					</div>
+				}
+			>
+				<MarketContainer />
+			</Suspense>
 		</Modal>
 	)
 }

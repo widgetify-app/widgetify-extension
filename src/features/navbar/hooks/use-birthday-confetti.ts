@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import confetti from 'canvas-confetti'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import type { BirthdayConfettiKey } from '../types'
 
@@ -22,6 +21,7 @@ export function useBirthdayConfetti(isBirthday: boolean) {
 			if (cancelled) return
 
 			timer = setTimeout(async () => {
+				const { default: confetti } = await import('canvas-confetti')
 				confetti({
 					particleCount: 80,
 					spread: 60,

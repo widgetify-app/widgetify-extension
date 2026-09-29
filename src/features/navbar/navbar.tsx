@@ -1,7 +1,14 @@
-import { type JSX, useCallback, useEffect, useMemo, useState } from 'react'
+import {
+	type JSX,
+	lazy,
+	Suspense,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+} from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
-import { SettingModal } from '@/features/setting/setting'
 import { FriendsListNavbar } from './components/friends-navbar'
 import { LayoutDropdown } from './components/layout-dropdown'
 import { ProfileNav } from './profile/profile'
@@ -25,6 +32,12 @@ import { useGetNotifications } from '@/services/extension/get-notifications.hook
 const WIDGETIFY_URLS = {
 	website: 'https://widgetify.ir',
 } as const
+
+const SettingModal = lazy(() =>
+	import('@/features/setting/setting').then((module) => ({
+		default: module.SettingModal,
+	}))
+)
 
 const tabs = [
 	{
@@ -95,6 +108,7 @@ function NavbarTabs() {
 
 export function NavbarLayout(): JSX.Element {
 	const [showSettings, setShowSettings] = useState(false)
+	const [hasOpenedSettings, setHasOpenedSettings] = useState(false)
 	const [isVisible, setIsVisible] = useState(false)
 	const { user } = useAuth()
 	const { canvasMode } = useAppearance()
@@ -105,6 +119,7 @@ export function NavbarLayout(): JSX.Element {
 	const handleOpenSettings = useCallback((tabName: string | null) => {
 		setTab(tabName)
 		setShowSettings(true)
+		setHasOpenedSettings(true)
 	}, [])
 
 	const { data: notificationsData } = useGetNotifications()
@@ -213,12 +228,16 @@ export function NavbarLayout(): JSX.Element {
 
 			<MarketModalListener />
 
-			<SettingModal
-				isOpen={showSettings}
-				onClose={settingsModalCloseHandler}
-				selectedTab={tab}
-				onTabChange={setTab}
-			/>
+			{hasOpenedSettings && (
+				<Suspense fallback={null}>
+					<SettingModal
+						isOpen={showSettings}
+						onClose={settingsModalCloseHandler}
+						selectedTab={tab}
+						onTabChange={setTab}
+					/>
+				</Suspense>
+			)}
 		</>
 	)
 }

@@ -1,11 +1,17 @@
-import { useState, useEffect } from 'react'
+import { lazy, Suspense, useState, useEffect } from 'react'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
-import { ConfirmationModal, Dropdown, Modal } from '@/components/ui'
+import { ConfirmationModal, Dropdown, Modal, Spinner } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
-import AuthForm from '@/features/setting/account/auth-form/auth-form'
 import { ProfileDropdownMenu } from './components/profile-dropdown-menu'
 import { ProfileTrigger } from './components/profile-trigger'
-import { WelcomeWizard } from './components/welcome-wizard'
+
+const AuthForm = lazy(() => import('@/features/setting/account/auth-form/auth-form'))
+
+const WelcomeWizard = lazy(() =>
+	import('./components/welcome-wizard').then((module) => ({
+		default: module.WelcomeWizard,
+	}))
+)
 
 export function ProfileNav() {
 	const { user, isAuthenticated, isVip, profilePercentage, logout } = useAuth()
@@ -78,7 +84,15 @@ export function ProfileNav() {
 				size="sm"
 				title=" "
 			>
-				<AuthForm />
+				<Suspense
+					fallback={
+						<div className="flex justify-center py-16">
+							<Spinner size="lg" />
+						</div>
+					}
+				>
+					<AuthForm />
+				</Suspense>
 			</Modal>
 
 			<ConfirmationModal
@@ -93,10 +107,12 @@ export function ProfileNav() {
 			/>
 
 			{openedWizard && (
-				<WelcomeWizard
-					isOpen={openedWizard}
-					onClose={() => setOpenedWizard(false)}
-				/>
+				<Suspense fallback={null}>
+					<WelcomeWizard
+						isOpen={openedWizard}
+						onClose={() => setOpenedWizard(false)}
+					/>
+				</Suspense>
 			)}
 		</>
 	)
