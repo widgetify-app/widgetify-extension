@@ -171,7 +171,7 @@ const NextEventSummary: React.FC<NextEventSummaryProps> = ({
 				)}
 			</span>
 
-			<span className="block text-[11.5cqh] font-bold text-fg truncate leading-snug">
+			<span className="block text-[11.5cqh] font-bold text-fg truncate leading-control">
 				{title}
 			</span>
 

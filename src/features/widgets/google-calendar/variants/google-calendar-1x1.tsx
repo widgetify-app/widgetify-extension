@@ -143,7 +143,7 @@ export const GoogleCalendar1x1: React.FC<GoogleCalendar1x1Props> = ({
 			</span>
 
 			<span className="block py-1 my-auto">
-				<span className="block text-[11.5cqh] font-bold text-fg truncate leading-snug">
+				<span className="block text-[11.5cqh] font-bold text-fg truncate leading-control">
 					{title}
 				</span>
 				<span className="block text-[8.3cqh] text-fg-muted mt-0.5 tabular-nums">

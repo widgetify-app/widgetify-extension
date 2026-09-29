@@ -26,7 +26,7 @@ export function PetOptionTile({ label, selected, onSelect, children, className }
 			{children}
 			<span
 				className={cn(
-					'w-full py-1 text-3xs leading-[1.7] text-center',
+					'w-full py-1 text-3xs leading-relaxed text-center',
 					selected ? 'font-medium text-brand' : 'text-fg-muted'
 				)}
 			>

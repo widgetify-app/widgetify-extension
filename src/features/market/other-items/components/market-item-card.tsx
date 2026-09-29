@@ -74,7 +74,7 @@ export function MarketItemCard({
 
 			{/* Card body */}
 			<div className="flex flex-col flex-1 px-3 py-2.5 gap-2">
-				<p className="text-xs font-semibold text-fg-strong leading-snug truncate">
+				<p className="text-xs font-semibold text-fg-strong leading-control truncate">
 					{item.name}
 				</p>
 

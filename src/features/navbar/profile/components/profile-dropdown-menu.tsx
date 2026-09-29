@@ -50,7 +50,7 @@ export function ProfileDropdownMenu({
 							</span>
 							{isVip && <VipBadge size="xs" variant="subtle" iconOnly />}
 						</div>
-						<span className="text-2xs text-fg-muted truncate leading-normal">
+						<span className="text-2xs text-fg-muted truncate leading-body">
 							مشاهده پروفایل
 						</span>
 					</div>

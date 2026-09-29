@@ -228,7 +228,7 @@ export function TodoItem({
 
 			{expanded && (
 				<div className="border-t border-line bg-fill px-2.5 py-2">
-					<p className="mb-0 text-2xs leading-snug text-fg-muted whitespace-pre-wrap">
+					<p className="mb-0 text-2xs leading-control text-fg-muted whitespace-pre-wrap">
 						{currentTodo.text}
 					</p>
 					{hasFriends && (

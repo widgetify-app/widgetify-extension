@@ -96,7 +96,7 @@ export const GoogleCalendarTimelineItem = ({
 				<div className="flex items-center min-w-0 gap-1">
 					<span
 						className={cn(
-							'flex-1 text-2xs leading-snug truncate',
+							'flex-1 text-2xs leading-control truncate',
 							isNow ? 'font-bold text-fg' : 'font-semibold',
 							isPast ? 'line-through text-fg-muted' : 'text-fg'
 						)}

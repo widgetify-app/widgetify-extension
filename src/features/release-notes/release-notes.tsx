@@ -179,7 +179,7 @@ export const UpdateReleaseNotesModal = ({
 						<div className="flex flex-col justify-between h-full gap-2">
 							<div className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-brand">
 								<span className="text-sm">💣</span>
-								<span className="text-lg font-bold leading-normal">
+								<span className="text-lg font-bold leading-body">
 									بزرگ‌ترین تحول: چیدمان کاملا آزاد و بی‌نهایت
 								</span>
 							</div>

@@ -49,10 +49,12 @@
 	--text-3xs: 0.625rem;
 	--text-4xs: 0.5625rem;
 
+	--leading-*: initial;
 	--leading-body: 1.5625;
 	--leading-control: 1.4;
 	--leading-tight: 1.25;
 	--leading-relaxed: 1.75;
+	--leading-loose: 2;
 
 	/* --------------------------------------------
      RADIUS

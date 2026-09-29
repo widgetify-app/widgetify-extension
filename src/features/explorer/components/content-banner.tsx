@@ -98,7 +98,7 @@ export function RenderContentBanner({ link, onOpenPromoModal }: BannerProp) {
 						{link.name}
 					</h3>
 					{link.description && (
-						<p className="text-2xs text-[rgba(255,255,255,0.75)] line-clamp-1 mt-0.5 drop-shadow-xs leading-normal font-normal">
+						<p className="text-2xs text-[rgba(255,255,255,0.75)] line-clamp-1 mt-0.5 drop-shadow-xs leading-body font-normal">
 							{link.description}
 						</p>
 					)}

@@ -162,7 +162,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 						<h3 className="text-base font-semibold truncate text-fg">
 							{displayName}
 						</h3>
-						<span className="px-2 py-0.5 text-3xs leading-[1.7] border rounded-full text-fg border-surface-3 bg-surface-2">
+						<span className="px-2 py-0.5 text-3xs leading-relaxed border rounded-full text-fg border-surface-3 bg-surface-2">
 							{PET_SPECIES_LABEL[petType]}
 						</span>
 					</div>
