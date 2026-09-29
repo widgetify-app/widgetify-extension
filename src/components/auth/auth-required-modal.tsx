@@ -32,7 +32,6 @@ export function AuthRequiredModal({
 			onClose={onClose}
 			closeOnBackdropClick={true}
 			showCloseButton={true}
-			title=" "
 		>
 			<div className="flex flex-col items-center justify-between w-full h-56 pt-2 text-center">
 				<div className="relative flex items-center justify-center w-16 h-16 border shadow-sm rounded-2xl bg-surface-2 border-surface-3">

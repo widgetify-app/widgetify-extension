@@ -23,6 +23,7 @@ type ModalProps = VariantProps<typeof modalBoxVariants> & {
 	children: ReactNode
 	closeOnBackdropClick?: boolean
 	showCloseButton?: boolean
+	dismissible?: boolean
 	className?: string
 	zIndex?: number
 }
@@ -38,6 +39,7 @@ export function Modal({
 	children,
 	closeOnBackdropClick = true,
 	showCloseButton = true,
+	dismissible = true,
 	className,
 	zIndex: customZIndex,
 }: ModalProps) {
@@ -95,7 +97,8 @@ export function Modal({
 			aria-labelledby={title ? titleId : undefined}
 			aria-modal="true"
 			onClick={(e) => {
-				if (closeOnBackdropClick && e.target === dialogRef.current) onClose()
+				if (dismissible && closeOnBackdropClick && e.target === dialogRef.current)
+					onClose()
 			}}
 			onContextMenu={(e) => e.stopPropagation()}
 			className={cn('flex items-center justify-center', modalDialogVariants())}
@@ -127,7 +130,8 @@ export function Modal({
 							<button
 								type="button"
 								onClick={onClose}
-								className="flex items-center justify-center transition-ui cursor-pointer w-7 h-7 md:w-8 md:h-8 bg-surface-3 text-fg-muted hover:bg-fill-2 hover:scale-105 active:scale-95 shrink-0 border-0! rounded-lg focus-visible:focus-ring"
+								disabled={!dismissible}
+								className="flex items-center justify-center ms-auto transition-ui cursor-pointer w-7 h-7 md:w-8 md:h-8 bg-surface-3 text-fg-muted hover:bg-fill-2 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shrink-0 border-0! rounded-lg focus-visible:focus-ring"
 								aria-label="بستن"
 							>
 								<Icon name="close" size={16} className="md:hidden" />

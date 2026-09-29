@@ -66,14 +66,7 @@ export function GalleryAssetPurchaseModal({
 	}
 
 	return (
-		<Modal
-			isOpen={isOpen}
-			onClose={onClose}
-			title=" "
-			size="md"
-			closeOnBackdropClick={!isPending}
-			showCloseButton={!isPending}
-		>
+		<Modal isOpen={isOpen} onClose={onClose} size="md" dismissible={!isPending}>
 			<div className="space-y-4">
 				<div className="relative overflow-hidden rounded-2xl bg-fill-2 max-h-[340px] flex items-center justify-center">
 					<img

@@ -34,7 +34,7 @@ export function FreeVipSuccessModal({
 	}
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} size="sm" closeOnBackdropClick title=" ">
+		<Modal isOpen={isOpen} onClose={onClose} size="sm" closeOnBackdropClick>
 			<div className="flex flex-col items-center text-center p-2 space-y-4 select-none">
 				<div className="flex justify-center">
 					<img

@@ -54,10 +54,8 @@ export function MarketItemPurchaseModal({
 		<Modal
 			isOpen={isOpen}
 			onClose={() => onClose(false)}
-			title=" "
 			size="md"
-			closeOnBackdropClick={!isPending}
-			showCloseButton={!isPending}
+			dismissible={!isPending}
 		>
 			<div className="space-y-4">
 				<div className="relative flex items-center justify-center overflow-hidden rounded-2xl bg-fill-2 max-h-85">

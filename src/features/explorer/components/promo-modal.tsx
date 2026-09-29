@@ -65,7 +65,6 @@ export function ExplorerPromoModal({ isOpen, onClose, item }: ExplorerPromoModal
 			size="md"
 			closeOnBackdropClick={true}
 			showCloseButton={true}
-			title=" "
 		>
 			<div className="space-y-3.5 pt-0.5">
 				{/* Visual / Gallery Container */}

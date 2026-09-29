@@ -63,7 +63,7 @@ export function DialogChecker() {
 		<Modal
 			isOpen={show}
 			onClose={() => onClose()}
-			title={dialog.dialogTitle || ' '}
+			title={dialog.dialogTitle}
 			showCloseButton={true}
 		>
 			<div className="flex flex-col gap-3 p-2">
