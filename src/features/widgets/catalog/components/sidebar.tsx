@@ -1,5 +1,5 @@
 import type React from 'react'
-import { Badge, Button, VipBadge } from '@/components/ui'
+import { Badge, Button, Chip, VipBadge } from '@/components/ui'
 import { cn } from '@/common/utils/cn'
 import type {
 	WidgetCategory,
@@ -40,19 +40,14 @@ export function AddWidgetSidebar({
 		<div className="flex flex-col w-full pb-3 pl-0 border-b md:min-h-0 md:w-5/12 md:border-b-0 md:border-l border-line md:pl-3 md:pb-0">
 			<div className="flex items-center gap-1 pb-2 mb-2 overflow-x-auto border-b shrink-0 scrollbar-none border-line">
 				{categories.map((cat) => (
-					<button
-						key={cat.id}
-						type="button"
+					<Chip
 						onClick={() => onSelectCategory(cat.id)}
-						className={cn(
-							'px-2.5 py-1 rounded-xl text-xs whitespace-nowrap transition-ui cursor-pointer font-medium',
-							activeCategory === cat.id
-								? 'bg-brand text-on-brand font-bold shadow-sm'
-								: 'bg-fill-2 hover:bg-surface-2 text-fg-muted'
-						)}
+						key={cat.id}
+						selected={activeCategory === cat.id}
+						className="px-2.5 py-1 rounded-xl text-xs whitespace-nowrap transition-ui cursor-pointer font-medium"
 					>
 						{cat.label}
-					</button>
+					</Chip>
 				))}
 			</div>
 
@@ -74,7 +69,7 @@ export function AddWidgetSidebar({
 									'relative w-full flex items-center justify-between p-2.5 rounded-2xl border text-right transition-ui duration-150',
 									isSelected
 										? 'bg-brand-fill border-brand shadow-sm'
-										: 'bg-fill-2 hover:bg-surface-2 border-line'
+										: 'bg-surface-2 hover:bg-surface-3 border-surface-3'
 								)}
 							>
 								<button
