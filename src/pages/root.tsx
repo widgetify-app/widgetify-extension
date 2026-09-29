@@ -17,7 +17,6 @@ import { HomePage } from '@/pages/home/home.page'
 import { useEffect } from 'react'
 import { useWallpaperApply } from '@/pages/hooks/use-wallpaper-apply'
 import { WallpaperProvider } from '@/context/wallpaper.context'
-import { IconProvider } from '@/icons'
 
 export function RootLayout() {
 	useWallpaperApply()
@@ -27,7 +26,7 @@ export function RootLayout() {
 	}, [])
 
 	return (
-		<IconProvider defaultTheme="default">
+		<>
 			<div className="w-full min-h-screen mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-screen overflow-y-auto scrollbar-none">
 				<GeneralSettingProvider>
 					<WallpaperProvider>
@@ -36,7 +35,7 @@ export function RootLayout() {
 				</GeneralSettingProvider>
 			</div>
 			<StackedToaster />
-		</IconProvider>
+		</>
 	)
 }
 
