@@ -1045,7 +1045,17 @@ describe('classes', () => {
 		bare = await stylesheetFor(candidates, false)
 	})
 
-	const compiles = (token: string, css: string) => css.includes(selectorOf(token))
+	const compiles = (token: string, css: string) => {
+		const selector = selectorOf(token)
+		for (
+			let at = css.indexOf(selector);
+			at !== -1;
+			at = css.indexOf(selector, at + 1)
+		) {
+			if (!/[\w\\-]/.test(css[at + selector.length] ?? '')) return true
+		}
+		return false
+	}
 	const isMarker = (token: string) => /^(group|peer)(\/[\w-]+)?$/.test(token)
 
 	it('are only ones that compile to CSS', () => {

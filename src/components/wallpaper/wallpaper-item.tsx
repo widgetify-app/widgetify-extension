@@ -166,7 +166,7 @@ function WallpaperItemFu({
 							)}
 
 							{isAnimated && (
-								<div className="absolute flex gap-0.5 px-1 rounded-t-none rounded-b-lg bg-info text-on-info shadow-sm  items-center top-0 right-0 m- inset-x-0 m-auto w-max h-4">
+								<div className="absolute flex gap-0.5 px-1 rounded-t-none rounded-b-lg bg-info text-on-info shadow-sm  items-center top-0 right-0 inset-x-0 m-auto w-max h-4">
 									<Icon name="play" size={12} />
 									<span className="text-3xs! font-normal">متحرک</span>
 								</div>
