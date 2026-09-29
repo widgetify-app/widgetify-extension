@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { Icon } from '@/icons'
-import { ConfirmationModal } from '@/components/ui'
+import { ConfirmationModal, Tooltip } from '@/components/ui'
 import Analytics from '@/analytics'
 
 export function BlurModeButton() {
@@ -28,16 +28,18 @@ export function BlurModeButton() {
 
 	return (
 		<>
-			<div
-				onClick={handleBlurModeToggle}
-				className="relative p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
-			>
-				{blurMode ? (
-					<Icon name="outlineEye" size={15} />
-				) : (
-					<Icon name="outlineEyeSlash" size={15} />
-				)}
-			</div>
+			<Tooltip content="حالت مخفی">
+				<div
+					onClick={handleBlurModeToggle}
+					className="relative p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
+				>
+					{blurMode ? (
+						<Icon name="outlineEye" size={15} />
+					) : (
+						<Icon name="outlineEyeSlash" size={15} />
+					)}
+				</div>
+			</Tooltip>
 
 			<ConfirmationModal
 				isOpen={showConfirm}

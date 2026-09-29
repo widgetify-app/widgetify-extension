@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
-import { ConfirmationModal, Dropdown, Modal } from '@/components/ui'
+import { ConfirmationModal, Dropdown, Modal, Tooltip } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import AuthForm from '../../setting/tabs/account/auth-form/auth-form'
 import { ProfileDropdownMenu } from './components/profile-dropdown-menu'
@@ -56,11 +56,13 @@ export function ProfileNav() {
 		<>
 			<Dropdown
 				trigger={
-					<ProfileTrigger
-						user={user}
-						isAuthenticated={isAuthenticated}
-						profilePercentage={profilePercentage}
-					/>
+					<Tooltip content="پروفایل">
+						<ProfileTrigger
+							user={user}
+							isAuthenticated={isAuthenticated}
+							profilePercentage={profilePercentage}
+						/>
+					</Tooltip>
 				}
 			>
 				<ProfileDropdownMenu

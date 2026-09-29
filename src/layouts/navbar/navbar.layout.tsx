@@ -13,7 +13,7 @@ import { useAuth } from '@/context/auth.context'
 import { useAppearance } from '@/context/appearance.context'
 import { BlurModeButton } from './components/blur-mode.button'
 import type { UserProfile } from '@/services/hooks/user/user-service.hook'
-import { NewBadge } from '@/components/ui'
+import { NewBadge, Tooltip } from '@/components/ui'
 import { SyncAccount } from './sync'
 import { getCurrentDate } from '../widgets/calendar/utils/date-events'
 import { useBirthdayConfetti } from '@/hooks/use-birthday-confetti'
@@ -30,7 +30,7 @@ const tabs = [
 		id: Page.Home,
 		icon: <Icon name="outlineHome" />,
 		activeIcon: <Icon name="home" />,
-		label: 'ویجتیفای',
+		label: 'خانه',
 	},
 
 	{
@@ -58,32 +58,34 @@ export function NavbarTabs() {
 	return (
 		<div className="flex items-center gap-2 sm:gap-4">
 			{tabs.map((tab) => (
-				<button
-					key={tab.id}
-					onClick={() => handleTabClick(tab.id)}
-					className="relative p-1.5 sm:p-2 cursor-pointer group nav-btn"
-				>
-					<span
-						className={`
+				<Tooltip key={tab.id} content={tab.label}>
+					<button
+						onClick={() => handleTabClick(tab.id)}
+						aria-label={tab.label}
+						className="relative p-1.5 sm:p-2 cursor-pointer group nav-btn"
+					>
+						<span
+							className={`
             relative z-10 transition-all duration-300 block
             ${page === tab.id ? 'text-primary scale-110' : 'nav-btn text-base-content/20 hover:text-base-content/40'}
         `}
-					>
-						{page === tab.id && tab.activeIcon ? (
-							<span className="block text-[18px] sm:text-[22px]">
-								{tab.activeIcon}
-							</span>
-						) : (
-							<span className="block text-[18px] sm:text-[22px]">
-								{tab.icon}
-							</span>
-						)}
-					</span>
+						>
+							{page === tab.id && tab.activeIcon ? (
+								<span className="block text-[18px] sm:text-[22px]">
+									{tab.activeIcon}
+								</span>
+							) : (
+								<span className="block text-[18px] sm:text-[22px]">
+									{tab.icon}
+								</span>
+							)}
+						</span>
 
-					{page === tab.id && (
-						<div className="absolute bottom-0 left-0 w-4 mx-auto right-0 h-1 bg-primary rounded-t-full shadow-[0_-4px_12px_rgba(var(--primary-rgb),0.8)]"></div>
-					)}
-				</button>
+						{page === tab.id && (
+							<div className="absolute bottom-0 left-0 w-4 mx-auto right-0 h-1 bg-primary rounded-t-full shadow-[0_-4px_12px_rgba(var(--primary-rgb),0.8)]"></div>
+						)}
+					</button>
+				</Tooltip>
 			))}
 		</div>
 	)
@@ -175,6 +177,7 @@ export function NavbarLayout(): JSX.Element {
 							href={WIDGETIFY_URLS.website}
 							target="_blank"
 							rel="noopener noreferrer"
+							aria-label="وب‌سایت ویجتیفای"
 							className="flex items-center justify-center border rounded-full border-white/10 bg-black/20 outline-2 outline-base-300"
 						>
 							<img
@@ -193,12 +196,15 @@ export function NavbarLayout(): JSX.Element {
 					</div>
 
 					<div className="flex items-center justify-end flex-1 gap-1 sm:gap-2">
-						<button
-							onClick={() => onToggleNavbar()}
-							className="p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
-						>
-							<Icon name="chevronDown" size={15} />
-						</button>
+						<Tooltip content="بستن نوار">
+							<button
+								onClick={() => onToggleNavbar()}
+								aria-label="بستن نوار"
+								className="p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
+							>
+								<Icon name="chevronDown" size={15} />
+							</button>
+						</Tooltip>
 						<NotificationNavbar />
 						<BlurModeButton />
 						<FriendsListNavbar />

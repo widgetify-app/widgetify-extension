@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AuthRequiredModal } from '@/components/auth/auth-required-modal'
 import { useAuth } from '@/context/auth.context'
-import { BottomSheet } from '@/components/ui'
+import { BottomSheet, Tooltip } from '@/components/ui'
 import { FriendsDirectView } from '@/layouts/friends/components/friends-direct-view'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { FriendRequestsButton } from '@/layouts/friends/components/buttons/friend-requests.button'
@@ -45,14 +45,16 @@ export function FriendsListNavbar() {
 
 	return (
 		<>
-			<div
-				className="relative p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
-				onClick={() => clickToOpenSheet()}
-			>
-				<Icon name="friends" size={15} />
-				{hasPendingRequests &&
-					renderPendingNotification(user?.friendshipStats?.pending || 0)}
-			</div>
+			<Tooltip content="دوستان">
+				<div
+					className="relative p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
+					onClick={() => clickToOpenSheet()}
+				>
+					<Icon name="friends" size={15} />
+					{hasPendingRequests &&
+						renderPendingNotification(user?.friendshipStats?.pending || 0)}
+				</div>
+			</Tooltip>
 
 			<BottomSheet isOpen={isOpen} onClose={() => setIsOpen(false)} size="medium">
 				<div className="pt-2 h-[calc(50vh-2rem)]">

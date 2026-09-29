@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Dropdown, NewBadge } from '@/components/ui'
+import { Dropdown, NewBadge, Tooltip } from '@/components/ui'
 import { Icon } from '@/icons'
 import { useGetNotifications } from '@/services/hooks/extension/get-notifications.hook'
 import { NotificationCenter } from '@/layouts/navbar/notifications/notification-center/notification-center'
@@ -27,14 +27,18 @@ export function NotificationNavbar() {
 			maxHeight="420px"
 			dropdownClassName="w-80 sm:w-96 rounded-2xl"
 			trigger={
-				<div
-					onClick={handleOpen}
-					className="relative p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
-					id="notifications-button"
-				>
-					<Icon name="notification" size={15} />
-					{hasCloseableNotifications && <NewBadge className="top-1 right-1" />}
-				</div>
+				<Tooltip content="اعلان‌ها">
+					<div
+						onClick={handleOpen}
+						className="relative p-2 transition-all cursor-pointer nav-btn text-base-content/40 hover:text-base-content active:scale-90"
+						id="notifications-button"
+					>
+						<Icon name="notification" size={15} />
+						{hasCloseableNotifications && (
+							<NewBadge className="top-1 right-1" />
+						)}
+					</div>
+				</Tooltip>
 			}
 		>
 			<div className="flex flex-col p-3 w-80 bg-content bg-glass" dir="rtl">
