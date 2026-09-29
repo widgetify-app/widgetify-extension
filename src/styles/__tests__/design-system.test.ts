@@ -169,8 +169,7 @@ describe('white and black', () => {
 		const depictsBrands = [
 			'src/features/setting/account/user-profile/connections/connections.tsx',
 		]
-		const awaitingDecision = ['src/components/ui/toggle/toggle.variants.ts']
-		const allowed = [...alwaysDark, ...depictsBrands, ...awaitingDecision]
+		const allowed = [...alwaysDark, ...depictsBrands]
 		const pattern =
 			/(?<![\w-])(?:[a-z0-9/-]+:)*!?(bg|text|border|ring|from|to|via|fill|stroke|outline|divide|shadow|placeholder|decoration)-(white|black)(?![\w-])/
 		const bad = offenders(pattern).filter(
