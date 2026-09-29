@@ -33,6 +33,8 @@ const WIDGETIFY_URLS = {
 	website: 'https://widgetify.ir',
 } as const
 
+const LOGO_URL = browser.runtime.getURL('/icons/icon128.png')
+
 const SettingModal = lazy(() =>
 	import('@/features/setting/setting').then((module) => ({
 		default: module.SettingModal,
@@ -199,8 +201,11 @@ export function NavbarLayout(): JSX.Element {
 							className="flex items-center justify-center border rounded-full border-image-line bg-scrim-soft outline-2 outline-surface-3"
 						>
 							<img
-								src={'https://cdn.widgetify.ir/extension/logo.png'}
+								src={LOGO_URL}
 								alt="ویجتیفای"
+								width={32}
+								height={32}
+								decoding="async"
 								className="object-contain w-7 h-7 sm:w-8 sm:h-8"
 							/>
 						</a>
