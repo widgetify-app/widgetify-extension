@@ -9,7 +9,6 @@ import { GoogleCalendarNowCard } from '../components/google-calendar-now-card'
 import { GoogleCalendarWeekStrip } from '../components/google-calendar-week-strip'
 import type { ClassifiedCalendarEvent } from '../types'
 import { isSameJalaliDay, toIsoDateKey } from '@/features/widgets/utils/jalali-date'
-import { Tooltip } from '@/components/ui'
 
 const navButtonClass =
 	'flex items-center justify-center w-6 h-6 rounded-lg cursor-pointer transition-ui text-fg-muted opacity-70 hover:opacity-100 hover:bg-fill-2 focus-visible:focus-ring'
@@ -74,26 +73,21 @@ export const GoogleCalendarSchedule: React.FC<GoogleCalendarScheduleProps> = ({
 							امروز
 						</button>
 					)}
-					<Tooltip content="هفته قبل">
-						<button
-							type="button"
-							onClick={() => goToWeek(-7, 'google_calendar_prev_week')}
-							aria-label="هفته قبل"
-							className={navButtonClass}
-						>
-							<Icon name="chevronRight" size={14} aria-hidden="true" />
-						</button>
-					</Tooltip>
-					<Tooltip content="هفته بعد">
-						<button
-							type="button"
-							onClick={() => goToWeek(7, 'google_calendar_next_week')}
-							aria-label="هفته بعد"
-							className={navButtonClass}
-						>
-							<Icon name="chevronLeft" size={14} aria-hidden="true" />
-						</button>
-					</Tooltip>
+					<button
+						type="button"
+						onClick={() => goToWeek(-7, 'google_calendar_prev_week')}
+						className={navButtonClass}
+					>
+						<Icon name="chevronRight" size={14} aria-hidden="true" />
+					</button>
+					<button
+						type="button"
+						onClick={() => goToWeek(7, 'google_calendar_next_week')}
+						aria-label="هفته بعد"
+						className={navButtonClass}
+					>
+						<Icon name="chevronLeft" size={14} aria-hidden="true" />
+					</button>
 				</nav>
 			</header>
 

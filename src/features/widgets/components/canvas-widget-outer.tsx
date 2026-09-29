@@ -12,7 +12,7 @@ import {
 } from '../utils/layout-engine/types'
 import { cn } from '@/common/utils/cn'
 import { useAuth } from '@/context/auth.context'
-import { VipBadge, Tooltip } from '@/components/ui'
+import { VipBadge } from '@/components/ui'
 import { useWidgetVipResolver } from '@/features/widgets/hooks/use-widget-vip-resolver'
 import { WidgetContextMenu } from './widget-context-menu'
 import { BookmarkDeleteModal } from './bookmark-delete-modal'
@@ -346,23 +346,21 @@ function CanvasWidgetOuterImpl({
 				}}
 			>
 				{canvasMode === 'edit' && (
-					<Tooltip content="حذف ویجت" className="absolute z-50 -top-2 -right-2">
-						<button
-							type="button"
-							aria-label="حذف ویجت"
-							data-widget-delete
-							onPointerDown={(e) => e.stopPropagation()}
-							onPointerUp={(e) => e.stopPropagation()}
-							onClick={(e) => {
-								e.preventDefault()
-								e.stopPropagation()
-								handleDelete()
-							}}
-							className="flex items-center justify-center w-6 h-6 text-xs font-bold text-on-danger transition-transform rounded-full shadow-lg cursor-pointer bg-danger hover:scale-110 active:scale-95"
-						>
-							✕
-						</button>
-					</Tooltip>
+					<button
+						type="button"
+						title="حذف ویجت"
+						data-widget-delete
+						onPointerDown={(e) => e.stopPropagation()}
+						onPointerUp={(e) => e.stopPropagation()}
+						onClick={(e) => {
+							e.preventDefault()
+							e.stopPropagation()
+							handleDelete()
+						}}
+						className="absolute z-50 flex items-center justify-center w-6 h-6 text-xs font-bold text-on-danger transition-transform rounded-full shadow-lg cursor-pointer -top-2 -right-2 bg-danger hover:scale-110 active:scale-95"
+					>
+						✕
+					</button>
 				)}
 
 				<div

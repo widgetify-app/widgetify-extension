@@ -5,7 +5,7 @@ import { playAlarm } from '@/common/utils/play-alarm'
 import { showToast } from '@/common/toast'
 import { cn } from '@/common/utils/cn'
 import { translateError } from '@/common/utils/translate-error'
-import { Spinner, Tooltip } from '@/components/ui'
+import { Spinner } from '@/components/ui'
 import type { WidgetifyDate } from '@/common/utils/date-events'
 import { Icon } from '@/icons'
 import { safeAwait } from '@/services/api'
@@ -220,54 +220,47 @@ export function HabitCompactWide({
 					const isSelected = habit.id === selectedId
 
 					return (
-						<Tooltip
+						<button
+							type="button"
 							key={habit.id}
-							content={habit.title}
-							className="shrink-0"
+							onClick={(e) => {
+								e.stopPropagation()
+								setSelectedId(habit.id)
+							}}
+							aria-pressed={isSelected}
+							aria-label={habit.title}
+							className={cn(
+								'flex items-center justify-center text-4xs rounded-full w-[18px] h-[18px] shrink-0 transition-ui cursor-pointer',
+								'focus-visible:focus-ring',
+								isSelected && 'scale-125'
+							)}
+							style={{
+								backgroundColor: habitDone
+									? habitColor
+									: `${habitColor}22`,
+								color: habitDone
+									? getContrastingTextColor(habitColor)
+									: habitColor,
+								opacity: habitDone ? 1 : 0.45 + habitProgress * 0.55,
+								boxShadow: isSelected
+									? `0 0 0 2px ${habitColor}`
+									: 'none',
+							}}
 						>
-							<button
-								type="button"
-								onClick={(e) => {
-									e.stopPropagation()
-									setSelectedId(habit.id)
-								}}
-								aria-pressed={isSelected}
-								aria-label={habit.title}
-								className={cn(
-									'flex items-center justify-center text-4xs rounded-full w-[18px] h-[18px] shrink-0 transition-ui cursor-pointer',
-									'focus-visible:focus-ring',
-									isSelected && 'scale-125'
-								)}
-								style={{
-									backgroundColor: habitDone
-										? habitColor
-										: `${habitColor}22`,
-									color: habitDone
-										? getContrastingTextColor(habitColor)
-										: habitColor,
-									opacity: habitDone ? 1 : 0.45 + habitProgress * 0.55,
-									boxShadow: isSelected
-										? `0 0 0 2px ${habitColor}`
-										: 'none',
-								}}
-							>
-								{habit.emoji || '🎯'}
-							</button>
-						</Tooltip>
+							{habit.emoji || '🎯'}
+						</button>
 					)
 				})}
 
 				{onAddHabit && (
-					<Tooltip content="عادت جدید" className="shrink-0">
-						<button
-							type="button"
-							onClick={onAddHabit}
-							aria-label="عادت جدید"
-							className="flex items-center justify-center w-[18px] h-[18px] rounded-full shrink-0 cursor-pointer text-fg-muted bg-fill-2 transition-ui hover:text-fg-strong hover:bg-fill-3 focus-visible:focus-ring"
-						>
-							<Icon name="plus" size={12} aria-hidden="true" />
-						</button>
-					</Tooltip>
+					<button
+						type="button"
+						onClick={onAddHabit}
+						aria-label="عادت جدید"
+						className="flex items-center justify-center w-[18px] h-[18px] rounded-full shrink-0 cursor-pointer text-fg-muted bg-fill-2 transition-ui hover:text-fg-strong hover:bg-fill-3 focus-visible:focus-ring"
+					>
+						<Icon name="plus" size={12} aria-hidden="true" />
+					</button>
 				)}
 			</div>
 		</div>
