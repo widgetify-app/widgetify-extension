@@ -21,7 +21,6 @@ export function ProfileProgressNotification({ className }: Prop) {
 	return (
 		<div
 			className={`flex w-full gap-2 px-2 py-1 transition-ui duration-300 border cursor-pointer rounded-xl  border-surface-3 hover:scale-[0.99] active:scale-[0.99] ${className}`}
-			id="update_profile"
 			onClick={() => onClick()}
 		>
 			<div className="flex flex-row items-center w-full gap-2 rounded-xl ">

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { AuthRequiredModal } from '@/components/auth/auth-required-modal'
 import { useAuth } from '@/context/auth.context'
 import { BottomSheet } from '@/components/ui'
 import { FriendsDirectView } from '@/features/friends/friends'
@@ -10,14 +9,10 @@ import { Icon } from '@/icons'
 export function FriendsListNavbar() {
 	const { user, isAuthenticated } = useAuth()
 
-	const [firstAuth, setFirstAuth] = useState(false)
 	const [isOpen, setIsOpen] = useState(false)
 
-	const handleAuthModalClose = () => setFirstAuth(false)
-
 	const clickToOpenSheet = () => {
-		if (isOpen === false) {
-			//current state
+		if (!isOpen) {
 			Analytics.event('friends_navbar_opened')
 		}
 
@@ -57,14 +52,6 @@ export function FriendsListNavbar() {
 					<FriendsDirectView />
 				</div>
 			</BottomSheet>
-			<AuthRequiredModal
-				isOpen={firstAuth}
-				onClose={handleAuthModalClose}
-				title="ورود به حساب کاربری"
-				message="برای دسترسی به بخش مدیریت دوستان اول وارد حسابت شو"
-				loginButtonText="ورود به حساب"
-				cancelButtonText="فعلا نه"
-			/>
 		</>
 	)
 }

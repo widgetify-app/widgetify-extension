@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
 import { NotificationCardItem } from './notification-item'
 import { listenEvent } from '@/common/utils/call-event'
@@ -12,8 +12,15 @@ import { useAuth } from '@/context/auth.context'
 import { DailyMoodNotification } from './daily-mood'
 import { ProfileProgressNotification } from './profile-progress'
 import { safeAwait } from '@/services/api'
+import { Icon } from '@/icons'
 
 const localIds = ['notificationMood', 'update_profile']
+
+interface PushedNotification {
+	id: string
+	node: ReactNode
+}
+
 interface Prop {
 	hasBorder?: boolean
 }
@@ -24,28 +31,29 @@ export function NotificationCenter({ hasBorder }: Prop = { hasBorder: true }) {
 	const { mutateAsync: notifyAsSeen } = useNotifyAsSeen()
 
 	const [dismissedIds, setDismissedIds] = useState<Set<string>>(new Set())
-	const [pushed, setPushed] = useState<{ id: string; node: ReactNode }[]>([])
+	const [pushed, setPushed] = useState<PushedNotification[]>([])
 
 	const notifications = useMemo(() => {
 		const items = fetchedNotifications?.widgetifyCard || []
 		return items.filter((item) => item.id && !dismissedIds.has(item.id))
 	}, [fetchedNotifications?.widgetifyCard, dismissedIds])
 
-	const addToNodes = async (notif: { id: string; node: React.ReactNode }) => {
-		const notifFromStorage = await getWithExpiry(`removed_notification_${notif.id}`)
-		if (!notifFromStorage) {
-			setPushed((prev: any) => {
-				if (
-					prev.some(
-						(item: { id: string; node: ReactNode }) => item.id === notif.id
-					)
-				) {
-					return prev
-				}
-				return [...prev, notif]
-			})
-		}
-	}
+	const addToNodes = useCallback(async (notif: PushedNotification) => {
+		const removedRecently = await getWithExpiry(`removed_notification_${notif.id}`)
+		if (removedRecently) return
+
+		setPushed((prev) =>
+			prev.some((item) => item.id === notif.id) ? prev : [...prev, notif]
+		)
+	}, [])
+
+	const removeFromNodes = useCallback((id: string) => {
+		setPushed((prev) =>
+			prev.some((item) => item.id === id)
+				? prev.filter((item) => item.id !== id)
+				: prev
+		)
+	}, [])
 
 	useEffect(() => {
 		if (isAuthenticated && !isLoadingUser) {
@@ -74,40 +82,18 @@ export function NotificationCenter({ hasBorder }: Prop = { hasBorder: true }) {
 					),
 				})
 			} else {
-				try {
-					document.getElementById('update_profile')?.remove()
-				} catch {}
+				removeFromNodes('update_profile')
 			}
 		}
-	}, [isAuthenticated, user, hasBorder])
+	}, [isAuthenticated, user, hasBorder, addToNodes, removeFromNodes])
 
 	useEffect(() => {
-		const addEvent = listenEvent(
-			'add_to_notifications',
-			async (notif: { id: string; node: React.ReactNode }) => {
-				const notifFromStorage = await getWithExpiry(
-					`removed_notification_${notif.id}`
-				)
-				if (!notifFromStorage) {
-					setPushed((prev: any) => {
-						if (
-							prev.some(
-								(item: { id: string; node: ReactNode }) =>
-									item.id === notif.id
-							)
-						) {
-							return prev
-						}
-						return [...prev, notif]
-					})
-				}
-			}
-		)
+		const addEvent = listenEvent('add_to_notifications', addToNodes)
 
 		const removeEvent = listenEvent(
 			'remove_from_notifications',
 			async ({ id, ttl }) => {
-				setPushed((prev) => prev.filter((item) => item.id !== id))
+				removeFromNodes(id)
 				if (ttl) {
 					await setWithExpiry(`removed_notification_${id}`, 'true', ttl)
 				} else {
@@ -120,7 +106,7 @@ export function NotificationCenter({ hasBorder }: Prop = { hasBorder: true }) {
 			addEvent()
 			removeEvent()
 		}
-	}, [])
+	}, [addToNodes, removeFromNodes])
 
 	const onClose = async (e: any, id: string, ttl = 1200) => {
 		e.preventDefault()
@@ -146,6 +132,18 @@ export function NotificationCenter({ hasBorder }: Prop = { hasBorder: true }) {
 			))}
 
 			{pushed.map((f) => f.node)}
+
+			{notifications.length === 0 && pushed.length === 0 && (
+				<div className="flex flex-col items-center justify-center py-8 text-center text-fg-muted">
+					<div className="flex items-center justify-center w-10 h-10 mb-2 text-fg-muted">
+						<Icon name="notification" size={18} />
+					</div>
+					<span className="text-xs font-bold text-fg">اعلان جدیدی نداری</span>
+					<span className="text-3xs text-fg-muted mt-0.5">
+						همه چیز به‌روز و مرتبه
+					</span>
+				</div>
+			)}
 		</div>
 	)
 }

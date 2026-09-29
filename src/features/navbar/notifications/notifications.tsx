@@ -13,11 +13,6 @@ export function NotificationNavbar() {
 		return cardItems.some((item) => item.closeable)
 	}, [notificationsData])
 
-	const hasNotifications = useMemo(() => {
-		const cardCount = notificationsData?.widgetifyCard?.length || 0
-		return cardCount > 0
-	}, [notificationsData])
-
 	const handleOpen = () => {
 		Analytics.event('notification_navbar_opened')
 	}
@@ -47,20 +42,6 @@ export function NotificationNavbar() {
 
 				<div className="flex-1 h-48 overflow-y-auto min-h-48 max-h-48 scrollbar-none overscroll-contain">
 					<NotificationCenter hasBorder={true} />
-
-					{!hasNotifications && (
-						<div className="flex flex-col items-center justify-center py-8 text-center text-fg-muted">
-							<div className="flex items-center justify-center w-10 h-10 mb-2 text-fg-muted">
-								<Icon name="notification" size={18} />
-							</div>
-							<span className="text-xs font-bold text-fg">
-								اعلان جدیدی نداری
-							</span>
-							<span className="text-3xs text-fg-muted mt-0.5">
-								همه چیز به‌روز و مرتبه
-							</span>
-						</div>
-					)}
 				</div>
 			</div>
 		</Dropdown>

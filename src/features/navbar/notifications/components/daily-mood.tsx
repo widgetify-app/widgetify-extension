@@ -76,7 +76,6 @@ export function DailyMoodNotification({ className }: Prop) {
 	return (
 		<div
 			className={`flex w-full h-20 gap-2 px-2 py-1 transition-ui duration-300 border rounded-xl border-surface-3 ${className}`}
-			id="notificationMood "
 		>
 			<div className="flex-1 min-w-0 ">
 				<div className="flex items-center justify-between">

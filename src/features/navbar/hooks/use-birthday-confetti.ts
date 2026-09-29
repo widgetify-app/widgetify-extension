@@ -1,30 +1,41 @@
 import { useEffect } from 'react'
 import confetti from 'canvas-confetti'
 import { getFromStorage, setToStorage } from '@/common/storage'
+import type { BirthdayConfettiKey } from '../types'
+
+function birthdayConfettiKey(date: Date): BirthdayConfettiKey {
+	const month = String(date.getMonth() + 1).padStart(2, '0')
+	const day = String(date.getDate()).padStart(2, '0')
+	return `birthday-confetti-${date.getFullYear()}-${month}-${day}`
+}
 
 export function useBirthdayConfetti(isBirthday: boolean) {
 	useEffect(() => {
 		if (!isBirthday) return
 
+		let timer: ReturnType<typeof setTimeout> | undefined
+		let cancelled = false
+
 		const run = async () => {
-			const todayKey = new Date().toISOString().slice(0, 10)
-			const storageKey = `birthday-confetti-${todayKey}`
+			const storageKey = birthdayConfettiKey(new Date())
+			if (await getFromStorage(storageKey)) return
+			if (cancelled) return
 
-			const alreadyShown = await getFromStorage(storageKey as any)
-
-			if (alreadyShown) return
-
-			setTimeout(() => {
+			timer = setTimeout(async () => {
 				confetti({
 					particleCount: 80,
 					spread: 60,
 					origin: { y: 0.3 },
 				})
+				await setToStorage(storageKey, 'true')
 			}, 2000)
-
-			await setToStorage(storageKey as any, 'true' as any)
 		}
 
 		run()
+
+		return () => {
+			cancelled = true
+			clearTimeout(timer)
+		}
 	}, [isBirthday])
 }
