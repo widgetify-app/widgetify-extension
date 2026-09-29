@@ -18,48 +18,48 @@ import { usePetContext } from '../../pet.context'
 import { PET_SEQUENCES } from '../../utils/species-sequences'
 import { PetTypes } from '../../types'
 
+const DOG_ANIMATIONS: PetAnimations = {
+	idle,
+	walk: walking,
+	run: running,
+	swipe,
+	sit: lie,
+}
+
+const DOG_DIMENSIONS: PetDimensions = {
+	size: 32,
+	width: 50,
+	walkSpeed: PetSpeed.NORMAL,
+	runSpeed: PetSpeed.VERY_FAST,
+	maxHeight: 100,
+}
+
+const DOG_ASSETS: PetAssets = {
+	collectibleIcon: <PetFood src={dogFood} />,
+	collectibleSize: 24,
+	collectibleFallSpeed: 2,
+}
+
 export const DogComponent = ({ className }: { className?: string }) => {
 	const { getCurrentPetName, isPetHungry, levelUpHungryState, levelDownHungryState } =
 		usePetContext()
 
-	const dogAnimations: PetAnimations = {
-		idle,
-		walk: walking,
-		run: running,
-		swipe,
-		sit: lie,
-	}
-
-	const dogDimensions: PetDimensions = {
-		size: 32,
-		width: 50,
-		walkSpeed: PetSpeed.NORMAL,
-		runSpeed: PetSpeed.VERY_FAST,
-		maxHeight: 100,
-	}
-
-	const dogAssets: PetAssets = {
-		collectibleIcon: <PetFood src={dogFood} />,
-		collectibleSize: 24,
-		collectibleFallSpeed: 2,
-	}
-
 	const {
 		containerRef,
 		petRef,
-		position,
 		direction,
 		showName,
+		airborne,
 		collectibles,
-		getAnimationForCurrentAction,
+		animationSrc,
 		dimensions,
 		assets,
 	} = useBasePetLogic({
 		name: getCurrentPetName(PetTypes.DOG),
-		animations: dogAnimations,
-		dimensions: dogDimensions,
+		animations: DOG_ANIMATIONS,
+		dimensions: DOG_DIMENSIONS,
 		sequence: PET_SEQUENCES[PetTypes.DOG],
-		assets: dogAssets,
+		assets: DOG_ASSETS,
 		isHungry: isPetHungry(PetTypes.DOG),
 		onCollectibleCollection: () => levelUpHungryState(PetTypes.DOG),
 		onLevelDownHungryState: () => levelDownHungryState(PetTypes.DOG),
@@ -71,11 +71,11 @@ export const DogComponent = ({ className }: { className?: string }) => {
 			name={getCurrentPetName(PetTypes.DOG)}
 			containerRef={containerRef}
 			petRef={petRef}
-			position={position}
 			direction={direction}
 			showName={showName}
+			airborne={airborne}
 			collectibles={collectibles}
-			getAnimationForCurrentAction={getAnimationForCurrentAction}
+			animationSrc={animationSrc}
 			dimensions={dimensions}
 			assets={assets}
 			isHungry={isPetHungry(PetTypes.DOG)}

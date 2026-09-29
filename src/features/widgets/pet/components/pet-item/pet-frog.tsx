@@ -30,58 +30,62 @@ const COLLECTIBLE_COLORS = [
 	'#3b82f6',
 ]
 
+const FROG_ANIMATIONS: PetAnimations = {
+	idle,
+	walk: walking,
+	run: running,
+	swipe,
+	sit: lie,
+}
+
+const FROG_DIMENSIONS: PetDimensions = {
+	size: 32,
+	width: 50,
+	walkSpeed: PetSpeed.SLOW,
+	runSpeed: PetSpeed.NORMAL,
+	maxHeight: 80,
+	hop: {
+		distance: { min: 35, max: 60 },
+		height: { min: 12, max: 22 },
+		durationMs: 450,
+		crouchMs: { min: 500, max: 1200 },
+	},
+}
+
 export const FrogComponent = ({ className }: { className?: string }) => {
 	const { getCurrentPetName, isPetHungry, levelUpHungryState, levelDownHungryState } =
 		usePetContext()
-	const frogAnimations: PetAnimations = {
-		idle,
-		walk: walking,
-		run: running,
-		swipe,
-		sit: lie,
-	}
-
-	const frogDimensions: PetDimensions = {
-		size: 32,
-		width: 50,
-		walkSpeed: PetSpeed.SLOW,
-		runSpeed: PetSpeed.NORMAL,
-		maxHeight: 80,
-		hop: {
-			distance: { min: 35, max: 60 },
-			height: { min: 12, max: 22 },
-			durationMs: 450,
-			crouchMs: { min: 500, max: 1200 },
-		},
-	}
 
 	const collectibleColor = useMemo(
 		() => COLLECTIBLE_COLORS[Math.floor(Math.random() * COLLECTIBLE_COLORS.length)],
 		[]
 	)
 
-	const frogAssets: PetAssets = {
-		collectibleIcon: (
-			<Icon name="bug" style={{ color: collectibleColor }} size={24} />
-		),
-		collectibleSize: 24,
-		collectibleFallSpeed: 2,
-	}
+	const frogAssets: PetAssets = useMemo(
+		() => ({
+			collectibleIcon: (
+				<Icon name="bug" style={{ color: collectibleColor }} size={24} />
+			),
+			collectibleSize: 24,
+			collectibleFallSpeed: 2,
+		}),
+		[collectibleColor]
+	)
 
 	const {
 		containerRef,
 		petRef,
-		position,
 		direction,
 		showName,
+		airborne,
 		collectibles,
-		getAnimationForCurrentAction,
+		animationSrc,
 		dimensions,
 		assets,
 	} = useBasePetLogic({
 		name: getCurrentPetName(PetTypes.FROG),
-		animations: frogAnimations,
-		dimensions: frogDimensions,
+		animations: FROG_ANIMATIONS,
+		dimensions: FROG_DIMENSIONS,
 		sequence: PET_SEQUENCES[PetTypes.FROG],
 		assets: frogAssets,
 		isHungry: isPetHungry(PetTypes.FROG),
@@ -95,11 +99,11 @@ export const FrogComponent = ({ className }: { className?: string }) => {
 			name={getCurrentPetName(PetTypes.FROG)}
 			containerRef={containerRef}
 			petRef={petRef}
-			position={position}
 			direction={direction}
 			showName={showName}
+			airborne={airborne}
 			collectibles={collectibles}
-			getAnimationForCurrentAction={getAnimationForCurrentAction}
+			animationSrc={animationSrc}
 			dimensions={dimensions}
 			assets={assets}
 			isHungry={isPetHungry(PetTypes.FROG)}

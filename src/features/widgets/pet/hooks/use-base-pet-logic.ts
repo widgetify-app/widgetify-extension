@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { MAX_ACTIVE_PET_FOOD } from '../constants'
 import {
 	COLLECT_HEIGHT,
@@ -15,6 +15,7 @@ import {
 	getMovementBounds,
 	stepWalk,
 } from '../utils/pet-movement'
+import { chooseTickMode, IDLE_POLL_MS } from '../utils/pet-schedule'
 import {
 	chooseNextState,
 	facingOf,
@@ -35,9 +36,11 @@ import type {
 } from '../types'
 
 const FALL_SPEED = 1.5
+const MIN_TICK_MS = 16
 const MAX_TICK_MS = 250
 const HOP_ARRIVAL = 2
 const SPEED_VARIANCE = 0.25
+const AIRBORNE_HEIGHT = 0.5
 
 interface BasePetProps {
 	name: string
@@ -56,14 +59,19 @@ interface ActiveState {
 	holdMs: number
 }
 
+interface ContainerSize {
+	width: number
+	height: number
+}
+
 export function useBasePetLogic(props: BasePetProps) {
 	const containerRef = useRef<HTMLButtonElement>(null)
 	const petRef = useRef<HTMLDivElement>(null)
 
-	const [position, setPosition] = useState<Position>({ x: 30, y: 0 })
 	const [direction, setDirection] = useState(1)
 	const [petState, setPetState] = useState<PetState>(START_STATE)
 	const [hopPhase, setHopPhase] = useState<HopPhase>('crouch')
+	const [airborne, setAirborne] = useState(false)
 	const [showName, setShowName] = useState(false)
 	const [collectibles, setCollectibles] = useState<CollectibleItem[]>([])
 
@@ -71,6 +79,9 @@ export function useBasePetLogic(props: BasePetProps) {
 	propsRef.current = props
 
 	const positionRef = useRef<Position>({ x: 30, y: 0 })
+	const paintedRef = useRef('')
+	const airborneRef = useRef(false)
+	const sizeRef = useRef<ContainerSize>({ width: 0, height: 0 })
 	const directionRef = useRef(1)
 	const activeRef = useRef<ActiveState>({
 		current: START_STATE,
@@ -84,13 +95,37 @@ export function useBasePetLogic(props: BasePetProps) {
 	const speedVarianceRef = useRef(
 		1 - SPEED_VARIANCE + Math.random() * 2 * SPEED_VARIANCE
 	)
+	const wakeRef = useRef<() => void>(() => {})
 
-	const applyPosition = useCallback((next: Position) => {
-		const prev = positionRef.current
-		if (prev.x === next.x && prev.y === next.y) return
-		positionRef.current = next
-		setPosition(next)
+	const paint = useCallback((position: Position) => {
+		const element = petRef.current
+		if (!element) return
+
+		const x = Math.round(position.x * 100) / 100
+		const y = Math.round(position.y * 100) / 100
+		const value = `translate3d(${x}px, ${-y}px, 0)`
+		if (value === paintedRef.current) return
+
+		paintedRef.current = value
+		element.style.transform = value
 	}, [])
+
+	const applyPosition = useCallback(
+		(next: Position) => {
+			const previous = positionRef.current
+			if (previous.x === next.x && previous.y === next.y) return
+
+			positionRef.current = next
+			paint(next)
+
+			const isAirborne = next.y > AIRBORNE_HEIGHT
+			if (isAirborne !== airborneRef.current) {
+				airborneRef.current = isAirborne
+				setAirborne(isAirborne)
+			}
+		},
+		[paint]
+	)
 
 	const applyDirection = useCallback((next: number) => {
 		if (directionRef.current === next) return
@@ -100,7 +135,7 @@ export function useBasePetLogic(props: BasePetProps) {
 
 	const applyHop = useCallback((next: HopState) => {
 		hopRef.current = next
-		setHopPhase(next.phase)
+		setHopPhase((previous) => (previous === next.phase ? previous : next.phase))
 	}, [])
 
 	const applyCollectibles = useCallback((next: CollectibleItem[]) => {
@@ -110,10 +145,9 @@ export function useBasePetLogic(props: BasePetProps) {
 
 	const getBounds = useCallback(() => {
 		const { dimensions } = propsRef.current
-		const container = containerRef.current
 		return getMovementBounds(
-			container?.offsetWidth || 0,
-			container?.offsetHeight || 0,
+			sizeRef.current.width,
+			sizeRef.current.height,
 			dimensions.width,
 			dimensions.size,
 			dimensions.maxHeight
@@ -176,6 +210,7 @@ export function useBasePetLogic(props: BasePetProps) {
 				},
 			])
 			collectibleIdRef.current += 1
+			wakeRef.current()
 		},
 		[applyCollectibles]
 	)
@@ -402,11 +437,8 @@ export function useBasePetLogic(props: BasePetProps) {
 				enterState('chase', false)
 			}
 
-			activeRef.current = {
-				...activeRef.current,
-				elapsedMs: activeRef.current.elapsedMs + elapsed,
-			}
 			const active = activeRef.current
+			active.elapsedMs += elapsed
 			const pace = paceOf(active.current)
 			let next = positionRef.current
 			let finished = false
@@ -462,27 +494,90 @@ export function useBasePetLogic(props: BasePetProps) {
 	tickRef.current = tick
 
 	useEffect(() => {
-		let frameId: number
+		let frame: number | null = null
+		let timer: ReturnType<typeof setTimeout> | null = null
+		let visible = true
+		let stopped = false
 		let lastTick = performance.now()
 
-		const loop = (now: number) => {
+		const cancelScheduled = () => {
+			if (frame !== null) cancelAnimationFrame(frame)
+			if (timer !== null) clearTimeout(timer)
+			frame = null
+			timer = null
+		}
+
+		const schedule = () => {
+			if (stopped) return
+
+			const mode = chooseTickMode({
+				visible,
+				still: paceOf(activeRef.current.current) === 'still',
+				grounded: positionRef.current.y <= 0,
+				hasFood: collectiblesRef.current.some((item) => !item.collected),
+			})
+
+			if (mode === 'idle') timer = setTimeout(run, IDLE_POLL_MS)
+			else if (mode === 'frame') frame = requestAnimationFrame(run)
+		}
+
+		const run = () => {
+			frame = null
+			timer = null
+
+			const now = performance.now()
 			const elapsed = now - lastTick
-			if (elapsed >= 16) {
+			if (elapsed >= MIN_TICK_MS) {
 				lastTick = now
 				tickRef.current(Math.min(elapsed, MAX_TICK_MS))
 			}
-			frameId = requestAnimationFrame(loop)
+			schedule()
 		}
 
-		frameId = requestAnimationFrame(loop)
-		return () => cancelAnimationFrame(frameId)
+		wakeRef.current = () => {
+			cancelScheduled()
+			schedule()
+		}
+
+		const container = containerRef.current
+		const observer = container
+			? new IntersectionObserver((entries) => {
+					const entry = entries[entries.length - 1]
+					if (!entry || entry.isIntersecting === visible) return
+
+					visible = entry.isIntersecting
+					cancelScheduled()
+					if (visible) {
+						lastTick = performance.now()
+						schedule()
+					}
+				})
+			: null
+		if (container) observer?.observe(container)
+
+		schedule()
+
+		return () => {
+			stopped = true
+			cancelScheduled()
+			observer?.disconnect()
+			wakeRef.current = () => {}
+		}
 	}, [])
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		const container = containerRef.current
 		if (!container) return
 
+		sizeRef.current = { width: container.offsetWidth, height: container.offsetHeight }
+		paint(positionRef.current)
+
 		const observer = new ResizeObserver(() => {
+			sizeRef.current = {
+				width: container.offsetWidth,
+				height: container.offsetHeight,
+			}
+
 			const bounds = getBounds()
 			if (bounds.maxX <= bounds.minX && bounds.maxY <= 0) return
 			applyPosition(clampToBounds(positionRef.current, bounds))
@@ -490,7 +585,7 @@ export function useBasePetLogic(props: BasePetProps) {
 
 		observer.observe(container)
 		return () => observer.disconnect()
-	}, [getBounds, applyPosition])
+	}, [getBounds, applyPosition, paint])
 
 	useEffect(() => {
 		const container = containerRef.current
@@ -517,8 +612,8 @@ export function useBasePetLogic(props: BasePetProps) {
 
 	const { animations, dimensions } = props
 
-	const getAnimationForCurrentAction = useCallback(() => {
-		if (dimensions.flight && position.y > 0.5 && animations.fly) return animations.fly
+	const animationSrc = useMemo(() => {
+		if (dimensions.flight && airborne && animations.fly) return animations.fly
 
 		const hopping = dimensions.hop !== undefined && paceOf(petState) !== 'still'
 		if (hopping) return hopPhase === 'air' ? animations.run : animations.idle
@@ -538,16 +633,16 @@ export function useBasePetLogic(props: BasePetProps) {
 			default:
 				return animations.idle
 		}
-	}, [petState, hopPhase, position.y, animations, dimensions])
+	}, [petState, hopPhase, airborne, animations, dimensions])
 
 	return {
 		containerRef,
 		petRef,
-		position,
 		direction: dimensions.sidestep ? 1 : direction,
 		showName,
+		airborne,
 		collectibles,
-		getAnimationForCurrentAction,
+		animationSrc,
 		dimensions,
 		assets: props.assets,
 	}

@@ -15,8 +15,8 @@ A single sprite pet lives inside a fixed 2x1 widget cell. It follows a per-speci
 | `pet-setting.tsx` | Settings panel in two modes (see Persistence): species picker, background picker, name input (`maxLength` 20). Also the only writer of global choices. |
 | `types.ts` | `PetTypes`, `PetState`, `PetSequence`, `PetDimensions`, `PetFlight`, `PetHop`, `PetAnimations`, `PetSpeed`, background types, storage and event augmentation. |
 | `constants.ts` | Icons and previews per species, Persian labels, `PET_BACKGROUNDS`, default names, hunger constants. |
-| `hooks/use-base-pet-logic.ts` | The simulation loop. Only place that moves the pet. |
-| `components/base-pet.tsx` | `BasePetContainer`: renders the pet, food, tooltip. No logic. |
+| `hooks/use-base-pet-logic.ts` | The simulation loop, the scheduler and the painting of the pet. Only place that moves the pet. Returns `animationSrc`, `airborne`, `direction`, `showName`, `collectibles`. |
+| `components/base-pet.tsx` | `BasePetContainer` and `CollectiblesRenderer`, both `memo`. Renders the pet, food, tooltip. No logic. |
 | `components/pet-factory.tsx` | Picks the species component and renders `PetHud`. |
 | `components/pet-item/pet-<species>.tsx` | One per species: animation map, dimensions, assets, wiring into the hook. |
 | `components/pet-hud.tsx` | Five hearts. `filled = ceil(level / 20)`. |
@@ -25,19 +25,34 @@ A single sprite pet lives inside a fixed 2x1 widget cell. It follows a per-speci
 | `utils/pet-hop.ts` | Frog hop arcs. Pure. |
 | `utils/pet-flight.ts` | Owl flight: cruise altitude, bob, dive, landing. Pure. |
 | `utils/pet-movement.ts` | `getMovementBounds`, `clampToBounds`, `stepWalk`, `frameScale`. Pure. |
+| `utils/pet-schedule.ts` | `chooseTickMode`: whether the loop runs every frame, polls slowly, or stops. Pure. |
 | `utils/get-pet-background.ts` | Background lookup with fallback to `none`. |
 | `utils/resolve-pet-settings.ts` | `resolvePetSettings` and `mergePetMeta`: the single rule for which value the widget and the settings panel show. Pure. |
-| `__tests__/` | `pet-sequence`, `pet-hop`, `pet-flight`, `pet-movement`, `resolve-pet-settings` tests. |
+| `__tests__/` | `pet-sequence`, `pet-hop`, `pet-flight`, `pet-movement`, `pet-schedule`, `resolve-pet-settings` tests. |
 
 Sprites live in `src/assets/animals/<species>/`, backgrounds in `src/assets/animals/backgrounds/`.
 
 ## Runtime model
 
-`PetFactory` renders one species component. Each component calls `useBasePetLogic({ animations, dimensions, sequence, assets, isHungry, callbacks })` and passes the result to `BasePetContainer`.
+`PetFactory` renders one species component. Each component calls `useBasePetLogic({ animations, dimensions, sequence, assets, isHungry, callbacks })` and passes the result to `BasePetContainer`. The animation map, dimensions and assets of a species are **module-level constants** (`DOG_ANIMATIONS`, `DOG_DIMENSIONS`, `DOG_ASSETS`), so they keep their identity across renders. The frog is the one exception: its food icon has a per-instance random colour, so its assets go through `useMemo`.
 
-The hook keeps the simulation in refs (`positionRef`, `directionRef`, `activeRef`, `hopRef`, `collectiblesRef`, `cruiseAltitudeRef`) and mirrors only what renders into React state (`position`, `direction`, `petState`, `hopPhase`, `collectibles`, `showName`). It reads current props through `propsRef`, so the callbacks are stable and the animation loop never restarts. Do not add render-driven state to the loop.
+The hook keeps the simulation in refs (`positionRef`, `directionRef`, `activeRef`, `hopRef`, `collectiblesRef`, `cruiseAltitudeRef`, `sizeRef`) and mirrors into React state only what changes what is rendered: `direction`, `petState`, `hopPhase`, `airborne`, `collectibles`, `showName`. It reads current props through `propsRef`, so the callbacks are stable and the loop never restarts.
 
-The loop is `requestAnimationFrame`, ticking when at least 16 ms passed, with the step capped at `MAX_TICK_MS = 250` so a backgrounded tab cannot produce a huge jump. Movement is scaled by `frameScale(elapsed)` (reference frame 16.67 ms, capped at 3) so speed is refresh-rate independent.
+**The position is not React state.** Every tick paints it straight onto the pet element (`paint`: `style.transform = translate3d(...)`, rounded to 0.01 px and skipped when unchanged). A React render happens only when something discrete changes: a new state, a hop phase, taking off or landing (`airborne`, height above 0.5), a turn, food added or eaten. `willChange: transform` keeps the pet on its own compositor layer, so moving it does no layout or paint.
+
+**The container size is cached.** `sizeRef` is read once in a layout effect and refreshed by the `ResizeObserver`; `getBounds` is pure arithmetic on it. Nothing in the loop reads `offsetWidth`, `offsetHeight` or `getBoundingClientRect` (the only one is in `dropFood`, on a click).
+
+**Scheduling** (`chooseTickMode` in `utils/pet-schedule.ts`, applied after every tick):
+
+| Situation | Mode |
+|---|---|
+| Widget not intersecting the viewport (`IntersectionObserver`) | `stopped`: no frame, no timer |
+| Pet in a still state, on the ground, no uneaten food | `idle`: `setTimeout` every `IDLE_POLL_MS = 100`, accumulating the elapsed time |
+| Anything else (moving, in the air, food present) | `frame`: `requestAnimationFrame` |
+
+`dropFood` calls `wakeRef.current()` so a click switches from `idle` to `frame` immediately. Becoming visible again resets the clock and restarts the loop. In `frame` mode a tick still runs only when at least `MIN_TICK_MS = 16` passed, and the step is capped at `MAX_TICK_MS = 250` so a backgrounded tab cannot produce a huge jump. Movement is scaled by `frameScale(elapsed)` (reference frame 16.67 ms, capped at 3), so speed is refresh-rate independent.
+
+The container renders the sprite as `animationSrc` (a string, computed with `useMemo` in the hook). Every sprite a pet has used stays mounted as a hidden `<img>` so switching animation never flashes; a new one is added during render (no extra commit).
 
 ## State machine
 
@@ -109,14 +124,14 @@ The container is a `button` and the click handler is on it, so the whole play ar
 
 ## Backgrounds
 
-`PET_BACKGROUNDS` in `constants.ts`, id type `PetBackgroundId`. Pixel art strips about 792 px wide and 197-242 px tall (the existing ones are 793x240, 793x197 and 792x242; tehran is 792x240), drawn with `background-size: auto 100%`, bottom centred.
+`PET_BACKGROUNDS` in `constants.ts`, id type `PetBackgroundId`. Pixel art strips about 792 px wide and 197-242 px tall (forest 793x240, autumn 793x197, beach 792x242, tehran 792x240); all lossless WebP, the three older ones converted from PNG with identical pixels, drawn with `background-size: auto 100%`, bottom centred.
 
 | id | Label | `groundOffsetPx` | File |
 |---|---|---|---|
 | none | بدون محیط | 0 | - |
-| forest | جنگل شب | 7 | `forest.png` |
-| autumn | پاییز | 3 | `autumn.png` |
-| beach | ساحل | 10 | `beach.png` |
+| forest | جنگل شب | 7 | `forest.webp` |
+| autumn | پاییز | 3 | `autumn.webp` |
+| beach | ساحل | 10 | `beach.webp` |
 | tehran | تهران | 7 | `tehran.webp` (lossless, rendered from Blender) |
 
 ## Persistence and settings
@@ -152,7 +167,7 @@ The container is a `button` labelled `غذا دادن به <name>`. Keyboard act
 ## Sprite spec
 
 - Animated WebP, faces right, transparent, 8 fps naming (`*_8fps.webp`). Existing species use their own frame sizes.
-- Owl: 160x160, 8 frames of 125 ms (drawn at 32x32 and scaled 5x with nearest neighbour), clips `owl_idle`, `owl_swipe`, `owl_lie`, `owl_fly`. Food is `owl-food.png` (24x24, like every species). Lossless WebP; identical consecutive frames collapse in the file but the total duration stays 1000 ms.
+- Owl: 64x64, 8 frames of 125 ms (drawn at 32x32 and scaled 2x with nearest neighbour, which is exactly twice the size it is displayed at; it was 160x160 before, which decoded six times more pixels for the same picture), clips `owl_idle`, `owl_swipe`, `owl_lie`, `owl_fly`. Food is `owl-food.png` (24x24, like every species). Lossless WebP; identical consecutive frames collapse in the file but the total duration stays 1000 ms.
 - `swipe` is the eating clip, not a greeting or attack. `sit` is the lying pose. Do not reuse them for other meanings.
 - The owl art was drawn in Aseprite through a Lua script that lives outside the repo; the editable sources are not committed. Redrawing means starting from the exported WebPs or recreating the script.
 - Every species needs `idle`, `walk`, `run`, and optionally `swipe`, `sit`, `fly`.
@@ -181,13 +196,32 @@ Tree rules enforced by the tests: only real states, every reachable state has a 
 | Hunger pace | `HUNGER_TICK_MS`, `HUNGER_GAIN_STEPS` |
 | Food limit | `MAX_ACTIVE_PET_FOOD` |
 
+## Performance
+
+Measured with a throwaway harness that mounted the real `PetProvider` and species component in a plain page, replaced the animation clock, timers and `IntersectionObserver` with a fake clock, ran a fixed number of frames with a seeded `Math.random`, and counted work. The harness itself costs about 1.45 ms per simulated second (message-channel flushing), which is subtracted where noted. It measures JavaScript, React and DOM-write cost, not compositing or paint.
+
+| 60 Hz, 60 simulated seconds | React commits/s | Layout-property reads/s | Loop callbacks/s | Cost above harness floor |
+|---|---|---|---|---|
+| Dog before | 37.0 | 194 | 60 | 1.69 ms/s |
+| Dog after | 0.3 | 0.03 | 40 frame + 3 timer | 0.56 ms/s |
+| Owl before / after | 30.7 / 0.3 | 177 / 0.03 | 60 / 40 + 3 | 1.6 / 0.8 ms/s |
+| Frog before / after | 16.7 / 3.4 | 204 / 0.03 | 60 / 44 + 2 | 1.2 / 0.6 ms/s |
+| Owl at 144 Hz before / after | 42.4 / 0.3 | 180 / 0 | 144 / 115 + 2 | 3.4 / 2.1 ms/s |
+
+Behaviour was checked in the same harness: with the widget reported off screen there were zero callbacks, timers and DOM writes and the pet did not move, and it resumed on becoming visible; a click still made the dog run to the food, eat it for about 1.5 s and carry on.
+
+What this does not show: the remaining commits are real visual changes (sprite swaps, hop phases, turns); at 144 Hz about three quarters of the frame callbacks are cheap no-ops that wait for the 16 ms gate; compositing, paint and image decode were not measured; nothing was measured on a real extension page or on a slow device.
+
 ## Tests
 
-`bun test` covers only the pure modules: state facts, hold times, wall detection, `chooseNextState` (including hunger), all six species trees, hop arcs (landing on the floor, bounds, direction, chase without overshoot, wall behaviour, running vs walking), flight maths, and movement bounds. It does not render `use-base-pet-logic.ts` or any component; there is no React test setup in this repo. `architecture.test.ts` allows one `<feature>.md` at a feature root, added for this file.
+`bun test` covers only the pure modules: state facts, hold times, wall detection, `chooseNextState` (including hunger), all six species trees, hop arcs (landing on the floor, bounds, direction, chase without overshoot, wall behaviour, running vs walking), flight maths, movement bounds, the tick-mode rule, and settings resolution. It does not render `use-base-pet-logic.ts` or any component; there is no React test setup in this repo. `architecture.test.ts` allows one `<feature>.md` at a feature root, added for this file.
 
 ## Invariants
 
 - Only `use-base-pet-logic.ts` writes the pet position. Species files only configure.
+- The pet position never goes into React state, and nothing in the tick reads layout (`offsetWidth`, `offsetHeight`, `getBoundingClientRect`). Use `paint` and `sizeRef`. Putting either back turns every tick into a React commit or a forced layout.
+- Per-species configuration objects live at module level. Building them inside the component defeats `memo` on `BasePetContainer` and re-creates the animation lookup on every render.
+- The loop must stop when the widget is off screen and must not run per frame while the pet rests. Anything that needs to react to a user action while resting must call `wakeRef.current()` (as `dropFood` does), or it will wait up to `IDLE_POLL_MS`.
 - Species trees are data in `species-sequences.ts`; do not encode behaviour by adding branches to the hook.
 - `swipe` = eating. Do not play it while idle.
 - No wall climbing. It was removed because there is no climb art and the pet floated. Do not reintroduce it without dedicated sprites.
@@ -223,7 +257,7 @@ Tree rules enforced by the tests: only real states, every reachable state has a 
 
 Confirmed by reading the code and by automated checks (`npm run compile`, `npm test`, `npm run lint`, `npm run build`; the 7 remaining `npm test` failures are pre-existing and unrelated to this folder): tree validity, pure movement maths, types, lint, bundle build.
 
-Not yet checked on screen: saving, refreshing and reloading a changed pet or name through both settings entry points, for signed-out and signed-in users, and in the narrow list view; the actual look and pacing of each species, hop and flight feel, owl altitude at each density, the tooltip position with the taller container, click behaviour in edit mode, the Tehran background against every sprite, and the sprites themselves at 32 px. All numeric tuning values are first guesses.
+Not yet checked on screen: that the pet still looks the same and moves as smoothly (especially on a 144 Hz display and after the widget scrolls back into view), the owl clips at 64x64 next to the others, the WebP backgrounds; saving, refreshing and reloading a changed pet or name through both settings entry points, for signed-out and signed-in users, and in the narrow list view; the actual look and pacing of each species, hop and flight feel, owl altitude at each density, the tooltip position with the taller container, click behaviour in edit mode, the Tehran background against every sprite, and the sprites themselves at 32 px. All numeric tuning values are first guesses.
 
 ## Change history (why things look the way they do)
 
@@ -235,3 +269,4 @@ Not yet checked on screen: saving, refreshing and reloading a changed pet or nam
 6. The chicken briefly used `swipe` (eating) as a pause pose; removed.
 7. Owl ear tufts reshaped: they stuck straight up and read as horns, and the head crown was a single pointed pixel. They are now short, tilted outward, with a darker outer and lighter inner feather, on a flattened crown. All four owl clips were re-exported.
 8. User report: a changed pet or name showed in settings but the widget stayed, or reset to the dog named Akita after a refresh. Root cause: two settings entry points and two stores. The catalog's entry saved only to the global store while every canvas widget read only its own `meta` (falling back to a hard-coded dog), and the narrow list view dropped `meta` altogether. Also fixed: a debounced name save could restore a stale species, and every widget wrote the whole global object on a change. Fix: one resolution rule (`resolvePetSettings`), the settings panel as the only global writer, providers write only hunger, `meta` passed in the list view.
+9. Performance pass. Root causes, measured: the position lived in React state, so every movement tick was a full React commit (30-40 per second, more on high refresh rate displays); the container size was read from the DOM about 190 times per second, even when the pet sat still; and the loop woke on every frame regardless. Now: the position is painted directly on the element, the size is cached from the `ResizeObserver`, the loop drops to a 100 ms poll while the pet rests on the ground and stops when the widget is off screen, species configuration is hoisted so `BasePetContainer` can be `memo`, sprite loading no longer costs a second commit, the owl clips are 64x64 and the three older backgrounds are lossless WebP (about 14% smaller, identical pixels).

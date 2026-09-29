@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react'
+import { memo, useState } from 'react'
 import { PetTooltip } from './pet-tooltip'
 import { cn } from '@/common/utils/cn'
-import type { CollectibleItem, PetAssets, PetDimensions, Position } from '../types'
+import type { CollectibleItem, PetAssets, PetDimensions } from '../types'
 
 interface CollectiblesRendererProps {
 	collectibles: CollectibleItem[]
 	assets: PetAssets
 }
 
-const CollectiblesRenderer: React.FC<CollectiblesRendererProps> = ({
+const CollectiblesRenderer = memo(function CollectiblesRenderer({
 	collectibles,
 	assets,
-}) => {
+}: CollectiblesRendererProps) {
 	const CollectibleIcon = assets.collectibleIcon
 
 	return (
@@ -33,50 +33,45 @@ const CollectiblesRenderer: React.FC<CollectiblesRendererProps> = ({
 			)}
 		</>
 	)
-}
+})
 
 interface BasePetContainerProps {
 	name: string
 	containerRef: React.RefObject<HTMLButtonElement | null>
 	petRef: React.RefObject<HTMLDivElement | null>
-	position: Position
 	direction: number
 	showName?: boolean
+	airborne: boolean
 	collectibles: CollectibleItem[]
-	getAnimationForCurrentAction: () => string
+	animationSrc: string
 	dimensions: PetDimensions
 	assets: PetAssets
 	isHungry: boolean
 	className?: string
 }
 
-export const BasePetContainer: React.FC<BasePetContainerProps> = ({
+export const BasePetContainer = memo(function BasePetContainer({
 	name,
 	containerRef,
 	petRef,
-	position,
 	direction,
 	showName,
+	airborne,
 	collectibles,
-	getAnimationForCurrentAction,
+	animationSrc,
 	dimensions,
 	assets,
 	isHungry,
 	className,
-}) => {
+}: BasePetContainerProps) {
 	const showToolTip = showName || isHungry
 
-	const currentSrc = getAnimationForCurrentAction()
 	const [loadedSrcs, setLoadedSrcs] = useState<string[]>(() =>
-		currentSrc ? [currentSrc] : []
+		animationSrc ? [animationSrc] : []
 	)
-
-	useEffect(() => {
-		if (!currentSrc) return
-		setLoadedSrcs((prev) =>
-			prev.includes(currentSrc) ? prev : [...prev, currentSrc]
-		)
-	}, [currentSrc])
+	if (animationSrc && !loadedSrcs.includes(animationSrc)) {
+		setLoadedSrcs([...loadedSrcs, animationSrc])
+	}
 
 	return (
 		<button
@@ -97,7 +92,6 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 				ref={petRef}
 				className="absolute bottom-0 left-0 cursor-pointer"
 				style={{
-					transform: `translate3d(${position.x}px, ${-position.y}px, 0)`,
 					width: `${dimensions.width}px`,
 					height: `${dimensions.size}px`,
 					zIndex: 10,
@@ -114,7 +108,7 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 							content={isHungry ? 'غذاااا بدهه' : name}
 							emoji={isHungry ? '🍽️' : undefined}
 							isAnimation={isHungry}
-							placement={position.y > 0 ? 'bottom' : 'top'}
+							placement={airborne ? 'bottom' : 'top'}
 						/>
 					)}
 					{loadedSrcs.map((src) => (
@@ -125,7 +119,7 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 							aria-hidden="true"
 							className="absolute inset-0 object-contain w-full h-full pointer-events-none"
 							style={{
-								visibility: src === currentSrc ? 'visible' : 'hidden',
+								visibility: src === animationSrc ? 'visible' : 'hidden',
 							}}
 						/>
 					))}
@@ -133,4 +127,4 @@ export const BasePetContainer: React.FC<BasePetContainerProps> = ({
 			</div>
 		</button>
 	)
-}
+})
