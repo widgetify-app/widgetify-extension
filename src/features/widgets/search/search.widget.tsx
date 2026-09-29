@@ -212,7 +212,7 @@ function SearchFullContent() {
 							/>
 						</button>
 
-						<div className="absolute inset-0 transition-ui duration-300 border-2 pointer-events-none rounded-2xl border-base-content/2" />
+						<div className="absolute inset-0 transition-ui duration-300 border-2 pointer-events-none rounded-2xl border-[rgba(var(--color-base-content-rgb),0.02)]" />
 					</div>
 				</form>
 

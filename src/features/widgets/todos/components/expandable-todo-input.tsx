@@ -240,7 +240,7 @@ export function ExpandableTodoInput({
 							defaultValue=""
 							onChange={handleTodoTextChange}
 							placeholder="عنوان تسک جدید..."
-							className="h-6! border-none! outline-none! shadow-none! ring-0! w-full p-0 pr-1 text-sm bg-transparent! rounded-2x focus:placeholder:text-line"
+							className="h-6! border-none! outline-none! shadow-none! ring-0! w-full p-0 pr-1 text-sm bg-transparent! rounded-2xl focus:placeholder:text-line"
 							onFocus={handleInputFocus}
 							onKeyDown={handleKeyDown}
 							id="expandable-todo-input"
