@@ -144,7 +144,7 @@ export function NavbarLayout(): JSX.Element {
 				onClick={() => onToggleNavbar()}
 				aria-hidden={showHandle ? undefined : true}
 				tabIndex={showHandle ? 0 : -1}
-				className={`fixed z-float bottom-0 left-1/2 -translate-x-1/2 w-28 py-2.5 bg-glass-surface-2 border-t border-x border-line rounded-t-widget shadow-[0_-0px_30px_rgba(0,0,0,0.3)] transition-ui duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] hover:bg-glass-fill-2 cursor-pointer group ${
+				className={`fixed z-float bottom-0 left-1/2 -translate-x-1/2 w-28 py-2.5 bg-glass-surface-2 border-t border-x border-line rounded-t-widget shadow-[0_-0px_30px_rgba(0,0,0,0.3)] transition-ui duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] hover:bg-glass-surface-3 cursor-pointer group ${
 					showHandle
 						? 'translate-y-0 opacity-100'
 						: 'translate-y-full opacity-0 pointer-events-none'
