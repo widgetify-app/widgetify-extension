@@ -13,24 +13,72 @@ import { Chip } from '@/components/ui'
 import { useAppearanceSetting } from '@/context/appearance.context'
 import { usePreviewHandler } from '@/hooks/use-preview-handler'
 import { Icon } from '@/icons'
+import { listenEvent } from '@/common/utils/call-event'
 
 const FILTER_OPTIONS = [
 	{ id: 'all', label: 'همه' },
 	{ id: MarketItemType.THEME, label: 'تم' },
 	{ id: MarketItemType.FONT, label: 'فونت' },
+	{ id: MarketItemType.PET, label: 'حیوان خانگی' },
 	{ id: MarketItemType.BROWSER_TITLE, label: 'عنوان مرورگر' },
 ]
 
-export function MarketOtherItems() {
+interface MarketOtherItemsProps {
+	initialFilter?: string
+}
+
+export function MarketOtherItems({ initialFilter }: MarketOtherItemsProps = {}) {
 	const { fontFamily } = useAppearanceSetting()
 	const { theme } = useTheme()
 	const { user, isAuthenticated, refetchUser } = useAuth()
 	const [currentPage, setCurrentPage] = useState(1)
 	const [selectedItem, setSelectedItem] = useState<MarketItem | null>(null)
 	const [showPurchaseModal, setShowPurchaseModal] = useState(false)
-	const [activeFilter, setActiveFilter] = useState('all')
+	const [activeFilter, setActiveFilter] = useState(
+		initialFilter === MarketItemType.PET_BACKGROUND
+			? MarketItemType.PET
+			: initialFilter || 'all'
+	)
+
+	useEffect(() => {
+		if (initialFilter) {
+			setActiveFilter(
+				initialFilter === MarketItemType.PET_BACKGROUND
+					? MarketItemType.PET
+					: initialFilter
+			)
+			setCurrentPage(1)
+		}
+	}, [initialFilter])
+
+	useEffect(() => {
+		const unlisten = listenEvent('openMarketModal', (detail) => {
+			if (detail && typeof detail === 'object' && detail.filter) {
+				const filter =
+					detail.filter === MarketItemType.PET_BACKGROUND
+						? MarketItemType.PET
+						: detail.filter
+				setActiveFilter(filter)
+				setCurrentPage(1)
+			}
+		})
+		return () => {
+			unlisten()
+		}
+	}, [])
 
 	const { previewHandler } = usePreviewHandler()
+
+	const queryType = useMemo(() => {
+		if (activeFilter === 'all') return undefined
+		if (
+			activeFilter === MarketItemType.PET ||
+			activeFilter === MarketItemType.PET_BACKGROUND
+		) {
+			return `${MarketItemType.PET},${MarketItemType.PET_BACKGROUND}`
+		}
+		return activeFilter
+	}, [activeFilter])
 
 	const {
 		data: marketData,
@@ -40,14 +88,15 @@ export function MarketOtherItems() {
 	} = useGetMarketItems(true, {
 		limit: 12,
 		page: currentPage,
+		type: queryType,
 	})
 
-	const filteredItems = (marketData?.items || [])
-		.filter((item) => activeFilter === 'all' || item.type === activeFilter)
-		.sort((a, b) => {
+	const items = useMemo(() => {
+		return [...(marketData?.items || [])].sort((a, b) => {
 			if (a.isOwned === b.isOwned) return 0
 			return a.isOwned ? 1 : -1
 		})
+	}, [marketData?.items])
 
 	const handleFilterChange = (filter: string) => {
 		setActiveFilter(filter)
@@ -147,9 +196,9 @@ export function MarketOtherItems() {
 						</div>
 					))}
 				</div>
-			) : filteredItems.length > 0 ? (
+			) : items.length > 0 ? (
 				<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-					{filteredItems.map((item) => (
+					{items.map((item) => (
 						<MarketItemCard
 							key={item.id}
 							item={item}

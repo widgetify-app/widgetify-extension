@@ -9,35 +9,28 @@ import { MarketCoins } from './market-coins/market-coins'
 import { listenEvent } from '@/common/utils/call-event'
 import { Icon } from '@/icons'
 
-const tabs = [
-	{
-		id: 'other',
-		label: 'شخصی‌سازی',
-		icon: <Icon name="brush" />,
-		element: <MarketOtherItems />,
-	},
-	{
-		id: 'wallpapers',
-		label: 'تصویر زمینه‌ها',
-		icon: <Icon name="images" />,
-		element: <MarketWallpaper />,
-	},
-	{
-		id: 'coins',
-		label: 'خرید ویج‌‌کوین',
-		icon: <Icon name="coin" />,
-		element: <MarketCoins />,
-	},
-]
+interface MarketContainerProps {
+	initialTab?: string
+	initialFilter?: string
+}
 
-export function MarketContainer() {
+export function MarketContainer({
+	initialTab,
+	initialFilter,
+}: MarketContainerProps = {}) {
 	const { isAuthenticated, user } = useAuth()
-	const [activeTab, setActiveTab] = useState('other')
+	const [activeTab, setActiveTab] = useState(initialTab || 'other')
 
 	const handleTabChange = (tabValue: string) => {
 		setActiveTab(tabValue)
 		Analytics.event(`market_select_tab_${tabValue}`)
 	}
+
+	useEffect(() => {
+		if (initialTab) {
+			setActiveTab(initialTab)
+		}
+	}, [initialTab])
 
 	useEffect(() => {
 		const listen = listenEvent('market_change_tab', (tab) => {
@@ -47,6 +40,27 @@ export function MarketContainer() {
 			listen()
 		}
 	}, [])
+
+	const tabs = [
+		{
+			id: 'other',
+			label: 'شخصی‌سازی',
+			icon: <Icon name="brush" />,
+			element: <MarketOtherItems initialFilter={initialFilter} />,
+		},
+		{
+			id: 'wallpapers',
+			label: 'تصویر زمینه‌ها',
+			icon: <Icon name="images" />,
+			element: <MarketWallpaper />,
+		},
+		{
+			id: 'coins',
+			label: 'خرید ویج‌‌کوین',
+			icon: <Icon name="coin" />,
+			element: <MarketCoins />,
+		},
+	]
 
 	return (
 		<div dir="rtl" className="flex flex-col h-[80vh] overflow-hidden">

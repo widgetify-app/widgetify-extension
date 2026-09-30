@@ -18,7 +18,7 @@ async function getMarketItems(params?: MarketQueryParams): Promise<MarketRespons
 
 	if (params?.page) searchParams.append('page', params.page.toString())
 	if (params?.limit) searchParams.append('limit', params.limit.toString())
-	if (params?.type) searchParams.append('type', params.type)
+	if (params?.type && params.type !== 'all') searchParams.append('type', params.type)
 
 	const { data } = await client.get<MarketResponse>(
 		`/market?${searchParams.toString()}`

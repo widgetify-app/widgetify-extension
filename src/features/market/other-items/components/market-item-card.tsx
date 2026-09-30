@@ -5,6 +5,7 @@ import { showToast } from '@/common/toast'
 import { RenderPreview } from './render-preview'
 import { Icon } from '@/icons'
 import { Button } from '@/components/ui'
+import { PetTypes } from '@/features/widgets/pet/pet.widget'
 
 interface MarketItemCardProps {
 	item: MarketItem
@@ -14,11 +15,14 @@ interface MarketItemCardProps {
 }
 
 const SUPPORTED_TYPES: MarketItemType[] = Object.values(MarketItemType)
+const SUPPORTED_PET_TYPES = new Set<string>(Object.values(PetTypes))
 
 const TYPE_LABELS: Record<string, string> = {
 	BROWSER_TITLE: 'عنوان مرورگر',
 	FONT: 'فونت',
 	THEME: 'تم',
+	PET: 'حیوان خانگی',
+	PET_BACKGROUND: 'محیط پت',
 }
 
 export function MarketItemCard({
@@ -27,7 +31,10 @@ export function MarketItemCard({
 	onClickPreview,
 }: MarketItemCardProps) {
 	const isOwned = item.isOwned
-	const canPreview = !!(item as any).canPreview
+	const canPreview = item.canPreview !== false
+	const petKey = item.itemValue || (item as any).value
+	const isUnsupportedPet =
+		item.type === MarketItemType.PET && (!petKey || !SUPPORTED_PET_TYPES.has(petKey))
 
 	const handlePreview = (e: React.MouseEvent) => {
 		e.stopPropagation()
@@ -35,11 +42,51 @@ export function MarketItemCard({
 	}
 
 	const handleBuy = () => {
-		if (!SUPPORTED_TYPES.includes(item.type)) {
+		if (!SUPPORTED_TYPES.includes(item.type) || isUnsupportedPet) {
 			showToast('نیاز به به‌روزرسانی افزونه دارد!', 'error')
 			return
 		}
 		onPurchase()
+	}
+
+	if (isUnsupportedPet) {
+		return (
+			<div className="flex flex-col overflow-hidden transition-ui duration-200 border bg-surface-veil rounded-2xl border-line">
+				<div className="relative overflow-hidden bg-fill flex-shrink-0 min-h-[90px] flex flex-col items-center justify-center p-3 text-center gap-1">
+					<div className="flex items-center justify-center w-10 h-10 rounded-xl bg-surface-veil border border-line text-warning">
+						<Icon name="alert" size={16} />
+					</div>
+					<div className="absolute top-2 right-2">
+						<span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-lg bg-surface-veil backdrop-blur-sm border border-line text-4xs text-warning font-medium">
+							نیازمند به‌روزرسانی
+						</span>
+					</div>
+				</div>
+
+				<div className="flex flex-col flex-1 px-3 py-2.5 gap-1.5">
+					<p className="text-xs font-semibold text-fg-strong leading-control truncate">
+						{item.name}
+					</p>
+					<p className="text-3xs text-fg-muted leading-relaxed line-clamp-2">
+						این حیوان خانگی در این نسخه از افزونه پشتیبانی نمی‌شود. لطفاً افزونه
+						را به‌روزرسانی کنید.
+					</p>
+
+					<div className="flex items-center justify-between pt-2 mt-auto border-t border-line">
+						<ItemPrice price={item.price} />
+						<Button
+							size="xs"
+							disabled
+							rounded="lg"
+							color="base"
+							className="h-6 px-2 rounded-lg text-3xs cursor-not-allowed opacity-60"
+						>
+							غیرقابل خرید
+						</Button>
+					</div>
+				</div>
+			</div>
+		)
 	}
 
 	return (
@@ -49,7 +96,8 @@ export function MarketItemCard({
 				<RenderPreview
 					item={item}
 					handlePreviewClick={() => {
-						if (item.previewUrl) window.open(item.previewUrl, '_blank')
+						const url = item.imageUrl || item.previewUrl
+						if (url) window.open(url, '_blank')
 					}}
 				/>
 
@@ -61,7 +109,7 @@ export function MarketItemCard({
 					</span>
 				</div>
 
-				{!canPreview && (
+				{canPreview && (
 					<button
 						type="button"
 						onClick={handlePreview}

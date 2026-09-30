@@ -5,8 +5,8 @@ import { WidgetContainer } from '../components/widget-container'
 import type { PetMeta } from './types'
 
 function PetScene() {
-	const { background } = usePetContext()
-	const scene = getPetBackground(background)
+	const { background, backgroundMeta } = usePetContext()
+	const scene = getPetBackground(background, backgroundMeta)
 
 	return (
 		<section
@@ -40,3 +40,6 @@ export function PetWidget({ meta, instanceId }: PetWidgetProps = {}) {
 		</PetProvider>
 	)
 }
+
+export { PET_PREVIEW, PET_BACKGROUNDS } from './constants'
+export { PetTypes, type PetBackgroundId } from './types'

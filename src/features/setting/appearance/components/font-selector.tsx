@@ -4,7 +4,10 @@ import { callEvent } from '@/common/utils/call-event'
 import { ItemSelector } from '@/components/ui'
 import { SectionPanel } from '@/components/ui'
 import { useAppearanceSetting } from '@/context/appearance.context'
-import type { UserInventoryItem } from '@/services/market/market.interface'
+import {
+	MarketItemType,
+	type UserInventoryItem,
+} from '@/services/market/market.interface'
 import { Icon } from '@/icons'
 
 interface FontItem {
@@ -58,7 +61,7 @@ export function FontSelector({ fetched_fonts }: FontSelectorProps) {
 
 	const handleMoreClick = () => {
 		Analytics.event('font_market_opened')
-		callEvent('openMarketModal')
+		callEvent('openMarketModal', { filter: MarketItemType.FONT })
 	}
 
 	const renderFontPreview = ({ value }: FontItem) => (

@@ -12,12 +12,16 @@ export enum PetTypes {
 
 type PetSpecies = 'dog' | 'chicken' | 'crab' | 'frog' | 'cat' | 'owl' | 'sheep'
 
-export type PetBackgroundId = 'none' | 'forest' | 'autumn' | 'beach' | 'tehran'
+export type PetBackgroundId = 'none' | 'forest' | 'autumn' | 'beach' | (string & {})
 
 export interface PetMeta {
 	petType?: PetTypes
 	petName?: string
 	background?: PetBackgroundId
+	backgroundMeta?: {
+		image?: string | null
+		groundOffsetPx?: number
+	}
 }
 
 export interface PetBackground {
@@ -41,6 +45,10 @@ interface PetOption {
 export interface PetSettings {
 	petType: PetTypes | null
 	background: PetBackgroundId
+	backgroundMeta?: {
+		image?: string | null
+		groundOffsetPx?: number
+	}
 	petOptions: Record<PetTypes, PetOption>
 }
 

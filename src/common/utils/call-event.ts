@@ -41,7 +41,10 @@ export interface EventName {
 	}
 	closeAllDropdowns: null
 	openProfile?: 'friends' | 'platforms' | 'vip' | 'pro'
-	openMarketModal: null
+	openMarketModal?: {
+		tab?: string
+		filter?: string
+	} | null
 	font_change: {
 		font: string
 		sync: boolean

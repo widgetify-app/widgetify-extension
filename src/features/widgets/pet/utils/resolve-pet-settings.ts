@@ -14,6 +14,8 @@ export function mergePetMeta(
 	if (overrides?.petType !== undefined) merged.petType = overrides.petType
 	if (overrides?.petName !== undefined) merged.petName = overrides.petName
 	if (overrides?.background !== undefined) merged.background = overrides.background
+	if (overrides?.backgroundMeta !== undefined)
+		merged.backgroundMeta = overrides.backgroundMeta
 	return merged
 }
 
@@ -35,10 +37,11 @@ export function resolvePetSettings(
 	const petType =
 		[meta?.petType, stored?.petType, defaults.petType].find(isPetType) ?? PetTypes.DOG
 	const background = meta?.background ?? stored?.background ?? defaults.background
+	const backgroundMeta = meta?.backgroundMeta ?? stored?.backgroundMeta
 
 	if (meta?.petName) {
 		petOptions[petType] = { ...petOptions[petType], name: meta.petName }
 	}
 
-	return { petType, background, petOptions }
+	return { petType, background, backgroundMeta, petOptions }
 }

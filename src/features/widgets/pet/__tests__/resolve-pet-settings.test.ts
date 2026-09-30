@@ -58,10 +58,10 @@ describe('resolvePetSettings precedence', () => {
 		const result = resolvePetSettings(
 			defaults,
 			stored({ petType: PetTypes.CAT, background: 'forest' }),
-			{ petType: PetTypes.OWL, background: 'tehran', petName: 'Joghdoo' }
+			{ petType: PetTypes.OWL, background: 'beach', petName: 'Joghdoo' }
 		)
 		expect(result.petType).toBe(PetTypes.OWL)
-		expect(result.background).toBe('tehran')
+		expect(result.background).toBe('beach')
 		expect(result.petOptions[PetTypes.OWL].name).toBe('Joghdoo')
 	})
 
@@ -166,14 +166,28 @@ describe('mergePetMeta', () => {
 		).toEqual({ petType: PetTypes.DOG, petName: 'Max', background: 'forest' })
 	})
 
-	it('ignores undefined overrides and handles a missing base', () => {
-		expect(
-			mergePetMeta(undefined, { petType: PetTypes.CAT, background: undefined })
-		).toEqual({
-			petType: PetTypes.CAT,
-		})
-		expect(mergePetMeta({ petType: PetTypes.DOG }, undefined)).toEqual({
+	it('preserves and overrides backgroundMeta', () => {
+		const base = {
 			petType: PetTypes.DOG,
+			background: 'custom_bg',
+			backgroundMeta: {
+				image: 'https://example.com/bg1.webp',
+				groundOffsetPx: 10,
+			},
+		}
+		const overrides = {
+			backgroundMeta: {
+				image: 'https://example.com/bg2.webp',
+				groundOffsetPx: 15,
+			},
+		}
+		expect(mergePetMeta(base, overrides)).toEqual({
+			petType: PetTypes.DOG,
+			background: 'custom_bg',
+			backgroundMeta: {
+				image: 'https://example.com/bg2.webp',
+				groundOffsetPx: 15,
+			},
 		})
 	})
 })

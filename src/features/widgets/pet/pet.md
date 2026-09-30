@@ -4,7 +4,7 @@ Agent reference for `src/features/widgets/pet/`. Read this before changing anyth
 
 ## Summary
 
-A single sprite pet lives inside a fixed 2x1 widget cell. It follows a per-species state tree (walk to a wall, turn, walk back, sit, lie, run), chases and eats food the user drops with a click, and slowly gets hungry. Seven species: dog, cat, chicken, crab, frog, owl, sheep. Five backgrounds: none, forest, autumn, beach, tehran. Free tier, no server calls.
+A single sprite pet lives inside a fixed 2x1 widget cell. It follows a per-species state tree (walk to a wall, turn, walk back, sit, lie, run), chases and eats food the user drops with a click, and slowly gets hungry. Seven species: dog, cat, chicken, crab, frog, owl, sheep. Four built-in backgrounds: none, forest, autumn, beach. Dynamic backgrounds (like tehran) are uploaded via the admin panel and fetched from user inventory. Free tier, no server calls.
 
 ## File map
 
@@ -133,7 +133,8 @@ The container is a `button` and the click handler is on it, so the whole play ar
 | forest | جنگل شب | 7 | `forest.webp` |
 | autumn | پاییز | 3 | `autumn.webp` |
 | beach | ساحل | 10 | `beach.webp` |
-| tehran | تهران | 7 | `tehran.webp` (lossless, rendered from Blender) |
+
+Additional backgrounds (e.g. Tehran) are served dynamically from the marketplace and user inventory.
 
 ## Persistence and settings
 

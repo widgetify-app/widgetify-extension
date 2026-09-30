@@ -11,14 +11,19 @@ const MarketContainer = lazy(() =>
 
 export function MarketModalListener() {
 	const [showMarket, setShowMarket] = useState(false)
+	const [marketConfig, setMarketConfig] = useState<{
+		tab?: string
+		filter?: string
+	}>({})
 
-	const handleOpen = () => {
+	const handleOpen = (config?: { tab?: string; filter?: string } | null) => {
+		setMarketConfig(config || {})
 		setShowMarket(true)
 		Analytics.event('market_opened')
 	}
 
 	useEffect(() => {
-		const event = listenEvent('openMarketModal', () => handleOpen())
+		const event = listenEvent('openMarketModal', (detail) => handleOpen(detail))
 		return () => {
 			event()
 		}
@@ -39,7 +44,10 @@ export function MarketModalListener() {
 					</div>
 				}
 			>
-				<MarketContainer />
+				<MarketContainer
+					initialTab={marketConfig.tab}
+					initialFilter={marketConfig.filter}
+				/>
 			</Suspense>
 		</Modal>
 	)

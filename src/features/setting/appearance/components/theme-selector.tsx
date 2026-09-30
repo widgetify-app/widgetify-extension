@@ -4,7 +4,10 @@ import { callEvent } from '@/common/utils/call-event'
 import { ItemSelector } from '@/components/ui'
 import { SectionPanel } from '@/components/ui'
 import { useTheme } from '@/context/theme.context'
-import type { UserInventoryItem } from '@/services/market/market.interface'
+import {
+	MarketItemType,
+	type UserInventoryItem,
+} from '@/services/market/market.interface'
 import { Icon } from '@/icons'
 
 interface ThemeItem {
@@ -76,7 +79,7 @@ export function ThemeSelector({ fetched_themes }: Props) {
 
 	const handleMoreClick = () => {
 		Analytics.event('theme_market_opened')
-		callEvent('openMarketModal')
+		callEvent('openMarketModal', { filter: MarketItemType.THEME })
 	}
 
 	return (

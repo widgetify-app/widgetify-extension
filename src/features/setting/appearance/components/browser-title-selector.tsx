@@ -7,7 +7,10 @@ import { renderBrowserTitlePreview } from '@/components/browser-title-preview'
 import { SectionPanel } from '@/components/ui'
 import { type ApiError, safeAwait } from '@/services/api'
 import { useChangeBrowserTitle } from '@/services/extension/update-setting.hook'
-import type { UserInventoryItem } from '@/services/market/market.interface'
+import {
+	MarketItemType,
+	type UserInventoryItem,
+} from '@/services/market/market.interface'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
 import { Icon } from '@/icons'
@@ -90,7 +93,7 @@ export function BrowserTitleSelector({ fetched_browserTitles, isAuthenticated }:
 
 	const handleMoreClick = () => {
 		Analytics.event('browser_title_market_opened')
-		callEvent('openMarketModal')
+		callEvent('openMarketModal', { filter: MarketItemType.BROWSER_TITLE })
 	}
 
 	return (

@@ -1,24 +1,36 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import { TextInput, Tooltip } from '@/components/ui'
+import { useAuth } from '@/context/auth.context'
 import { Icon } from '@/icons'
+import { useGetUserInventory } from '@/services/market/get-user-inventory.hook'
+import { MarketItemType } from '@/services/market/market.interface'
 import { useFreeWidgets } from '@/features/widgets/widgets.context'
 import { PetOptionTile } from './components/pet-option-tile'
 import {
 	BASE_PET_OPTIONS,
 	DEFAULT_PET_BACKGROUND,
 	PET_BACKGROUND_LIST,
+	PET_BACKGROUNDS,
 	PET_ICON,
 	PET_NAME_SAVE_DEBOUNCE_MS,
 	PET_PREVIEW,
 	PET_SPECIES_LABEL,
 } from './constants'
-import { type PetBackgroundId, type PetMeta, PetTypes } from './types'
+import { type PetBackground, type PetBackgroundId, type PetMeta, PetTypes } from './types'
 import { getPetBackground } from './utils/get-pet-background'
 import { resolvePetSettings } from './utils/resolve-pet-settings'
 
-const PET_LIST = Object.keys(BASE_PET_OPTIONS.petOptions) as PetTypes[]
+const FREE_PETS = new Set<PetTypes>([
+	PetTypes.DOG,
+	PetTypes.CAT,
+	PetTypes.CHICKEN,
+	PetTypes.CRAB,
+	PetTypes.FROG,
+])
+const FREE_BACKGROUNDS = new Set<string>(['none', 'forest', 'autumn', 'beach'])
 
 const TIPS = [
 	'واسه غذا دادن، هر جای محیطش کلیک کن',
@@ -33,6 +45,9 @@ interface PetSettingsProps {
 
 export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 	const { runtimeLayout, updateWidgetSettings } = useFreeWidgets()
+	const { isAuthenticated } = useAuth()
+	const { data: inventory } = useGetUserInventory(isAuthenticated)
+
 	const targetWidget = instanceId
 		? runtimeLayout.find((w) => w.instanceId === instanceId)
 		: null
@@ -43,6 +58,61 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 	const [background, setBackground] = useState<PetBackgroundId>(
 		targetMeta?.background || DEFAULT_PET_BACKGROUND
 	)
+
+	const ownedPets = new Set<string>(inventory?.pets?.map((p) => p.value) || [])
+	const ownedBackgrounds = new Set<string>(
+		inventory?.pet_backgrounds?.map((b) => b.value) || []
+	)
+
+	const allPets: PetTypes[] = useMemo(() => {
+		const list: PetTypes[] = Array.from(FREE_PETS)
+		const seen = new Set<string>(FREE_PETS)
+
+		if (inventory?.pets) {
+			for (const item of inventory.pets) {
+				const val = item.value as PetTypes
+				if (val && !seen.has(val) && Object.values(PetTypes).includes(val)) {
+					list.push(val)
+					seen.add(val)
+				}
+			}
+		}
+
+		return list
+	}, [inventory?.pets])
+
+	const allBackgrounds: PetBackground[] = useMemo(() => {
+		const map = new Map<string, PetBackground>()
+		for (const bg of PET_BACKGROUND_LIST) {
+			map.set(bg.id, bg)
+		}
+
+		if (inventory?.pet_backgrounds) {
+			for (const item of inventory.pet_backgrounds) {
+				const key = item.value
+				if (!map.has(key)) {
+					map.set(key, {
+						id: key,
+						label: item.name || key,
+						image: item.imageUrl || item.previewUrl || null,
+						groundOffsetPx: Number(item.meta?.groundOffsetPx ?? 0),
+					})
+				}
+			}
+		}
+
+		return Array.from(map.values())
+	}, [inventory?.pet_backgrounds])
+
+	const isPetLocked = (type: PetTypes) => {
+		if (FREE_PETS.has(type)) return false
+		return !ownedPets.has(type)
+	}
+
+	const isBackgroundLocked = (bgId: PetBackgroundId) => {
+		if (FREE_BACKGROUNDS.has(bgId)) return false
+		return !ownedBackgrounds.has(bgId)
+	}
 
 	useEffect(() => {
 		let cancelled = false
@@ -135,6 +205,12 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 	)
 
 	async function onChangePetType(value: PetTypes) {
+		if (isPetLocked(value)) {
+			Analytics.event('pet_market_opened')
+			callEvent('openMarketModal', { filter: MarketItemType.PET })
+			return
+		}
+
 		const stored = await getFromStorage('pets')
 		const fallbackName =
 			stored?.petOptions?.[value]?.name ?? BASE_PET_OPTIONS.petOptions[value].name
@@ -154,10 +230,28 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 	}
 
 	async function onChangeBackground(value: PetBackgroundId) {
+		if (isBackgroundLocked(value)) {
+			Analytics.event('pet_background_market_opened')
+			callEvent('openMarketModal', { filter: MarketItemType.PET })
+			return
+		}
+
 		setBackground(value)
 
-		if (instanceId) saveToWidget({ background: value })
-		else await saveGlobal({ background: value, petType })
+		const selectedBg = allBackgrounds.find((b) => b.id === value)
+		const bgMeta =
+			selectedBg && !PET_BACKGROUNDS[value as keyof typeof PET_BACKGROUNDS]
+				? {
+						image: selectedBg.image,
+						groundOffsetPx: selectedBg.groundOffsetPx,
+					}
+				: undefined
+
+		if (instanceId) {
+			saveToWidget({ background: value, backgroundMeta: bgMeta })
+		} else {
+			await saveGlobal({ background: value, petType, backgroundMeta: bgMeta })
+		}
 
 		callEvent('updatedPetSettings', {
 			instanceId,
@@ -167,7 +261,13 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 	}
 
 	const displayName = petName.trim() || BASE_PET_OPTIONS.petOptions[petType].name
-	const scene = getPetBackground(background)
+	const currentBg = allBackgrounds.find((b) => b.id === background)
+	const scene = getPetBackground(
+		background,
+		currentBg
+			? { image: currentBg.image, groundOffsetPx: currentBg.groundOffsetPx }
+			: targetMeta?.backgroundMeta
+	)
 
 	return (
 		<div className="flex flex-col gap-4">
@@ -227,18 +327,32 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 			</section>
 
 			<section className="flex flex-col gap-2">
-				<h4 id="pet-type-label" className="text-sm font-medium text-fg">
-					حیوان خانگی
-				</h4>
+				<div className="flex items-center justify-between">
+					<h4 id="pet-type-label" className="text-sm font-medium text-fg">
+						حیوان خانگی
+					</h4>
+					<button
+						type="button"
+						onClick={() => {
+							Analytics.event('pet_market_opened')
+							callEvent('openMarketModal', { filter: MarketItemType.PET })
+						}}
+						className="flex items-center gap-1 text-3xs text-fg-muted hover:text-brand transition-ui cursor-pointer"
+					>
+						<Icon name="shoppingBag" size={12} />
+						<span>فروشگاه</span>
+					</button>
+				</div>
 				<fieldset
 					aria-labelledby="pet-type-label"
 					className="grid grid-cols-5 gap-2"
 				>
-					{PET_LIST.map((type) => (
+					{allPets.map((type) => (
 						<PetOptionTile
 							key={type}
 							label={PET_SPECIES_LABEL[type]}
 							selected={petType === type}
+							locked={isPetLocked(type)}
 							onSelect={() => onChangePetType(type)}
 						>
 							<img
@@ -252,18 +366,32 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 			</section>
 
 			<section className="flex flex-col gap-2">
-				<h4 id="pet-background-label" className="text-sm font-medium text-fg">
-					محیط
-				</h4>
+				<div className="flex items-center justify-between">
+					<h4 id="pet-background-label" className="text-sm font-medium text-fg">
+						محیط
+					</h4>
+					<button
+						type="button"
+						onClick={() => {
+							Analytics.event('pet_background_market_opened')
+							callEvent('openMarketModal', { filter: MarketItemType.PET })
+						}}
+						className="flex items-center gap-1 text-3xs text-fg-muted hover:text-brand transition-ui cursor-pointer"
+					>
+						<Icon name="shoppingBag" size={12} />
+						<span>فروشگاه</span>
+					</button>
+				</div>
 				<fieldset
 					aria-labelledby="pet-background-label"
 					className="grid grid-cols-4 gap-2"
 				>
-					{PET_BACKGROUND_LIST.map((item) => (
+					{allBackgrounds.map((item) => (
 						<PetOptionTile
 							key={item.id}
 							label={item.label}
 							selected={background === item.id}
+							locked={isBackgroundLocked(item.id)}
 							onSelect={() => onChangeBackground(item.id)}
 						>
 							<div

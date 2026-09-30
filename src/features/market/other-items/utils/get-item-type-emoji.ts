@@ -6,6 +6,10 @@ export const getItemTypeEmoji = (type: string) => {
 			return '🔤'
 		case 'THEME':
 			return '🎨'
+		case 'PET':
+			return '🐾'
+		case 'PET_BACKGROUND':
+			return '🏞️'
 		default:
 			return '📦'
 	}
