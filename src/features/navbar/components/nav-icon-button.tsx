@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
 import { cn } from '@/common/utils/cn'
-import { Tooltip } from '@/components/ui'
 import { Icon, type IconName } from '@/icons'
 
 interface NavIconButtonProps {
@@ -23,21 +22,19 @@ export function NavIconButton({
 	children,
 }: NavIconButtonProps) {
 	return (
-		<Tooltip content={label} position="bottom">
-			<button
-				type="button"
-				id={id}
-				aria-label={label}
-				aria-pressed={pressed}
-				onClick={onClick}
-				className={cn(
-					'relative p-2 transition-ui cursor-pointer text-nav hover:text-nav-hover active:scale-90',
-					className
-				)}
-			>
-				<Icon name={icon} size={16} aria-hidden="true" />
-				{children}
-			</button>
-		</Tooltip>
+		<button
+			type="button"
+			id={id}
+			aria-label={label}
+			aria-pressed={pressed}
+			onClick={onClick}
+			className={cn(
+				'relative p-2 transition-ui cursor-pointer text-nav/80 hover:text-nav-idle-hover active:scale-90',
+				className
+			)}
+		>
+			<Icon name={icon} size={16} aria-hidden="true" />
+			{children}
+		</button>
 	)
 }
