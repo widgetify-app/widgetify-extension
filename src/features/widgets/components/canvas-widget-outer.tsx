@@ -348,7 +348,7 @@ function CanvasWidgetOuterImpl({
 				{canvasMode === 'edit' && (
 					<button
 						type="button"
-						title="حذف ویجت"
+						aria-label="حذف ویجت"
 						data-widget-delete
 						onPointerDown={(e) => e.stopPropagation()}
 						onPointerUp={(e) => e.stopPropagation()}

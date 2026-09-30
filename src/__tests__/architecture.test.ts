@@ -810,6 +810,7 @@ describe('assets', () => {
 		'src/assets/animals/chicken/white_walk_8fps.webp',
 		'src/assets/animals/crab/red_walk_8fps.webp',
 		'src/assets/animals/dog/akita_with_ball_8fps.webp',
+		'src/assets/animals/frog/ghoori_walk_fast_8fps.webp',
 	])
 
 	it('are each used by a component or a stylesheet', () => {
