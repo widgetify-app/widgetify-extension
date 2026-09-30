@@ -18,15 +18,9 @@ const defaults: PetSettings = {
 			type,
 			defaultOption(
 				type,
-				{
-					dog: 'Akita',
-					chicken: 'Chicken',
-					crab: 'Crab',
-					cat: 'Cat',
-					frog: 'Frog',
-					owl: 'Owl',
-					sheep: 'Sheep',
-				}[type]
+				type === PetTypes.DOG
+					? 'Akita'
+					: type.charAt(0).toUpperCase() + type.slice(1)
 			),
 		])
 	) as PetSettings['petOptions'],

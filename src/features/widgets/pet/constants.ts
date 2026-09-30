@@ -13,6 +13,8 @@ import frogIcon from '@/assets/animals/frog/ghoori_lie_8fps.webp'
 import frogPreview from '@/assets/animals/frog/ghoori_swipe_8fps.webp'
 import owlIcon from '@/assets/animals/owl/owl_idle_8fps.webp'
 import owlPreview from '@/assets/animals/owl/owl_swipe_8fps.webp'
+import hedgehogIcon from '@/assets/animals/hedgehog/hedgehog_idle_8fps.webp'
+import hedgehogPreview from '@/assets/animals/hedgehog/hedgehog_swipe_8fps.webp'
 import sheepIcon from '@/assets/animals/sheep/sheep_idle_8fps.webp'
 import sheepPreview from '@/assets/animals/sheep/sheep_swipe_8fps.webp'
 import {
@@ -30,6 +32,7 @@ export const PET_ICON: Record<PetTypes, string> = {
 	[PetTypes.CAT]: catIcon,
 	[PetTypes.OWL]: owlIcon,
 	[PetTypes.SHEEP]: sheepIcon,
+	[PetTypes.HEDGEHOG]: hedgehogIcon,
 }
 
 export const PET_PREVIEW: Record<PetTypes, string> = {
@@ -40,6 +43,7 @@ export const PET_PREVIEW: Record<PetTypes, string> = {
 	[PetTypes.CAT]: catPreview,
 	[PetTypes.OWL]: owlPreview,
 	[PetTypes.SHEEP]: sheepPreview,
+	[PetTypes.HEDGEHOG]: hedgehogPreview,
 }
 
 export const PET_SPECIES_LABEL: Record<PetTypes, string> = {
@@ -50,6 +54,7 @@ export const PET_SPECIES_LABEL: Record<PetTypes, string> = {
 	[PetTypes.CAT]: 'گربه',
 	[PetTypes.OWL]: 'جغد',
 	[PetTypes.SHEEP]: 'گوسفند',
+	[PetTypes.HEDGEHOG]: 'جوجه‌تیغی',
 }
 
 export const DEFAULT_PET_BACKGROUND: PetBackgroundId = 'none'
@@ -128,6 +133,11 @@ export const BASE_PET_OPTIONS: PetSettings = {
 		[PetTypes.SHEEP]: {
 			name: 'میشا',
 			type: 'sheep',
+			hungryState: { level: 100, lastHungerTick: null },
+		},
+		[PetTypes.HEDGEHOG]: {
+			name: 'تیغو',
+			type: 'hedgehog',
 			hungryState: { level: 100, lastHungerTick: null },
 		},
 	},

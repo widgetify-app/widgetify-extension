@@ -8,9 +8,18 @@ export enum PetTypes {
 	CAT = 'cat',
 	OWL = 'owl',
 	SHEEP = 'sheep',
+	HEDGEHOG = 'hedgehog',
 }
 
-type PetSpecies = 'dog' | 'chicken' | 'crab' | 'frog' | 'cat' | 'owl' | 'sheep'
+type PetSpecies =
+	| 'dog'
+	| 'chicken'
+	| 'crab'
+	| 'frog'
+	| 'cat'
+	| 'owl'
+	| 'sheep'
+	| 'hedgehog'
 
 export type PetBackgroundId = 'none' | 'forest' | 'autumn' | 'beach' | (string & {})
 

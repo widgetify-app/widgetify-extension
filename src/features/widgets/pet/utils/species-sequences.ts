@@ -83,4 +83,16 @@ export const PET_SEQUENCES: Record<PetTypes, PetSequence> = {
 			eat: ['walk-right', 'walk-left', 'run-left', 'run-right'],
 		},
 	},
+	[PetTypes.HEDGEHOG]: {
+		next: {
+			'sit-idle': ['walk-right', 'walk-right', 'lie', 'lie'],
+			lie: ['walk-right', 'walk-left'],
+			'walk-right': ['walk-left', 'walk-left', 'run-left'],
+			'run-right': ['walk-left', 'run-left'],
+			'walk-left': ['sit-idle', 'lie', 'lie', 'walk-right', 'run-right'],
+			'run-left': ['sit-idle', 'lie', 'walk-right'],
+			chase: ['eat'],
+			eat: ['walk-right', 'walk-left', 'run-left', 'run-right'],
+		},
+	},
 }

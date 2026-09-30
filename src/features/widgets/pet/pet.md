@@ -4,7 +4,7 @@ Agent reference for `src/features/widgets/pet/`. Read this before changing anyth
 
 ## Summary
 
-A single sprite pet lives inside a fixed 2x1 widget cell. It follows a per-species state tree (walk to a wall, turn, walk back, sit, lie, run), chases and eats food the user drops with a click, and slowly gets hungry. Seven species: dog, cat, chicken, crab, frog, owl, sheep. Four built-in backgrounds: none, forest, autumn, beach. Dynamic backgrounds (like tehran) are uploaded via the admin panel and fetched from user inventory. Free tier, no server calls.
+A single sprite pet lives inside a fixed 2x1 widget cell. It follows a per-species state tree (walk to a wall, turn, walk back, sit, lie, run), chases and eats food the user drops with a click, and slowly gets hungry. Eight species: dog, cat, chicken, crab, frog, owl, sheep, hedgehog. Four built-in backgrounds: none, forest, autumn, beach. Dynamic backgrounds (like tehran) are uploaded via the admin panel and fetched from user inventory. Free tier, no server calls.
 
 ## File map
 
@@ -83,7 +83,7 @@ Each pet also gets a random speed multiplier `1 +/- 0.25`, fixed for the lifetim
 
 Chosen by fields on `PetDimensions`. A pet has at most one of `hop` / `flight`.
 
-- **Plain walk** (dog, cat, chicken, crab, sheep): `stepWalk` moves horizontally at `walkSpeed` or `runSpeed` times the variance and pulls any residual height down at `FALL_SPEED = 1.5`.
+- **Plain walk** (dog, cat, chicken, crab, sheep, hedgehog): `stepWalk` moves horizontally at `walkSpeed` or `runSpeed` times the variance and pulls any residual height down at `FALL_SPEED = 1.5`.
 - **Hop** (`hop`, frog): `stepHop` alternates `crouch` (timer, still) and `air` (parabola: `y = 4 * height * p * (1 - p)`, `x` lerps to a clamped target). Hops never leave the bounds and a hop that would move less than 0.5 px stays crouched (that is how the pet rests against a wall). Running (`fast`) multiplies crouch time by 0.4, distance by 1.5, height by 1.2 and duration by 0.75. While chasing, the hop direction points at the food, the distance is capped at the remaining distance so it lands on the target, and arrival is within `HOP_ARRIVAL = 2` px. Animation: `run` while airborne, `idle` while crouching.
 - **Flight** (`flight`, owl): `stepFlight` moves horizontally and eases height toward `cruiseAltitude + bob` at `climbRate`. Bob is a sine (`bobAmplitude`, `bobPeriodMs`). Still states descend at `landRate`. Chasing food dives with `stepDive`: the allowed height is capped by `distanceX * diveSlope` and falls at most `diveRate` per frame. Food can only be collected when height is at most `COLLECT_HEIGHT = 6`. Animation: `fly` whenever height is above 0.5, otherwise the state's usual animation.
 - **Sidestep** (`sidestep`, crab): only affects rendering. The reported direction is always `1`, so the sprite never flips while it travels either way.
@@ -102,6 +102,7 @@ All: `width` 50, `size` 32 unless noted, sprites face right and are flipped with
 | crab | چنگولی | SLOW / NORMAL | 80 | plain + sidestep | no `lie` |
 | frog | قوری | SLOW / NORMAL | 80 | hop: distance 35-60, height 12-22, 450 ms, crouch 500-1200 ms | can `lie` after a left trip |
 | sheep | میشا | SLOW / NORMAL | 100 | plain, `size` 32 | can `lie`; like the cat it walks far more than it runs; art from the owner's own drawing |
+| hedgehog | تیغو | SLOW / NORMAL | 100 | plain, `size` 32 | curls into a ball for `lie` (the `lie` clip is a ball of spines with the eye and nose peeking out) and does so more often than the cat or sheep |
 | owl | جغدو | 1.3 / 2.4 | 100 | flight: cruise 12-56, bob 3 over 900 ms, climb 0.9, land 0.7, dive 1.4, slope 0.5 | can `lie`; walk and run both use the `fly` clip |
 
 The cat's `size: 25` predates this work and was left alone.
@@ -174,6 +175,7 @@ The container is a `button` labelled `غذا دادن به <name>`. Keyboard act
 - The owl art was drawn in Aseprite through a Lua script that lives outside the repo; the editable sources are not committed. Redrawing means starting from the exported WebPs or recreating the script.
 - Sheep: 64x64, 8 frames of 125 ms per clip (`sheep_idle`, `sheep_walk`, `sheep_run`, `sheep_swipe`, `sheep_lie`), food `sheep-food.png` (a 24x24 canvas holding a 12x9 grass tuft with a flower, standing on the bottom row). It was built from the owner's own `sheep.aseprite` (32x32, 4 frames): the body, head and legs are that artist's pixels, and only the poses were added by moving parts of them (leg swing and knee step for walk and run, a lowered head with grass for eat, the body dropped to the ground for lie, the ground line at the bottom row). The editable source of the added poses is not in the repo.
 - Food art is small and bottom-aligned inside its 24x24 canvas: the existing foods are 9-18 px tall, the sheep's is 9. The canvas size is the pickup and layout size (`collectibleSize`), not the size of the picture, so never fill the canvas, and draw the food at the same pixel scale as the pet (one art pixel per screen pixel for the sheep).
+- Hedgehog: 64x64, 8 frames of 125 ms per clip (`hedgehog_idle`, `hedgehog_walk`, `hedgehog_run`, `hedgehog_swipe`, `hedgehog_lie`), food `hedgehog-food.png` (an 11x10 apple on the bottom of the 24x24 canvas). Drawn at 32x32 with a procedural spine dome (a radial stripe pattern, lighter tips and a jagged outline) plus a hand-placed face. `swipe` shows the snout on the ground with closed eyes, and `lie` shows a ball with blue "z" marks. The label shown in the picker is «جوجه‌تیغی». The drawing script is not in the repo.
 - Every species needs `idle`, `walk`, `run`, and optionally `swipe`, `sit`, `fly`.
 
 ## Adding a species
@@ -218,7 +220,7 @@ What this does not show: the remaining commits are real visual changes (sprite s
 
 ## Tests
 
-`bun test` covers only the pure modules: state facts, hold times, wall detection, `chooseNextState` (including hunger), all seven species trees, hop arcs (landing on the floor, bounds, direction, chase without overshoot, wall behaviour, running vs walking), flight maths, movement bounds, the tick-mode rule, and settings resolution. It does not render `use-base-pet-logic.ts` or any component; there is no React test setup in this repo. `architecture.test.ts` allows one `<feature>.md` at a feature root, added for this file.
+`bun test` covers only the pure modules: state facts, hold times, wall detection, `chooseNextState` (including hunger), all eight species trees, hop arcs (landing on the floor, bounds, direction, chase without overshoot, wall behaviour, running vs walking), flight maths, movement bounds, the tick-mode rule, and settings resolution. It does not render `use-base-pet-logic.ts` or any component; there is no React test setup in this repo. `architecture.test.ts` allows one `<feature>.md` at a feature root, added for this file.
 
 ## Invariants
 
@@ -257,6 +259,7 @@ What this does not show: the remaining commits are real visual changes (sprite s
 - The catalog's pet settings now mean "default pet for widgets that have no choice of their own". Confirm that is the intended meaning, or remove that entry point so pet settings are only reachable from a widget's own gear.
 - Switching species replaces the custom name. Should the widget remember one name per species? That needs a `meta` shape decision.
 - Old widgets whose `meta` was saved when it was broken keep whatever it holds; nothing migrates them.
+- `frog/ghoori_walk_fast_8fps.webp` is no longer used by any component, because wall climbing was removed from the frog and it was the climb clip. The architecture test "assets are each used by a component or a stylesheet" flags it. Delete it, or add it to `spritesKeptForUnplayedAnimations` like the other spare clips. *Needs a decision*.
 
 ## Verification status
 
@@ -277,3 +280,4 @@ Not yet checked on screen: that the pet still looks the same and moves as smooth
 9. Performance pass. Root causes, measured: the position lived in React state, so every movement tick was a full React commit (30-40 per second, more on high refresh rate displays); the container size was read from the DOM about 190 times per second, even when the pet sat still; and the loop woke on every frame regardless. Now: the position is painted directly on the element, the size is cached from the `ResizeObserver`, the loop drops to a 100 ms poll while the pet rests on the ground and stops when the widget is off screen, species configuration is hoisted so `BasePetContainer` can be `memo`, sprite loading no longer costs a second commit, the owl clips are 64x64 and the three older backgrounds are lossless WebP (about 14% smaller, identical pixels).
 10. Sheep added («میشا»): a seventh species from the owner's own pixel art, with a walk/run cycle whose legs bend at a knee step, a grazing pose for eating, and a lying pose. Its tree is the cat's shape (mostly walking, some lying).
 11. Sheep fixes after review: the legs were moved under the belly (the owner's original spacing put the last leg outside the body), and the food was redrawn much smaller (it filled the whole 24x24 canvas and was drawn at twice the pet's pixel scale).
+12. Hedgehog added («تیغو», picker label «جوجه‌تیغی»): an eighth species, small and slow, that rests curled into a ball. Its tree is the sheep's shape with `lie` weighted higher.
