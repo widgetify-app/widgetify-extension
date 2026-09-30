@@ -2,7 +2,7 @@ export function HabitItemSkeleton() {
 	return (
 		<div
 			aria-hidden="true"
-			className="w-full p-1.5 text-right border rounded-xl border-line bg-fill"
+			className="w-full p-1.5 text-right border rounded-xl border-surface-3"
 		>
 			<div className="flex items-center gap-2">
 				<div className="rounded-lg w-7 h-7 shrink-0 skeleton " />

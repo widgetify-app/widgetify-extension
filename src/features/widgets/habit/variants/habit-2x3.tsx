@@ -10,7 +10,7 @@ import { HabitItem } from '../components/item/habit-item'
 import type { useHabitActions } from '../hooks/use-habit-actions'
 import { WidgetError } from '@/features/widgets/components/widget-error'
 
-const SKELETON_COUNT = 3
+const SKELETON_COUNT = 4
 
 interface Habit2x3Props {
 	actions: ReturnType<typeof useHabitActions>
