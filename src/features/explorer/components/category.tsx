@@ -24,7 +24,7 @@ export function ExplorerCategory({ category, categoryRefs, onOpenPromoModal }: P
 		>
 			<div className="flex items-center justify-between pb-3 mb-3 border-b border-surface-3">
 				<div className="flex items-center gap-2.5">
-					<div className="w-8 h-8 rounded-xl bg-fill-2 border border-line p-1.5 flex items-center justify-center shrink-0">
+					<div className="w-8 h-8 rounded-xl p-1.5 flex items-center justify-center shrink-0">
 						{category.icon ? (
 							<img
 								src={category.icon}

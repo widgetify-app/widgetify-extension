@@ -12,15 +12,15 @@ function ExplorerSkeleton() {
 			{[1, 2, 3].map((i) => (
 				<div key={i} className="flex flex-col gap-3">
 					<div className="flex items-center gap-2.5 pb-3 border-b border-surface-3">
-						<div className="w-8 h-8 rounded-xl skeleton opacity-30" />
-						<div className="h-4 w-32 skeleton rounded-lg opacity-30" />
+						<div className="w-8 h-8 rounded-xl skeleton" />
+						<div className="h-4 w-32 skeleton rounded-lg" />
 					</div>
 					<div className="grid grid-cols-2 md:grid-cols-4 gap-3 auto-rows-[68px]">
-						<div className="col-span-2 row-span-2 skeleton rounded-2xl opacity-20" />
+						<div className="col-span-2 row-span-2 skeleton rounded-2xl" />
 						{[1, 2, 3, 4, 5, 6].map((j) => (
 							<div
 								key={j}
-								className="col-span-1 row-span-1 skeleton rounded-2xl opacity-20"
+								className="col-span-1 row-span-1 skeleton rounded-2xl"
 							/>
 						))}
 					</div>
@@ -248,7 +248,7 @@ export function ExplorerContent() {
 							value={searchQuery}
 							onChange={(e) => setSearchQuery(e.target.value)}
 							placeholder="جستجو در تمام سایت‌ها و دسته‌ها..."
-							className="w-full bg-fill-2 text-xs text-fg-strong placeholder-fg-faint px-3 py-2 rounded-xl border border-line focus:outline-none focus:border-brand-muted focus:bg-surface-2 transition-ui pr-8"
+							className="w-full bg-surface-2 text-xs text-fg-strong placeholder-fg-faint px-3 py-2 rounded-xl border border-line focus:outline-none focus:border-brand-muted transition-ui pr-8 focus:placeholder:text-fg-ghost"
 						/>
 						<svg
 							aria-hidden="true"

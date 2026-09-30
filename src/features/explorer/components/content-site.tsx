@@ -33,7 +33,7 @@ export function RenderContentSite({ link, onOpenPromoModal }: SiteProp) {
 			target="_blank"
 			rel="noopener noreferrer"
 			onClick={handleClick}
-			className="col-span-1 row-span-1 h-full group relative p-3 rounded-2xl border border-surface-3 bg-fill hover:bg-fill-2 hover:border-line transition-ui duration-200 active:scale-[0.98] select-none shadow-sm hover:shadow-md flex items-center justify-between gap-3 cursor-pointer"
+			className="col-span-1 row-span-1 h-full group relative p-3 rounded-2xl border border-surface-3 bg-surface-2 hover:bg-surface-3 hover:border-line transition-ui duration-200 active:scale-[0.98] select-none shadow-sm hover:shadow-md flex items-center justify-between gap-3 cursor-pointer"
 		>
 			{link.isNew && <NewBadge className="top-2 left-2" />}
 
@@ -51,7 +51,7 @@ export function RenderContentSite({ link, onOpenPromoModal }: SiteProp) {
 				</span>
 			)}
 
-			<div className="w-10 h-10 rounded-xl bg-surface-2 border border-line p-2 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:border-brand-fill-2 transition-ui">
+			<div className="w-10 h-10 rounded-xl bg-surface-2 border border-surface-3 p-2 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:border-brand-fill-2 transition-ui">
 				{link.icon ? (
 					<img
 						src={link.icon}
