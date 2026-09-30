@@ -126,7 +126,13 @@ The container is a `button` and the click handler is on it, so the whole play ar
 
 ## Backgrounds
 
-`PET_BACKGROUNDS` in `constants.ts`, id type `PetBackgroundId`. Pixel art strips about 792 px wide and 197-242 px tall (forest 793x240, autumn 793x197, beach 792x242, tehran 792x240); all lossless WebP, the three older ones converted from PNG with identical pixels, drawn with `background-size: auto 100%`, bottom centred.
+`PET_BACKGROUNDS` in `constants.ts`, id type `PetBackgroundId`. All lossless WebP, drawn with `background-size: auto 100%`, bottom centred.
+
+### Dimensions & Aspect Ratio Standard
+- **Standard resolution for new backgrounds:** **`640 × 240 px`** (lossless WebP, animated 8fps or static).
+- **Ratio rationale:** A 2×1 widget is `256 × 96 px` (at standard `lg` density, cellHeight 96, aspect ratio `8:3 = 2.666`). Under `background-size: auto 100%`, a 240 px tall background scales to 96 px height, yielding an exact rendered width of `640 * (96 / 240) = 256 px`. This ensures zero horizontal cropping on the container edges.
+- **Architectural safe zone:** Keep critical boundary elements (pillars, hanging lanterns, edge furniture) within $x \in [14, 626]$ px so they remain clearly visible and unclipped by the widget container's rounded corners (`rounded-widget`).
+- **Legacy assets:** Older panoramic outdoor nature strips used ~792 px width (`forest` 793×240, `autumn` 793×197, `beach` 792×242, `tehran` 792×240) where seamless horizontal cropping of repeating foliage/sky was acceptable, but architectural interiors must use 640×240.
 
 | id | Label | `groundOffsetPx` | File |
 |---|---|---|---|
