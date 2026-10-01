@@ -128,7 +128,11 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 	async function browserHasPermission(
 		permissions: Browser.runtime.ManifestPermissions[]
 	) {
-		return browser.permissions.contains({ permissions })
+		try {
+			return await browser.permissions.contains({ permissions })
+		} catch {
+			return false
+		}
 	}
 
 	const updateSetting = <K extends keyof GeneralData>(

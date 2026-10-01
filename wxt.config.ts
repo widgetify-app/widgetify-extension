@@ -91,7 +91,7 @@ export default defineConfig({
 			browser_specific_settings: {
 				gecko: {
 					id: geckoId,
-					strict_min_version: '142.0',
+					strict_min_version: '115.0',
 					data_collection_permissions: {
 						required: ['none'],
 						optional: ['technicalAndInteraction', 'websiteActivity'],
