@@ -27,7 +27,7 @@ function ImageSliderDots({
 			className={cn(
 				'flex items-center gap-1 px-2 py-1 rounded-full backdrop-blur-md pointer-events-auto',
 				variant === 'light'
-					? 'bg-[rgba(0,0,0,0.5)] border border-[rgba(255,255,255,0.1)]'
+					? 'bg-scrim border border-image-fill'
 					: 'bg-surface-veil border border-surface-3',
 				className
 			)}
@@ -49,7 +49,7 @@ function ImageSliderDots({
 								? 'w-4 bg-image-fg'
 								: 'w-3.5 bg-brand'
 							: variant === 'light'
-								? 'w-1.5 bg-[rgba(255,255,255,0.4)] hover:bg-[rgba(255,255,255,0.7)]'
+								? 'w-1.5 bg-image-line hover:bg-image-fg-muted'
 								: 'w-1 bg-[rgba(var(--color-base-content-rgb),0.3)] hover:bg-[rgba(var(--color-base-content-rgb),0.6)]'
 					)}
 					aria-label={`اسلاید ${idx + 1}`}
@@ -89,7 +89,7 @@ function ImageSliderArrows({
 				className={cn(
 					'pointer-events-auto w-7 h-7 rounded-xl flex items-center justify-center transition-ui active:scale-95 shadow-sm cursor-pointer',
 					variant === 'dark'
-						? 'bg-scrim hover:bg-[rgba(0,0,0,0.8)] text-image-fg backdrop-blur-md border border-image-fill'
+						? 'bg-scrim hover:bg-scrim-strong text-image-fg backdrop-blur-md border border-image-fill'
 						: 'bg-surface-veil hover:bg-surface text-fg backdrop-blur-xs border border-surface-3'
 				)}
 				aria-label="عکس قبلی"
@@ -106,7 +106,7 @@ function ImageSliderArrows({
 				className={cn(
 					'pointer-events-auto w-7 h-7 rounded-xl flex items-center justify-center transition-ui active:scale-95 shadow-sm cursor-pointer',
 					variant === 'dark'
-						? 'bg-scrim hover:bg-[rgba(0,0,0,0.8)] text-image-fg backdrop-blur-md border border-image-fill'
+						? 'bg-scrim hover:bg-scrim-strong text-image-fg backdrop-blur-md border border-image-fill'
 						: 'bg-surface-veil hover:bg-surface text-fg backdrop-blur-xs border border-surface-3'
 				)}
 				aria-label="عکس بعدی"

@@ -184,7 +184,7 @@ function WallpaperItemFu({
 							e.stopPropagation()
 							onPreviewBackground(wallpaper)
 						}}
-						className="absolute bottom-1.5 right-1.5 flex items-center gap-1 px-2 py-1 rounded-lg bg-scrim border border-image-line text-[rgba(255,255,255,0.8)] hover:text-image-fg transition-colors text-3xs font-medium backdrop-blur-sm cursor-pointer opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:focus-ring"
+						className="absolute bottom-1.5 right-1.5 flex items-center gap-1 px-2 py-1 rounded-lg bg-scrim border border-image-line text-image-fg-muted hover:text-image-fg transition-colors text-3xs font-medium backdrop-blur-sm cursor-pointer opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:focus-ring"
 					>
 						<Icon name="outlineEye" size={10} />
 						<span>پیش‌نمایش</span>

@@ -161,6 +161,19 @@ describe('one vocabulary', () => {
 		)
 		expect(bad).toEqual([])
 	})
+
+	it('never writes a numeric rgb() or rgba() into a class', () => {
+		const pattern =
+			/(?<![\w-])(?:[a-z0-9/-]+:)*!?(bg|text|border(?:-[tblr])?|ring|from|to|via|fill|stroke|outline|divide|shadow|drop-shadow)-\[[^\]]*rgba?\(\s*\d/
+		const allowed = [
+			'src/common/toast.tsx',
+			'src/features/widgets/pet/components/pet-hud.tsx',
+		]
+		const bad = offenders(pattern).filter(
+			(o) => !allowed.some((path) => o.startsWith(`${path}:`))
+		)
+		expect(bad).toEqual([])
+	})
 })
 
 describe('white and black', () => {

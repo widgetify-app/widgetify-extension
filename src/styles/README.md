@@ -80,9 +80,12 @@ and tint names. Redeclaring one there would make it refer to itself.
 
 **Over imagery** — chrome drawn on a wallpaper or a photo follows no theme,
 because the theme says nothing about the pixels behind it: `image-fg` (white) ·
-`image-fill` (white 20) · `image-line` (white 30) · `scrim` (black 60) ·
-`scrim-soft` (black 20). Text on a solid accent is never one of these: it is
-that accent's `on-` pair.
+`image-fg-muted` (white 75) · `image-fill` (white 20) · `image-line` (white 30) ·
+`scrim-strong` (black 85) · `scrim` (black 60) · `scrim-soft` (black 20). Text on
+a solid accent is never one of these: it is that accent's `on-` pair. A numeric
+`rgba(0,0,0,…)` or `rgba(255,255,255,…)` in a class is rejected by a test; take
+the nearest step above, or write it from a theme channel
+(`rgba(var(--color-error-rgb),0.6)`).
 
 **Navbar** — `nav` · `nav-hover` for the navbar's buttons, `nav-idle` ·
 `nav-idle-hover` for its inactive tabs. They default to `fg-faint` → `fg-strong`

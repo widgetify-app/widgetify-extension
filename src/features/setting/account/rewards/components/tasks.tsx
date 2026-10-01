@@ -112,7 +112,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 					<div className="py-12 text-center">
 						<div className="relative flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-surface-2 to-surface-3">
 							<Icon name="check" className="w-8 h-8 text-fg-muted" />
-							<div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-transparent to-[rgba(255,255,255,0.05)]"></div>
+							<div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-transparent to-fill"></div>
 						</div>
 						<p className="text-sm font-medium text-fg-muted">
 							هیچ ماموریتی یافت نشد

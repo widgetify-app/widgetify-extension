@@ -56,7 +56,7 @@ export function RenderContentBanner({ link, onOpenPromoModal }: BannerProp) {
 				}}
 			/>
 
-			<div className="absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.95)] via-[rgba(0,0,0,0.5)] to-transparent transition-opacity group-hover:opacity-90" />
+			<div className="absolute inset-0 bg-gradient-to-t from-scrim-strong via-scrim to-transparent transition-opacity group-hover:opacity-90" />
 
 			{hasMultiple && (
 				<ImageSlider.Arrows
@@ -98,7 +98,7 @@ export function RenderContentBanner({ link, onOpenPromoModal }: BannerProp) {
 						{link.name}
 					</h3>
 					{link.description && (
-						<p className="text-2xs text-[rgba(255,255,255,0.75)] line-clamp-1 mt-0.5 drop-shadow-xs leading-body font-normal">
+						<p className="text-2xs text-image-fg-muted line-clamp-1 mt-0.5 drop-shadow-xs leading-body font-normal">
 							{link.description}
 						</p>
 					)}
