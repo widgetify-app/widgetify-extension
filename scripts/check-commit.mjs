@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process'
-import { existsSync, mkdtempSync, rmdirSync, symlinkSync } from 'node:fs'
+import { existsSync, mkdtempSync, rmdirSync, symlinkSync, unlinkSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
@@ -15,7 +15,7 @@ function run(command, args, cwd) {
 
 function unlink(path) {
 	try {
-		rmdirSync(path)
+		unlinkSync(path)
 		return true
 	} catch (error) {
 		console.error(`Could not remove the link ${path}: ${error.message}`)
