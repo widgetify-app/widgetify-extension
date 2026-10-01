@@ -86,7 +86,8 @@ function referencedFiles(path: string): string[] {
 				!NOT_A_PATH.test(token) &&
 				!/^\.[\w.-]*\.(tsx?|css|md|mjs|json)$/.test(token) &&
 				!/^\.(tsx?|css|md|mjs|json)$/.test(token) &&
-				!token.startsWith('http')
+				!token.startsWith('http') &&
+				!UNCHECKED_DOCS.includes(token)
 		)
 		.filter((token) => !exists(token, path))
 }
