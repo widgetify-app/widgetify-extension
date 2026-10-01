@@ -1,55 +1,44 @@
-# Contributing Guide
+# Contributing
 
-Thank you for your interest in contributing to Widgetify! This document provides guidelines to help you with the contribution process.
+Thank you for helping with Widgetify. This is the short version. The rules for each part of the code are in the README of that folder; start from [README.md](../README.md).
 
-## Required Tools
-To contribute, you'll need to install the following tools and software:
-- Bun.sh
-- Chrome Browser
-- Biomejs
+## Tools
 
-API documentation can be found in the [Api-doc.md](./Api-doc.md) file.
+- [Bun](https://bun.sh) and Node.js
+- Chrome and Firefox, to try the extension
+- Biome, which is installed with the project
 
-## Getting Started
-To get started, fork and clone the repository to your local machine:
+API documentation is in [Api-doc.md](./Api-doc.md).
+
+## Getting started
 
 ```bash
 git clone https://github.com/widgetify-app/widgetify-extension.git
-```
-```bash
 cd widgetify-extension
-```
-```bash
 bun install
-```
-```bash
-git checkout -b feature/your-feature-name
-```
-```bash
 bun dev
 ```
 
-> [!TIP]
-> After running the last command, open a new tab in your browser (the default tab might show a blank page)
+Open a new tab in the browser that starts. The first one may be blank.
 
-## How to Contribute
+## How to contribute
 
-Before submitting a pull request, please make sure the following is done:
+1. Branch from `dev`. Never work on `main`.
+2. Name the branch `<type>/<what-it-does>`, in lowercase with hyphens. The type is one of `feat`, `fix`, `refactor`, `perf`, `docs`, `test` or `chore`. Examples: `fix/calendar-date-selection`, `feat/network-widget`.
+3. Make one change per branch. Keep it small and about one topic.
+4. Run `npm run check`. It formats the code, type checks, lints, runs the tests and builds.
+5. Try the change by hand in the browser and say what you checked.
+6. Commit with a short title: `type(scope): what changed`. Add up to three lines of explanation when the reason is not obvious.
+7. Open a pull request into `dev` that explains the problem, the cause and the fix.
 
-1. Create a new branch for your feature or bug fix.
-2. Make your changes and commit them with descriptive commit messages.
-3. Push your changes to your fork: ```git push origin my-feature```
-4. Create a pull request.
+## Code style
 
-## Development Workflow
-- Create a new branch for each feature or fix
-- Sync with the main branch before submitting a pull request
-- Keep your branches clean and focused on a single topic
+- Biome formats the code. `npm run format` does it for you; `npm run lint` must report nothing.
+- No comments in the code. Name things so they explain themselves.
+- Text the user sees is Persian, right to left, and friendly.
+- Build screens from `src/components/ui` and the theme tokens, with semantic HTML.
+- Support Chrome 109 and Firefox 115.
 
-## Code Style Guide
-- Use biomejs for code formatting
-- Variable and function names should be clear and descriptive
+## Questions
 
-## Community Communication
-
-Thank you for contributing! 
+Open an issue on GitHub.
