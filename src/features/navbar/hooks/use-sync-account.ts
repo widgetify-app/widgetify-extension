@@ -83,7 +83,7 @@ async function processWallpaper(
 
 async function processBrowserTitle(browserTitle: UserInventoryItem | null) {
 	try {
-		if (!browserTitle) return console.log('not found title')
+		if (!browserTitle) return
 
 		if (browserTitle.value === document.title) return
 
