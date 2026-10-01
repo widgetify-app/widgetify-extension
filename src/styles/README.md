@@ -145,8 +145,8 @@ because the theme says nothing about the pixels behind it: `image-fg` (white) ·
 `image-fg-muted` (white 75) · `image-fill` (white 20) · `image-line` (white 30) ·
 `scrim-strong` (black 85) · `scrim` (black 60) · `scrim-soft` (black 20). Text on
 a solid accent is never one of these: it is that accent's `on-` pair. A numeric
-`rgba(0,0,0,…)` or `rgba(255,255,255,…)` in a class is rejected by a test; take
-the nearest step above, or write it from a theme channel
+`rgba(0,0,0,…)` or `rgba(255,255,255,…)` in a class is rejected by a test, except in `toast.tsx` and
+the pet hearts' drop shadow; take the nearest step above, or write it from a theme channel
 (`rgba(var(--color-error-rgb),0.6)`).
 
 **Navbar** — `nav` · `nav-hover` for the navbar's buttons, `nav-idle` ·
@@ -295,3 +295,10 @@ Modals (from 1000, twenty per open modal) and toasts stack themselves in
 JavaScript and are not on this list. A portal that sets its z-index inline reads
 the same value with `zIndex: 'var(--z-dropdown)'`. A test rejects arbitrary
 page-wide values like `z-[9999]`.
+
+## Known and not fixed
+
+Measured on 2026-10-01 with the WCAG ratio on the opaque themes. `glass` and `icy` are left out because their tokens carry alpha.
+
+- **Content on its colour** (`on-brand` on `brand` and the like) is 3:1 or better everywhere. Under 4.5: `on-brand` on `brand` is 4.2 in `light` and `dark` and 3.5 in `esteghlal`; `on-danger` on `danger` is 4.2 in `dark` and 3.6 in `esteghlal`. Only a different brand or status colour fixes these.
+- **A colour used as text on `surface`** is weaker, because it was chosen as a fill. In `light`, `text-danger` is 2.9, `text-success` 2.0, `text-warning` 1.8 and `text-info` 2.2, and the app writes them 88 times. `text-secondary` (5 uses) is 1.3 in `zarna`. `text-brand` (151 uses) is 4.2 to 4.3 in `light`, `dark` and `esteghlal`. A darker text tone per status would fix the first group; that is a design choice.

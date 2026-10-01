@@ -52,7 +52,7 @@ Events go through `Analytics` from `@/analytics`. The user can turn it off in se
 
 ## Toasts
 
-Toasts are always dark, in every theme. They are a transient layer over the page and not part of it, so their colours are written literally inside arbitrary value classes. Leave them. `toast.tsx` is the only file allowed numeric colours in classes.
+Toasts are always dark, in every theme. They are a transient layer over the page and not part of it, so their colours are written literally inside arbitrary value classes. Leave them. `toast.tsx` is the only file allowed numeric colours in classes, apart from the drop shadow of the pet hearts in `pet-hud.tsx`.
 
 ## Mistakes that happened
 

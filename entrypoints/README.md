@@ -13,8 +13,8 @@ The extension must run on the oldest browsers Windows 7 can still install, becau
 
 What follows from that:
 
-- No API or CSS feature that starts after those versions. `src/__tests__/browser-baseline.test.ts` rejects the known ones in `src` (`toSorted`, `Object.groupBy`, `Promise.withResolvers`, `:has(`, `text-wrap: balance` and others). The stylesheet tests reject `oklch()` and `color-mix()`.
-- `src/styles/legacy.css` holds the Chrome 109 fallbacks for what daisyUI writes. Tailwind's own `@property` fallback covers Firefox below 128.
+- No API or CSS feature that starts after those versions. `src/__tests__/browser-baseline.test.ts` rejects the known ones in `src` (`toSorted`, `Object.groupBy`, `Promise.withResolvers`, `:has(`, the `popover` attribute and others). A property that only changes looks and is ignored where missing, like `text-balance`, may stay. The stylesheet tests reject `oklch()` and `color-mix()` in our own CSS.
+- `src/styles/legacy.css` holds the Chrome 109 fallbacks for what daisyUI writes. The built stylesheet still carries daisyUI's own `oklch()`, `color-mix()` and `:has()`, which an old browser drops, so `legacy.css` restores the one that mattered: the modal scrim. Tailwind's own `@property` fallback covers Firefox below 128.
 - On every Firefox the extension asks for data consent itself, in `src/pages/home/components/step-firefox-consent.tsx`. Firefox 140 and later has a built-in prompt too (`data_collection_permissions`); older versions ignore that key.
 - Firefox below 139 has no `tabGroups` permission. The code guards the missing API, and `general-setting.context.tsx` treats a permission check that throws as "not granted".
 - `strict_min_version` in `wxt.config.ts` must match the table above. The baseline test reads it.

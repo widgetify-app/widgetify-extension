@@ -43,6 +43,10 @@ The canvas that hosts every widget, and the widgets themselves. Each widget is a
 - A disabled query left a signed out user on a skeleton that never resolved.
 - Notes had a premium model that could be picked for free and then rendered locked, because `isVipOnly` was missing on the variant.
 
+## Known and not fixed
+
+`registry.tsx` and the canvas hooks import each other in a loop: the registry imports every widget, a widget imports `widgets.context.tsx`, the context imports `use-widget-drag`, `use-widget-operations` and `widget-layout-helpers`, and those import the registry. It works because they read `WIDGET_DEFINITIONS` only inside functions. Reading it at the top level of one of those files would run before it exists, and `tsc` would not notice. Passing the registry in from the provider would remove the loop.
+
 ## Tests
 
 Pure modules only: `__tests__/` covers the layout engine, push down, migration, size choice and zoned time; each widget covers its own maths and `normalize-*` helpers.
