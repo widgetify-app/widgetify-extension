@@ -736,7 +736,9 @@ describe('server state', () => {
 		const outside = projectFiles
 			.filter((path) => path !== 'src/common/storage.ts' && !isTest(path))
 			.filter((path) =>
-				/\b(localStorage|sessionStorage)\s*\./.test(readFileSync(path, 'utf8'))
+				/\b(localStorage|sessionStorage|indexedDB)\s*\.|\b(browser|chrome)\.storage\b|wxt\/utils\/storage|document\.cookie/.test(
+					readFileSync(path, 'utf8')
+				)
 			)
 		expect(outside).toEqual([])
 	})
