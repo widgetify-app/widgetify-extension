@@ -2,7 +2,7 @@ type TickMode = 'stopped' | 'idle' | 'frame'
 
 export const IDLE_POLL_MS = 100
 
-interface TickFacts {
+export interface TickFacts {
 	visible: boolean
 	still: boolean
 	grounded: boolean

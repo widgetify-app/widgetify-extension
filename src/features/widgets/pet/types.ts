@@ -144,6 +144,17 @@ export interface PetAssets {
 	collectibleFallSpeed: number
 }
 
+export interface PetLogicProps {
+	name: string
+	animations: PetAnimations
+	dimensions: PetDimensions
+	sequence: PetSequence
+	assets: PetAssets
+	onCollectibleCollection: (collectedItemId: number) => void
+	onLevelDownHungryState: () => void
+	isHungry: boolean
+}
+
 declare module '@/common/constants/store-keys' {
 	interface StorageKV {
 		pets: PetSettings
