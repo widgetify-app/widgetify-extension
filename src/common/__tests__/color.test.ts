@@ -9,6 +9,20 @@ describe('getContrastingTextColor', () => {
 		expect(getContrastingTextColor('#1e3a8a')).toBe('#ffffff')
 	})
 
+	it('weighs red, green and blue by how bright the eye sees them', () => {
+		expect(getContrastingTextColor('#ff0000')).toBe('#ffffff')
+		expect(getContrastingTextColor('#0000ff')).toBe('#ffffff')
+		expect(getContrastingTextColor('#00ff00')).toBe('#0b0b0f')
+		expect(getContrastingTextColor('#f0ca00')).toBe('#0b0b0f')
+		expect(getContrastingTextColor('#00ca00')).toBe('#ffffff')
+		expect(getContrastingTextColor('#00caff')).toBe('#0b0b0f')
+	})
+
+	it('switches from white to dark text just above 60% brightness', () => {
+		expect(getContrastingTextColor('#989898')).toBe('#ffffff')
+		expect(getContrastingTextColor('#9a9a9a')).toBe('#0b0b0f')
+	})
+
 	it('reads the short hex form and a hex with or without the hash', () => {
 		expect(getContrastingTextColor('#fff')).toBe('#0b0b0f')
 		expect(getContrastingTextColor('000')).toBe('#ffffff')

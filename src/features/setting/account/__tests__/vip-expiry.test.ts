@@ -23,6 +23,11 @@ describe('formatVipRemaining', () => {
 		expect(formatVipRemaining(fromNow(3 * DAY + HOUR))).toBe('۳ روز')
 	})
 
+	it('counts one day and one hour as they are', () => {
+		expect(formatVipRemaining(fromNow(DAY + HOUR))).toBe('۱ روز')
+		expect(formatVipRemaining(fromNow(HOUR + 10 * MINUTE))).toBe('۱ ساعت')
+	})
+
 	it('counts hours when less than a day is left', () => {
 		expect(formatVipRemaining(fromNow(5 * HOUR + 10 * MINUTE))).toBe('۵ ساعت')
 	})

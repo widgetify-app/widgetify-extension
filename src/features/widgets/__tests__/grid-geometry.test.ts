@@ -35,6 +35,10 @@ describe('getCanvasHeight', () => {
 		expect(getCanvasHeight([], 50, 10)).toBe(0)
 	})
 
+	it('is one cell high for one row, with no gap to add', () => {
+		expect(getCanvasHeight([widget(0, 1)], 50, 10)).toBe(50)
+	})
+
 	it('reaches the bottom of the lowest widget, with a gap between rows', () => {
 		expect(getCanvasHeight([widget(0, 2)], 50, 10)).toBe(110)
 		expect(getCanvasHeight([widget(0, 1), widget(3, 2)], 50, 10)).toBe(

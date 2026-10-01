@@ -47,6 +47,37 @@ describe('translateError', () => {
 		expect(Object.keys(result as Record<string, string>)).toEqual(['email', 'name'])
 	})
 
+	it('translates a known validation message and keeps an unknown one', () => {
+		const error = {
+			response: {
+				data: {
+					formValidation: [
+						{ property: 'username', message: 'username should not be empty' },
+						{ property: 'bio', message: 'something the server added' },
+					],
+				},
+			},
+		}
+		expect(translateError(error)).toEqual({
+			username: 'نام کاربری نمی‌تونه خالی باشه',
+			bio: 'something the server added',
+		})
+	})
+
+	it('returns the field map even when only one field failed', () => {
+		const error = {
+			response: {
+				data: {
+					formValidation: [
+						{ property: 'username', message: 'username does not exist' },
+					],
+					message: 'NOT_FOUND',
+				},
+			},
+		}
+		expect(translateError(error)).toEqual({ username: 'این نام کاربری وجود نداره' })
+	})
+
 	it('ignores an empty validation list and uses the message instead', () => {
 		const error = {
 			response: { data: { formValidation: [], message: 'NOT_FOUND' } },

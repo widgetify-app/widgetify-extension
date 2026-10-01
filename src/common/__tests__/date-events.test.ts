@@ -5,6 +5,7 @@ import {
 	convertShamsiToHijri,
 	formatDateStr,
 	getGregorianEvents,
+	getHijriEvents,
 	getShamsiEvents,
 } from '../utils/date-events'
 
@@ -42,6 +43,16 @@ describe('convertShamsiToHijri', () => {
 		expect([hijri.iMonth(), hijri.iDate()]).toEqual([0, 29])
 	})
 
+	it('moves to the second day after one day', () => {
+		const hijri = convertShamsiToHijri(shamsi(start).add(1, 'days'))
+		expect([hijri.iYear(), hijri.iMonth(), hijri.iDate()]).toEqual([1445, 0, 2])
+	})
+
+	it('falls back to the first day of the next known year past the table', () => {
+		const hijri = convertShamsiToHijri(shamsi(start).add(2000, 'days'))
+		expect([hijri.iYear(), hijri.iMonth(), hijri.iDate()]).toEqual([1448, 0, 1])
+	})
+
 	it('rolls into the next Hijri year after the twelfth month', () => {
 		const nextYear = convertShamsiToHijri(shamsi(start).add(354, 'days'))
 		expect([nextYear.iYear(), nextYear.iMonth(), nextYear.iDate()]).toEqual([
@@ -67,6 +78,14 @@ describe('events of a day', () => {
 			['a']
 		)
 		expect(getShamsiEvents(events, shamsi('1403/05/09'))).toEqual([])
+	})
+
+	it('picks the Hijri events of the Hijri day the selected date falls on', () => {
+		const hijriEvents = [event('x', 1, 1), event('y', 1, 2), event('z', 2, 1)]
+		const day = shamsi('1402/04/28')
+		expect(
+			getHijriEvents({ ...events, hijriEvents }, day).map((e) => e.title)
+		).toEqual(['x'])
 	})
 
 	it('picks the Gregorian events that fall on the same day', () => {
