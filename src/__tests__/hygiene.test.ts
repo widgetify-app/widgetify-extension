@@ -140,19 +140,23 @@ describe('who wrote it', () => {
 })
 
 describe('comments', () => {
-	it('are not added: a file has no more than it had, and a new file has none', () => {
-		const grew = codeFiles()
+	it('are not added, and the baseline stays exact', () => {
+		const files = codeFiles()
+		const changed = files
 			.map((path) => ({
 				path,
 				count: commentCount(path),
-				allowed: COMMENT_BASELINE[path] ?? 0,
+				listed: COMMENT_BASELINE[path] ?? 0,
 			}))
-			.filter(({ count, allowed }) => count > allowed)
+			.filter(({ count, listed }) => count !== listed)
 			.map(
-				({ path, count, allowed }) =>
-					`${path}: ${count} comments, ${allowed} allowed`
+				({ path, count, listed }) =>
+					`${path}: ${count} comments, the baseline says ${listed}`
 			)
-		expect(grew).toEqual([])
+		const gone = Object.keys(COMMENT_BASELINE)
+			.filter((path) => !files.includes(path))
+			.map((path) => `${path}: in the baseline, but the file is gone`)
+		expect([...changed, ...gone]).toEqual([])
 	})
 })
 

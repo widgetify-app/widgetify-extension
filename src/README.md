@@ -94,7 +94,7 @@ kebab-case everywhere. A file is a tsx file exactly when it contains JSX. A role
 | `src/__tests__/architecture.test.ts` | layers, folder shape, names, imports, dead code, server state, gateways |
 | `src/styles/__tests__/design-system.test.ts` | colour, radius, text, motion, stylesheets, themes, icons |
 | `src/__tests__/docs.test.ts` | every section has a README, no README names a file that is gone, the API docs list the endpoints the app calls |
-| `src/__tests__/hygiene.test.ts` | no assistant names, no new comments, no stray `console.log` |
+| `src/__tests__/hygiene.test.ts` | no assistant names, a comment count per file that never moves, no stray `console.log` |
 | `src/__tests__/data-names.test.ts` | storage keys, analytics events and widget ids keep their names |
 | `src/__tests__/browser-baseline.test.ts` | nothing newer than Chrome 109 and Firefox 115 |
 
