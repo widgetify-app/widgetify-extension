@@ -87,6 +87,7 @@ kebab-case everywhere. A file is a tsx file exactly when it contains JSX. A role
 - Put logic worth covering in a dependency free module and test that. Precedents: `features/widgets/utils/layout-engine/`, `features/widgets/pet/utils/pet-food.ts`, `components/ui/modal/animation-timing.ts`.
 - A test must not import `@/services/api`. It reads the manifest at load and bun has no `browser`.
 - Prefer a test that fails loudly on the bug that happened over one that restates the code.
+- `mock.module` replaces a module for every test file that runs after it. Put the real module back in `afterAll`, or the result depends on the order of the files. `bun test --randomize` shows it.
 
 | Test file | Holds |
 |---|---|
