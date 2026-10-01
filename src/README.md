@@ -78,7 +78,7 @@ kebab-case everywhere. A file is a tsx file exactly when it contains JSX. A role
 
 - One alias per top level folder, declared in `wxt.config.ts`: `@/common`, `@/components`, `@/context`, `@/hooks`, `@/icons`, `@/services`, `@/styles`, `@/assets`, `@/features`, `@/pages`, `@/analytics`.
 - A relative import stays inside the feature, page or top level folder it starts in.
-- Exactly three barrels: `@/components/ui`, `@/components/gallery`, `@/icons`. Import from the folder, never the file behind it.
+- Exactly three barrels: `@/components/ui`, `@/components/gallery`, `@/icons`. Import from the folder, never the file behind it. A file inside a barrel imports its sibling by relative path, never the barrel itself, or the barrel and the file import each other.
 
 ## Tests
 

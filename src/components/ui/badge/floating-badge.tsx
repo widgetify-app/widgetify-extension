@@ -1,4 +1,4 @@
-import { Tooltip } from '@/components/ui'
+import { Tooltip } from '../tooltip/tooltip'
 import type React from 'react'
 
 interface FloatingBadgeProps {

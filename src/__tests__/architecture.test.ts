@@ -481,6 +481,21 @@ describe('imports', () => {
 		expect(past).toEqual([])
 	})
 
+	it('keep the files of a barrel from importing its index', () => {
+		const circular: string[] = []
+		for (const [importer, targets] of imports) {
+			for (const target of targets) {
+				const barrel = BARRELS.find(
+					(dir) => /\/index\.tsx?$/.test(target) && parentOf(target) === dir
+				)
+				if (barrel && importer.startsWith(`${barrel}/`)) {
+					circular.push(`${importer} -> ${target}`)
+				}
+			}
+		}
+		expect(circular).toEqual([])
+	})
+
 	it('use only the aliases the build declares', () => {
 		const aliases = declaredAliases()
 		const undeclared: string[] = []
