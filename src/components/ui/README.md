@@ -11,11 +11,11 @@ Presentational primitives. They know nothing about the app, the server or a feat
 | Notice box | `Alert` (`tone`: danger, warning, info) |
 | Loading | `Spinner` (`xs` to `2xl`, `tone`) |
 | Dialog | `Modal`, `ConfirmationModal` |
-| Hint on hover | `Tooltip` |
+| Hint on hover | `Tooltip`; `ClickableTooltip` when a click opens it and you hold `isOpen` |
 | Form | `TextInput`, `SelectBox`, `Checkbox`, `ToggleSwitch`, `Slider`, `DatePicker`, `ColorPicker` |
-| Menu | `Dropdown`, `PopoverMenu` |
+| Menu | `Dropdown` with `DropdownItem` and `DropdownDivider`; `PopoverMenu` with `PopoverMenuItem`, `PopoverMenuHeader` and `PopoverMenuDivider`; `FilterTooltip`, a button that opens a list of filter options |
 | Overlays | `BottomSheet`, `Portal`, `StackedToaster` |
-| Small marks | `Badge`, `VipBadge`, `AvatarComponent`, `Kbd`, `ProgressRing` |
+| Small marks | `Badge`, `NewBadge` (a pulsing dot for something new), `VipBadge`, `FloatingBadge` (a sticker on a corner), `AvatarComponent`, `Kbd`, `ProgressRing` |
 | Layout helpers | `SectionPanel`, `TabNavigation`, `Pagination`, `ItemSelector`, `ImageSlider` |
 
 Look here before writing any UI. If a component other areas would reuse is missing, build it here, not inside a feature.

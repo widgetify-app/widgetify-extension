@@ -101,6 +101,31 @@ function brokenLinks(path: string): string[] {
 		.filter((target) => target && !existsSync(normalize(join(dirname(path), target))))
 }
 
+function uiExports(): string[] {
+	return walk('src/components/ui')
+		.filter((path) => /\.tsx?$/.test(path) && !path.includes('__tests__'))
+		.flatMap((path) => {
+			const text = readFileSync(path, 'utf8')
+			const declared = [...text.matchAll(/export (?:const|function) (\w+)/g)].map(
+				(match) => match[1]
+			)
+			const grouped = [...text.matchAll(/export \{([^}]*)\}/g)].flatMap((match) =>
+				match[1]
+					.split(',')
+					.map((name) => name.trim())
+					.filter((name) => /^[A-Z]\w*$/.test(name))
+			)
+			return [...declared, ...grouped]
+		})
+}
+
+function uiListed(): string[] {
+	return readFileSync('src/components/ui/README.md', 'utf8')
+		.split('\n')
+		.filter((line) => line.startsWith('|'))
+		.flatMap((line) => [...line.matchAll(/`([A-Z]\w+)`/g)].map((match) => match[1]))
+}
+
 function endpointSegments(path: string): string {
 	const clean = path.replace(/^\$\{API_URL\}/, '').split('?')[0]
 	const segments = clean
@@ -205,22 +230,16 @@ describe('docs', () => {
 	})
 
 	it('list only components that components/ui exports', () => {
-		const exported = walk('src/components/ui')
-			.filter((path) => /\.tsx?$/.test(path))
-			.flatMap((path) =>
-				[
-					...readFileSync(path, 'utf8').matchAll(
-						/export (?:const|function) (\w+)/g
-					),
-				].map((match) => match[1])
-			)
-		const listed = readFileSync('src/components/ui/README.md', 'utf8')
-			.split('\n')
-			.filter((line) => line.startsWith('|'))
-			.flatMap((line) =>
-				[...line.matchAll(/`([A-Z]\w+)`/g)].map((match) => match[1])
-			)
-		expect(listed.filter((name) => !exported.includes(name))).toEqual([])
+		const exported = uiExports()
+		expect(uiListed().filter((name) => !exported.includes(name))).toEqual([])
+	})
+
+	it('list every component that components/ui exports', () => {
+		const listed = uiListed()
+		const unlisted = uiExports().filter(
+			(name) => /^[A-Z][a-z]\w*$/.test(name) && !listed.includes(name)
+		)
+		expect(unlisted).toEqual([])
 	})
 
 	it('list in the API docs every endpoint the app calls, and only those', () => {
