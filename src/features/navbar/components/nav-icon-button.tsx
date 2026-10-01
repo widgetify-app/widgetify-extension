@@ -29,7 +29,7 @@ export function NavIconButton({
 			aria-pressed={pressed}
 			onClick={onClick}
 			className={cn(
-				'relative p-2 transition-ui cursor-pointer text-nav/80 hover:text-nav-idle-hover active:scale-90',
+				'relative p-2 transition-ui cursor-pointer text-nav hover:text-nav-hover active:scale-90',
 				className
 			)}
 		>
