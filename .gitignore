@@ -32,7 +32,9 @@ local_output
 diff.txt
 
 docs/*
-.claude
+.claude/*
+!.claude/skills
 .agents
 graphify-out
 SOCIAL_ROADMAP.md
+AGENTS.local.md
