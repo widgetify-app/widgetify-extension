@@ -232,7 +232,7 @@ What this does not show: the remaining commits are real visual changes (sprite s
 
 ## Tests
 
-`bun test` covers only the pure modules: state facts, hold times, wall detection, `chooseNextState` (including hunger), all eight species trees, hop arcs (landing on the floor, bounds, direction, chase without overshoot, wall behaviour, running vs walking), flight maths, movement bounds, the tick-mode rule, food (drop position, nearest piece, falling, eating one piece per step), clip choice, and settings resolution. It does not render the hooks or any component; there is no React test setup in this repo. `architecture.test.ts` allows one `<feature>.md` at a feature root, added for this file.
+`bun test` covers only the pure modules: state facts, hold times, wall detection, `chooseNextState` (including hunger), all eight species trees, hop arcs (landing on the floor, bounds, direction, chase without overshoot, wall behaviour, running vs walking), flight maths, movement bounds, the tick-mode rule, food (drop position, nearest piece, falling, eating one piece per step), clip choice, and settings resolution. It does not render the hooks or any component; there is no React test setup in this repo. `architecture.test.ts` allows a `README.md` at a feature root.
 
 ## Invariants
 
@@ -294,3 +294,4 @@ Not yet checked on screen: that the pet still looks the same and moves as smooth
 11. Sheep fixes after review: the legs were moved under the belly (the owner's original spacing put the last leg outside the body), and the food was redrawn much smaller (it filled the whole 24x24 canvas and was drawn at twice the pet's pixel scale).
 12. Hedgehog added («تیغو», picker label «جوجه‌تیغی»): an eighth species, small and slow, that rests curled into a ball. Its tree is the sheep's shape with `lie` weighted higher.
 13. `use-base-pet-logic.ts` (649 lines) split by concern into `use-pet-body`, `use-pet-motion`, `use-pet-food` and `use-pet-loop`, composed by a 185-line `use-base-pet-logic`. Food stepping and clip choice moved to pure `pet-food.ts` and `pick-pet-animation.ts` with tests. No behaviour was meant to change. The 2000 ms eaten-food delay became `EATEN_LINGER_MS`.
+14. The document was renamed to README.md, so every section of the project has its guide under the same name.

@@ -12,6 +12,68 @@ is not declared in `tokens.css` (or by the theme itself, see below), on a
 Tailwind palette name (`bg-blue-500`), on an opacity modifier (`bg-fill/50`), on
 a raw daisyUI base class (`bg-base-200`) and on a hex literal in a class.
 
+## Rules, and the test that holds each
+
+Themes are chosen by a `data-theme` attribute on `<html>`, never by the OS, and a
+theme can be fetched from a CDN at runtime. **The set of themes is open ended, so
+no code may assume what a token contains**: not its lightness, not its hue, not
+whether it is opaque. Every rule below follows from that.
+
+| Rule | Test (`design-system.test.ts`) |
+|---|---|
+| Colour classes use names `tokens.css` declares | "names only colours that tokens.css or the theme declare" |
+| No Tailwind palette colour (`bg-blue-500`) | "never uses a Tailwind palette colour" |
+| No opacity modifier on a colour (`bg-fill/50`) | "never puts an opacity modifier on a colour utility" |
+| No hex and no numeric `rgba()` in a class | "never writes a colour literal into a class", "never writes a numeric rgb() or rgba() into a class" |
+| `white` and `black` only where they depict something | "are written only where they depict something" |
+| No `dark:` or `light:` variants | "never uses the OS-keyed dark:/light: variants" |
+| Text, radius, z-index and shadow come from their scales | "sizes text from the scale", "rounds corners from the radius scale", "puts page-wide layers on a named z-index", "uses only the four shadow steps elevation.css defines" |
+| Transitions use `transition-ui` or name a property, on the duration steps | "never transitions every property", "times transitions from the duration steps" |
+| Every class compiles to CSS | "are only ones that compile to CSS" |
+| Stylesheets have one role, themes are only variables | "every stylesheet has one role", "themes" |
+| No `oklch()` or `color-mix()` (Chrome 109) | "stylesheets stay parseable on Chrome 109" |
+
+## Chrome or content
+
+Decide which of two kinds a colour is before you write it.
+
+**Chrome** is the interface: surfaces, text, borders, states, emphasis. It must
+come from a token, because it has to survive a theme nobody has written yet. A
+literal colour in chrome is a bug even when it looks right today.
+
+**Content** carries its own meaning and would be wrong to re-theme: artwork, an
+illustrated object, a palette the user picks from, a colour taken from an image,
+a fill handed to an API that cannot take a class. Hardcode it where it is drawn.
+
+When the same non-token colour appears in more than a couple of places it is
+neither: it is a missing token. See "Adding a colour".
+
+## Pairs, opacity and imagery
+
+- **Tokens come in pairs.** A surface token has a content token that is the only
+  safe foreground on it (`bg-brand` with `text-on-brand`). When you add or edit a
+  theme, compute the WCAG ratio for every opaque pair: nothing below 3:1, and
+  anything under 4.5:1 needs a reason. A token with alpha cannot be scored alone.
+  A low ratio that can only be fixed by changing the brand colour is not yours to
+  fix; record it.
+- **Never put an opacity modifier on a surface token.** Tailwind compiles `/N` to
+  a `color-mix` against transparent, which multiplies whatever alpha the token
+  already has, so the element vanishes in the themes that define translucent
+  surfaces. To tint, dilute the content token instead: that is what `fill`,
+  `fill-2` and `fill-3` are.
+- **Anything drawn over an image is its own context.** The theme says nothing about
+  the pixels behind it. Use the `image-*` and `scrim-*` names below.
+- **Check the built CSS, not the markup.** A class that does not exist compiles to
+  nothing and nothing complains.
+
+```
+npm run build
+grep -o '<the-class>[^{]*{[^}]*}' .output/chrome-mv3/assets/newtab-*.css
+```
+
+No output means it compiled to nothing. The compiler merges selectors that share a
+declaration, so match loosely.
+
 ## Which file owns what
 
 `index.css` is the entry: `main.tsx` imports it and nothing else, and it imports
