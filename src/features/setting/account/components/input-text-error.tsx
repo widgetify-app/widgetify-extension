@@ -27,7 +27,7 @@ const InputTextError: React.FC<InputTextErrorProps> = ({ message, className }) =
 				<>
 					<span
 						aria-hidden="true"
-						className="block w-1.5 h-1.5 bg-danger rounded-full shadow-[0_0_4px_1px_rgba(239,68,68,0.6)] flex-shrink-0 animate-pulse"
+						className="block w-1.5 h-1.5 bg-danger rounded-full shadow-[0_0_4px_1px_rgba(var(--color-error-rgb),0.6)] flex-shrink-0 animate-pulse"
 					/>
 					<span className="leading-relaxed">{message}</span>
 				</>

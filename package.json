@@ -14,9 +14,11 @@
     "zip:firefox": "wxt zip -b firefox",
     "zip:firefox:clean": "npm run clean && wxt zip -b firefox",
     "compile": "tsc --noEmit",
-    "lint": "biome check src background entrypoints wxt.config.ts",
+    "lint": "biome check src background entrypoints scripts wxt.config.ts",
+    "format": "biome check --write src background entrypoints scripts wxt.config.ts",
     "test": "bun test",
-    "check": "npm run compile && npm run lint && npm test && npm run build",
+    "check": "npm run format && npm run compile && npm run lint && npm test && npm run build",
+    "check:commit": "node scripts/check-commit.mjs",
     "postinstall": "wxt prepare"
   },
   "dependencies": {

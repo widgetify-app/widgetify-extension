@@ -15,7 +15,11 @@ A single sprite pet lives inside a fixed 2x1 widget cell. It follows a per-speci
 | `pet-setting.tsx` | Settings panel in two modes (see Persistence): species picker, background picker, name input (`maxLength` 20). Also the only writer of global choices. |
 | `types.ts` | `PetTypes`, `PetState`, `PetSequence`, `PetDimensions`, `PetFlight`, `PetHop`, `PetAnimations`, `PetSpeed`, background types, storage and event augmentation. |
 | `constants.ts` | Icons and previews per species, Persian labels, `PET_BACKGROUNDS`, default names, hunger constants. |
-| `hooks/use-base-pet-logic.ts` | The simulation loop, the scheduler and the painting of the pet. Only place that moves the pet. Returns `animationSrc`, `airborne`, `direction`, `showName`, `collectibles`. |
+| `hooks/use-base-pet-logic.ts` | Composes the four hooks below and owns the state machine: `enterState`, `tick`, the hover name. Returns `animationSrc`, `airborne`, `direction`, `showName`, `collectibles`. |
+| `hooks/use-pet-body.ts` | The pet element and its container: position ref, `paint`, cached container size, `getBounds`, direction, `airborne`. The only place that writes the position. |
+| `hooks/use-pet-motion.ts` | Per-step movement for walk, run, hop, flight and chase, and the hop and cruise-altitude state. Returns the next position; never writes it. |
+| `hooks/use-pet-food.ts` | Food state: click to drop, falling, eating, removal two seconds after eating. Calls `wakeRef.current()` on a drop. |
+| `hooks/use-pet-loop.ts` | The scheduler: `requestAnimationFrame`, the idle poll, the `IntersectionObserver`. Installs `wakeRef`. |
 | `components/base-pet.tsx` | `BasePetContainer` and `CollectiblesRenderer`, both `memo`. Renders the pet, food, tooltip. No logic. |
 | `components/pet-factory.tsx` | Picks the species component and renders `PetHud`. |
 | `components/pet-item/pet-<species>.tsx` | One per species: animation map, dimensions, assets, wiring into the hook. |
@@ -26,9 +30,11 @@ A single sprite pet lives inside a fixed 2x1 widget cell. It follows a per-speci
 | `utils/pet-flight.ts` | Owl flight: cruise altitude, bob, dive, landing. Pure. |
 | `utils/pet-movement.ts` | `getMovementBounds`, `clampToBounds`, `stepWalk`, `frameScale`. Pure. |
 | `utils/pet-schedule.ts` | `chooseTickMode`: whether the loop runs every frame, polls slowly, or stops. Pure. |
+| `utils/pet-food.ts` | `foodDropX`, `findNearestFood`, `stepCollectibles`: where food lands, which piece the pet chases, how food falls and is eaten. Pure. |
+| `utils/pick-pet-animation.ts` | `pickPetAnimation`: which clip plays for a state, a hop phase and flight. Pure. |
 | `utils/get-pet-background.ts` | Background lookup with fallback to `none`. |
 | `utils/resolve-pet-settings.ts` | `resolvePetSettings` and `mergePetMeta`: the single rule for which value the widget and the settings panel show. Pure. |
-| `__tests__/` | `pet-sequence`, `pet-hop`, `pet-flight`, `pet-movement`, `pet-schedule`, `resolve-pet-settings` tests. |
+| `__tests__/` | `pet-sequence`, `pet-hop`, `pet-flight`, `pet-movement`, `pet-schedule`, `pet-food`, `pick-pet-animation`, `resolve-pet-settings` tests. |
 
 Sprites live in `src/assets/animals/<species>/`, backgrounds in `src/assets/animals/backgrounds/`.
 
@@ -36,7 +42,7 @@ Sprites live in `src/assets/animals/<species>/`, backgrounds in `src/assets/anim
 
 `PetFactory` renders one species component. Each component calls `useBasePetLogic({ animations, dimensions, sequence, assets, isHungry, callbacks })` and passes the result to `BasePetContainer`. The animation map, dimensions and assets of a species are **module-level constants** (`DOG_ANIMATIONS`, `DOG_DIMENSIONS`, `DOG_ASSETS`), so they keep their identity across renders. The frog is the one exception: its food icon has a per-instance random colour, so its assets go through `useMemo`.
 
-The hook keeps the simulation in refs (`positionRef`, `directionRef`, `activeRef`, `hopRef`, `collectiblesRef`, `cruiseAltitudeRef`, `sizeRef`) and mirrors into React state only what changes what is rendered: `direction`, `petState`, `hopPhase`, `airborne`, `collectibles`, `showName`. It reads current props through `propsRef`, so the callbacks are stable and the loop never restarts.
+`useBasePetLogic` creates `propsRef` and `wakeRef` and hands them to the four hooks. The simulation lives in refs (`positionRef`, `directionRef`, `sizeRef` in the body; `hopRef`, `cruiseAltitudeRef` in motion; `collectiblesRef` in food; `activeRef` in the state machine) and is mirrored into React state only where it changes what is rendered: `direction`, `petState`, `hopPhase`, `airborne`, `collectibles`, `showName`. Current props are read through `propsRef`, so the callbacks are stable and the loop never restarts. `wakeRef` is created by the composing hook because food needs to wake a loop that needs the tick that needs food.
 
 **The position is not React state.** Every tick paints it straight onto the pet element (`paint`: `style.transform = translate3d(...)`, rounded to 0.01 px and skipped when unchanged). A React render happens only when something discrete changes: a new state, a hop phase, taking off or landing (`airborne`, height above 0.5), a turn, food added or eaten. `willChange: transform` keeps the pet on its own compositor layer, so moving it does no layout or paint.
 
@@ -126,7 +132,13 @@ The container is a `button` and the click handler is on it, so the whole play ar
 
 ## Backgrounds
 
-`PET_BACKGROUNDS` in `constants.ts`, id type `PetBackgroundId`. Pixel art strips about 792 px wide and 197-242 px tall (forest 793x240, autumn 793x197, beach 792x242, tehran 792x240); all lossless WebP, the three older ones converted from PNG with identical pixels, drawn with `background-size: auto 100%`, bottom centred.
+`PET_BACKGROUNDS` in `constants.ts`, id type `PetBackgroundId`. All lossless WebP, drawn with `background-size: auto 100%`, bottom centred.
+
+### Dimensions & Aspect Ratio Standard
+- **Standard resolution for new backgrounds:** **`640 × 240 px`** (lossless WebP, animated 8fps or static).
+- **Ratio rationale:** A 2×1 widget is `256 × 96 px` (at standard `lg` density, cellHeight 96, aspect ratio `8:3 = 2.666`). Under `background-size: auto 100%`, a 240 px tall background scales to 96 px height, yielding an exact rendered width of `640 * (96 / 240) = 256 px`. This ensures zero horizontal cropping on the container edges.
+- **Architectural safe zone:** Keep critical boundary elements (pillars, hanging lanterns, edge furniture) within $x \in [14, 626]$ px so they remain clearly visible and unclipped by the widget container's rounded corners (`rounded-widget`).
+- **Legacy assets:** Older panoramic outdoor nature strips used ~792 px width (`forest` 793×240, `autumn` 793×197, `beach` 792×242, `tehran` 792×240) where seamless horizontal cropping of repeating foliage/sky was acceptable, but architectural interiors must use 640×240.
 
 | id | Label | `groundOffsetPx` | File |
 |---|---|---|---|
@@ -220,11 +232,11 @@ What this does not show: the remaining commits are real visual changes (sprite s
 
 ## Tests
 
-`bun test` covers only the pure modules: state facts, hold times, wall detection, `chooseNextState` (including hunger), all eight species trees, hop arcs (landing on the floor, bounds, direction, chase without overshoot, wall behaviour, running vs walking), flight maths, movement bounds, the tick-mode rule, and settings resolution. It does not render `use-base-pet-logic.ts` or any component; there is no React test setup in this repo. `architecture.test.ts` allows one `<feature>.md` at a feature root, added for this file.
+`bun test` covers only the pure modules: state facts, hold times, wall detection, `chooseNextState` (including hunger), all eight species trees, hop arcs (landing on the floor, bounds, direction, chase without overshoot, wall behaviour, running vs walking), flight maths, movement bounds, the tick-mode rule, food (drop position, nearest piece, falling, eating one piece per step), clip choice, and settings resolution. It does not render the hooks or any component; there is no React test setup in this repo. `architecture.test.ts` allows a `README.md` at a feature root.
 
 ## Invariants
 
-- Only `use-base-pet-logic.ts` writes the pet position. Species files only configure.
+- Only `use-pet-body.ts` writes the pet position (`applyPosition`). `use-pet-motion.ts` returns the next position and `use-base-pet-logic.ts` hands it over. Species files only configure.
 - The pet position never goes into React state, and nothing in the tick reads layout (`offsetWidth`, `offsetHeight`, `getBoundingClientRect`). Use `paint` and `sizeRef`. Putting either back turns every tick into a React commit or a forced layout.
 - Per-species configuration objects live at module level. Building them inside the component defeats `memo` on `BasePetContainer` and re-creates the animation lookup on every render.
 - The loop must stop when the widget is off screen and must not run per frame while the pet rests. Anything that needs to react to a user action while resting must call `wakeRef.current()` (as `dropFood` does), or it will wait up to `IDLE_POLL_MS`.
@@ -263,7 +275,7 @@ What this does not show: the remaining commits are real visual changes (sprite s
 
 ## Verification status
 
-Confirmed by reading the code and by automated checks (`npm run compile`, `npm test`, `npm run lint`, `npm run build`; the 7 remaining `npm test` failures are pre-existing and unrelated to this folder): tree validity, pure movement maths, types, lint, bundle build.
+Confirmed by reading the code and by automated checks (`npm run compile`, `npm test`, `npm run lint`, `npm run build`; every test passes): tree validity, pure movement maths, food and clip rules, types, lint, bundle build. The split of the hook (change 13) was checked by compile, lint and tests only; no pure test can show that the loop behaves the same, so that part is read from the code.
 
 Not yet checked on screen: that the pet still looks the same and moves as smoothly (especially on a 144 Hz display and after the widget scrolls back into view), the owl clips at 64x64 next to the others, the WebP backgrounds; saving, refreshing and reloading a changed pet or name through both settings entry points, for signed-out and signed-in users, and in the narrow list view; the actual look and pacing of each species, hop and flight feel, owl altitude at each density, the tooltip position with the taller container, click behaviour in edit mode, the Tehran background against every sprite, and the sprites themselves at 32 px. All numeric tuning values are first guesses.
 
@@ -281,3 +293,5 @@ Not yet checked on screen: that the pet still looks the same and moves as smooth
 10. Sheep added («میشا»): a seventh species from the owner's own pixel art, with a walk/run cycle whose legs bend at a knee step, a grazing pose for eating, and a lying pose. Its tree is the cat's shape (mostly walking, some lying).
 11. Sheep fixes after review: the legs were moved under the belly (the owner's original spacing put the last leg outside the body), and the food was redrawn much smaller (it filled the whole 24x24 canvas and was drawn at twice the pet's pixel scale).
 12. Hedgehog added («تیغو», picker label «جوجه‌تیغی»): an eighth species, small and slow, that rests curled into a ball. Its tree is the sheep's shape with `lie` weighted higher.
+13. `use-base-pet-logic.ts` (649 lines) split by concern into `use-pet-body`, `use-pet-motion`, `use-pet-food` and `use-pet-loop`, composed by a 185-line `use-base-pet-logic`. Food stepping and clip choice moved to pure `pet-food.ts` and `pick-pet-animation.ts` with tests. No behaviour was meant to change. The 2000 ms eaten-food delay became `EATEN_LINGER_MS`.
+14. The document was renamed to README.md, so every section of the project has its guide under the same name.

@@ -1,5 +1,5 @@
 import { useState, useRef, type ReactNode } from 'react'
-import { ClickableTooltip } from '@/components/ui'
+import { ClickableTooltip } from '../tooltip/clickable-tooltip'
 import { Tooltip } from '../tooltip/tooltip'
 import { Button } from '../button/button'
 

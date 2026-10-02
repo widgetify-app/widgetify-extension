@@ -1,683 +1,127 @@
 # AGENTS.md
 
-Working agreement for AI agents on this repo. Read this before touching anything.
+How an AI agent works on this repo. This file is the **workflow**. What each part of the code requires is in the README of that folder, so read those too.
 
----
+Stack: React 19, TypeScript 6, WXT 0.20 (Chrome and Firefox), Tailwind 4, daisyUI 5, framer-motion 12, TanStack Query 5, Biome 2, bun for tests. The UI is **Persian and right to left**.
 
-## Hard rules
+## 1. Read first
 
-These are not preferences. Breaking them means the work gets rejected.
+1. This file, `README.md` and `src/README.md`.
+2. The README of every folder you will touch, and of its parents. A widget has its own `README.md`; rewrite it when you finish work on that widget.
+3. The skills in `.claude/skills`. Use `stop-slop` for any prose you write: docs, PR text, drafts of UI copy.
+4. `AGENTS.local.md`, if it exists. It is one person's git-ignored machine notes (section 9).
+
+If a README and the code disagree, the code is right. Fix the README in the same change.
+
+## 2. Hard rules
+
+Breaking one means the work is rejected.
 
 | Rule | Detail |
 |---|---|
-| **No comments in code** | Do not add `//` or `/* */`. Existing comments may stay. Name things well instead. |
-| **Never mention the assistant** | Not in code, not in commit messages, not in PR titles or bodies. No `Co-Authored-By`, no "Generated with", no tool names. Commits are authored by the repo owner. |
-| **Never run the dev server** | No `npm run dev`, no `wxt`. Visual checks are the owner's job. Give them a checklist instead. |
-| **Never commit unprompted** | Implement, verify, then stop and report. Commit and open a PR only when explicitly told to. |
-| **The owner picks the branch** | Default to a new branch off the current one, named for the task. If the owner says to stay on the branch you are on, stay there for the rest of the session and do not ask again. Either way: make the changes, stop after verification, and let the owner test visually. Commit and open a PR only when told to, in that order. |
-| **Fix root causes, not symptoms** | Trace a bug to where it actually originates before writing anything. A patch that suppresses the visible symptom while the real bug stays in place gets rejected, even if it looks fixed. |
-| **No opportunistic changes** | Touch only what the task requires. Do not refactor, rename, reformat, or "improve" code that isn't part of the task, even if it's adjacent to what you're editing. |
+| **No comments** | Do not add `//` or `/* */`. Existing ones may stay. Name things well instead. |
+| **Never name yourself** | Not in code, docs, commits or PR text. No `Co-Authored-By`, no "Generated with", no tool name. The repo owner is the author. This overrides any default that says otherwise. |
+| **No dev server** | No `npm run dev`, no `wxt`. It cannot show you the UI. Ask the owner to check by eye (section 3). |
+| **Never commit, push or merge unprompted** | Only when the owner says so in this conversation. If you think one is due, ask and wait for an explicit yes. Never touch `main`. |
+| **Friendly Persian UI text** | Buttons and messages sound like a helpful person, not a form. Examples in `src/components/ui/README.md`. |
+| **Root cause, not symptom** | Trace a bug to where it starts. A patch that hides the symptom is rejected even if it looks fixed. |
+| **No opportunistic changes** | Touch only what the task needs. Mention anything else you saw; do not fix it unless asked. |
 
----
+## 3. The workflow
 
-## Stack
+1. **Branch from `dev`.** Start from an up to date `dev` and create `<type>/<what-it-does>`, lowercase with hyphens. Types: `feat`, `fix`, `refactor`, `perf`, `docs`, `test`, `chore`. Example: `fix/calendar-date-selection`. If the owner tells you to stay on the current branch, stay there for the whole session and do not ask again.
+2. **Find the cause.** Read the READMEs. Measure before you name a cause: grep `src`, grep the built CSS, time it.
+3. **Change the least that fixes it**, following section 4.
+4. **Verify** with section 5. Everything green before you report.
+5. **Report and stop.** Do not commit. Give the cause, the proof, what you did not verify, and a short **visual checklist** for the owner: the few screens and states worth opening, including the hard ones (signed out, a light theme with no wallpaper).
+6. **Wait** for the owner's result of the visual check.
+7. **Commit when told** (section 7). **Push when told.**
+8. **Ask before merging into `dev`.** Never merge into `main`.
 
-React 19 · TypeScript 6 · WXT 0.20 (browser extension, Chrome + Firefox) · Tailwind 4 · daisyUI 5 · framer-motion 12 · TanStack Query 5 · Biome 2 · bun (tests only)
+## 4. When you write code
 
-UI text is **Persian and RTL**. Match the surrounding tone; do not switch to English strings.
+- **Semantic elements.** `button`, `a`, `label`, `nav`, `section` before `div`. Never a `button` inside an `a`. Biome rejects a click handler on a static element.
+- **`src/components/ui` first.** Look there before building any UI, and import from `@/components/ui`. Do not hand roll a dialog, popover, spinner or alert. A reusable piece that is missing goes into `ui`.
+- **Theme tokens.** Colour comes from `src/styles/tokens.css` names. No hex, no numeric `rgba()`, no palette name, no opacity modifier, no `dark:`.
+- **Utilities.** `cn()` from `@/common/utils/cn` for classes, `@utility` for new classes, `transition-ui` for state changes. Variants live beside a component as `*.variants.ts`.
+- **Icons** only through `Icon` from `@/icons`. **Storage** only through `@/common/storage`. **Server calls** only in `src/services`. **Animation** only through `@/common/motion`.
+- **Responsive down to 500px.** This is a desktop new tab. Do not spend effort below 500px.
+- **Old browsers.** Chrome 109 and Firefox 115. See `entrypoints/README.md`; `browser-baseline.test.ts` rejects the known newer APIs.
+- **Names that are data.** Storage keys, analytics events and widget ids are written where you cannot reach them. Rename the constant, never the string.
+- **Tests.** When a section gains logic worth covering, put it in a dependency free file and test it there. See `src/README.md`.
+- **Say when you are unsure.** If a package behaves unexpectedly, read the docs for the exact version pinned here before you ship a guess.
 
----
-
-## Verification
-
-Run all four before reporting anything as done:
-
-```
-npm run compile      # tsc --noEmit
-npm test             # bun test
-npm run lint         # biome check, zero diagnostics
-npm run build        # wxt build, catches CSS and asset issues tsc cannot
-```
-
-**Never run `npx biome`.** bun installs Biome's binary as `node_modules/.bin/biome.exe`, which npx
-does not look for, so npx quietly downloads an unrelated npm package that happens to be called
-`biome`, checks nothing and exits cleanly. Every Biome result in this repo was produced that way
-until it was noticed. `npm run lint` runs the pinned version (`biome --version` says 2.5.0) over
-`src`, `background`, `entrypoints` and `wxt.config.ts`, and reports nothing. Keep it at nothing:
-fix a diagnostic rather than suppress it. The one deliberate exception is in `biome.json` — tests
-may use a non-null assertion, because a missing value should fail the test.
-
-Checking the built CSS at `.output/chrome-mv3/assets/newtab-*.css` is often the fastest way to prove a styling claim. Use it — several bugs in this repo were classes that compile to nothing.
-
-### A commit has to compile on its own
-
-The four commands above check your *working tree*. They say nothing about the tree you are
-about to commit. Committing one folder at a time, which is the normal rhythm here, makes it
-easy to ship a file whose dependency is still uncommitted: the working tree stays green and
-the committed tree does not build. That has happened twice, and both times the next commit
-hid it.
-
-Before committing, check the commit, not the desk:
+## 5. Verify
 
 ```
-git worktree add --detach /tmp/headcheck HEAD
+npm run format      # Biome, writes the files you touched
+npm run compile     # tsc --noEmit
+npm run lint        # Biome check, zero diagnostics
+npm test            # bun test
+npm run build       # wxt build, catches CSS and asset problems tsc cannot
+npm run check       # all of the above in order
 ```
 
-Give it `node_modules` and `.wxt` (a junction on Windows: `cmd /c mklink /J`), run
-`./node_modules/.bin/tsc --noEmit` there, then remove it with `cmd /c rd /s /q` — **never**
-`rm -rf`, which follows a junction and deletes the real folder behind it.
+- **Run Biome last**, after the final edit, and check that it did something: `npm run lint` must go green. It does format checking too, so an unformatted file turns it red.
+- **Never `npx biome`.** bun installs Biome as `node_modules/.bin/biome.exe`, which npx does not look for, so it quietly downloads an unrelated package, checks nothing and exits cleanly. Use the npm scripts. Fix a diagnostic, never suppress it.
+- **A commit has to compile on its own.** The commands above check your working tree, not the tree you commit. Right after the owner has you commit, run `npm run check:commit` before anything is pushed. It checks `HEAD` in a temporary worktree: `tsc` must pass there, and the commit message must not name an assistant or tool. If it fails, say so and fix it before the push. `tsc` will not see a CSS class or an icon name defined only in an uncommitted file, so when a commit uses a class, an animation or an icon, confirm its definition is in the same commit.
+- **A claim about CSS is a grep.** `grep -o '<class>[^{]*{[^}]*}' .output/chrome-mv3/assets/newtab-*.css`. No output means it compiled to nothing.
+- **A green build is not proof nothing changed.** To show a refactor left behaviour alone, compare the size and hash of the built `background.js` and `chunks/` (see `entrypoints/README.md`).
+- **You cannot see the UI.** Whatever the tests cannot show goes into the visual checklist, with the unverified part named.
 
-`tsc` will not catch everything: a CSS class or an icon name that only exists in an
-uncommitted file compiles fine and simply renders wrong. When a commit reaches for a class,
-an animation or an icon, check that its definition is in the same commit.
+## 6. Code quality
 
-**A green build is not proof that nothing changed.** To show a refactor left behaviour alone, record the byte size and content hash of `.output/chrome-mv3/background.js` and the chunks under `.output/chrome-mv3/chunks/` before the change, then rebuild and compare. The hash is derived from the content, so an unchanged hash means the emitted code is identical. A deliberate change should move those numbers by an amount you can explain — inlining one nine line component moved a chunk by exactly 38 bytes.
+- **Minimal, not clever.** The least code that correctly does it. No configurability or handling for cases that cannot occur here.
+- **Reuse before you write.** `src/components/ui`, `@/common/utils`, the feature folder.
+- **Small functions and components,** each with one purpose. A piece used in one place stays inline, unless inlining would bury its consumer or it is pure logic worth a test.
+- **Readable over impressive.** Straight control flow and clear names.
+- **Small diffs.** Do not rename, reformat or restructure what you were not asked to touch. If the owner asks for a refactor, do it, scoped to the request.
+- **Flag, don't fix.** Notice something unrelated? Put it in the report.
+- **Dead code does not stay.** Delete what your change leaves unused. `architecture.test.ts` fails on an unreachable file, an export nobody imports and an unused dependency.
 
-Two builds of the same tree do not hash the same. Two pairs of pet sprites are byte for byte
-identical (`chicken/white_run_8fps` and `white_walk_fast_8fps`, `crab/red_run_8fps` and
-`red_walk_fast_8fps`), Vite emits one file per pair, and which name it keeps changes from build to
-build — and with it every chunk that references it. Compare the output with asset and chunk
-names normalised away, and build the baseline from the same commit twice to confirm it matches
-itself before trusting a difference.
+## 7. Git
 
----
+**Commit messages.** A short title, `type(scope): what changed`, in the same types as branches. Add at most three lines when the reason is not obvious; no bullet lists and no copy of the diff. A longer story goes in the PR. No attribution of any kind.
 
-## Renaming and the published extension
+**Pull requests** (only when asked): the problem, the cause with the real snippet, the changes, what was left out, how it was tested. Include measurements when you have them.
 
-Source file names do not reach the published extension. Everything under `src/` is bundled
-and minified into `background.js` and a couple of chunks, `sourcemap` is off in
-`wxt.config.ts`, and grepping the built output for any source file name returns nothing. A
-rename that only moves files and rewrites imports produces a byte identical bundle, down to
-the content hash in the chunk filename. Two exceptions, both harmless and both explainable: a
-lazily imported module names its own chunk (`habit-share-modal-<hash>.js`), and replacing a
-barrel import with direct imports changes the order modules are evaluated in, which moves
-code around in the bundle without changing a single statement.
+**Conflicts are resolved by blending, never by taking one side.** Both halves usually matter, and "accept incoming" silently reverts merged work.
 
-Four things genuinely can break a published build, and none of them is a file name:
+**Never force push over someone else's commit.** Make a fresh branch at your known good commit and open a new PR. Run `git diff` to confirm the trees match before assuming their push broke anything.
 
-- **Storage key values.** Changing a key string orphans every existing user's data. The
-  file holding the keys may be renamed freely; the strings inside it may not.
-- **`entrypoints/`.** WXT derives the manifest from that directory, so renaming anything in
-  it changes the manifest.
-- **The manifest** — version, permissions, `gecko.id`, `chrome_url_overrides`.
-- **A dynamic import built from a template literal.** This is the only one a rename can
-  break silently: `tsc` cannot follow it and the build still succeeds. Grep for a backtick
-  immediately after `import(` before any bulk rename. There are none in this repo today.
+Use the `gh` CLI for GitHub work. If it is not on `PATH`, ask where it is instead of guessing; the owner may keep that in `AGENTS.local.md`. Pass a multiline body from a file.
 
-When someone asks whether a rename is safe to ship, answer with those four and with a
-bundle comparison, not with reassurance.
+## 8. Reporting
 
----
+- Lead with the cause, not the fix. Show the offending code.
+- When a claim can be measured or grepped, do that instead of asserting it.
+- Separate what you **proved** from what you **suspect**. Say plainly when a bug predates your work, when something was left out and why, and when an earlier statement turned out wrong.
+- End with the visual checklist.
 
-## Code quality
+## 9. Your environment
 
-**Minimal, not clever.** Solve the problem with the least code that correctly does it. No speculative configurability, no handling for cases that cannot occur here, no code written "just in case."
+Every contributor's machine is different. Do not assume an operating system, a shell or an installed tool, and do not write one person's setup into this repo.
 
-**Root cause over patch.** When something is broken, find where it actually breaks and fix it there. Do not bolt a condition onto the symptom site while the real bug stays untouched elsewhere.
+- Check before you rely on a tool: `command -v <tool>`, or the equivalent in the shell you have.
+- If `AGENTS.local.md` exists, read it. It is git-ignored and holds one person's own notes: where tools live, which shell to prefer. Never commit it and never copy its contents into a tracked file.
+- For scripted edits, use the edit tools or a short script in your scratchpad, and assert the match count before writing so a silent no-op is impossible.
+- Scoped replacements only. A blanket replace once turned `@/common/wallpaper.interface` into `@/common/activeWallpaper.interface`. Use word boundaries and limit the region.
+- A replacement anchored on a closing quote misses deeper paths and nothing catches it. Match on the prefix, or compare the total against a count you measured first.
+- Never delete a folder that holds a symlink or a junction with a recursive remove; it can follow the link into the real folder. `npm run check:commit` handles its own.
 
-**Readable over impressive.** Prefer straightforward control flow and clear names over dense one-liners, deep nesting, or clever tricks. Someone new to this codebase should be able to follow the logic on the first read, without tracing it through three files.
+## 10. Where each rule lives
 
-**Small, single-purpose functions and components.** If a function does three unrelated things, split it. If a component is thick with unrelated concerns, it's probably several components.
-
-**Extract shared code only when it's actually shared.** If a piece of logic or markup is used in two or more places, pull it into its own file. If it's used in exactly one place, leave it inline where it's used. Do not pre-emptively split out single-use code into a separate file "for organization" — that just adds indirection and files to jump between for no reason.
-
-Two things override that, and only these two. A single-use piece large enough that inlining it would bury its consumer stays in its own file — a hundred lines of markup or drawing code does not belong in the middle of a component. Pure logic worth a test also stays in its own dependency free module, because that is the only way it can be tested here (see Testing). Both are judgments about whether the consumer gets worse, not about tidiness, so say which one you are invoking.
-
-**Reuse before you write.** Check `src/components/ui`, `@/common/utils`, and the relevant feature folder for something that already does this before adding a new helper or duplicating logic.
-
-**Small diffs.** Changes should be traceable to the task. Do not rename variables, reformat untouched code, or restructure files you weren't asked to touch — see "No opportunistic changes" above. This only applies to unprompted changes: if the owner explicitly asks for a rename, cleanup, or broader refactor, do it, scoped to what was asked.
-
-**Flag it, don't silently fix it.** If while working you notice unrelated issues in code you touched or passed through — bad variable names, code that's harder to follow than it should be, logic that could be simplified — do not fix it as part of the current task. Mention it as a suggestion in your report instead. Only act on it if the owner then asks you to.
-
-**Dead code does not stay.** When a change leaves something unused, delete it in the same change.
-The tests enforce it: `src/__tests__/architecture.test.ts` fails on a file no entrypoint reaches,
-an export no other file imports and a runtime dependency nothing imports;
-`design-system.test.ts` fails on a CSS class no component writes; Biome fails on an unused
-import. Export a name only when another file imports it — a name used only in its own file
-stays unexported.
-
-**Say when you're unsure.** If the correct fix depends on something you don't actually understand yet, investigate or ask — don't guess and ship a plausible-looking change. If the uncertainty is about a package (an API that seems to have changed, an unfamiliar option, behaviour that doesn't match what you'd expect), check that package's official docs for the exact version pinned in this repo before implementing, rather than assuming from general knowledge.
-
----
-
-## Project structure
-
-One structure, applied to everything, and `src/__tests__/architecture.test.ts` checks it. A
-file that does not fit means the structure is being worked around, not extended: move the
-file, or change the rule here and the test together.
-
-### Layers
-
-```
-src/components/ui/                                  presentational primitives, no app knowledge
-src/components/                                     cross cutting components that do know the app
-src/common/ src/hooks/ src/context/ src/services/   non component globals
-src/features/ src/pages/                            features, and the pages that compose them
-```
-
-Imports point upward through that list and never downward. **Nothing at or above
-`src/components/` may import from `src/features/**` or `src/pages/**`,** type imports
-included. If it needs to, it is not global: either it belongs inside that one feature, or
-the thing it reaches for belongs further up. `src/components/ui` also never reaches
-`src/services` — a primitive does not fetch.
-
-**A feature reaches another feature only through its public files:** the entry (and what
-the entry re-exports), the `-setting.tsx` panel, and `*.context.tsx`. A feature may use
-anything in its own folder or in an ancestor's root and role folders — that is what the
-nearest common parent is for. When a sibling needs an internal piece, either the owner
-re-exports it from its entry (`friends.tsx` exports `SelectFriendLayout` for the todos
-widget) or the piece moves up to the common parent.
-
-### Where a new file goes
-
-Two questions, in this order. **Which feature owns it** — count the places that will
-import it:
-
-| Importers | Owner |
+| Topic | Read |
 |---|---|
-| One file, or one feature folder | That feature folder |
-| Two or more sibling folders | Their nearest common parent |
-| Two or more unrelated areas | The matching global layer |
-
-Run the same count backwards before leaving something in a global folder. A global file
-used from a single area is misplaced, not reusable — the test counts a feature, a page, a
-group under `src/components`, or a global folder as one area. `src/services` is the
-exception by design: everything that talks to the server lives there, however many
-features use it.
-
-**Then which folder inside that owner** — that is settled by the file's role, under
-"Shape of a feature folder" below, and never by the import count. A helper used once and
-a helper used ten times both live in `utils/`. The count decides ownership; the role
-decides placement.
-
-### Shape of a feature folder
-
-Every feature folder looks like this, at every depth:
-
-```
-<feature>/
-  <feature>.tsx             entry — <feature>.widget.tsx for a widget, <feature>.page.tsx for a page
-  <feature>-setting.tsx     settings panel, when it has one
-  <name>.context.tsx        provider, when it has one
-  types.ts constants.ts     this feature's own types and constants, flat
-  components/               sub components of this feature
-  variants/                 alternate renderers this feature registers
-  hooks/ utils/             role folders, whenever the feature has files of that kind
-  __tests__/
-  <sub-feature>/            only when it has its own entry file; same shape, recursively
-```
-
-**Nothing else sits at a feature's root** — no helper, no second component, no
-`index.tsx`. `src/features/` holds only feature folders. `src/pages/` holds page folders
-and `root.tsx`, the shell that switches between them, with the shell's own role folders
-beside it (`src/pages/hooks/use-wallpaper-apply.ts`).
-
-**Every file sits in the folder for its role,** whether the feature has one of them or
-twenty. A helper goes in `utils/`, a hook in `hooks/`, a sub component in `components/`,
-an alternate renderer in `variants/`. A role folder with a single file is correct and
-expected; a role folder that would be empty is simply absent. The point is that any
-feature folder can be read without opening it, and that the same kind of file is always
-found in the same place.
-
-**`components/` and `utils/` may hold one level of named group** — `components/modal/`,
-`utils/layout-engine/` — and a group holds files only. `hooks/`, `variants/` and
-`__tests__/` never nest. A hook is `use-<name>.ts` and lives in `hooks/`, and nothing else
-lives there.
-
-**Types and constants are the exception: inside a feature they stay flat** as `types.ts`
-and `constants.ts` in the feature root (`constants.tsx` when the values hold JSX), because
-they describe the feature itself rather than being a collection of like things. They take
-a folder only in the global layer, where many unrelated features' shapes and values live
-side by side.
-
-**No folder name outside that list.** Not a second word for something already named
-there, not a folder standing in for a single file's role.
-
-**A feature or sub feature folder's name matches its entry file's name,** plural or
-singular included: `habit/` holds `habit.widget.tsx`. This does not reach role folders or
-a named group inside them — those hold a set of files and have no entry to match.
-
-**`src/features/widgets/` is itself a feature.** `widgets.tsx` is the canvas and
-`widgets.context.tsx` its state; `registry.tsx` registers every widget — the one root
-file beyond the list above, because only a feature that hosts sub features has one, and
-it cannot live in `constants.ts` without every widget importing a file that imports every
-widget. `types.ts`, `constants.ts`, `date.context.tsx` and `currency.context.tsx` hold what
-several widgets share, and `components/`, `hooks/` and `utils/` hold the platform — the
-container, the layout engine, migration, the VIP resolver. Each widget is a sub feature
-with a `<name>.widget.tsx` entry. The canvas's other sub features — `catalog/` (adding a
-widget), `widget-settings/`, `presets/` — take the plain `<name>.tsx`.
-
-### Naming
-
-kebab-case for every file and folder. A file is `.tsx` exactly when it contains JSX.
-
-| Role | Pattern |
-|---|---|
-| Feature entry | `<name>.tsx` in the folder of the same name |
-| Widget entry | `<name>.widget.tsx`, directly under `src/features/widgets/<name>/` |
-| Routed page | `<name>.page.tsx`, directly under `src/pages/<name>/` |
-| Settings panel | `<name>-setting.tsx` |
-| Context provider | `<name>.context.tsx` |
-| Server state hook | `<name>.hook.ts`, only in `src/services/<domain>/` |
-| Query and mutation keys | `<domain>.keys.ts`, one per domain in `src/services/<domain>/` |
-| Local React hook | `hooks/use-<name>.ts` |
-| cva class variants | `<component>.variants.ts`, beside the component in `src/components/ui` |
-| Alternate size or display renderer | `variants/<name>-<WxH>.tsx` |
-| Domain shape | `<name>.interface.ts` in a global layer; `types.ts` inside a feature |
-| Constants | `constants.ts` |
-| Helpers | `utils/<name>.ts`, named for what the helper does |
-| Test | `__tests__/<name>.test.ts`; `__tests__/` holds nothing else |
-
-Take the suffix from that table rather than inventing one. `variants` is the single word
-carrying two meanings, and they do not mix: as a file suffix it is cva classes beside a
-component, as a folder it is the alternate renderers a feature registers.
-
-**A role word is part of the name, joined with a hyphen, never a dot.**
-`holiday-badge.tsx`, not `holiday.badge.tsx`. `habit-item-skeleton.tsx`, not
-`habit-item.skeleton.tsx`. Only the suffixes in the table above take a dot, and that list
-is closed — `.item`, `.badge`, `.modal`, `.dropdown`, `.skeleton` and the rest are not
-suffixes, they are the last word of the name.
-
-### Imports
-
-**One alias per top-level folder,** declared in `wxt.config.ts`: `@/common`,
-`@/components`, `@/context`, `@/hooks`, `@/icons`, `@/services`, `@/styles`, `@/assets`,
-`@/features`, `@/pages`, `@/analytics`. WXT also answers `@/src/...` and `~/...`; those
-spellings are a missing alias, not a convention, and the test rejects them.
-
-**A relative import stays inside the unit it starts in** — one feature
-(`src/features/<name>`), one page (`src/pages/<name>`), or one top-level folder under
-`src`. Anything that crosses goes through an alias, so a moved file never leaves a
-`../../..` pointing somewhere else.
-
-**There are exactly three barrels:** `@/components/ui`, `@/components/gallery` and
-`@/icons`. Import from the folder, never from the file behind it. The one exception is a
-file inside that same folder importing a sibling: `popover-menu.tsx` reaches
-`@/components/ui/portal/portal` directly because going through its own barrel would be a
-circular import. No other folder gets an `index.ts`.
-
-### Server state
-
-**Everything that talks to the server lives in `src/services/<domain>/`,** one flat folder
-per backend domain, however many features use it: the hooks (`*.hook.ts`), the shapes
-the server sends (`*.interface.ts`), a plain request that is not a hook
-(`<verb>-<noun>.ts`), and the domain's keys (`<domain>.keys.ts`). `src/services/api.ts`
-is the client, and only `src/services` calls `getMainClient` — a feature that needs a new
-request adds a function there rather than calling the client itself.
-
-**Every query and mutation key comes from a keys file.** A literal array passed as
-`queryKey`, `mutationKey` or to `setQueryData` anywhere else fails the test, because a key
-typed twice drifts: the profile was once invalidated as `['getUser']` after a purchase
-while every query cached it as `['userProfile']`, so the coin balance never refreshed.
-
-```ts
-export const habitKeys = {
-	list: (archived: boolean) => ['get-habits', archived] as const,
-	detail: (habitId: string) => ['get-habit-detail', habitId] as const,
-	add: ['addHabit'] as const,
-}
-```
-
-The strings are what TanStack Query caches by — renaming one is harmless, but never make
-two queries share a key they did not share before.
-
-### Before adding a file
-
-1. Does it already exist? Check `src/components/ui`, `@/common/utils`, the feature folder.
-2. Who owns it? Apply the table above. One consumer is rarely a reason for a new file —
-   check the two exceptions in Code quality before deciding it is.
-3. A component? Then `components/` of the owning feature — or `src/components/ui`, but
-   only for a generic primitive with no app knowledge that other areas would reuse.
-4. Take the suffix from the naming table.
-5. Does the feature already have the role folder this file belongs in? Create it if
-   not; a single file in it is fine.
-6. Run `npm test` — the architecture test names the rule a misplaced file breaks.
-
-Documentation lives in this file, not in a README beside the code it describes. Nothing
-keeps those in sync and they go stale without anyone noticing.
-
----
-
-## Conventions
-
-**Check `src/components/ui` first.** Before implementing any UI, look in `src/components/ui` for something that already covers it and import from `@/components/ui`. Do not hand roll a dialog or a popover. If the task genuinely needs a component that other parts of the app would reasonably reuse and it isn't in `src/components/ui` yet, build it there and use it from that location — don't leave a reusable component sitting in a feature folder.
-
-**Responsiveness matters, down to 500px wide.** This is a desktop browser extension: it renders in a new tab on a computer, never on a phone. 500px is the narrowest width worth supporting, so a layout that holds from 500px up is done — do not spend effort on narrower breakpoints or phone specific behaviour.
-
-**Semantic HTML and accessibility are not optional.** Use semantic tags (`button`, `nav`, `header`, `label`, etc.) instead of generic `div`/`span` where one fits, and take `aria-*` attributes, roles, and keyboard/focus behaviour seriously — not just for interactive elements borrowed from `src/components/ui`, but for anything new you build.
-
-**Variants live beside the component** as `*.variants.ts` using `cva`. Extend those rather than piling classes at the call site. A folder named `variants/` is a different thing entirely — see the naming table above.
-
-**Class merging** goes through `cn()` in `@/common/utils/cn` (clsx + tailwind-merge).
-
-**Animation** uses `Motion` and `Presence` from `@/common/motion`, never raw `framer-motion`. The wrappers are what make optimisation mode work.
-
-**Transitions** use `transition-ui` for a state change and name the properties (`transition-[width]`) when size or position animates. `transition-all` and durations off the 150/200/300/500/1000 steps fail `design-system.test.ts`; `src/styles/README.md` explains why.
-
-**Storage** goes through `@/common/storage`, and every key is typed on the `StorageKV`
-interface. App-wide keys are declared in `src/common/constants/store-keys.ts`; a key whose
-value only one feature understands is declared by that feature, in its `types.ts`, by
-augmenting the interface:
-
-```ts
-declare module '@/common/constants/store-keys' {
-	interface StorageKV {
-		pets: PetSettings
-	}
-}
-```
-
-That keeps the global layer from importing feature types, and the compiler still rejects a
-key nobody declared. Grep `interface StorageKV` to see every key. Deprecated keys get
-purged via `purgeDeprecatedStorageKeys`.
-
-`localStorage` is touched only inside `src/common/storage.ts`. The one value it holds is the
-Firefox favicon consent, because `getFaviconFromUrl` reads it synchronously while
-rendering; `getFaviconConsent` and `setFaviconConsent` wrap it under its original key, and
-logout clears it with `clearLocalStorage`, as it clears every other setting.
-
-**Cross component messaging** uses `callEvent` / `listenEvent` from `@/common/utils/call-event`, typed on the `EventName` interface — app-wide events in that file, a feature's own events in its `types.ts`, the same way as storage keys. A file that augments must stay a module (keep at least one export): a `declare module` in a file with no import or export replaces the module instead of extending it.
-
-**Icons** come from `Icon` in `@/icons`, and nothing else imports `react-icons`. Every icon in the pack is Lucide (`react-icons/lu`) except the Google and Telegram logos and the custom SVGs (the diamond, and the solid home and compass, whose door and needle are cut out with `evenodd`, which `filled()` cannot do); a solid version is otherwise the same Lucide icon wrapped in `filled()`. A new icon is a Lucide name added to `src/icons/packs/default.tsx` and `types.ts`. An icon that turns while something loads (a refresh button) takes `spin`.
-
-**Loading** is `Spinner` from `@/components/ui`: `size` from `xs` (12px) to `2xl` (40px), `tone` `brand` by default, `current` inside a coloured button, `image` over a picture. It announces itself as a status; pass `aria-hidden` when the text beside it already says it is loading. `animate-spin` is written nowhere else, and a test holds that.
-
-**Modals are always right to left.** `Modal` has no direction prop; it labels itself from its `title` and its close button reads «بستن».
-
-**Buttons** take `color` from the token names: `base`, `brand`, `danger`, `success`, `warning`, `vip`. `brand` is the app's main action. `rounded` defaults to `xl`; every radius has a role, listed in `src/styles/README.md`.
-
-**Analytics** via `@/analytics`.
-
----
-
-## Colour and theming
-
-Themes are chosen by a `data-theme` attribute on `<html>`, never by OS preference, and a theme can also be fetched at runtime from a CDN. **The set of themes is open ended, so no code may assume what a token contains** — not its lightness, not its hue, not whether it is opaque.
-
-That single constraint produces every rule below. They apply to any colour decision anywhere in the app, not just to the themes that happen to ship today.
-
-### Colour belongs to a token, unless it depicts something
-
-Before writing any colour, decide which of two kinds it is.
-
-**Chrome** is the interface: surfaces, text, borders, states, emphasis. Chrome must come from a token, because it has to survive a theme nobody has written yet. A literal colour in chrome is a bug even when it looks right today.
-
-**Content** is a colour that carries its own meaning and would be wrong to re-theme: a thing being depicted (artwork, an illustrated object), a palette the user picks a value out of, a colour derived from an image, or a fill handed to an API that cannot take a class. Content is correctly hardcoded, and converting it to a token breaks it.
-
-When the same non-token colour appears in more than a couple of places, it is neither — it is a missing token. Name it once in `src/styles/tokens.css` and point every site at that name. The reverse holds too: a colour only one component needs is not a token. Write it inline from the theme channels (`border-[rgba(var(--color-error-rgb),0.5)]`), never as a hex. `src/styles/README.md` has the vocabulary and the order to work through before adding a name.
-
-### Tokens come in pairs, and the pair is the unit
-
-Every surface token has a matching content token that is the only safe foreground on it. Use them together. Writing a literal foreground on a token background works until the token moves, and then it fails silently, because nothing in the build checks contrast.
-
-**When you add or edit a theme, check every pair.** Convert both sides to relative luminance and compute the WCAG ratio: nothing below **3:1**, and anything under 4.5:1 needs a reason. Two things will mislead you when you do:
-
-- **A token carrying alpha cannot be scored on its own.** It composites over whatever is behind it, so a naive reading pairs two near-identical values and reports a failure that does not exist. Score opaque pairs; judge translucent ones by eye.
-- **A low ratio can be the brand rather than a defect.** If fixing it means changing the brand colour, it is not yours to fix — record it instead.
-
-### Never put an opacity modifier on a surface token
-
-Tailwind compiles `/N` to a `color-mix` against transparent, which **multiplies** whatever alpha the token already has. A theme is free to define its surfaces as translucent, and some do. The same class then lands anywhere between its nominal value and near zero depending on the theme, so an element styled this way disappears in exactly the themes where it mattered.
-
-To tint a surface, dilute the **content** token instead. A content token is near opaque in any sane theme and contrasts its own background by definition, so one class behaves the same everywhere: a light wash on dark themes, a dark wash on light ones. That is what `fill`, `fill-2` and `fill-3` are.
-
-### Anything drawn over an image is its own context
-
-The app renders over a user supplied wallpaper, and individual surfaces may carry their own artwork. Chrome floating on unknown pixels cannot borrow lightness from the theme, because the theme says nothing about what is behind it. Use a token pair that is dark-surface-plus-light-foreground in every theme, and rely on it rather than on the surface tokens, which may be transparent or may invert.
-
-### Never use the OS-keyed variants
-
-`dark:` and `light:` key off `prefers-color-scheme`, which is unrelated to `data-theme`. They fire for a user whose OS disagrees with the theme they chose. Grep for them rather than assuming one is load bearing: none belong in `src`, so every hit is something to remove.
-
-### Prefer the project's colour name over the raw one
-
-`src/styles/tokens.css` names the colours this app actually uses — its surfaces, its text steps, its line, its fills, its brand and status tints. Use those rather than a daisyUI name (`text-primary`, `bg-error`) or an inline value. They are the single place a decision like "what is a muted foreground" can be changed, and a raw value at a call site opts that site out of any future change. A test rejects any colour class whose name is not declared there.
-
-### Every stylesheet has one role
-
-`src/styles/index.css` is the only stylesheet anything imports (`main.tsx`, as `@/styles/index.css`), and it imports every other one. Each file holds one kind of thing, and `design-system.test.ts` rejects anything else in it:
-
-| file | holds |
-|---|---|
-| `primitives.css` | `@theme` values and the brand constants: palette ban, fonts, type and line-height steps, radius, motion, layers |
-| `tokens.css` | the colour vocabulary, in `@theme` |
-| `elevation.css` | the shadow scale, and its default colour |
-| `animations.css` | every `@keyframes`, with its `--animate-*` in `@theme` when a class uses it |
-| `themes/<name>.css` | one `@plugin "daisyui/theme"` block and one `[data-theme="<name>"]` block of variables. No selectors |
-| `base.css` | element defaults, all inside `@layer base` |
-| `utilities.css` | `@utility` only |
-| `legacy.css` | Chrome 109 fallbacks for what daisyUI writes |
-
-Four rules follow from that, each with a test:
-
-- **A class is only ever an `@utility`.** A plain `.class {}` rule sits outside Tailwind's layers, so it silently beats every utility on the element and takes no variants: `hover:` on it generates no CSS at all. The one exception is a state on `html` (`html.optimal-mode`).
-- **A theme is variables.** It sets daisyUI's colours, their channels, its shadow colours, and optionally the glass material and a token override (`--color-nav`). A theme that needs a component to look different says so with a variable the component reads, never with a selector. This is what lets a theme fetched from the CDN do everything a built-in one can.
-- **Element defaults live in `@layer base`,** so a utility on the element always wins. Headings and controls keep their fixed line height (see `base.css`) through `--tw-leading`, which Tailwind's `text-*` sizes defer to, so `text-sm` on a button does not change it but `leading-none` does.
-- **Every `var()` resolves.** A variable read anywhere must be declared by a stylesheet, by Tailwind's theme or by an inline style.
-
-### Glass
-
-Glass and icy frost the surfaces that float over the wallpaper. A surface opts in with `bg-glass-<token>`: `bg-glass-surface-2` is `surface-2` in every theme that sets no glass, and the theme's glass tint and blur in one that does. Give every state background on that surface the same family (`hover:bg-glass-surface-3`), or glass themes swap the frost for the plain token on hover. `backdrop-glass` is the blur alone, for a surface whose background is drawn by its children; `bg-glass-modal` is the modal's heavier version.
-
-A theme sets `--glass-bg` and `--glass-filter`, and `--glass-modal-bg` and `--glass-modal-filter` for the modal. Nothing else about glass lives in a theme.
-
-The same trap as a plain rule catches any class name that does not exist, and nothing but the built CSS will tell you. Grep the built CSS rather than trusting the markup:
-
-```
-grep -o 'hover\:bg-fill-2' .output/chrome-mv3/assets/newtab-*.css
-```
-
-### Verifying
-
-A theme is an attribute and a class is text, so both claims are checkable and neither should be asserted from memory:
-
-```
-npm run build
-grep -o '<the-class>[^{]*{[^}]*}' .output/chrome-mv3/assets/newtab-*.css
-```
-
-No output means the class compiled to nothing. Note that the compiler merges selectors that share a declaration, so match loosely — an exact `.class{` anchor can miss a rule that is present. To read what a token actually resolves to, pull the theme's block out of the same file.
-
-### Known debt
-
-One shape of debt remains. Do not treat it as fixed; do not sweep it inside an unrelated task; never add to it. Counts move every time work lands, so measure rather than quote a number from here.
-
-- **`white`/`black` classes.** Some are content or drawn over imagery and must stay; the rest are chrome that predates the tokens.
-
-Opacity modifiers, palette classes, raw daisyUI base classes, colour names outside `tokens.css`, stylesheet rules for class names nothing writes, plain class rules and selectors in theme files are no longer debt: the tests reject every one of them.
-
----
-
-## Widgets
-
-Every widget in this repo is a small app with its own data, its own settings and its own
-sizes. The same five defects turned up in nearly all of them, so check for these by name
-before looking for anything cleverer.
-
-### Never animate a container-query sized element
-
-Widgets size themselves against their container: `w-[22cqh]`, `text-[13cqh]`,
-`py-[4cqh]`, `clamp(2rem, 24cqw, 10rem)`. Put `transition-all` on one of those and every
-resize of the widget starts a transition on width, height, padding and font size at once,
-so the browser re-lays out that subtree on every frame while the user drags. With a grid of
-cells — thirty day cells, a hundred and eighty heatmap squares — the widget visibly stalls.
-
-`transition-ui` exists for this. It covers colour, background, border, shadow, opacity and
-transform, and deliberately excludes everything that causes layout. Use it, or name the
-single property you actually animate (`transition-[stroke-dashoffset]`).
-
-This was the most common bug in the repo: it was found in the calendar, google calendar,
-currency, mood, todos, habits, network, notes, tools, news and transparent clock widgets.
-`transition-all` on a fixed size element is harmless debt; on a `cq*` sized one it is a
-performance bug.
-
-### The four states, and they have to be distinguishable
-
-A widget that fetches anything needs **loading**, **error**, **empty** and, if it needs an
-account, **signed out** — and a user must be able to tell them apart. The recurring failure
-is not a missing state, it is two states that render identically:
-
-- a failed request drawing the empty state, so a network problem reads as "you have no
-  tasks" (todos, habits, news, network, religious times)
-- a disabled query leaving the widget in its loading state forever, so a signed out user
-  watches a skeleton that never resolves (network, weather)
-- an action firing while signed out and surfacing a raw server error (mood, todos)
-
-Prefer per-source errors where a widget has several: one dead RSS feed should not blank the
-other two. And never show an error over data you already have — a slightly stale price or
-temperature beats an error message.
-
-Draw the error with `WidgetError` and the empty state with `WidgetEmpty`, both in
-`features/widgets/components`. `WidgetError` takes the widget's own sentence and a retry,
-and `compact` for a cell too small for the button. `WidgetEmpty` takes the no-items
-illustration or an icon, a title, a description and at most one action. A widget file named
-`*-empty.tsx` or `*-error.tsx` that draws its own markup fails `design-system.test.ts`.
-
-### Anything read back from storage is untrusted input
-
-Stored values outlive the code that wrote them. A tab id, a display model, a filter — all
-of them can hold something an older version wrote and this one has never heard of, and the
-usual shape of the bug is a bare equality check that silently falls into the wrong branch
-rather than the default.
-
-Put a `normalize-*` helper in the feature's `utils/`, give it a test, and route every read
-through it. `yadkar`, `tools`, `combo-widget` and `transparent-clock` all have one; copy
-the nearest.
-
-### A setting nothing writes, or writes and never reads
-
-Both halves have to exist. The repo has collected several of each: four weather settings
-that are read and honoured but that no screen can change, a pomodoro long break that is
-stored and never applied, a notes cache written as an empty object on every open and read
-by nobody, storage keys left behind by a feature that moved to the server.
-
-When you find one, say so and ask — wiring it up and deleting it are both product
-decisions, and guessing is how a half-built feature becomes a shipped one.
-
-### Premium gating has two independent paths
-
-`allowedSizes[].isVipOnly` is what locks a widget already on the canvas. The add/edit modal
-checks the **variant's** flag instead, and skips the size check entirely for any widget that
-declares variants. A widget with both variants and a premium size therefore needs
-`isVipOnly` in **both** places — the currency widget has it, and notes did not, so its
-premium model could be selected for free and then rendered locked. They are not duplicates;
-do not merge them.
-
----
-
-## Testing
-
-`bun test` only runs on **pure modules**. There is no React testing setup, so a hook or component cannot be rendered in a test.
-
-When logic is worth covering, extract it into a dependency free module and test that. Precedents:
-
-- `src/features/widgets/utils/layout-engine/` — grid collision maths
-- `src/features/widgets/pet/utils/pet-movement.ts` — pet movement maths
-- `src/components/ui/modal/animation-timing.ts` — shared timing plus the retain predicate
-
-A test file must not transitively import `@/services/api`; it reads `browser.runtime.getManifest()` at module scope and bun has no `browser` global. That is why timing constants live in their own module rather than next to the hook that uses them.
-
-Prefer a test that would fail loudly on regression over one that restates the implementation. The layout engine has a timing budget test because the bug it guards was a 112 second freeze.
-
----
-
-## Git and PR workflow
-
-**Commit messages** state the problem, the actual cause with the offending code, then the fix. Wrap at ~76 characters. No bullet soup without a lead in.
-
-**PR bodies** follow: Problem → Root cause with the real snippet → Changes → anything deliberately left out → Testing. Include measurements when you have them.
-
-**gh CLI** lives at `C:\Program Files\GitHub CLI\gh.exe` and is not on PATH — this is where it's installed for the user `Shak`. Call it by full path, from PowerShell for anything with a multiline body.
-
-**Names that are data, not code.** Storage keys, analytics event names and widget ids are
-written into places you do not control — a user's browser, a dashboard's history, a stored
-layout. Renaming one orphans everything already recorded under the old name, and nothing in
-the build complains. Rename the constant freely; leave the string alone.
-
-**Conflicts are resolved by blending, never by taking one side.** Every conflict in this session needed both halves. "Accept incoming" would have silently reverted merged work.
-
-**Do not force push over someone else's commit.** If a colleague pushed to your branch, create a fresh branch at your known good commit and open a new PR. Confirm with `git diff` that the tree is identical before assuming their push broke something; a `git pull` merge often resolves to the same tree.
-
----
-
-## Tooling notes for this machine
-
-- Windows. Bash and PowerShell are both available and take their own syntax.
-- The Bash tool's heredocs choke on some TSX. Use a Python heredoc with exact string replacement, or the file writing tool. Assert the match count before replacing so a silent no-op is impossible.
-- Scoped replacements only. A blanket string replace once rewrote import paths (`@/common/wallpaper.interface` became `@/common/activeWallpaper.interface`). Use word boundaries and limit the region.
-- A replacement anchored on the closing quote misses deeper paths, and nothing catches it. Replacing `'@/src/icons'` left `'@/src/icons/types'` behind; the old path still resolved, so `tsc`, biome, the tests and the build all stayed green with one file unconverted. Match on the prefix, or assert the total count against a number you measured first and let the script refuse to write when it disagrees.
-
----
-
-## Do not break these
-
-Deliberate solutions that look wrong until you know why. Changing them reintroduces a fixed bug.
-
-**daisyUI already animates modals, in both directions.** `.modal` transitions `visibility` with `allow-discrete`, and `@starting-style` covers the enter. Do not add your own enter animation on top; several earlier attempts did exactly that and none of them worked, because the real problem was elsewhere. Two consequences:
-- The dialog must stay mounted and only toggle `open`. Unmounting it kills the exit.
-- `@starting-style` covers `.modal` but **not** `.modal-box`. A dialog that mounts already open skips the slide up, which is why `Modal` renders closed for one frame via `open={isOpen && isMounted}`. That line looks pointless. It is not.
-
-**Optimisation mode has two independent paths.** framer is handled by the `Motion` and `Presence` wrappers; CSS transitions are handled by the `html.optimal-mode` class and one rule in `styles/base.css`. A new animation needs whichever path it belongs to. Keyframe animations are deliberately left running so spinners and the notification ping still work.
-
-**`voice-search-portal.tsx` starts the microphone in a mount effect.** Never convert it to always mounted, however tempting it is for animation consistency.
-
-**`containerType: 'size'`** on widget containers is load bearing. Widgets size themselves in `cqh` and `cqw` units, which resolve against that container, so removing it collapses their type and spacing. It also makes those widgets a real hot spot — see "Never animate a container-query sized element".
-
----
-
-## Design decisions
-
-Intentional behaviour. Not bugs, do not "fix" them.
-
-**Widget canvas collision is push down only, with no compaction.** Gaps between widgets are deliberate and must survive a move. The previous backtracking solver froze the extension for 112 seconds on a single drag; do not reintroduce one. Compaction exists behind an option and is off.
-
-**Toasts are deliberately always dark**, in every theme. They are a transient layer over the page rather than part of it, so they do not follow the theme tokens and their colours are written literally. The literals sit inside Tailwind arbitrary-value classes, which the class scanner only sees as static text, so they cannot be lifted into constants. Leave them.
-
-**Pet food rises from below the floor** rather than dropping from above. This was changed once and reverted on request.
-
----
-
-## Reporting
-
-Lead with the cause, not the fix. Show the offending code. When a claim can be measured or grepped, do that instead of asserting it.
-
-Say plainly when a bug predates the current work, when something was left out and why, and when an earlier statement turns out to be wrong. Several fixes in this session were only correct because a wrong first answer got corrected rather than defended.
-
-**Measure before naming a cause.** "This is slow because X" is a claim, and the obvious
-suspect is often innocent. A laggy calendar was blamed on a preview component and then on
-the date maths; the date maths turned out to take about 2ms for the whole grid, and the
-real cause was a CSS transition. One measurement would have replaced two wrong answers.
-The same applies to "this class does nothing" and "nothing uses this" — grep the built CSS,
-grep `src`, then say it.
-
-**Separate what you proved from what you suspect.** If you cannot run the thing, say which
-part is confirmed from the code and which part still needs a look. A fix reported as
-certain, that turns out to be one of two possible causes, costs more than an honest "this
-was definitely wrong, and it may or may not be the whole of what you saw".
-
-**End with a short visual checklist.** The owner does the visual pass, so name the few
-screens and states worth opening — including the ones that are hard to reach, like a signed
-out view or a light theme with no wallpaper.
-
----
-
-## Per widget documentation
-
-Each widget has one document, written for AI agents, in English. It sits at the root of the
-widget's feature folder as `<feature>.md` (`src/features/widgets/pet/pet.md`); the architecture
-test allows exactly that one Markdown file there. When you finish work on a widget, rewrite its
-document from the code you just read, so the next agent does not have to rediscover it.
-
-- Write for someone who is about to change the code. File and function names, exact constants
-  and short code identifiers are welcome; marketing prose is not.
-- Cover: what the widget does and its sizes, a file map, the runtime model and state machine,
-  data flow and storage (and which key strings must never change), settings, states and
-  accessibility, its place in the paid tiers, how to extend it, the tuning knobs, and which
-  pure modules the tests cover.
-- Include an **invariants** section (rules that must keep holding) and a **design decisions**
-  section (things that look like bugs and must not be "fixed").
-- End with **open questions** (each one an owner decision, not yours) and a **verification
-  status** that separates what was proved from the code and by tests from what nobody has
-  looked at on screen.
-- Correct the old document where the code disagrees with it, and say so in a short change
-  history. Several documents described behaviour that had already changed.
+| Layers, where a file goes, names, imports, tests | `src/README.md` |
+| Components, modals, accessibility, wording | `src/components/ui/README.md` |
+| Colour, themes, radius, motion, stylesheets | `src/styles/README.md` |
+| Storage, events, animation, toasts, names that are data | `src/common/README.md` |
+| Server state, query keys and the API docs | `src/services/README.md` |
+| Icons | `src/icons/README.md` |
+| Features | `src/features/README.md` |
+| Widgets: states, storage, premium, canvas | `src/features/widgets/README.md` |
+| Manifest, build, browsers, what breaks a release | `entrypoints/README.md` |
+| Hooks, context, pages, shared components | `src/hooks/README.md`, `src/context/README.md`, `src/pages/README.md`, `src/components/README.md` |
+
+The tests that hold these rules are listed in `src/README.md`. When a rule and its test disagree, change both in the same commit.

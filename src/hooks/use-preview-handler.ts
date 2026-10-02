@@ -52,7 +52,7 @@ export function usePreviewHandler() {
 
 	const cancelPreview = useCallback(async () => {
 		const state = currentPreviewRef.current
-		if (!state) return console.log('not found state')
+		if (!state) return
 		removeToast(state.toastId)
 		restorePreview(state)
 		currentPreviewRef.current = null

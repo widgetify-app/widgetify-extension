@@ -10,29 +10,6 @@ interface NotificationItemProps {
 	className?: string
 }
 
-interface Prop {
-	link: string | undefined
-	className: string
-	children: React.ReactNode
-}
-
-function Wrapper({ link, children, className }: Prop) {
-	if (link) {
-		return (
-			<a
-				href={link}
-				target="_blank"
-				rel="noopener noreferrer"
-				className={className}
-			>
-				{children}
-			</a>
-		)
-	}
-
-	return <div className={className}>{children}</div>
-}
-
 export function NotificationCardItem(prop: NotificationItemProps) {
 	const {
 		link,
@@ -87,8 +64,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 		: null
 
 	return (
-		<Wrapper
-			link={link}
+		<div
 			className={`flex gap-2 p-2 transition-ui duration-300 border rounded-2xl ${!isText && 'hover:scale-[0.99] cursor-pointer hover:bg-surface-3  items-center active:scale-[0.99]'} border-surface-3 group relative ${prop.className || ''}`}
 		>
 			{icon && (
@@ -113,7 +89,16 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 						className="text-sm font-black tracking-tight text-fg"
 						style={headTitleStyle}
 					>
-						{isAction ? (
+						{link ? (
+							<a
+								href={link}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="after:absolute after:inset-0 after:rounded-2xl focus-visible:focus-ring"
+							>
+								{title}
+							</a>
+						) : isAction ? (
 							<button
 								type="button"
 								onClick={handleAction}
@@ -128,7 +113,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 				</div>
 
 				{description && (
-					<div className="relative">
+					<div>
 						<p
 							className={`mt-0.5 text-4xs font-medium  text-fg-muted  leading-relaxed whitespace-pre-wrap wrap-break-word transition-ui duration-300 ${!isExpanded && shouldShowReadMore ? 'line-clamp-2' : ''}`}
 						>
@@ -175,6 +160,6 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 					<Icon name="close" size={14} />
 				</button>
 			)}
-		</Wrapper>
+		</div>
 	)
 }

@@ -1,64 +1,83 @@
-
-
 # ![logo](./public/icons/icon32.png) Widgetify
 
- Widgetify is a browser extensions that adds useful widgets to the new page of your browser. Numerous weather, currency, calendar, to-do list, search, and bookmark widgets can improve your exploring experience.
+Widgetify is a browser extension that fills your new tab with useful widgets: weather, currency rates, calendar, to-do list, notes, search, bookmarks and more.
 
-Official Website: [widgetify.ir](https://widgetify.ir)
+Official website: [widgetify.ir](https://widgetify.ir)
 
-## Contributing | Development
+## Supported browsers
 
-We welcome your contributions to improve Widgetify! To contribute please read the following document:
+| Browser | Minimum |
+|---|---|
+| Chrome | 109 |
+| Firefox | 115 ESR |
 
-[Contribution Guide](./.github/CONTRIBUTING.md).
+These are the last versions Windows 7 can run, and some companies still use it. Do not add code that needs anything newer. The full rules are in [entrypoints/README.md](entrypoints/README.md).
+
+## Run it
+
+You need [Bun](https://bun.sh) and Node.js.
+
+```bash
+bun install
+```
+
+| Command | Does |
+|---|---|
+| `bun dev` | Starts the extension in Chrome with live reload |
+| `bun dev:firefox` | Same, in Firefox |
+| `npm run build` | Chrome build into `.output/chrome-mv3` |
+| `npm run build:firefox` | Firefox build into `.output/firefox-mv2` |
+| `npm run format` | Formats the code with Biome |
+| `npm run compile` | Type check |
+| `npm run lint` | Biome check, must report nothing |
+| `npm test` | Tests |
+| `npm run check` | Format, type check, lint, tests and build together |
+| `npm run check:commit` | Checks that the last commit compiles on its own and that its message is clean |
+
+After `bun dev`, open a new tab. The first one may be blank.
+
+For formatting, be sure to use only `npm run lint` and `npm run format`.
+
+## How the code is organised
+
+Every folder with its own rules has a README that explains only that part.
+
+| Part | Guide |
+|---|---|
+| The whole `src` layout, names and imports | [src/README.md](src/README.md) |
+| Buttons, modals and the other primitives | [src/components/ui/README.md](src/components/ui/README.md) |
+| Colours, themes and stylesheets | [src/styles/README.md](src/styles/README.md) |
+| Storage, events, animation | [src/common/README.md](src/common/README.md) |
+| Server requests | [src/services/README.md](src/services/README.md) |
+| Icons | [src/icons/README.md](src/icons/README.md) |
+| Features | [src/features/README.md](src/features/README.md) |
+| Widgets | [src/features/widgets/README.md](src/features/widgets/README.md) |
+| Manifest, build and browsers | [entrypoints/README.md](entrypoints/README.md) |
+
+Working with an AI agent? It follows [AGENTS.md](AGENTS.md).
+
+## Contributing
+
+Read the [contribution guide](.github/CONTRIBUTING.md).
 
 ## Analytics and privacy
 
-The Widgetify extension uses Google Analytics 4 to collect statistical data and improve the user experience. The following Data is collected anonymously:
-  
+Widgetify uses Google Analytics 4 to collect anonymous statistics and improve the experience.
 
-### Collected Data
+**What is collected**
 
--  **Page Views**: Visit duration of extension pages
+- Page views: how long extension pages are open.
+- Features: how widgets are used, such as changing the background, using the weather widget or creating a note. The note's content is never sent.
+- Errors: failures that help us fix the extension.
 
--  **Features**: The type of user interaction with widgets, including:
+**Turning it off.** Choose "Disable Analytics" in the extension's general settings.
 
-- Changing the background image
+**Privacy.** The data never includes personal information or the content of your notes. It is used only to improve Widgetify.
 
-- Using the weather widget and selecting a city
+## Feedback
 
-- ⚠️ When creating a note (note subject is not sent)⚠️
+Share ideas and problems through [GitHub issues](https://github.com/widgetify-app/widgetify-extension/issues).
 
-- Interact with different widgets
+## License
 
--  **Errors**: Reporting possible errors to improve extension performance
-
-  
-
-### Disable Analytics
-
-Users can select the "Disable Analytics" option in the extension's general settings section to prevent data collection.
-
-  
-
-### Privacy Policy
-
-The collected data never includes personal information or the content of the notes and it's only used to improve the widgetify functionality.
-  
-
-## Feedback and Report
-
-Please share your comments and suggestions with us through one of the following methods:
-
-
--  [Github issues](https://github.com/widgetify-app/widgetify-extension/issues)
-
-
-  
-
-
-
-  
-
-## LICENSE
-For more information please read [License](LICENSE) 
+See [LICENSE](LICENSE).

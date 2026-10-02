@@ -128,7 +128,11 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 	async function browserHasPermission(
 		permissions: Browser.runtime.ManifestPermissions[]
 	) {
-		return browser.permissions.contains({ permissions })
+		try {
+			return await browser.permissions.contains({ permissions })
+		} catch {
+			return false
+		}
 	}
 
 	const updateSetting = <K extends keyof GeneralData>(
@@ -200,8 +204,6 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 								if (granted) {
 									updateSetting(settingKey, true)
 									Analytics.event(enableEvent)
-								} else {
-									console.log('Permission denied')
 								}
 							})
 							.catch(console.error)

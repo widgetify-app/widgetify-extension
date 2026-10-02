@@ -1,6 +1,6 @@
 import type { PetSequence, PetState } from '../types'
 
-type Pace = 'still' | 'walk' | 'run' | 'chase'
+export type Pace = 'still' | 'walk' | 'run' | 'chase'
 
 interface StateInfo {
 	pace: Pace

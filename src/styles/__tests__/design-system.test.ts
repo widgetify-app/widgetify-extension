@@ -105,11 +105,7 @@ describe('one vocabulary', () => {
 	it('never puts an opacity modifier on a colour utility', () => {
 		const pattern =
 			/(?<![\w-])(bg|text|border|border-[tblr]|ring|divide|from|to|via|outline|fill|stroke|shadow)-[a-z0-9-]+\/\d+(?![\w-])/
-		const allowed = ['src/features/navbar/components/nav-icon-button.tsx']
-		const bad = offenders(pattern).filter(
-			(o) => !allowed.some((path) => o.startsWith(`${path}:`))
-		)
-		expect(bad).toEqual([])
+		expect(offenders(pattern)).toEqual([])
 	})
 
 	it('never reaches past the tokens to a raw daisyUI base class', () => {
@@ -160,6 +156,19 @@ describe('one vocabulary', () => {
 			'src/features/widgets/tools/pomodoro/top-users/components/top-user-item.tsx',
 		]
 		const allowed = ['src/common/toast.tsx', ...paintsContent]
+		const bad = offenders(pattern).filter(
+			(o) => !allowed.some((path) => o.startsWith(`${path}:`))
+		)
+		expect(bad).toEqual([])
+	})
+
+	it('never writes a numeric rgb() or rgba() into a class', () => {
+		const pattern =
+			/(?<![\w-])(?:[a-z0-9/-]+:)*!?(bg|text|border(?:-[tblr])?|ring|from|to|via|fill|stroke|outline|divide|shadow|drop-shadow)-\[[^\]]*rgba?\(\s*\d/
+		const allowed = [
+			'src/common/toast.tsx',
+			'src/features/widgets/pet/components/pet-hud.tsx',
+		]
 		const bad = offenders(pattern).filter(
 			(o) => !allowed.some((path) => o.startsWith(`${path}:`))
 		)

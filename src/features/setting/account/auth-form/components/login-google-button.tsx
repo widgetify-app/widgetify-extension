@@ -27,10 +27,7 @@ export default function LoginGoogleButton() {
 				const granted = await browser.permissions.request({
 					permissions: ['identity'],
 				})
-				if (!granted) {
-					console.log('Permission denied')
-					return
-				}
+				if (!granted) return
 			}
 
 			const redirectUri = browser.identity.getRedirectURL('google')

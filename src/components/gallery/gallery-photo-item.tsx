@@ -66,7 +66,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 
 			{loaded && !error && (
 				<>
-					<div className="absolute inset-x-0 bottom-0 p-2.5 rounded-b-2xl bg-linear-to-t from-scrim via-[rgba(0,0,0,0.4)] to-transparent flex items-center justify-between pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+					<div className="absolute inset-x-0 bottom-0 p-2.5 rounded-b-2xl bg-linear-to-t from-scrim via-scrim-soft to-transparent flex items-center justify-between pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200">
 						<span className="text-2xs font-medium text-image-fg truncate max-w-[60%]">
 							{asset.title || ''}
 						</span>

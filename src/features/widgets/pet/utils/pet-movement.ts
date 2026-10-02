@@ -3,7 +3,7 @@ interface Position {
 	y: number
 }
 
-interface MovementBounds {
+export interface MovementBounds {
 	minX: number
 	maxX: number
 	minY: number

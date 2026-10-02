@@ -336,9 +336,11 @@ function declaredAliases(): string[] {
 describe('feature folders', () => {
 	it('hold only feature folders at the top of features and pages', () => {
 		const stray = [
-			...filesIn('src/features').map((file) => `src/features/${file}`),
+			...filesIn('src/features')
+				.filter((file) => file !== 'README.md')
+				.map((file) => `src/features/${file}`),
 			...filesIn('src/pages')
-				.filter((file) => file !== 'root.tsx')
+				.filter((file) => file !== 'root.tsx' && file !== 'README.md')
 				.map((file) => `src/pages/${file}`),
 		]
 		expect(stray).toEqual([])
@@ -351,13 +353,13 @@ describe('feature folders', () => {
 		expect(missing).toEqual([])
 	})
 
-	it('keep only the entry, settings, contexts, types, constants and one document at their root', () => {
+	it('keep only the entry, settings, contexts, types, constants and a README at their root', () => {
 		const stray: string[] = []
 		for (const dir of featureFolders) {
 			const allowed = [
 				...entryNames(dir),
 				`${nameOf(dir)}-setting.tsx`,
-				`${nameOf(dir)}.md`,
+				'README.md',
 			]
 			for (const file of filesIn(dir)) {
 				const fits =
@@ -477,6 +479,21 @@ describe('imports', () => {
 			}
 		}
 		expect(past).toEqual([])
+	})
+
+	it('keep the files of a barrel from importing its index', () => {
+		const circular: string[] = []
+		for (const [importer, targets] of imports) {
+			for (const target of targets) {
+				const barrel = BARRELS.find(
+					(dir) => /\/index\.tsx?$/.test(target) && parentOf(target) === dir
+				)
+				if (barrel && importer.startsWith(`${barrel}/`)) {
+					circular.push(`${importer} -> ${target}`)
+				}
+			}
+		}
+		expect(circular).toEqual([])
 	})
 
 	it('use only the aliases the build declares', () => {
@@ -674,7 +691,8 @@ describe('server state', () => {
 			.filter((path) => path.startsWith('src/services/'))
 			.filter((path) => {
 				const depth = path.split('/').length
-				return path === 'src/services/api.ts' ? false : depth !== 4
+				const allowed = ['src/services/api.ts', 'src/services/README.md']
+				return allowed.includes(path) ? false : depth !== 4
 			})
 		expect(misplaced).toEqual([])
 	})
@@ -718,7 +736,9 @@ describe('server state', () => {
 		const outside = projectFiles
 			.filter((path) => path !== 'src/common/storage.ts' && !isTest(path))
 			.filter((path) =>
-				/\b(localStorage|sessionStorage)\s*\./.test(readFileSync(path, 'utf8'))
+				/\b(localStorage|sessionStorage|indexedDB)\s*\.|\b(browser|chrome)\.storage\b|wxt\/utils\/storage|document\.cookie/.test(
+					readFileSync(path, 'utf8')
+				)
 			)
 		expect(outside).toEqual([])
 	})
@@ -759,7 +779,7 @@ describe('gateways', () => {
 
 describe('global folders', () => {
 	it('keep src/common to its gateways and role folders', () => {
-		const gateways = ['motion.tsx', 'storage.ts', 'toast.tsx']
+		const gateways = ['motion.tsx', 'storage.ts', 'toast.tsx', 'README.md']
 		const roleFolders = ['constants', 'types', 'utils', '__tests__']
 		const stray = srcFiles
 			.filter((path) => path.startsWith('src/common/'))
@@ -781,10 +801,12 @@ describe('global folders', () => {
 	it('keep only hooks in src/hooks and only providers at the root of src/context', () => {
 		const stray = [
 			...filesIn('src/hooks')
-				.filter((file) => !/^use-[a-z0-9-]+\.ts$/.test(file))
+				.filter(
+					(file) => file !== 'README.md' && !/^use-[a-z0-9-]+\.ts$/.test(file)
+				)
 				.map((file) => `src/hooks/${file}`),
 			...filesIn('src/context')
-				.filter((file) => !file.endsWith('.context.tsx'))
+				.filter((file) => file !== 'README.md' && !file.endsWith('.context.tsx'))
 				.map((file) => `src/context/${file}`),
 		]
 		expect(stray).toEqual([])

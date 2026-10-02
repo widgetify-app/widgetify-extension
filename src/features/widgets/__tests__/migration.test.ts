@@ -3,7 +3,17 @@ import { validateLayout } from '../utils/layout-engine/validation'
 import { type StoredWidget, WidgetKeys } from '../utils/layout-engine/types'
 
 // @ts-expect-error
-const { mock, beforeEach } = await import('bun:test')
+const { mock, beforeEach, afterAll } = await import('bun:test')
+
+if (typeof (globalThis as any).browser === 'undefined') {
+	;(globalThis as any).browser = {
+		runtime: {
+			getManifest: () => ({ version: '1.0.0' }),
+		},
+	}
+}
+
+const realStorage = await import('@/common/storage')
 
 const storageMockData: Record<string, any> = {}
 
@@ -24,6 +34,10 @@ mock.module('@/common/storage', () => ({
 }))
 
 const { migrateWidgetLayoutIfNeeded } = await import('../utils/migration')
+
+afterAll(() => {
+	mock.module('@/common/storage', () => realStorage)
+})
 
 describe('migrateWidgetLayoutIfNeeded', () => {
 	beforeEach(() => {
