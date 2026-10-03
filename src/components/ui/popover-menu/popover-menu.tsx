@@ -134,7 +134,6 @@ export function PopoverMenu({
 				}}
 				className={cn(popoverMenuVariants(), className)}
 				onClick={(e) => e.stopPropagation()}
-				onContextMenu={(e) => e.preventDefault()}
 			>
 				{children}
 			</div>
