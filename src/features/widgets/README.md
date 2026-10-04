@@ -26,6 +26,7 @@ The canvas that hosts every widget, and the widgets themselves. Each widget is a
 ## Design decisions (do not "fix")
 
 - Canvas collision is push down only, with no compaction. Gaps between widgets are deliberate and survive a move. The earlier backtracking solver froze the extension for 112 seconds on one drag. Compaction exists behind an option and is off.
+- The canvas is `MAX_CANVAS_ROWS` (12) rows deep at 8 columns, scaled by `8 / cols` on narrower grids (`row-cap.ts`). `resolveLayoutChange` refuses a move, resize, add or duplicate whose result reaches past it, or past the layout's current bottom when that is already lower, so an old layout that is too tall still works but cannot grow. The drag clamps to the same row. In edit mode the canvas shows every row up to the cap, so it does not shrink under a widget dragged upward.
 - `voice-search-portal.tsx` starts the microphone in a mount effect. Never make it always mounted.
 
 ## Adding a widget

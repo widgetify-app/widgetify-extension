@@ -3,6 +3,7 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { useFreeWidgetActions } from '@/features/widgets/widgets.context'
 import { getWidgetPixelRect } from '../utils/grid-geometry'
+import { rowCapFor } from '../utils/layout-engine/row-cap'
 import {
 	type StoredWidget,
 	type WidgetDefinition,
@@ -52,7 +53,6 @@ function CanvasWidgetOuterImpl({
 	const {
 		setCanvasMode,
 		setSelectedInstanceId,
-		getGridBounds,
 		resizeWidget,
 		startDragPreview,
 		updateDragPreview,
@@ -185,8 +185,7 @@ function CanvasWidgetOuterImpl({
 		const deltaCol = unitW > 0 ? Math.round(offset.x / unitW) : 0
 		const deltaRow = unitH > 0 ? Math.round(offset.y / unitH) : 0
 
-		const { maxRows } = getGridBounds()
-		const rowLimit = Math.max(0, maxRows - widget.size.h)
+		const rowLimit = Math.max(0, rowCapFor(cols) - widget.size.h)
 
 		return {
 			col: Math.max(

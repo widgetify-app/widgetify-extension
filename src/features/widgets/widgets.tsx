@@ -4,6 +4,8 @@ import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { useFreeWidgets } from '@/features/widgets/widgets.context'
 import { useContainerSize } from '@/features/widgets/hooks/use-container-size'
 import { getCanvasHeight } from './utils/grid-geometry'
+import { MIN_CANVAS_ROWS } from './utils/layout-engine/constants'
+import { rowCapFor } from './utils/layout-engine/row-cap'
 import { WIDGET_DEFINITIONS } from './registry'
 import { WidgetHelpModal } from '@/features/widgets/components/widget-help-modal'
 import { PresetLayoutModal } from './presets/presets'
@@ -31,7 +33,6 @@ export function FreeWidgetCanvas() {
 		setSelectedInstanceId,
 		updateContainerWidth,
 		removeWidget,
-		setMaxRows,
 	} = useFreeWidgets()
 
 	const [isPresetModalOpen, setIsPresetModalOpen] = useState(false)
@@ -107,15 +108,15 @@ export function FreeWidgetCanvas() {
 		0,
 		...runtimeLayout.map((w) => w.position.row + w.size.h)
 	)
-	const totalGridRows = Math.max(6, maxWidgetRow + 2)
+	const rowCap = Math.max(rowCapFor(cols), maxWidgetRow)
+	const totalGridRows =
+		canvasMode === 'edit'
+			? rowCap
+			: Math.max(MIN_CANVAS_ROWS, Math.min(maxWidgetRow + 2, rowCap))
 	const canvasPixelHeight = Math.max(
 		totalGridRows * cellHeight + Math.max(0, totalGridRows - 1) * gap,
 		getCanvasHeight(runtimeLayout, cellHeight, gap)
 	)
-
-	useEffect(() => {
-		setMaxRows(totalGridRows)
-	}, [totalGridRows, setMaxRows])
 
 	const wiggleVariants = useMemo(() => {
 		const variants = new Map<string, number>()

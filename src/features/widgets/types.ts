@@ -20,7 +20,6 @@ export interface FreeWidgetLayoutState {
 export interface FreeWidgetActions {
 	setCanvasMode: (mode: 'normal' | 'edit') => void
 	setSelectedInstanceId: (id: string | null) => void
-	getGridBounds: () => { cols: number; maxRows: number }
 	resizeWidget: (instanceId: string, newSize: WidgetSize) => boolean
 	moveWidget: (instanceId: string, targetPosition: WidgetPosition) => boolean
 	startDragPreview: () => void
@@ -41,7 +40,6 @@ export interface FreeWidgetActions {
 		meta?: Record<string, any>
 	) => boolean
 	updateContainerWidth: (containerWidth: number) => void
-	setMaxRows: (maxRows: number) => void
 	applyPresetLayout: (presetWidgets: StoredWidget[]) => Promise<boolean>
 }
 
