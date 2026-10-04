@@ -70,7 +70,7 @@ export default defineConfig({
 	manifest: ({ browser }) => {
 		const isFirefox = browser === 'firefox'
 		const rawVersion = process.env.FIREFOX_EXTENSION_VERSION?.trim()
-		const version = (rawVersion ? rawVersion.replace(/^[vV]/, '') : '') || '2.0.4'
+		const version = (rawVersion ? rawVersion.replace(/^[vV]/, '') : '') || '2.0.5'
 		const geckoId =
 			process.env.FIREFOX_EXTENSION_ID?.trim() || 'widgetify_ir@addons.mozilla.org'
 		return {
