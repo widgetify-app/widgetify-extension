@@ -77,7 +77,7 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 				const storedSettings = await getFromStorage('generalSettings')
 				const [browserBookmarksEnabled, browserTabsEnabled] = await Promise.all([
 					browserHasPermission(['bookmarks']),
-					browserHasPermission(['tabs', 'tabGroups']),
+					browserHasPermission(['tabGroups']),
 				])
 
 				if (storedSettings) {
@@ -236,7 +236,7 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 	)
 
 	const setBrowserTabsEnabled = togglePermission(
-		['tabs', 'tabGroups'],
+		['tabGroups'],
 		'browserTabsEnabled',
 		'browser_tabs_enabled',
 		'browser_tabs_disabled'
