@@ -19,6 +19,10 @@ What follows from that:
 - Firefox below 139 has no `tabGroups` permission. The code guards the missing API, and `general-setting.context.tsx` treats a permission check that throws as "not granted".
 - `strict_min_version` in `wxt.config.ts` must match the table above. The baseline test reads it.
 
+## Permissions
+
+Ask only for a permission the code calls, or the Chrome Web Store rejects the release ("Use of Permissions"). It rejected 2.0.5 for an unused `tabs`. Creating and grouping tabs need no permission; `tabs` only unlocks reading a tab's `url`, `title` and `favIconUrl`, which nothing here does. Grouping needs `tabGroups`. `bookmarks` is used by the bookmark import and the search bookmark list, both behind the switch in Privacy settings, so tell the reviewer where to find them.
+
 A test can show that a newer API is absent. It cannot show that the build runs on those browsers. Open the build once in Chrome 109 and Firefox 115 (a Windows 7 machine or a VM) before a release.
 
 **Firefox lint.** Mozilla's linter checks the Firefox manifest the way the add-on store does:

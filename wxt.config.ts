@@ -82,7 +82,6 @@ export default defineConfig({
 			permissions: ['storage', 'search', ...(isFirefox ? ['identity'] : [])],
 
 			optional_permissions: [
-				'tabs',
 				'tabGroups',
 				'bookmarks',
 				...(!isFirefox ? ['identity'] : []),
