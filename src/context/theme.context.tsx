@@ -16,7 +16,6 @@ export enum Theme {
 	Glass = 'glass',
 	Icy = 'icy',
 	Zarna = 'zarna',
-	esteghlal = 'esteghlal',
 }
 const freeThemes = [Theme.Light, Theme.Dark, Theme.Glass, Theme.Icy, Theme.Zarna]
 

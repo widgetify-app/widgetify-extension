@@ -1,6 +1,8 @@
 import { type GridBreakpoint, type StoredWidget, WidgetKeys } from './types'
 
 export const DEFAULT_COLS = 8
+export const MIN_CANVAS_ROWS = 6
+export const MAX_CANVAS_ROWS = 12
 export const DEFAULT_CELL_HEIGHT = 96
 export const DEFAULT_GAP = 8
 export const MIN_CELL_WIDTH = 72

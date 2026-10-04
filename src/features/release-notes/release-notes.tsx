@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { callEvent } from '@/common/utils/call-event'
+import { cn } from '@/common/utils/cn'
 import { Button, Modal } from '@/components/ui'
-import { Icon } from '@/icons'
-import { useFreeWidgets } from '@/features/widgets/widgets.context'
+import { Icon, type IconName } from '@/icons'
+import { MarketItemType } from '@/services/market/market.interface'
 
 type UpdateReleaseNotesModalProps = {
 	isOpen: boolean
@@ -9,53 +11,49 @@ type UpdateReleaseNotesModalProps = {
 	counterValue?: number | null
 }
 
-interface ReleaseStep {
+interface ReleaseHighlight {
 	id: string
+	icon: IconName
+	tileClass: string
 	title: string
-	badge: string
 	description: string
-	videoUrl: string
-	icon: 'move' | 'viewGridAdd' | 'plus' | 'squares2X2'
 }
 
-const CDN_BASE_URL = 'https://cdn.widgetify.ir/extension/help_videos/'
-
-const RELEASE_STEPS: ReleaseStep[] = [
+const RELEASE_HIGHLIGHTS: ReleaseHighlight[] = [
 	{
-		id: 'drag-and-drop',
-		title: 'جابجایی آزاد در صفحه',
-		badge: 'مرحله ۱ از ۴',
-		description:
-			'ویجت‌ها رو با درگ و دراپ به هر جای صفحه ببر و چیدمان دلخواهت رو بساز',
-		videoUrl: `${CDN_BASE_URL}JABEJAIE-WIDGET-HA.webm`,
-		icon: 'move',
+		id: 'dot-calendar',
+		icon: 'calendarDays',
+		tileClass: 'bg-warning-fill text-warning',
+		title: 'ویجت تازه: تقویم نقطه‌ای',
+		description: 'روزهای سال یا روزشمار هدفت رو نقطه‌نقطه ببین',
 	},
 	{
-		id: 'widget-styles',
-		title: 'تنوع اندازه و ظاهر ویجت‌ها',
-		badge: 'مرحله ۲ از ۴',
-		description:
-			'با کلیک‌راست روی هر ویجت اندازه‌ش رو تغییر بده و از مدل‌های مختلف استفاده کن',
-		videoUrl: `${CDN_BASE_URL}WIDGET-STYLES.webm`,
-		icon: 'viewGridAdd',
+		id: 'curated-news',
+		icon: 'outlineNewspaper',
+		tileClass: 'bg-danger-fill text-danger',
+		title: 'اخبار از منابع دست‌چین',
+		description: 'از ورزش تا اقتصاد، دسته‌ی دلخواهت رو انتخاب کن',
 	},
 	{
-		id: 'add-new-item',
-		title: 'افزودن ویجت‌های جدید',
-		badge: 'مرحله ۳ از ۴',
-		description:
-			'از منوی افزودن ویجت، ویجت‌های دلخواهت رو به صفحه اضافه کن و حتی از یکی چند نسخه بساز',
-		videoUrl: `${CDN_BASE_URL}ADD-NEW-ITEM-AND-NEW-LIST.webm`,
-		icon: 'plus',
+		id: 'theme-colors',
+		icon: 'theme',
+		tileClass: 'bg-brand-fill text-brand',
+		title: 'تم‌ها خوش‌رنگ‌تر شدن',
+		description: 'رنگ تمامی تم‌ها بهبود پیدا کرده',
 	},
 	{
-		id: 'prepared-items',
-		title: 'چیدمان‌های آماده با ۱ کلیک',
-		badge: 'مرحله ۴ از ۴',
-		description:
-			'اگه دوست داری سریع شروع کنی، از قالب‌ها و چیدمان‌های آماده استفاده کن',
-		videoUrl: `${CDN_BASE_URL}CHANGE-PREPARED-ITEMS-2.webm`,
-		icon: 'squares2X2',
+		id: 'sticky-note',
+		icon: 'notebook',
+		tileClass: 'bg-success-fill text-success',
+		title: 'یادداشت‌هات، هر شکلی که بخوای',
+		description: 'لیست یادداشت‌ها رو راحت به استیک نوت تبدیل کن',
+	},
+	{
+		id: 'tidy-layout',
+		icon: 'layout',
+		tileClass: 'bg-info-fill text-info',
+		title: 'چیدن ویجت‌ها راحت‌تر شد',
+		description: 'موقع چیدن، کل صفحه جلوی چشمته',
 	},
 ]
 
@@ -64,19 +62,7 @@ export const UpdateReleaseNotesModal = ({
 	onClose,
 	counterValue,
 }: UpdateReleaseNotesModalProps) => {
-	const [activeStepIndex, setActiveStepIndex] = useState<number>(0)
 	const [counter, setCounter] = useState<number>(0)
-	const videoRef = useRef<HTMLVideoElement>(null)
-	const { setCanvasMode } = useFreeWidgets()
-
-	const currentStep = RELEASE_STEPS[activeStepIndex]
-	const isLastStep = activeStepIndex === RELEASE_STEPS.length - 1
-
-	useEffect(() => {
-		if (isOpen) {
-			setActiveStepIndex(0)
-		}
-	}, [isOpen])
 
 	useEffect(() => {
 		if (isOpen && counterValue) {
@@ -96,219 +82,94 @@ export const UpdateReleaseNotesModal = ({
 		setCounter(0)
 	}, [isOpen, counterValue])
 
-	useEffect(() => {
-		if (isOpen && videoRef.current) {
-			videoRef.current.load()
-			videoRef.current.play().catch(() => {})
-		}
-	}, [isOpen, activeStepIndex])
-
-	const handleNextStep = () => {
-		if (!isLastStep) {
-			setActiveStepIndex((prev) => prev + 1)
-		} else {
-			handleEnterEditMode()
-		}
-	}
-
-	const handlePrevStep = () => {
-		if (activeStepIndex > 0) {
-			setActiveStepIndex((prev) => prev - 1)
-		}
-	}
-
-	const handleEnterEditMode = () => {
+	const handleOpenPets = () => {
 		onClose()
-		setCanvasMode('edit')
+		callEvent('openMarketModal', { filter: MarketItemType.PET })
 	}
 
 	return (
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			title={'نسخه 2 ویجتیفای با کلی تغییرات منتشر شد!!'}
-			size="lg"
+			title="پاییز اومد، با کلی چیز تازه"
+			size="xl"
+			className="max-w-3xl"
 			closeOnBackdropClick={false}
-			className="min-h-[500px]"
 		>
-			<div className="flex flex-col gap-4 select-none text-right">
-				{/* Step Stepper Indicator */}
-				<div className="flex items-center justify-between gap-1 px-1">
-					{RELEASE_STEPS.map((step, index) => {
-						const isCurrent = index === activeStepIndex
-						const isCompleted = index < activeStepIndex
-
-						return (
-							<button
-								key={step.id}
-								type="button"
-								onClick={() => setActiveStepIndex(index)}
-								className={`flex-1 h-1.5 rounded-full transition-ui duration-300 cursor-pointer ${
-									isCurrent
-										? 'bg-brand'
-										: isCompleted
-											? 'bg-brand-muted'
-											: 'bg-fill-2 hover:bg-fill-3'
-								}`}
-								aria-label={step.title}
-							/>
-						)
-					})}
-				</div>
-
-				{/* Video Preview Container */}
-				<div className="relative flex items-center justify-center w-full overflow-hidden border shadow-sm aspect-video max-h-56 rounded-2xl border-line bg-fill shrink-0">
-					<video
-						key={currentStep.videoUrl}
-						ref={videoRef}
-						src={currentStep.videoUrl}
-						autoPlay
-						loop
-						muted
-						playsInline
+			<div className="flex flex-col gap-3 select-none text-right">
+				<section className="relative w-full overflow-hidden shadow-md aspect-2/1 rounded-2xl bg-fill">
+					<img
+						src={'https://cdn.widgetify.ir/extension/autumn.webp'}
+						alt="جغدو، میشا و تیغو کنار کاراکتر ویجتیفای تو جنگل پاییزی"
 						className="object-cover w-full h-full"
+						draggable={false}
 					/>
-					<div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-surface-veil backdrop-blur-md border border-line text-2xs font-bold text-fg shadow-sm">
-						{currentStep.badge}
-					</div>
-				</div>
-
-				{/* Active Step Content Card */}
-				<div className="flex flex-col justify-center min-h-[128px]">
-					{activeStepIndex === 0 ? (
-						<div className="flex flex-col justify-between h-full gap-2">
-							<div className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-brand">
-								<span className="text-sm">💣</span>
-								<span className="text-lg font-bold leading-body">
-									بزرگ‌ترین تحول: چیدمان کاملا آزاد و بی‌نهایت
-								</span>
-							</div>
-
-							<div className="flex items-start gap-3 p-3 rounded-2xl bg-fill-2 border border-line transition-ui">
-								<div className="w-8 h-8 rounded-xl bg-brand-fill text-brand flex items-center justify-center shrink-0 mt-0.5">
-									<Icon name={currentStep.icon} size={16} />
-								</div>
-								<div className="flex flex-col gap-0.5">
-									<span className="text-xs font-bold text-fg">
-										{currentStep.title}
-									</span>
-									<span className="text-2xs leading-relaxed text-fg-muted">
-										{currentStep.description}
-									</span>
-								</div>
-							</div>
-
-							<div className="flex items-center gap-1.5 px-2 text-2xs font-medium text-fg-muted">
-								<span>
-									دیگه خبری از محدودیت ستون‌های ثابت نیست؛ صفحه تماما در
-									اختیارته!
-								</span>
-							</div>
+					<div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 px-5 pt-16 pb-4 bg-linear-to-t from-scrim-strong to-transparent">
+						<div className="flex flex-col gap-1">
+							<span className="w-fit px-2.5 py-0.5 rounded-full bg-image-fill text-2xs font-bold text-image-fg">
+								دوستای تازه
+							</span>
+							<h3 className="text-xl font-bold text-image-fg">
+								جغدو، میشا و تیغو اومدن
+							</h3>
+							<p className="text-xs text-image-fg-muted">
+								تو فروشگاه منتظرتن، محیط تهران هم براشون اومده
+							</p>
 						</div>
-					) : (
-						<div className="flex flex-col justify-between h-full gap-2">
-							<div className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-fill-2 border border-line transition-ui">
-								<div className="w-9 h-9 rounded-xl bg-brand-fill text-brand flex items-center justify-center shrink-0 mt-0.5">
-									<Icon name={currentStep.icon} size={16} />
-								</div>
-								<div className="flex flex-col gap-1 justify-center">
-									<div className="flex items-center gap-2">
-										<span className="text-sm font-bold text-fg">
-											{currentStep.title}
-										</span>
-									</div>
-									<p className="text-xs leading-relaxed text-fg-muted">
-										{currentStep.description}
-									</p>
-								</div>
-							</div>
-
-							{isLastStep ? (
-								<div className="flex items-center justify-between gap-2 px-3 py-1.5 rounded-xl bg-brand-fill border border-brand-fill-2 text-fg">
-									<div className="flex items-center gap-2">
-										<span className="text-base">📸</span>
-										<span className="text-xs font-bold text-brand">
-											مشتاقیم چیدمان‌های خلاقانه‌ت رو ببینیم!
-										</span>
-									</div>
-									<span className="text-2xs font-medium text-fg-muted">
-										عکس تب قشنگت رو با ما به اشتراک بذار
-									</span>
-								</div>
-							) : (
-								<div className="flex items-center gap-1.5 px-2 text-2xs font-medium text-fg-muted">
-									<span>
-										{activeStepIndex === 1
-											? 'هر ویجت رو می‌تونی با اندازه و مدل اختصاصی تنظیم کنی'
-											: 'می‌تونی از ویجت‌های محبوبت چند نسخه با تنظیمات مجزا بسازی'}
-									</span>
-								</div>
-							)}
-						</div>
-					)}
-				</div>
-
-				{/* Footer Controls & Actions */}
-				<div className="flex items-center justify-between gap-2 pt-2 border-t border-line">
-					<div className="flex items-center gap-1.5">
 						<Button
 							type="button"
 							size="sm"
-							variant="ghost"
-							onClick={onClose}
-							className="px-3 text-xs font-medium text-fg-muted hover:text-fg"
+							color="brand"
+							onClick={handleOpenPets}
+							className="gap-1.5 px-4 text-xs font-bold shrink-0"
 							rounded="xl"
 						>
-							<span>بعدا</span>
+							<Icon name="paw" size={14} />
+							<span>بریم ببینیم</span>
 						</Button>
-
-						{activeStepIndex > 0 && (
-							<Button
-								type="button"
-								size="sm"
-								variant="ghost"
-								onClick={handlePrevStep}
-								className="px-2.5 text-xs font-bold flex items-center gap-1 text-fg"
-								rounded="xl"
-							>
-								<Icon name="chevronRight" size={14} />
-								<span>قبلی</span>
-							</Button>
-						)}
 					</div>
+				</section>
 
-					<div className="flex items-center gap-2">
-						{!isLastStep ? (
-							<Button
-								type="button"
-								size="sm"
-								color="brand"
-								onClick={handleNextStep}
-								className="h-10 px-5 text-xs font-bold flex items-center gap-1.5 shadow-sm"
-								rounded="xl"
+				<ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+					{RELEASE_HIGHLIGHTS.map((item, index) => (
+						<li
+							key={item.id}
+							className={cn(
+								'flex items-center gap-3 p-3 rounded-2xl bg-fill',
+								index === 0 && 'sm:col-span-2'
+							)}
+						>
+							<span
+								className={`flex items-center justify-center w-10 h-10 rounded-xl shrink-0 ${item.tileClass}`}
 							>
-								<span>مرحله بعد</span>
-								<Icon name="chevronLeft" size={14} />
-							</Button>
-						) : (
-							<Button
-								type="button"
-								size="sm"
-								color="brand"
-								onClick={handleEnterEditMode}
-								disabled={counter > 0}
-								className="h-10 px-5 text-xs font-bold flex items-center gap-2 shadow-sm animate-pulse"
-								rounded="xl"
-							>
-								<Icon name="edit" size={16} />
-								<span>
-									{counter > 0
-										? `یه لحظه صبر کن (${counter})`
-										: 'ورود به حالت ویرایش و چیدمان'}
+								<Icon name={item.icon} size={20} />
+							</span>
+							<span className="flex flex-col gap-0.5">
+								<span className="text-sm font-bold text-fg">
+									{item.title}
 								</span>
-							</Button>
-						)}
-					</div>
+								<span className="text-xs leading-relaxed text-fg-muted">
+									{item.description}
+								</span>
+							</span>
+						</li>
+					))}
+				</ul>
+
+				<div className="flex justify-end pt-1">
+					<Button
+						type="button"
+						size="sm"
+						color="brand"
+						onClick={onClose}
+						disabled={counter > 0}
+						className="h-10 px-8 text-xs font-bold shadow-sm"
+						rounded="xl"
+					>
+						{counter > 0
+							? `یه لحظه صبر کن (${counter.toLocaleString('fa-IR')})`
+							: 'بزن بریم'}
+					</Button>
 				</div>
 			</div>
 		</Modal>

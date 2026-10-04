@@ -22,6 +22,7 @@ import {
 } from '@/services/widgets/widget-sync.hook'
 import { reflowForColumns, sanitizeLayout } from '../utils/widget-layout-helpers'
 import { createNoteForDuplicatedWidget } from '../utils/widget-note-helpers'
+import { withWidgetMeta } from '../utils/with-widget-meta'
 
 type ApplyRuntimeLayout = (
 	next: StoredWidget[] | ((prev: StoredWidget[]) => StoredWidget[])
@@ -411,15 +412,11 @@ export function useWidgetOperations({
 	const updateWidgetSettings = useCallback(
 		(instanceId: string, meta: any) => {
 			setSavedLayout((prev) => {
-				const updated = prev.map((w) =>
-					w.instanceId === instanceId ? { ...w, meta } : w
-				)
-				persistLayout(updated)
+				const updated = withWidgetMeta(prev, instanceId, meta)
+				if (updated !== prev) persistLayout(updated)
 				return updated
 			})
-			applyRuntimeLayout((prev) =>
-				prev.map((w) => (w.instanceId === instanceId ? { ...w, meta } : w))
-			)
+			applyRuntimeLayout((prev) => withWidgetMeta(prev, instanceId, meta))
 
 			if (isAuthenticated && isServerInstanceId(instanceId)) {
 				updateUserWidgetApi(instanceId, { meta }).catch(() => {})

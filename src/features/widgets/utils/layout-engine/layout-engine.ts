@@ -8,6 +8,7 @@ import type {
 	WidgetPosition,
 	WidgetSize,
 } from './types'
+import { staysWithinRowCap } from './row-cap'
 import { validateLayout } from './validation'
 
 function patchWidget(
@@ -42,7 +43,15 @@ function assertValidInDev(
 	}
 }
 
+const GROWING_OPERATIONS = new Set(['move', 'resize', 'add', 'duplicate'])
+
 export function resolveLayoutChange(options: LayoutEngineOptions): StoredWidget[] | null {
+	const result = applyOperation(options)
+	if (!result || !GROWING_OPERATIONS.has(options.operation)) return result
+	return staysWithinRowCap(result, options.layout, options.cols) ? result : null
+}
+
+function applyOperation(options: LayoutEngineOptions): StoredWidget[] | null {
 	const {
 		layout,
 		operation,

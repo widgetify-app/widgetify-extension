@@ -15,11 +15,13 @@ import { MiniAppPage } from '@/pages/mini-apps/mini-apps.page'
 import { ExplorerPage } from '@/pages/explorer/explorer.page'
 import { HomePage } from '@/pages/home/home.page'
 import { useEffect } from 'react'
+import { useBlockBrowserContextMenu } from '@/pages/hooks/use-block-browser-context-menu'
 import { useWallpaperApply } from '@/pages/hooks/use-wallpaper-apply'
 import { WallpaperProvider } from '@/context/wallpaper.context'
 
 export function RootLayout() {
 	useWallpaperApply()
+	useBlockBrowserContextMenu()
 
 	useEffect(() => {
 		purgeDeprecatedStorageKeys()

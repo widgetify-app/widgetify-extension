@@ -62,7 +62,6 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 	const runtimeLayoutRef = useRef<StoredWidget[]>([])
 	const isVipRef = useRef<boolean>(isVip)
 	const selectedInstanceIdRef = useRef<string | null>(selectedInstanceId)
-	const maxRowsRef = useRef<number>(0)
 
 	useEffect(() => {
 		isVipRef.current = isVip
@@ -82,15 +81,6 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 				return value
 			})
 		},
-		[]
-	)
-
-	const setMaxRows = useCallback((maxRows: number) => {
-		maxRowsRef.current = maxRows
-	}, [])
-
-	const getGridBounds = useCallback(
-		() => ({ cols: colsRef.current, maxRows: maxRowsRef.current }),
 		[]
 	)
 
@@ -217,8 +207,6 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 		() => ({
 			setCanvasMode,
 			setSelectedInstanceId,
-			getGridBounds,
-			setMaxRows,
 			resizeWidget,
 			moveWidget,
 			startDragPreview,
@@ -235,8 +223,6 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 		[
 			setCanvasMode,
 			setSelectedInstanceId,
-			getGridBounds,
-			setMaxRows,
 			resizeWidget,
 			moveWidget,
 			startDragPreview,

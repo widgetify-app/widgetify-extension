@@ -5,7 +5,12 @@ import { resolveLayoutChange } from '../utils/layout-engine/layout-engine'
 import { validateLayout } from '../utils/layout-engine/validation'
 import { WidgetKeys } from '../utils/layout-engine/types'
 import { pushDownward } from '../utils/layout-engine/push'
+import { rowCapFor } from '../utils/layout-engine/row-cap'
 import type { StoredWidget } from '../utils/layout-engine/types'
+
+function bottomOf(layout: StoredWidget[]): number {
+	return Math.max(...layout.map((w) => w.position.row + w.size.h))
+}
 
 function widget(
 	instanceId: string,
@@ -97,20 +102,31 @@ describe('push-down collision engine', () => {
 		})
 	})
 
-	it('never returns null for any in-bounds move', () => {
+	it('never returns null for any in-bounds move, unless it would grow past the row cap', () => {
 		const initial = buildPackedLayout(30)
+		const initialBottom = bottomOf(initial)
+		const sentinel = widget('sentinel', 0, 1000, 2, 1)
 
 		for (let col = 0; col <= 6; col++) {
 			for (let row = 0; row < 20; row++) {
-				const result = resolveLayoutChange({
-					layout: initial,
-					operation: 'move',
-					instanceId: 'w-7',
-					targetPosition: { col, row },
-					cols: 8,
-				})
-				expect(result).not.toBeNull()
-				expect(validateLayout(result!, 8)).toBe(true)
+				const move = (layout: StoredWidget[]) =>
+					resolveLayoutChange({
+						layout,
+						operation: 'move',
+						instanceId: 'w-7',
+						targetPosition: { col, row },
+						cols: 8,
+					})
+
+				const uncapped = move([...initial, sentinel])
+				expect(uncapped).not.toBeNull()
+				expect(validateLayout(uncapped!, 8)).toBe(true)
+
+				const grown =
+					bottomOf(uncapped!.filter((w) => w.instanceId !== 'sentinel')) >
+					Math.max(rowCapFor(8), initialBottom)
+				const result = move(initial)
+				expect(result === null).toBe(grown)
 			}
 		}
 	})
