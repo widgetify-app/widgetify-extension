@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
+import { marketKeys } from '@/services/market/market.keys'
 import { userKeys } from '@/services/user/user.keys'
 
 interface PurchaseMarketItemParams {
@@ -20,6 +21,7 @@ export const usePurchaseMarketItem = () => {
 			purchaseMarketItem(params),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: userKeys.profile })
+			queryClient.invalidateQueries({ queryKey: marketKeys.inventoryAll })
 		},
 	})
 }
