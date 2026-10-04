@@ -300,5 +300,5 @@ page-wide values like `z-[9999]`.
 
 Measured on 2026-10-01 with the WCAG ratio on the opaque themes. `glass` and `icy` are left out because their tokens carry alpha.
 
-- **Content on its colour** (`on-brand` on `brand` and the like) is 3:1 or better everywhere. Under 4.5: `on-brand` on `brand` is 4.2 in `light` and `dark` and 3.5 in `esteghlal`; `on-danger` on `danger` is 4.2 in `dark` and 3.6 in `esteghlal`. Only a different brand or status colour fixes these.
-- **A colour used as text on `surface`** is weaker, because it was chosen as a fill. In `light`, `text-danger` is 2.9, `text-success` 2.0, `text-warning` 1.8 and `text-info` 2.2, and the app writes them 88 times. `text-secondary` (5 uses) is 1.3 in `zarna`. `text-brand` (151 uses) is 4.2 to 4.3 in `light`, `dark` and `esteghlal`. A darker text tone per status would fix the first group; that is a design choice.
+- **Content on its colour** (`on-brand` on `brand` and the like) is 3:1 or better everywhere. Under 4.5: `on-brand` on `brand` is 4.2 in `light` and `dark`; `on-danger` on `danger` is 4.2 in `dark`. Only a different brand or status colour fixes these.
+- **A colour used as text on `surface`** is weaker, because it was chosen as a fill. In `light`, `text-danger` is 2.9, `text-success` 2.0, `text-warning` 1.8 and `text-info` 2.2, and the app writes them 88 times. `text-secondary` (5 uses) is 1.2 in `zarna`. `text-brand` (151 uses) is 4.2 to 4.3 in `light` and `dark`. A darker text tone per status would fix the first group; that is a design choice.

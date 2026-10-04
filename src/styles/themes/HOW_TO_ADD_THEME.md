@@ -118,7 +118,6 @@ export enum Theme {
 	Glass = 'glass',
 	Icy = 'icy',
 	Zarna = 'zarna',
-	esteghlal = 'esteghlal',
 	NewTheme = 'newtheme',
 }
 ```
