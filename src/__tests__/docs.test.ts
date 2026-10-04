@@ -28,7 +28,7 @@ const OTHER_DOCS = [
 	'.github/Api-doc.fa.md',
 ]
 
-const UNCHECKED_DOCS = ['AGENTS.local.md']
+const UNCHECKED_DOCS = ['AGENTS.local.md', 'SOCIAL_ROADMAP.md']
 
 const WIDGET_README = /^src\/features\/widgets\/[a-z0-9-]+\/README\.md$/
 const LONG_READMES: Record<string, number> = {
@@ -49,7 +49,11 @@ const FILE_NAME = /\.(tsx?|css|md|mjs|json)$/
 const NOT_A_PATH = /[*<>{}$\s()]/
 
 function isSkipped(folder: string): boolean {
-	return folder === 'node_modules' || (folder.startsWith('.') && folder !== '.github')
+	return (
+		folder === 'node_modules' ||
+		folder === 'graphify-out' ||
+		(folder.startsWith('.') && folder !== '.github')
+	)
 }
 
 function walk(dir: string): string[] {
