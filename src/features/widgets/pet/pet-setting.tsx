@@ -8,6 +8,7 @@ import { Icon } from '@/icons'
 import { useGetUserInventory } from '@/services/market/get-user-inventory.hook'
 import { MarketItemType } from '@/services/market/market.interface'
 import { useFreeWidgets } from '@/features/widgets/widgets.context'
+import { PetOptionGrid } from './components/pet-option-grid'
 import { PetOptionTile } from './components/pet-option-tile'
 import {
 	BASE_PET_OPTIONS,
@@ -43,10 +44,14 @@ interface PetSettingsProps {
 	size?: { w: number; h: number }
 }
 
+const PET_ITEM_TYPES = [MarketItemType.PET, MarketItemType.PET_BACKGROUND].join(',')
+
 export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 	const { runtimeLayout, updateWidgetSettings } = useFreeWidgets()
 	const { isAuthenticated } = useAuth()
-	const { data: inventory } = useGetUserInventory(isAuthenticated)
+	const { data: inventory } = useGetUserInventory(isAuthenticated, {
+		type: PET_ITEM_TYPES,
+	})
 
 	const targetWidget = instanceId
 		? runtimeLayout.find((w) => w.instanceId === instanceId)
@@ -343,9 +348,9 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 						<span>فروشگاه</span>
 					</button>
 				</div>
-				<fieldset
-					aria-labelledby="pet-type-label"
-					className="grid grid-cols-5 gap-2"
+				<PetOptionGrid
+					labelledBy="pet-type-label"
+					className="grid-cols-5 max-h-49"
 				>
 					{allPets.map((type) => (
 						<PetOptionTile
@@ -362,7 +367,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 							/>
 						</PetOptionTile>
 					))}
-				</fieldset>
+				</PetOptionGrid>
 			</section>
 
 			<section className="flex flex-col gap-2">
@@ -382,9 +387,9 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 						<span>فروشگاه</span>
 					</button>
 				</div>
-				<fieldset
-					aria-labelledby="pet-background-label"
-					className="grid grid-cols-4 gap-2"
+				<PetOptionGrid
+					labelledBy="pet-background-label"
+					className="grid-cols-4 max-h-52"
 				>
 					{allBackgrounds.map((item) => (
 						<PetOptionTile
@@ -408,7 +413,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 							></div>
 						</PetOptionTile>
 					))}
-				</fieldset>
+				</PetOptionGrid>
 			</section>
 
 			<section className="flex flex-col gap-2">

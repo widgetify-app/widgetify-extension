@@ -24,6 +24,8 @@ A single sprite pet lives inside a fixed 2x1 widget cell. It follows a per-speci
 | `components/pet-factory.tsx` | Picks the species component and renders `PetHud`. |
 | `components/pet-item/pet-<species>.tsx` | One per species: animation map, dimensions, assets, wiring into the hook. |
 | `components/pet-hud.tsx` | Five hearts. `filled = ceil(level / 20)`. |
+| `components/pet-option-tile.tsx` | One choice in the settings panel: a pressed-state button with a lock for unowned items. |
+| `components/pet-option-grid.tsx` | The settings panel's species and background grids. Fixed height with its own scroll, and scrolls the selected tile into view on open. |
 | `utils/pet-sequence.ts` | State facts (pace, facing, hold time), `chooseNextState`, `hasReachedWall`. Pure. |
 | `utils/species-sequences.ts` | `PET_SEQUENCES`: the state tree of every species. Pure data. |
 | `utils/pet-hop.ts` | Frog hop arcs. Pure. |
@@ -172,6 +174,8 @@ Rules worth knowing:
 - The settings panel saves through one function that reads the latest values, and changing species cancels a pending name save; otherwise a stale name or species would be written back.
 - Switching species sets the name to that species' stored or default name. The widget keeps one name, for the active species.
 - Both places that render a widget must pass `meta`: the canvas (`WidgetSlot`) and the list view used when cells are too narrow (`widgets.tsx`). The list view used to omit it, which reset every pet to the default dog.
+- The panel loads owned pets and backgrounds in one inventory request (`type=PET,PET_BACKGROUND`). A request without a type returns the first 32 purchases of every kind, which once hid newly bought pets. A purchase refreshes every inventory query (`marketKeys.inventoryAll`).
+- Each grid shows two and a half rows and scrolls inside itself (`max-h-49` for species, `max-h-52` for backgrounds, from tile heights of 71.5px and 75.5px), so the panel keeps its height however many items exist. The grid needs `auto-rows-max`: the tiles have `overflow-hidden`, and without it the grid squashes rows to fit the height instead of scrolling. Change the heights with the tile size.
 - `PET_NAME_SAVE_DEBOUNCE_MS`, `updateWidgetSettings` and the layout persistence are shared with other widgets. Do not special-case the pet there.
 - Nothing pet-specific is sent to a server by the pet code. For signed-in users the widget layout, including `meta`, syncs through the generic widget sync, and the backend stores `meta` unchanged (size-limited and sanitised, not whitelisted).
 
