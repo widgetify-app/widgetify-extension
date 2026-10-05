@@ -271,7 +271,7 @@
 | `POST /notes` | بله | `{ title?, body?, id?, priority? }`. هم می‌سازد هم به‌روز می‌کند: برای ویرایش `id` بدهید. `priority` یکی از `low`، `medium` یا `high` است | یادداشت |
 | `DELETE /notes/{id}` | بله | | |
 | `GET /todos/v2/@me` | بله | `page`، `limit`، `isCompleted`، `dateFilter` (`today` یا `this_month`)، `category` | `{ todos, totalPages, totals }` |
-| `GET /todos/@me/tags` | بله | | `string[]`، تگ‌هایی که کاربر استفاده کرده |
+| `GET /todos/@me/tags` | بله | | `string[]`، تگ‌هایی که کاربر استفاده کرده. مسیری برای حذف تگ نیست: اپ روی هر تسکِ خود کاربر که این تگ را دارد `PATCH /todos/{id}` با `category: ''` می‌فرستد (`src/services/todo/remove-tag.hook.ts`) |
 | `POST /todos` | بله | `{ text*, date*, friendIds*: string[], category?, description?, priority?, completed?, order? }` | |
 | `PATCH /todos/{id}` | بله | هرکدام از `text`، `category`، `date`، `description`، `priority`، `completed`، `order` | `{ data: { todo } }` |
 | `DELETE /todos/{id}` | بله | | |

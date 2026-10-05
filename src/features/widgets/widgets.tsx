@@ -1,9 +1,11 @@
 import type React from 'react'
+import type { ReactNode } from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { useFreeWidgets } from '@/features/widgets/widgets.context'
 import { useContainerSize } from '@/features/widgets/hooks/use-container-size'
 import { getCanvasHeight } from './utils/grid-geometry'
+import { useKeyboardFocusWithin } from './hooks/use-keyboard-focus-within'
 import { MIN_CANVAS_ROWS } from './utils/layout-engine/constants'
 import { rowCapFor } from './utils/layout-engine/row-cap'
 import { WIDGET_DEFINITIONS } from './registry'
@@ -149,10 +151,7 @@ export function FreeWidgetCanvas() {
 					if (!def) return null
 
 					return (
-						<div
-							key={widget.instanceId}
-							className="relative w-full p-2 border rounded-2xl bg-fill-2 border-line"
-						>
+						<ListWidgetFrame key={widget.instanceId}>
 							<div className="flex items-center justify-between pb-1 mb-2 border-b border-line">
 								<div className="flex items-center gap-1.5 font-bold text-xs text-fg">
 									<span>{def.emoji}</span>
@@ -169,7 +168,7 @@ export function FreeWidgetCanvas() {
 							<div className="w-full">
 								{def.node(widget.instanceId, widget.size, widget.meta)}
 							</div>
-						</div>
+						</ListWidgetFrame>
 					)
 				})}
 			</div>
@@ -265,5 +264,19 @@ export function FreeWidgetCanvas() {
 
 			<WidgetHelpModal isOpen={isHelpModalOpen} onClose={handleCloseHelpModal} />
 		</section>
+	)
+}
+
+function ListWidgetFrame({ children }: { children: ReactNode }) {
+	const keyboardFocus = useKeyboardFocusWithin()
+
+	return (
+		<div
+			data-widget
+			{...keyboardFocus}
+			className="relative w-full p-2 border rounded-2xl bg-fill-2 border-line"
+		>
+			{children}
+		</div>
 	)
 }

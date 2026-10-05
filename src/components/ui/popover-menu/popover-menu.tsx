@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Portal } from '@/components/ui/portal/portal'
 import { cn } from '@/common/utils/cn'
+import { fitMenuHorizontally, fitMenuVertically } from '../utils/menu-position'
 import { popoverMenuVariants } from './popover-menu.variants'
 
 interface PopoverMenuProps {
@@ -21,6 +22,13 @@ interface PopoverMenuProps {
 	offset?: number
 }
 
+interface MenuCoords {
+	top: number
+	left: number
+	flipBottom: number
+	isFitted: boolean
+}
+
 export function PopoverMenu({
 	isOpen,
 	onClose,
@@ -33,7 +41,7 @@ export function PopoverMenu({
 	offset = 8,
 }: PopoverMenuProps) {
 	const menuRef = useRef<HTMLDivElement>(null)
-	const [coords, setCoords] = useState<{ top: number; left: number } | null>(null)
+	const [coords, setCoords] = useState<MenuCoords | null>(null)
 
 	useEffect(() => {
 		if (!isOpen) {
@@ -42,20 +50,24 @@ export function PopoverMenu({
 		}
 
 		const computePosition = () => {
+			const numericWidth = typeof width === 'number' ? width : 208
+
 			if (position) {
-				const numericWidth = typeof width === 'number' ? width : 208
-				const left = Math.min(
-					Math.max(12, position.x),
-					window.innerWidth - numericWidth - 12
-				)
-				const top = Math.min(Math.max(12, position.y), window.innerHeight - 260)
-				setCoords({ top, left })
+				setCoords({
+					top: position.y,
+					left: fitMenuHorizontally(
+						position.x,
+						numericWidth,
+						window.innerWidth
+					),
+					flipBottom: position.y,
+					isFitted: false,
+				})
 				return
 			}
 
 			if (triggerRef?.current) {
 				const rect = triggerRef.current.getBoundingClientRect()
-				const numericWidth = typeof width === 'number' ? width : 208
 				let left = rect.left + rect.width / 2 - numericWidth / 2
 				let top = rect.bottom + offset
 
@@ -69,36 +81,52 @@ export function PopoverMenu({
 					if (placement === 'top-end') left = rect.right - numericWidth
 				}
 
-				left = Math.min(Math.max(12, left), window.innerWidth - numericWidth - 12)
-				top = Math.min(Math.max(12, top), window.innerHeight - 180)
-
-				setCoords({ top, left })
+				setCoords({
+					top,
+					left: fitMenuHorizontally(left, numericWidth, window.innerWidth),
+					flipBottom: rect.top - offset,
+					isFitted: false,
+				})
 			}
 		}
 
 		computePosition()
 
 		const handleClickOutside = (e: MouseEvent) => {
-			if (
-				menuRef.current &&
-				!menuRef.current.contains(e.target as Node) &&
-				triggerRef?.current &&
-				!triggerRef.current.contains(e.target as Node)
-			) {
-				onClose()
-			} else if (
-				menuRef.current &&
-				!menuRef.current.contains(e.target as Node) &&
-				!triggerRef
-			) {
-				onClose()
-			}
+			const target = e.target as Node
+			if (menuRef.current?.contains(target)) return
+			if (triggerRef?.current?.contains(target)) return
+			onClose()
 		}
+
+		const focusableItems = () =>
+			Array.from(
+				menuRef.current?.querySelectorAll<HTMLElement>(
+					'button:not(:disabled), a[href], input'
+				) ?? []
+			)
 
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if (e.key === 'Escape') {
+				triggerRef?.current?.focus()
 				onClose()
+				return
 			}
+
+			if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return
+			const items = focusableItems()
+			if (!items.length) return
+
+			e.preventDefault()
+			const current = items.indexOf(document.activeElement as HTMLElement)
+			const step = e.key === 'ArrowDown' ? 1 : -1
+			const next =
+				current < 0
+					? step > 0
+						? 0
+						: items.length - 1
+					: (current + step + items.length) % items.length
+			items[next].focus()
 		}
 
 		const handleScroll = () => {
@@ -118,6 +146,20 @@ export function PopoverMenu({
 		}
 	}, [isOpen, position, triggerRef, width, placement, offset, onClose])
 
+	useLayoutEffect(() => {
+		if (!coords || coords.isFitted || !menuRef.current) return
+		setCoords({
+			...coords,
+			top: fitMenuVertically({
+				top: coords.top,
+				flipBottom: coords.flipBottom,
+				height: menuRef.current.offsetHeight,
+				viewportHeight: window.innerHeight,
+			}),
+			isFitted: true,
+		})
+	}, [coords])
+
 	if (!isOpen || !coords) return null
 
 	return (
@@ -131,6 +173,7 @@ export function PopoverMenu({
 					width: typeof width === 'number' ? `${width}px` : width,
 					zIndex: 'var(--z-dropdown)',
 					pointerEvents: 'auto',
+					visibility: coords.isFitted ? 'visible' : 'hidden',
 				}}
 				className={cn(popoverMenuVariants(), className)}
 				onClick={(e) => e.stopPropagation()}

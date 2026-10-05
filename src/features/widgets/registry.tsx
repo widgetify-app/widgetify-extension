@@ -370,7 +370,9 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		defaultSize: { w: 2, h: 3 },
 		canDuplicate: true,
 		node: (_instanceId, size) => (
-			<WidgetContainer>
+			<WidgetContainer
+				contentClassName={size.h === 1 ? 'px-3 py-2.5 gap-1.5' : 'p-3 gap-2'}
+			>
 				<TodosLayout size={size} />
 			</WidgetContainer>
 		),

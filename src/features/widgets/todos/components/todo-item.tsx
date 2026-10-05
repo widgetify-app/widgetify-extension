@@ -1,7 +1,6 @@
 import type React from 'react'
 import { useEffect, useState } from 'react'
 import { cn } from '@/common/utils/cn'
-import { Checkbox } from '@/components/ui'
 import type { FetchedTodo, Todo } from '@/services/todo/todo.interface'
 import { ConfirmationModal } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
@@ -14,33 +13,25 @@ import { Spinner } from '@/components/ui'
 import { parseTodoDate } from '../utils/parse-date'
 import { useUpdateTodo } from '@/services/todo/update-todo.hook'
 import { playAlarm } from '@/common/utils/play-alarm'
-import { Tooltip } from '@/components/ui'
+import jalaliMoment from 'jalali-moment'
 import { TodoFriends } from './friends'
-import { Icon } from '@/icons'
-import {
-	PRIORITY_BADGE_CLASS,
-	PRIORITY_BORDER_CLASS,
-	PRIORITY_CHECKED_CLASS,
-	PRIORITY_LABELS,
-	priorityClass,
-} from '../constants'
+import { TodoCheck } from './todo-check'
+import { Icon, type IconName } from '@/icons'
+import { PRIORITY_LABELS } from '../constants'
+import { todoDueLabel } from '../utils/todo-due-label'
+import { resolveIsDone } from '../utils/resolve-is-done'
+import { useKeyboardFocusWithin } from '@/features/widgets/hooks/use-keyboard-focus-within'
 
 interface Prop {
 	todo: Todo
 	blurMode?: boolean
-	comfortable?: boolean
 	onEdit: (todo: Todo) => void
 	onUpdated?: () => void
 }
 
-export function TodoItem({
-	todo,
-	blurMode = false,
-	comfortable = false,
-	onEdit,
-	onUpdated,
-}: Prop) {
+export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 	const { isAuthenticated } = useAuth()
+	const keyboardFocus = useKeyboardFocusWithin()
 	const [currentTodo, setCurrentTodo] = useState<FetchedTodo>(todo)
 	const [expanded, setExpanded] = useState(false)
 	const [showConfirmation, setShowConfirmation] = useState(false)
@@ -109,167 +100,110 @@ export function TodoItem({
 		setIsDone(resolveIsDone(currentTodo))
 	}, [currentTodo])
 
-	const isoDate = parseTodoDate(currentTodo.date).format('YYYY-MM-DD')
+	const dueDate = parseTodoDate(currentTodo.date)
+	const isoDate = dueDate.format('YYYY-MM-DD')
+	const dueLabel = todoDueLabel(dueDate, jalaliMoment())
 	const isOwner = currentTodo?.owner?.isSelf
 	const hasFriends = currentTodo?.friends && currentTodo?.friends?.length > 0
 	return (
 		<div
-			className={`group overflow-hidden border rounded-xl border-surface-3 bg-surface-2 hover:bg-surface-3 transition-ui ${comfortable ? 'mb-1.5' : 'mb-1'} ${blurMode ? 'blur-mode' : 'disabled-blur-mode'}`}
+			{...keyboardFocus}
+			className={cn(
+				'group/row rounded-xl transition-ui hover:bg-fill data-[keyboard-focus]:bg-fill',
+				blurMode ? 'blur-mode' : 'disabled-blur-mode'
+			)}
 		>
-			<div
-				className={`flex items-center ${comfortable ? 'gap-2.5 px-3 py-2' : 'gap-1.5 px-2 py-1'}`}
-			>
-				<div className="flex items-center gap-1 shrink-0">
-					<Checkbox
-						checked={isDone}
-						disabled={isUpdating}
-						className={`${comfortable ? 'h-4.5! w-4.5!' : 'h-4! w-4!'} border! transition-transform active:scale-90 ${priorityClass(PRIORITY_BORDER_CLASS, currentTodo.priority)}`}
-						unCheckedCheckBoxClassName={priorityClass(
-							PRIORITY_BORDER_CLASS,
-							currentTodo.priority
-						)}
-						checkedCheckBoxClassName={priorityClass(
-							PRIORITY_CHECKED_CLASS,
-							currentTodo.priority
-						)}
-						onClick={handleToggleComplete}
-					/>
-				</div>
+			<div className="flex items-center gap-2.5 px-2 min-h-8.5">
+				<TodoCheck
+					text={currentTodo.text}
+					isDone={isDone}
+					priority={currentTodo.priority}
+					disabled={isUpdating}
+					onToggle={handleToggleComplete}
+				/>
 
 				<button
 					type="button"
 					onClick={() => setExpanded(!expanded)}
 					aria-expanded={expanded}
-					className="flex-1 min-w-0 py-1 overflow-hidden text-start cursor-pointer focus-visible:focus-ring"
-				>
-					<p
-						className={`truncate font-medium transition-ui ${
-							comfortable ? 'text-2xs' : 'text-3xs'
-						} ${
-							isDone
-								? 'text-fg-muted opacity-60 line-through font-normal'
-								: 'text-fg'
-						}`}
-					>
-						{currentTodo.text}
-					</p>
-
-					{comfortable && !expanded && (
-						<span className="flex items-center gap-1.5 mt-1 text-4xs text-fg-muted">
-							<span className="flex items-center gap-1 shrink-0">
-								<Icon name="calendar" size={10} aria-hidden="true" />
-								<time dateTime={isoDate}>
-									{parseTodoDate(currentTodo.date)
-										.locale('fa')
-										.format('jD jMMMM')}
-								</time>
-							</span>
-							{currentTodo.category && (
-								<span className="flex items-center gap-1 min-w-0">
-									<Icon name="tags" size={10} aria-hidden="true" />
-									<span className="truncate">
-										{currentTodo.category}
-									</span>
-								</span>
-							)}
-						</span>
+					className={cn(
+						'flex-1 min-w-0 py-1.5 text-xs font-medium text-start cursor-pointer transition-ui focus-visible:focus-ring',
+						expanded ? 'whitespace-pre-wrap wrap-break-word' : 'truncate',
+						isDone
+							? 'text-fg-faint line-through decoration-fg-ghost'
+							: 'text-fg'
 					)}
+				>
+					{currentTodo.text}
 				</button>
 
-				<div className="flex relative items-center gap-0.5 shrink-0">
-					{isPending && <Spinner size="sm" />}
+				<span className="flex items-center gap-1 shrink-0">
+					{isPending && <Spinner size="xs" />}
 					{hasFriends && (
-						<Tooltip content="مشترک">
-							<Icon
-								name="users"
-								size={12}
-								className="text-fg-muted"
-								aria-hidden="true"
-							/>
-						</Tooltip>
+						<Icon
+							name="users"
+							size={12}
+							className="text-fg-faint"
+							aria-label="مشترک"
+						/>
 					)}
-					<div className="hidden group-hover:flex">
-						<div className="flex items-center">
-							{isOwner && (
-								<button
-									type="button"
-									onClick={handleEdit}
-									aria-label="ویرایش تسک"
-									className="p-1 rounded-lg cursor-pointer text-brand-muted hover:bg-brand-fill hover:text-brand focus-visible:focus-ring"
-								>
-									<Icon name="edit" size={12} aria-hidden="true" />
-								</button>
-							)}
+					{!isDone && dueLabel && (
+						<time
+							dateTime={isoDate}
+							className="font-medium text-3xs text-fg-faint group-hover/row:hidden group-data-[keyboard-focus]/row:hidden"
+						>
+							{dueLabel}
+						</time>
+					)}
+					<span className="items-center hidden group-hover/row:flex group-data-[keyboard-focus]/row:flex">
+						{isOwner && (
 							<button
 								type="button"
-								onClick={handleDelete}
-								aria-label="حذف تسک"
-								className="p-1 rounded-lg cursor-pointer text-[rgba(var(--color-error-rgb),0.5)] hover:bg-danger-fill hover:text-danger focus-visible:focus-ring"
+								onClick={handleEdit}
+								aria-label="ویرایش تسک"
+								className="grid rounded-lg cursor-pointer place-items-center size-6 text-fg-muted transition-ui hover:bg-fill-2 hover:text-fg-strong focus-visible:focus-ring"
 							>
-								<Icon name="trash" size={12} aria-hidden="true" />
+								<Icon name="edit" size={14} aria-hidden="true" />
 							</button>
-						</div>
-					</div>
-
-					<button
-						type="button"
-						onClick={() => setExpanded(!expanded)}
-						aria-expanded={expanded}
-						aria-label={expanded ? 'بستن جزئیات' : 'نمایش جزئیات'}
-						className={cn(
-							'rounded-sm p-0.5 text-fg-muted opacity-50 cursor-pointer transition-transform duration-300 hover:scale-110 focus-visible:focus-ring',
-							expanded && 'rotate-180'
 						)}
-					>
-						<Icon name="chevronDown" size={16} aria-hidden="true" />
-					</button>
-				</div>
+						<button
+							type="button"
+							onClick={handleDelete}
+							aria-label="حذف تسک"
+							className="grid rounded-lg cursor-pointer place-items-center size-6 text-fg-muted transition-ui hover:bg-danger-fill hover:text-danger focus-visible:focus-ring"
+						>
+							<Icon name="trash" size={14} aria-hidden="true" />
+						</button>
+					</span>
+				</span>
 			</div>
 
 			{expanded && (
-				<div className="border-t border-line bg-fill px-2.5 py-2">
-					<p className="mb-0 text-2xs leading-control text-fg-muted whitespace-pre-wrap">
-						{currentTodo.text}
-					</p>
-					{hasFriends && (
-						<div className="flex items-center w-full">
-							<TodoFriends
-								currentTodoCompleted={currentTodo.completed}
-								friends={currentTodo.friends}
-								owner={currentTodo.owner}
-							/>
-						</div>
-					)}
-					<div className="flex items-center gap-2 text-3xs">
-						{currentTodo.category && (
-							<span className="flex text-3xs items-center gap-1 rounded-lg border border-dashed border-line px-1.5 text-fg-muted">
-								<Icon name="tags" size={10} aria-hidden="true" />
-								{currentTodo.category}
-							</span>
-						)}
-
-						{currentTodo.priority && (
-							<span
-								className={`rounded-lg px-1.5 py-0.5 font-bold ${priorityClass(PRIORITY_BADGE_CLASS, currentTodo.priority)}`}
-							>
-								{PRIORITY_LABELS[currentTodo.priority]}
-							</span>
-						)}
-
-						<span className="flex items-center gap-1 mr-auto text-fg-muted">
-							<Icon name="calendar" size={12} aria-hidden="true" />
-							<time dateTime={isoDate}>
-								{parseTodoDate(currentTodo.date)
-									.locale('fa')
-									.format('jD jMMMM')}
-							</time>
-						</span>
-					</div>
-
+				<div className="flex flex-col gap-1.5 pt-0.5 pb-2 leading-relaxed ps-8.5 pe-2 text-2xs text-fg-muted">
 					{currentTodo.description && (
-						<div className="mt-2 leading-relaxed whitespace-break-spaces rounded-xl border border-line bg-fill p-1.5 text-2xs font-black">
-							<NoteLinkRenderer note={currentTodo.description} />
-						</div>
+						<NoteLinkRenderer note={currentTodo.description} />
+					)}
+					<span className="flex flex-wrap gap-1">
+						<TodoDetail icon="calendar">
+							<time dateTime={isoDate}>
+								{dueDate.clone().locale('fa').format('jD jMMMM')}
+							</time>
+						</TodoDetail>
+						{currentTodo.category && (
+							<TodoDetail icon="tags">{currentTodo.category}</TodoDetail>
+						)}
+						{currentTodo.priority && (
+							<TodoDetail icon="outlineFilterList">
+								{PRIORITY_LABELS[currentTodo.priority]}
+							</TodoDetail>
+						)}
+					</span>
+					{hasFriends && (
+						<TodoFriends
+							currentTodoCompleted={currentTodo.completed}
+							friends={currentTodo.friends}
+							owner={currentTodo.owner}
+						/>
 					)}
 				</div>
 			)}
@@ -287,10 +221,13 @@ export function TodoItem({
 	)
 }
 
-function resolveIsDone(todo: Todo): boolean {
-	if (todo.owner?.isSelf) return todo.completed
-
-	return todo.friends?.find((f) => f.isSelf)?.completed ?? todo.completed
+function TodoDetail({ icon, children }: { icon: IconName; children: React.ReactNode }) {
+	return (
+		<span className="inline-flex items-center h-6 gap-1 px-2 font-semibold rounded-lg bg-fill text-3xs text-fg-muted">
+			<Icon name={icon} size={12} aria-hidden="true" />
+			{children}
+		</span>
+	)
 }
 
 function NoteLinkRenderer({ note }: { note: string }) {
@@ -308,5 +245,5 @@ function NoteLinkRenderer({ note }: { note: string }) {
 			</a>
 		)
 	}
-	return <p className="font-light opacity-70">{note}</p>
+	return <p className="whitespace-pre-wrap">{note}</p>
 }

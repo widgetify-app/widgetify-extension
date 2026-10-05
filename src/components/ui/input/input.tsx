@@ -1,6 +1,10 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { cn } from '@/common/utils/cn'
-import { type TextInputSize, textInputVariants } from './input.variants'
+import {
+	type TextInputSize,
+	type TextInputVariant,
+	textInputVariants,
+} from './input.variants'
 
 interface TextInputProps {
 	id?: string
@@ -21,7 +25,9 @@ interface TextInputProps {
 	debounceTime?: number
 	maxLength?: number
 	size?: TextInputSize
+	variant?: TextInputVariant
 	invalid?: boolean
+	'aria-label'?: string
 	min?: number
 	max?: number
 	autoComplete?: 'on' | 'off'
@@ -46,7 +52,9 @@ export const TextInput = memo(function TextInput({
 	debounceTime = 150,
 	maxLength = 1000,
 	size = 'md',
+	variant = 'field',
 	invalid = false,
+	'aria-label': ariaLabel,
 	min,
 	max,
 	autoComplete = 'off',
@@ -117,7 +125,8 @@ export const TextInput = memo(function TextInput({
 		onKeyDown,
 		dir: direction,
 		placeholder: placeholder || '',
-		className: cn(textInputVariants({ size, invalid }), className),
+		'aria-label': ariaLabel,
+		className: cn(textInputVariants({ size, invalid, variant }), className),
 		onChange: handleChange,
 		maxLength,
 		autoComplete,

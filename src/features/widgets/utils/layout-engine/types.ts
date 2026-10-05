@@ -80,6 +80,7 @@ export interface WidgetVariantOption {
 export interface WidgetDefinition {
 	id: WidgetKeys
 	label: string
+	menuLabel?: string
 	emoji: string
 	icon: IconName
 	category?: WidgetCategory

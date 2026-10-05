@@ -1,4 +1,5 @@
 import type React from 'react'
+import { cn } from '@/common/utils/cn'
 import { useAppearance } from '@/context/appearance.context'
 
 interface WidgetContainerProps {
@@ -26,7 +27,13 @@ export function WidgetContainer({
 			className={`relative h-full w-full overflow-hidden ${className}`}
 		>
 			<div
-				className={`h-full w-full m-auto flex flex-col overflow-hidden ${background ? `bg-glass-surface ${padding ? 'p-2' : 'p-0'} rounded-widget` : ''} ${contentClassName} ${canvasMode === 'edit' ? 'pointer-events-none select-none' : ''}`}
+				className={cn(
+					'h-full w-full m-auto flex flex-col overflow-hidden',
+					background && 'bg-glass-surface rounded-widget',
+					background && (padding ? 'p-2' : 'p-0'),
+					contentClassName,
+					canvasMode === 'edit' && 'pointer-events-none select-none'
+				)}
 				inert={canvasMode === 'edit' ? true : undefined}
 				style={{
 					containerType: 'size',

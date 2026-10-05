@@ -1,3 +1,4 @@
+import { cn } from '@/common/utils/cn'
 import { AvatarComponent } from '@/components/ui'
 import { Tooltip } from '@/components/ui'
 import { Icon } from '@/icons'
@@ -12,11 +13,12 @@ export function UserItem({ avatar, completed, isOwner, name }: UserItemProp) {
 	return (
 		<Tooltip content={name}>
 			<div className="relative inline-flex align-middle overflow-visible border-4 rounded-full border-surface">
-				<div className="relative w-5 h-5 overflow-visible ">
+				<div className="relative overflow-visible size-5">
 					<div
-						className={`w-full h-full rounded-full overflow-hidden ${
-							isOwner ? 'ring-2 ring-warning' : 'ring-2 ring-surface-3'
-						}`}
+						className={cn(
+							'size-full rounded-full overflow-hidden ring-2',
+							isOwner ? 'ring-warning' : 'ring-surface-3'
+						)}
 					>
 						<AvatarComponent
 							url={avatar}
@@ -27,12 +29,12 @@ export function UserItem({ avatar, completed, isOwner, name }: UserItemProp) {
 
 					{completed && (
 						<div className="absolute inset-0 flex items-center justify-center rounded-full bg-success-fill-2">
-							<Icon name="check" className="text-success text-4xs" />
+							<Icon name="check" size={8} className="text-success" />
 						</div>
 					)}
 
 					{isOwner && (
-						<div className="absolute flex items-center justify-center w-2 h-2 -translate-x-1/2 rounded-full shadow-md left-1/2 -bottom-1.5 bg-warning text-on-warning ring-2 ring-surface">
+						<div className="absolute flex items-center justify-center size-2 -translate-x-1/2 rounded-full shadow-md left-1/2 -bottom-1.5 bg-warning text-on-warning ring-2 ring-surface">
 							<Icon name="crown" size={8} />
 						</div>
 					)}

@@ -271,7 +271,7 @@ Source: `src/services/note`, `src/services/todo`, `src/services/habit`
 | `POST /notes` | yes | `{ title?, body?, id?, priority? }`. It is an upsert: pass `id` to update a note. `priority` is `low`, `medium` or `high` | the note |
 | `DELETE /notes/{id}` | yes | | |
 | `GET /todos/v2/@me` | yes | `page`, `limit`, `isCompleted`, `dateFilter` (`today` or `this_month`), `category` | `{ todos, totalPages, totals }` |
-| `GET /todos/@me/tags` | yes | | `string[]`, the tags the user has used |
+| `GET /todos/@me/tags` | yes | | `string[]`, the tags the user has used. There is no route to delete one: the app clears `category` with `PATCH /todos/{id}` and `category: ''` on each of the user's own tasks that carry it (`src/services/todo/remove-tag.hook.ts`) |
 | `POST /todos` | yes | `{ text*, date*, friendIds*: string[], category?, description?, priority?, completed?, order? }` | |
 | `PATCH /todos/{id}` | yes | any of `text`, `category`, `date`, `description`, `priority`, `completed`, `order` | `{ data: { todo } }` |
 | `DELETE /todos/{id}` | yes | | |

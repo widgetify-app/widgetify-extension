@@ -1,8 +1,17 @@
 import type React from 'react'
-import { memo, useCallback, useEffect, useRef, useState } from 'react'
+import {
+	memo,
+	type ReactNode,
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from 'react'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { useFreeWidgetActions } from '@/features/widgets/widgets.context'
 import { getWidgetPixelRect } from '../utils/grid-geometry'
+import { useKeyboardFocusWithin } from '../hooks/use-keyboard-focus-within'
 import { rowCapFor } from '../utils/layout-engine/row-cap'
 import {
 	type StoredWidget,
@@ -15,8 +24,10 @@ import { cn } from '@/common/utils/cn'
 import { useAuth } from '@/context/auth.context'
 import { VipBadge } from '@/components/ui'
 import { useWidgetVipResolver } from '@/features/widgets/hooks/use-widget-vip-resolver'
-import { WidgetContextMenu } from './widget-context-menu'
+import { WidgetMenuProvider } from '../widget-menu.context'
+import { type WidgetMenuAnchor, WidgetContextMenu } from './widget-context-menu'
 import { BookmarkDeleteModal } from './bookmark-delete-modal'
+import { WidgetMenuButton } from './widget-menu-button'
 import { WidgetSlot } from './widget-slot'
 
 interface CanvasWidgetOuterProps {
@@ -49,6 +60,7 @@ function CanvasWidgetOuterImpl({
 	wiggleVariant,
 }: CanvasWidgetOuterProps) {
 	const { isVip } = useAuth()
+	const keyboardFocus = useKeyboardFocusWithin()
 	const { isWidgetVipOnly, isVariantVipOnly, isSizeVipOnly } = useWidgetVipResolver()
 	const {
 		setCanvasMode,
@@ -70,10 +82,9 @@ function CanvasWidgetOuterImpl({
 	const isCompactSize = widget.size.w === 1 && widget.size.h === 1
 
 	const [isDragging, setIsDragging] = useState(false)
-	const [contextMenuPos, setContextMenuPos] = useState<{
-		x: number
-		y: number
-	} | null>(null)
+	const [menuAnchor, setMenuAnchor] = useState<WidgetMenuAnchor | null>(null)
+	const menuActionsRef = useRef<ReactNode>(null)
+	const settingsSummaryRef = useRef<string | null>(null)
 	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
 	const isWiggling = canvasMode === 'edit' && !isSelected
@@ -270,8 +281,32 @@ function CanvasWidgetOuterImpl({
 	const handleContextMenu = (e: React.MouseEvent) => {
 		e.preventDefault()
 		e.stopPropagation()
-		setContextMenuPos({ x: e.clientX, y: e.clientY })
+		if (canvasMode === 'edit') return
+		const isFromKeyboard = e.clientX === 0 && e.clientY === 0
+		const frame = outerRef.current?.getBoundingClientRect()
+		setMenuAnchor({
+			point:
+				isFromKeyboard && frame
+					? { x: frame.left + 12, y: frame.top + 44 }
+					: { x: e.clientX, y: e.clientY },
+		})
 	}
+
+	const closeMenu = useCallback(() => setMenuAnchor(null), [])
+
+	const isMenuOpen = menuAnchor !== null
+	const menuContext = useMemo(
+		() => ({
+			isOpen: isMenuOpen,
+			toggleFromButton: (button: HTMLElement) =>
+				setMenuAnchor((current) =>
+					current ? null : { trigger: { current: button } }
+				),
+			actionsRef: menuActionsRef,
+			settingsSummaryRef,
+		}),
+		[isMenuOpen]
+	)
 
 	const handleResize = (newSize: WidgetSize) => {
 		resizeWidget(widget.instanceId, newSize)
@@ -315,6 +350,10 @@ function CanvasWidgetOuterImpl({
 			<article
 				aria-label={definition.label}
 				ref={outerRef}
+				data-widget
+				{...keyboardFocus}
+				data-menu-open={isMenuOpen || undefined}
+				data-editing={canvasMode === 'edit' || undefined}
 				className={cn(
 					'absolute top-0 left-0 select-none rounded-widget',
 					isDragging ? 'z-50 shadow-xl cursor-grabbing' : 'z-10 cursor-default',
@@ -362,58 +401,64 @@ function CanvasWidgetOuterImpl({
 					</button>
 				)}
 
-				<div
-					className={cn(
-						'w-full h-full relative',
-						canvasMode === 'edit' && 'pointer-events-none select-none',
-						isWiggling && WIGGLE_CLASSES[wiggleVariant]
-					)}
-				>
-					{(!isLocked || canvasMode === 'edit') && (
-						<WidgetSlot
-							definition={definition}
-							instanceId={widget.instanceId}
-							size={widget.size}
-							meta={widget.meta}
-						/>
-					)}
-					{isLocked && canvasMode === 'normal' && (
-						<button
-							type="button"
-							aria-label="ارتقا به اشتراک پرو"
-							className="absolute inset-0 z-25 rounded-widget bg-glass-surface-2 border border-vip-fill-2 flex flex-col items-center justify-center p-2 text-center select-none cursor-pointer overflow-hidden group transition-ui duration-200 hover:border-vip"
-							onClick={(e) => {
-								e.stopPropagation()
-								callEvent('openSettings', 'vip')
-							}}
-						>
-							<div className="flex flex-col items-center gap-1.5 transition-transform duration-200 group-hover:scale-105">
-								<VipBadge
-									size={isCompactSize ? 'xs' : 'sm'}
-									variant="solid"
-								/>
-								{!isCompactSize && (
-									<span className="text-2xs font-medium text-fg-muted transition-colors duration-200 group-hover:text-fg">
-										ارتقا به اشتراک پرو
-									</span>
-								)}
-							</div>
-						</button>
-					)}
-					{canvasMode === 'edit' && (
-						<div className="absolute inset-0 z-30 bg-transparent pointer-events-auto cursor-grab" />
-					)}
-				</div>
+				<WidgetMenuProvider value={menuContext}>
+					<div
+						className={cn(
+							'w-full h-full relative',
+							canvasMode === 'edit' && 'pointer-events-none select-none',
+							isWiggling && WIGGLE_CLASSES[wiggleVariant]
+						)}
+					>
+						{(!isLocked || canvasMode === 'edit') && (
+							<WidgetSlot
+								definition={definition}
+								instanceId={widget.instanceId}
+								size={widget.size}
+								meta={widget.meta}
+							/>
+						)}
+						{isLocked && canvasMode === 'normal' && (
+							<button
+								type="button"
+								aria-label="ارتقا به اشتراک پرو"
+								className="absolute inset-0 z-25 rounded-widget bg-glass-surface-2 border border-vip-fill-2 flex flex-col items-center justify-center p-2 text-center select-none cursor-pointer overflow-hidden group transition-ui duration-200 hover:border-vip"
+								onClick={(e) => {
+									e.stopPropagation()
+									callEvent('openSettings', 'vip')
+								}}
+							>
+								<div className="flex flex-col items-center gap-1.5 transition-transform duration-200 group-hover:scale-105">
+									<VipBadge
+										size={isCompactSize ? 'xs' : 'sm'}
+										variant="solid"
+									/>
+									{!isCompactSize && (
+										<span className="text-2xs font-medium text-fg-muted transition-colors duration-200 group-hover:text-fg">
+											ارتقا به اشتراک پرو
+										</span>
+									)}
+								</div>
+							</button>
+						)}
+						{isLocked && canvasMode === 'normal' && (
+							<WidgetMenuButton placement="floating" />
+						)}
+						{canvasMode === 'edit' && (
+							<div className="absolute inset-0 z-30 bg-transparent pointer-events-auto cursor-grab" />
+						)}
+					</div>
+				</WidgetMenuProvider>
 			</article>
 
-			{contextMenuPos && (
+			{menuAnchor && (
 				<WidgetContextMenu
-					x={contextMenuPos.x}
-					y={contextMenuPos.y}
+					anchor={menuAnchor}
 					widget={widget}
 					definition={definition}
 					cols={cols}
-					onClose={() => setContextMenuPos(null)}
+					actions={menuActionsRef.current}
+					settingsSummary={settingsSummaryRef.current}
+					onClose={closeMenu}
 					onResize={handleResize}
 					onDuplicate={handleDuplicate}
 					onMove={handleMove}

@@ -1,14 +1,9 @@
-import { Motion as motion, Presence } from '@/common/motion'
-
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { TextInput } from '@/components/ui'
-import { Button, Dropdown, Spinner } from '@/components/ui'
+import { Button, Spinner } from '@/components/ui'
 import jalaliMoment from 'jalali-moment'
-import Analytics from '@/analytics'
-import { Chip } from '@/components/ui'
 import { useGetTags } from '@/services/todo/get-tags.hook'
 import { useAuth } from '@/context/auth.context'
-import { DatePicker } from '@/components/ui'
 import { PriorityDropdown } from './priority-dropdown'
 import type { Todo, TodoPriority } from '@/services/todo/todo.interface'
 import { type TodoCreationPayload, useAddTodo } from '@/services/todo/add-todo.hook'
@@ -18,26 +13,22 @@ import { showToast } from '@/common/toast'
 import type { Friend } from '@/services/friends/friend-service.hook'
 import { TodoSelectFriends } from './select-friends'
 import { callEvent } from '@/common/utils/call-event'
-import { twMerge } from 'tailwind-merge'
+import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
 import { toTodoDueDate } from '../utils/todo-due-date'
+import { TodoCategoryDropdown, TodoDateDropdown } from './todo-form-tools'
 interface ExpandableTodoInputProps {
 	editTodo?: Todo | null
 	onClose: () => void
 	isEdit: boolean
 	onUpdated?: () => void
-	className?: string
-	transparentInput?: boolean
 }
 const getTodayJalaliMoment = () => jalaliMoment().locale('fa')
-const formatJalaliDateForDisplay = (date: jalaliMoment.Moment) => date.format('jD jMMM')
 export function ExpandableTodoInput({
 	editTodo,
 	onClose,
 	isEdit,
 	onUpdated,
-	className,
-	transparentInput,
 }: ExpandableTodoInputProps) {
 	const { isAuthenticated } = useAuth()
 	const { mutateAsync: addTodoAsync, isPending: isCreatingTodo } = useAddTodo()
@@ -112,12 +103,6 @@ export function ExpandableTodoInput({
 			resetForm()
 		}
 	}, [editTodo])
-
-	const onSelectCategory = (v: string) => {
-		setCategory(v)
-		callEvent('closeAllDropdowns')
-		Analytics.event('todo_category_select')
-	}
 
 	const handleNotesChange = useCallback((value: string) => {
 		if (notesRef.current) notesRef.current.value = value
@@ -229,36 +214,81 @@ export function ExpandableTodoInput({
 	)
 
 	return (
-		<div ref={containerRef} className={twMerge('flex-none pt-3 mt-auto', className)}>
+		<div
+			ref={containerRef}
+			className={cn(
+				'flex flex-col flex-none',
+				isExpanded &&
+					'gap-2 p-2.5 shadow-lg rounded-2xl bg-surface-2 ring-[1.5px] ring-inset ring-brand-muted'
+			)}
+		>
 			<div
-				className={`overflow-hidden transition-shadow ${isExpanded ? 'shadow-xl' : ''} rounded-xl`}
+				className={cn(
+					'flex items-center gap-2',
+					!isExpanded &&
+						'px-2.5 h-8.5 rounded-xl text-fg-faint transition-ui hover:bg-fill focus-within:bg-fill'
+				)}
 			>
-				<div className="flex items-center gap-1 p-2 border rounded-widget bg-surface-2 border-surface-3">
-					<div className="w-full grow">
-						<TextInput
-							ref={inputRef}
-							defaultValue=""
-							onChange={handleTodoTextChange}
-							placeholder="عنوان تسک جدید..."
-							className="h-6! border-none! outline-none! shadow-none! ring-0! w-full p-0 pr-1 text-sm bg-transparent! rounded-2xl focus:placeholder:text-line"
-							onFocus={handleInputFocus}
-							onKeyDown={handleKeyDown}
-							id="expandable-todo-input"
-							debounce={false}
+				{!isExpanded && <Icon name="plus" size={14} aria-hidden="true" />}
+				<TextInput
+					ref={inputRef}
+					defaultValue=""
+					onChange={handleTodoTextChange}
+					placeholder="تسک جدید"
+					aria-label="عنوان تسک جدید"
+					variant="bare"
+					className={cn(
+						'text-xs',
+						isExpanded ? 'h-6 font-semibold text-fg-strong' : 'font-medium'
+					)}
+					onFocus={handleInputFocus}
+					onKeyDown={handleKeyDown}
+					id="expandable-todo-input"
+					debounce={false}
+				/>
+			</div>
+			{isExpanded && (
+				<>
+					<textarea
+						ref={notesRef}
+						onChange={(e) => handleNotesChange(e.target.value)}
+						placeholder="توضیح یا لینک، اگه لازمه"
+						rows={2}
+						className="w-full p-0 leading-relaxed bg-transparent outline-none resize-none text-2xs text-fg-muted placeholder:text-fg-faint"
+					/>
+					<div className="flex items-center gap-1">
+						<TodoDateDropdown
+							date={selectedDate}
+							onChange={setSelectedDate}
 						/>
-					</div>
-					<div className="flex items-center">
+						<TodoCategoryDropdown
+							category={category}
+							tags={fetchedTags}
+							onChange={setCategory}
+						/>
+
+						<PriorityDropdown priority={priority} setPriority={setPriority} />
+
+						{!isEdit && isAuthenticated && (
+							<TodoSelectFriends
+								selectedFriends={selectedFriends}
+								setSelectedFriends={(fList: Friend[]) => {
+									setSelectedFriends(fList)
+								}}
+							/>
+						)}
+
+						<span className="flex-1" />
+
 						{isEdit && (
 							<Button
 								onClick={() => onCloseEdit()}
 								disabled={isPending}
-								loading={isPending}
-								size="sm"
-								rounded={'full'}
-								variant={'ghost'}
-								className="px-0! w-8"
+								size="xs"
+								variant="ghost"
+								rounded="lg"
 							>
-								<Icon name="close" size={12} className="" />
+								انصراف
 							</Button>
 						)}
 						<Button
@@ -266,151 +296,15 @@ export function ExpandableTodoInput({
 							disabled={isPending}
 							loading={isPending}
 							loadingText={<Spinner size="sm" tone="current" />}
-							size="sm"
-							color={'brand'}
-							rounded={'full'}
-							className="px-0! w-8"
+							size="xs"
+							color="brand"
+							rounded="lg"
 						>
-							{isEdit ? (
-								<Icon name="save" size={16} />
-							) : (
-								<Icon name="plus" size={16} />
-							)}
+							{isEdit ? 'ذخیره' : 'افزودن'}
 						</Button>
 					</div>
-				</div>
-
-				<Presence mode="wait">
-					{isExpanded && (
-						<motion.div
-							initial={{ opacity: 0, height: 0 }}
-							animate={{ opacity: 1, height: 'auto' }}
-							exit={{ opacity: 0, height: 0 }}
-							transition={{ duration: 0.2 }}
-						>
-							<div className="px-2 py-2">
-								<div className="flex flex-col gap-1">
-									<div>
-										<textarea
-											ref={notesRef}
-											onChange={(e) =>
-												handleNotesChange(e.target.value)
-											}
-											placeholder="توضیحات بیشتر یا لینک اضافه کنید..."
-											className={twMerge(
-												'w-full px-4 py-2 text-xs leading-relaxed transition-ui outline-none resize-none rounded-2xl min-h-28 focus:placeholder:text-fg-ghost text-fg-muted',
-												`${transparentInput ? 'bg-transparent!' : 'bg-surface-2! focus:ring-brand'} border-none! shadow-none!`
-											)}
-										/>
-									</div>
-									<div className="flex pl-1 gap-0.5 overflow-x-auto">
-										<PriorityDropdown
-											priority={priority}
-											setPriority={setPriority}
-										/>
-
-										<Dropdown
-											trigger={
-												<Button
-													size="sm"
-													rounded={'xl'}
-													className={`p-2 border text-fg-faint shrink-0 active:scale-95`}
-												>
-													<Icon name="calendarDays" size={16} />
-													<p className="truncate max-w-14 min-w-5">
-														{selectedDate
-															? formatJalaliDateForDisplay(
-																	selectedDate
-																)
-															: 'تاریخ انجامش'}
-													</p>
-												</Button>
-											}
-										>
-											<DatePicker
-												selectedDate={selectedDate}
-												onDateSelect={(date) => {
-													setSelectedDate(date)
-													callEvent('closeAllDropdowns')
-												}}
-											/>
-										</Dropdown>
-
-										<Dropdown
-											trigger={
-												<Button
-													size="sm"
-													className={`p-2 border rounded-xl  text-3xs  text-fg-faint shrink-0 active:scale-95`}
-												>
-													<Icon name="tags" size={16} />
-													<p className="truncate max-w-14 min-w-5">
-														{category || 'دسته‌بندی'}
-													</p>
-												</Button>
-											}
-										>
-											<div className="flex flex-col gap-2 p-2 border w-62 bg-surface-2 rounded-2xl border-surface-3">
-												<div className="relative flex flex-row items-center gap-1 px-2 border rounded-2xl border-surface-3 bg-surface-2">
-													<TextInput
-														value={category}
-														onChange={(val) =>
-															setCategory(val)
-														}
-														placeholder="مثلا: کارهای خونه"
-														className="duration-150 border-0 bg-transparent!"
-													/>
-													<Button
-														size="xs"
-														color={'brand'}
-														rounded={'full'}
-														className="p-0! w-6 h-6"
-														onClick={() =>
-															callEvent('closeAllDropdowns')
-														}
-													>
-														<Icon name="plus" size={16} />
-													</Button>
-												</div>
-												<div className="w-full h-0.5  rounded-full bg-surface-3" />
-												<div className="flex flex-wrap w-full gap-1 overflow-x-hidden overflow-y-auto max-h-32 scrollbar-none">
-													{fetchedTags
-														?.filter((tag) => tag.trim())
-														?.map((tag) => (
-															<Chip
-																key={tag}
-																selected={false}
-																onClick={() =>
-																	onSelectCategory(tag)
-																}
-																className="flex gap-1 text-xs px-2! py-1!"
-															>
-																<Icon
-																	name="tags"
-																	size={16}
-																	className="text-fg-faint"
-																/>
-																{tag}
-															</Chip>
-														))}
-												</div>
-											</div>
-										</Dropdown>
-
-										{!isEdit && isAuthenticated && (
-											<TodoSelectFriends
-												selectedFriends={selectedFriends}
-												setSelectedFriends={(fList: Friend[]) => {
-													setSelectedFriends(fList)
-												}}
-											/>
-										)}
-									</div>
-								</div>
-							</div>
-						</motion.div>
-					)}
-				</Presence>
-			</div>
+				</>
+			)}
 		</div>
 	)
 }

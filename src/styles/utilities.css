@@ -64,3 +64,43 @@
 	filter: blur(0px);
 	transition: filter 300ms ease-in-out;
 }
+
+@utility widget-control {
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity var(--duration-fast) var(--ease-standard) 200ms;
+
+	[data-widget]:hover &,
+	[data-widget][data-keyboard-focus] &,
+	[data-widget][data-menu-open] & {
+		opacity: 1;
+		pointer-events: auto;
+		transition-delay: 0ms;
+	}
+
+	[data-widget][data-editing] & {
+		visibility: hidden;
+	}
+
+	@media (hover: none) {
+		opacity: 0.6;
+		pointer-events: auto;
+	}
+}
+
+@utility widget-info {
+	transition: opacity var(--duration-fast) var(--ease-standard) 200ms;
+
+	[data-widget]:hover &,
+	[data-widget][data-keyboard-focus] &,
+	[data-widget][data-menu-open] & {
+		opacity: 0;
+		pointer-events: none;
+		transition-delay: 0ms;
+	}
+
+	@media (hover: none) {
+		opacity: 0;
+		pointer-events: none;
+	}
+}

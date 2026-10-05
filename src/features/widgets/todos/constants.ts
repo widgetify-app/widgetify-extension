@@ -1,6 +1,9 @@
-import type { FilterOption } from '@/components/ui'
+export interface TodoFilterOption {
+	value: string
+	label: string
+}
 
-export const DATE_FILTER_OPTIONS: FilterOption[] = [
+export const DATE_FILTER_OPTIONS: TodoFilterOption[] = [
 	{ value: 'all', label: 'همه' },
 	{ value: 'today', label: 'امروز' },
 	{ value: 'this_month', label: 'این ماه' },
@@ -8,7 +11,7 @@ export const DATE_FILTER_OPTIONS: FilterOption[] = [
 	{ value: 'pending', label: 'در انتظار' },
 ]
 
-export const SORT_OPTIONS: FilterOption[] = [
+export const SORT_OPTIONS: TodoFilterOption[] = [
 	{ value: 'def', label: 'پیشفرض' },
 	{ value: 'high', label: 'مهم' },
 	{ value: 'medium', label: 'متوسط' },
@@ -28,24 +31,10 @@ export const PRIORITY_LABELS: Record<string, string> = {
 }
 
 export const PRIORITY_BORDER_CLASS: Record<string, string> = {
-	high: 'border-danger!',
-	medium: 'border-warning!',
-	low: 'border-success!',
-	default: 'border-brand!',
-}
-
-export const PRIORITY_CHECKED_CLASS: Record<string, string> = {
-	high: 'border-danger! bg-danger!',
-	medium: 'border-warning! bg-warning!',
-	low: 'border-success! bg-success!',
-	default: 'border-brand! bg-brand!',
-}
-
-export const PRIORITY_BADGE_CLASS: Record<string, string> = {
-	high: 'bg-danger-fill text-danger',
-	medium: 'bg-warning-fill text-warning',
-	low: 'bg-success-fill text-success',
-	default: 'bg-brand-fill text-brand',
+	high: 'border-danger',
+	medium: 'border-warning',
+	low: 'border-success',
+	default: 'border-fg-ghost',
 }
 
 export function priorityClass(map: Record<string, string>, priority?: string): string {
