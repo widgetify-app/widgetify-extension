@@ -267,7 +267,7 @@
 
 | مسیر | توکن | درخواست | پاسخ |
 |---|---|---|---|
-| `GET /notes` | بله | | `{ notes, total, totalPages }`. هر یادداشت `{ id, title, body, priority?, createdAt, updatedAt }` است |
+| `GET /notes` | بله | | `{ notes, total, totalPages }`. هر یادداشت `{ id, title, body, priority?, createdAt, updatedAt }` است. `body` ممکنه `null` برگرده و `title` و `priority` هم ممکنه؛ برنامه هر یادداشت رو از `normalizeNotes` (`src/features/widgets/notes/utils/normalize-notes.ts`) رد می‌کنه |
 | `POST /notes` | بله | `{ title?, body?, id?, priority? }`. هم می‌سازد هم به‌روز می‌کند: برای ویرایش `id` بدهید. `priority` یکی از `low`، `medium` یا `high` است | یادداشت |
 | `DELETE /notes/{id}` | بله | | |
 | `GET /todos/v2/@me` | بله | `page`، `limit`، `isCompleted`، `dateFilter` (`today` یا `this_month`)، `category` | `{ todos, totalPages, totals }` |

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import Analytics from '@/analytics'
 import type { WidgetifyDate } from '@/common/utils/date-events'
 import { useKeyboardFocusWithin } from '@/features/widgets/hooks/use-keyboard-focus-within'
@@ -11,9 +12,16 @@ interface HabitItemProps {
 	today: WidgetifyDate
 	onChanged: () => void
 	onViewDetails: () => void
+	trailing?: ReactNode
 }
 
-export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemProps) {
+export function HabitItem({
+	habit,
+	today,
+	onChanged,
+	onViewDetails,
+	trailing,
+}: HabitItemProps) {
 	const keyboardFocus = useKeyboardFocusWithin()
 	const color = habit.color || DEFAULT_HABIT_COLOR
 	const target = habit.target || 1
@@ -46,31 +54,33 @@ export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemP
 				</span>
 			</button>
 
-			<ul
-				dir="ltr"
-				aria-label={`${habit.history.length} روز گذشته`}
-				className="flex gap-0.75 shrink-0"
-			>
-				{habit.history.map((day) => {
-					const dayProgress = Math.min(day.value / target, 1)
-					return (
-						<li
-							key={day.date}
-							className="overflow-hidden size-1.5 rounded-xs bg-fill-2"
-						>
-							{dayProgress > 0 && (
-								<span
-									className="block size-full"
-									style={{
-										backgroundColor: color,
-										opacity: 0.35 + dayProgress * 0.65,
-									}}
-								/>
-							)}
-						</li>
-					)
-				})}
-			</ul>
+			{trailing ?? (
+				<ul
+					dir="ltr"
+					aria-label={`${habit.history.length} روز گذشته`}
+					className="flex gap-0.75 shrink-0"
+				>
+					{habit.history.map((day) => {
+						const dayProgress = Math.min(day.value / target, 1)
+						return (
+							<li
+								key={day.date}
+								className="overflow-hidden size-1.5 rounded-xs bg-fill-2"
+							>
+								{dayProgress > 0 && (
+									<span
+										className="block size-full"
+										style={{
+											backgroundColor: color,
+											opacity: 0.35 + dayProgress * 0.65,
+										}}
+									/>
+								)}
+							</li>
+						)
+					})}
+				</ul>
+			)}
 		</article>
 	)
 }

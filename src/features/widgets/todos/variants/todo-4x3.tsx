@@ -1,8 +1,6 @@
-import { cn } from '@/common/utils/cn'
+import { BoardSummary } from '@/features/widgets/components/board-summary'
 import { ExpandableTodoInput } from '../components/expandable-todo-input'
 import { type TodoListProps, TodoListBody } from './todo-2x3'
-
-const RING_RADIUS = 15.9155
 
 export function TodoBoard(props: TodoListProps) {
 	const { todos, isAuthenticated, isLoading, isError } = props
@@ -31,77 +29,18 @@ export function TodoBoard(props: TodoListProps) {
 				</div>
 
 				{showStats && (
-					<aside
-						aria-label="خلاصه‌ی تسک‌ها"
-						className="flex flex-col flex-none gap-1 pt-1 border-s w-37.5 ps-3.5 border-line"
-					>
-						<div
-							role="img"
-							aria-label={`${percent} درصد تسک‌ها انجام شده`}
-							className="relative grid self-center mt-1 mb-2.5 place-items-center size-19"
-						>
-							<svg
-								aria-hidden="true"
-								className="absolute inset-0 -rotate-90 size-full"
-								viewBox="0 0 36 36"
-							>
-								<circle
-									className="text-fill-2"
-									stroke="currentColor"
-									strokeWidth="3"
-									fill="none"
-									cx="18"
-									cy="18"
-									r={RING_RADIUS}
-								/>
-								<circle
-									className="transition-[stroke-dasharray] duration-500 ease-out text-brand"
-									stroke="currentColor"
-									strokeWidth="3"
-									strokeDasharray={`${percent}, 100`}
-									strokeLinecap="round"
-									fill="none"
-									cx="18"
-									cy="18"
-									r={RING_RADIUS}
-								/>
-							</svg>
-							<span className="relative text-base font-bold tabular-nums text-fg-strong">
-								{percent}٪
-							</span>
-						</div>
-
-						<dl className="flex flex-col">
-							<StatRow label="انجام‌شده" value={completed} />
-							<StatRow label="انجام‌نشده" value={pending} />
-							<StatRow
-								label="مهم"
-								value={important}
-								className="text-danger"
-							/>
-						</dl>
-					</aside>
+					<BoardSummary
+						label="خلاصه‌ی تسک‌ها"
+						percent={percent}
+						percentLabel={`${percent} درصد تسک‌ها انجام شده`}
+						stats={[
+							{ label: 'انجام‌شده', value: completed },
+							{ label: 'انجام‌نشده', value: pending },
+							{ label: 'مهم', value: important, className: 'text-danger' },
+						]}
+					/>
 				)}
 			</div>
 		</>
-	)
-}
-
-interface StatRowProps {
-	label: string
-	value: number
-	className?: string
-}
-
-function StatRow({ label, value, className }: StatRowProps) {
-	return (
-		<div className="flex items-center justify-between text-xs h-6.5 text-fg-muted">
-			<dt>{label}</dt>
-			<dd
-				className={cn('text-sm font-bold tabular-nums text-fg-strong', className)}
-			>
-				<data value={value}>{value}</data>
-			</dd>
-		</div>
 	)
 }

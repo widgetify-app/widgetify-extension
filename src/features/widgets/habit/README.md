@@ -1,23 +1,26 @@
 # Habits widget
 
-Daily, weekly and monthly habits with a one-click log. Sizes 2x1 and 2x3. Signed-in only.
+Daily, weekly and monthly habits with a one-click log. Sizes 2x1, 2x3 and a 4x3 board for PRO. Signed-in only.
 
 ## Files
 
 | Path | Holds |
 |---|---|
-| `habit.widget.tsx` | Entry. `HabitsContent` owns the header, the menu and the modals for both sizes; yadkar uses it with its tabs. `HabitsLayout` picks the size and the frame padding. |
+| `habit.widget.tsx` | Entry. `HabitsContent` owns the header, the menu and the modals for every size and picks the variant by `size`; yadkar uses it at 2x3 with its tabs. `HabitsLayout` sets the frame padding. |
 | `hooks/use-habit-actions.ts` | Query, modal state, delete, refresh. |
 | `variants/habit-2x3.tsx` | The list and its four states. |
+| `variants/habit-4x3.tsx` | The board: the list with a week of days per habit under a row of weekday letters, beside `BoardSummary` with today's share done. |
 | `variants/habit-2x1.tsx` | One habit at a time, stepped with `CompactPager` like tasks 2x1. |
-| `components/item/habit-item.tsx` | One row: log button, title, today's progress, seven-day history. |
+| `components/item/habit-item.tsx` | One row: log button, title, today's progress, then the seven-day dots, or `trailing` in their place. |
+| `components/item/habit-week.tsx` | The board's days: `HabitWeek`, 16px cells filled by progress with a check on a done day, each with its date and value as a tooltip and for screen readers; `HabitWeekHeader`, the weekday letters above them with today's in brand colour. |
 | `components/item/habit-log-button.tsx` | The 32px ring that logs one step. Filled with the habit colour once today is done. Shared by both sizes. |
 | `components/item/button-progress-ring.tsx`, `components/item/button-simple-progress-ring.tsx` | Segmented ring up to six steps, a plain ring above that. |
 | `components/habit-empty.tsx` | `HabitEmpty` and `HabitSignedOut`. |
 | `components/habit-modals.tsx` | The form and the detail modal. |
-| `components/habit-detail-modal/` | The detail modal: goal, the four stats, the six-month chart, and delete, edit and share. |
+| `components/habit-detail-modal/` | The detail modal: goal, the three stats, the six-month chart, and delete, edit and share. |
 | `components/habit-share-modal.tsx` | The share image with copy and download. |
 | `utils/habit-goal.ts` | Goal text, today's text (`formatHabitToday`), `isHabitDoneToday`. Tested. |
+| `utils/habit-week.ts` | `dayKey` (the date part of a history date) and `weekdayInitial`. Tested. |
 | `utils/habit-step.ts`, `utils/habit-stats.ts` | Log step size and the detail statistics (streak, best streak, successful days). Tested. |
 | `utils/render-habit-share-canvas.ts` | Draws the share image at 800×520. The modal sets its display size. |
 
@@ -26,6 +29,7 @@ Daily, weekly and monthly habits with a one-click log. Sizes 2x1 and 2x3. Signed
 The same as tasks and notes. The frame is `p-3 gap-2` (`px-3 py-2.5 gap-1.5` at 2x1), then a `h-7` header.
 
 - A 2x3 row is `px-2 gap-2.5 rounded-xl hover:bg-fill`, rows `gap-0.5` apart. The log ring is 32px where a task has its 16px check, because it carries the emoji and the step segments. The history ends at the row's `px-2`.
+- The board's body is the list, `gap-3`, then `BoardSummary` (`w-37.5 border-s ps-3.5`), the same as the tasks board. The weekday row sits outside the scrolling list and is laid out like a row (`px-2 gap-2.5`, a flex-1 spacer), so each letter lines up over its column.
 - The 2x1 row fills the body: ring, title, then "today · ۲ از ۴", then the pager.
 - A row lights up for keyboard focus only (`useKeyboardFocusWithin`), so clicking the ring does not leave it highlighted.
 
@@ -33,7 +37,7 @@ The same as tasks and notes. The frame is `p-3 gap-2` (`px-3 py-2.5 gap-1.5` at 
 
 - Always: the title (or the yadkar tabs) and "1 از 4 امروز".
 - On hover: "عادت جدید" (signed in only) and ⋯.
-- Menu actions in both sizes: "بارگذاری مجدد".
+- Menu actions in every size: "بارگذاری مجدد".
 
 ## Detail modal
 
@@ -62,8 +66,10 @@ Signed out, loading, error and empty are separate screens. The 2x1 draws them wi
 - The success rate is gone. It divided the successful days by every day since the first log, which says little, least of all for a habit that is not daily.
 - The form's subtitle «از یه الگو شروع کن یا خودت بساز» shows only when adding, since editing has no templates.
 - The share modal was 4xl wide for an 800px image. It is now as wide as the other modals and the image scales down.
+- The board shows `history` in the order the server sends it, like the 2x3 dots, and reads each entry's date only for its weekday letter and for today's. Neither the order nor the date format is documented, so it does not rebuild the week from today's date; `dayKey` takes the first ten characters, which covers `2026-10-05` and a full timestamp alike.
+- The board's summary counts today only (done and not done). A rate over several days would repeat the success rate's problem.
 - The analytics names `habit_quick_log` and `habit_quick_log_wide` are sent by the callers, so `data-names.test.ts` can find them.
 
 ## Not checked on screen
 
-The rings and the emoji inside them, the history squares, the 2x1 pager, the detail modal's strip and chart at 500px, the share preview's corners, every theme.
+The rings and the emoji inside them, the history squares, the 2x1 pager, the detail modal's strip and chart at 500px, the share preview's corners, every theme. On the board: the weekday letters over their columns, which side today lands on, the cells and their tooltips, the summary, and the narrowest 4x3 (a window under 900px), where the titles get short.

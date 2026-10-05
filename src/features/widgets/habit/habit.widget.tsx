@@ -12,13 +12,14 @@ import { useHabitActions } from './hooks/use-habit-actions'
 import { isHabitDoneToday } from './utils/habit-goal'
 import { Habit2x1 } from './variants/habit-2x1'
 import { Habit2x3 } from './variants/habit-2x3'
+import { Habit4x3 } from './variants/habit-4x3'
 
 interface HabitsContentProps {
+	size?: WidgetSize
 	tabs?: ReactNode
-	isCompact?: boolean
 }
 
-export function HabitsContent({ tabs, isCompact = false }: HabitsContentProps = {}) {
+export function HabitsContent({ size = { w: 2, h: 3 }, tabs }: HabitsContentProps = {}) {
 	const { selected_timezone: timezone } = useGeneralSetting()
 	const today = getCurrentDate(timezone.value)
 	const actions = useHabitActions()
@@ -53,8 +54,10 @@ export function HabitsContent({ tabs, isCompact = false }: HabitsContentProps = 
 					)
 				}
 			/>
-			{isCompact ? (
+			{size.h === 1 ? (
 				<Habit2x1 actions={actions} today={today} />
+			) : size.w === 4 ? (
+				<Habit4x3 actions={actions} today={today} />
 			) : (
 				<Habit2x3 actions={actions} today={today} />
 			)}
@@ -68,13 +71,11 @@ interface HabitsLayoutProps {
 }
 
 export function HabitsLayout({ size = { w: 2, h: 3 } }: HabitsLayoutProps = {}) {
-	const isCompact = size.w === 2 && size.h === 1
-
 	return (
 		<WidgetContainer
-			contentClassName={isCompact ? 'px-3 py-2.5 gap-1.5' : 'p-3 gap-2'}
+			contentClassName={size.h === 1 ? 'px-3 py-2.5 gap-1.5' : 'p-3 gap-2'}
 		>
-			<HabitsContent isCompact={isCompact} />
+			<HabitsContent size={size} />
 		</WidgetContainer>
 	)
 }

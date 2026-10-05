@@ -20,7 +20,7 @@ import { PhotoWidget } from './photo/photo.widget'
 import { DotCalendarWidget } from './dot-calendar/dot-calendar.widget'
 import { GoogleCalendarWidget } from './google-calendar/google-calendar.widget'
 import { TodosLayout } from './todos/todos.widget'
-import { isStickyVariant, NotesLayout } from './notes/notes.widget'
+import { NotesLayout, resolveNotesVariant } from './notes/notes.widget'
 import { WidgetContainer } from './components/widget-container'
 import { WidgetTabKeys } from '@/features/widgets/types'
 import { type WidgetDefinition, WidgetKeys } from './utils/layout-engine/types'
@@ -351,6 +351,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [
 			{ w: 2, h: 1 },
 			{ w: 2, h: 3 },
+			{ w: 4, h: 3, isVipOnly: true },
 		],
 		defaultSize: { w: 2, h: 3 },
 		canDuplicate: false,
@@ -386,6 +387,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [
 			{ w: 2, h: 3 },
 			{ w: 2, h: 2, isVipOnly: true },
+			{ w: 4, h: 3, isVipOnly: true },
 		],
 		defaultSize: { w: 2, h: 3 },
 		variants: [
@@ -402,10 +404,17 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 				isVipOnly: true,
 				meta: { variant: 'sticky' },
 			},
+			{
+				id: 'board',
+				label: 'دفتر یادداشت',
+				size: { w: 4, h: 3 },
+				isVipOnly: true,
+				meta: { variant: 'board' },
+			},
 		],
 		canDuplicate: true,
 		node: (instanceId, size, meta) => {
-			const isSticky = isStickyVariant(size, meta)
+			const isSticky = resolveNotesVariant(size, meta) === 'sticky'
 
 			return (
 				<WidgetContainer

@@ -1,6 +1,6 @@
 export type NotePriority = 'low' | 'medium' | 'high'
 
-type NotesVariant = 'list' | 'sticky'
+export type NotesVariant = 'list' | 'sticky' | 'board'
 
 export interface NotesMeta {
 	variant?: NotesVariant

@@ -267,7 +267,7 @@ Source: `src/services/note`, `src/services/todo`, `src/services/habit`
 
 | Endpoint | Token | Request | Reply |
 |---|---|---|---|
-| `GET /notes` | yes | | `{ notes, total, totalPages }`. A note is `{ id, title, body, priority?, createdAt, updatedAt }` |
+| `GET /notes` | yes | | `{ notes, total, totalPages }`. A note is `{ id, title, body, priority?, createdAt, updatedAt }`. `body` can come back `null`, and `title` and `priority` may too; the app reads every note through `normalizeNotes` (`src/features/widgets/notes/utils/normalize-notes.ts`) |
 | `POST /notes` | yes | `{ title?, body?, id?, priority? }`. It is an upsert: pass `id` to update a note. `priority` is `low`, `medium` or `high` | the note |
 | `DELETE /notes/{id}` | yes | | |
 | `GET /todos/v2/@me` | yes | `page`, `limit`, `isCompleted`, `dateFilter` (`today` or `this_month`), `category` | `{ todos, totalPages, totals }` |

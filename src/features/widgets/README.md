@@ -7,7 +7,7 @@ The canvas that hosts every widget, and the widgets themselves. Each widget is a
 - `widgets.tsx` is the canvas and `widgets.context.tsx` its state.
 - `registry.tsx` registers every widget. It is the one root file beyond the usual list: it hosts sub features, and it cannot live in `constants.ts` without every widget importing a file that imports every widget.
 - `types.ts`, `constants.ts`, `date.context.tsx`, `currency.context.tsx` hold what several widgets share.
-- `components/`, `hooks/` and `utils/` hold the platform: the container, the layout engine, migration, the VIP resolver, `WidgetError`, `WidgetEmpty`, `WidgetCompactEmpty` and `CompactPager`.
+- `components/`, `hooks/` and `utils/` hold the platform: the container, the layout engine, migration, the VIP resolver, `WidgetError`, `WidgetEmpty`, `WidgetCompactEmpty`, `CompactPager` and `BoardSummary`.
 - Each widget is a sub feature with a `<name>.widget.tsx` entry: `bookmark`, `calendar`, `clock`, `combo-widget`, `dot-calendar`, `google-calendar`, `habit`, `mood-tracker`, `network`, `news`, `notes`, `pet`, `photo`, `search`, `todos`, `tools`, `transparent-clock`, `weather`, `wigi-arz`, `yadkar`.
 - The canvas's own sub features take the plain `<name>.tsx`: `catalog/` (adding a widget), `widget-settings/`, `presets/`.
 
@@ -28,6 +28,7 @@ Keyboard focus means `data-keyboard-focus` on the frame, set by `hooks/use-keybo
 - A hidden `widget-info` must not take the pointer. It shares a grid cell with the controls, and an element below full opacity is painted above plain siblings, so without `pointer-events: none` the faded text sat on top of the buttons and only the strip below it took a click.
 - Edit mode hides the controls and no longer opens the menu on right click.
 - Migrated so far: todos, notes, habits, yadkar. The other widgets still show their old buttons and have no ⋯ yet. A migrated widget places its own ⋯ (a header, or one `WidgetMenuButton`) and puts its actions in the shared menu instead of a menu of its own.
+- A 4x3 board (tasks, notes, habits) splits its body in two with `gap-3` and a `border-s border-line ps-3.5` divider before the second pane. Tasks and habits put `BoardSummary` there (a percent ring and a few counts); notes put the open note.
 - A one-row list widget (tasks, habits 2x1) shows one item at a time and steps with `CompactPager`, the up and down pair at the row's end. The row's second line ends in "۲ از ۵".
 - `WidgetBackButton` leads a sub-view's header (an open note). `PopoverMenuItem` takes a `description` for a second line.
 
@@ -40,7 +41,7 @@ Keyboard focus means `data-keyboard-focus` on the frame, set by `hooks/use-keybo
 - **A widget's modal stays mounted and only toggles `isOpen`.** Keep what it shows (the task, the habit) until it opens again. Mounting it on open skips daisyUI's enter animation and unmounting kills the exit (see `src/components/ui/README.md`); clearing its data on close swaps the content while it fades out, so an edit form turned into a «new» form. Tasks and habits keep the open flag and the item in separate state.
 - The productivity widgets (tasks, notes, habits, yadkar) share one voice: casual second person («یه», «رو», «بشه»), errors as «نتونستیم … رو بیاریم», a delete asked as «این … حذف بشه؟» with «حذف» and «نه», `…` for an ellipsis and no full stop after a toast.
 - Prefer per-source errors where a widget has several: one dead RSS feed must not blank the other two. Never show an error over data you already have; a slightly stale price beats an error message.
-- **Anything read back from storage is untrusted.** Put a `normalize-*` helper in the feature's `utils/`, give it a test, and route every read through it. `yadkar`, `tools`, `combo-widget` and `transparent-clock` have one; copy the nearest.
+- **Anything read back from storage is untrusted.** Put a `normalize-*` helper in the feature's `utils/`, give it a test, and route every read through it. `yadkar`, `tools`, `combo-widget`, `transparent-clock` and `notes` have one; copy the nearest.
 - **A setting needs a writer and a reader.** If you find one with only a half, say so and ask.
 - **Premium gating has two independent paths.** `allowedSizes[].isVipOnly` locks a widget already on the canvas. The add and edit modal checks the variant's flag and skips the size check for any widget that declares variants. A widget with both variants and a premium size needs `isVipOnly` in both places. They are not duplicates.
 - Storage keys, widget ids and analytics names are data. Never rename the strings.

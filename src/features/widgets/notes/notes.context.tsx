@@ -16,6 +16,7 @@ import { useAuth } from '@/context/auth.context'
 import { useRemoveNote } from '@/services/note/delete-note.hook'
 import { useUpsertNote } from '@/services/note/upsert-note.hook'
 import type { FetchedNote, NoteCreateInput } from '@/services/note/note.interface'
+import { normalizeNote, normalizeNotes } from './utils/normalize-notes'
 
 interface NotesContextType {
 	notes: FetchedNote[]
@@ -58,16 +59,16 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 
 	useEffect(() => {
 		async function loadNotes() {
-			const storedNotes = await getFromStorage('notes_data')
-			if (storedNotes && storedNotes.length > 0) {
+			const storedNotes = normalizeNotes(await getFromStorage('notes_data'))
+			if (storedNotes.length > 0) {
 				setNotes(storedNotes)
 			}
 		}
 
 		loadNotes()
 		return watchStorage('notes_data', (newVal) => {
-			if (newVal && Array.isArray(newVal)) {
-				setNotes(newVal)
+			if (Array.isArray(newVal)) {
+				setNotes(normalizeNotes(newVal))
 			}
 		})
 	}, [])
@@ -105,10 +106,11 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 			return null
 		}
 
-		sync([createdNote, ...notes], true)
-		setActiveNoteId(createdNote.id)
+		const note = normalizeNote(createdNote)
+		sync([note, ...notes], true)
+		setActiveNoteId(note.id)
 		Analytics.event('add_notes')
-		return createdNote
+		return note
 	}
 
 	const updateNote = (id: string, updates: Partial<FetchedNote>) => {
@@ -145,7 +147,9 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 			}
 
 			setNotes((prev) => {
-				const updated = prev.map((n) => (n.id === id ? updatedNote : n))
+				const updated = prev.map((n) =>
+					n.id === id ? normalizeNote(updatedNote) : n
+				)
 				setToStorage('notes_data', updated)
 				return updated
 			})
@@ -169,9 +173,10 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 	}
 
 	const sync = (data: FetchedNote[], syncLocal: boolean) => {
-		setNotes([...data])
+		const normalized = normalizeNotes(data)
+		setNotes(normalized)
 		if (syncLocal) {
-			setToStorage('notes_data', data)
+			setToStorage('notes_data', normalized)
 		}
 	}
 

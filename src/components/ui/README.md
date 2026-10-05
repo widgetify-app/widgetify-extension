@@ -37,7 +37,8 @@ Look here before writing any UI. If a component other areas would reuse is missi
 
 - Always right to left. `Modal` has no direction prop; it labels itself from `title` and its close button reads «بستن».
 - Escape and the backdrop close it when `dismissible` allows. Focus moves into the dialog on open and returns on close.
-- daisyUI already animates `.modal` in both directions. The dialog stays mounted and only toggles `open`; unmounting kills the exit. `@starting-style` covers `.modal` but not `.modal-box`, so `Modal` renders closed for one frame through `open={isOpen && isMounted}`. That line looks pointless and is not.
+- daisyUI already animates `.modal` in both directions, as a transition on the `open` attribute. `Modal` keeps its dialog in the page and sets or removes `open` from an effect; it does not call `showModal()`, so the dialog is not in the top layer and stacks by a z-index that grows with each open (`BASE_MODAL_Z_INDEX`). The children stay for `EXIT_ANIMATION_MS` after closing (`use-delayed-unmount.ts`), so the exit has something to fade.
+- So keep a modal mounted and toggle `isOpen`. A modal mounted already open can get `open` before its first paint, because React runs the effects of a click's render before the browser paints; `@starting-style` covers `.modal` but not `.modal-box`, so the box skips its enter. A modal unmounted on close skips its exit. Keep what it shows until it opens again, too: clearing its data on close swaps the content while it fades out.
 - Do not add an enter animation of your own.
 
 ## Writing the words

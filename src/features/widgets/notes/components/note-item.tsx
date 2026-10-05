@@ -10,9 +10,17 @@ interface NoteItemProps {
 	note: FetchedNote
 	onSelect: (noteId: string) => void
 	onDelete: (noteId: string) => void
+	onEdit?: (noteId: string) => void
+	isSelected?: boolean
 }
 
-export const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect, onDelete }) => {
+export const NoteItem: React.FC<NoteItemProps> = ({
+	note,
+	onSelect,
+	onDelete,
+	onEdit,
+	isSelected = false,
+}) => {
 	const keyboardFocus = useKeyboardFocusWithin()
 
 	const createdAt = moment(note.createdAt).locale('fa')
@@ -21,12 +29,16 @@ export const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect, onDelete }) 
 	return (
 		<article
 			{...keyboardFocus}
-			className="flex items-start rounded-xl group/note transition-ui hover:bg-fill data-[keyboard-focus]:bg-fill"
+			className={cn(
+				'flex items-start rounded-xl group/note transition-ui hover:bg-fill data-[keyboard-focus]:bg-fill',
+				isSelected && 'bg-fill'
+			)}
 		>
 			<button
 				type="button"
 				onClick={() => onSelect(note.id)}
 				aria-label={`باز کردن یادداشت ${title}`}
+				aria-current={isSelected || undefined}
 				className="flex items-start flex-1 min-w-0 gap-2.5 p-2 rounded-xl cursor-pointer text-start focus-visible:focus-ring"
 			>
 				<span
@@ -43,7 +55,12 @@ export const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect, onDelete }) 
 					/>
 				</span>
 				<span className="flex flex-col flex-1 min-w-0 leading-control">
-					<span className="text-xs font-semibold truncate text-fg">
+					<span
+						className={cn(
+							'text-xs font-semibold truncate',
+							isSelected ? 'text-fg-strong' : 'text-fg'
+						)}
+					>
 						{title}
 					</span>
 					{note.body && (
@@ -62,11 +79,13 @@ export const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect, onDelete }) 
 					{createdAt.format('jD jMMM')}
 				</time>
 				<span className="items-center hidden group-hover/note:flex group-data-[keyboard-focus]/note:flex">
-					<RowButton
-						icon="edit"
-						label="ویرایش یادداشت"
-						onClick={() => onSelect(note.id)}
-					/>
+					{onEdit && (
+						<RowButton
+							icon="edit"
+							label="ویرایش یادداشت"
+							onClick={() => onEdit(note.id)}
+						/>
+					)}
 					<RowButton
 						icon="trash"
 						label="حذف یادداشت"
