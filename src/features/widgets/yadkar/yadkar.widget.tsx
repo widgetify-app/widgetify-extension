@@ -54,7 +54,7 @@ export function YadkarWidget({ size }: YadkarWidgetProps = {}) {
 				) : tab === 'notes' ? (
 					<NotesLayout size={size} tabs={tabs} />
 				) : (
-					<HabitsContent tabs={tabs} />
+					<HabitsContent size={size} tabs={tabs} />
 				)}
 			</section>
 		</WidgetContainer>

@@ -9,6 +9,7 @@ import { HabitItemSkeleton } from '../components/item/habit-item-skeleton'
 import { HabitWeek, HabitWeekHeader } from '../components/item/habit-week'
 import type { useHabitActions } from '../hooks/use-habit-actions'
 import { isHabitDoneToday } from '../utils/habit-goal'
+import { weekOf } from '../utils/habit-week'
 
 const SKELETON_COUNT = 4
 
@@ -31,6 +32,7 @@ export function Habit4x3({ actions, today }: Habit4x3Props) {
 	} = actions
 
 	const todayKey = today.clone().doAsGregorian().format('YYYY-MM-DD')
+	const week = weekOf(todayKey)
 	const total = habits.length
 	const done = habits.filter(isHabitDoneToday).length
 	const percent = total > 0 ? Math.round((done / total) * 100) : 0
@@ -50,7 +52,7 @@ export function Habit4x3({ actions, today }: Habit4x3Props) {
 		<HabitEmpty onAdd={openAddHabit} />
 	) : (
 		<>
-			<HabitWeekHeader days={habits[0].history} todayKey={todayKey} />
+			<HabitWeekHeader week={week} todayKey={todayKey} />
 			<ul
 				className={cn(
 					'flex flex-col flex-1 min-h-0 gap-0.5 overflow-y-auto scrollbar-none',
@@ -64,7 +66,13 @@ export function Habit4x3({ actions, today }: Habit4x3Props) {
 							today={today}
 							onChanged={refetch}
 							onViewDetails={() => openHabitDetail(habit.id)}
-							trailing={<HabitWeek habit={habit} />}
+							trailing={
+								<HabitWeek
+									habit={habit}
+									week={week}
+									todayKey={todayKey}
+								/>
+							}
 						/>
 					</li>
 				))}

@@ -5,39 +5,41 @@ import { Icon } from '@/icons'
 import type { Habit } from '@/services/habit/habit.interface'
 import { DEFAULT_HABIT_COLOR } from '../../constants'
 import { getHabitUnitLabel } from '../../utils/habit-goal'
-import { dayKey, weekdayInitial } from '../../utils/habit-week'
+import { habitWeek, weekdayInitial } from '../../utils/habit-week'
 
 interface HabitWeekProps {
 	habit: Habit
+	week: string[]
+	todayKey: string
 }
 
-export function HabitWeek({ habit }: HabitWeekProps) {
+export function HabitWeek({ habit, week, todayKey }: HabitWeekProps) {
 	const color = habit.color || DEFAULT_HABIT_COLOR
 	const target = habit.target || 1
 	const unit = getHabitUnitLabel(habit)
 
 	return (
-		<ul
-			dir="ltr"
-			aria-label={`${habit.history.length} روز گذشته`}
-			className="flex gap-1 shrink-0"
-		>
-			{habit.history.map((day) => {
+		<ul aria-label="این هفته" className="flex gap-1 shrink-0">
+			{habitWeek(habit, week, todayKey).map((day) => {
 				const progress = Math.min(day.value / target, 1)
-				const isDone = day.isDone || day.value >= target
-				const label = `${moment(dayKey(day.date), 'YYYY-MM-DD').locale('fa').format('dddd jD jMMMM')}: ${
-					isDone
-						? 'انجام شد'
-						: day.value > 0
-							? `${day.value} از ${target} ${unit}`.trim()
-							: 'ثبت نشده'
+				const label = `${moment(day.key, 'YYYY-MM-DD').locale('fa').format('dddd jD jMMMM')}: ${
+					day.isFuture
+						? 'هنوز نرسیده'
+						: day.isDone
+							? 'انجام شد'
+							: day.value > 0
+								? `${day.value} از ${target} ${unit}`.trim()
+								: 'ثبت نشده'
 				}`
 
 				return (
 					<li
-						key={day.date}
+						key={day.key}
 						title={label}
-						className="overflow-hidden rounded-sm size-4 bg-fill-2"
+						className={cn(
+							'overflow-hidden rounded-sm size-4',
+							day.isFuture ? 'bg-fill' : 'bg-fill-2'
+						)}
 					>
 						<span className="sr-only">{label}</span>
 						{progress > 0 && (
@@ -47,10 +49,10 @@ export function HabitWeek({ habit }: HabitWeekProps) {
 								style={{
 									backgroundColor: color,
 									color: getContrastingTextColor(color),
-									opacity: isDone ? 1 : 0.35 + progress * 0.65,
+									opacity: day.isDone ? 1 : 0.35 + progress * 0.65,
 								}}
 							>
-								{isDone && (
+								{day.isDone && (
 									<Icon name="check" size={10} strokeWidth={3} />
 								)}
 							</span>
@@ -63,26 +65,26 @@ export function HabitWeek({ habit }: HabitWeekProps) {
 }
 
 interface HabitWeekHeaderProps {
-	days: Habit['history']
+	week: string[]
 	todayKey: string
 }
 
-export function HabitWeekHeader({ days, todayKey }: HabitWeekHeaderProps) {
+export function HabitWeekHeader({ week, todayKey }: HabitWeekHeaderProps) {
 	return (
 		<div aria-hidden="true" className="flex items-center flex-none h-5 gap-2.5 px-2">
 			<span className="flex-1" />
-			<span dir="ltr" className="flex gap-1 shrink-0">
-				{days.map((day) => (
+			<span className="flex gap-1 shrink-0">
+				{week.map((key) => (
 					<span
-						key={day.date}
+						key={key}
 						className={cn(
 							'w-4 text-center text-3xs',
-							dayKey(day.date) === todayKey
+							key === todayKey
 								? 'font-bold text-brand'
 								: 'font-medium text-fg-faint'
 						)}
 					>
-						{weekdayInitial(day.date)}
+						{weekdayInitial(key)}
 					</span>
 				))}
 			</span>

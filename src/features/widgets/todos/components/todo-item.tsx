@@ -67,6 +67,7 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 			showToast(translateError(err) as string, 'error')
 			return
 		}
+		showToast('تسک حذف شد', 'success')
 		onUpdated?.()
 		Analytics.event('todo_removed')
 	}

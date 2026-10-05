@@ -113,6 +113,7 @@ export function TodoFormModal({ isOpen, todo, onClose, onChanged }: TodoFormModa
 			return
 		}
 
+		showToast('تسک حذف شد', 'success')
 		Analytics.event('todo_removed')
 		onChanged()
 	}

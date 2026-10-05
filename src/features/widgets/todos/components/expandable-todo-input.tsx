@@ -224,7 +224,6 @@ export function ExpandableTodoInput({
 					)}
 					onFocus={handleInputFocus}
 					onKeyDown={handleKeyDown}
-					id="expandable-todo-input"
 					debounce={false}
 				/>
 			</div>

@@ -9,7 +9,7 @@ The signed-in user's tasks from the server. Three sizes: 2x1, 2x3, and a 4x3 boa
 | `todos.widget.tsx` | Entry. Owns the query, filters, the header, the "reload" item of the widget menu and the task form modal for 2x1 and 2x3. Picks the variant by size. The modal's open state and its task are separate (`isFormOpen`, `formTodo`), so a closing modal keeps the task it showed instead of turning into «تسک جدید» mid-animation. The board's inline editor has its own `editingTodo`. |
 | `variants/todo-2x1.tsx` | Header, then one task: a check that works both ways, its due day and place («۲ از ۵»), and `CompactPager` to move through the list. Clicking the task opens the modal, where it can be edited or deleted. Starts on the first open task; finishing one moves to the next open one; the down arrow at the end loads the next page. |
 | `variants/todo-2x3.tsx` | The list: header and `TodoListBody` (signed out, loading, error, empty, rows). Adding and editing open the modal. `TodoListProps` is shared with the board. |
-| `variants/todo-4x3.tsx` | The same list beside `BoardSummary`: percent ring, done, pending, important. Keeps the inline composer for adding and editing. |
+| `variants/todo-4x3.tsx` | The same list beside `BoardSummary`: percent ring, done, pending, important. Keeps the inline composer for adding and editing. Yadkar shows it at 4x3, so two boards can share a page; the composer's input carries no fixed `id`. |
 | `components/todo-check.tsx` | The round check every size uses: the priority ring, filled when done. A button with `aria-pressed` and a label naming the task. |
 | `components/todo-item.tsx` | One row. `TodoCheck`, text, due label. Edit and delete replace the due label on row hover or focus. Clicking the text expands description, date, category, priority and friends. |
 | `components/todo-filter-menu.tsx` | `TodoFilterMenu`, the header filter button and its popover (time, label, order). `TodoFilterChip`, the active filter beside the title. |
@@ -63,7 +63,7 @@ Signed out, loading, error and empty are separate screens. Signed out hides the 
 - The filter is one popover in every size. The board lost its row of date chips.
 - Done tasks show no due label.
 - The filter's options read «انجام‌شده», «انجام‌نشده» and «اول مهم‌ها», the board's column «انجام‌نشده», and a priority «کم‌اهمیت» everywhere. A category is called «برچسب» everywhere, as in the form.
-- Deleting from a row asks «این تسک حذف بشه؟» with «حذف» and «نه», like notes; the modal asks in place.
+- Deleting from a row asks «این تسک حذف بشه؟» with «حذف» and «نه», like notes; the modal asks in place. Either way a delete ends with «تسک حذف شد», like habits, and the toast's sound.
 
 ## Not checked on screen
 

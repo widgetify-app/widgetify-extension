@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { type ReactNode, useState } from 'react'
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
@@ -20,7 +20,11 @@ import { NoteSkeleton } from '../components/note-skeleton'
 
 const SKELETON_COUNT = 4
 
-export function NoteBoard() {
+interface NoteBoardProps {
+	tabs?: ReactNode
+}
+
+export function NoteBoard({ tabs }: NoteBoardProps) {
 	const { isAuthenticated } = useAuth()
 	const { blurMode } = useGeneralSetting()
 	const {
@@ -107,7 +111,7 @@ export function NoteBoard() {
 	return (
 		<>
 			<WidgetHeader
-				title="یادداشت‌ها"
+				title={tabs ?? 'یادداشت‌ها'}
 				info={notes.length > 0 ? `${notes.length} یادداشت` : undefined}
 				actions={
 					<WidgetHeaderButton

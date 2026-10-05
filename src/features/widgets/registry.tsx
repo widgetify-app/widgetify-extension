@@ -243,7 +243,10 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		category: 'productivity',
 		order: 1,
 		canToggle: true,
-		allowedSizes: [{ w: 2, h: 3 }],
+		allowedSizes: [
+			{ w: 2, h: 3 },
+			{ w: 4, h: 3, isVipOnly: true },
+		],
 		defaultSize: { w: 2, h: 3 },
 		canDuplicate: false,
 		node: (_instanceId, size) => <YadkarWidget size={size} />,

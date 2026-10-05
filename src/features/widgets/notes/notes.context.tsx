@@ -166,6 +166,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 			return showToast(translateError(err) as string, 'error')
 		}
 
+		showToast('یادداشت حذف شد', 'success')
 		await refetch()
 		Analytics.event('delete_notes')
 		setActiveNoteId(null)

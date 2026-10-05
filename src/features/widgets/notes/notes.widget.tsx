@@ -29,7 +29,7 @@ export function NotesLayout({
 			{variant === 'sticky' ? (
 				<NoteSticky meta={meta} instanceId={instanceId} />
 			) : variant === 'board' ? (
-				<NoteBoard />
+				<NoteBoard tabs={tabs} />
 			) : (
 				<NoteList tabs={tabs} />
 			)}

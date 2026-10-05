@@ -9,7 +9,7 @@ Notes kept locally and synced for signed-in users. Three variants: a list (2x3),
 | `notes.widget.tsx` | Entry. Wraps `NotesProvider` and picks the variant with `resolveNotesVariant`. Takes `tabs` from yadkar. |
 | `notes.context.tsx` | `NotesProvider`: local copy in storage, server sync, debounced saves, create and delete. |
 | `variants/note-list.tsx` | The list and the editor. Owns the header, the reload action and the delete confirmation for a row or the open note. |
-| `variants/note-board.tsx` | The notebook: the list on the start side, the open note beside it, with the header, the reload action and the delete confirmation. Opens on the last note picked, or the first. |
+| `variants/note-board.tsx` | The notebook (also yadkar's notes tab at 4x3, with the tabs as its title): the list on the start side, the open note beside it, with the header, the reload action and the delete confirmation. Opens on the last note picked, or the first. |
 | `variants/note-sticky.tsx` | One note on a coloured card. The header says «یادداشت», the widget's name, like every other widget; the note's own title is the first line of the card. Delete and new note in the header; on hover the colours and the pager lie over the bottom of the text. |
 | `components/note-item.tsx` | One row: priority dot, title, one line of body, date. On hover or keyboard focus the date gives way to edit and delete; edit shows only when the list passes `onEdit`, since picking a row on the notebook already opens it. `isSelected` marks the notebook's open note. |
 | `components/note-editor.tsx` | `NoteFields`, colour swatches and the save button. |
@@ -53,7 +53,7 @@ On a coloured sticky the header uses `tone="onColor"`, so its text and buttons f
 
 ## Design decisions
 
-- Everything a note needs is on the widget itself: new, delete and colours. The menu keeps only what is not, reload. Deleting always asks first: «این یادداشت حذف بشه؟» with «حذف» and «نه», the same as a task row. Without a `title` and `confirmText`, `ConfirmationModal` fell back to «تایید عملیات» and «تایید».
+- Everything a note needs is on the widget itself: new, delete and colours. The menu keeps only what is not, reload. Deleting always asks first: «این یادداشت حذف بشه؟» with «حذف» and «نه», the same as a task row, and ends with «یادداشت حذف شد» from `NotesProvider`, like tasks and habits. Without a `title` and `confirmText`, `ConfirmationModal` fell back to «تایید عملیات» and «تایید».
 - A row no longer expands to show the whole body on hover; it crowded the list. Opening the note shows it. `note_toggle_expand` is no longer sent.
 - The notebook is the list and the editor side by side, so a note opens without leaving the list and the list shows each edit as you type. It saves as you type, like the sticky card, instead of the list editor's save button: there is no screen to leave.
 - The notebook gives `NoteFields` no title debounce. The body already saves on every keystroke and `updateNote` debounces the server call, so a debounced title could only lose the last keystrokes when the pane unmounts.
