@@ -263,12 +263,12 @@ export const HabitGoalFrequencySection: React.FC<HabitGoalFrequencySectionProps>
 					{unit === HabitUnit.CUSTOM && onChangeCustomUnit && (
 						<div className="flex items-center gap-2 py-1">
 							<span className="text-xs text-fg-muted shrink-0">
-								نام واحد دلخواه:
+								اسم واحد دلخواه
 							</span>
 							<TextInput
 								value={customUnit}
 								onChange={(val) => onChangeCustomUnit(val)}
-								placeholder="مثال: کیلومتر، ست، فنجان"
+								placeholder="مثلاً کیلومتر، ست یا فنجان"
 								size="sm"
 								className="flex-1 text-xs"
 							/>

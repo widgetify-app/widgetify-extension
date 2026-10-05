@@ -1,12 +1,11 @@
-import type { IconName } from '@/icons'
 import type { YadkarTab } from './types'
 
 export const DEFAULT_YADKAR_TAB: YadkarTab = 'todos'
 
-export const YADKAR_TAB_LIST: { id: YadkarTab; label: string; icon: IconName }[] = [
-	{ id: 'todos', label: 'تسک‌ها', icon: 'taskList' },
-	{ id: 'notes', label: 'یادداشت', icon: 'notebook' },
-	{ id: 'habits', label: 'عادت‌ها (بتا)', icon: 'strike' },
+export const YADKAR_TAB_LIST: { id: YadkarTab; label: string }[] = [
+	{ id: 'todos', label: 'تسک' },
+	{ id: 'notes', label: 'یادداشت' },
+	{ id: 'habits', label: 'عادت' },
 ]
 
 export const YADKAR_TABS: YadkarTab[] = YADKAR_TAB_LIST.map((tab) => tab.id)

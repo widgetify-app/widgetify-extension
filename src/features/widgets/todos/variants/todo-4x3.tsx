@@ -73,7 +73,7 @@ export function TodoBoard(props: TodoListProps) {
 
 						<dl className="flex flex-col">
 							<StatRow label="انجام‌شده" value={completed} />
-							<StatRow label="در انتظار" value={pending} />
+							<StatRow label="انجام‌نشده" value={pending} />
 							<StatRow
 								label="مهم"
 								value={important}

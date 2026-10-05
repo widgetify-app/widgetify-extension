@@ -20,5 +20,5 @@ export const PRIORITY_OPTIONS: {
 }[] = [
 	{ value: 'high', ariaLabel: 'اولویت مهم', bgColor: PRIORITY_BG_COLORS.high },
 	{ value: 'medium', ariaLabel: 'اولویت متوسط', bgColor: PRIORITY_BG_COLORS.medium },
-	{ value: 'low', ariaLabel: 'اولویت کم', bgColor: PRIORITY_BG_COLORS.low },
+	{ value: 'low', ariaLabel: 'اولویت کم‌اهمیت', bgColor: PRIORITY_BG_COLORS.low },
 ]

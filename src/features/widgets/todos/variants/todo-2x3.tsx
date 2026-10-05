@@ -61,7 +61,7 @@ export function TodoListBody({
 					))}
 				</div>
 			) : isError ? (
-				<WidgetError message="تسک‌ها دریافت نشدند" onRetry={onRefresh} />
+				<WidgetError message="نتونستیم تسک‌ها رو بیاریم" onRetry={onRefresh} />
 			) : todos.length === 0 ? (
 				<TodosEmpty onAdd={onAdd} />
 			) : (

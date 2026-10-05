@@ -102,6 +102,49 @@ export function WidgetHeaderButton({
 	)
 }
 
+interface WidgetHeaderTabsProps<T extends string> {
+	label: string
+	tabs: { id: T; label: string }[]
+	activeTab: T
+	onChange: (tab: T) => void
+}
+
+export function WidgetHeaderTabs<T extends string>({
+	label,
+	tabs,
+	activeTab,
+	onChange,
+}: WidgetHeaderTabsProps<T>) {
+	return (
+		<div
+			role="tablist"
+			aria-label={label}
+			className="flex items-center h-7 min-w-0 gap-3.5 overflow-x-auto scrollbar-none"
+		>
+			{tabs.map((tab) => {
+				const isActive = tab.id === activeTab
+				return (
+					<button
+						key={tab.id}
+						type="button"
+						role="tab"
+						aria-selected={isActive}
+						onClick={() => onChange(tab.id)}
+						className={cn(
+							'relative h-7 text-xs whitespace-nowrap cursor-pointer transition-ui focus-visible:focus-ring',
+							isActive
+								? 'font-bold text-fg-strong after:absolute after:inset-x-0 after:bottom-px after:h-0.5 after:rounded-xs after:bg-brand'
+								: 'font-semibold text-fg-faint hover:text-fg'
+						)}
+					>
+						{tab.label}
+					</button>
+				)
+			})}
+		</div>
+	)
+}
+
 interface WidgetBackButtonProps {
 	label: string
 	onClick: () => void

@@ -26,8 +26,6 @@ export function renderHabitShareCanvas(
 
 	canvas.width = width * dpr
 	canvas.height = height * dpr
-	canvas.style.width = `${width}px`
-	canvas.style.height = `${height}px`
 
 	ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 	ctx.clearRect(0, 0, width, height)
@@ -216,7 +214,7 @@ export function renderHabitShareCanvas(
 
 	ctx.font = '500 13px Vazir, "Segoe UI", sans-serif'
 	ctx.fillStyle = secondary
-	ctx.fillText('روز متوالی', width - 36, 145)
+	ctx.fillText('روز پشت‌سرهم', width - 36, 145)
 
 	if (currentStreak > 0) {
 		ctx.font =
@@ -336,7 +334,7 @@ export function renderHabitShareCanvas(
 	ctx.fillText(`بهترین رکورد ${longestStreak} روز`, 36, bottomY)
 
 	ctx.textAlign = 'right'
-	ctx.fillText('یک قدم کوچک، هر روز', width - 36, bottomY)
+	ctx.fillText('یه قدم کوچیک، هر روز', width - 36, bottomY)
 
 	const legendY = 454
 	let legendX = width / 2 - 38

@@ -7,15 +7,15 @@ export const DATE_FILTER_OPTIONS: TodoFilterOption[] = [
 	{ value: 'all', label: 'همه' },
 	{ value: 'today', label: 'امروز' },
 	{ value: 'this_month', label: 'این ماه' },
-	{ value: 'done', label: 'تکمیل‌شده' },
-	{ value: 'pending', label: 'در انتظار' },
+	{ value: 'done', label: 'انجام‌شده' },
+	{ value: 'pending', label: 'انجام‌نشده' },
 ]
 
 export const SORT_OPTIONS: TodoFilterOption[] = [
-	{ value: 'def', label: 'پیشفرض' },
-	{ value: 'high', label: 'مهم' },
-	{ value: 'medium', label: 'متوسط' },
-	{ value: 'low', label: 'کم اهمیت' },
+	{ value: 'def', label: 'پیش‌فرض' },
+	{ value: 'high', label: 'اول مهم‌ها' },
+	{ value: 'medium', label: 'اول متوسط‌ها' },
+	{ value: 'low', label: 'اول کم‌اهمیت‌ها' },
 ]
 
 export const LEGACY_DATE_FILTERS: Record<string, string> = {
@@ -25,7 +25,7 @@ export const LEGACY_DATE_FILTERS: Record<string, string> = {
 export const UNFILTERED_TAGS = ['', '-all-']
 
 export const PRIORITY_LABELS: Record<string, string> = {
-	low: 'کم',
+	low: 'کم‌اهمیت',
 	medium: 'متوسط',
 	high: 'مهم',
 }

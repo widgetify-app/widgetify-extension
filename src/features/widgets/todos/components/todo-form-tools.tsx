@@ -87,11 +87,7 @@ export function TodoCategoryDropdown({
 				setTagToRemove(null)
 			}}
 			trigger={
-				<TodoComposerTool
-					icon="tags"
-					label="دسته‌بندی"
-					isActive={Boolean(category)}
-				>
+				<TodoComposerTool icon="tags" label="برچسب" isActive={Boolean(category)}>
 					{category || undefined}
 				</TodoComposerTool>
 			}
@@ -120,7 +116,7 @@ export function TodoCategoryDropdown({
 								onClick={confirmRemove}
 								disabled={isRemoving}
 							>
-								{isRemoving ? 'در حال برداشتن...' : 'برداشتن برچسب'}
+								{isRemoving ? 'در حال برداشتن…' : 'برداشتن برچسب'}
 							</Button>
 						</div>
 					</div>
@@ -205,7 +201,7 @@ function TagChip({ tag, isSelected, onSelect, onRemove }: TagChipProps) {
 			<button
 				type="button"
 				onClick={onRemove}
-				aria-label={`حذف برچسب ${tag}`}
+				aria-label={`برداشتن برچسب ${tag}`}
 				className="grid h-full rounded-e-full cursor-pointer place-items-center ps-0.5 pe-1.5 transition-ui hover:text-danger focus-visible:focus-ring"
 			>
 				<Icon name="close" size={10} aria-hidden="true" />

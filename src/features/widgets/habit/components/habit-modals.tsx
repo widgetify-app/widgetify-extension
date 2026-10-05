@@ -1,5 +1,3 @@
-import type React from 'react'
-import { ConfirmationModal } from '@/components/ui'
 import type { useHabitActions } from '../hooks/use-habit-actions'
 import { HabitDetailModal } from './habit-detail-modal/habit-detail-modal'
 import { HabitFormModal } from './habit-form-modal/habit-form-modal'
@@ -8,12 +6,12 @@ interface HabitModalsProps {
 	actions: ReturnType<typeof useHabitActions>
 }
 
-export const HabitModals: React.FC<HabitModalsProps> = ({ actions }) => {
+export function HabitModals({ actions }: HabitModalsProps) {
 	const {
 		showForm,
 		editingHabit,
 		detailHabitId,
-		archiveConfirm,
+		isDetailOpen,
 		icons,
 		colors,
 		isArchiving,
@@ -21,8 +19,7 @@ export const HabitModals: React.FC<HabitModalsProps> = ({ actions }) => {
 		closeForm,
 		openEditHabit,
 		closeHabitDetail,
-		confirmArchive,
-		setArchiveConfirm,
+		archiveHabit,
 	} = actions
 
 	return (
@@ -39,26 +36,15 @@ export const HabitModals: React.FC<HabitModalsProps> = ({ actions }) => {
 				colors={colors}
 			/>
 
-			{detailHabitId && (
-				<HabitDetailModal
-					isOpen={!!detailHabitId}
-					habitId={detailHabitId}
-					onClose={closeHabitDetail}
-					onEdit={openEditHabit}
-					onArchive={() => setArchiveConfirm(detailHabitId)}
-				/>
-			)}
-
-			<ConfirmationModal
-				isOpen={!!archiveConfirm}
-				onClose={() => setArchiveConfirm(null)}
-				onConfirm={confirmArchive}
-				variant="danger"
-				title="حذف این عادت؟"
-				message="این عادت و سابقه‌اش از لیست برداشته می‌شوند و راهی برای برگرداندنشان از داخل برنامه وجود ندارد."
-				confirmText="بله، حذف کن"
-				cancelText="انصراف"
-				isLoading={isArchiving}
+			<HabitDetailModal
+				isOpen={isDetailOpen}
+				habitId={detailHabitId}
+				onClose={closeHabitDetail}
+				onEdit={openEditHabit}
+				onDelete={() => {
+					if (detailHabitId) archiveHabit(detailHabitId)
+				}}
+				isDeleting={isArchiving}
 			/>
 		</>
 	)

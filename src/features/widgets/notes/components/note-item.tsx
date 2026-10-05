@@ -69,7 +69,7 @@ export const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect, onDelete }) 
 					/>
 					<RowButton
 						icon="trash"
-						label="پاک کردن یادداشت"
+						label="حذف یادداشت"
 						onClick={() => onDelete(note.id)}
 						isDanger
 					/>

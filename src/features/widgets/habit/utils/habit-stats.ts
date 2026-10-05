@@ -1,14 +1,11 @@
 export interface HabitDay {
 	isDone: boolean
-	hasRecord: boolean
 }
 
 interface HabitStats {
 	currentStreak: number
 	longestStreak: number
 	totalCompleted: number
-	trackedDays: number
-	completionRate: number
 }
 
 export function computeHabitStats(days: HabitDay[]): HabitStats {
@@ -26,16 +23,10 @@ export function computeHabitStats(days: HabitDay[]): HabitStats {
 		}
 	}
 
-	const firstTrackedIndex = days.findIndex((day) => day.hasRecord || day.isDone)
-	const trackedDays = firstTrackedIndex === -1 ? 0 : days.length - firstTrackedIndex
-
 	return {
 		currentStreak: countCurrentStreak(days),
 		longestStreak,
 		totalCompleted,
-		trackedDays,
-		completionRate:
-			trackedDays > 0 ? Math.round((totalCompleted / trackedDays) * 100) : 0,
 	}
 }
 

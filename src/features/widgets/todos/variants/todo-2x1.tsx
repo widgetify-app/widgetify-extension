@@ -6,12 +6,12 @@ import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
 import { playAlarm } from '@/common/utils/play-alarm'
 import { translateError } from '@/common/utils/translate-error'
-import { Button } from '@/components/ui'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { Icon, type IconName } from '@/icons'
 import { safeAwait } from '@/services/api'
 import type { Todo } from '@/services/todo/todo.interface'
 import { useUpdateTodo } from '@/services/todo/update-todo.hook'
+import { CompactPager } from '@/features/widgets/components/compact-pager'
+import { WidgetCompactEmpty } from '@/features/widgets/components/widget-compact-empty'
 import { WidgetError } from '@/features/widgets/components/widget-error'
 import { TodoCheck } from '../components/todo-check'
 import { currentTaskIndex, nextOpenTaskId } from '../utils/current-task-index'
@@ -71,20 +71,11 @@ function TodoCompactContent({
 
 	if (!isAuthenticated) {
 		return (
-			<CompactLayout
+			<WidgetCompactEmpty
 				icon="user"
 				title="تسک‌هات توی حسابته"
-				subtitle="برای دیدنشون وارد شو"
-				action={
-					<Button
-						size="xs"
-						color="brand"
-						rounded="lg"
-						onClick={() => callEvent('openProfile')}
-					>
-						ورود
-					</Button>
-				}
+				description="برای دیدنشون وارد شو"
+				action={{ label: 'ورود', onClick: () => callEvent('openProfile') }}
 			/>
 		)
 	}
@@ -102,20 +93,18 @@ function TodoCompactContent({
 	}
 
 	if (isError) {
-		return <WidgetError message="تسک‌ها دریافت نشدند" compact onRetry={onRefresh} />
+		return (
+			<WidgetError message="نتونستیم تسک‌ها رو بیاریم" compact onRetry={onRefresh} />
+		)
 	}
 
 	if (!current) {
 		return (
-			<CompactLayout
+			<WidgetCompactEmpty
 				icon="check"
 				title="هنوز تسکی نداری"
-				subtitle="یه کار برای امروز بنویس"
-				action={
-					<Button size="xs" color="brand" rounded="lg" onClick={onAdd}>
-						افزودن
-					</Button>
-				}
+				description="یه کار برای امروز بنویس"
+				action={{ label: 'افزودن', onClick: onAdd }}
 			/>
 		)
 	}
@@ -147,7 +136,7 @@ function TodoCompactContent({
 
 	const openCurrent = () => {
 		if (isTemp) {
-			showToast('این تسک هنوز همگام‌سازی نشده است.', 'error')
+			showToast('این تسک هنوز ذخیره نشده، یه لحظه صبر کن', 'error')
 			return
 		}
 		onOpen(current)
@@ -200,63 +189,14 @@ function TodoCompactContent({
 				</button>
 			</div>
 
-			<span className="flex flex-col flex-none">
-				<NavButton
-					icon="chevronUp"
-					label="تسک قبلی"
-					onClick={() => setCurrentId(todos[index - 1].id)}
-					disabled={index === 0}
-				/>
-				<NavButton
-					icon="chevronDown"
-					label="تسک بعدی"
-					onClick={goNext}
-					disabled={(isLast && !hasNextPage) || isFetchingNextPage}
-				/>
-			</span>
-		</div>
-	)
-}
-
-interface NavButtonProps {
-	icon: IconName
-	label: string
-	onClick: () => void
-	disabled: boolean
-}
-
-function NavButton({ icon, label, onClick, disabled }: NavButtonProps) {
-	return (
-		<button
-			type="button"
-			onClick={onClick}
-			disabled={disabled}
-			aria-label={label}
-			className="grid rounded-lg cursor-pointer place-items-center size-5 text-fg-muted transition-ui hover:bg-fill-2 hover:text-fg-strong focus-visible:focus-ring disabled:cursor-default disabled:opacity-30 disabled:hover:bg-transparent"
-		>
-			<Icon name={icon} size={14} aria-hidden="true" />
-		</button>
-	)
-}
-
-interface CompactLayoutProps {
-	icon: 'check' | 'user'
-	title: string
-	subtitle: string
-	action?: ReactNode
-}
-
-function CompactLayout({ icon, title, subtitle, action }: CompactLayoutProps) {
-	return (
-		<div className="flex items-center h-full gap-2.5 px-2">
-			<span className="grid rounded-xl place-items-center size-9 shrink-0 bg-fill text-fg-muted">
-				<Icon name={icon} size={16} aria-hidden="true" />
-			</span>
-			<div className="flex flex-col flex-1 min-w-0 leading-control">
-				<span className="text-xs font-semibold truncate text-fg">{title}</span>
-				<span className="truncate text-3xs text-fg-faint">{subtitle}</span>
-			</div>
-			{action}
+			<CompactPager
+				previousLabel="تسک قبلی"
+				nextLabel="تسک بعدی"
+				onPrevious={() => setCurrentId(todos[index - 1].id)}
+				onNext={goNext}
+				isPreviousDisabled={index === 0}
+				isNextDisabled={(isLast && !hasNextPage) || isFetchingNextPage}
+			/>
 		</div>
 	)
 }

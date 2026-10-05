@@ -33,7 +33,7 @@ export const HabitFormActions: React.FC<HabitFormActionsProps> = React.memo(
 					className="flex-1 w-full text-xs font-bold shadow-md h-11 shadow-brand-fill-2"
 				>
 					{isPending
-						? 'در حال ذخیره...'
+						? 'در حال ذخیره…'
 						: isEdit
 							? 'ذخیره تغییرات'
 							: 'افزودن عادت'}

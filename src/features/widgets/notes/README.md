@@ -37,8 +37,8 @@ The same as tasks: the frame is `p-3 gap-2` (the sticky card draws its own), the
 | Where | Header on hover | Menu actions |
 |---|---|---|
 | List | "یادداشت جدید", ⋯ | بارگذاری مجدد |
-| Editor | "پاک کردن این یادداشت", ⋯; the back button is always visible | بارگذاری مجدد |
-| Sticky | "پاک کردن این یادداشت", "یادداشت جدید", ⋯ | بارگذاری مجدد |
+| Editor | "حذف این یادداشت", ⋯; the back button is always visible | بارگذاری مجدد |
+| Sticky | "حذف این یادداشت", "یادداشت جدید", ⋯ | بارگذاری مجدد |
 
 The header shows "در حال ذخیره…" beside the title while a save runs, in both the editor and the sticky card, because the info slot hides on hover and while you type.
 
@@ -46,9 +46,13 @@ On a coloured sticky the header uses `tone="onColor"`, so its text and buttons f
 
 ## Design decisions
 
-- Everything a note needs is on the widget itself: new, delete and colours. The menu keeps only what is not, reload. Deleting always asks first.
+- Everything a note needs is on the widget itself: new, delete and colours. The menu keeps only what is not, reload. Deleting always asks first: «این یادداشت حذف بشه؟» with «حذف» and «نه», the same as a task row. Without a `title` and `confirmText`, `ConfirmationModal` fell back to «تایید عملیات» and «تایید».
 - A row no longer expands to show the whole body on hover; it crowded the list. Opening the note shows it. `note_toggle_expand` is no longer sent.
 - The sticky footer lies over the text instead of reserving a row. A reserved row cut 30px off a short card for controls that show only on hover. The fade is a mask, not a background, because the default card is glass and no solid colour matches it.
+
+## Known issue
+
+Picking the default colour does not reach the server. `updateNote` sends `priority` only when it is set, so the server keeps the old colour and the save's reply, half a second later, puts it back on the card. This predates the redesign. The API doc lists `priority` as `low`, `medium` or `high` and says nothing about clearing it, so the fix waits on what the backend accepts (`null`, or an empty value).
 
 ## Not checked on screen
 

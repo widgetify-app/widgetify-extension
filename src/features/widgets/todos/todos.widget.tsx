@@ -36,7 +36,8 @@ export function TodosLayout({ size = { w: 2, h: 3 }, tabs }: TodosLayoutProps = 
 	const { isAuthenticated } = useAuth()
 	const { blurMode } = useGeneralSetting()
 	const [editingTodo, setEditingTodo] = useState<Todo | null>(null)
-	const [isCreating, setIsCreating] = useState(false)
+	const [formTodo, setFormTodo] = useState<Todo | null>(null)
+	const [isFormOpen, setIsFormOpen] = useState(false)
 	const {
 		dateFilter,
 		sort,
@@ -105,18 +106,23 @@ export function TodosLayout({ size = { w: 2, h: 3 }, tabs }: TodosLayoutProps = 
 	}
 
 	const openEditTodo = (todo: Todo) => {
-		setEditingTodo(todo)
+		if (isBoard) {
+			setEditingTodo(todo)
+		} else {
+			setFormTodo(todo)
+			setIsFormOpen(true)
+		}
 		Analytics.event('todo_edit_open')
 	}
 
 	const openCreateTodo = () => {
-		setEditingTodo(null)
-		setIsCreating(true)
+		setFormTodo(null)
+		setIsFormOpen(true)
 	}
 
 	const closeTodoForm = () => {
-		setIsCreating(false)
-		if (editingTodo) handleCloseTodoEditor()
+		setIsFormOpen(false)
+		if (formTodo) Analytics.event('todo_edit_close')
 	}
 
 	const onTodoChanged = () => {
@@ -216,8 +222,8 @@ export function TodosLayout({ size = { w: 2, h: 3 }, tabs }: TodosLayoutProps = 
 
 	const todoForm = !isBoard && (
 		<TodoFormModal
-			isOpen={isCreating || Boolean(editingTodo)}
-			todo={editingTodo}
+			isOpen={isFormOpen}
+			todo={formTodo}
 			onClose={closeTodoForm}
 			onChanged={onTodoChanged}
 		/>

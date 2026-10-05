@@ -1,158 +1,72 @@
 import Analytics from '@/analytics'
-import { playAlarm } from '@/common/utils/play-alarm'
-import { showToast } from '@/common/toast'
 import type { WidgetifyDate } from '@/common/utils/date-events'
-import { safeAwait } from '@/services/api'
+import { useKeyboardFocusWithin } from '@/features/widgets/hooks/use-keyboard-focus-within'
 import type { Habit } from '@/services/habit/habit.interface'
-import { useLogHabitProgress } from '@/services/habit/log-habit-progress.hook'
-import { translateError } from '@/common/utils/translate-error'
-import { formatHabitGoal } from '../../utils/habit-goal'
-import { resolveHabitStep } from '../../utils/habit-step'
 import { DEFAULT_HABIT_COLOR } from '../../constants'
-import { SegmentedProgressRing } from './button-progress-ring'
-import { SimpleProgressRing } from './button-simple-progress-ring'
-import { Icon } from '@/icons'
-import { Spinner } from '@/components/ui'
+import { formatHabitToday } from '../../utils/habit-goal'
+import { HabitLogButton } from './habit-log-button'
 
 interface HabitItemProps {
 	habit: Habit
 	today: WidgetifyDate
 	onChanged: () => void
-
-	onViewDetails: (e: React.MouseEvent<HTMLElement>) => void
+	onViewDetails: () => void
 }
-export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemProps) {
-	const { mutateAsync: logProgress, isPending } = useLogHabitProgress()
 
+export function HabitItem({ habit, today, onChanged, onViewDetails }: HabitItemProps) {
+	const keyboardFocus = useKeyboardFocusWithin()
 	const color = habit.color || DEFAULT_HABIT_COLOR
 	const target = habit.target || 1
-	const value = habit.today.value
-	const isSimpleHabit = target === 1
-	const isDone = habit.today.isDone || value >= target
-
-	const handleQuickLog = async (e: React.MouseEvent) => {
-		e.stopPropagation()
-		if (isPending) return
-
-		const { amount, blockedMessage } = resolveHabitStep(habit, value)
-		if (blockedMessage) {
-			showToast(blockedMessage, 'error')
-			return
-		}
-
-		const date = today.clone().doAsGregorian().format('YYYY-MM-DD')
-		const [error] = await safeAwait(
-			logProgress({ id: habit.id, input: { date, amount } })
-		)
-		if (error) {
-			showToast(translateError(error) as string, 'error')
-			return
-		}
-		playAlarm('info')
-		Analytics.event('habit_quick_log')
-		onChanged()
-	}
 
 	return (
-		<article className="w-full p-2 text-right transition-ui border rounded-2xl border-surface-3 bg-surface-2 hover:bg-surface-3">
-			<div className="flex items-center gap-2">
-				<button
-					type="button"
-					onClick={onViewDetails}
-					aria-label={`جزئیات ${habit.title}`}
-					className="flex items-center flex-1 min-w-0 gap-2 cursor-pointer text-start active:scale-[0.99] focus-visible:focus-ring"
-				>
-					<span
-						className="flex items-center justify-center w-8 h-8 text-sm rounded-lg shrink-0"
-						style={{ backgroundColor: `${color}22`, color }}
-					>
-						{isPending ? (
-							<Spinner size="sm" tone="current" />
-						) : (
-							habit.emoji || '🎯'
-						)}
-					</span>
+		<article
+			{...keyboardFocus}
+			className="flex items-center gap-2.5 px-2 rounded-xl min-h-11.5 transition-ui hover:bg-fill data-[keyboard-focus]:bg-fill"
+		>
+			<HabitLogButton
+				habit={habit}
+				today={today}
+				onLogged={() => {
+					Analytics.event('habit_quick_log')
+					onChanged()
+				}}
+			/>
 
-					<span className="flex-1 min-w-0">
-						<span className="block text-xs font-bold truncate text-fg">
-							{habit.title}
-						</span>
-						<span className="mt-0.5 block text-4xs truncate text-fg-muted">
-							{formatHabitGoal(habit)}
-						</span>
-					</span>
-				</button>
-
-				<button
-					type="button"
-					onClick={handleQuickLog}
-					disabled={isPending}
-					aria-label={`ثبت پیشرفت ${habit.title}`}
-					className="relative flex items-center justify-center w-8 h-8 rounded-lg cursor-pointer transition-ui active:scale-95 disabled:opacity-70 focus-visible:focus-ring"
-					style={{ backgroundColor: `${color}22`, color }}
-				>
-					{!isSimpleHabit && (
-						<div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-							{target > 6 ? (
-								<SimpleProgressRing
-									value={value}
-									target={target}
-									color={color}
-									size={28}
-									strokeWidth={3}
-								/>
-							) : (
-								<SegmentedProgressRing
-									value={value}
-									target={target}
-									color={color}
-									size={28}
-									strokeWidth={3}
-									gap={6}
-								/>
-							)}
-						</div>
-					)}
-
-					<div className="relative z-10 flex items-center justify-center w-8 h-8 rounded-full">
-						{isDone || isSimpleHabit ? (
-							<Icon
-								name="check"
-								size={12}
-								strokeWidth={2.5}
-								aria-hidden="true"
-							/>
-						) : (
-							<Icon
-								name="plus"
-								size={12}
-								strokeWidth={3}
-								aria-hidden="true"
-							/>
-						)}
-					</div>
-				</button>
-			</div>
+			<button
+				type="button"
+				onClick={onViewDetails}
+				aria-label={`جزئیات ${habit.title}`}
+				className="flex flex-col flex-1 min-w-0 py-1 cursor-pointer text-start leading-control focus-visible:focus-ring"
+			>
+				<span className="text-xs font-semibold truncate text-fg">
+					{habit.title}
+				</span>
+				<span className="truncate text-3xs text-fg-faint">
+					{formatHabitToday(habit)}
+				</span>
+			</button>
 
 			<ul
-				aria-label={`تاریخچه ${habit.history.length} روز گذشته`}
-				className="flex gap-1 mt-2"
+				dir="ltr"
+				aria-label={`${habit.history.length} روز گذشته`}
+				className="flex gap-0.75 shrink-0"
 			>
 				{habit.history.map((day) => {
 					const dayProgress = Math.min(day.value / target, 1)
 					return (
 						<li
 							key={day.date}
-							className="flex-1 h-1.5 rounded-full bg-fill-2 overflow-hidden"
+							className="overflow-hidden size-1.5 rounded-xs bg-fill-2"
 						>
-							<div
-								className="w-full h-full rounded-full"
-								style={{
-									backgroundColor: color,
-									opacity:
-										dayProgress === 0 ? 0 : 0.25 + dayProgress * 0.75,
-								}}
-							/>
+							{dayProgress > 0 && (
+								<span
+									className="block size-full"
+									style={{
+										backgroundColor: color,
+										opacity: 0.35 + dayProgress * 0.65,
+									}}
+								/>
+							)}
 						</li>
 					)
 				})}

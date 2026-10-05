@@ -10,7 +10,7 @@ export const HABIT_UNIT_OPTIONS = [
 export const HABIT_COMPARISON_OPTIONS = [
 	{ value: 'AT_LEAST', label: 'حداقل' },
 	{ value: 'AT_MOST', label: 'حداکثر' },
-	{ value: 'EXACT', label: 'دقیقا' },
+	{ value: 'EXACT', label: 'دقیقاً' },
 ]
 
 export const HABIT_FREQUENCY_OPTIONS = [

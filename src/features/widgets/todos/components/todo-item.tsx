@@ -44,17 +44,17 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 
 	const isPending = isUpdating || isRemoving
 	const handleDelete = (e: React.MouseEvent) => {
-		if (isTemp) return showToast('این تسک هنوز همگام‌سازی نشده است.', 'error')
+		if (isTemp) return showToast('این تسک هنوز ذخیره نشده، یه لحظه صبر کن', 'error')
 		e.stopPropagation()
 		if (isPending) return
-		if (!isAuthenticated) return showToast('برای حذف باید وارد شوید', 'error')
+		if (!isAuthenticated) return showToast('برای حذفش اول وارد حسابت شو', 'error')
 		setShowConfirmation(true)
 	}
 
 	const handleEdit = (e: React.MouseEvent) => {
-		if (isTemp) return showToast('این تسک هنوز همگام‌سازی نشده است.', 'error')
+		if (isTemp) return showToast('این تسک هنوز ذخیره نشده، یه لحظه صبر کن', 'error')
 		e.stopPropagation()
-		if (!isAuthenticated) return showToast('برای ویرایش باید وارد شوید', 'error')
+		if (!isAuthenticated) return showToast('برای ویرایشش اول وارد حسابت شو', 'error')
 		onEdit(todo)
 	}
 
@@ -213,9 +213,10 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 				onClose={() => setShowConfirmation(false)}
 				onConfirm={onConfirmDelete}
 				confirmText={isPending ? <Spinner size="sm" tone="current" /> : 'حذف'}
-				message="این عمل قابل بازگشت نیست و وظیفه برای همیشه حذف خواهد شد"
+				cancelText="نه"
+				message="دیگه نمی‌تونی برش گردونی."
 				variant="danger"
-				title="حذف این تسک؟"
+				title="این تسک حذف بشه؟"
 			/>
 		</div>
 	)

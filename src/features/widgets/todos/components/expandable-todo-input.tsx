@@ -79,22 +79,6 @@ export function ExpandableTodoInput({
 					setSelectedDate(parsedDate)
 				}
 			}
-			if (editTodo.friends && editTodo.friends.length > 0) {
-				setSelectedFriends(
-					editTodo.friends.map(
-						(f) =>
-							({
-								user: {
-									name: f.name,
-									avatar: f.avatar,
-									userId: null,
-								},
-								status: 'ACCEPTED',
-							}) as unknown as Friend
-					)
-				)
-			}
-
 			setIsExpanded(true)
 			setTimeout(() => {
 				if (notesRef.current) notesRef.current.value = editTodo.description || ''
@@ -133,7 +117,7 @@ export function ExpandableTodoInput({
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside)
 		}
-	}, [isExpanded])
+	}, [isExpanded, isEdit])
 
 	const handleInputFocus = useCallback(() => {
 		setIsExpanded(true)
@@ -154,7 +138,7 @@ export function ExpandableTodoInput({
 		setSelectedFriends([])
 	}, [])
 
-	const handleSave = useCallback(async () => {
+	const handleSave = async () => {
 		if (!isAuthenticated) {
 			callEvent('openProfile')
 			return
@@ -162,19 +146,27 @@ export function ExpandableTodoInput({
 		const text = inputRef.current?.value?.trim()
 		if (text) {
 			try {
-				const payload: TodoCreationPayload = {
+				const fields = {
 					text,
-					category: category.trim() || undefined,
 					description: notesRef.current?.value.trim(),
-					priority: priority,
+					priority,
 					date: toTodoDueDate(selectedDate),
-					friendIds: selectedFriends.map((f) => f.id),
 				}
 
 				if (isEdit && editTodo?.id) {
-					await updateTodoAsync({ id: editTodo.id, input: payload })
+					await updateTodoAsync({
+						id: editTodo.id,
+						input: { ...fields, category: category.trim() },
+					})
 				} else {
-					await addTodoAsync({ ...payload, completed: false, order: 0 })
+					const payload: TodoCreationPayload = {
+						...fields,
+						category: category.trim() || undefined,
+						completed: false,
+						order: 0,
+						friendIds: selectedFriends.map((f) => f.id),
+					}
+					await addTodoAsync(payload)
 				}
 
 				resetForm()
@@ -188,15 +180,7 @@ export function ExpandableTodoInput({
 				showToast(errorContent as string, 'error')
 			}
 		}
-	}, [
-		category,
-		priority,
-		selectedDate,
-		resetForm,
-		isEdit,
-		isAuthenticated,
-		selectedFriends,
-	])
+	}
 
 	const onCloseEdit = () => {
 		resetForm()
@@ -204,14 +188,11 @@ export function ExpandableTodoInput({
 		onClose()
 	}
 
-	const handleKeyDown = useCallback(
-		(e: React.KeyboardEvent<HTMLInputElement>) => {
-			if (e.key === 'Enter' && inputRef?.current?.value.trim()) {
-				handleSave()
-			}
-		},
-		[handleSave]
-	)
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === 'Enter' && inputRef?.current?.value.trim()) {
+			handleSave()
+		}
+	}
 
 	return (
 		<div

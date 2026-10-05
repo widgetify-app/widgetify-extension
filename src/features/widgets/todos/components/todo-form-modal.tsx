@@ -147,7 +147,7 @@ export function TodoFormModal({ isOpen, todo, onClose, onChanged }: TodoFormModa
 							onKeyDown={(e) => {
 								if (e.key === 'Enter') handleSubmit()
 							}}
-							placeholder="مثلا: خرید نون"
+							placeholder="مثلاً خرید نون"
 							debounce={false}
 						/>
 					</div>
@@ -206,7 +206,7 @@ export function TodoFormModal({ isOpen, todo, onClose, onChanged }: TodoFormModa
 							onClick={handleDelete}
 							disabled={isPending}
 						>
-							{isRemoving ? 'در حال حذف...' : 'حذف'}
+							{isRemoving ? 'در حال حذف…' : 'حذف'}
 						</Button>
 					</div>
 				) : (
@@ -243,7 +243,7 @@ export function TodoFormModal({ isOpen, todo, onClose, onChanged }: TodoFormModa
 								className="flex-1"
 							>
 								{isPending
-									? 'در حال ذخیره...'
+									? 'در حال ذخیره…'
 									: isEdit
 										? 'ذخیره تغییرات'
 										: 'افزودن تسک'}

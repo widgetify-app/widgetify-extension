@@ -90,7 +90,7 @@ export function NoteList({ tabs }: NoteListProps) {
 			}
 			actions={
 				<WidgetHeaderButton
-					label="پاک کردن این یادداشت"
+					label="حذف این یادداشت"
 					icon="trash"
 					onClick={() => setNoteToDelete(activeNote.id)}
 				/>
@@ -119,7 +119,7 @@ export function NoteList({ tabs }: NoteListProps) {
 				))}
 			</div>
 		) : isError && !notes.length ? (
-			<WidgetError message="یادداشت‌ها دریافت نشدند" onRetry={refetch} />
+			<WidgetError message="نتونستیم یادداشت‌ها رو بیاریم" onRetry={refetch} />
 		) : activeNote ? (
 			<div
 				key={activeNoteId}
@@ -160,7 +160,10 @@ export function NoteList({ tabs }: NoteListProps) {
 					if (noteToDelete) deleteNote(noteToDelete)
 					setNoteToDelete(null)
 				}}
-				message="این یادداشت پاک بشه؟"
+				title="این یادداشت حذف بشه؟"
+				message="دیگه نمی‌تونی برش گردونی."
+				confirmText="حذف"
+				cancelText="نه"
 			/>
 		</>
 	)

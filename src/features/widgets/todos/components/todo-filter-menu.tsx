@@ -43,7 +43,7 @@ export function TodoFilterMenu({
 			onChange: onDateFilterChange,
 		},
 		{
-			label: 'دسته‌بندی',
+			label: 'برچسب',
 			options: tagOptions,
 			value: tagFilter || '-all-',
 			onChange: onTagFilterChange,

@@ -9,7 +9,7 @@ const OPTION_CLASS =
 const priorityOptions = [
 	{
 		value: TodoPriority.Low,
-		label: 'کم اهمیت',
+		label: 'کم‌اهمیت',
 		color: 'text-success',
 		bg: 'bg-success-fill',
 	},

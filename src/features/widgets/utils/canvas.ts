@@ -65,7 +65,7 @@ export async function copyCanvasToClipboard(
 		canvas.toBlob(
 			async (blob) => {
 				if (!blob) {
-					showToast('خطا در ایجاد تصویر', 'error')
+					showToast('نتونستیم تصویر رو بسازیم', 'error')
 					resolve(false)
 					return
 				}
@@ -76,13 +76,10 @@ export async function copyCanvasToClipboard(
 							'image/png': blob,
 						}),
 					])
-					showToast('تصویر در کلیپ‌بورد کپی شد', 'success')
+					showToast('تصویر کپی شد', 'success')
 					resolve(true)
 				} catch {
-					showToast(
-						'امکان کپی خودکار در مرورگر وجود ندارد، تصویر را ذخیره کن',
-						'warning'
-					)
+					showToast('مرورگرت اجازه‌ی کپی نمی‌ده، تصویر رو دانلود کن', 'warning')
 					resolve(false)
 				}
 			},
@@ -104,10 +101,10 @@ export function downloadCanvasAsImage(
 		link.download = filename.endsWith('.png') ? filename : `${filename}.png`
 		link.href = dataUrl
 		link.click()
-		showToast('تصویر با موفقیت ذخیره شد', 'success')
+		showToast('تصویر دانلود شد', 'success')
 		return true
 	} catch {
-		showToast('خطا در دانلود تصویر', 'error')
+		showToast('نتونستیم تصویر رو دانلود کنیم', 'error')
 		return false
 	}
 }

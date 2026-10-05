@@ -226,7 +226,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 	if (isError && !notes.length) {
 		return (
 			<div className={frameClass}>
-				<WidgetError message="یادداشت‌ها دریافت نشدند" onRetry={refetch} />
+				<WidgetError message="نتونستیم یادداشت‌ها رو بیاریم" onRetry={refetch} />
 			</div>
 		)
 	}
@@ -258,7 +258,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 						{currentNote && (
 							<WidgetHeaderButton
 								tone={tone}
-								label="پاک کردن این یادداشت"
+								label="حذف این یادداشت"
 								icon="trash"
 								onClick={() => setShowDeleteConfirm(true)}
 							/>
@@ -345,7 +345,10 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 				isOpen={showDeleteConfirm}
 				onClose={() => setShowDeleteConfirm(false)}
 				onConfirm={handleDelete}
-				message="این یادداشت پاک بشه؟"
+				title="این یادداشت حذف بشه؟"
+				message="دیگه نمی‌تونی برش گردونی."
+				confirmText="حذف"
+				cancelText="نه"
 			/>
 		</div>
 	)
