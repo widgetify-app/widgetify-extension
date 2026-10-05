@@ -132,7 +132,6 @@ const ANALYTICS_EVENTS = [
 	'note_selected',
 	'note_sticky_next',
 	'note_sticky_prev',
-	'note_toggle_expand',
 	'notification_mood_clicked',
 	'notification_navbar_opened',
 	'notifications_action',

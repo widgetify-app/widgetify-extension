@@ -101,3 +101,21 @@ export function WidgetHeaderButton({
 		</Tooltip>
 	)
 }
+
+interface WidgetBackButtonProps {
+	label: string
+	onClick: () => void
+}
+
+export function WidgetBackButton({ label, onClick }: WidgetBackButtonProps) {
+	return (
+		<button
+			type="button"
+			onClick={onClick}
+			aria-label={label}
+			className="grid w-6 rounded-lg cursor-pointer h-7 -ms-1 place-items-center text-fg-muted transition-ui hover:text-fg-strong focus-visible:focus-ring"
+		>
+			<Icon name="chevronRight" size={16} aria-hidden="true" />
+		</button>
+	)
+}

@@ -408,7 +408,11 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			const isSticky = isStickyVariant(size, meta)
 
 			return (
-				<WidgetContainer padding={!isSticky} background={!isSticky}>
+				<WidgetContainer
+					padding={!isSticky}
+					background={!isSticky}
+					contentClassName={isSticky ? undefined : 'p-3 gap-2'}
+				>
 					<NotesLayout size={size} meta={meta} instanceId={instanceId} />
 				</WidgetContainer>
 			)

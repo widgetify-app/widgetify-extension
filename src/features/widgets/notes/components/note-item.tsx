@@ -1,88 +1,105 @@
 import moment from 'jalali-moment'
 import type React from 'react'
-import { useState } from 'react'
-import Analytics from '@/analytics'
 import { cn } from '@/common/utils/cn'
-import { Icon } from '@/icons'
+import { useKeyboardFocusWithin } from '@/features/widgets/hooks/use-keyboard-focus-within'
+import { Icon, type IconName } from '@/icons'
 import type { FetchedNote } from '@/services/note/note.interface'
-import { NOTE_PREVIEW_CHARACTER_LIMIT, PRIORITY_BG_COLORS } from '../constants'
+import { PRIORITY_BG_COLORS } from '../constants'
 
 interface NoteItemProps {
 	note: FetchedNote
 	onSelect: (noteId: string) => void
+	onDelete: (noteId: string) => void
 }
 
-export const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect }) => {
-	const [isExpanded, setIsExpanded] = useState(false)
-
-	const priorityBg = note.priority
-		? PRIORITY_BG_COLORS[note.priority]
-		: 'bg-surface-2 border border-surface-3'
-	const shouldShowReadMore =
-		!!note.body && note.body.length > NOTE_PREVIEW_CHARACTER_LIMIT
+export const NoteItem: React.FC<NoteItemProps> = ({ note, onSelect, onDelete }) => {
+	const keyboardFocus = useKeyboardFocusWithin()
 
 	const createdAt = moment(note.createdAt).locale('fa')
 	const title = note.title || 'بدون عنوان'
 
-	const toggleExpand = () => {
-		setIsExpanded(!isExpanded)
-		Analytics.event('note_toggle_expand')
-	}
-
 	return (
 		<article
-			className={cn('group flex flex-col rounded-2xl overflow-hidden', priorityBg)}
+			{...keyboardFocus}
+			className="flex items-start rounded-xl group/note transition-ui hover:bg-fill data-[keyboard-focus]:bg-fill"
 		>
 			<button
 				type="button"
 				onClick={() => onSelect(note.id)}
 				aria-label={`باز کردن یادداشت ${title}`}
-				className="flex flex-col w-full text-start cursor-pointer active:scale-[0.99] hover:opacity-90 focus-visible:focus-ring"
+				className="flex items-start flex-1 min-w-0 gap-2.5 p-2 rounded-xl cursor-pointer text-start focus-visible:focus-ring"
 			>
-				<span className="flex items-center justify-between w-full gap-2 px-2.5 py-1.5">
-					<span className="text-xs font-bold truncate">{title}</span>
-					<span className="flex items-center gap-1 shrink-0">
-						<Icon name="calendarDays" size={10} aria-hidden="true" />
-						<time
-							dateTime={createdAt.clone().locale('en').format('YYYY-MM-DD')}
-							className="text-3xs"
-						>
-							{createdAt.format('jD jMMM')}
-						</time>
-					</span>
-				</span>
-
-				<span className="block px-2.5 pb-2.5 pt-0 w-full">
+				<span
+					aria-hidden="true"
+					className="grid size-4 place-items-center shrink-0"
+				>
 					<span
 						className={cn(
-							'block text-2xs leading-relaxed text-shadow-2xs whitespace-pre-wrap wrap-break-word font-medium',
-							!isExpanded && shouldShowReadMore && 'line-clamp-3'
+							'rounded-full size-1.75',
+							note.priority
+								? PRIORITY_BG_COLORS[note.priority]
+								: 'bg-fg-ghost'
 						)}
-					>
-						{note.body}
+					/>
+				</span>
+				<span className="flex flex-col flex-1 min-w-0 leading-control">
+					<span className="text-xs font-semibold truncate text-fg">
+						{title}
 					</span>
+					{note.body && (
+						<span className="truncate text-2xs text-fg-muted">
+							{note.body}
+						</span>
+					)}
 				</span>
 			</button>
 
-			{shouldShowReadMore && (
-				<button
-					type="button"
-					onClick={toggleExpand}
-					aria-expanded={isExpanded}
-					aria-label={isExpanded ? 'بستن متن یادداشت' : 'نمایش کامل یادداشت'}
-					className="flex items-center gap-1 mx-2.5 mb-2 text-xs font-medium cursor-pointer text-fg-muted hover:bg-fill-2 p-0.5 rounded-full w-fit focus-visible:focus-ring"
+			<span className="flex items-center h-6 mt-1.5 shrink-0 pe-2">
+				<time
+					dateTime={createdAt.clone().locale('en').format('YYYY-MM-DD')}
+					className="px-0.5 font-medium text-3xs text-fg-faint group-hover/note:hidden group-data-[keyboard-focus]/note:hidden"
 				>
-					<Icon
-						name="chevronDown"
-						size={12}
-						aria-hidden="true"
-						className={cn(
-							'transition-transform duration-300',
-							isExpanded && 'rotate-180'
-						)}
+					{createdAt.format('jD jMMM')}
+				</time>
+				<span className="items-center hidden group-hover/note:flex group-data-[keyboard-focus]/note:flex">
+					<RowButton
+						icon="edit"
+						label="ویرایش یادداشت"
+						onClick={() => onSelect(note.id)}
 					/>
-				</button>
-			)}
+					<RowButton
+						icon="trash"
+						label="پاک کردن یادداشت"
+						onClick={() => onDelete(note.id)}
+						isDanger
+					/>
+				</span>
+			</span>
 		</article>
+	)
+}
+
+interface RowButtonProps {
+	icon: IconName
+	label: string
+	onClick: () => void
+	isDanger?: boolean
+}
+
+function RowButton({ icon, label, onClick, isDanger }: RowButtonProps) {
+	return (
+		<button
+			type="button"
+			onClick={onClick}
+			aria-label={label}
+			className={cn(
+				'grid rounded-lg cursor-pointer place-items-center size-6 text-fg-muted transition-ui focus-visible:focus-ring',
+				isDanger
+					? 'hover:bg-danger-fill hover:text-danger'
+					: 'hover:bg-fill-2 hover:text-fg-strong'
+			)}
+		>
+			<Icon name={icon} size={14} aria-hidden="true" />
+		</button>
 	)
 }

@@ -10,8 +10,6 @@ export interface NotesMeta {
 
 export interface StickyColorTheme {
 	bg: string
-	border: string
 	text: string
-	headerBg: string
-	divider: string
+	onColor: boolean
 }

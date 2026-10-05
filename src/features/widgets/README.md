@@ -24,10 +24,11 @@ Keyboard focus means `data-keyboard-focus` on the frame, set by `hooks/use-keybo
 - `components/widget-header.tsx`: `WidgetHeader` (title or tabs, a badge, info that fades on hover, up to two actions, then ⋯) and `WidgetHeaderButton`. A working widget always has a header; a display widget never does.
 - `components/widget-menu-button.tsx`: the ⋯. A header renders it; a widget without a header renders `<WidgetMenuButton placement="floating" />` once. `compact` fits a short top row, `corner` sits outside the frame on a widget without one (bookmarks), `image` is a dark glass button for a frameless widget over the wallpaper. `tone="onColor"` makes header controls follow the text colour of a coloured card.
 - The reveal is the `widget-control` and `widget-info` utilities in `src/styles/utilities.css`. Wrap a control in `widget-control` instead of toggling it in React; it reserves its space, so nothing moves.
+- Where reserving that space costs the content too much (the sticky note's text), lay the control over the content and give the content `widget-control-fade`. It fades the bottom 40px on the same trigger, with a mask, so it works on glass and on a coloured card alike.
 - A hidden `widget-info` must not take the pointer. It shares a grid cell with the controls, and an element below full opacity is painted above plain siblings, so without `pointer-events: none` the faded text sat on top of the buttons and only the strip below it took a click.
 - Edit mode hides the controls and no longer opens the menu on right click.
-- Migrated so far: todos. The other widgets still show their old buttons and have no ⋯ yet. A migrated widget places its own ⋯ (a header, or one `WidgetMenuButton`) and puts its actions in the shared menu instead of a menu of its own.
-- `PopoverMenuItem` takes a `description` for a second line.
+- Migrated so far: todos, notes. The other widgets still show their old buttons and have no ⋯ yet. A migrated widget places its own ⋯ (a header, or one `WidgetMenuButton`) and puts its actions in the shared menu instead of a menu of its own.
+- `WidgetBackButton` leads a sub-view's header (an open note). `PopoverMenuItem` takes a `description` for a second line.
 
 ## Rules
 
