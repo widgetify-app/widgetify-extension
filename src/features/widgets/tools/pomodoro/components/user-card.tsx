@@ -24,7 +24,7 @@ export function UserCard({ user, className = '' }: UserCardProps) {
 			{ username: user.username },
 			{
 				onSuccess: () => {
-					showToast('درخواست دوستی با موفقیت ارسال شد', 'success')
+					showToast('درخواست دوستی فرستاده شد', 'success')
 				},
 				onError: (err) => {
 					const message = translateError(err)
@@ -66,7 +66,7 @@ export function UserCard({ user, className = '' }: UserCardProps) {
 												className="flex items-center text-3xs!"
 												color="brand"
 												loading={isSending}
-												loadingText="در حال ارسال..."
+												loadingText="در حال ارسال…"
 												onClick={() => onAddClick()}
 											>
 												<Icon name="usersPlus" size={14} />

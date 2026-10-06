@@ -1,22 +1,31 @@
-import { Button } from '@/components/ui'
 import type React from 'react'
+import { cn } from '@/common/utils/cn'
+import { Icon, type IconName } from '@/icons'
 
 interface ControlButtonProps {
-	icon: React.ReactNode
+	icon: IconName
+	label: string
 	onClick: () => void
-	mode: string
+	isPrimary?: boolean
 }
 
-export const ControlButton: React.FC<ControlButtonProps> = ({ icon, onClick, mode }) => {
-	const isPrimary = ['play', 'pause'].includes(mode)
-	return (
-		<Button
-			onClick={onClick}
-			size="md"
-			color={isPrimary ? 'brand' : 'base'}
-			className={`rounded-full p-0! w-10 text-center  border-none shadow-none transition-colors duration-300 ease-in-out`}
-		>
-			{icon}
-		</Button>
-	)
-}
+export const ControlButton: React.FC<ControlButtonProps> = ({
+	icon,
+	label,
+	onClick,
+	isPrimary = false,
+}) => (
+	<button
+		type="button"
+		onClick={onClick}
+		aria-label={label}
+		className={cn(
+			'grid rounded-full cursor-pointer place-items-center transition-ui active:scale-95 focus-visible:focus-ring',
+			isPrimary
+				? 'size-12 bg-brand text-on-brand shadow-md shadow-brand-fill-2 hover:bg-brand-hover'
+				: 'size-7 rounded-lg text-fg-muted hover:bg-fill-2 hover:text-fg-strong'
+		)}
+	>
+		<Icon name={icon} size={isPrimary ? 20 : 16} aria-hidden="true" />
+	</button>
+)

@@ -1,87 +1,71 @@
 import type React from 'react'
-import { modeFullLabels } from '../constants'
+import { cn } from '@/common/utils/cn'
 import type { TimerMode } from '../types'
+import { formatTimer } from '../../utils/pomodoro-time'
 
-const modeColors = {
-	work: 'stroke-brand',
-	'short-break': 'stroke-success',
-	'long-break': 'stroke-warning',
-}
+const RADIUS = 46
 
 interface TimerDisplayProps {
 	timeLeft: number
 	progress: number
 	mode: TimerMode
+	label: string
+	isLarge?: boolean
 }
 
 export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 	timeLeft,
 	progress,
 	mode,
-}) => {
-	const formatTime = (seconds: number) => {
-		const mins = Math.floor(seconds / 60)
-		const secs = seconds % 60
-		return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
-	}
-	return (
-		<div className="h-full aspect-square max-h-36">
-			<svg aria-hidden="true" className="w-full h-full" viewBox="0 0 100 100">
-				<circle
-					cx="50"
-					cy="50"
-					r="45"
-					fill="none"
-					className="stroke-line"
-					strokeWidth="5"
-					filter="url(#shadow)"
-				/>
-				{/* Progress circle with gradient and smooth animation */}
-				<circle
-					cx="50"
-					cy="50"
-					r="45"
-					fill="none"
-					stroke="url(#progressGradient)"
-					strokeWidth="5"
-					strokeDasharray="283"
-					strokeDashoffset={283 - (283 * progress) / 100}
-					transform="rotate(-90 50 50)"
-					className={`transition-[stroke-dashoffset] duration-1000 ease-out ${modeColors[mode]}`}
-					strokeLinecap="round"
-				/>
-				<circle
-					cx="50"
-					cy="50"
-					r="40"
-					fill="none"
-					className="stroke-line"
-					strokeWidth="1"
-				/>
-				<text
-					x="50"
-					y="50"
-					className={'text-fg-strong'}
-					textAnchor="middle"
-					dominantBaseline="middle"
-					fontSize="16"
-					fontWeight="bold"
-					fill="currentColor"
-				>
-					{formatTime(timeLeft)}
-				</text>
-				{/* Current mode text */}
-				<text
-					x="50"
-					y="65"
-					textAnchor="middle"
-					fontSize="7"
-					fill="currentColor"
-					className={'text-fg-muted'}
-				>
-					{modeFullLabels[mode]}
-				</text>
-			</svg>{' '}
-		</div>
-	)
-}
+	label,
+	isLarge = false,
+}) => (
+	<div
+		role="timer"
+		aria-label={`${formatTimer(timeLeft)}، ${label}`}
+		className={cn(
+			'relative grid place-items-center shrink-0',
+			isLarge ? 'size-40' : 'size-32'
+		)}
+	>
+		<svg
+			aria-hidden="true"
+			className="absolute inset-0 -rotate-90 size-full"
+			viewBox="0 0 100 100"
+		>
+			<circle
+				cx="50"
+				cy="50"
+				r={RADIUS}
+				fill="none"
+				className="stroke-fill-2"
+				strokeWidth="4"
+			/>
+			<circle
+				cx="50"
+				cy="50"
+				r={RADIUS}
+				fill="none"
+				strokeWidth="4"
+				strokeLinecap="round"
+				pathLength={100}
+				strokeDasharray={`${progress} 100`}
+				className={cn(
+					'transition-[stroke-dasharray] duration-1000 ease-out',
+					mode === 'work' ? 'stroke-brand' : 'stroke-success'
+				)}
+			/>
+		</svg>
+		<span aria-hidden="true" className="relative flex flex-col items-center">
+			<span
+				className={cn(
+					'font-extrabold leading-none tabular-nums text-fg-strong',
+					isLarge ? 'text-3xl' : 'text-2xl'
+				)}
+			>
+				{formatTimer(timeLeft)}
+			</span>
+			<span className="mt-1 text-3xs text-fg-faint">{label}</span>
+		</span>
+	</div>
+)

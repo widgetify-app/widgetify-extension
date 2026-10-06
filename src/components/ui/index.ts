@@ -14,8 +14,6 @@ export * from './bottom-sheet/bottom-sheet'
 export * from './button/button'
 export * from './button/button.variants'
 
-export * from './checkbox/checkbox'
-
 export * from './chip/chip'
 export * from './chip/chip.variants'
 

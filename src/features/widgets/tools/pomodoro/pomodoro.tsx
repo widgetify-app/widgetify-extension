@@ -1,27 +1,35 @@
 import type React from 'react'
-import { useEffect, useMemo, useState } from 'react'
+import { type ReactNode, useEffect, useMemo, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
-import { Button, SelectBox } from '@/components/ui'
-import { Tooltip } from '@/components/ui'
+import { PopoverMenuItem, TabNavigation } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { useCreatePomodoroSession } from '@/services/pomodoro/create-session.hook'
 import { TopUsersType } from '@/services/pomodoro/get-top-users.hook'
 import { ControlButton } from './components/control-button'
 import { RequestNotificationModal } from './components/request-notification-modal'
+import { PomodoroSettingsForm } from './components/settings-form'
 import { PomodoroSettingsPanel } from './components/settings-panel'
 import { TimerDisplay } from './components/timer-display'
 import { TopUsersTab } from './top-users/top-users'
-import { ALARM_SOUND_URL } from './constants'
+import { ALARM_SOUND_URL, modeFullLabels } from './constants'
 import type { PomodoroSettings, TimerMode } from './types'
-import { TabNavigation } from '@/components/ui'
+
+export type { PomodoroSession, PomodoroSettings } from './types'
 import { Icon } from '@/icons'
+import {
+	WidgetBackButton,
+	WidgetHeaderButton,
+} from '@/features/widgets/components/widget-header'
+import { useWidgetMenuActions } from '@/features/widgets/widget-menu.context'
+import { ToolHeader } from '../components/tool-header'
 
 interface PomodoroTimerProps {
+	tabs?: ReactNode
 	onComplete?: () => void
 }
 
-export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
+export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ tabs, onComplete }) => {
 	const [isRunning, setIsRunning] = useState(false)
 	const [mode, setMode] = useState<TimerMode>('work')
 	const [timeLeft, setTimeLeft] = useState(25 * 60)
@@ -116,8 +124,8 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 
 		if (Notification.permission === 'granted') {
 			const textList: Record<TimerMode, string> = {
-				work: 'تایمر کار تمام شد! حالا وقت یه استراحت کوتاهه.',
-				'short-break': 'استراحت کوتاه تموم شد! آماده‌اید به کار ادامه بدید؟',
+				work: 'وقت کار تموم شد، یه استراحت کوتاه بکن',
+				'short-break': 'استراحت تموم شد، آماده‌ای برگردی سر کار؟',
 			}
 
 			new Notification('تایمر پومودورو', {
@@ -250,164 +258,197 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onComplete }) => {
 
 	const handleUpdateSettings = (newSettings: PomodoroSettings) => {
 		setSettings(newSettings)
+		setToStorage('pomodoro_settings', newSettings)
 
-		let newTimeLeft = timeLeft
-		if (mode === 'work') {
-			newTimeLeft = newSettings.workTime * 60
-			setTimeLeft(newTimeLeft)
-		} else {
-			newTimeLeft = newSettings.shortBreakTime * 60
-			setTimeLeft(newTimeLeft)
-		}
+		const minutesFor = (value: PomodoroSettings) =>
+			mode === 'work' ? value.workTime : value.shortBreakTime
+		if (minutesFor(newSettings) === minutesFor(settings)) return
 
-		const sessionData = {
+		const newTimeLeft = minutesFor(newSettings) * 60
+		setIsRunning(false)
+		setTimeLeft(newTimeLeft)
+		setToStorage('pomodoro_session', {
 			startTime: Date.now(),
 			mode,
 			initialTimeLeft: newTimeLeft,
 			maxTime: newTimeLeft,
 			cycles,
 			isRunning: false,
-		}
-		setToStorage('pomodoro_session', sessionData)
-		setToStorage('pomodoro_settings', newSettings)
+		})
 	}
 
-	const onChangeTopUsersType = (val: string) => {
-		setTopUsersType(val as TopUsersType)
+	const onChangeTopUsersType = (val: TopUsersType) => {
+		setTopUsersType(val)
 		Analytics.event(`${val}_top_users_view`)
 	}
 
-	return (
-		<div className="relative flex flex-col h-full min-h-0 overflow-hidden rounded-xl">
-			<div className="relative flex items-center justify-between flex-none mb-1 py-0.5">
-				<div className={`flex items-center gap-x-0.5`}>
-					{currentTab === 'timer' ? (
-						<TabNavigation
-							tabMode="simple"
-							activeTab={mode}
-							onTabClick={(v) => handleModeChange(v as any)}
-							tabs={[
-								{
-									label: 'کار',
-									id: 'work',
-								},
-								{
-									label: 'استراحت',
-									id: 'short-break',
-								},
-							]}
-							size="sm"
-							className="h-8 mb-0! border-none w-28"
-						/>
-					) : (
-						<SelectBox
-							value={topUsersType}
-							options={[
-								{ label: 'جدول کلی', value: TopUsersType.ALL_TIME },
-								{ label: 'جدول هفتگی', value: TopUsersType.WEEKLY },
-								{ label: 'جدول روزانه', value: TopUsersType.DAILY },
-							]}
-							onChange={(val) => onChangeTopUsersType(val)}
-						/>
-					)}
-				</div>
+	const settingsSummary = `کار ${settings.workTime} · استراحت ${settings.shortBreakTime} دقیقه`
+	const openSettings = () => setShowSettings(true)
 
-				<div className="flex flex-row items-center gap-x-1">
-					<Tooltip
-						content={
-							currentTab === 'timer'
-								? 'جدول برترین کاربران'
-								: 'بازگشت به تایمر'
-						}
-					>
-						<Button
-							size="sm"
-							onClick={() =>
-								setCurrentTab(
-									currentTab === 'timer' ? 'top-users' : 'timer'
-								)
-							}
-							className={`px-2 py-0! border-none! rounded-xl text-fg-faint shrink-0 active:scale-95 h-7!`}
-						>
-							<Icon name="coffee" size={12} />
-						</Button>
-					</Tooltip>
-					<Tooltip content="شخصی سازی">
-						<Button
-							size="sm"
-							onClick={() => setShowSettings(!showSettings)}
-							className={`px-2 py-0! border-none! rounded-xl text-fg-faint shrink-0 active:scale-95 h-7!`}
-						>
-							<Icon name="menuOption" className="w-4 h-4" />
-						</Button>
-					</Tooltip>
-				</div>
+	useWidgetMenuActions(
+		<PopoverMenuItem
+			icon={<Icon name="timer" size={14} />}
+			label="تنظیمات تایمر"
+			description={settingsSummary}
+			onClick={openSettings}
+		/>
+	)
+
+	const isBreak = mode === 'short-break'
+	const isInModal = !tabs
+	const timerLabel = isRunning
+		? isBreak
+			? 'تا کار'
+			: 'تا استراحت'
+		: modeFullLabels[mode]
+
+	const timerView = (
+		<div className="flex flex-col items-center justify-center flex-1 min-w-0 min-h-0 gap-2.5">
+			<TabNavigation
+				tabMode="simple"
+				activeTab={mode}
+				onTabClick={(value) => handleModeChange(value)}
+				tabs={[
+					{ label: 'کار', id: 'work' as const },
+					{ label: 'استراحت', id: 'short-break' as const },
+				]}
+				size="sm"
+				className="h-7 p-0.5 border-none rounded-xl w-37.5 bg-fill"
+				activeBgClass="bg-surface rounded-lg shadow-sm"
+				activeTextClass="text-fg-strong"
+			/>
+
+			<TimerDisplay
+				timeLeft={timeLeft}
+				progress={progress}
+				mode={mode}
+				label={timerLabel}
+				isLarge={isInModal}
+			/>
+
+			<div className="flex items-center gap-4.5">
+				<ControlButton icon="reload" label="از اول" onClick={handleReset} />
+				{isRunning ? (
+					<ControlButton
+						icon="pause"
+						label="مکث"
+						onClick={handlePause}
+						isPrimary
+					/>
+				) : (
+					<ControlButton
+						icon="play"
+						label="شروع"
+						onClick={handleStart}
+						isPrimary
+					/>
+				)}
+				{isBreak ? (
+					<ControlButton
+						icon="check"
+						label="برو به کار"
+						onClick={() => handleModeChange('work')}
+					/>
+				) : (
+					<ControlButton
+						icon="coffee"
+						label="برو به استراحت"
+						onClick={() => handleModeChange('short-break')}
+					/>
+				)}
 			</div>
+		</div>
+	)
 
-			{currentTab === 'timer' ? (
-				<div className="relative flex flex-col flex-1 min-h-0 gap-y-2">
-					<div className="flex items-center justify-center flex-1 min-h-0">
-						<TimerDisplay
-							timeLeft={timeLeft}
-							progress={progress}
-							mode={mode}
+	return (
+		<>
+			{currentTab === 'top-users' ? (
+				<>
+					<ToolHeader
+						tabs={tabs}
+						title="جدول برترین‌ها"
+						leading={
+							<WidgetBackButton
+								label="بازگشت به تایمر"
+								onClick={() => setCurrentTab('timer')}
+							/>
+						}
+					/>
+					<TabNavigation
+						tabMode="simple"
+						activeTab={topUsersType}
+						onTabClick={onChangeTopUsersType}
+						tabs={[
+							{ label: 'امروز', id: TopUsersType.DAILY },
+							{ label: 'این هفته', id: TopUsersType.WEEKLY },
+							{ label: 'همه', id: TopUsersType.ALL_TIME },
+						]}
+						size="sm"
+						className="h-7 p-0.5 border-none rounded-xl shrink-0 bg-fill"
+						activeBgClass="bg-surface rounded-lg shadow-sm"
+						activeTextClass="text-fg-strong"
+					/>
+					<TopUsersTab type={topUsersType} />
+				</>
+			) : isInModal ? (
+				<div className="flex flex-1 min-h-0 gap-5">
+					{timerView}
+					<aside
+						aria-label="تنظیمات تایمر"
+						className="flex flex-col w-60 gap-2.5 shrink-0 border-s border-line ps-5"
+					>
+						<h4 className="text-xs font-bold text-fg-strong">تنظیمات</h4>
+						<PomodoroSettingsForm
+							settings={settings}
+							onChange={handleUpdateSettings}
 						/>
-					</div>
-
-					<div className="flex justify-center flex-none gap-x-4">
-						<ControlButton
-							mode={'reset'}
-							icon={<Icon name="reload" size={16} strokeWidth={1} />}
-							onClick={handleReset}
-						/>
-
-						{isRunning ? (
-							<ControlButton
-								mode={'pause'}
-								icon={<Icon name="pause" size={16} strokeWidth={0.55} />}
-								onClick={handlePause}
+						<button
+							type="button"
+							onClick={() => setCurrentTab('top-users')}
+							className="flex items-center h-10 gap-2 px-3 mt-auto text-xs font-semibold cursor-pointer rounded-xl bg-fill text-fg transition-ui hover:bg-fill-2 focus-visible:focus-ring"
+						>
+							<Icon
+								name="crown"
+								size={14}
+								aria-hidden="true"
+								className="text-warning"
 							/>
-						) : (
-							<ControlButton
-								mode={'play'}
-								icon={<Icon name="play" size={24} />}
-								onClick={handleStart}
+							جدول برترین‌ها
+							<Icon
+								name="chevronLeft"
+								size={14}
+								aria-hidden="true"
+								className="ms-auto text-fg-faint"
 							/>
-						)}
-
-						{mode.includes('break') && (
-							<ControlButton
-								mode={'check'}
-								icon={<Icon name="check" size={16} strokeWidth={0.55} />}
-								onClick={() => handleModeChange('work')}
-							/>
-						)}
-
-						{mode === 'work' && (
-							<ControlButton
-								mode={'coffee'}
-								icon={<Icon name="coffee" size={16} strokeWidth={1} />}
-								onClick={() => handleModeChange('short-break')}
-							/>
-						)}
-					</div>
+						</button>
+					</aside>
 				</div>
 			) : (
-				<TopUsersTab type={topUsersType} />
+				<>
+					<ToolHeader
+						tabs={tabs}
+						actions={
+							<WidgetHeaderButton
+								label="جدول برترین‌ها"
+								icon="crown"
+								onClick={() => setCurrentTab('top-users')}
+							/>
+						}
+					/>
+					{timerView}
+				</>
 			)}
-			{/* Settings panel */}
 			<PomodoroSettingsPanel
 				isOpen={showSettings}
 				onClose={() => setShowSettings(false)}
 				settings={settings}
 				onUpdateSettings={handleUpdateSettings}
-				onReset={handleReset}
 			/>
 			<RequestNotificationModal
 				setShowRequireNotificationModal={setShowRequireNotificationModal}
 				showRequireNotificationModal={showRequireNotificationModal}
 				startPomodoro={handleStart}
 			/>
-		</div>
+		</>
 	)
 }
