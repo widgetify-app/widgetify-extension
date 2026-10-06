@@ -4,11 +4,6 @@ export const DEFAULT_DOT_CALENDAR_VARIANT: DotCalendarVariant = 'year'
 
 export const DOT_CALENDAR_VARIANTS: DotCalendarVariant[] = ['year', 'goal']
 
-export const DOT_CALENDAR_VARIANT_LABEL: Record<DotCalendarVariant, string> = {
-	year: 'روزهای سال',
-	goal: 'روزشمار هدف',
-}
-
 export const GOAL_DATE_FORMAT = 'YYYY-MM-DD'
 
 export const GOAL_MAX_DAYS = 366

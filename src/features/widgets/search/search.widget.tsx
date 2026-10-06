@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Analytics from '@/analytics'
+import { cn } from '@/common/utils/cn'
 import { useAuth } from '@/context/auth.context'
-import { Icon } from '@/icons'
 import type { EngineMeta } from '@/services/trends/get-trends.hook'
 import type { WidgetSize } from '../utils/layout-engine/types'
 import { BrowserBookmark } from './components/bookmark/browser-bookmark'
@@ -15,6 +15,14 @@ import { DEFAULT_ENGINE } from './constants'
 import { usePortalAnchor } from './hooks/use-portal-anchor'
 import { useSearchHistory } from './hooks/use-search-history'
 import { runSearch } from './utils/run-search'
+import { WidgetContainer } from '../components/widget-container'
+import { WidgetMenuButton } from '../components/widget-menu-button'
+import {
+	SEARCH_BOX_CLASS,
+	SEARCH_INPUT_CLASS,
+	SearchBoxButton,
+	SearchMenuButton,
+} from './components/search-box-parts'
 import { SearchCompactRow } from './variants/search-2x1'
 
 interface SearchLayoutProps {
@@ -144,106 +152,92 @@ function SearchFullContent() {
 	}, [showHistoryPortal, activePortal])
 
 	return (
-		<div className="flex flex-col items-center justify-center w-full h-full">
-			<div
-				ref={searchRef}
-				className="relative w-full p-1 bg-glass-surface-2 rounded-widget"
-			>
-				<form onSubmit={handleSubmit}>
-					<div
-						ref={searchRowRef}
-						className="relative flex items-center px-3 py-1.5 overflow-hidden transition-ui duration-300 rounded-2xl bg-surface-2 group"
-					>
-						<EngineSelector onSelected={onEngineSelected} />
+		<div
+			ref={searchRef}
+			className="relative flex flex-col justify-center h-full gap-1.5"
+		>
+			<form onSubmit={handleSubmit}>
+				<div ref={searchRowRef} className={cn(SEARCH_BOX_CLASS, 'bg-fill')}>
+					<EngineSelector onSelected={onEngineSelected} />
 
-						<input
-							ref={inputRef}
-							type="text"
-							name="search"
-							value={searchQuery}
-							onChange={(e) => {
-								setSearchQuery(e.target.value)
-								setSelectedIndex(-1)
-							}}
-							onKeyDown={handleKeyDown}
-							onFocus={() => {
-								setShowHistoryPortal(true)
-								Analytics.event('search_input_focused')
-								updateHistoryPosition()
-							}}
-							className="w-full py-1.5 text-base font-light text-right focus:outline-none text-fg placeholder:text-fg-muted placeholder:font-medium focus:placeholder:opacity-50 bg-transparent"
-							placeholder={`جستجو در ${selectedEngine.label}`}
-							aria-label={`جستجو در ${selectedEngine.label}`}
-							autoComplete="off"
-						/>
+					<input
+						ref={inputRef}
+						type="text"
+						name="search"
+						value={searchQuery}
+						onChange={(e) => {
+							setSearchQuery(e.target.value)
+							setSelectedIndex(-1)
+						}}
+						onKeyDown={handleKeyDown}
+						onFocus={() => {
+							setShowHistoryPortal(true)
+							Analytics.event('search_input_focused')
+							updateHistoryPosition()
+						}}
+						className={SEARCH_INPUT_CLASS}
+						placeholder={`جستجو در ${selectedEngine.label}`}
+						aria-label={`جستجو در ${selectedEngine.label}`}
+						autoComplete="off"
+					/>
 
-						<button
-							type="button"
-							onClick={handleClearSearch}
-							aria-label="پاک کردن عبارت جستجو"
-							className={`h-9 w-9 shrink-0 flex items-center justify-center rounded-full cursor-pointer transition-ui duration-300 ${searchQuery ? 'opacity-70 hover:opacity-100 hover:bg-surface-3' : 'opacity-0 pointer-events-none'}`}
-						>
-							<Icon
-								name="close"
-								size={20}
-								className="opacity-50"
-								aria-hidden="true"
+					{searchQuery ? (
+						<>
+							<SearchBoxButton
+								label="پاک کردن عبارت جستجو"
+								icon="close"
+								onClick={handleClearSearch}
 							/>
-						</button>
-
-						<div
-							className={`${searchQuery ? 'opacity-0 hidden' : 'flex'} items-center gap-0.5 ml-1 transition-ui duration-300`}
-						>
+							<SearchBoxButton
+								label="جستجو"
+								icon="search"
+								onClick={handleSearchButtonClick}
+								isActive
+							/>
+						</>
+					) : (
+						<>
 							<ImageSearchButton onClick={() => setActivePortal('image')} />
 							<VoiceSearchButton onClick={() => setActivePortal('voice')} />
-						</div>
+						</>
+					)}
+				</div>
+			</form>
 
-						<button
-							type="button"
-							onClick={handleSearchButtonClick}
-							aria-label="جستجو"
-							className={`${searchQuery ? 'flex' : 'opacity-0 hidden'} h-9 w-9 shrink-0 flex items-center justify-center rounded-full cursor-pointer hover:bg-surface-3 border-none bg-transparent p-0`}
-						>
-							<Icon
-								name="search"
-								size={20}
-								className="opacity-50"
-								aria-hidden="true"
-							/>
-						</button>
-
-						<div className="absolute inset-0 transition-ui duration-300 border-2 pointer-events-none rounded-2xl border-[rgba(var(--color-base-content-rgb),0.02)]" />
-					</div>
-				</form>
-
-				{activePortal === 'voice' && (
-					<VoiceSearchPortal
-						portalRef={portalRef}
-						portalStyles={toolStyles}
-						onClose={() => setActivePortal(null)}
-						onSearch={handleVoiceSearch}
-					/>
-				)}
-
-				{activePortal === 'image' && (
-					<ImageSearchPortal
-						portalRef={portalRef}
-						portalStyles={toolStyles}
-						onClose={() => setActivePortal(null)}
-					/>
-				)}
-
-				<SearchHistoryPortal
-					isOpen={isHistoryOpen}
+			{activePortal === 'voice' && (
+				<VoiceSearchPortal
 					portalRef={portalRef}
-					onSearch={handleHistorySearch}
-					searchQuery={searchQuery}
-					portalStyles={historyStyles}
-					selectedIndex={selectedIndex}
-					onSuggestionsChange={setCurrentSuggestions}
+					portalStyles={toolStyles}
+					onClose={() => setActivePortal(null)}
+					onSearch={handleVoiceSearch}
 				/>
+			)}
 
-				<BrowserBookmark />
+			{activePortal === 'image' && (
+				<ImageSearchPortal
+					portalRef={portalRef}
+					portalStyles={toolStyles}
+					onClose={() => setActivePortal(null)}
+				/>
+			)}
+
+			<SearchHistoryPortal
+				isOpen={isHistoryOpen}
+				portalRef={portalRef}
+				onSearch={handleHistorySearch}
+				searchQuery={searchQuery}
+				portalStyles={historyStyles}
+				selectedIndex={selectedIndex}
+				onSuggestionsChange={setCurrentSuggestions}
+			/>
+
+			<div className="flex items-center gap-1.5">
+				<div className="flex-1 min-w-0">
+					<BrowserBookmark />
+				</div>
+				<span className="widget-control shrink-0">
+					<WidgetMenuButton placement="compact" />
+				</span>
 			</div>
 		</div>
 	)
@@ -251,8 +245,17 @@ function SearchFullContent() {
 
 export function SearchLayout({ size }: SearchLayoutProps = {}) {
 	if (size && size.w <= 2) {
-		return <SearchCompactRow />
+		return (
+			<WidgetContainer background={false} contentClassName="justify-center">
+				<SearchCompactRow />
+				<SearchMenuButton />
+			</WidgetContainer>
+		)
 	}
 
-	return <SearchFullContent />
+	return (
+		<WidgetContainer contentClassName="p-2">
+			<SearchFullContent />
+		</WidgetContainer>
+	)
 }

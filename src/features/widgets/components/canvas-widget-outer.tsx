@@ -462,7 +462,12 @@ function CanvasWidgetOuterImpl({
 					onResize={handleResize}
 					onDuplicate={handleDuplicate}
 					onMove={handleMove}
-					onSettings={definition.settingsTab ? handleSettings : undefined}
+					onSettings={
+						definition.settingsTab &&
+						(definition.hasSettings?.(widget.meta) ?? true)
+							? handleSettings
+							: undefined
+					}
 					onEditVariant={
 						definition.variants?.length ? handleEditVariant : undefined
 					}

@@ -8,16 +8,28 @@ function day(iso: string) {
 }
 
 describe('getGoalProgress', () => {
-	it('counts both the start and the end day', () => {
+	it('draws both the start and the end day but counts the days until the goal', () => {
 		const progress = getGoalProgress('2026-01-01', '2026-01-10', day('2026-01-01'))
 
-		expect(progress).toEqual({ totalDays: 10, passedDays: 0, daysLeft: 10 })
+		expect(progress).toEqual({ totalDays: 10, passedDays: 0, daysLeft: 9 })
 	})
 
 	it('moves one dot per elapsed day', () => {
 		const progress = getGoalProgress('2026-01-01', '2026-01-10', day('2026-01-04'))
 
-		expect(progress).toEqual({ totalDays: 10, passedDays: 3, daysLeft: 7 })
+		expect(progress).toEqual({ totalDays: 10, passedDays: 3, daysLeft: 6 })
+	})
+
+	it('says one day left the day before the goal', () => {
+		const progress = getGoalProgress('2026-01-01', '2026-01-02', day('2026-01-01'))
+
+		expect(progress?.daysLeft).toBe(1)
+	})
+
+	it('reports the goal reached on the goal day itself, ringing its last dot', () => {
+		const progress = getGoalProgress('2026-01-01', '2026-01-10', day('2026-01-10'))
+
+		expect(progress).toEqual({ totalDays: 10, passedDays: 9, daysLeft: 0 })
 	})
 
 	it('reports nothing left once the goal day has passed', () => {

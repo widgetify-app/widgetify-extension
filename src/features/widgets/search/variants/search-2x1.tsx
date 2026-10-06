@@ -1,9 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import Analytics from '@/analytics'
+import { cn } from '@/common/utils/cn'
 import { useAuth } from '@/context/auth.context'
-import { Icon } from '@/icons'
 import type { EngineMeta } from '@/services/trends/get-trends.hook'
 import { EngineSelector } from '../components/engine-selector'
+import {
+	SEARCH_BOX_CLASS,
+	SEARCH_INPUT_CLASS,
+	SearchBoxButton,
+} from '../components/search-box-parts'
 import { SearchHistoryPortal } from '../components/search-history-portal'
 import { DEFAULT_ENGINE } from '../constants'
 import { usePortalAnchor } from '../hooks/use-portal-anchor'
@@ -128,61 +133,49 @@ export function SearchCompactRow() {
 	const hasQuery = searchQuery.length > 0
 
 	return (
-		<div className="flex items-center justify-center w-full h-full p-1 select-none">
-			<div ref={searchRef} className="relative w-full">
-				<form onSubmit={handleSubmit}>
-					<div className="relative flex items-center px-2 py-1.5 overflow-hidden transition-ui duration-300 shadow-sm bg-glass-surface-2 rounded-2xl">
-						<EngineSelector onSelected={onEngineSelected} />
+		<div ref={searchRef} className="relative w-full">
+			<form onSubmit={handleSubmit}>
+				<div className={cn(SEARCH_BOX_CLASS, 'bg-glass-surface')}>
+					<EngineSelector onSelected={onEngineSelected} />
 
-						<input
-							ref={inputRef}
-							type="text"
-							name="search"
-							value={searchQuery}
-							onChange={(e) => {
-								setSearchQuery(e.target.value)
-								setSelectedIndex(-1)
-							}}
-							onKeyDown={handleKeyDown}
-							onFocus={() => {
-								setShowHistoryPortal(true)
-								updatePosition()
-								Analytics.event('search_input_focused_2x1')
-							}}
-							className="w-full py-1 px-1.5 text-xs font-light text-right focus:outline-none text-fg placeholder:text-fg-muted placeholder:font-medium bg-transparent"
-							placeholder="جستجو..."
-							aria-label="جستجو"
-							autoComplete="off"
-						/>
+					<input
+						ref={inputRef}
+						type="text"
+						name="search"
+						value={searchQuery}
+						onChange={(e) => {
+							setSearchQuery(e.target.value)
+							setSelectedIndex(-1)
+						}}
+						onKeyDown={handleKeyDown}
+						onFocus={() => {
+							setShowHistoryPortal(true)
+							updatePosition()
+							Analytics.event('search_input_focused_2x1')
+						}}
+						className={SEARCH_INPUT_CLASS}
+						placeholder="جستجو..."
+						aria-label="جستجو"
+						autoComplete="off"
+					/>
 
-						<button
-							type="button"
-							onClick={
-								hasQuery ? handleClearSearch : handleSearchButtonClick
-							}
-							aria-label={hasQuery ? 'پاک کردن عبارت جستجو' : 'جستجو'}
-							className="flex items-center justify-center w-6 h-6 transition-colors rounded-full cursor-pointer shrink-0 hover:bg-surface-3"
-						>
-							<Icon
-								name={hasQuery ? 'close' : 'search'}
-								size={14}
-								className="opacity-50"
-								aria-hidden="true"
-							/>
-						</button>
-					</div>
-				</form>
+					<SearchBoxButton
+						label={hasQuery ? 'پاک کردن عبارت جستجو' : 'جستجو'}
+						icon={hasQuery ? 'close' : 'search'}
+						onClick={hasQuery ? handleClearSearch : handleSearchButtonClick}
+					/>
+				</div>
+			</form>
 
-				<SearchHistoryPortal
-					isOpen={showHistoryPortal}
-					portalRef={portalRef}
-					onSearch={handleHistorySearch}
-					searchQuery={searchQuery}
-					portalStyles={portalStyles}
-					selectedIndex={selectedIndex}
-					onSuggestionsChange={setCurrentSuggestions}
-				/>
-			</div>
+			<SearchHistoryPortal
+				isOpen={showHistoryPortal}
+				portalRef={portalRef}
+				onSearch={handleHistorySearch}
+				searchQuery={searchQuery}
+				portalStyles={portalStyles}
+				selectedIndex={selectedIndex}
+				onSuggestionsChange={setCurrentSuggestions}
+			/>
 		</div>
 	)
 }

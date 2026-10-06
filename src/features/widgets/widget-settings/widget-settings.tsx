@@ -44,8 +44,8 @@ const WIDGET_SETTING_MODALS: Record<string, WidgetSettingModalConfig> = {
 		Component: ComboSetting,
 	},
 	[WidgetTabKeys.dot_calendar_settings]: {
-		title: 'تنظیمات تقویم نقطه‌ای',
-		size: 'lg',
+		title: 'تنظیمات روزشمار',
+		size: 'md',
 		Component: DotCalendarSetting,
 	},
 	[WidgetTabKeys.calendar_settings]: {
@@ -63,6 +63,7 @@ interface WidgetSettingsRequest {
 
 export function WidgetSettings() {
 	const [request, setRequest] = useState<WidgetSettingsRequest | null>(null)
+	const [isOpen, setIsOpen] = useState(false)
 
 	useEffect(
 		() =>
@@ -71,6 +72,7 @@ export function WidgetSettings() {
 					callEvent('openAddCustomWidgetModal')
 				} else {
 					setRequest(data)
+					setIsOpen(true)
 				}
 			}),
 		[]
@@ -80,14 +82,15 @@ export function WidgetSettings() {
 
 	return (
 		<Modal
-			isOpen={!!activeSettingConfig}
-			onClose={() => setRequest(null)}
+			isOpen={isOpen && !!activeSettingConfig}
+			onClose={() => setIsOpen(false)}
 			title={activeSettingConfig?.title}
 			size={activeSettingConfig?.size}
 			closeOnBackdropClick
 		>
 			{activeSettingConfig && (
 				<activeSettingConfig.Component
+					key={`${request?.tab}-${request?.instanceId}`}
 					{...({ instanceId: request?.instanceId, size: request?.size } as any)}
 				/>
 			)}

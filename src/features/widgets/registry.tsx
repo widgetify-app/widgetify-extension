@@ -17,7 +17,10 @@ import { PetWidget } from './pet/pet.widget'
 import { TransparentClockWidget } from './transparent-clock/transparent-clock.widget'
 import { MoodTrackerWidget } from './mood-tracker/mood-tracker.widget'
 import { PhotoWidget } from './photo/photo.widget'
-import { DotCalendarWidget } from './dot-calendar/dot-calendar.widget'
+import {
+	DotCalendarWidget,
+	normalizeDotCalendarMeta,
+} from './dot-calendar/dot-calendar.widget'
 import { GoogleCalendarWidget } from './google-calendar/google-calendar.widget'
 import { TodosLayout } from './todos/todos.widget'
 import { NotesLayout, resolveNotesVariant } from './notes/notes.widget'
@@ -499,10 +502,14 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	[WidgetKeys.dotCalendar]: {
 		id: WidgetKeys.dotCalendar,
 		label: 'تقویم نقطه‌ای',
+		menuLabel: 'روزشمار',
 		emoji: '⏳',
 		icon: 'calendarRange',
 		category: 'time',
-		allowedSizes: [{ w: 2, h: 2 }],
+		allowedSizes: [
+			{ w: 2, h: 1 },
+			{ w: 2, h: 2 },
+		],
 		defaultSize: { w: 2, h: 2 },
 		variants: [
 			{
@@ -512,15 +519,29 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 				meta: { variant: 'year' },
 			},
 			{
+				id: 'year-count',
+				label: 'روزهای سال (عددی)',
+				size: { w: 2, h: 1 },
+				meta: { variant: 'year' },
+			},
+			{
 				id: 'goal',
 				label: 'روزشمار هدف',
 				size: { w: 2, h: 2 },
 				meta: { variant: 'goal' },
 				isVipOnly: true,
 			},
+			{
+				id: 'goal-count',
+				label: 'روزشمار هدف (عددی)',
+				size: { w: 2, h: 1 },
+				meta: { variant: 'goal' },
+				isVipOnly: true,
+			},
 		],
 		canResize: true,
 		settingsTab: WidgetTabKeys.dot_calendar_settings,
+		hasSettings: (meta) => normalizeDotCalendarMeta(meta).variant === 'goal',
 		canDuplicate: true,
 		node: (instanceId, size, meta) => (
 			<DotCalendarWidget instanceId={instanceId} size={size} meta={meta} />

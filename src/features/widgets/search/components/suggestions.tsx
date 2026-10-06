@@ -17,7 +17,7 @@ export function Suggestions({
 	const { blurMode } = useGeneralSetting()
 
 	return (
-		<ul className="px-2 pt-1.5 pb-1 space-y-0.5">
+		<ul className="flex flex-col gap-0.5 p-1.5">
 			{combinedSuggestions.map((item, index) => {
 				const isSelected = selectedIndex === index
 
@@ -34,7 +34,7 @@ export function Suggestions({
 								e.preventDefault()
 								handleSearch(item.text)
 							}}
-							className={`flex items-center flex-1 min-w-0 gap-2 px-3 py-2 text-right bg-transparent border-none cursor-pointer rounded-xl focus-visible:focus-ring ${
+							className={`flex items-center flex-1 min-w-0 gap-2.5 px-2.5 min-h-8 text-right bg-transparent border-none cursor-pointer rounded-xl focus-visible:focus-ring ${
 								item.isRecent && blurMode
 									? 'blur-mode'
 									: 'disabled-blur-mode'
@@ -42,13 +42,15 @@ export function Suggestions({
 						>
 							<Icon
 								name={item.isRecent ? 'history' : 'search'}
-								size={16}
+								size={14}
 								aria-hidden="true"
 								className={`shrink-0 ${isSelected ? 'text-brand' : 'text-fg-faint'}`}
 							/>
 							<span
-								className={`text-sm font-medium truncate ${
-									isSelected ? 'text-fg font-bold' : 'text-fg-muted'
+								className={`text-xs truncate ${
+									isSelected
+										? 'text-fg-strong font-semibold'
+										: 'text-fg'
 								}`}
 							>
 								{item.text}

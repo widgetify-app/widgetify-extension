@@ -27,6 +27,6 @@ export function getGoalProgress(
 	return {
 		totalDays,
 		passedDays,
-		daysLeft: totalDays - passedDays,
+		daysLeft: Math.max(totalDays - passedDays - 1, 0),
 	}
 }
