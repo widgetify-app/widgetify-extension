@@ -68,6 +68,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	[WidgetKeys.pet]: {
 		id: WidgetKeys.pet,
 		label: 'پت (حیوان خانگی)',
+		menuLabel: 'حیوان خانگی',
 		emoji: '🐾',
 		icon: 'paw',
 		category: 'lifestyle',

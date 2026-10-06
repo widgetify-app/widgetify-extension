@@ -10,9 +10,11 @@ A single sprite pet lives inside a fixed 2x1 widget cell. It follows a per-speci
 
 | Path | Responsibility |
 |---|---|
-| `pet.widget.tsx` | Entry. `PetProvider` > `WidgetContainer` > `PetScene`. `PetScene` paints the background image and sets `--pet-ground`. |
+| `pet.widget.tsx` | Entry. `PetProvider` > `PetScene`, with the glass ⋯ beside it. `PetScene` draws `WidgetContainer` and, in it, the scene: the background image on the scene's own rounded box, `--pet-ground`, and the widget menu's summary and feed action. |
 | `pet.context.tsx` | `PetProvider`: holds the persisted global settings, unsaved live edits and the widget `meta`, resolves them with `resolvePetSettings`, owns hunger and its persistence, listens to `updatedPetSettings`. |
-| `pet-setting.tsx` | Settings panel in two modes (see Persistence): species picker, background picker, name input (`maxLength` 20). Also the only writer of global choices. |
+| `pet-setting.tsx` | Settings panel in two modes (see Persistence). Two columns from 768 px up, stacked below: a preview, the name with a counter (`maxLength` 20) and three tips; then the species grid with a shop link and the scene grid with a «محیط‌های بیشتر» tile that opens the shop. Also the only writer of global choices. |
+| `components/pet-preview.tsx` | The still preview in the panel: the scene at the widget's 8:3 shape, the species' preview clip and its name bubble. |
+| `components/pet-option-tile.tsx` | One tile in the species or scene grid, with a lock badge when it is not owned. |
 | `types.ts` | `PetTypes`, `PetState`, `PetSequence`, `PetDimensions`, `PetFlight`, `PetHop`, `PetAnimations`, `PetSpeed`, background types, storage and event augmentation. |
 | `constants.ts` | Icons and previews per species, Persian labels, `PET_BACKGROUNDS`, default names, hunger constants. |
 | `hooks/use-base-pet-logic.ts` | Composes the four hooks below and owns the state machine: `enterState`, `tick`, the hover name. Returns `animationSrc`, `airborne`, `direction`, `showName`, `collectibles`. |
@@ -21,7 +23,7 @@ A single sprite pet lives inside a fixed 2x1 widget cell. It follows a per-speci
 | `hooks/use-pet-food.ts` | Food state: click to drop, falling, eating, removal two seconds after eating. Calls `wakeRef.current()` on a drop. |
 | `hooks/use-pet-loop.ts` | The scheduler: `requestAnimationFrame`, the idle poll, the `IntersectionObserver`. Installs `wakeRef`. |
 | `components/base-pet.tsx` | `BasePetContainer` and `CollectiblesRenderer`, both `memo`. Renders the pet, food, tooltip. No logic. |
-| `components/pet-factory.tsx` | Picks the species component and renders `PetHud`. |
+| `components/pet-factory.tsx` | Picks the species component and renders `PetHud` in the top right corner, away from the ⋯. |
 | `components/pet-item/pet-<species>.tsx` | One per species: animation map, dimensions, assets, wiring into the hook. |
 | `components/pet-hud.tsx` | Five hearts. `filled = ceil(level / 20)`. |
 | `utils/pet-sequence.ts` | State facts (pace, facing, hold time), `chooseNextState`, `hasReachedWall`. Pure. |
@@ -162,7 +164,7 @@ Two stores, one rule.
 
 | Opened from | `instanceId` | Saves to | Effect |
 |---|---|---|---|
-| The widget's own gear on the canvas | set | that widget's `meta` (name save debounced by `PET_NAME_SAVE_DEBOUNCE_MS = 500`) | changes only that widget |
+| The widget's ⋯ menu (or a right click) on the canvas | set | that widget's `meta` (name save debounced by `PET_NAME_SAVE_DEBOUNCE_MS = 500`) | changes only that widget |
 | The widget catalog's settings button | none | the global store (immediately) | changes the default pet; every widget that has no `meta` value for a field follows it. Widgets with their own `meta` are unaffected |
 
 Events: `updatedPetSettings` (`instanceId`, `petName`, `petType`, `background`). With an `instanceId` the provider of that instance applies it as an unsaved live edit (`live`), which is dropped as soon as the saved `meta` arrives. Without an `instanceId` it means "the global store changed": every provider re-reads storage. Only the settings panel writes global choices, so several widgets never overwrite each other. Hunger is the one thing providers write themselves: a read-modify-write that merges only `hungryState` into storage.
@@ -177,7 +179,14 @@ Rules worth knowing:
 
 ## Accessibility
 
-The container is a `button` labelled `غذا دادن به <name>`. Keyboard activation feeds. `PetHud` is `role="img"` with `سیری: N از 5`. Sprites and food are `aria-hidden`. The settings panel has an info tooltip with three tips (click to feed, hover for the name, max three foods).
+The container is a `button` labelled `غذا دادن به <name>`. Keyboard activation feeds, and so does «غذا دادن» in the widget menu: it calls `click()` on that button, which arrives with `detail === 0` and drops the food beside the pet. `PetHud` is `role="img"` with `سیری: N از 5`. Sprites and food are `aria-hidden`. The settings panel lists three tips under the name (click to feed, hover for the name, max three foods). The name counter is `aria-hidden`; the input's own `maxLength` is what a screen reader meets.
+
+## Widget menu
+
+- The menu calls it «حیوان خانگی» (`menuLabel` in the registry). Settings comes first with the name and the scene under it («زردآلو · جنگل شب»); a scene from the shop shows the name only, because its label is its id.
+- The ⋯ is the dark glass button for any scene, beside `WidgetContainer`. The scene is `isolate`: the play button's `z-index: 50` stays inside it. Without that the button and the ⋯ (`z-30`) stacked in the canvas frame's context and the button won, so a click on the ⋯ fed the pet. `container-type: size` on the container does not make a stacking context, as this file used to claim; a headless Chrome render of the same structure put the click on the play button.
+- A scene with an image paints it on its own rounded box, and the container drops its surface (`background={!scene.image}`). Drawn over the light theme's white surface, the anti-aliased edge of the clipped image let the white through, a thin light rim on a dark scene. The `none` scene keeps the surface.
+- The settings panel follows the design board's layout. The design draws it 640 px wide; the settings modal is `lg` (512 px), so the first column is 208 px instead of 256. The species grid still shows only the free and owned species, as before.
 
 ## Sprite spec
 
@@ -268,7 +277,7 @@ What this does not show: the remaining commits are real visual changes (sprite s
 - Bring back wall climbing, if climb sprites are drawn?
 - Draw a resting pose for the chicken and crab so they can lie?
 - Whole-area click target: confirm it does not interfere with dragging or resizing in edit mode.
-- The catalog's pet settings now mean "default pet for widgets that have no choice of their own". Confirm that is the intended meaning, or remove that entry point so pet settings are only reachable from a widget's own gear.
+- The catalog's pet settings now mean "default pet for widgets that have no choice of their own". Confirm that is the intended meaning, or remove that entry point so pet settings are only reachable from a widget's own menu.
 - Switching species replaces the custom name. Should the widget remember one name per species? That needs a `meta` shape decision.
 - Old widgets whose `meta` was saved when it was broken keep whatever it holds; nothing migrates them.
 - `frog/ghoori_walk_fast_8fps.webp` is no longer used by any component, because wall climbing was removed from the frog and it was the climb clip. The architecture test "assets are each used by a component or a stylesheet" flags it. Delete it, or add it to `spritesKeptForUnplayedAnimations` like the other spare clips. *Needs a decision*.
@@ -277,7 +286,7 @@ What this does not show: the remaining commits are real visual changes (sprite s
 
 Confirmed by reading the code and by automated checks (`npm run compile`, `npm test`, `npm run lint`, `npm run build`; every test passes): tree validity, pure movement maths, food and clip rules, types, lint, bundle build. The split of the hook (change 13) was checked by compile, lint and tests only; no pure test can show that the loop behaves the same, so that part is read from the code.
 
-Not yet checked on screen: that the pet still looks the same and moves as smoothly (especially on a 144 Hz display and after the widget scrolls back into view), the owl clips at 64x64 next to the others, the WebP backgrounds; saving, refreshing and reloading a changed pet or name through both settings entry points, for signed-out and signed-in users, and in the narrow list view; the actual look and pacing of each species, hop and flight feel, owl altitude at each density, the tooltip position with the taller container, click behaviour in edit mode, the Tehran background against every sprite, and the sprites themselves at 32 px. All numeric tuning values are first guesses.
+Not yet checked on screen: that the pet still looks the same and moves as smoothly (especially on a 144 Hz display and after the widget scrolls back into view), the owl clips at 64x64 next to the others, the WebP backgrounds; saving, refreshing and reloading a changed pet or name through both settings entry points, for signed-out and signed-in users, and in the narrow list view; the actual look and pacing of each species, hop and flight feel, owl altitude at each density, the tooltip position with the taller container, click behaviour in edit mode, the Tehran background against every sprite, the sprites themselves at 32 px, and the ⋯ and the edge of a dark scene in the light theme after change 17. All numeric tuning values are first guesses.
 
 ## Change history (why things look the way they do)
 
@@ -295,3 +304,6 @@ Not yet checked on screen: that the pet still looks the same and moves as smooth
 12. Hedgehog added («تیغو», picker label «جوجه‌تیغی»): an eighth species, small and slow, that rests curled into a ball. Its tree is the sheep's shape with `lie` weighted higher.
 13. `use-base-pet-logic.ts` (649 lines) split by concern into `use-pet-body`, `use-pet-motion`, `use-pet-food` and `use-pet-loop`, composed by a 185-line `use-base-pet-logic`. Food stepping and clip choice moved to pure `pet-food.ts` and `pick-pet-animation.ts` with tests. No behaviour was meant to change. The 2000 ms eaten-food delay became `EATEN_LINGER_MS`.
 14. The document was renamed to README.md, so every section of the project has its guide under the same name.
+15. The widget joined the shared hover controls: the glass ⋯ in the top left, the hearts moved to the top right, settings and «غذا دادن» in the shared menu.
+16. The settings panel was redrawn: a live-looking preview instead of the small square, the name with a counter, the tips out of their tooltip, a four column species grid and a three column scene grid ending in a shop tile. The species chip next to the name is gone; the selected tile says it.
+17. User report: the ⋯ fed the pet instead of opening the menu, and a dark scene showed a white line round its edge in the light theme. The scene became a stacking context of its own, and the image moved off the white surface onto the scene's rounded box (see Widget menu).
