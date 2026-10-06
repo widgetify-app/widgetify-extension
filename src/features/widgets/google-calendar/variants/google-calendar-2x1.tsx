@@ -5,7 +5,7 @@ import { WidgetMenuButton } from '@/features/widgets/components/widget-menu-butt
 import { Icon } from '@/icons'
 import type { GoogleCalendarEvent } from '@/services/date/get-google-calendar-events.hook'
 import type { ClassifiedCalendarEvent } from '../types'
-import { toDateTimeAttr } from '../utils/classify-event'
+import { countdownParts, toDateTimeAttr } from '../utils/classify-event'
 
 interface GoogleCalendar2x1Props {
 	classifiedEvents: ClassifiedCalendarEvent[]
@@ -45,7 +45,13 @@ function GoogleCalendar2x1Content({
 	}
 
 	if (isError) {
-		return <WidgetError message="برنامه‌هات دریافت نشدند" compact onRetry={onRetry} />
+		return (
+			<WidgetError
+				message="نتونستیم برنامه‌هات رو بیاریم"
+				compact
+				onRetry={onRetry}
+			/>
+		)
 	}
 
 	const target =
@@ -71,9 +77,9 @@ function GoogleCalendar2x1Content({
 	}
 
 	const { event, isNow, start, end, startTimeStr, endTimeStr, durationLabel } = target
-	const minsRemaining = target.minsRemaining
 	const hasAction = !!(event.hangoutLink || event.location)
 	const title = event.summary || 'بدون عنوان'
+	const countdown = countdownParts(isNow ? target.minsRemaining : target.minsUntilStart)
 
 	return (
 		<div className="flex flex-col justify-center h-full gap-2">
@@ -116,13 +122,11 @@ function GoogleCalendar2x1Content({
 								isNow ? 'font-semibold text-brand' : 'text-fg-faint'
 							)}
 						>
-							{isNow
-								? `الان · ${minsRemaining} دقیقه مونده`
-								: `بعدی · ${durationLabel}`}
+							{isNow ? 'الان در جریانه' : event.location || durationLabel}
 						</span>
 					</span>
 				</button>
-				{isNow && event.hangoutLink && (
+				{isNow && event.hangoutLink ? (
 					<button
 						type="button"
 						onClick={() => onEventClick(event)}
@@ -131,6 +135,15 @@ function GoogleCalendar2x1Content({
 						<Icon name="videoCamera" size={12} aria-hidden="true" />
 						ورود
 					</button>
+				) : (
+					<span className="flex flex-col items-end shrink-0 leading-control text-end">
+						<span className="text-sm font-extrabold tabular-nums text-fg-strong">
+							{countdown.value}
+						</span>
+						<span className="text-3xs text-fg-faint">
+							{countdown.unit} {isNow ? 'مونده' : 'تا شروع'}
+						</span>
+					</span>
 				)}
 			</div>
 			{isNow && (

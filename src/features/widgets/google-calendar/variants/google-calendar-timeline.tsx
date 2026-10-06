@@ -104,7 +104,7 @@ export const GoogleCalendarTimeline: React.FC<GoogleCalendarTimelineProps> = ({
 							key={event.id}
 							className="inline-flex items-center h-6 px-2 font-semibold rounded-lg bg-brand-fill text-brand text-3xs"
 						>
-							{event.summary || 'رویداد همه‌روز'}
+							{event.summary || 'رویداد تمام روز'}
 						</li>
 					))}
 				</ul>

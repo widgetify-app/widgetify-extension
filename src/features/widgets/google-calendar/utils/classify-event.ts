@@ -30,6 +30,12 @@ export function getDurationLabel(start: Date, end: Date): string {
 	return `${diffMins} دقیقه`
 }
 
+export function countdownParts(minutes: number): { value: string; unit: string } {
+	if (minutes < 60) return { value: String(minutes), unit: 'دقیقه' }
+	const remainder = String(minutes % 60).padStart(2, '0')
+	return { value: `${Math.floor(minutes / 60)}:${remainder}`, unit: 'ساعت' }
+}
+
 export function classifyEvent(
 	event: GoogleCalendarEvent,
 	currentTime: Date,
@@ -59,6 +65,8 @@ export function classifyEvent(
 			: 0
 	const remaining = Math.ceil((end.getTime() - currentTime.getTime()) / 60000)
 	const minsRemaining = Number.isNaN(remaining) ? 0 : Math.max(0, remaining)
+	const untilStart = Math.ceil((start.getTime() - currentTime.getTime()) / 60000)
+	const minsUntilStart = Number.isNaN(untilStart) ? 0 : Math.max(0, untilStart)
 
 	return {
 		event,
@@ -70,6 +78,7 @@ export function classifyEvent(
 		endTimeStr: formatPersianTime(end),
 		durationLabel: isAllDay ? 'تمام روز' : getDurationLabel(start, end),
 		minsRemaining,
+		minsUntilStart,
 		elapsedPercent,
 		isAllDay,
 		isoDate: (event.start?.dateTime || event.start?.date || '').slice(0, 10),

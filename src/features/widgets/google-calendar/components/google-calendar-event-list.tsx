@@ -34,7 +34,7 @@ export function GoogleCalendarEventList({
 					))}
 				</div>
 			) : isError ? (
-				<WidgetError message="برنامه‌هات دریافت نشدند" onRetry={onRetry} />
+				<WidgetError message="نتونستیم برنامه‌هات رو بیاریم" onRetry={onRetry} />
 			) : isEmpty ? (
 				empty
 			) : (

@@ -30,7 +30,10 @@ function GoogleCalendar1x1Content({
 }: GoogleCalendar1x1Props) {
 	if (isLoading) {
 		return (
-			<div aria-hidden="true" className="flex flex-col justify-between h-full">
+			<div
+				aria-hidden="true"
+				className="flex flex-col items-center justify-between h-full"
+			>
 				<div className="w-12 h-2 rounded-sm skeleton" />
 				<div className="w-14 h-5 rounded-sm skeleton" />
 				<div className="w-full h-2.5 rounded-sm skeleton" />
@@ -39,7 +42,13 @@ function GoogleCalendar1x1Content({
 	}
 
 	if (isError) {
-		return <WidgetError message="برنامه‌هات دریافت نشدند" compact onRetry={onRetry} />
+		return (
+			<WidgetError
+				message="نتونستیم برنامه‌هات رو بیاریم"
+				compact
+				onRetry={onRetry}
+			/>
+		)
 	}
 
 	const target =
@@ -48,7 +57,7 @@ function GoogleCalendar1x1Content({
 
 	if (!target) {
 		return (
-			<div className="flex flex-col justify-between h-full">
+			<div className="flex flex-col items-center justify-between h-full text-center">
 				<span className="font-bold text-3xs text-fg-faint">جلسه‌ی بعدی</span>
 				<span className="text-sm font-bold text-fg-strong">بدون برنامه</span>
 				<span className="text-2xs text-fg-muted">امروز آزادی</span>
@@ -67,7 +76,7 @@ function GoogleCalendar1x1Content({
 			onClick={() => hasAction && onEventClick(event)}
 			aria-label={`${isNow ? 'جلسه‌ی الان' : 'جلسه‌ی بعدی'}: ${title}، ${startTimeStr}`}
 			className={cn(
-				'flex flex-col justify-between h-full text-start rounded-lg focus-visible:focus-ring',
+				'flex flex-col items-center justify-between h-full text-center rounded-lg focus-visible:focus-ring',
 				hasAction ? 'cursor-pointer' : 'cursor-default'
 			)}
 		>

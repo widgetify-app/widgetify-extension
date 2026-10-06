@@ -30,7 +30,7 @@ export const GoogleCalendarTab: React.FC<GoogleCalendarTabProps> = ({ tabs }) =>
 		isCalendarConnected && (
 			<PopoverMenuItem
 				icon={<Icon name="refresh" size={14} />}
-				label="به‌روزرسانی رویدادها"
+				label="بارگذاری مجدد"
 				onClick={() => refetch()}
 			/>
 		)

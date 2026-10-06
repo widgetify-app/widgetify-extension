@@ -44,7 +44,7 @@ export function GoogleCalendarWidget({
 		isCalendarConnected && (
 			<PopoverMenuItem
 				icon={<Icon name="refresh" size={14} />}
-				label="به‌روزرسانی رویدادها"
+				label="بارگذاری مجدد"
 				onClick={() => refetch()}
 			/>
 		)

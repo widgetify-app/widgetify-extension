@@ -12,6 +12,7 @@ export interface ClassifiedCalendarEvent {
 	endTimeStr: string
 	durationLabel: string
 	minsRemaining: number
+	minsUntilStart: number
 	elapsedPercent: number
 	isAllDay: boolean
 	isoDate: string

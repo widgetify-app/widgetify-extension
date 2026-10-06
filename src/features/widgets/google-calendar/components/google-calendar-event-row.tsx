@@ -1,5 +1,6 @@
 import type React from 'react'
 import { cn } from '@/common/utils/cn'
+import { useKeyboardFocusWithin } from '@/features/widgets/hooks/use-keyboard-focus-within'
 import { Icon } from '@/icons'
 import type { GoogleCalendarEvent } from '@/services/date/get-google-calendar-events.hook'
 import type { ClassifiedCalendarEvent } from '../types'
@@ -14,6 +15,7 @@ export const GoogleCalendarEventRow: React.FC<GoogleCalendarEventRowProps> = ({
 	classified,
 	onEventClick,
 }) => {
+	const keyboardFocus = useKeyboardFocusWithin()
 	const {
 		event,
 		isNow,
@@ -34,9 +36,10 @@ export const GoogleCalendarEventRow: React.FC<GoogleCalendarEventRowProps> = ({
 
 	return (
 		<div
+			{...keyboardFocus}
 			className={cn(
 				'flex items-center gap-2 px-2 rounded-xl min-h-10.5 transition-ui',
-				isNow ? 'bg-brand-fill' : 'hover:bg-fill',
+				isNow ? 'bg-brand-fill' : 'hover:bg-fill data-[keyboard-focus]:bg-fill',
 				isPast && 'opacity-50'
 			)}
 		>
@@ -56,7 +59,7 @@ export const GoogleCalendarEventRow: React.FC<GoogleCalendarEventRowProps> = ({
 			>
 				<span className="flex flex-col w-9.5 shrink-0 leading-tight tabular-nums">
 					{isAllDay ? (
-						<span className="font-bold text-3xs text-brand">همه‌روز</span>
+						<span className="font-bold text-3xs text-brand">تمام روز</span>
 					) : (
 						<>
 							<time
