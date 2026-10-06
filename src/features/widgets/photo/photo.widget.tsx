@@ -1,8 +1,9 @@
 import { useRef, useState } from 'react'
 import { WidgetContainer } from '../components/widget-container'
+import { WidgetMenuButton } from '../components/widget-menu-button'
 import type { WidgetSize } from '../utils/layout-engine/types'
+import { useWidgetMenuActions } from '../widget-menu.context'
 import { useFreeWidgets } from '@/features/widgets/widgets.context'
-import { useAppearance } from '@/context/appearance.context'
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { Icon } from '@/icons'
@@ -12,14 +13,7 @@ import { type ApiError, safeAwait } from '@/services/api'
 import { uploadWidgetMediaApi } from '@/services/widgets/widget-media.hook'
 import { callEvent } from '@/common/utils/call-event'
 import { GalleryPickerModal } from '@/components/gallery'
-import {
-	PopoverMenu,
-	PopoverMenuDivider,
-	PopoverMenuHeader,
-	PopoverMenuItem,
-	Spinner,
-	VipBadge,
-} from '@/components/ui'
+import { PopoverMenuItem, Spinner, VipBadge } from '@/components/ui'
 import type { GalleryAsset } from '@/services/gallery/get-gallery-assets.hook'
 import { PhotoEmptyState } from './components/photo-empty-state'
 import { getPhotoFileError } from './utils/get-photo-file-error'
@@ -36,20 +30,18 @@ export function PhotoWidget({
 	instanceId,
 }: PhotoWidgetProps) {
 	const { updateWidgetSettings } = useFreeWidgets()
-	const { canvasMode } = useAppearance()
 	const { isVip } = useAuth()
 	const { blurMode } = useGeneralSetting()
 	const inputRef = useRef<HTMLInputElement>(null)
-	const triggerRef = useRef<HTMLButtonElement>(null)
 
 	const [isUploading, setIsUploading] = useState(false)
 	const [isGalleryOpen, setIsGalleryOpen] = useState(false)
-	const [isMenuOpen, setIsMenuOpen] = useState(false)
 	const [failedSrc, setFailedSrc] = useState<string | null>(null)
 
 	const imageSrc = meta?.imageSrc
 	const isCustom = meta?.isCustom
 	const hasFailed = Boolean(imageSrc) && failedSrc === imageSrc
+	const showsPhoto = Boolean(imageSrc) && !hasFailed
 
 	const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0]
@@ -83,14 +75,7 @@ export function PhotoWidget({
 		updateWidgetSettings(instanceId, { imageSrc: res.url, isCustom: true })
 	}
 
-	const handleOpenMenu = (e: React.MouseEvent) => {
-		e.stopPropagation()
-		if (canvasMode === 'edit' || isUploading) return
-		setIsMenuOpen((isOpen) => !isOpen)
-	}
-
 	const handleSelectFromSystem = () => {
-		setIsMenuOpen(false)
 		if (!isVip) {
 			callEvent('openSettings', 'vip')
 			return
@@ -99,18 +84,16 @@ export function PhotoWidget({
 	}
 
 	const handleOpenGallery = () => {
-		setIsMenuOpen(false)
 		setIsGalleryOpen(true)
 	}
 
 	const handleRemovePhoto = () => {
-		setIsMenuOpen(false)
 		if (instanceId) {
 			updateWidgetSettings(instanceId, {
 				imageSrc: undefined,
 				isCustom: undefined,
 			})
-			showToast('عکس با موفقیت حذف شد', 'success')
+			showToast('عکس برداشته شد', 'success')
 		}
 	}
 
@@ -123,54 +106,66 @@ export function PhotoWidget({
 		}
 	}
 
+	useWidgetMenuActions(
+		<>
+			<PopoverMenuItem
+				icon={<Icon name="uploadImage" size={14} />}
+				label="عکس از دستگاه"
+				badge={!isVip ? <VipBadge size="xs" /> : undefined}
+				onClick={handleSelectFromSystem}
+				disabled={isUploading}
+			/>
+			<PopoverMenuItem
+				icon={<Icon name="image" size={14} />}
+				label="انتخاب از گالری"
+				onClick={handleOpenGallery}
+				disabled={isUploading}
+			/>
+			{imageSrc && (
+				<PopoverMenuItem
+					icon={<Icon name="trash" size={14} />}
+					label="برداشتن عکس"
+					onClick={handleRemovePhoto}
+					disabled={isUploading}
+				/>
+			)}
+		</>
+	)
+
 	return (
 		<>
 			<WidgetContainer
-				background={false}
-				padding={false}
-				contentClassName="w-full h-full relative"
-				className="w-full h-full"
+				background={!showsPhoto}
+				contentClassName={
+					showsPhoto
+						? 'rounded-widget'
+						: size.w === 1 && size.h === 1
+							? 'px-3 py-2.5'
+							: size.h === 1
+								? 'px-3 py-2.5 gap-1.5'
+								: 'p-3 gap-2'
+				}
 			>
-				<button
-					ref={triggerRef}
-					type="button"
-					onClick={handleOpenMenu}
-					aria-haspopup="menu"
-					aria-expanded={isMenuOpen}
-					aria-label={
-						imageSrc ? 'تغییر عکس قاب عکس' : 'انتخاب عکس برای قاب عکس'
-					}
-					className="relative flex flex-col items-center justify-center w-full h-full overflow-hidden cursor-pointer group rounded-widget focus-visible:focus-ring"
-				>
-					{imageSrc && !hasFailed && (
-						<img
-							src={imageSrc}
-							alt=""
-							onError={() => setFailedSrc(imageSrc)}
-							className={`object-cover w-full h-full rounded-widget ${
-								isCustom && blurMode
-									? 'blur-mode blur-xl!'
-									: 'disabled-blur-mode'
-							}`}
-						/>
-					)}
-
-					{hasFailed && (
-						<span className="flex flex-col items-center justify-center w-full h-full gap-2 p-3 text-center select-none rounded-widget bg-glass-surface-2">
-							<Icon
-								name="alert"
-								size={16}
-								className="text-fg-muted"
-								aria-hidden="true"
-							/>
-							<span className="text-2xs leading-tight text-fg-muted">
-								عکس بارگذاری نشد، یکی دیگه انتخاب کن
-							</span>
-						</span>
-					)}
-
-					{!imageSrc && <PhotoEmptyState size={size} />}
-				</button>
+				{showsPhoto ? (
+					<img
+						src={imageSrc}
+						alt=""
+						onError={() => setFailedSrc(imageSrc ?? null)}
+						className={`object-cover w-full h-full rounded-widget ${
+							isCustom && blurMode
+								? 'blur-mode blur-xl!'
+								: 'disabled-blur-mode'
+						}`}
+					/>
+				) : (
+					<PhotoEmptyState
+						size={size}
+						hasFailed={hasFailed}
+						isVip={isVip}
+						onPickFromDevice={handleSelectFromSystem}
+						onOpenGallery={handleOpenGallery}
+					/>
+				)}
 
 				{isUploading && (
 					<div
@@ -179,7 +174,7 @@ export function PhotoWidget({
 					>
 						<Spinner aria-hidden="true" />
 						<span className="text-xs font-medium text-fg">
-							در حال بارگذاری...
+							دارم آپلودش می‌کنم…
 						</span>
 					</div>
 				)}
@@ -191,50 +186,14 @@ export function PhotoWidget({
 					className="hidden"
 					onChange={handleUpload}
 				/>
+				{showsPhoto && <WidgetMenuButton placement="image" />}
 			</WidgetContainer>
-
-			<PopoverMenu
-				isOpen={isMenuOpen}
-				onClose={() => setIsMenuOpen(false)}
-				triggerRef={triggerRef}
-				width={210}
-				placement="bottom-center"
-			>
-				<PopoverMenuHeader>
-					<span>مدیریت قاب عکس</span>
-				</PopoverMenuHeader>
-
-				<PopoverMenuItem
-					icon={<Icon name="uploadImage" size={14} />}
-					label="بارگذاری از دستگاه"
-					badge={!isVip ? <VipBadge size="xs" /> : undefined}
-					onClick={handleSelectFromSystem}
-				/>
-
-				<PopoverMenuItem
-					icon={<Icon name="image" size={14} />}
-					label="گالری ویجتیفای"
-					onClick={handleOpenGallery}
-				/>
-
-				{imageSrc && (
-					<>
-						<PopoverMenuDivider />
-						<PopoverMenuItem
-							icon={<Icon name="trash" size={14} />}
-							label="حذف عکس فعلی"
-							variant="danger"
-							onClick={handleRemovePhoto}
-						/>
-					</>
-				)}
-			</PopoverMenu>
 
 			<GalleryPickerModal
 				isOpen={isGalleryOpen}
 				onClose={() => setIsGalleryOpen(false)}
 				type="PHOTO_FRAME"
-				title="گالری تصاویر قاب عکس"
+				title="گالری قاب عکس"
 				onSelect={handleGallerySelect}
 				selectedAssetUrl={imageSrc}
 			/>
