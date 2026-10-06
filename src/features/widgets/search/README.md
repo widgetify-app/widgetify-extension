@@ -6,9 +6,9 @@ The search box. 4x1, and a 2x1 for PRO. No header. The 4x1 is a card with the bo
 
 | Path | Holds |
 |---|---|
-| `search.widget.tsx` | Entry and the 4x1: engine, input, image and voice search, clear and submit while typing, then the bookmarks row with ⋯ at its end. `SearchLayout` gives the 4x1 the widget card and the 2x1 a `WidgetContainer` without a background, with ⋯ in its corner. |
+| `search.widget.tsx` | Entry and the 4x1: engine, input, image and voice search, clear and submit while typing, then the bookmarks row with ⋯ at its end. `SearchLayout` gives the 4x1 the widget card and the 2x1 a `WidgetContainer` without a background, with `<WidgetMenuButton placement="corner" />`. |
 | `variants/search-2x1.tsx` | Engine, input, one search or clear button. |
-| `components/search-box-parts.tsx` | The box and input classes (each size adds the box's background), `SearchBoxButton`, and `SearchMenuButton`, the 2x1's ⋯ at the top left. |
+| `components/search-box-parts.tsx` | The box and input classes (each size adds the box's background) and `SearchBoxButton`. |
 | `components/engine-selector.tsx` | Engine dropdown. |
 | `components/bookmark/browser-bookmark.tsx` | "کاوش", "بوکمارک‌های مرورگر" and the recommended sites. |
 | `components/search-history-portal.tsx`, `components/suggestions.tsx` | History and suggestions under the box. |
@@ -22,7 +22,7 @@ The search box. 4x1, and a 2x1 for PRO. No header. The 4x1 is a card with the bo
 
 ## Menu
 
-⋯ is the bare `compact` button, on hover only, never inside the box: at the end of the 4x1's chips row, and at the 2x1's top left, where the cell is empty above the box. The row keeps ⋯'s width free at rest, so the chips do not move. The menu has only size, move and delete.
+⋯ is the small bare button, on hover only, never inside the box: `compact` at the end of the 4x1's chips row, and `corner` at the 2x1's top left, where the cell is empty above the box. The row keeps ⋯'s width free at rest, so the chips do not move. The menu has only size, move and delete.
 
 ## Design decisions
 

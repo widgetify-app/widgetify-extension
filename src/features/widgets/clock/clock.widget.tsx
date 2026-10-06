@@ -4,6 +4,7 @@ import { useGeneralSetting } from '@/context/general-setting.context'
 import { useZonedClock } from '@/features/widgets/hooks/use-zoned-clock'
 import type { WidgetSize } from '../utils/layout-engine/types'
 import { WidgetContainer } from '../components/widget-container'
+import { WidgetMenuButton } from '../components/widget-menu-button'
 import { Clock1x1 } from './variants/clock-1x1'
 import { Clock2x1 } from './variants/clock-2x1'
 import { ClockAnalog } from './variants/clock-analog'
@@ -22,18 +23,27 @@ interface ClockWidgetProps {
 export function ClockWidget({ size = { w: 2, h: 1 }, meta }: ClockWidgetProps) {
 	const variant = meta?.variant
 	const hasBackground = !BACKGROUNDLESS_VARIANTS.includes(variant || '')
+	const isVertical =
+		VERTICAL_VARIANTS.includes(variant || '') || (size.w === 1 && size.h === 1)
 
 	return (
 		<WidgetContainer
 			background={hasBackground}
-			padding={hasBackground}
-			className="w-full h-full"
+			padding={false}
+			contentClassName={
+				!hasBackground
+					? undefined
+					: isVertical
+						? 'px-3 py-2.5'
+						: 'px-3 py-2.5 gap-1.5'
+			}
 		>
 			{variant === 'flip' ? (
 				<ClockFlip />
 			) : (
 				<ClockContent size={size} variant={variant} />
 			)}
+			{!hasBackground && <WidgetMenuButton placement="corner" />}
 		</WidgetContainer>
 	)
 }

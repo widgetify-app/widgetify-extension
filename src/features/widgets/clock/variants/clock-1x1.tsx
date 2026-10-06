@@ -1,3 +1,5 @@
+import { WidgetCenteredHeader } from '@/features/widgets/components/widget-header'
+
 interface Clock1x1Props {
 	hours: string
 	minutes: string
@@ -5,21 +7,12 @@ interface Clock1x1Props {
 
 export function Clock1x1({ hours, minutes }: Clock1x1Props) {
 	return (
-		<div className="w-full h-full flex flex-col items-center justify-center p-1 overflow-hidden select-none">
-			<div
-				dir="ltr"
-				className="flex gap-2 items-center justify-center leading-none"
-			>
-				<span className="text-2xl sm:text-3xl font-black text-fg tracking-tight tabular-nums">
-					{hours}
-				</span>
-				<span className="text-2xl sm:text-3xl font-black text-fg tracking-tight mx-0.5 -mt-1">
-					:
-				</span>
-				<span className="text-2xl sm:text-3xl font-black text-fg tracking-tight tabular-nums">
-					{minutes}
-				</span>
+		<>
+			<WidgetCenteredHeader title="ساعت" />
+			<div className="flex flex-col items-center justify-center flex-1 min-h-0 gap-0.5 font-extrabold leading-none select-none tabular-nums text-[28cqh] tracking-tight">
+				<span className="text-fg-strong">{hours}</span>
+				<span className="text-fg-faint">{minutes}</span>
 			</div>
-		</div>
+		</>
 	)
 }

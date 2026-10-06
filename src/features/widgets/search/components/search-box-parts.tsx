@@ -1,5 +1,4 @@
 import { cn } from '@/common/utils/cn'
-import { WidgetMenuButton } from '@/features/widgets/components/widget-menu-button'
 import { Icon, type IconName } from '@/icons'
 
 export const SEARCH_BOX_CLASS =
@@ -35,13 +34,5 @@ export function SearchBoxButton({
 		>
 			<Icon name={icon} size={16} aria-hidden="true" />
 		</button>
-	)
-}
-
-export function SearchMenuButton() {
-	return (
-		<span className="absolute top-0 left-0 z-30 widget-control">
-			<WidgetMenuButton placement="compact" />
-		</span>
 	)
 }

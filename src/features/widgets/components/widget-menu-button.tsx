@@ -4,7 +4,7 @@ import { Icon } from '@/icons'
 import { useWidgetMenu } from '../widget-menu.context'
 
 interface WidgetMenuButtonProps {
-	placement?: 'header' | 'compact' | 'floating' | 'image'
+	placement?: 'header' | 'compact' | 'corner' | 'floating' | 'image'
 	tone?: WidgetControlTone
 }
 
@@ -17,14 +17,16 @@ export function WidgetMenuButton({
 
 	const isFloating = placement === 'floating'
 	const isOnImage = placement === 'image'
-	const isSmall = isFloating || isOnImage || placement === 'compact'
+	const isSmall =
+		isFloating || isOnImage || placement === 'compact' || placement === 'corner'
 
 	return (
 		<Tooltip
 			content="گزینه‌های ویجت"
 			delay={500}
 			className={cn(
-				(isFloating || isOnImage) && 'widget-control absolute top-2 left-2 z-30'
+				(isFloating || isOnImage) && 'widget-control absolute top-2 left-2 z-30',
+				placement === 'corner' && 'widget-control absolute top-0 left-0 z-30'
 			)}
 		>
 			<button

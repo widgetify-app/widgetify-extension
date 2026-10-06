@@ -21,7 +21,6 @@ import {
 	SEARCH_BOX_CLASS,
 	SEARCH_INPUT_CLASS,
 	SearchBoxButton,
-	SearchMenuButton,
 } from './components/search-box-parts'
 import { SearchCompactRow } from './variants/search-2x1'
 
@@ -248,7 +247,7 @@ export function SearchLayout({ size }: SearchLayoutProps = {}) {
 		return (
 			<WidgetContainer background={false} contentClassName="justify-center">
 				<SearchCompactRow />
-				<SearchMenuButton />
+				<WidgetMenuButton placement="corner" />
 			</WidgetContainer>
 		)
 	}

@@ -1,5 +1,6 @@
 import type React from 'react'
 import { cn } from '@/common/utils/cn'
+import { WidgetMenuButton } from '@/features/widgets/components/widget-menu-button'
 import { useWallpaperClockTheme } from '../hooks/use-wallpaper-clock-theme'
 import { ClockDigits } from './clock-digits'
 
@@ -93,6 +94,13 @@ export const TransparentClockFace: React.FC<TransparentClockFaceProps> = ({
 					<span>{date}</span>
 				</span>
 			</time>
+
+			<span
+				className={cn('absolute top-0 left-0', !usesWallpaperColors && 'text-fg')}
+				style={{ color: usesWallpaperColors ? theme.primaryColor : undefined }}
+			>
+				<WidgetMenuButton placement="corner" tone="onColor" />
+			</span>
 		</div>
 	)
 }
