@@ -465,6 +465,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	[WidgetKeys.moodTracker]: {
 		id: WidgetKeys.moodTracker,
 		label: 'حال روزانه (Mood)',
+		menuLabel: 'حال روزانه',
 		emoji: '🥰',
 		icon: 'mood',
 		category: 'lifestyle',

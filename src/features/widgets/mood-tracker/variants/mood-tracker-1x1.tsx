@@ -1,8 +1,6 @@
-import type React from 'react'
 import { moodOptions } from '@/common/constants/moods'
 import { cn } from '@/common/utils/cn'
 import { MoodImage } from '@/components/mood-image'
-import { Icon } from '@/icons'
 import type { MoodEntry } from '@/services/mood-log/get-moods.hook'
 import type { MoodType } from '@/services/mood-log/upsert-mood-log.hook'
 
@@ -10,55 +8,31 @@ interface Mood1x1Props {
 	todayMood?: MoodEntry
 	onSelectMood: (mood: MoodType) => void
 	isSaving?: boolean
-	onOpenMenu?: (e: React.MouseEvent) => void
-	menuTriggerRef?: React.RefObject<HTMLButtonElement | null>
 }
 
-export function Mood1x1({
-	todayMood,
-	onSelectMood,
-	isSaving,
-	onOpenMenu,
-	menuTriggerRef,
-}: Mood1x1Props) {
+export function Mood1x1({ todayMood, onSelectMood, isSaving }: Mood1x1Props) {
 	const currentOption = moodOptions.find((m) => m.value === todayMood?.mood)
 
 	return (
 		<section
 			aria-label="حال روزانه"
-			className="relative flex flex-col items-center justify-between w-full h-full p-[8.3cqh] overflow-hidden text-center select-none group"
+			className="flex flex-col items-center justify-between w-full h-full text-center select-none"
 		>
-			<div className="flex items-center justify-between w-full px-1">
-				<span
-					className={cn(
-						'px-2 py-0.5 rounded-full text-[10.4cqh] font-bold leading-none transition-colors truncate',
-						currentOption ? 'text-brand' : 'bg-surface-2 text-fg-muted'
-					)}
-				>
-					{currentOption ? currentOption.label : 'حس امروزت؟'}
-				</span>
-
-				{onOpenMenu && (
-					<button
-						ref={menuTriggerRef}
-						type="button"
-						onClick={onOpenMenu}
-						aria-label="گزینه‌های حال روزانه"
-						className="p-1 transition-ui rounded-lg opacity-0 cursor-pointer text-fg-muted hover:text-fg-strong hover:bg-fill-2 group-hover:opacity-100 focus-visible:focus-ring"
-					>
-						<Icon name="menuOption" size={12} aria-hidden="true" />
-					</button>
-				)}
-			</div>
-
 			<span
-				aria-hidden="true"
-				className="my-auto text-[28cqh] leading-none transition-transform duration-200 hover:scale-110 active:scale-95"
+				className={cn(
+					'text-[11cqh] font-bold truncate leading-none',
+					currentOption ? 'text-brand' : 'text-fg-muted'
+				)}
 			>
-				<MoodImage mood={currentOption?.value} />
+				{currentOption ? currentOption.label : 'حس امروزت؟'}
 			</span>
 
-			<div className="flex items-center justify-center w-full gap-1.5 p-[4cqh] rounded-full bg-surface-2">
+			<MoodImage
+				mood={currentOption?.value}
+				className={currentOption ? 'size-[35cqh]' : 'size-[31cqh] opacity-80'}
+			/>
+
+			<div className="flex items-center justify-center gap-1 p-[3cqh] rounded-full bg-fill">
 				{moodOptions.map((opt) => {
 					const isSelected = todayMood?.mood === opt.value
 
@@ -69,20 +43,20 @@ export function Mood1x1({
 							disabled={isSaving}
 							aria-pressed={isSelected}
 							aria-label={opt.label}
-							onClick={(e) => {
-								e.stopPropagation()
-								onSelectMood(opt.value as MoodType)
-							}}
+							onClick={() => onSelectMood(opt.value as MoodType)}
 							className={cn(
-								'flex items-center justify-center w-[22cqh] h-[22cqh] rounded-full',
-								'text-[13cqh] transition-ui cursor-pointer',
+								'grid place-items-center size-[23cqh] rounded-full cursor-pointer transition-ui',
 								'disabled:cursor-not-allowed disabled:opacity-60 focus-visible:focus-ring',
-								isSelected
-									? 'bg-brand text-on-brand scale-110 shadow-sm'
-									: 'hover:bg-fill-2 hover:scale-105 opacity-70 hover:opacity-100'
+								isSelected ? 'bg-brand' : 'hover:bg-fill-2'
 							)}
 						>
-							<MoodImage mood={opt.value} />
+							<MoodImage
+								mood={opt.value}
+								className={cn(
+									'size-[16cqh]',
+									!isSelected && 'opacity-75'
+								)}
+							/>
 						</button>
 					)
 				})}
