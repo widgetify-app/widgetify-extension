@@ -26,14 +26,17 @@ export function WeatherCompactSquare({
 				className="flex flex-col items-center justify-center flex-1 min-h-0 gap-0.5 select-none"
 			>
 				<span className="flex items-center gap-1">
-					<WeatherIcon src={weather?.icon?.url} className="size-[34cqh]" />
+					<WeatherIcon
+						src={weather?.icon?.url}
+						className="size-[min(34cqh,calc(100cqh-46px))]"
+					/>
 					<Temperature
 						value={weather?.temperature?.temp}
 						unit={temperatureUnit}
-						className="text-[32cqh]"
+						className="text-[length:min(32cqh,calc(100cqh-46px))]"
 					/>
 				</span>
-				<span className="max-w-full font-medium leading-tight truncate text-3xs text-fg-muted">
+				<span className="max-w-full font-medium truncate shrink-0 text-3xs text-fg-muted">
 					{weather?.description?.text}
 				</span>
 			</section>

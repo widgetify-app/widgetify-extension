@@ -33,6 +33,7 @@ Settings comes first, with the city under it ("شهر: تهران"). No actions 
 
 - High and low are shown only when they round to two different numbers. The current reading often sends the same value for both, which is why the 2x1 fills its end with wind and humidity instead.
 - The 1x1 and 2x1 laid everything against the start edge and left the other half empty. The 1x1 is now centred under the shared 1x1 header; the 2x1 puts the reading at one end and two metrics at the other.
+- At 1x1 the condition line is `shrink-0` and the icon and temperature take `min(34cqh, 100cqh - 46px)`: the 28px header, the 2px gap and the 16px line come first. On 88px and shorter rows the reading plus the line did not fit, and the line, the only item allowed to shrink (`truncate` drops its minimum height to 0), was squashed to 15, 10 and 4px with its letters cut off.
 - The metric unit shows as a bare "°".
 - The status banner image and the `temp_description` line of the old 2x3 are gone; the design has neither.
 - 2x2 now sits in the normal widget frame instead of its own glass card.
