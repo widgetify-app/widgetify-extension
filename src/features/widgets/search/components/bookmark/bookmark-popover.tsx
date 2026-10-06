@@ -107,8 +107,8 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 									دسترسی به بوکمارک‌ها
 								</p>
 								<p className="mb-4 text-xs leading-relaxed text-fg-muted">
-									برای مشاهده بوکمارک‌های مرورگر در این بخش، نیاز به
-									دسترسی شما داریم.
+									برای دیدن بوکمارک‌های مرورگرت اینجا، باید بهمون اجازه
+									بدی
 								</p>
 								<Button
 									size="sm"
@@ -117,7 +117,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 									color="brand"
 									rounded="2xl"
 								>
-									فعال‌سازی دسترسی
+									اجازه بده
 								</Button>
 							</div>
 						) : (
@@ -186,7 +186,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 										))
 									) : (
 										<li className="py-8 text-xs text-center text-fg-muted">
-											پوشه خالی است
+											این پوشه خالیه
 										</li>
 									)}
 								</ul>

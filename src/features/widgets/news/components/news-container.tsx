@@ -1,38 +1,74 @@
-import type { RssFeed } from '../types'
+import Analytics from '@/analytics'
+import { WidgetEmpty } from '@/features/widgets/components/widget-empty'
+import type { NewsFeedEntry } from '../hooks/use-news-feeds'
+import { headlineKey, mergeHeadlines } from '../utils/merge-headlines'
+import { formatTimeAgo } from '../utils/time-ago'
+import { FeedErrorRow } from './feed-error-row'
 import { NewsEmpty } from './news-empty'
-import { RssFeedComponent } from './rss-feed'
+import { NewsItem } from './news-item'
+import { NewsSkeleton } from './news-skeleton'
 
-const DEFAULT_FEED: RssFeed = {
-	id: 'default',
-	enabled: true,
-	name: 'DEFAULT',
-	url: 'DEFAULT',
-}
+const SKELETON_COUNT = 4
 
 interface NewsContainerProps {
-	customFeeds: RssFeed[]
-	useDefaultNews: boolean
+	entries: NewsFeedEntry[]
+	now: number
 }
 
-export const NewsContainer = ({ customFeeds, useDefaultNews }: NewsContainerProps) => {
-	const enabledFeeds = customFeeds.filter((feed) => feed.enabled)
-	const feeds = useDefaultNews ? [DEFAULT_FEED, ...enabledFeeds] : enabledFeeds
+const openNewsLink = () => {
+	Analytics.event('rss_link_opened')
+}
 
-	if (feeds.length === 0) {
+export const NewsContainer = ({ entries, now }: NewsContainerProps) => {
+	if (entries.length === 0) {
 		return <NewsEmpty />
+	}
+
+	const headlines = mergeHeadlines(entries.map((entry) => entry.result.data ?? []))
+	const failed = entries.filter((entry) => entry.result.isError)
+	const isLoading = entries.some((entry) => entry.result.isLoading)
+
+	if (headlines.length === 0 && failed.length === 0) {
+		return isLoading ? (
+			<ul aria-busy="true" className="flex flex-col flex-1 min-h-0 gap-0.5">
+				{Array.from({ length: SKELETON_COUNT }, (_, i) => (
+					<li key={`news-skeleton-${i}`}>
+						<NewsSkeleton />
+					</li>
+				))}
+			</ul>
+		) : (
+			<WidgetEmpty
+				art="outlineNewspaper"
+				title="فعلاً خبر تازه‌ای نیست"
+				description="یه کم دیگه دوباره سر بزن"
+			/>
+		)
 	}
 
 	return (
 		<ul
 			aria-label="اخبار"
-			className="flex flex-col gap-1 overflow-y-auto scrollbar-none h-full pr-0.5"
+			aria-busy={isLoading}
+			className="flex flex-col flex-1 min-h-0 gap-0.5 overflow-y-auto scrollbar-none"
 		>
-			{feeds.map((feed) => (
-				<RssFeedComponent
-					key={feed.id}
-					url={feed.url}
-					sourceName={feed.name}
-					label={feed.id === 'default' ? 'اخبار پیش‌فرض' : feed.name}
+			{headlines.map((item) => (
+				<li key={headlineKey(item)}>
+					<NewsItem
+						title={item.title}
+						image_url={item.image_url}
+						source={item.source}
+						publishedAgo={formatTimeAgo(item.publishedAt, now)}
+						link={item.link}
+						onOpen={openNewsLink}
+					/>
+				</li>
+			))}
+			{failed.map((entry) => (
+				<FeedErrorRow
+					key={entry.feed.id}
+					label={entry.label}
+					onRetry={() => entry.result.refetch()}
 				/>
 			))}
 		</ul>

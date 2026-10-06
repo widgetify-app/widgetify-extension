@@ -37,7 +37,7 @@ The backend team keeps a Swagger for the whole API, including the admin routes. 
 - Each API has a cache and a rate limit.
 - The rate limit count is private.
 - Cache for each API is set randomly between 1 to 10 minutes and 1 hour.
-- The extension adds its own cache for `GET` requests in the service worker (`background/cache-config.ts`): stale-while-revalidate for `/searchbox`, `/currencies`, `/weather` and `/contents`; network first, with a 3 second wait, for `/date/events`, `/news/rss` and `/extension/notifications`; never `/searchbox/suggest-search`. Only `200` replies are kept, 50 entries for 2 days.
+- The extension adds its own cache for `GET` requests in the service worker (`background/cache-config.ts`): stale-while-revalidate for `/searchbox`, `/currencies`, `/weather` and `/contents`; network first, with a 3 second wait, for `/date/events`, `/news/rss` and `/extension/notifications`; never `/searchbox/suggest-search`. Only `200` replies are kept, 50 entries for 2 days. A request sent with `cache: 'no-cache'` (an explicit refresh, `FRESH_REQUEST` in `src/services/api.ts`) skips both strategies: it goes to the network without the wait and writes the reply into the same cache, so the next ordinary request does not bring back the older copy.
 
 ## Sign in
 

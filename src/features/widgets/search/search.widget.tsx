@@ -183,7 +183,7 @@ function SearchFullContent() {
 					{searchQuery ? (
 						<>
 							<SearchBoxButton
-								label="پاک کردن عبارت جستجو"
+								label="پاک کردن متن"
 								icon="close"
 								onClick={handleClearSearch}
 							/>

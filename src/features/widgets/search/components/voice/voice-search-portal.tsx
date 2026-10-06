@@ -19,9 +19,9 @@ const languages = [
 
 const ERROR_MESSAGES: Record<Exclude<VoiceSearchError, null>, string> = {
 	'permission-denied':
-		'دسترسی به میکروفون داده نشده. از نوار آدرس مرورگر اجازه‌ی میکروفون رو بده و دوباره تلاش کن.',
-	unsupported: 'مرورگرت از جستجوی صوتی پشتیبانی نمی‌کنه.',
-	failed: 'جستجوی صوتی شروع نشد. دوباره تلاش کن.',
+		'به میکروفون دسترسی نداریم. از نوار آدرس مرورگر اجازه‌ی میکروفون رو بده و دوباره امتحان کن',
+	unsupported: 'مرورگرت از جستجوی صوتی پشتیبانی نمی‌کنه',
+	failed: 'جستجوی صوتی شروع نشد، دوباره امتحان کن',
 }
 
 export function VoiceSearchPortal({
@@ -99,7 +99,7 @@ export function VoiceSearchPortal({
 							>
 								{currentTranscript ||
 									(selectedLanguage === 'fa-IR'
-										? 'در حال گوش دادن...'
+										? 'دارم گوش می‌دم…'
 										: 'Listening...')}
 							</p>
 						)}

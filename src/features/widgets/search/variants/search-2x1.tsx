@@ -154,13 +154,13 @@ export function SearchCompactRow() {
 							Analytics.event('search_input_focused_2x1')
 						}}
 						className={SEARCH_INPUT_CLASS}
-						placeholder="جستجو..."
+						placeholder="جستجو…"
 						aria-label="جستجو"
 						autoComplete="off"
 					/>
 
 					<SearchBoxButton
-						label={hasQuery ? 'پاک کردن عبارت جستجو' : 'جستجو'}
+						label={hasQuery ? 'پاک کردن متن' : 'جستجو'}
 						icon={hasQuery ? 'close' : 'search'}
 						onClick={hasQuery ? handleClearSearch : handleSearchButtonClick}
 					/>

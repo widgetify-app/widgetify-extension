@@ -37,7 +37,7 @@
 - هرکدوم از API ها دارای Cache و Rate Limit هستند.
 - تعداد Rate Limit درحال حاضر private هست.
 - Cache هر API به صورت رندوم بین 1 تا 10 دقیقه و 1 ساعت هست.
-- افزونه برای درخواست‌های `GET` توی service worker هم cache خودش را دارد (`background/cache-config.ts`): stale-while-revalidate برای `/searchbox`، `/currencies`، `/weather` و `/contents`؛ اول شبکه، با ۳ ثانیه صبر، برای `/date/events`، `/news/rss` و `/extension/notifications`؛ و `/searchbox/suggest-search` هیچ‌وقت. فقط پاسخ‌های `200` نگه داشته می‌شوند، تا ۵۰ مورد برای ۲ روز.
+- افزونه برای درخواست‌های `GET` توی service worker هم cache خودش را دارد (`background/cache-config.ts`): stale-while-revalidate برای `/searchbox`، `/currencies`، `/weather` و `/contents`؛ اول شبکه، با ۳ ثانیه صبر، برای `/date/events`، `/news/rss` و `/extension/notifications`؛ و `/searchbox/suggest-search` هیچ‌وقت. فقط پاسخ‌های `200` نگه داشته می‌شوند، تا ۵۰ مورد برای ۲ روز. درخواستی که با `cache: 'no-cache'` فرستاده شود (به‌روزرسانی دستی، `FRESH_REQUEST` در `src/services/api.ts`) از هر دو روش می‌گذرد: بدون صبر به شبکه می‌رود و پاسخ را در همان cache می‌نویسد، تا درخواست عادی بعدی نسخه‌ی قدیمی‌تر را برنگرداند.
 
 ## ورود
 

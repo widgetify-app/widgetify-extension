@@ -39,7 +39,7 @@ export const RssFeedSetting = () => {
 						<div className="space-y-0.5">
 							<h4 className="text-xs font-medium text-fg">اخبار پیش‌فرض</h4>
 							<p className="text-2xs text-fg-muted">
-								نمایش تیترهای روز از خبرگزاری‌های معتبر
+								تیترهای روز از چند خبرگزاری معتبر
 							</p>
 						</div>
 						<div className="shrink-0">

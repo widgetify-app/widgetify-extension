@@ -35,12 +35,12 @@ export function ImageSearchPortal({
 
 	const handleUpload = async (file: File) => {
 		if (!file?.type?.startsWith('image/')) {
-			showToast('لطفا فقط فایل تصویری انتخاب کنید', 'error')
+			showToast('فقط عکس می‌تونی انتخاب کنی', 'error')
 			return
 		}
 
 		if (file.size > 1 * 1024 * 1024) {
-			showToast('حجم فایل نباید بیشتر از ۱ مگابایت باشد', 'error')
+			showToast('عکس باید کمتر از ۱ مگابایت باشه', 'error')
 			return
 		}
 
@@ -165,9 +165,9 @@ export function ImageSearchPortal({
 								</svg>
 							</div>
 							<p className="text-xs font-bold text-fg-muted">
-								یک تصویر را اینجا بکشید یا{' '}
+								یه عکس رو بکش اینجا یا{' '}
 								<span className="text-brand hover:underline">
-									فایل را انتخاب کنید
+									انتخابش کن
 								</span>
 							</p>
 							{isUploading && (
@@ -186,8 +186,8 @@ export function ImageSearchPortal({
 										<div className="flex flex-col items-center gap-1">
 											<span className="text-xs font-black text-fg-strong">
 												{uploadProgress < 100
-													? 'در حال ارسال تصویر...'
-													: 'در حال جستجو در گوگل...'}
+													? 'در حال فرستادن عکس…'
+													: 'در حال جستجو توی گوگل…'}
 											</span>
 											<span className="text-3xs font-bold text-fg-faint tracking-widest">
 												{uploadProgress}%
@@ -213,7 +213,7 @@ export function ImageSearchPortal({
 							type="url"
 							value={imageUrl}
 							onChange={(v) => setImageUrl(v)}
-							placeholder="لینک تصویر را پیست کنید..."
+							placeholder="لینک عکس رو اینجا بذار…"
 							className="flex-1 py-2 text-xs bg-transparent border-none! outline-none! ring-transparent! focus:placeholder:opacity-50"
 							onKeyDown={(e) => e.key === 'Enter' && handleUrlSearch()}
 							direction={imageUrl ? 'auto' : 'rtl'}

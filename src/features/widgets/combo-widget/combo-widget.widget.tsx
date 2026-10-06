@@ -1,23 +1,32 @@
 import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { TabNavigation } from '@/components/ui'
+import { PopoverMenuItem } from '@/components/ui'
+import { NewsComboView } from '@/features/widgets/news/news.widget'
+import { WigiArzComboView } from '@/features/widgets/wigi-arz/wigi-arz.widget'
 import { Icon } from '@/icons'
-import { NewsLayout } from '@/features/widgets/news/news.widget'
-import { WigiArzLayout } from '@/features/widgets/wigi-arz/wigi-arz.widget'
+import { useRefreshCurrencies } from '@/services/currency/get-currency-by-code.hook'
+import { useRefreshRssFeeds } from '@/services/news/get-news.hook'
 import { WidgetContainer } from '../components/widget-container'
-import { COMBO_TAB_LABELS, COMBO_TAB_LIST, DEFAULT_COMBO_TAB } from './constants'
+import { WidgetHeaderTabs } from '../components/widget-header'
+import { useWidgetMenuActions, useWidgetSettingsSummary } from '../widget-menu.context'
+import { COMBO_TAB_LIST, DEFAULT_COMBO_TAB } from './constants'
 import type { ComboTabType } from './types'
 import { normalizeComboTab } from './utils/normalize-combo-tab'
 
-const navigationTabs = COMBO_TAB_LIST.map((tab) => ({
-	id: tab.id,
-	label: tab.label,
-	icon: <Icon name={tab.icon} size={14} />,
-}))
-
 export function ComboWidget() {
 	const [activeTab, setActiveTab] = useState<ComboTabType>(DEFAULT_COMBO_TAB)
+	const { refresh: refreshCurrencies } = useRefreshCurrencies()
+	const { refresh: refreshNews } = useRefreshRssFeeds()
+
+	useWidgetSettingsSummary('ارزها و منابع خبری')
+	useWidgetMenuActions(
+		<PopoverMenuItem
+			icon={<Icon name="refresh" size={14} />}
+			label="به‌روز کن"
+			onClick={activeTab === 'currency' ? refreshCurrencies : refreshNews}
+		/>
+	)
 
 	useEffect(() => {
 		async function load() {
@@ -35,27 +44,22 @@ export function ComboWidget() {
 		Analytics.event('combo_tab_changed', { tab })
 	}
 
-	return (
-		<WidgetContainer className="flex flex-col">
-			<TabNavigation
-				tabMode="advanced"
-				activeTab={activeTab}
-				onTabClick={onTabClick}
-				tabs={navigationTabs}
-				size="sm"
-				className="flex-none w-full border-none"
-			/>
+	const tabs = (
+		<WidgetHeaderTabs
+			label="ارز و اخبار"
+			tabs={COMBO_TAB_LIST}
+			activeTab={activeTab}
+			onChange={onTabClick}
+		/>
+	)
 
-			<section
-				aria-label={COMBO_TAB_LABELS[activeTab]}
-				className="flex-1 min-h-0 overflow-y-auto scrollbar-none"
-			>
-				{activeTab === 'currency' ? (
-					<WigiArzLayout inComboWidget enableBackground={false} />
-				) : (
-					<NewsLayout inComboWidget enableBackground={false} />
-				)}
-			</section>
+	return (
+		<WidgetContainer contentClassName="p-3 gap-2">
+			{activeTab === 'currency' ? (
+				<WigiArzComboView tabs={tabs} />
+			) : (
+				<NewsComboView tabs={tabs} />
+			)}
 		</WidgetContainer>
 	)
 }

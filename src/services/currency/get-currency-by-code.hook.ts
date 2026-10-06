@@ -1,6 +1,12 @@
-import { useQuery } from '@tanstack/react-query'
+import {
+	queryOptions,
+	useIsFetching,
+	useQueries,
+	useQuery,
+	useQueryClient,
+} from '@tanstack/react-query'
 import ms from 'ms'
-import { getMainClient } from '@/services/api'
+import { FRESH_REQUEST, getMainClient } from '@/services/api'
 import { currencyKeys } from '@/services/currency/currency.keys'
 
 export interface FetchedCurrency {
@@ -25,21 +31,65 @@ interface PriceHistory {
 	createdAt: string
 }
 
-export const useGetCurrencyByCode = (
-	currency: string,
-	options: { refetchInterval: number | null }
-) => {
-	return useQuery<FetchedCurrency>({
+function currencyByCodeQuery(currency: string, refetchInterval: number | null) {
+	return queryOptions({
 		queryKey: currencyKeys.byCode(currency),
-		queryFn: async () => getSupportCurrencies(currency),
+		queryFn: async () => getCurrencyByCode(currency),
 		retry: 0,
-		refetchInterval: options.refetchInterval || false,
+		refetchInterval: refetchInterval || false,
 		staleTime: ms('1m'),
 	})
 }
 
-async function getSupportCurrencies(currency: string): Promise<FetchedCurrency> {
+export const useGetCurrencyByCode = (
+	currency: string,
+	options: { refetchInterval: number | null }
+) => {
+	return useQuery(currencyByCodeQuery(currency, options.refetchInterval))
+}
+
+export function useCurrenciesUpdatedAt(currencies: string[]) {
+	return useQueries({
+		queries: currencies.map((currency) => currencyByCodeQuery(currency, null)),
+		combine: (results) =>
+			Math.max(0, ...results.map((result) => result.dataUpdatedAt)),
+	})
+}
+
+export function useRefreshCurrencies() {
+	const queryClient = useQueryClient()
+	const isRefreshing = useIsFetching({ queryKey: currencyKeys.byCodeAll }) > 0
+
+	const refresh = async () => {
+		const shown = queryClient
+			.getQueryCache()
+			.findAll({ queryKey: currencyKeys.byCodeAll, type: 'active' })
+
+		await Promise.all(
+			shown.map(({ queryKey }) => {
+				const code = String(queryKey[1])
+				return queryClient
+					.fetchQuery({
+						queryKey: currencyKeys.byCode(code),
+						queryFn: () => getCurrencyByCode(code, true),
+						staleTime: 0,
+					})
+					.catch(() => undefined)
+			})
+		)
+	}
+
+	return { refresh, isRefreshing }
+}
+
+async function getCurrencyByCode(
+	currency: string,
+	fresh = false
+): Promise<FetchedCurrency> {
 	const client = getMainClient()
-	const { data } = await client.get<FetchedCurrency>(`/currencies/${currency}`)
+	const { data } = await client.get<FetchedCurrency>(
+		`/currencies/${currency}`,
+		fresh ? FRESH_REQUEST : undefined
+	)
 	return data
 }

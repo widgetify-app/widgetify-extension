@@ -223,6 +223,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	[WidgetKeys.comboWidget]: {
 		id: WidgetKeys.comboWidget,
 		label: 'ویجت ترکیبی (ارز و اخبار)',
+		menuLabel: 'ارز و اخبار',
 		emoji: '🔗',
 		icon: 'link',
 		category: 'info',
@@ -306,12 +307,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		canDuplicate: true,
 		node: (instanceId, size, meta) => (
 			<CurrencyProvider>
-				<WigiArzLayout
-					inComboWidget={false}
-					size={size}
-					meta={meta}
-					instanceId={instanceId}
-				/>
+				<WigiArzLayout size={size} meta={meta} instanceId={instanceId} />
 			</CurrencyProvider>
 		),
 	},
@@ -327,7 +323,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.news_settings,
 		canDuplicate: false,
-		node: () => <NewsLayout inComboWidget={false} />,
+		node: () => <NewsLayout />,
 	},
 	[WidgetKeys.network]: {
 		id: WidgetKeys.network,

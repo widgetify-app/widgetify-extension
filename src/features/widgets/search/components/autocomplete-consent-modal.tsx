@@ -25,8 +25,8 @@ export function AutocompleteConsentModal({
 		<Modal isOpen={isOpen} onClose={onClose} title="پیشنهادهای جستجو" size="sm">
 			<div className="flex flex-col gap-4 pt-1">
 				<p className="px-1 text-sm leading-relaxed text-fg">
-					با فعال کردن این گزینه، هنگام تایپ در باکس جستجو، پیشنهادها مستقیما از
-					گوگل دریافت می‌شوند. هیچ اطلاعاتی ذخیره نمی‌شود.
+					اگه روشنش کنی، موقع تایپ پیشنهادها مستقیم از گوگل میان. ما چیزی ذخیره
+					نمی‌کنیم.
 				</p>
 				<div className="flex items-center justify-end gap-2">
 					<Button
@@ -36,7 +36,7 @@ export function AutocompleteConsentModal({
 						className="w-20"
 						disabled={isPending}
 					>
-						لغو
+						فعلاً نه
 					</Button>
 					<Button
 						type="button"
@@ -48,7 +48,7 @@ export function AutocompleteConsentModal({
 						loading={isPending}
 						className="px-8"
 					>
-						قبوله، فعالسازی
+						روشنش کن
 					</Button>
 				</div>
 			</div>

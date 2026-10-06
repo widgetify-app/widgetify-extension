@@ -38,12 +38,10 @@ export function useNewsSettings() {
 	}, [])
 
 	const updateSettings = (updater: (prev: WigiNewsSetting) => WigiNewsSetting) => {
-		setSettings((prev) => {
-			const next = updater(prev)
-			setToStorage('rssOptions', next)
-			callEvent('wigiNewsSettingsChanged', next)
-			return next
-		})
+		const next = updater(settings)
+		setSettings(next)
+		setToStorage('rssOptions', next)
+		callEvent('wigiNewsSettingsChanged', next)
 	}
 
 	const toggleDefaultNews = () => {

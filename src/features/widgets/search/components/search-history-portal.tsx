@@ -149,8 +149,7 @@ export function SearchHistoryPortal({
 											پیشنهادهای جستجو
 										</p>
 										<p className="text-2xs text-fg-faint leading-relaxed">
-											با فعال‌سازی، هنگام تایپ پیشنهادهای هوشمندی
-											داده میشه!
+											اگه روشنش کنی، موقع تایپ پیشنهاد می‌گیری
 										</p>
 									</div>
 									<button
@@ -161,12 +160,12 @@ export function SearchHistoryPortal({
 										}}
 										className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-xl cursor-pointer bg-fill text-fg-muted transition-ui hover:text-brand hover:bg-brand-fill focus-visible:focus-ring"
 									>
-										فعال‌سازی
+										روشنش کن
 									</button>
 								</div>
 							) : (
 								<p className="px-4 py-6 text-xs text-center text-fg-faint">
-									نتیجه‌ای برای نمایش وجود ندارد
+									هنوز چیزی اینجا نیست
 								</p>
 							)}
 						</Motion.div>

@@ -22,6 +22,10 @@ function matchesApiPaths(url: URL, request: Request, paths: string[]): boolean {
 	return paths.some((path) => url.pathname.startsWith(path))
 }
 
+function asksForFreshCopy(request: Request): boolean {
+	return request.cache === 'no-cache' || request.cache === 'reload'
+}
+
 // Browser-initiated requests for CDN assets (<img>, <link>, ...) default to
 // no-cors, which yields opaque responses. Opaque responses can't be validated
 // and get a large, misleading padding added to storage estimates. Since the CDN
@@ -54,6 +58,19 @@ export function setupCaching() {
 				purgeOnQuotaError: true,
 			}),
 		]
+
+		registerRoute(
+			({ url, request }) =>
+				asksForFreshCopy(request) &&
+				matchesApiPaths(url, request, [
+					...SWR_API_PATHS,
+					...NETWORK_FIRST_API_PATHS,
+				]),
+			new NetworkFirst({
+				cacheName: CacheNames.api,
+				plugins: apiCachePlugins(),
+			})
+		)
 
 		registerRoute(
 			({ url, request }) => matchesApiPaths(url, request, SWR_API_PATHS),

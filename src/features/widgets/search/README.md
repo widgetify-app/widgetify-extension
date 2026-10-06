@@ -29,6 +29,7 @@ The search box. 4x1, and a 2x1 for PRO. No header. The 4x1 is a card with the bo
 - The 2x1 dropped its card: around one box it drew a box inside a box. The 4x1 keeps it, since it holds the chips too.
 - ⋯ used to sit at the end of the box after a divider. It moved out of the box so the box holds only search controls. At the 4x1's top left it lay over the box, which fills the card's corner, so there it ends the chips row.
 - The 2x1 still sits in `WidgetContainer`, for the edit-mode lock and the container size.
+- The words follow the voice of the other widgets: «جستجو با عکس», «یه عکس رو بکش اینجا یا انتخابش کن», «دارم گوش می‌دم…», «روشنش کن» and «فعلاً نه» in the suggestions consent, «هنوز چیزی اینجا نیست», and toasts without «لطفا» or a full stop. The voice button's tooltip said «جستجوی گفتاری» while its panel said «جستجوی صوتی»; both say «جستجوی صوتی».
 - `voice-search-portal.tsx` starts the microphone in a mount effect. Never make it always mounted.
 
 ## Not checked on screen

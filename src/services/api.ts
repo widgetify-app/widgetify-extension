@@ -1,6 +1,7 @@
 import axios, {
 	type AxiosError,
 	type AxiosInstance,
+	type AxiosRequestConfig,
 	type AxiosResponse,
 	type InternalAxiosRequestConfig,
 } from 'axios'
@@ -23,6 +24,11 @@ const IGNORE_ENDPOINTS = [
 
 let instance: AxiosInstance | null = null
 let refreshPromise: Promise<string | null> | null = null
+
+export const FRESH_REQUEST: AxiosRequestConfig = {
+	adapter: 'fetch',
+	fetchOptions: { cache: 'no-cache' },
+}
 
 export function getMainClient(): AxiosInstance {
 	if (instance) {
