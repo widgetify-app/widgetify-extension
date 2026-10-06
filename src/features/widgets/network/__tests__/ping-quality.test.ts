@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'bun:test'
 import {
 	FAIR_PING_MS,
-	getPingFeedback,
+	getPingBars,
+	getPingLabel,
 	getPingQuality,
 	getPingTextClass,
 	GOOD_PING_MS,
@@ -39,17 +40,24 @@ describe('getPingQuality', () => {
 	})
 
 	it('keeps the wording and the colour on the same verdict', () => {
-		expect(getPingFeedback(100)).toBe('پینگ شما عالی هست.')
+		expect(getPingLabel(100)).toBe('عالی')
 		expect(getPingTextClass(100)).toBe('text-success')
 
-		expect(getPingFeedback(200)).toBe('پینگ شما متوسط است.')
+		expect(getPingLabel(200)).toBe('متوسط')
 		expect(getPingTextClass(200)).toBe('text-warning')
 
-		expect(getPingFeedback(900)).toBe('پینگ شما ضعیف است.')
+		expect(getPingLabel(900)).toBe('ضعیف')
 		expect(getPingTextClass(900)).toBe('text-danger')
 
-		expect(getPingFeedback(null)).toBe('پینگ در دسترس نیست.')
+		expect(getPingLabel(null)).toBe('معلوم نیست')
 		expect(getPingTextClass(null)).toBe('text-fg-muted')
+	})
+
+	it('lights fewer signal bars as the ping gets worse', () => {
+		expect(getPingBars(100)).toBe(4)
+		expect(getPingBars(200)).toBe(2)
+		expect(getPingBars(900)).toBe(1)
+		expect(getPingBars(null)).toBe(0)
 	})
 
 	it('keeps the bands in order', () => {

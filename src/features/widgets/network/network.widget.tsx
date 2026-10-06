@@ -1,29 +1,18 @@
 import { useCallback, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
-import { cn } from '@/common/utils/cn'
-import { RequireAuth } from '@/features/widgets/components/require-auth'
-import { AvatarComponent, Button, Tooltip } from '@/components/ui'
+import { PopoverMenuItem } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { Icon } from '@/icons'
 import { getIpInfo, measurePing } from '@/services/network/get-network-info'
 import type { WidgetSize } from '../utils/layout-engine/types'
 import { WidgetContainer } from '../components/widget-container'
-import { NetworkIPCard } from './components/network-ip-card'
-import { NetworkLoadingSkeleton } from './components/network-loading-skeleton'
-import { NetworkPingCard } from './components/network-ping-card'
+import { useWidgetMenuActions } from '../widget-menu.context'
+import type { NetworkInfo, NetworkViewProps } from './types'
+import { copyIpToClipboard } from './utils/copy-ip'
 import { NetworkCompactSquare } from './variants/network-1x1'
 import { NetworkCompactRow } from './variants/network-2x1'
-import { WidgetError } from '@/features/widgets/components/widget-error'
-
-interface NetworkInfo {
-	ip: string | null
-	country: string | null
-	countryIcon: string | null
-	city: string | null
-	isp: string | null
-	ping: number | null
-}
+import { Network2x3 } from './variants/network-2x3'
 
 const EMPTY_NETWORK_INFO: NetworkInfo = {
 	ip: null,
@@ -87,182 +76,73 @@ export function NetworkLayout({ size = { w: 2, h: 3 } }: Prop) {
 	}, [])
 
 	useEffect(() => {
-		if (isAuthenticated) {
+		if (isAuthenticated && isOnline) {
 			fetchNetworkData()
 		}
-	}, [isAuthenticated, fetchNetworkData])
+	}, [isAuthenticated, isOnline, fetchNetworkData])
 
 	const handleRefresh = useCallback(() => {
 		Analytics.event('refresh_network_data')
 		fetchNetworkData(true)
 	}, [fetchNetworkData])
 
-	const status = isOnline ? 'online' : 'offline'
-	const isInitialLoading = loadingState === NetworkLoadingState.INITIAL
-	const isRefreshing = loadingState === NetworkLoadingState.REFRESHING
+	const handleRetryOffline = () => {
+		setIsOnline(navigator.onLine)
+	}
+
 	const isLoading = loadingState !== NetworkLoadingState.IDLE
-	const showError = hasError && !isLoading
+
+	useWidgetMenuActions(
+		isAuthenticated && isOnline && (
+			<>
+				{networkInfo.ip && (
+					<PopoverMenuItem
+						icon={<Icon name="copy" size={14} />}
+						label="کپی آدرس IP"
+						onClick={() => copyIpToClipboard(networkInfo.ip)}
+					/>
+				)}
+				<PopoverMenuItem
+					icon={<Icon name="refresh" size={14} />}
+					label="به‌روز کن"
+					onClick={handleRefresh}
+					disabled={isLoading}
+				/>
+			</>
+		)
+	)
+
+	const viewProps: NetworkViewProps = {
+		info: networkInfo,
+		isOnline,
+		isAuthenticated,
+		isInitialLoading: loadingState === NetworkLoadingState.INITIAL,
+		isLoading,
+		hasError: hasError && !isLoading,
+		blurMode,
+		onRefresh: handleRefresh,
+		onRetryOffline: handleRetryOffline,
+	}
 
 	if (size.w === 1 && size.h === 1) {
 		return (
-			<WidgetContainer>
-				<NetworkCompactSquare
-					status={status}
-					ping={networkInfo.ping}
-					isAuthenticated={isAuthenticated}
-					isInitialLoading={isInitialLoading}
-					isRefreshing={isRefreshing}
-					hasError={showError}
-					blurMode={blurMode}
-					countryIcon={networkInfo.countryIcon}
-					ip={networkInfo.ip}
-					isp={networkInfo.isp}
-					city={networkInfo.city}
-					onRefresh={handleRefresh}
-				/>
+			<WidgetContainer contentClassName="px-3 py-2.5">
+				<NetworkCompactSquare {...viewProps} />
 			</WidgetContainer>
 		)
 	}
 
-	if (size.w === 2 && size.h === 1) {
+	if (size.h === 1) {
 		return (
-			<WidgetContainer>
-				<NetworkCompactRow
-					status={status}
-					ip={networkInfo.ip}
-					countryIcon={networkInfo.countryIcon}
-					city={networkInfo.city}
-					isp={networkInfo.isp}
-					ping={networkInfo.ping}
-					isAuthenticated={isAuthenticated}
-					isLoading={isLoading}
-					hasError={showError}
-					blurMode={blurMode}
-					onRefresh={handleRefresh}
-				/>
+			<WidgetContainer contentClassName="px-3 py-2.5 gap-1.5">
+				<NetworkCompactRow {...viewProps} />
 			</WidgetContainer>
 		)
 	}
 
 	return (
-		<WidgetContainer>
-			<RequireAuth mode="preview">
-				<section aria-label="شبکه" className="flex flex-col h-full">
-					<header className="flex items-center justify-between mb-2">
-						<h3 className="flex items-center gap-2 text-sm font-semibold text-fg">
-							شبکه
-						</h3>
-
-						<Tooltip content="بارگذاری مجدد">
-							<Button
-								onClick={handleRefresh}
-								size="xs"
-								disabled={isLoading}
-								aria-label="بارگذاری مجدد"
-								className="flex items-center justify-center w-6 h-6 p-0 rounded-full border-none! shadow-none!"
-							>
-								<Icon
-									name="refresh"
-									size={12}
-									aria-hidden="true"
-									className="text-fg opacity-70 hover:opacity-100"
-									spin={isLoading}
-								/>
-							</Button>
-						</Tooltip>
-					</header>
-
-					{isInitialLoading ? (
-						<NetworkLoadingSkeleton />
-					) : showError ? (
-						<WidgetError
-							message="اطلاعات شبکه دریافت نشد"
-							onRetry={handleRefresh}
-						/>
-					) : (
-						<div className="flex-1 space-y-2">
-							<div className="relative overflow-hidden border border-surface-3 rounded-2xl">
-								<div
-									aria-hidden="true"
-									className="absolute inset-0 bg-linear-to-br from-fill to-transparent"
-								/>
-								<div className="relative p-2 space-y-3 max-h-32 min-h-32">
-									<div className="flex items-center justify-between">
-										<div className="flex items-center gap-2">
-											<span
-												aria-hidden="true"
-												className={cn(
-													'w-2 h-2 rounded-full',
-													isOnline
-														? 'bg-success animate-pulse'
-														: 'bg-danger'
-												)}
-											/>
-											<span className="text-xs font-medium text-fg-muted">
-												{isOnline ? 'متصل' : 'قطع شده'}
-											</span>
-										</div>
-										{networkInfo.countryIcon && (
-											<Tooltip
-												content={
-													networkInfo.isp ||
-													'ارائه‌دهنده خدمات اینترنتی نامشخص'
-												}
-											>
-												<AvatarComponent
-													url={networkInfo.countryIcon}
-													placeholder="flag"
-													className="rounded-sm shadow-sm"
-													size="xs"
-												/>
-											</Tooltip>
-										)}
-									</div>
-
-									<NetworkIPCard
-										blurMode={blurMode}
-										ip={networkInfo.ip}
-									/>
-
-									{(networkInfo.city || networkInfo.country) && (
-										<div className="flex flex-wrap items-center justify-center gap-2 text-xs">
-											{networkInfo.city && (
-												<span className="px-2 py-1 font-medium rounded-full text-brand bg-brand-fill">
-													{networkInfo.city}
-												</span>
-											)}
-											{networkInfo.country && (
-												<span className="px-2 py-1 font-medium rounded-full text-secondary bg-secondary-fill">
-													{networkInfo.country}
-												</span>
-											)}
-										</div>
-									)}
-								</div>
-							</div>
-
-							<NetworkPingCard ping={networkInfo.ping} />
-
-							<Button
-								size="md"
-								type="button"
-								className="w-full h-fit py-2.5"
-								rounded={'2xl'}
-								onClick={handleRefresh}
-								disabled={isLoading}
-							>
-								<Icon
-									name="refresh"
-									size={12}
-									aria-hidden="true"
-									spin={isLoading}
-								/>
-								به‌روزرسانی شبکه
-							</Button>
-						</div>
-					)}
-				</section>
-			</RequireAuth>
+		<WidgetContainer contentClassName="p-3 gap-2">
+			<Network2x3 {...viewProps} />
 		</WidgetContainer>
 	)
 }

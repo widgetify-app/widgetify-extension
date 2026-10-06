@@ -1,13 +1,20 @@
-export type PingQuality = 'unknown' | 'good' | 'fair' | 'poor'
+type PingQuality = 'unknown' | 'good' | 'fair' | 'poor'
 
 export const GOOD_PING_MS = 150
 export const FAIR_PING_MS = 300
 
 const QUALITY_LABELS: Record<PingQuality, string> = {
-	unknown: 'پینگ در دسترس نیست.',
-	good: 'پینگ شما عالی هست.',
-	fair: 'پینگ شما متوسط است.',
-	poor: 'پینگ شما ضعیف است.',
+	unknown: 'معلوم نیست',
+	good: 'عالی',
+	fair: 'متوسط',
+	poor: 'ضعیف',
+}
+
+const QUALITY_BARS: Record<PingQuality, number> = {
+	unknown: 0,
+	good: 4,
+	fair: 2,
+	poor: 1,
 }
 
 const QUALITY_TEXT_CLASS: Record<PingQuality, string> = {
@@ -24,8 +31,12 @@ export function getPingQuality(ping: number | null): PingQuality {
 	return 'poor'
 }
 
-export function getPingFeedback(ping: number | null): string {
+export function getPingLabel(ping: number | null): string {
 	return QUALITY_LABELS[getPingQuality(ping)]
+}
+
+export function getPingBars(ping: number | null): number {
+	return QUALITY_BARS[getPingQuality(ping)]
 }
 
 export function getPingTextClass(ping: number | null): string {
