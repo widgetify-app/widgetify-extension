@@ -9,7 +9,7 @@ export function NoteEmpty({ onAdd }: NoteEmptyProps) {
 		<WidgetEmpty
 			art="notebook"
 			title="هنوز یادداشتی نداری"
-			description="ایده، لیست خرید یا یه جمله برای بعد؛ همین‌جا نگهش دار."
+			description="ایده، لیست خرید یا یه جمله برای بعد؛ همین‌جا نگهش دار"
 			action={{ label: 'یادداشت جدید', onClick: onAdd }}
 		/>
 	)

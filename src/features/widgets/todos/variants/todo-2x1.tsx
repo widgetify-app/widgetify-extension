@@ -104,7 +104,7 @@ function TodoCompactContent({
 				icon="check"
 				title="هنوز تسکی نداری"
 				description="یه کار برای امروز بنویس"
-				action={{ label: 'افزودن', onClick: onAdd }}
+				action={{ label: 'تسک جدید', onClick: onAdd }}
 			/>
 		)
 	}

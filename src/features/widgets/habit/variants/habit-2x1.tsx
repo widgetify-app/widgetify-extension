@@ -77,7 +77,7 @@ function HabitCompactContent({ actions, today }: Habit2x1Props) {
 				icon="strike"
 				title="یه عادت خوب شروع کن"
 				description="مثلاً روزی ۸ لیوان آب"
-				action={{ label: 'افزودن', onClick: openAddHabit }}
+				action={{ label: 'عادت جدید', onClick: openAddHabit }}
 			/>
 		)
 	}

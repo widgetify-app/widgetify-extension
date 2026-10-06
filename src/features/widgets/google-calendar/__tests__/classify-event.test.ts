@@ -3,6 +3,7 @@ import type { GoogleCalendarEvent } from '@/services/date/get-google-calendar-ev
 import {
 	classifyEvent,
 	countdownParts,
+	currentOrNextEvent,
 	formatPersianTime,
 	getDurationLabel,
 } from '../utils/classify-event'
@@ -182,5 +183,36 @@ describe('countdownParts', () => {
 		expect(countdownParts(60)).toEqual({ value: '1:00', unit: 'ساعت' })
 		expect(countdownParts(95)).toEqual({ value: '1:35', unit: 'ساعت' })
 		expect(countdownParts(605)).toEqual({ value: '10:05', unit: 'ساعت' })
+	})
+})
+
+describe('currentOrNextEvent', () => {
+	const onToday = (event: GoogleCalendarEvent) => classifyEvent(event, NOW, true, false)
+
+	it('picks the event in progress over a later one', () => {
+		const later = onToday(timedEvent('2026-09-14T12:00:00Z', '2026-09-14T13:00:00Z'))
+		const running = onToday(
+			timedEvent('2026-09-14T10:00:00Z', '2026-09-14T11:00:00Z')
+		)
+
+		expect(currentOrNextEvent([later, running])).toBe(running)
+	})
+
+	it('skips finished and all-day events to find the next one', () => {
+		const finished = onToday(
+			timedEvent('2026-09-14T08:00:00Z', '2026-09-14T09:00:00Z')
+		)
+		const allDay = onToday(allDayEvent('2026-09-14'))
+		const next = onToday(timedEvent('2026-09-14T12:00:00Z', '2026-09-14T13:00:00Z'))
+
+		expect(currentOrNextEvent([finished, allDay, next])).toBe(next)
+	})
+
+	it('finds nothing once every timed event has ended', () => {
+		const finished = onToday(
+			timedEvent('2026-09-14T08:00:00Z', '2026-09-14T09:00:00Z')
+		)
+
+		expect(currentOrNextEvent([finished])).toBeUndefined()
 	})
 })

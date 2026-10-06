@@ -18,8 +18,8 @@ interface CurrencyConverterProps {
 }
 
 export const CurrencyConverter: React.FC<CurrencyConverterProps> = ({ tabs }) => {
-	const [fromCurrency, setFromCurrency] = useState(CONVERTER_DEFAULT_PAIR.from)
-	const [toCurrency, setToCurrency] = useState(CONVERTER_DEFAULT_PAIR.to)
+	const [fromCurrency, setFromCurrency] = useState(CONVERTER_DEFAULT_PAIR.from.code)
+	const [toCurrency, setToCurrency] = useState(CONVERTER_DEFAULT_PAIR.to.code)
 	const [amount, setAmount] = useState<number>(1)
 
 	const { data: supportedCurrencies, isLoading: isLoadingSupported } =

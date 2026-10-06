@@ -108,7 +108,7 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 							<h4 className="px-2 pt-1.5 pb-0.5 font-bold text-3xs text-fg-faint">
 								<time dateTime={dateStr}>{dayLabel}</time>
 							</h4>
-							<ul className="flex flex-col gap-px">
+							<ul className="flex flex-col gap-0.5">
 								{items.map((item) => (
 									<li key={item.event.id}>
 										<GoogleCalendarEventRow

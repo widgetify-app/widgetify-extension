@@ -36,6 +36,15 @@ export function countdownParts(minutes: number): { value: string; unit: string }
 	return { value: `${Math.floor(minutes / 60)}:${remainder}`, unit: 'ساعت' }
 }
 
+export function currentOrNextEvent(
+	events: ClassifiedCalendarEvent[]
+): ClassifiedCalendarEvent | undefined {
+	return (
+		events.find((item) => item.isNow) ||
+		events.find((item) => !item.isPast && !item.isNow && !item.isAllDay)
+	)
+}
+
 export function classifyEvent(
 	event: GoogleCalendarEvent,
 	currentTime: Date,

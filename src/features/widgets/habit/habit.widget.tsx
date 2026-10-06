@@ -28,7 +28,7 @@ export function HabitsContent({ size = { w: 2, h: 3 }, tabs }: HabitsContentProp
 	useWidgetMenuActions(
 		<PopoverMenuItem
 			icon={<Icon name="refresh" size={14} />}
-			label="بارگذاری مجدد"
+			label="به‌روز کن"
 			onClick={onRefresh}
 		/>
 	)

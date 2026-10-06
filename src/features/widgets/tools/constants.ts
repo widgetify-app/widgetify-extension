@@ -8,7 +8,10 @@ export const TOOLS_TABS: { id: ToolsTabType; label: string }[] = [
 	{ id: 'currency-converter', label: 'تبدیل' },
 ]
 
-export const CONVERTER_DEFAULT_PAIR = { from: 'EUR', to: 'USD' }
+export const CONVERTER_DEFAULT_PAIR = {
+	from: { code: 'EUR', symbol: '€' },
+	to: { code: 'USD', symbol: '$' },
+}
 
 export const TOOLS_TAB_TITLES: Record<ToolsTabType, string> = {
 	pomodoro: 'تایمر پومودورو',

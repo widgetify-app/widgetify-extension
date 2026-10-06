@@ -142,7 +142,7 @@ export function TodosLayout({ size = { w: 2, h: 3 }, tabs }: TodosLayoutProps = 
 	useWidgetMenuActions(
 		<PopoverMenuItem
 			icon={<Icon name="refresh" size={14} />}
-			label="بارگذاری مجدد"
+			label="به‌روز کن"
 			onClick={onRefresh}
 		/>
 	)

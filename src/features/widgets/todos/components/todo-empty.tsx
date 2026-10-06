@@ -8,10 +8,10 @@ export function TodosEmpty({ onAdd }: { onAdd?: () => void }) {
 			title="هنوز تسکی نداری"
 			description={
 				onAdd
-					? 'اولین کاری که باید انجام بدی رو بنویس.'
-					: 'اولین کاری که باید انجام بدی رو همین پایین بنویس.'
+					? 'اولین کاری که باید انجام بدی رو بنویس'
+					: 'اولین کاری که باید انجام بدی رو همین پایین بنویس'
 			}
-			action={onAdd ? { label: 'افزودن تسک', onClick: onAdd } : undefined}
+			action={onAdd ? { label: 'تسک جدید', onClick: onAdd } : undefined}
 		/>
 	)
 }

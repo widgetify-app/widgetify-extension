@@ -37,7 +37,7 @@ The same as tasks and notes. The frame is `p-3 gap-2` (`px-3 py-2.5 gap-1.5` at 
 
 - Always: the title (or the yadkar tabs) and "1 از 4 امروز".
 - On hover: "عادت جدید" (signed in only) and ⋯.
-- Menu actions in every size: "بارگذاری مجدد".
+- Menu actions in every size: «به‌روز کن».
 
 ## Detail modal
 
@@ -62,7 +62,7 @@ Signed out, loading, error and empty are separate screens. The 2x1 draws them wi
 
 - Adding is on the widget (the header's +), so the menu keeps only reload.
 - Deleting asks in the detail modal, then shows «عادت حذف شد». Tasks and notes now end a delete the same way; the toast's sound is the confirmation.
-- The 2x1 has a header and the tasks pager instead of a dot row and a floating ⋯.
+- The 2x1 has a header and the tasks pager instead of a dot row and a floating ⋯. Its empty state's button reads «عادت جدید», like the 2x3's; it said «افزودن».
 - The detail modal lost its title dropdown; edit and delete sit in the footer where the task modal has them.
 - The success rate is gone. It divided the successful days by every day since the first log, which says little, least of all for a habit that is not daily.
 - The form's subtitle «از یه الگو شروع کن یا خودت بساز» shows only when adding, since editing has no templates.

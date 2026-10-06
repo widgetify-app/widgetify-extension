@@ -62,7 +62,7 @@ export function NoteBoard({ tabs }: NoteBoardProps) {
 	useWidgetMenuActions(
 		<PopoverMenuItem
 			icon={<Icon name="refresh" size={14} />}
-			label="بارگذاری مجدد"
+			label="به‌روز کن"
 			onClick={() => {
 				refetch()
 				Analytics.event('note_refetch')

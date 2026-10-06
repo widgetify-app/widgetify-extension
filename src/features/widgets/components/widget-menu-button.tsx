@@ -4,7 +4,7 @@ import { Icon } from '@/icons'
 import { useWidgetMenu } from '../widget-menu.context'
 
 interface WidgetMenuButtonProps {
-	placement?: 'header' | 'compact' | 'floating' | 'corner' | 'image'
+	placement?: 'header' | 'compact' | 'floating' | 'image'
 	tone?: WidgetControlTone
 }
 
@@ -15,7 +15,7 @@ export function WidgetMenuButton({
 	const menu = useWidgetMenu()
 	if (!menu) return null
 
-	const isFloating = placement === 'floating' || placement === 'corner'
+	const isFloating = placement === 'floating'
 	const isOnImage = placement === 'image'
 	const isSmall = isFloating || isOnImage || placement === 'compact'
 
@@ -24,10 +24,7 @@ export function WidgetMenuButton({
 			content="گزینه‌های ویجت"
 			delay={500}
 			className={cn(
-				(placement === 'floating' || isOnImage) &&
-					'widget-control absolute top-2 left-2 z-30',
-				placement === 'corner' &&
-					'widget-control absolute -top-1.5 -left-1.5 z-30'
+				(isFloating || isOnImage) && 'widget-control absolute top-2 left-2 z-30'
 			)}
 		>
 			<button
@@ -46,7 +43,6 @@ export function WidgetMenuButton({
 									isSmall ? 'size-6' : 'size-7',
 									controlToneClass(tone, false)
 								),
-					placement === 'corner' && 'shadow-md',
 					menu.isOpen && (isOnImage ? 'bg-scrim' : 'bg-fill-3'),
 					menu.isOpen && !isOnImage && tone === 'default' && 'text-fg-strong'
 				)}

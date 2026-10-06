@@ -5,7 +5,7 @@ interface WidgetCompactEmptyProps {
 	icon: IconName
 	title: string
 	description: string
-	action: { label: string; onClick: () => void }
+	action?: { label: string; onClick: () => void }
 }
 
 export function WidgetCompactEmpty({
@@ -23,9 +23,11 @@ export function WidgetCompactEmpty({
 				<span className="text-xs font-semibold truncate text-fg">{title}</span>
 				<span className="truncate text-3xs text-fg-faint">{description}</span>
 			</div>
-			<Button size="xs" color="brand" rounded="lg" onClick={action.onClick}>
-				{action.label}
-			</Button>
+			{action && (
+				<Button size="xs" color="brand" rounded="lg" onClick={action.onClick}>
+					{action.label}
+				</Button>
+			)}
 		</div>
 	)
 }

@@ -38,7 +38,7 @@ export const TopUsersTab: React.FC<TopUsersTabProps> = ({ type }) => {
 	}
 
 	if (!data?.tops || data.tops.length === 0) {
-		return <WidgetEmpty art="users" title="هنوز کسی در این فهرست نیست" />
+		return <WidgetEmpty art="users" title="هنوز کسی توی این فهرست نیست" />
 	}
 
 	return (

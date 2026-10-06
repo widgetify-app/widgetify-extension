@@ -1,11 +1,16 @@
 import type React from 'react'
 import { cn } from '@/common/utils/cn'
+import { WidgetCompactEmpty } from '@/features/widgets/components/widget-compact-empty'
 import { WidgetError } from '@/features/widgets/components/widget-error'
-import { WidgetMenuButton } from '@/features/widgets/components/widget-menu-button'
+import { WidgetHeader } from '@/features/widgets/components/widget-header'
 import { Icon } from '@/icons'
 import type { GoogleCalendarEvent } from '@/services/date/get-google-calendar-events.hook'
 import type { ClassifiedCalendarEvent } from '../types'
-import { countdownParts, toDateTimeAttr } from '../utils/classify-event'
+import {
+	countdownParts,
+	currentOrNextEvent,
+	toDateTimeAttr,
+} from '../utils/classify-event'
 
 interface GoogleCalendar2x1Props {
 	classifiedEvents: ClassifiedCalendarEvent[]
@@ -15,12 +20,22 @@ interface GoogleCalendar2x1Props {
 	onRetry: () => void
 }
 
-export const GoogleCalendar2x1: React.FC<GoogleCalendar2x1Props> = (props) => (
-	<>
-		<GoogleCalendar2x1Content {...props} />
-		<WidgetMenuButton placement="floating" />
-	</>
-)
+export const GoogleCalendar2x1: React.FC<GoogleCalendar2x1Props> = (props) => {
+	const { classifiedEvents, isLoading, isError } = props
+	const info =
+		!isLoading && !isError && classifiedEvents.length > 0
+			? `${classifiedEvents.length} برنامه`
+			: undefined
+
+	return (
+		<>
+			<WidgetHeader title="تقویم گوگل" info={info} />
+			<div className="flex-1 min-h-0">
+				<GoogleCalendar2x1Content {...props} />
+			</div>
+		</>
+	)
+}
 
 function GoogleCalendar2x1Content({
 	classifiedEvents,
@@ -31,8 +46,8 @@ function GoogleCalendar2x1Content({
 }: GoogleCalendar2x1Props) {
 	if (isLoading) {
 		return (
-			<div aria-hidden="true" className="flex items-center h-full gap-3">
-				<div className="flex flex-col gap-1 w-10 shrink-0">
+			<div aria-hidden="true" className="flex items-center h-full gap-2.5 px-2">
+				<div className="flex flex-col gap-1 w-9 shrink-0">
 					<div className="w-9 h-3 rounded-sm skeleton" />
 					<div className="w-6 h-2 rounded-sm skeleton" />
 				</div>
@@ -54,25 +69,15 @@ function GoogleCalendar2x1Content({
 		)
 	}
 
-	const target =
-		classifiedEvents.find((item) => item.isNow) ||
-		classifiedEvents.find((item) => !item.isPast && !item.isNow && !item.isAllDay)
+	const target = currentOrNextEvent(classifiedEvents)
 
 	if (!target) {
 		return (
-			<div className="flex items-center h-full gap-3">
-				<span className="grid rounded-xl size-10 place-items-center shrink-0 bg-fill text-fg-muted">
-					<Icon name="calendar" size={16} aria-hidden="true" />
-				</span>
-				<span className="flex flex-col flex-1 min-w-0 leading-control">
-					<span className="text-sm font-bold truncate text-fg-strong">
-						امروز برنامه‌ای نداری
-					</span>
-					<span className="truncate text-3xs text-fg-faint">
-						فرصت خوبیه برای کارهای شخصی
-					</span>
-				</span>
-			</div>
+			<WidgetCompactEmpty
+				icon="calendar"
+				title="امروز برنامه‌ای نداری"
+				description="فرصت خوبیه برای کارهای شخصی"
+			/>
 		)
 	}
 
@@ -82,15 +87,20 @@ function GoogleCalendar2x1Content({
 	const countdown = countdownParts(isNow ? target.minsRemaining : target.minsUntilStart)
 
 	return (
-		<div className="flex flex-col justify-center h-full gap-2">
-			<div className="flex items-center gap-2.5">
+		<div className="flex flex-col justify-center h-full gap-1">
+			<div
+				className={cn(
+					'flex items-center gap-2.5 px-2 rounded-xl min-h-8.5 transition-ui',
+					hasAction && 'hover:bg-fill'
+				)}
+			>
 				<button
 					type="button"
 					aria-disabled={!hasAction}
 					onClick={() => hasAction && onEventClick(event)}
 					aria-label={`${isNow ? 'جلسه‌ی الان' : 'جلسه‌ی بعدی'}: ${title}، ${startTimeStr} تا ${endTimeStr}`}
 					className={cn(
-						'flex items-center flex-1 min-w-0 gap-2.5 text-start rounded-lg focus-visible:focus-ring',
+						'flex items-center flex-1 min-w-0 gap-2.5 py-1 text-start rounded-lg focus-visible:focus-ring',
 						hasAction ? 'cursor-pointer' : 'cursor-default'
 					)}
 				>
@@ -149,7 +159,7 @@ function GoogleCalendar2x1Content({
 			{isNow && (
 				<span
 					aria-hidden="true"
-					className="h-0.75 overflow-hidden rounded-xs bg-fill-2"
+					className="mx-2 h-0.75 overflow-hidden rounded-xs bg-fill-2"
 				>
 					<span
 						className="block h-full transition-[width] duration-1000 bg-brand"

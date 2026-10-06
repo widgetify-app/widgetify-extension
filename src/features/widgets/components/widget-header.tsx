@@ -64,6 +64,23 @@ export function WidgetHeader({
 	)
 }
 
+interface WidgetCenteredHeaderProps {
+	title: ReactNode
+}
+
+export function WidgetCenteredHeader({ title }: WidgetCenteredHeaderProps) {
+	return (
+		<header className="grid items-center flex-none grid-cols-1 h-7">
+			<h3 className="col-start-1 row-start-1 text-xs font-bold text-center truncate widget-info text-fg-strong">
+				{title}
+			</h3>
+			<div className="flex col-start-1 row-start-1 justify-self-end widget-control">
+				<WidgetMenuButton />
+			</div>
+		</header>
+	)
+}
+
 interface WidgetHeaderButtonProps {
 	label: string
 	icon: IconName

@@ -11,7 +11,7 @@ import { PERSIAN_WEEKDAYS } from '@/features/widgets/constants'
 import { EMPTY_EVENTS } from '../constants'
 import { useDayDetailsPopup } from '../hooks/use-day-details-popup'
 import { toIsoDateKey } from '@/features/widgets/utils/jalali-date'
-import { WidgetMenuButton } from '@/features/widgets/components/widget-menu-button'
+import { WidgetHeader } from '@/features/widgets/components/widget-header'
 import type { CalendarDisplay } from '../types'
 import { getDayMarks } from '../utils/day-marks'
 
@@ -42,14 +42,7 @@ export function Calendar2x1({ display }: Calendar2x1Props) {
 
 	return (
 		<>
-			<div className="flex items-center justify-between h-4.5 shrink-0">
-				<span className="font-bold text-3xs text-fg-muted">
-					{today.format('jMMMM jYYYY')}
-				</span>
-				<span className="widget-control">
-					<WidgetMenuButton placement="compact" />
-				</span>
-			</div>
+			<WidgetHeader title={today.format('jMMMM jYYYY')} />
 			<ul
 				ref={weekRef}
 				className="grid flex-1 min-h-0 grid-cols-7 gap-0.5 select-none"
@@ -98,7 +91,7 @@ export function Calendar2x1({ display }: Calendar2x1Props) {
 							>
 								<span
 									className={cn(
-										'font-semibold text-3xs',
+										'font-semibold leading-none text-3xs',
 										isToday
 											? 'opacity-80'
 											: isHoliday

@@ -191,7 +191,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 	useWidgetMenuActions(
 		<PopoverMenuItem
 			icon={<Icon name="refresh" size={14} />}
-			label="بارگذاری مجدد"
+			label="به‌روز کن"
 			onClick={() => {
 				refetch()
 				Analytics.event('note_refetch')

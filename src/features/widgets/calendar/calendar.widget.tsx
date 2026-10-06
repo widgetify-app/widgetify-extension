@@ -24,7 +24,7 @@ export const CalendarLayout: React.FC<CalendarLayoutProps> = ({
 
 	if (isToday) {
 		return (
-			<WidgetContainer contentClassName="p-2">
+			<WidgetContainer contentClassName="px-3 py-2.5">
 				<Calendar1x1 />
 			</WidgetContainer>
 		)
@@ -32,7 +32,7 @@ export const CalendarLayout: React.FC<CalendarLayoutProps> = ({
 
 	if (size.w === 2 && size.h === 1) {
 		return (
-			<WidgetContainer contentClassName="p-2 gap-1">
+			<WidgetContainer contentClassName="px-3 py-2.5 gap-1.5">
 				<Calendar2x1 display={display} />
 			</WidgetContainer>
 		)

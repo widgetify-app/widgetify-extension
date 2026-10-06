@@ -49,7 +49,7 @@ Every size is the same frame: `WidgetContainer` padding from the registry (`px-3
 
 - Always: the title (or the yadkar tabs) and the summary. The board also shows the active filter as a chip; the smaller sizes only fill the filter icon.
 - On hover or keyboard focus: «تسک جدید» (2x1 and 2x3), the filter button and ⋯. The summary fades out so they take its place.
-- Menu actions: "بارگذاری مجدد".
+- Menu actions: «به‌روز کن».
 - The summary reads "2 از 5 انجام شده" only when every task is loaded and no filter is on. Otherwise it gives the server total, "12 تسک", because the done count of an unloaded page is unknown.
 
 ## States
@@ -63,6 +63,7 @@ Signed out, loading, error and empty are separate screens. Signed out hides the 
 - The filter is one popover in every size. The board lost its row of date chips.
 - Done tasks show no due label.
 - The filter's options read «انجام‌شده», «انجام‌نشده» and «اول مهم‌ها», the board's column «انجام‌نشده», and a priority «کم‌اهمیت» everywhere. A category is called «برچسب» everywhere, as in the form.
+- The empty states' button reads «تسک جدید», like the header's +. It said «افزودن تسک» at 2x3 and «افزودن» at 2x1.
 - Deleting from a row asks «این تسک حذف بشه؟» with «حذف» and «نه», like notes; the modal asks in place. Either way a delete ends with «تسک حذف شد», like habits, and the toast's sound.
 
 ## Not checked on screen

@@ -44,14 +44,14 @@ export function GoogleCalendarWidget({
 		isCalendarConnected && (
 			<PopoverMenuItem
 				icon={<Icon name="refresh" size={14} />}
-				label="بارگذاری مجدد"
+				label="به‌روز کن"
 				onClick={() => refetch()}
 			/>
 		)
 	)
 
-	const isCompact = size.h === 1
-	const containerClass = isCompact ? 'px-3 py-2.5' : 'p-3 gap-2'
+	const containerClass =
+		size.h !== 1 ? 'p-3 gap-2' : size.w === 1 ? 'px-3 py-2.5' : 'px-3 py-2.5 gap-1.5'
 
 	if (!isCalendarConnected) {
 		return (

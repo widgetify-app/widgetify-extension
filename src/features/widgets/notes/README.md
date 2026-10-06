@@ -42,10 +42,10 @@ The same as tasks: the frame is `p-3 gap-2` (the sticky card draws its own), the
 
 | Where | Header on hover | Menu actions |
 |---|---|---|
-| List | "یادداشت جدید", ⋯ | بارگذاری مجدد |
-| Editor | "حذف این یادداشت", ⋯; the back button is always visible | بارگذاری مجدد |
-| Sticky | "حذف این یادداشت", "یادداشت جدید", ⋯ | بارگذاری مجدد |
-| Notebook | "یادداشت جدید", ⋯; delete sits in the open note's footer | بارگذاری مجدد |
+| List | "یادداشت جدید", ⋯ | به‌روز کن |
+| Editor | "حذف این یادداشت", ⋯; the back button is always visible | به‌روز کن |
+| Sticky | "حذف این یادداشت", "یادداشت جدید", ⋯ | به‌روز کن |
+| Notebook | "یادداشت جدید", ⋯; delete sits in the open note's footer | به‌روز کن |
 
 The header shows "در حال ذخیره…" beside the title while a save runs, in both the editor and the sticky card, because the info slot hides on hover and while you type.
 
@@ -53,7 +53,7 @@ On a coloured sticky the header uses `tone="onColor"`, so its text and buttons f
 
 ## Design decisions
 
-- Everything a note needs is on the widget itself: new, delete and colours. The menu keeps only what is not, reload. Deleting always asks first: «این یادداشت حذف بشه؟» with «حذف» and «نه», the same as a task row, and ends with «یادداشت حذف شد» from `NotesProvider`, like tasks and habits. Without a `title` and `confirmText`, `ConfirmationModal` fell back to «تایید عملیات» and «تایید».
+- Everything a note needs is on the widget itself: new, delete and colours. The menu keeps only what is not, «به‌روز کن». Deleting always asks first: «این یادداشت حذف بشه؟» with «حذف» and «نه», the same as a task row, and ends with «یادداشت حذف شد» from `NotesProvider`, like tasks and habits. Without a `title` and `confirmText`, `ConfirmationModal` fell back to «تایید عملیات» and «تایید».
 - A row no longer expands to show the whole body on hover; it crowded the list. Opening the note shows it. `note_toggle_expand` is no longer sent.
 - The notebook is the list and the editor side by side, so a note opens without leaving the list and the list shows each edit as you type. It saves as you type, like the sticky card, instead of the list editor's save button: there is no screen to leave.
 - The notebook gives `NoteFields` no title debounce. The body already saves on every keystroke and `updateNote` debounces the server call, so a debounced title could only lose the last keystrokes when the pane unmounts.

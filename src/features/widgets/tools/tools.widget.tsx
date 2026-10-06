@@ -61,7 +61,7 @@ export const ToolsLayout: React.FC<ToolsLayoutProps> = ({ size = { w: 2, h: 3 } 
 	if (size.w === 2 && size.h === 1) {
 		return (
 			<>
-				<WidgetContainer contentClassName="p-2 gap-1">
+				<WidgetContainer contentClassName="px-3 py-2.5 gap-1.5">
 					<ToolsCompactRow
 						currentDate={selectedDate}
 						onSelectTab={onCompactToolClick}
