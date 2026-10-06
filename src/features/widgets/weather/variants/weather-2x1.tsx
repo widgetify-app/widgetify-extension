@@ -1,77 +1,66 @@
-import type React from 'react'
 import { Icon } from '@/icons'
-import { cleanCityName } from '../utils/clean-city-name'
-import { formatTemperature } from '../utils/format-temperature'
+import { WidgetHeader } from '@/features/widgets/components/widget-header'
 import type { FetchedWeather } from '@/services/weather/weather.interface'
+import { Temperature, WeatherIcon } from '../components/weather-reading'
 import type { TemperatureUnit } from '../types'
+import { cleanCityName } from '../utils/clean-city-name'
+import { getWeatherMetrics } from '../utils/weather-metrics'
+
+const ROW_METRICS = 2
 
 interface WeatherCompactRowProps {
 	fetchedWeather: FetchedWeather | null
 	temperatureUnit: TemperatureUnit
 }
 
-export const WeatherCompactRow: React.FC<WeatherCompactRowProps> = ({
+export function WeatherCompactRow({
 	fetchedWeather,
 	temperatureUnit,
-}) => {
-	const temp = formatTemperature(
-		fetchedWeather?.weather?.temperature?.temp,
-		temperatureUnit
-	)
-	const cityName = cleanCityName(fetchedWeather?.city?.fa)
-	const iconUrl = fetchedWeather?.weather?.icon?.url
-	const description = fetchedWeather?.weather?.description?.text || ''
-	const humidity = fetchedWeather?.weather?.temperature?.humidity || 0
-	const windSpeed = Math.round(fetchedWeather?.weather?.temperature?.wind_speed || 0)
+}: WeatherCompactRowProps) {
+	const weather = fetchedWeather?.weather
 
 	return (
-		<section
-			aria-label="آب و هوا"
-			aria-busy={!fetchedWeather}
-			className="flex items-center justify-between w-full h-full px-3.5 py-2 select-none"
-		>
-			<div className="flex items-center gap-3">
-				{iconUrl ? (
-					<img src={iconUrl} className="w-11 h-11 drop-shadow" alt="" />
-				) : (
-					<div
-						aria-hidden="true"
-						className="rounded-full w-11 h-11 animate-pulse bg-fill-2"
-					/>
+		<>
+			<WidgetHeader
+				title={cleanCityName(fetchedWeather?.city?.fa) || 'آب و هوا'}
+				info={weather?.description?.text}
+			/>
+			<section
+				aria-label="آب و هوا"
+				aria-busy={!fetchedWeather}
+				className="flex items-center flex-1 min-h-0 gap-2.5 px-1 select-none"
+			>
+				<WeatherIcon src={weather?.icon?.url} className="size-[50cqh]" />
+				<Temperature
+					value={weather?.temperature?.temp}
+					unit={temperatureUnit}
+					className="text-[42cqh]"
+				/>
+				{fetchedWeather && (
+					<dl className="flex flex-col items-end gap-0.5 ms-auto min-w-0">
+						{getWeatherMetrics(weather?.temperature)
+							.slice(0, ROW_METRICS)
+							.map((metric) => (
+								<div
+									key={metric.label}
+									className="flex items-center gap-1.5 leading-tight text-2xs whitespace-nowrap"
+								>
+									<dt className="flex items-center gap-1 text-fg-faint">
+										<Icon
+											name={metric.icon}
+											size={12}
+											aria-hidden="true"
+										/>
+										{metric.label}
+									</dt>
+									<dd className="font-bold tabular-nums text-fg">
+										{metric.value}
+									</dd>
+								</div>
+							))}
+					</dl>
 				)}
-
-				<div className="flex flex-col">
-					<div className="flex items-baseline gap-1.5">
-						<span className="text-2xl font-black leading-none text-fg">
-							<data value={temp.value}>{temp.value}</data>
-							<span className="text-xs font-medium text-fg-muted mr-0.5">
-								{temp.symbol}
-							</span>
-						</span>
-						<span className="text-xs font-bold text-fg">{cityName}</span>
-					</div>
-					<span className="text-2xs text-fg-muted font-medium mt-0.5 truncate max-w-36">
-						{description}
-					</span>
-				</div>
-			</div>
-
-			<dl className="flex flex-col items-end gap-1 text-3xs text-fg-muted">
-				<div className="flex items-center gap-1">
-					<dt className="flex items-center">
-						<Icon name="wind" className="w-3 h-3" aria-hidden="true" />
-						<span className="sr-only">باد</span>
-					</dt>
-					<dd>{windSpeed} m/s</dd>
-				</div>
-				<div className="flex items-center gap-1">
-					<dt className="flex items-center">
-						<Icon name="humidity" className="w-3 h-3" aria-hidden="true" />
-						<span className="sr-only">رطوبت</span>
-					</dt>
-					<dd>{humidity}%</dd>
-				</div>
-			</dl>
-		</section>
+			</section>
+		</>
 	)
 }

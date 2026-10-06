@@ -1,18 +1,21 @@
-import type { FilterOption } from '@/components/ui'
+export interface TodoFilterOption {
+	value: string
+	label: string
+}
 
-export const DATE_FILTER_OPTIONS: FilterOption[] = [
+export const DATE_FILTER_OPTIONS: TodoFilterOption[] = [
 	{ value: 'all', label: 'همه' },
 	{ value: 'today', label: 'امروز' },
 	{ value: 'this_month', label: 'این ماه' },
-	{ value: 'done', label: 'تکمیل‌شده' },
-	{ value: 'pending', label: 'در انتظار' },
+	{ value: 'done', label: 'انجام‌شده' },
+	{ value: 'pending', label: 'انجام‌نشده' },
 ]
 
-export const SORT_OPTIONS: FilterOption[] = [
-	{ value: 'def', label: 'پیشفرض' },
-	{ value: 'high', label: 'مهم' },
-	{ value: 'medium', label: 'متوسط' },
-	{ value: 'low', label: 'کم اهمیت' },
+export const SORT_OPTIONS: TodoFilterOption[] = [
+	{ value: 'def', label: 'پیش‌فرض' },
+	{ value: 'high', label: 'اول مهم‌ها' },
+	{ value: 'medium', label: 'اول متوسط‌ها' },
+	{ value: 'low', label: 'اول کم‌اهمیت‌ها' },
 ]
 
 export const LEGACY_DATE_FILTERS: Record<string, string> = {
@@ -22,30 +25,16 @@ export const LEGACY_DATE_FILTERS: Record<string, string> = {
 export const UNFILTERED_TAGS = ['', '-all-']
 
 export const PRIORITY_LABELS: Record<string, string> = {
-	low: 'کم',
+	low: 'کم‌اهمیت',
 	medium: 'متوسط',
 	high: 'مهم',
 }
 
 export const PRIORITY_BORDER_CLASS: Record<string, string> = {
-	high: 'border-danger!',
-	medium: 'border-warning!',
-	low: 'border-success!',
-	default: 'border-brand!',
-}
-
-export const PRIORITY_CHECKED_CLASS: Record<string, string> = {
-	high: 'border-danger! bg-danger!',
-	medium: 'border-warning! bg-warning!',
-	low: 'border-success! bg-success!',
-	default: 'border-brand! bg-brand!',
-}
-
-export const PRIORITY_BADGE_CLASS: Record<string, string> = {
-	high: 'bg-danger-fill text-danger',
-	medium: 'bg-warning-fill text-warning',
-	low: 'bg-success-fill text-success',
-	default: 'bg-brand-fill text-brand',
+	high: 'border-danger',
+	medium: 'border-warning',
+	low: 'border-success',
+	default: 'border-fg-ghost',
 }
 
 export function priorityClass(map: Record<string, string>, priority?: string): string {

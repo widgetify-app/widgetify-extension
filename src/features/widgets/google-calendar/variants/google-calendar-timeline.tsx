@@ -1,26 +1,38 @@
 import type React from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import Analytics from '@/analytics'
-import { Icon } from '@/icons'
+import { cn } from '@/common/utils/cn'
 import type { GoogleCalendarEvent } from '@/services/date/get-google-calendar-events.hook'
 import type { WidgetifyDate } from '@/common/utils/date-events'
+import {
+	WidgetHeader,
+	WidgetHeaderButton,
+} from '@/features/widgets/components/widget-header'
 import { GoogleCalendarEmpty } from '../components/google-calendar-empty'
-import { GoogleCalendarTimelineItem } from '../components/google-calendar-timeline-item'
-import { GoogleCalendarTimelineItemSkeleton } from '../components/google-calendar-timeline-item-skeleton'
+import { GoogleCalendarEventList } from '../components/google-calendar-event-list'
+import { TodayChip } from '@/features/widgets/components/today-chip'
 import type { ClassifiedCalendarEvent } from '../types'
+import { layoutTimeline, minuteOfDay } from '../utils/timeline-layout'
 import { isSameJalaliDay, toIsoDateKey } from '@/features/widgets/utils/jalali-date'
 
-const SKELETON_ROWS = 4
+const HOUR_HEIGHT = 36
+const GRID_TOP = 8
+const LABEL_WIDTH = 40
+const SHORT_BLOCK = 40
+const HOURS = Array.from({ length: 24 }, (_, hour) => hour)
 
-const navButtonClass =
-	'flex items-center justify-center w-7 h-7 rounded-lg cursor-pointer transition-ui text-fg-muted opacity-70 hover:bg-surface-3 hover:opacity-100 focus-visible:focus-ring'
+const toY = (minute: number) => GRID_TOP + (minute / 60) * HOUR_HEIGHT
 
 interface GoogleCalendarTimelineProps {
 	selectedDay: WidgetifyDate
 	setSelectedDay: React.Dispatch<React.SetStateAction<WidgetifyDate>>
 	classifiedEvents: ClassifiedCalendarEvent[]
 	isLoading: boolean
+	isError: boolean
 	today: WidgetifyDate
+	currentTime: Date
 	onEventClick: (event: GoogleCalendarEvent) => void
+	onRetry: () => void
 }
 
 export const GoogleCalendarTimeline: React.FC<GoogleCalendarTimelineProps> = ({
@@ -28,13 +40,26 @@ export const GoogleCalendarTimeline: React.FC<GoogleCalendarTimelineProps> = ({
 	setSelectedDay,
 	classifiedEvents,
 	isLoading,
+	isError,
 	today,
+	currentTime,
 	onEventClick,
+	onRetry,
 }) => {
+	const scrollRef = useRef<HTMLDivElement>(null)
 	const isSelectedToday = isSameJalaliDay(selectedDay, today)
-	const nextIndex = classifiedEvents.findIndex(
-		(classified) => !classified.isNow && !classified.isPast
-	)
+	const allDayEvents = classifiedEvents.filter((item) => item.isAllDay)
+	const timedEvents = classifiedEvents.filter((item) => !item.isAllDay)
+	const slots = layoutTimeline(timedEvents)
+	const nowMinute = minuteOfDay(currentTime)
+	const selectedDayKey = toIsoDateKey(selectedDay)
+	const firstMinute = slots.length ? Math.min(...slots.map((s) => s.startMinute)) : 0
+
+	useLayoutEffect(() => {
+		if (!scrollRef.current || isLoading) return
+		const focusMinute = isSelectedToday ? nowMinute : firstMinute || 8 * 60
+		scrollRef.current.scrollTop = Math.max(0, toY(focusMinute) - HOUR_HEIGHT)
+	}, [selectedDayKey, isLoading])
 
 	const goToDay = (deltaDays: number, analyticsEvent: string) => {
 		setSelectedDay((prev) => prev.clone().add(deltaDays, 'day'))
@@ -47,80 +72,132 @@ export const GoogleCalendarTimeline: React.FC<GoogleCalendarTimelineProps> = ({
 	}
 
 	return (
-		<div className="flex flex-col h-full p-2 overflow-hidden">
-			<nav
-				className="flex items-center justify-between shrink-0"
-				aria-label="پیمایش روز"
+		<>
+			<WidgetHeader
+				title={
+					isSelectedToday
+						? `امروز، ${selectedDay.format('dddd')}`
+						: selectedDay.format('dddd')
+				}
+				badge={!isSelectedToday && <TodayChip onClick={handleResetDay} />}
+				info={selectedDay.format('jD jMMMM')}
+				actions={
+					<>
+						<WidgetHeaderButton
+							label="روز قبل"
+							icon="chevronRight"
+							onClick={() => goToDay(-1, 'google_calendar_prev_day')}
+						/>
+						<WidgetHeaderButton
+							label="روز بعد"
+							icon="chevronLeft"
+							onClick={() => goToDay(1, 'google_calendar_next_day')}
+						/>
+					</>
+				}
+			/>
+
+			{allDayEvents.length > 0 && (
+				<ul className="flex flex-wrap gap-1 shrink-0">
+					{allDayEvents.map(({ event }) => (
+						<li
+							key={event.id}
+							className="inline-flex items-center h-6 px-2 font-semibold rounded-lg bg-brand-fill text-brand text-3xs"
+						>
+							{event.summary || 'رویداد تمام روز'}
+						</li>
+					))}
+				</ul>
+			)}
+
+			<GoogleCalendarEventList
+				scrollRef={scrollRef}
+				isLoading={isLoading}
+				isError={isError}
+				isEmpty={classifiedEvents.length === 0}
+				empty={<GoogleCalendarEmpty title="این روز برنامه‌ای نداری" />}
+				onRetry={onRetry}
 			>
-				<button
-					type="button"
-					onClick={() => goToDay(-1, 'google_calendar_prev_day')}
-					aria-label="روز قبل"
-					className={navButtonClass}
-				>
-					<Icon name="chevronRight" size={16} aria-hidden="true" />
-				</button>
-
-				<button
-					type="button"
-					onClick={handleResetDay}
-					className="flex flex-col items-center px-2 py-1 rounded-lg cursor-pointer select-none transition-ui hover:bg-surface-3 focus-visible:focus-ring"
-				>
-					<time
-						dateTime={toIsoDateKey(selectedDay)}
-						className="text-xs font-black leading-tight text-fg"
-					>
-						{isSelectedToday
-							? `امروز، ${selectedDay.format('dddd')}`
-							: selectedDay.format('dddd')}
-					</time>
-					<span className="text-4xs leading-none mt-0.5 text-fg-muted">
-						{selectedDay.format('jD jMMMM jYYYY')}
-					</span>
-				</button>
-
-				<button
-					type="button"
-					onClick={() => goToDay(1, 'google_calendar_next_day')}
-					aria-label="روز بعد"
-					className={navButtonClass}
-				>
-					<Icon name="chevronLeft" size={16} aria-hidden="true" />
-				</button>
-			</nav>
-
-			<div
-				aria-busy={isLoading}
-				className="flex flex-col flex-1 min-h-0 overflow-y-auto"
-			>
-				{isLoading && (
-					<div aria-hidden="true" className="flex flex-col gap-0.5">
-						{Array.from({ length: SKELETON_ROWS }).map((_, i) => (
-							<GoogleCalendarTimelineItemSkeleton
-								key={`timeline-loading-${i}`}
+				<div className="relative" style={{ height: toY(24 * 60) + GRID_TOP }}>
+					{HOURS.map((hour) => (
+						<div key={hour} aria-hidden="true">
+							<span
+								className="absolute h-px end-0 bg-fill-2"
+								style={{
+									top: toY(hour * 60),
+									insetInlineStart: LABEL_WIDTH,
+								}}
 							/>
-						))}
-					</div>
-				)}
+							<span
+								className="absolute font-semibold -translate-y-1/2 start-0 text-3xs text-fg-faint tabular-nums"
+								style={{ top: toY(hour * 60) }}
+							>
+								{`${String(hour).padStart(2, '0')}:00`}
+							</span>
+						</div>
+					))}
 
-				{!isLoading && classifiedEvents.length === 0 && (
-					<GoogleCalendarEmpty message="رویدادی وجود ندارد" />
-				)}
+					{timedEvents.map((classified, index) => {
+						const slot = slots[index]
+						const height = Math.max(
+							22,
+							toY(slot.endMinute) - toY(slot.startMinute) - 2
+						)
+						const isShort = height < SHORT_BLOCK
+						const { event, isNow, isPast, startTimeStr, endTimeStr } =
+							classified
+						const hasAction = !!(event.hangoutLink || event.location)
+						const title = event.summary || 'بدون عنوان'
 
-				{!isLoading && classifiedEvents.length > 0 && (
-					<ul className="flex flex-col gap-0.5">
-						{classifiedEvents.map((classified, index) => (
-							<li key={classified.event.id}>
-								<GoogleCalendarTimelineItem
-									classifiedEvent={classified}
-									isNext={index === nextIndex}
-									onEventClick={onEventClick}
-								/>
-							</li>
-						))}
-					</ul>
-				)}
-			</div>
-		</div>
+						return (
+							<button
+								key={event.id}
+								type="button"
+								aria-disabled={!hasAction}
+								onClick={() => hasAction && onEventClick(event)}
+								aria-label={`${title}، ${startTimeStr} تا ${endTimeStr}`}
+								className={cn(
+									'absolute z-10 flex overflow-hidden px-2.5 rounded-xl text-start bg-brand-fill transition-ui focus-visible:focus-ring',
+									isShort
+										? 'flex-row items-center gap-2'
+										: 'flex-col gap-px py-1.5',
+									hasAction
+										? 'cursor-pointer hover:bg-brand-fill-2'
+										: 'cursor-default',
+									isNow && 'ring-1 ring-inset ring-brand-muted',
+									isPast && 'opacity-50'
+								)}
+								style={{
+									top: toY(slot.startMinute) + 1,
+									height,
+									insetInlineStart: `calc(${LABEL_WIDTH}px + (100% - ${LABEL_WIDTH}px) * ${slot.lane} / ${slot.lanes})`,
+									width: `calc((100% - ${LABEL_WIDTH}px) / ${slot.lanes} - 2px)`,
+								}}
+							>
+								<span className="flex-1 min-w-0 text-xs font-bold truncate text-fg-strong">
+									{title}
+								</span>
+								<span className="text-3xs text-fg-muted whitespace-nowrap tabular-nums">
+									{isShort
+										? startTimeStr
+										: `${startTimeStr} تا ${endTimeStr}`}
+								</span>
+							</button>
+						)
+					})}
+
+					{isSelectedToday && (
+						<span
+							aria-hidden="true"
+							className="absolute z-20 end-0 h-0.5 rounded-xs bg-danger before:absolute before:-start-1 before:-top-0.75 before:size-2 before:rounded-full before:bg-danger"
+							style={{
+								top: toY(nowMinute),
+								insetInlineStart: LABEL_WIDTH - 6,
+							}}
+						/>
+					)}
+				</div>
+			</GoogleCalendarEventList>
+		</>
 	)
 }

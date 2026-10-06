@@ -1,27 +1,23 @@
-import { cn } from '@/common/utils/cn'
+import type { ReactNode } from 'react'
+import { PopoverMenuItem } from '@/components/ui'
 import { useCurrencyStore } from '@/features/widgets/currency.context'
 import { useOptionalFreeWidgets } from '@/features/widgets/widgets.context'
+import { Icon } from '@/icons'
+import { useRefreshCurrencies } from '@/services/currency/get-currency-by-code.hook'
 import type { WidgetSize } from '../utils/layout-engine/types'
 import { WidgetContainer } from '../components/widget-container'
-import { CurrencyEmpty } from './components/currency-empty'
-import { CurrencyList } from './components/currency-list'
+import { useWidgetMenuActions, useWidgetSettingsSummary } from '../widget-menu.context'
 import type { WigiArzMeta } from './types'
 import { CurrencyCompactSquare } from './variants/wigi-arz-1x1'
 import { WigiArz2x3 } from './variants/wigi-arz-2x3'
 
 interface WigiArzLayoutProps {
-	enableBackground?: boolean
-	inComboWidget?: boolean
-	comboClassName?: string
 	size?: WidgetSize
 	instanceId?: string
 	meta?: WigiArzMeta
 }
 
 export function WigiArzLayout({
-	enableBackground = true,
-	inComboWidget = false,
-	comboClassName,
 	size = { w: 2, h: 3 },
 	instanceId,
 	meta,
@@ -45,6 +41,31 @@ export function WigiArzLayout({
 				: []
 		: selectedCurrencies
 
+	const isCompact = size.w === 1 && size.h === 1
+	const compactCode =
+		meta?.currencyCode || (!instanceId ? selectedCurrencies[0] : undefined)
+	useWidgetSettingsSummary(
+		isCompact
+			? compactCode
+				? `ارز: ${compactCode}`
+				: 'هنوز ارزی انتخاب نشده'
+			: effectiveCurrencies.length
+				? `${effectiveCurrencies.length.toLocaleString('fa-IR')} ارز انتخاب شده`
+				: 'هنوز ارزی انتخاب نشده'
+	)
+
+	const { refresh } = useRefreshCurrencies()
+	const hasPrices = isCompact ? Boolean(compactCode) : effectiveCurrencies.length > 0
+	useWidgetMenuActions(
+		hasPrices && (
+			<PopoverMenuItem
+				icon={<Icon name="refresh" size={14} />}
+				label="به‌روز کن"
+				onClick={refresh}
+			/>
+		)
+	)
+
 	const handleReorder = (reordered: string[]) => {
 		if (ownsList && instanceId) {
 			freeWidgets?.updateWidgetSettings(instanceId, {
@@ -57,39 +78,12 @@ export function WigiArzLayout({
 		reorderCurrencies(reordered)
 	}
 
-	if (inComboWidget) {
+	if (isCompact) {
 		return (
-			<div
-				className={cn(
-					'flex items-center justify-between pb-2 mt-1',
-					selectedCurrencies.length === 0 && 'h-full'
-				)}
-			>
-				{selectedCurrencies.length === 0 ? (
-					<CurrencyEmpty compact />
-				) : (
-					<CurrencyList
-						currencies={selectedCurrencies}
-						onReorder={reorderCurrencies}
-						className={`flex flex-col w-full gap-1 overflow-x-hidden scrollbar-none ${comboClassName ?? ''}`}
-					/>
-				)}
-			</div>
-		)
-	}
-
-	if (size.w === 1 && size.h === 1) {
-		return (
-			<WidgetContainer
-				background={enableBackground}
-				padding={false}
-				className="h-full"
-			>
+			<WidgetContainer contentClassName="px-3 py-2.5">
 				<CurrencyCompactSquare
-					defaultCode={
-						meta?.currencyCode ||
-						(!instanceId ? selectedCurrencies[0] : undefined)
-					}
+					key={compactCode}
+					defaultCode={compactCode}
 					instanceId={instanceId}
 					meta={meta}
 				/>
@@ -98,15 +92,24 @@ export function WigiArzLayout({
 	}
 
 	return (
-		<WidgetContainer
-			background={enableBackground}
-			className="flex flex-col w-full h-full overflow-y-auto scrollbar-none"
-		>
+		<WidgetContainer contentClassName="p-3 gap-2">
 			<WigiArz2x3
 				currencies={effectiveCurrencies}
 				onReorder={handleReorder}
 				instanceId={ownsList ? instanceId : undefined}
 			/>
 		</WidgetContainer>
+	)
+}
+
+export function WigiArzComboView({ tabs }: { tabs: ReactNode }) {
+	const { selectedCurrencies, reorderCurrencies } = useCurrencyStore()
+
+	return (
+		<WigiArz2x3
+			currencies={selectedCurrencies}
+			onReorder={reorderCurrencies}
+			tabs={tabs}
+		/>
 	)
 }

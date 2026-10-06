@@ -5,7 +5,12 @@ import {
 	HabitFrequency,
 	HabitUnit,
 } from '@/services/habit/habit.interface'
-import { formatHabitGoal, getHabitUnitLabel } from '../utils/habit-goal'
+import {
+	formatHabitGoal,
+	formatHabitToday,
+	getHabitUnitLabel,
+	isHabitDoneToday,
+} from '../utils/habit-goal'
 
 function habit(overrides: Partial<Habit> = {}): Habit {
 	return {
@@ -52,7 +57,7 @@ describe('formatHabitGoal', () => {
 			'حداکثر 5 صفحه در روز'
 		)
 		expect(formatHabitGoal(habit({ comparison: HabitComparison.EXACT }))).toBe(
-			'دقیقا 5 صفحه در روز'
+			'دقیقاً 5 صفحه در روز'
 		)
 	})
 
@@ -69,5 +74,31 @@ describe('formatHabitGoal', () => {
 		expect(formatHabitGoal(habit({ unit: HabitUnit.CUSTOM, customUnit: null }))).toBe(
 			'حداقل 5 در روز'
 		)
+	})
+})
+
+describe('formatHabitToday', () => {
+	it('says when nothing was logged today', () => {
+		expect(formatHabitToday(habit())).toBe('امروز هنوز نه')
+	})
+
+	it('shows how far today got toward the target', () => {
+		expect(
+			formatHabitToday(
+				habit({ today: { date: '2026-01-01', value: 3, isDone: false } })
+			)
+		).toBe('3 از 5 صفحه')
+	})
+
+	it('marks a finished habit, with the target when it has one', () => {
+		const done = { date: '2026-01-01', value: 5, isDone: true }
+		expect(formatHabitToday(habit({ today: done }))).toBe('5 صفحه · انجام شد')
+		expect(formatHabitToday(habit({ target: 1, today: done }))).toBe('انجام شد')
+	})
+
+	it('treats reaching the target as done even before the server flags it', () => {
+		const reached = { date: '2026-01-01', value: 6, isDone: false }
+		expect(isHabitDoneToday(habit({ today: reached }))).toBe(true)
+		expect(formatHabitToday(habit({ today: reached }))).toBe('5 صفحه · انجام شد')
 	})
 })

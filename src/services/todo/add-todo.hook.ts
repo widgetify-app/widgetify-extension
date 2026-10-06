@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
 import type { TodoPriority } from '@/services/todo/todo.interface'
 import { todoKeys } from '@/services/todo/todo.keys'
@@ -15,10 +15,15 @@ export interface TodoCreationPayload {
 }
 
 export const useAddTodo = () => {
+	const queryClient = useQueryClient()
+
 	return useMutation({
 		mutationKey: todoKeys.add,
 		mutationFn: async (input: TodoCreationPayload) => {
 			return await AddTodoApi(input)
+		},
+		onSuccess: (_, input) => {
+			if (input.category) queryClient.invalidateQueries({ queryKey: todoKeys.tags })
 		},
 	})
 }

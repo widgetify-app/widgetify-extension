@@ -17,7 +17,7 @@ export function resolveHabitStep(habit: Habit, currentValue: number): HabitStep 
 	if (habit.comparison === HabitComparison.AT_MOST) {
 		return {
 			amount: 0,
-			blockedMessage: `مقدار فعلی به حداکثر هدف (${target}) رسیده است.`,
+			blockedMessage: `به سقف هدفت (${target}) رسیدی`,
 		}
 	}
 

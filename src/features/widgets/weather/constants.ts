@@ -2,7 +2,7 @@ import type { TemperatureUnit } from './types'
 
 export const TEMPERATURE_UNIT_SYMBOLS: Record<TemperatureUnit, string> = {
 	standard: 'K',
-	metric: '°C',
+	metric: '°',
 	imperial: '°F',
 }
 

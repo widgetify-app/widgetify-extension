@@ -37,7 +37,7 @@
 - هرکدوم از API ها دارای Cache و Rate Limit هستند.
 - تعداد Rate Limit درحال حاضر private هست.
 - Cache هر API به صورت رندوم بین 1 تا 10 دقیقه و 1 ساعت هست.
-- افزونه برای درخواست‌های `GET` توی service worker هم cache خودش را دارد (`background/cache-config.ts`): stale-while-revalidate برای `/searchbox`، `/currencies`، `/weather` و `/contents`؛ اول شبکه، با ۳ ثانیه صبر، برای `/date/events`، `/news/rss` و `/extension/notifications`؛ و `/searchbox/suggest-search` هیچ‌وقت. فقط پاسخ‌های `200` نگه داشته می‌شوند، تا ۵۰ مورد برای ۲ روز.
+- افزونه برای درخواست‌های `GET` توی service worker هم cache خودش را دارد (`background/cache-config.ts`): stale-while-revalidate برای `/searchbox`، `/currencies`، `/weather` و `/contents`؛ اول شبکه، با ۳ ثانیه صبر، برای `/date/events`، `/news/rss` و `/extension/notifications`؛ و `/searchbox/suggest-search` هیچ‌وقت. فقط پاسخ‌های `200` نگه داشته می‌شوند، تا ۵۰ مورد برای ۲ روز. درخواستی که با `cache: 'no-cache'` فرستاده شود (به‌روزرسانی دستی، `FRESH_REQUEST` در `src/services/api.ts`) از هر دو روش می‌گذرد: بدون صبر به شبکه می‌رود و پاسخ را در همان cache می‌نویسد، تا درخواست عادی بعدی نسخه‌ی قدیمی‌تر را برنگرداند.
 
 ## ورود
 
@@ -267,11 +267,11 @@
 
 | مسیر | توکن | درخواست | پاسخ |
 |---|---|---|---|
-| `GET /notes` | بله | | `{ notes, total, totalPages }`. هر یادداشت `{ id, title, body, priority?, createdAt, updatedAt }` است |
+| `GET /notes` | بله | | `{ notes, total, totalPages }`. هر یادداشت `{ id, title, body, priority?, createdAt, updatedAt }` است. `body` ممکنه `null` برگرده و `title` و `priority` هم ممکنه؛ برنامه هر یادداشت رو از `normalizeNotes` (`src/features/widgets/notes/utils/normalize-notes.ts`) رد می‌کنه |
 | `POST /notes` | بله | `{ title?, body?, id?, priority? }`. هم می‌سازد هم به‌روز می‌کند: برای ویرایش `id` بدهید. `priority` یکی از `low`، `medium` یا `high` است | یادداشت |
 | `DELETE /notes/{id}` | بله | | |
 | `GET /todos/v2/@me` | بله | `page`، `limit`، `isCompleted`، `dateFilter` (`today` یا `this_month`)، `category` | `{ todos, totalPages, totals }` |
-| `GET /todos/@me/tags` | بله | | `string[]`، تگ‌هایی که کاربر استفاده کرده |
+| `GET /todos/@me/tags` | بله | | `string[]`، تگ‌هایی که کاربر استفاده کرده. مسیری برای حذف تگ نیست: اپ روی هر تسکِ خود کاربر که این تگ را دارد `PATCH /todos/{id}` با `category: ''` می‌فرستد (`src/services/todo/remove-tag.hook.ts`) |
 | `POST /todos` | بله | `{ text*, date*, friendIds*: string[], category?, description?, priority?, completed?, order? }` | |
 | `PATCH /todos/{id}` | بله | هرکدام از `text`، `category`، `date`، `description`، `priority`، `completed`، `order` | `{ data: { todo } }` |
 | `DELETE /todos/{id}` | بله | | |

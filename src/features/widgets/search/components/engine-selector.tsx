@@ -78,7 +78,7 @@ export function EngineSelector({ trigger, onSelected }: EngineSelectorProps) {
 						onClick={() => setIsExpanded(!isExpanded)}
 						type="button"
 						aria-label={`موتور جستجو: ${currentEngine.label}`}
-						className="relative flex gap-0.5 items-center justify-start w-10 pr-1 ml-2 transition-ui duration-300 cursor-pointer h-7 shrink-0 bg-surface-2 hover:bg-surface-3 rounded-xl"
+						className="flex items-center h-8 gap-0.5 px-1 rounded-lg cursor-pointer shrink-0 text-fg-muted transition-ui hover:bg-fill-2 focus-visible:focus-ring"
 					>
 						<EngineIcon
 							engineId={currentEngine.id}

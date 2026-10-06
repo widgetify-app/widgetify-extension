@@ -37,7 +37,7 @@ The backend team keeps a Swagger for the whole API, including the admin routes. 
 - Each API has a cache and a rate limit.
 - The rate limit count is private.
 - Cache for each API is set randomly between 1 to 10 minutes and 1 hour.
-- The extension adds its own cache for `GET` requests in the service worker (`background/cache-config.ts`): stale-while-revalidate for `/searchbox`, `/currencies`, `/weather` and `/contents`; network first, with a 3 second wait, for `/date/events`, `/news/rss` and `/extension/notifications`; never `/searchbox/suggest-search`. Only `200` replies are kept, 50 entries for 2 days.
+- The extension adds its own cache for `GET` requests in the service worker (`background/cache-config.ts`): stale-while-revalidate for `/searchbox`, `/currencies`, `/weather` and `/contents`; network first, with a 3 second wait, for `/date/events`, `/news/rss` and `/extension/notifications`; never `/searchbox/suggest-search`. Only `200` replies are kept, 50 entries for 2 days. A request sent with `cache: 'no-cache'` (an explicit refresh, `FRESH_REQUEST` in `src/services/api.ts`) skips both strategies: it goes to the network without the wait and writes the reply into the same cache, so the next ordinary request does not bring back the older copy.
 
 ## Sign in
 
@@ -267,11 +267,11 @@ Source: `src/services/note`, `src/services/todo`, `src/services/habit`
 
 | Endpoint | Token | Request | Reply |
 |---|---|---|---|
-| `GET /notes` | yes | | `{ notes, total, totalPages }`. A note is `{ id, title, body, priority?, createdAt, updatedAt }` |
+| `GET /notes` | yes | | `{ notes, total, totalPages }`. A note is `{ id, title, body, priority?, createdAt, updatedAt }`. `body` can come back `null`, and `title` and `priority` may too; the app reads every note through `normalizeNotes` (`src/features/widgets/notes/utils/normalize-notes.ts`) |
 | `POST /notes` | yes | `{ title?, body?, id?, priority? }`. It is an upsert: pass `id` to update a note. `priority` is `low`, `medium` or `high` | the note |
 | `DELETE /notes/{id}` | yes | | |
 | `GET /todos/v2/@me` | yes | `page`, `limit`, `isCompleted`, `dateFilter` (`today` or `this_month`), `category` | `{ todos, totalPages, totals }` |
-| `GET /todos/@me/tags` | yes | | `string[]`, the tags the user has used |
+| `GET /todos/@me/tags` | yes | | `string[]`, the tags the user has used. There is no route to delete one: the app clears `category` with `PATCH /todos/{id}` and `category: ''` on each of the user's own tasks that carry it (`src/services/todo/remove-tag.hook.ts`) |
 | `POST /todos` | yes | `{ text*, date*, friendIds*: string[], category?, description?, priority?, completed?, order? }` | |
 | `PATCH /todos/{id}` | yes | any of `text`, `category`, `date`, `description`, `priority`, `completed`, `order` | `{ data: { todo } }` |
 | `DELETE /todos/{id}` | yes | | |

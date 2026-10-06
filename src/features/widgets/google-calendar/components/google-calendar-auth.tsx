@@ -1,17 +1,25 @@
 import type React from 'react'
+import type { ReactNode } from 'react'
 import { callEvent } from '@/common/utils/call-event'
 import { Button } from '@/components/ui'
-import { Icon } from '@/icons'
+import { WidgetCompactEmpty } from '@/features/widgets/components/widget-compact-empty'
+import { WidgetEmpty } from '@/features/widgets/components/widget-empty'
+import {
+	WidgetCenteredHeader,
+	WidgetHeader,
+} from '@/features/widgets/components/widget-header'
 import type { WidgetSize } from '../../utils/layout-engine/types'
 
 interface GoogleCalendarAuthProps {
 	isAuthenticated: boolean
 	size?: WidgetSize
+	tabs?: ReactNode
 }
 
 export const GoogleCalendarAuth: React.FC<GoogleCalendarAuthProps> = ({
 	isAuthenticated,
 	size = { w: 2, h: 3 },
+	tabs,
 }) => {
 	const handleAction = () => {
 		if (isAuthenticated) {
@@ -21,84 +29,59 @@ export const GoogleCalendarAuth: React.FC<GoogleCalendarAuthProps> = ({
 		}
 	}
 
-	const buttonText = isAuthenticated ? 'اتصال به تقویم' : 'ورود به حساب'
+	const status = isAuthenticated ? 'هنوز وصل نشده' : 'وارد حسابت نشدی'
+	const actionLabel = isAuthenticated ? 'اتصال' : 'ورود'
 
-	if (size.w === 1 && size.h === 1) {
+	if (size.h === 1 && size.w === 1) {
 		return (
-			<button
-				type="button"
-				onClick={handleAction}
-				aria-label={`تقویم گوگل، ${buttonText}`}
-				className="flex flex-col items-center justify-between w-full h-full p-[8.3cqh] text-center cursor-pointer select-none group focus-visible:focus-ring"
-			>
-				<span className="flex items-center justify-center w-[29.2cqh] h-[29.2cqh] rounded-xl bg-brand-fill text-brand group-hover:scale-105 transition-transform">
-					<Icon name="googleG" size={16} aria-hidden="true" />
-				</span>
-
-				<span className="flex flex-col items-center gap-0.5">
-					<span className="text-[10.4cqh] font-bold text-fg leading-none">
-						تقویم گوگل
-					</span>
-					<span className="text-[8.3cqh] text-fg-muted leading-tight">
-						{isAuthenticated ? 'نیاز به اتصال' : 'ورود به حساب'}
-					</span>
-				</span>
-
-				<span className="w-full py-[4.2cqh] rounded-lg bg-brand text-on-brand text-[9.4cqh] font-bold transition-ui group-hover:brightness-110 group-active:scale-95 shrink-0">
-					{isAuthenticated ? 'اتصال' : 'ورود'}
-				</span>
-			</button>
+			<>
+				<WidgetCenteredHeader title="تقویم گوگل" />
+				<div className="flex flex-col items-center justify-center flex-1 min-h-0 gap-1.5 text-center">
+					<span className="text-2xs text-fg-muted">{status}</span>
+					<Button size="xs" color="brand" rounded="lg" onClick={handleAction}>
+						{actionLabel}
+					</Button>
+				</div>
+			</>
 		)
 	}
 
-	if (size.w === 2 && size.h === 1) {
+	if (size.h === 1) {
 		return (
-			<div className="flex items-center justify-between w-full h-full gap-2 p-3 select-none">
-				<div className="flex items-center gap-2.5 min-w-0">
-					<span className="flex items-center justify-center w-9 h-9 rounded-2xl bg-brand-fill text-brand shrink-0">
-						<Icon name="googleG" size={16} aria-hidden="true" />
-					</span>
-					<div className="flex flex-col min-w-0">
-						<span className="text-xs font-bold leading-tight text-fg">
-							تقویم گوگل
-						</span>
-						<span className="text-3xs text-fg-muted truncate mt-0.5">
-							{isAuthenticated
-								? 'برای مشاهده برنامه‌ها، تقویم رو متصل کن'
-								: 'برای مشاهده رویدادها، اول وارد حسابت شو'}
-						</span>
-					</div>
+			<>
+				<WidgetHeader title="تقویم گوگل" />
+				<div className="flex-1 min-h-0">
+					<WidgetCompactEmpty
+						icon="googleG"
+						title={status}
+						description={
+							isAuthenticated
+								? 'تقویم گوگلت رو وصل کن'
+								: 'اول وارد حسابت شو'
+						}
+						action={{ label: actionLabel, onClick: handleAction }}
+					/>
 				</div>
-
-				<Button
-					size="sm"
-					className="text-3xs font-bold rounded-xl px-3 py-1 shrink-0"
-					onClick={handleAction}
-				>
-					{isAuthenticated ? 'اتصال تقویم' : 'ورود'}
-				</Button>
-			</div>
+			</>
 		)
 	}
 
 	return (
-		<div className="flex flex-col items-center justify-center h-full p-4 text-center select-none">
-			<span className="flex items-center justify-center w-12 h-12 mb-3 rounded-2xl bg-brand-fill text-brand">
-				<Icon name="googleG" size={24} aria-hidden="true" />
-			</span>
-			<p className="mb-1 text-xs font-bold text-fg">تقویم گوگل</p>
-			<p className="text-2xs text-fg-muted leading-relaxed max-w-50 mb-4">
-				{isAuthenticated
-					? 'برای مشاهده جلسات و برنامه‌هات، تقویم گوگل رو متصل کن'
-					: 'برای دسترسی به تقویم گوگل، اول وارد حسابت شو'}
-			</p>
-			<Button
-				size="sm"
-				className="text-xs rounded-xl px-4 py-1.5"
-				onClick={handleAction}
-			>
-				{buttonText}
-			</Button>
-		</div>
+		<>
+			<WidgetHeader title={tabs ?? 'تقویم گوگل'} />
+			<WidgetEmpty
+				art="googleG"
+				title={status}
+				description={
+					isAuthenticated
+						? 'تقویم گوگلت رو وصل کن تا جلسه‌ها و برنامه‌های امروزت همین‌جا باشن'
+						: 'برای دیدن برنامه‌هات اول وارد حسابت شو'
+				}
+				action={{
+					label: isAuthenticated ? 'اتصال تقویم گوگل' : 'ورود',
+					onClick: handleAction,
+				}}
+			/>
+		</>
 	)
 }

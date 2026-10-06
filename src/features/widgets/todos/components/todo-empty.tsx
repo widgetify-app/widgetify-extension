@@ -1,19 +1,28 @@
+import { callEvent } from '@/common/utils/call-event'
 import { WidgetEmpty } from '@/features/widgets/components/widget-empty'
 
-export function TodosEmpty() {
+export function TodosEmpty({ onAdd }: { onAdd?: () => void }) {
 	return (
 		<WidgetEmpty
-			art="illustration"
-			title="اینجا فعلا خیلی آرومه..."
+			art="taskList"
+			title="هنوز تسکی نداری"
 			description={
-				<>
-					هنوز هیچ تسکی نداری
-					<br />
-					وقتشه یه چیزی اضافه کنی، مثلا:
-					<br />🛒 خرید خونه
-					<br />☕ یه استراحت کوتاه
-				</>
+				onAdd
+					? 'اولین کاری که باید انجام بدی رو بنویس'
+					: 'اولین کاری که باید انجام بدی رو همین پایین بنویس'
 			}
+			action={onAdd ? { label: 'تسک جدید', onClick: onAdd } : undefined}
+		/>
+	)
+}
+
+export function TodosSignedOut() {
+	return (
+		<WidgetEmpty
+			art="user"
+			title="تسک‌هات توی حسابته"
+			description="برای دیدنشون وارد حسابت شو"
+			action={{ label: 'ورود', onClick: () => callEvent('openProfile') }}
 		/>
 	)
 }

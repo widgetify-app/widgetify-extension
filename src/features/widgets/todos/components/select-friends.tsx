@@ -2,7 +2,7 @@ import { callEvent } from '@/common/utils/call-event'
 import { Button, Dropdown } from '@/components/ui'
 import { SelectFriendLayout } from '@/features/friends/friends'
 import type { Friend } from '@/services/friends/friend-service.hook'
-import { Icon } from '@/icons'
+import { TodoComposerTool } from './todo-composer-tool'
 
 interface Prop {
 	selectedFriends: Friend[]
@@ -12,30 +12,22 @@ export function TodoSelectFriends({ selectedFriends, setSelectedFriends }: Prop)
 	return (
 		<Dropdown
 			trigger={
-				<Button
-					type="button"
-					size="sm"
-					rounded={'xl'}
-					variant="ghost"
-					className="p-2 border-surface-3 text-3xs shrink-0 active:scale-95"
+				<TodoComposerTool
+					icon="friends"
+					label="دوستان"
+					isActive={selectedFriends.length > 0}
 				>
-					{selectedFriends.length > 0 ? (
-						<div className="flex gap-0.5 text-fg-faint">
-							{selectedFriends.length}
-							<p>دوست</p>
-						</div>
-					) : (
-						<div className="flex gap-0.5 text-fg-faint">
-							<Icon name="friends" size={16} className="text-fg-faint" />
-							دوستان
-						</div>
-					)}
-				</Button>
+					{selectedFriends.length > 0
+						? `${selectedFriends.length} دوست`
+						: undefined}
+				</TodoComposerTool>
 			}
 			position="top-right"
 		>
-			<div className="p-2 border min-w-xs min-h-80 max-h-80 bg-surface-2 border-surface-3 rounded-2xl">
-				<p className="pr-1 mb-1 text-sm font-bold">افزودن دوست به تسک</p>
+			<div className="p-2 min-w-xs min-h-80 max-h-80">
+				<p className="mb-1 text-xs font-bold ps-1 text-fg-strong">
+					افزودن دوست به تسک
+				</p>
 				<div className="h-56 max-h-56">
 					<SelectFriendLayout
 						onChange={(f) => setSelectedFriends([...f])}
@@ -45,8 +37,8 @@ export function TodoSelectFriends({ selectedFriends, setSelectedFriends }: Prop)
 				</div>
 				<Button
 					size="sm"
-					color={'brand'}
-					rounded={'2xl'}
+					color="brand"
+					rounded="xl"
 					onClick={() => callEvent('closeAllDropdowns')}
 					className="w-full"
 				>

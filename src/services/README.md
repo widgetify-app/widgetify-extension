@@ -32,6 +32,7 @@ export const habitKeys = {
 - The strings are what TanStack Query caches by. Renaming one is harmless. Never make two queries share a key they did not share before.
 - A keys file is named after its domain ("names each keys file after its domain").
 - `components/ui` never imports from here. A primitive does not fetch.
+- An explicit refresh asks with `FRESH_REQUEST` from `api.ts`, through `queryClient.fetchQuery`, like `useRefreshCurrencies` and `useRefreshRssFeeds`. The service worker answers some paths from its cache (`background/cache-config.ts`), so a plain `refetch()` can come back with the copy the user is trying to replace.
 - Hooks end in `.hook.ts` and live only here. A local React hook goes in a feature's `hooks/`.
 
 ## Adding a request

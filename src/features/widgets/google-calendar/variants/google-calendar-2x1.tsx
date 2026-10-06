@@ -1,194 +1,172 @@
 import type React from 'react'
 import { cn } from '@/common/utils/cn'
+import { WidgetCompactEmpty } from '@/features/widgets/components/widget-compact-empty'
+import { WidgetError } from '@/features/widgets/components/widget-error'
+import { WidgetHeader } from '@/features/widgets/components/widget-header'
 import { Icon } from '@/icons'
 import type { GoogleCalendarEvent } from '@/services/date/get-google-calendar-events.hook'
-import type { WidgetifyDate } from '@/common/utils/date-events'
-import { toIsoDateKey } from '@/features/widgets/utils/jalali-date'
 import type { ClassifiedCalendarEvent } from '../types'
-import { toDateTimeAttr } from '../utils/classify-event'
+import {
+	countdownParts,
+	currentOrNextEvent,
+	toDateTimeAttr,
+} from '../utils/classify-event'
 
 interface GoogleCalendar2x1Props {
-	today: WidgetifyDate
 	classifiedEvents: ClassifiedCalendarEvent[]
 	isLoading: boolean
+	isError: boolean
 	onEventClick: (event: GoogleCalendarEvent) => void
+	onRetry: () => void
 }
 
-export const GoogleCalendar2x1: React.FC<GoogleCalendar2x1Props> = ({
-	today,
+export const GoogleCalendar2x1: React.FC<GoogleCalendar2x1Props> = (props) => {
+	const { classifiedEvents, isLoading, isError } = props
+	const info =
+		!isLoading && !isError && classifiedEvents.length > 0
+			? `${classifiedEvents.length} برنامه`
+			: undefined
+
+	return (
+		<>
+			<WidgetHeader title="تقویم گوگل" info={info} />
+			<div className="flex-1 min-h-0">
+				<GoogleCalendar2x1Content {...props} />
+			</div>
+		</>
+	)
+}
+
+function GoogleCalendar2x1Content({
 	classifiedEvents,
 	isLoading,
+	isError,
 	onEventClick,
-}) => {
-	const activeNow = classifiedEvents.find((e) => e.isNow)
-	const nextUpcoming = classifiedEvents.find((e) => !e.isPast && !e.isNow)
-	const targetEvent = activeNow || nextUpcoming
-	const todayIso = toIsoDateKey(today)
-
+	onRetry,
+}: GoogleCalendar2x1Props) {
 	if (isLoading) {
 		return (
-			<div
-				aria-hidden="true"
-				className="flex items-center justify-between w-full h-full gap-3 p-3 select-none animate-pulse"
-			>
-				<div className="w-1/3 space-y-1.5">
-					<div className="w-3/4 h-3 rounded-sm bg-fill-2" />
-					<div className="w-1/2 h-4 rounded-sm bg-fill" />
+			<div aria-hidden="true" className="flex items-center h-full gap-2.5 px-2">
+				<div className="flex flex-col gap-1 w-9 shrink-0">
+					<div className="w-9 h-3 rounded-sm skeleton" />
+					<div className="w-6 h-2 rounded-sm skeleton" />
 				</div>
-				<div className="w-px h-8 bg-fill-2 shrink-0" />
-				<div className="flex-1 space-y-1.5">
-					<div className="w-2/3 h-3 rounded-sm bg-fill-2" />
-					<div className="w-1/3 h-2 rounded-sm bg-fill" />
+				<div className="flex flex-col flex-1 gap-1.5">
+					<div className="w-3/4 h-3 rounded-sm skeleton" />
+					<div className="w-1/2 h-2 rounded-sm skeleton" />
 				</div>
 			</div>
 		)
 	}
 
-	return (
-		<div className="flex items-center justify-between w-full h-full p-[10.4cqh] gap-2.5 select-none">
-			<div className="flex flex-col justify-center w-20 min-w-0 shrink-0">
-				<div className="flex items-center gap-1 mb-0.5">
-					<Icon
-						name="googleG"
-						size={12}
-						className="text-brand shrink-0"
-						aria-hidden="true"
-					/>
-					<span className="text-[10.4cqh] font-bold text-fg-muted truncate">
-						{today.format('dddd')}
-					</span>
-				</div>
-				<time
-					dateTime={todayIso}
-					className="text-[14.6cqh] font-black leading-tight text-fg tabular-nums"
-				>
-					{today.format('jD jMMMM')}
-				</time>
-				<span className="text-[9.4cqh] font-medium text-fg-muted mt-0.5 tabular-nums">
-					{classifiedEvents.length > 0
-						? `${classifiedEvents.length} برنامه`
-						: 'بدون برنامه'}
-				</span>
-			</div>
-
-			<div
-				aria-hidden="true"
-				className="w-px self-stretch bg-fill-2 shrink-0 my-0.5"
+	if (isError) {
+		return (
+			<WidgetError
+				message="نتونستیم برنامه‌هات رو بیاریم"
+				compact
+				onRetry={onRetry}
 			/>
+		)
+	}
 
-			<div className="flex flex-col justify-center flex-1 min-w-0">
-				{targetEvent ? (
-					<NextEventSummary
-						classified={targetEvent}
-						onEventClick={onEventClick}
-					/>
-				) : (
-					<div className="flex items-center gap-2 p-1 text-fg-muted opacity-60">
-						<Icon
-							name="check"
-							size={16}
-							className="text-brand shrink-0"
-							aria-hidden="true"
-						/>
-						<div className="flex flex-col min-w-0">
-							<span className="text-[10.4cqh] font-bold text-fg">
-								برنامه‌ای نداری
-							</span>
-							<span className="text-[8.3cqh]">
-								وقت استراحت و کارهای شخصی
-							</span>
-						</div>
-					</div>
-				)}
-			</div>
-		</div>
-	)
-}
+	const target = currentOrNextEvent(classifiedEvents)
 
-interface NextEventSummaryProps {
-	classified: ClassifiedCalendarEvent
-	onEventClick: (event: GoogleCalendarEvent) => void
-}
+	if (!target) {
+		return (
+			<WidgetCompactEmpty
+				icon="calendar"
+				title="امروز برنامه‌ای نداری"
+				description="فرصت خوبیه برای کارهای شخصی"
+			/>
+		)
+	}
 
-const NextEventSummary: React.FC<NextEventSummaryProps> = ({
-	classified,
-	onEventClick,
-}) => {
-	const {
-		event,
-		isNow,
-		start,
-		end,
-		startTimeStr,
-		endTimeStr,
-		durationLabel,
-		minsRemaining,
-	} = classified
+	const { event, isNow, start, end, startTimeStr, endTimeStr, durationLabel } = target
 	const hasAction = !!(event.hangoutLink || event.location)
-	const title = event.summary || 'رویداد تقویم'
+	const title = event.summary || 'بدون عنوان'
+	const countdown = countdownParts(isNow ? target.minsRemaining : target.minsUntilStart)
 
 	return (
-		<button
-			type="button"
-			aria-disabled={!hasAction}
-			onClick={() => hasAction && onEventClick(event)}
-			aria-label={`${isNow ? 'در حال جلسه' : 'برنامه بعدی'}: ${title}، ${startTimeStr} تا ${endTimeStr}`}
-			className={cn(
-				'flex flex-col w-full gap-1 p-1.5 text-start rounded-xl transition-ui',
-				'focus-visible:focus-ring',
-				hasAction && 'cursor-pointer hover:bg-fill active:scale-[0.99]',
-				isNow && 'bg-brand-fill border border-brand-fill-2'
-			)}
-		>
-			<span className="flex items-center justify-between gap-1.5">
-				<span className="flex items-center min-w-0 gap-1">
-					{isNow ? (
-						<>
-							<span
-								aria-hidden="true"
-								className="relative flex w-1.5 h-1.5 shrink-0"
-							>
-								<span className="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-brand" />
-								<span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-brand" />
-							</span>
-							<span className="text-[9.4cqh] font-bold text-brand">
-								در حال جلسه
-							</span>
-						</>
-					) : (
-						<span className="text-[9.4cqh] font-bold text-fg-muted tabular-nums">
-							<time dateTime={toDateTimeAttr(start)}>{startTimeStr}</time> -{' '}
-							<time dateTime={toDateTimeAttr(end)}>{endTimeStr}</time>
-						</span>
+		<div className="flex flex-col justify-center h-full gap-1">
+			<div
+				className={cn(
+					'flex items-center gap-2.5 px-2 rounded-xl min-h-8.5 transition-ui',
+					hasAction && 'hover:bg-fill'
+				)}
+			>
+				<button
+					type="button"
+					aria-disabled={!hasAction}
+					onClick={() => hasAction && onEventClick(event)}
+					aria-label={`${isNow ? 'جلسه‌ی الان' : 'جلسه‌ی بعدی'}: ${title}، ${startTimeStr} تا ${endTimeStr}`}
+					className={cn(
+						'flex items-center flex-1 min-w-0 gap-2.5 py-1 text-start rounded-lg focus-visible:focus-ring',
+						hasAction ? 'cursor-pointer' : 'cursor-default'
 					)}
+				>
+					<span className="flex flex-col shrink-0 leading-tight tabular-nums">
+						<time
+							dateTime={toDateTimeAttr(start)}
+							className="text-sm font-extrabold text-fg-strong"
+						>
+							{startTimeStr}
+						</time>
+						<time
+							dateTime={toDateTimeAttr(end)}
+							className="text-3xs text-fg-faint"
+						>
+							{endTimeStr}
+						</time>
+					</span>
+					<span
+						aria-hidden="true"
+						className="rounded-full size-2 shrink-0 bg-brand"
+					/>
+					<span className="flex flex-col flex-1 min-w-0 leading-control">
+						<span className="text-xs font-semibold truncate text-fg">
+							{title}
+						</span>
+						<span
+							className={cn(
+								'truncate text-3xs',
+								isNow ? 'font-semibold text-brand' : 'text-fg-faint'
+							)}
+						>
+							{isNow ? 'الان در جریانه' : event.location || durationLabel}
+						</span>
+					</span>
+				</button>
+				{isNow && event.hangoutLink ? (
+					<button
+						type="button"
+						onClick={() => onEventClick(event)}
+						className="inline-flex items-center h-6 gap-1 px-2 font-bold rounded-lg cursor-pointer shrink-0 bg-brand text-on-brand text-3xs transition-ui hover:bg-brand-hover focus-visible:focus-ring"
+					>
+						<Icon name="videoCamera" size={12} aria-hidden="true" />
+						ورود
+					</button>
+				) : (
+					<span className="flex flex-col items-end shrink-0 leading-control text-end">
+						<span className="text-sm font-extrabold tabular-nums text-fg-strong">
+							{countdown.value}
+						</span>
+						<span className="text-3xs text-fg-faint">
+							{countdown.unit} {isNow ? 'مونده' : 'تا شروع'}
+						</span>
+					</span>
+				)}
+			</div>
+			{isNow && (
+				<span
+					aria-hidden="true"
+					className="mx-2 h-0.75 overflow-hidden rounded-xs bg-fill-2"
+				>
+					<span
+						className="block h-full transition-[width] duration-1000 bg-brand"
+						style={{ width: `${target.elapsedPercent}%` }}
+					/>
 				</span>
-
-				{event.hangoutLink && (
-					<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-brand text-on-brand text-[8.3cqh] font-bold shrink-0">
-						<Icon name="videoCamera" size={10} aria-hidden="true" />
-						<span>ورود</span>
-					</span>
-				)}
-			</span>
-
-			<span className="block text-[11.5cqh] font-bold text-fg truncate leading-control">
-				{title}
-			</span>
-
-			<span className="flex items-center gap-2 text-[8.3cqh] text-fg-muted tabular-nums">
-				<span>{isNow ? `${minsRemaining} دقیقه مانده` : durationLabel}</span>
-				{event.location && (
-					<span className="truncate max-w-20">
-						<Icon
-							name="location"
-							size={8}
-							className="inline align-[-1px]"
-							aria-hidden="true"
-						/>{' '}
-						{event.location}
-					</span>
-				)}
-			</span>
-		</button>
+			)}
+		</div>
 	)
 }

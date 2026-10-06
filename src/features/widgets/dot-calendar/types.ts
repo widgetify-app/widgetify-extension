@@ -7,6 +7,13 @@ export interface DotCalendarMeta {
 	goalEndDate?: string
 }
 
+export interface DotCalendarOptions {
+	variant: DotCalendarVariant
+	goalTitle: string
+	goalStartDate?: string
+	goalEndDate?: string
+}
+
 export interface DotProgress {
 	totalDays: number
 	passedDays: number

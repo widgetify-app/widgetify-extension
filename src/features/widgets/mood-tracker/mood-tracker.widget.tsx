@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { getCurrentDate } from '@/common/utils/date-events'
 import { toIsoDateKey } from '@/features/widgets/utils/jalali-date'
@@ -9,11 +9,13 @@ import { useQueryClient } from '@tanstack/react-query'
 import { type ApiError, safeAwait } from '@/services/api'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { WidgetContainer } from '../components/widget-container'
+import { WidgetMenuButton } from '../components/widget-menu-button'
+import { useWidgetMenuActions } from '../widget-menu.context'
 import type { WidgetSize } from '../utils/layout-engine/types'
 import { Mood1x1 } from './variants/mood-tracker-1x1'
 import { Mood2x1 } from './variants/mood-tracker-2x1'
 import { MoodShareModal } from './components/mood-share-modal'
-import { PopoverMenu, PopoverMenuItem, PopoverMenuHeader } from '@/components/ui'
+import { PopoverMenuItem } from '@/components/ui'
 import { Icon } from '@/icons'
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
@@ -32,9 +34,7 @@ export function MoodTrackerWidget({ size = { w: 2, h: 1 } }: MoodTrackerWidgetPr
 	const today = getCurrentDate(timezone.value)
 	const { mutateAsync: upsertMoodLog, isPending } = useUpsertMoodLog()
 	const [optimisticMood, setOptimisticMood] = useState<MoodType | null>(null)
-	const [isMenuOpen, setIsMenuOpen] = useState(false)
 	const [isShareModalOpen, setIsShareModalOpen] = useState(false)
-	const menuTriggerRef = useRef<HTMLButtonElement | null>(null)
 
 	const todayDateStr = toIsoDateKey(today)
 	const startStr = toIsoDateKey(today.clone().subtract(MOOD_HISTORY_DAYS - 1, 'days'))
@@ -88,66 +88,52 @@ export function MoodTrackerWidget({ size = { w: 2, h: 1 } }: MoodTrackerWidgetPr
 			if (dateToLog === todayDateStr) {
 				setOptimisticMood(null)
 			}
-			showToast('حال روزانه شما حذف شد.', 'info')
+			showToast('حالت پاک شد', 'info')
 		} else {
 			if (dateToLog === todayDateStr) {
 				setOptimisticMood(moodValue)
 			}
-			showToast('حال روزانه شما ثبت شد.', 'success')
+			showToast('حالت ثبت شد', 'success')
 		}
 
 		queryClient.invalidateQueries({ queryKey: moodLogKeys.all })
 	}
 
-	const handleOpenMenu = (e: React.MouseEvent) => {
-		e.stopPropagation()
-		setIsMenuOpen((prev) => !prev)
-	}
-
 	const handleOpenShare = () => {
-		setIsMenuOpen(false)
 		setIsShareModalOpen(true)
 		Analytics.event('mood_share_modal_opened')
 	}
 
+	useWidgetMenuActions(
+		<PopoverMenuItem
+			icon={<Icon name="camera" size={14} aria-hidden="true" />}
+			label="اشتراک‌گذاری ماه"
+			onClick={handleOpenShare}
+		/>
+	)
+
+	const isSquare = size.w === 1 && size.h === 1
+
 	return (
 		<>
-			<WidgetContainer padding={false} className="h-full">
-				{size.w === 1 && size.h === 1 ? (
-					<Mood1x1
-						todayMood={todayMood}
-						onSelectMood={handleSelectMood}
-						isSaving={isPending}
-						onOpenMenu={handleOpenMenu}
-						menuTriggerRef={menuTriggerRef}
-					/>
+			<WidgetContainer contentClassName={isSquare ? 'p-2' : 'px-2.5 pt-2 pb-2.5'}>
+				{isSquare ? (
+					<>
+						<Mood1x1
+							todayMood={todayMood}
+							onSelectMood={handleSelectMood}
+							isSaving={isPending}
+						/>
+						<WidgetMenuButton placement="floating" />
+					</>
 				) : (
 					<Mood2x1
 						todayMood={todayMood}
 						onSelectMood={handleSelectMood}
 						isSaving={isPending}
-						onOpenMenu={handleOpenMenu}
-						menuTriggerRef={menuTriggerRef}
 					/>
 				)}
 			</WidgetContainer>
-
-			<PopoverMenu
-				isOpen={isMenuOpen}
-				onClose={() => setIsMenuOpen(false)}
-				triggerRef={menuTriggerRef}
-				width={180}
-				placement="bottom-end"
-			>
-				<PopoverMenuHeader>
-					<span>حال روزانه</span>
-				</PopoverMenuHeader>
-				<PopoverMenuItem
-					icon={<Icon name="camera" size={14} aria-hidden="true" />}
-					label="اشتراک‌گذاری ماه"
-					onClick={handleOpenShare}
-				/>
-			</PopoverMenu>
 
 			<MoodShareModal
 				isOpen={isShareModalOpen}

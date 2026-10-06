@@ -55,7 +55,7 @@ export function ComboSetting({ instanceId, size }: ComboSettingProps) {
 					className="w-full"
 				/>
 
-				<div>
+				<div className="h-[30rem] overflow-y-auto">
 					{activeTab === 'currency' ? (
 						<WigiArzSetting instanceId={instanceId} size={size} />
 					) : (

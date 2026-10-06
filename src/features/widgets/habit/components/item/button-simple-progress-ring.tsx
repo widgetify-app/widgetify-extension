@@ -2,19 +2,19 @@ interface SimpleProgressRingProps {
 	value: number
 	target: number
 	color: string
-	size?: number
 	strokeWidth?: number
 }
+
+const SIZE = 32
 
 export function SimpleProgressRing({
 	value,
 	target,
 	color,
-	size = 32,
 	strokeWidth = 3.5,
 }: SimpleProgressRingProps) {
-	const center = size / 2
-	const radius = (size - strokeWidth) / 2
+	const center = SIZE / 2
+	const radius = (SIZE - strokeWidth) / 2
 	const circumference = 2 * Math.PI * radius
 	const progress = Math.min(value / target, 1)
 	const dashOffset = circumference * (1 - progress)
@@ -22,18 +22,17 @@ export function SimpleProgressRing({
 	return (
 		<svg
 			aria-hidden="true"
-			width={size}
-			height={size}
-			viewBox={`0 0 ${size} ${size}`}
+			width={SIZE}
+			height={SIZE}
+			viewBox={`0 0 ${SIZE} ${SIZE}`}
 		>
 			<circle
 				cx={center}
 				cy={center}
 				r={radius}
 				fill="none"
-				className={'stroke-surface-2'}
+				className="stroke-fill-2"
 				strokeWidth={strokeWidth}
-				opacity={0.3}
 			/>
 			<circle
 				cx={center}

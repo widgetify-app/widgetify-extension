@@ -35,7 +35,7 @@ export function useVoiceSearch(
 			window.SpeechRecognition || window.webkitSpeechRecognition
 		if (!SpeechRecognition) {
 			setError('unsupported')
-			showToast('مرورگر شما از جستجوی صوتی پشتیبانی نمی‌کند.', 'error')
+			showToast('مرورگرت از جستجوی صوتی پشتیبانی نمی‌کنه', 'error')
 			return null
 		}
 

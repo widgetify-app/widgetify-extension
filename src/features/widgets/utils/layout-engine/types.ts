@@ -80,6 +80,7 @@ export interface WidgetVariantOption {
 export interface WidgetDefinition {
 	id: WidgetKeys
 	label: string
+	menuLabel?: string
 	emoji: string
 	icon: IconName
 	category?: WidgetCategory
@@ -89,6 +90,7 @@ export interface WidgetDefinition {
 	canResize?: boolean // Allows manual resizing from the context menu even when the widget defines variants.
 	variants?: WidgetVariantOption[]
 	settingsTab?: WidgetTabKeys
+	hasSettings?: (meta: unknown) => boolean
 	canDuplicate: boolean
 	order?: number
 	canToggle?: boolean

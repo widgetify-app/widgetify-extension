@@ -33,7 +33,6 @@ export const HabitStatsCards: React.FC<HabitStatsCardsProps> = React.memo(
 				const value = record?.value ?? 0
 
 				days.push({
-					hasRecord: value > 0,
 					isDone: record?.isDone || (habit.target > 0 && value >= habit.target),
 				})
 			}
@@ -42,46 +41,33 @@ export const HabitStatsCards: React.FC<HabitStatsCardsProps> = React.memo(
 		}, [habit, today])
 
 		return (
-			<div className="grid grid-cols-2 gap-2 md:grid-cols-4">
-				<StatCard label="استریک فعلی" value={stats.currentStreak} suffix="روز" />
-				<StatCard
-					label="بهترین استریک"
-					value={stats.longestStreak}
-					suffix="روز"
-				/>
-				<StatCard label="روزهای موفق" value={stats.totalCompleted} suffix="روز" />
-				<StatCard
-					label="نرخ موفقیت"
-					value={stats.trackedDays > 0 ? `${stats.completionRate}٪` : '—'}
-					hint={
-						stats.trackedDays > 0
-							? `از ${stats.trackedDays} روز`
-							: 'هنوز ثبتی نداری'
-					}
-				/>
-			</div>
+			<dl className="grid grid-cols-3 p-1 rounded-2xl bg-fill">
+				<Stat label="پشت‌سرهم" value={stats.currentStreak} unit="روز" />
+				<Stat label="بهترین رکورد" value={stats.longestStreak} unit="روز" />
+				<Stat label="روزهای موفق" value={stats.totalCompleted} unit="روز" />
+			</dl>
 		)
 	}
 )
 
 HabitStatsCards.displayName = 'HabitStatsCards'
 
-interface StatCardProps {
+interface StatProps {
 	label: string
 	value: number | string
-	suffix?: string
-	hint?: string
+	unit?: string
 }
 
-function StatCard({ label, value, suffix, hint }: StatCardProps) {
+function Stat({ label, value, unit }: StatProps) {
 	return (
-		<div className="flex flex-col p-2.5 border rounded-2xl bg-surface-2 border-surface-3">
-			<div className="mb-1 text-xs font-medium text-fg-muted">{label}</div>
-			<div className="flex items-baseline gap-1">
-				<span className="text-lg font-bold text-fg">{value}</span>
-				{suffix && <span className="text-2xs text-fg-muted">{suffix}</span>}
-			</div>
-			{hint && <div className="text-3xs text-fg-muted truncate">{hint}</div>}
+		<div className="flex flex-col-reverse items-center gap-0.5 py-2 text-center">
+			<dt className="text-3xs text-fg-muted">{label}</dt>
+			<dd className="flex items-baseline gap-0.5">
+				<span className="text-base font-bold tabular-nums text-fg-strong">
+					{value}
+				</span>
+				{unit && <span className="text-3xs text-fg-muted">{unit}</span>}
+			</dd>
 		</div>
 	)
 }

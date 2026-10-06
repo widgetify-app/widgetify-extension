@@ -6,6 +6,7 @@ import { Icon } from '@/icons'
 import { useCurrencyPrice } from '../hooks/use-currency-price'
 import { getPrice } from '../utils/get-price'
 import { CurrencyModalComponent } from './currency-modal'
+import { PriceChange } from './price-change'
 
 const PARTNER_REDIRECT_DELAY_MS = 1000
 
@@ -20,7 +21,7 @@ export const CurrencyBox = ({ code, dragHandle }: CurrencyBoxProps) => {
 
 	function toggleCurrencyModal() {
 		if (currency?.url && currency?.isPartnerShip) {
-			showToast('🔗 درحال انتقال به سایت همکار...', 'success')
+			showToast('🔗 در حال رفتن به سایت همکار…', 'success')
 			setTimeout(() => {
 				dismissToasts()
 				Analytics.event('currency_sponsor', {
@@ -41,18 +42,15 @@ export const CurrencyBox = ({ code, dragHandle }: CurrencyBoxProps) => {
 
 	return (
 		<>
-			<div
-				dir="ltr"
-				className="group flex items-center gap-2 px-2.5 py-3 rounded-2xl border border-surface-3 bg-surface-2 hover:bg-surface-3 transition-ui active:scale-[0.98]"
-			>
+			<div className="relative flex items-center px-2 group/row rounded-xl min-h-11 transition-ui hover:bg-fill">
 				{dragHandle && (
 					<button
 						type="button"
 						{...dragHandle}
 						aria-label={`جابه‌جایی ${code}`}
-						className="flex items-center justify-center w-4 h-4 transition-opacity cursor-grab active:cursor-grabbing text-fg-muted opacity-40 group-hover:opacity-90 shrink-0"
+						className="absolute inset-y-0 grid w-2.5 opacity-0 -start-2.5 place-items-center cursor-grab active:cursor-grabbing text-fg-faint transition-ui group-hover/row:opacity-100 focus-visible:opacity-100"
 					>
-						<Icon name="dragIndicator" size={14} aria-hidden="true" />
+						<Icon name="dragIndicator" size={12} aria-hidden="true" />
 					</button>
 				)}
 
@@ -60,55 +58,62 @@ export const CurrencyBox = ({ code, dragHandle }: CurrencyBoxProps) => {
 					type="button"
 					onClick={toggleCurrencyModal}
 					aria-label={`${currency?.name?.fa || code}${price ? `، ${price.formatted}` : ''}`}
-					className="flex items-center justify-between flex-1 min-w-0 gap-2 cursor-pointer focus-visible:focus-ring"
+					className="flex items-center flex-1 min-w-0 gap-2.5 py-1.5 rounded-lg cursor-pointer text-start focus-visible:focus-ring"
 				>
-					<span className="flex items-center min-w-0 gap-2">
-						<span className="relative shrink-0">
-							{currency?.icon ? (
-								<img
-									src={currency.icon}
-									alt=""
-									className="object-cover w-5 h-5 rounded-lg bg-surface-2"
-								/>
-							) : (
-								<span
-									aria-hidden="true"
-									className="block w-5 h-5 rounded-full bg-fill-2 animate-pulse"
-								/>
-							)}
+					<span className="relative flex-none">
+						{currency?.icon ? (
+							<img
+								src={currency.icon}
+								alt=""
+								className="object-cover rounded-full size-6.5 bg-fill"
+							/>
+						) : (
+							<span
+								aria-hidden="true"
+								className="block rounded-full size-6.5 skeleton"
+							/>
+						)}
 
-							{currency?.partnershipLogo && (
-								<img
-									className="absolute right-0 w-3 h-3 -bottom-0.5"
-									src={currency.partnershipLogo}
-									alt="نماد همکار"
-								/>
-							)}
-						</span>
+						{currency?.partnershipLogo && (
+							<img
+								className="absolute right-0 size-3 -bottom-0.5"
+								src={currency.partnershipLogo}
+								alt="نماد همکار"
+							/>
+						)}
+					</span>
 
-						<span className="text-xs font-bold uppercase truncate text-fg">
+					<span className="flex flex-col flex-1 min-w-0">
+						<span
+							dir="ltr"
+							className="font-mono text-xs font-bold uppercase truncate text-end text-fg-strong"
+						>
 							{code}
+						</span>
+						<span className="truncate text-3xs text-fg-faint">
+							{currency?.name?.fa}
+							{price?.isDollar && ' · دلار'}
 						</span>
 					</span>
 
-					<span className="flex items-baseline gap-1.5 shrink-0">
-						<span className="text-xs font-bold tracking-tight text-fg">
+					<span className="flex flex-col items-end flex-none">
+						<span className="text-xs font-bold tabular-nums text-fg-strong">
 							{price ? (
-								<data value={price.value}>
-									{price.isDollar && '💲'}
-									{price.formatted}
-								</data>
-							) : hasFailed ? (
-								<span className="text-fg-muted">-</span>
+								<data value={price.value}>{price.formatted}</data>
 							) : (
-								'-'
+								<span className={hasFailed ? 'text-fg-muted' : undefined}>
+									-
+								</span>
 							)}
 						</span>
+						{currency && (
+							<PriceChange changePercentage={currency.changePercentage} />
+						)}
 					</span>
 				</button>
 			</div>
 
-			{currency && !currency.url && isModalOpen && (
+			{currency && !currency.url && (
 				<CurrencyModalComponent
 					key={code}
 					code={code}

@@ -4,14 +4,10 @@ import { moodOptions } from '@/common/constants/moods'
 import { cn } from '@/common/utils/cn'
 import type { FetchedAllEvents } from '@/services/date/get-events.hook'
 import type { MoodEntry } from '@/services/mood-log/get-moods.hook'
-import {
-	formatDateStr,
-	getCurrentDate,
-	getGregorianEvents,
-	getHijriEvents,
-	getShamsiEvents,
-} from '@/common/utils/date-events'
+import { formatDateStr, getCurrentDate } from '@/common/utils/date-events'
 import { isSameJalaliDay, toIsoDateKey } from '@/features/widgets/utils/jalali-date'
+import type { CalendarDisplay } from '../../types'
+import { getDayMarks } from '../../utils/day-marks'
 
 interface DayItemProps {
 	day: number
@@ -20,6 +16,7 @@ interface DayItemProps {
 	selectedDateStr: string
 	timezone: string
 	moods: MoodEntry[]
+	display: CalendarDisplay
 	onClick: (date: jalaliMoment.Moment, element: HTMLButtonElement) => void
 }
 
@@ -30,6 +27,7 @@ export function DayItem({
 	selectedDateStr,
 	timezone,
 	moods,
+	display,
 	onClick,
 }: DayItemProps) {
 	const dayRef = useRef<HTMLButtonElement>(null)
@@ -37,30 +35,24 @@ export function DayItem({
 	const dateStr = formatDateStr(cellDate)
 	const isoDate = toIsoDateKey(cellDate)
 
-	const shamsiEvents = getShamsiEvents(events, cellDate)
-	const hijriEvents = getHijriEvents(events, cellDate)
-	const gregorianEvents = getGregorianEvents(events, cellDate)
-
-	const eventIcon = [...gregorianEvents, ...shamsiEvents, ...hijriEvents].find(
-		(event) => event.icon
-	)?.icon
+	const { isHoliday, isHolidayEvent, hasEvent, eventCount } = getDayMarks(
+		events,
+		cellDate
+	)
 
 	const isSelected = selectedDateStr === dateStr
 	const isCurrentDay = isToday(cellDate, timezone)
 
-	const isHolidayEvent =
-		shamsiEvents.some((event) => event.isHoliday) ||
-		hijriEvents.some((event) => event.isHoliday)
-
-	const isHoliday = cellDate.day() === 5 || isHolidayEvent
-
 	const moodForDay = moods.find((mood) => mood.date === isoDate)
-	const dayMood = moodOptions.find((option) => option.value === moodForDay?.mood)
+	const dayMood = display.showMoods
+		? moodOptions.find((option) => option.value === moodForDay?.mood)
+		: undefined
+	const showEventDot = display.showEvents && hasEvent
 
 	const label = [
 		cellDate.format('dddd jD jMMMM jYYYY'),
 		isHoliday && 'تعطیل',
-		shamsiEvents.length > 0 && `${shamsiEvents.length} مناسبت`,
+		display.showEvents && eventCount > 0 && `${eventCount} مناسبت`,
 		dayMood && `حال روز: ${dayMood.label}`,
 	]
 		.filter(Boolean)
@@ -80,52 +72,40 @@ export function DayItem({
 			aria-label={label}
 			aria-pressed={isSelected}
 			aria-current={isCurrentDay ? 'date' : undefined}
-			className={cn(
-				'relative flex items-center justify-center mx-auto',
-				'w-[8cqh] h-[8cqh] max-w-6 max-h-6 text-[4cqh]',
-				'transition-ui rounded-lg cursor-pointer hover:scale-110 hover:shadow-sm',
-				'focus-visible:focus-ring',
-				isHoliday ? 'text-danger bg-danger-fill' : 'text-fg',
-				isSelected
-					? isHoliday
-						? 'bg-danger-fill-2'
-						: 'bg-brand-fill-2'
-					: isHoliday
-						? 'hover:bg-danger-fill'
-						: 'hover:bg-brand-fill',
-				isCurrentDay && 'scale-110 shadow-lg',
-				isCurrentDay &&
-					!dayMood &&
-					(isHoliday
-						? 'border border-dashed border-danger'
-						: 'border border-dashed border-brand'),
-				dayMood && `border-2 ${dayMood.borderClass}`
-			)}
+			className="relative grid w-full h-8 rounded-full cursor-pointer place-items-center group focus-visible:focus-ring"
 		>
-			<time dateTime={isoDate} aria-hidden="true">
+			<time
+				dateTime={isoDate}
+				aria-hidden="true"
+				className={cn(
+					'grid text-xs font-semibold rounded-full size-7 place-items-center tabular-nums transition-ui',
+					isCurrentDay
+						? 'bg-brand text-on-brand font-extrabold'
+						: isHoliday
+							? 'text-danger group-hover:bg-danger-fill'
+							: 'text-fg group-hover:bg-fill-2',
+					isSelected &&
+						!isCurrentDay &&
+						'ring-[1.5px] ring-inset ring-brand-muted',
+					dayMood && `border-2 ${dayMood.borderClass}`
+				)}
+			>
 				{day}
 			</time>
 
-			<span
-				aria-hidden="true"
-				className="absolute flex items-center justify-center w-full -translate-x-1/2 bottom-0.5 left-1/2"
-			>
-				{eventIcon ? (
-					<img
-						src={eventIcon}
-						alt=""
-						className="object-contain w-6 h-6 transition-ui rounded-full"
-						loading="lazy"
-					/>
-				) : shamsiEvents.length > 0 ? (
-					<span
-						className={cn(
-							'w-0.5 h-0.5 rounded-full shadow-sm',
-							isHolidayEvent ? 'bg-danger' : 'bg-brand'
-						)}
-					/>
-				) : null}
-			</span>
+			{showEventDot && (
+				<span
+					aria-hidden="true"
+					className={cn(
+						'absolute rounded-full bottom-px size-1',
+						isHolidayEvent
+							? 'bg-danger'
+							: isCurrentDay
+								? 'bg-brand'
+								: 'bg-fg-faint'
+					)}
+				/>
+			)}
 		</button>
 	)
 }

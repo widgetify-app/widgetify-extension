@@ -1,7 +1,7 @@
 import { AvatarComponent } from '@/components/ui'
 import { UserCardPortal } from '../../components/user-card-portal'
 import type { TopUser } from '@/services/pomodoro/get-top-users.hook'
-import { Icon } from '@/icons'
+import { cn } from '@/common/utils/cn'
 
 interface TopUserItemProps {
 	user: TopUser
@@ -17,14 +17,6 @@ export function TopUserItem({
 }: TopUserItemProps) {
 	const containerRef = useRef<HTMLButtonElement>(null)
 	const isActive = activeProfileId === user.id
-	const crownColors: Record<number, string> = {
-		1: 'text-[#fdc700]',
-		2: 'text-[#99a1af]',
-		3: 'text-[#e17100]',
-	}
-
-	const style = rank <= 3 ? 'bg-success-fill text-success' : 'bg-brand-fill text-brand'
-
 	const convertToHours = (duration: number) => {
 		const hours = Math.floor(duration / 60)
 		const minutes = duration % 60
@@ -38,31 +30,23 @@ export function TopUserItem({
 		<>
 			<button
 				type="button"
-				className={`relative flex items-center w-full gap-2 p-2 text-start cursor-pointer rounded-2xl bg-surface-2 transition-ui hover:scale-95 shadow-md hover:shadow-none`}
+				className={cn(
+					'flex items-center w-full gap-2.5 px-2 text-start rounded-xl cursor-pointer min-h-9.5 transition-ui focus-visible:focus-ring',
+					user.isSelf ? 'bg-brand-fill' : 'hover:bg-fill'
+				)}
 				onClick={() => setActiveProfileId(user.id)}
 				ref={containerRef}
 			>
-				{rank <= 3 && (
-					<Icon
-						name="crown"
-						className={`absolute top-1 rotate-12 right-1 w-4 h-4 ${crownColors[rank]} shadow-md`}
-					/>
-				)}
-				<AvatarComponent
-					url={user.avatar}
-					size="sm"
-					className="outline-2 outline-offset-0 outline-brand-fill-2"
-				/>
-				<div className="relative flex-1 min-w-0">
-					<p className="text-sm font-medium truncate text-fg">{user.name}</p>
-					<p className="text-xs text-fg-muted">{duration}</p>
-				</div>
-
-				<div
-					className={`flex items-center justify-center flex-shrink-0 rounded-full w-7 h-7 ${style} ${user.isSelf && 'outline-2 outline-dashed'}`}
-				>
-					<span className="text-xs font-bold">{rank}</span>
-				</div>
+				<span className="w-4 font-bold text-center text-2xs text-fg-faint tabular-nums">
+					{rank}
+				</span>
+				<AvatarComponent url={user.avatar} size="sm" />
+				<span className="flex-1 min-w-0 text-xs font-semibold truncate text-fg">
+					{user.name}
+				</span>
+				<span className="text-3xs text-fg-faint whitespace-nowrap">
+					{duration}
+				</span>
 			</button>
 
 			<UserCardPortal

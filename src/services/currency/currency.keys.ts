@@ -1,4 +1,5 @@
 export const currencyKeys = {
-	byCode: (currency: string) => [`currency-${currency}`] as const,
+	byCodeAll: ['currencyByCode'] as const,
+	byCode: (currency: string) => ['currencyByCode', currency] as const,
 	supported: ['supportedCurrencies'] as const,
 }

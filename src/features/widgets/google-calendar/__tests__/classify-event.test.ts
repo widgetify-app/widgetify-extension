@@ -2,6 +2,8 @@ import { describe, expect, it } from 'bun:test'
 import type { GoogleCalendarEvent } from '@/services/date/get-google-calendar-events.hook'
 import {
 	classifyEvent,
+	countdownParts,
+	currentOrNextEvent,
 	formatPersianTime,
 	getDurationLabel,
 } from '../utils/classify-event'
@@ -136,6 +138,29 @@ describe('classifyEvent', () => {
 		expect(after.elapsedPercent).toBe(100)
 	})
 
+	it('counts the minutes until an upcoming event starts', () => {
+		const c = classifyEvent(
+			timedEvent('2026-09-14T10:55:00Z', '2026-09-14T11:10:00Z'),
+			NOW,
+			true,
+			false
+		)
+
+		expect(c.isNow).toBe(false)
+		expect(c.minsUntilStart).toBe(25)
+	})
+
+	it('reports no wait for an event already running', () => {
+		const c = classifyEvent(
+			timedEvent('2026-09-14T10:00:00Z', '2026-09-14T11:00:00Z'),
+			NOW,
+			true,
+			false
+		)
+
+		expect(c.minsUntilStart).toBe(0)
+	})
+
 	it('reports zero elapsed for a zero-length event rather than NaN', () => {
 		const c = classifyEvent(
 			timedEvent('2026-09-14T10:30:00Z', '2026-09-14T10:30:00Z'),
@@ -146,5 +171,48 @@ describe('classifyEvent', () => {
 
 		expect(c.elapsedPercent).toBe(0)
 		expect(Number.isNaN(c.minsRemaining)).toBe(false)
+	})
+})
+
+describe('countdownParts', () => {
+	it('counts minutes under an hour', () => {
+		expect(countdownParts(25)).toEqual({ value: '25', unit: 'دقیقه' })
+	})
+
+	it('switches to hours and padded minutes from an hour on', () => {
+		expect(countdownParts(60)).toEqual({ value: '1:00', unit: 'ساعت' })
+		expect(countdownParts(95)).toEqual({ value: '1:35', unit: 'ساعت' })
+		expect(countdownParts(605)).toEqual({ value: '10:05', unit: 'ساعت' })
+	})
+})
+
+describe('currentOrNextEvent', () => {
+	const onToday = (event: GoogleCalendarEvent) => classifyEvent(event, NOW, true, false)
+
+	it('picks the event in progress over a later one', () => {
+		const later = onToday(timedEvent('2026-09-14T12:00:00Z', '2026-09-14T13:00:00Z'))
+		const running = onToday(
+			timedEvent('2026-09-14T10:00:00Z', '2026-09-14T11:00:00Z')
+		)
+
+		expect(currentOrNextEvent([later, running])).toBe(running)
+	})
+
+	it('skips finished and all-day events to find the next one', () => {
+		const finished = onToday(
+			timedEvent('2026-09-14T08:00:00Z', '2026-09-14T09:00:00Z')
+		)
+		const allDay = onToday(allDayEvent('2026-09-14'))
+		const next = onToday(timedEvent('2026-09-14T12:00:00Z', '2026-09-14T13:00:00Z'))
+
+		expect(currentOrNextEvent([finished, allDay, next])).toBe(next)
+	})
+
+	it('finds nothing once every timed event has ended', () => {
+		const finished = onToday(
+			timedEvent('2026-09-14T08:00:00Z', '2026-09-14T09:00:00Z')
+		)
+
+		expect(currentOrNextEvent([finished])).toBeUndefined()
 	})
 })

@@ -2,21 +2,21 @@ interface SegmentedProgressRingProps {
 	value: number
 	target: number
 	color: string
-	size?: number
 	strokeWidth?: number
 	gap?: number
 }
+
+const SIZE = 32
 
 export function SegmentedProgressRing({
 	value,
 	target,
 	color,
-	size = 32,
 	strokeWidth = 3.5,
 	gap = 2,
 }: SegmentedProgressRingProps) {
-	const center = size / 2
-	const radius = (size - strokeWidth) / 2
+	const center = SIZE / 2
+	const radius = (SIZE - strokeWidth) / 2
 
 	const segmentAngle = (2 * Math.PI) / target
 	const gapAngle = gap / radius
@@ -49,10 +49,9 @@ export function SegmentedProgressRing({
 				d={pathData}
 				fill="none"
 				strokeLinecap={'round'}
-				className={isFilled ? `` : `stroke-surface-2`}
+				className={isFilled ? undefined : 'stroke-fill-2'}
 				stroke={isFilled ? color : undefined}
 				strokeWidth={strokeWidth}
-				opacity={isFilled ? 1 : 0.8}
 				style={{ transition: 'stroke 0.3s ease' }}
 			/>
 		)
@@ -61,9 +60,9 @@ export function SegmentedProgressRing({
 	return (
 		<svg
 			aria-hidden="true"
-			width={size}
-			height={size}
-			viewBox={`0 0 ${size} ${size}`}
+			width={SIZE}
+			height={SIZE}
+			viewBox={`0 0 ${SIZE} ${SIZE}`}
 		>
 			{segments}
 		</svg>

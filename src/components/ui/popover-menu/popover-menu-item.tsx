@@ -4,6 +4,7 @@ import { popoverMenuItemVariants } from './popover-menu.variants'
 interface PopoverMenuItemProps {
 	icon?: React.ReactNode
 	label: string
+	description?: string
 	badge?: React.ReactNode
 	onClick?: () => void
 	variant?: 'default' | 'danger' | 'primary'
@@ -14,6 +15,7 @@ interface PopoverMenuItemProps {
 export function PopoverMenuItem({
 	icon,
 	label,
+	description,
 	badge,
 	onClick,
 	variant = 'default',
@@ -34,7 +36,16 @@ export function PopoverMenuItem({
 		>
 			<div className="flex items-center gap-2">
 				{icon && <span className="text-sm shrink-0">{icon}</span>}
-				<span className="truncate">{label}</span>
+				{description ? (
+					<span className="flex flex-col min-w-0 leading-control">
+						<span className="truncate">{label}</span>
+						<span className="font-medium truncate text-2xs text-fg-faint">
+							{description}
+						</span>
+					</span>
+				) : (
+					<span className="truncate">{label}</span>
+				)}
 			</div>
 			{badge && <span className="shrink-0">{badge}</span>}
 		</button>

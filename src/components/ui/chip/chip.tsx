@@ -12,6 +12,7 @@ interface ChipProps extends VariantProps<typeof chipVariants> {
 
 export const Chip: React.FC<ChipProps> = ({
 	selected,
+	size,
 	onClick,
 	children,
 	className,
@@ -22,7 +23,7 @@ export const Chip: React.FC<ChipProps> = ({
 		<button
 			type="button"
 			onClick={disabled ? undefined : onClick}
-			className={cn(chipVariants({ selected }), className)}
+			className={cn(chipVariants({ selected, size }), className)}
 			dir={dir}
 			disabled={disabled}
 		>

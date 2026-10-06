@@ -1,13 +1,12 @@
 import type React from 'react'
-import { useEffect, useState } from 'react'
+import { type ReactNode, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
-import { Motion as motion } from '@/common/motion'
 import { getFromStorage, setToStorage } from '@/common/storage'
-import { Modal, TabNavigation } from '@/components/ui'
+import { Modal } from '@/components/ui'
 import { useDate } from '@/features/widgets/date.context'
-import { Icon } from '@/icons'
 import type { WidgetSize } from '../utils/layout-engine/types'
 import { WidgetContainer } from '../components/widget-container'
+import { WidgetHeaderTabs } from '../components/widget-header'
 import { DEFAULT_TOOLS_TAB, TOOLS_TAB_TITLES, TOOLS_TABS } from './constants'
 import { CurrencyConverter } from './components/currency-converter'
 import { PomodoroTimer } from './pomodoro/pomodoro'
@@ -16,19 +15,14 @@ import type { ToolsTabType } from './types'
 import { normalizeToolsTab } from './utils/normalize-tools-tab'
 import { ToolsCompactRow } from './variants/tools-2x1'
 
-const navigationTabs = TOOLS_TABS.map((tab) => ({
-	id: tab.id,
-	label: tab.label,
-	icon: <Icon name={tab.icon} size={14} aria-hidden="true" />,
-}))
-
 interface ToolsLayoutProps {
 	size?: WidgetSize
 }
 
 export const ToolsLayout: React.FC<ToolsLayoutProps> = ({ size = { w: 2, h: 3 } }) => {
 	const [activeTab, setActiveTab] = useState<ToolsTabType>(DEFAULT_TOOLS_TAB)
-	const [activeModalTool, setActiveModalTool] = useState<ToolsTabType | null>(null)
+	const [modalTool, setModalTool] = useState<ToolsTabType>(DEFAULT_TOOLS_TAB)
+	const [isModalOpen, setIsModalOpen] = useState(false)
 	const { selectedDate } = useDate()
 
 	const onTabClick = (tab: ToolsTabType) => {
@@ -39,7 +33,8 @@ export const ToolsLayout: React.FC<ToolsLayoutProps> = ({ size = { w: 2, h: 3 } 
 	}
 
 	const onCompactToolClick = (tab: ToolsTabType) => {
-		setActiveModalTool(tab)
+		setModalTool(tab)
+		setIsModalOpen(true)
 		Analytics.event(`tools_compact_open_${tab}`)
 	}
 
@@ -52,56 +47,54 @@ export const ToolsLayout: React.FC<ToolsLayoutProps> = ({ size = { w: 2, h: 3 } 
 		load()
 	}, [])
 
-	const renderTool = (tab: ToolsTabType) => {
+	const renderTool = (tab: ToolsTabType, tabs?: ReactNode) => {
 		switch (tab) {
 			case 'religious-time':
-				return <ReligiousTime currentDate={selectedDate} />
+				return <ReligiousTime currentDate={selectedDate} tabs={tabs} />
 			case 'pomodoro':
-				return <PomodoroTimer />
+				return <PomodoroTimer tabs={tabs} />
 			case 'currency-converter':
-				return <CurrencyConverter />
+				return <CurrencyConverter tabs={tabs} />
 		}
 	}
 
 	if (size.w === 2 && size.h === 1) {
 		return (
 			<>
-				<WidgetContainer>
-					<ToolsCompactRow onSelectTab={onCompactToolClick} />
+				<WidgetContainer contentClassName="px-3 py-2.5 gap-1.5">
+					<ToolsCompactRow
+						currentDate={selectedDate}
+						onSelectTab={onCompactToolClick}
+					/>
 				</WidgetContainer>
 
 				<Modal
-					isOpen={!!activeModalTool}
-					onClose={() => setActiveModalTool(null)}
-					title={activeModalTool ? TOOLS_TAB_TITLES[activeModalTool] : ''}
-					size="md"
+					isOpen={isModalOpen}
+					onClose={() => setIsModalOpen(false)}
+					title={TOOLS_TAB_TITLES[modalTool]}
+					size={modalTool === 'pomodoro' ? 'lg' : 'md'}
 				>
-					{activeModalTool && renderTool(activeModalTool)}
+					<div className="flex flex-col gap-2 h-80">
+						{renderTool(modalTool)}
+					</div>
 				</Modal>
 			</>
 		)
 	}
 
-	return (
-		<WidgetContainer>
-			<section aria-label="ابزارها" className="flex flex-col h-full">
-				<TabNavigation
-					tabMode="advanced"
-					activeTab={activeTab}
-					onTabClick={onTabClick}
-					tabs={navigationTabs}
-					size="sm"
-					className="flex-none w-full border-none"
-				/>
+	const tabs = (
+		<WidgetHeaderTabs
+			label="ابزارها"
+			tabs={TOOLS_TABS}
+			activeTab={activeTab}
+			onChange={onTabClick}
+		/>
+	)
 
-				<motion.div
-					key={activeTab}
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					className="min-h-0 grow overflow-y-auto scrollbar-none"
-				>
-					{renderTool(activeTab)}
-				</motion.div>
+	return (
+		<WidgetContainer contentClassName="p-3">
+			<section aria-label="ابزارها" className="flex flex-col flex-1 min-h-0 gap-2">
+				{renderTool(activeTab, tabs)}
 			</section>
 		</WidgetContainer>
 	)

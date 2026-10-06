@@ -3,20 +3,15 @@ import { WidgetEmpty } from '@/features/widgets/components/widget-empty'
 import { WidgetTabKeys } from '@/features/widgets/types'
 
 interface CurrencyEmptyProps {
-	compact?: boolean
 	instanceId?: string
 }
 
-export function CurrencyEmpty({ compact, instanceId }: CurrencyEmptyProps) {
+export function CurrencyEmpty({ instanceId }: CurrencyEmptyProps) {
 	return (
 		<WidgetEmpty
-			art="illustration"
-			title="هنوز ارزی اضافه نکردی"
-			description={
-				compact
-					? undefined
-					: 'برای مشاهده قیمت لحظه‌ای، ارزهای دلخواهت رو انتخاب کن'
-			}
+			art="coin"
+			title="هنوز ارزی انتخاب نکردی"
+			description="دلار، طلا یا هر ارزی که می‌خوای رو اضافه کن تا قیمتش همین‌جا باشه"
 			action={{
 				label: 'افزودن ارز',
 				onClick: () =>

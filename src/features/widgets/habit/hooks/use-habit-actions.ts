@@ -12,12 +12,12 @@ export function useHabitActions() {
 	const { isAuthenticated } = useAuth()
 	const { data, isLoading, isError, refetch, isRefetching } =
 		useGetHabits(isAuthenticated)
-	const { mutateAsync: archiveHabit, isPending: isArchiving } = useArchiveHabit()
+	const { mutateAsync: archive, isPending: isArchiving } = useArchiveHabit()
 
 	const [showForm, setShowForm] = useState(false)
 	const [editingHabit, setEditingHabit] = useState<Habit | null>(null)
 	const [detailHabitId, setDetailHabitId] = useState<string | null>(null)
-	const [archiveConfirm, setArchiveConfirm] = useState<string | null>(null)
+	const [isDetailOpen, setIsDetailOpen] = useState(false)
 
 	const requireAuth = () => {
 		if (isAuthenticated) return true
@@ -41,32 +41,31 @@ export function useHabitActions() {
 
 	const closeForm = () => {
 		setShowForm(false)
-		setEditingHabit(null)
 	}
 
 	const openHabitDetail = (habitId: string) => {
 		setDetailHabitId(habitId)
+		setIsDetailOpen(true)
 		Analytics.event('habit_open_detail_model')
 	}
 
 	const closeHabitDetail = () => {
-		setDetailHabitId(null)
+		setIsDetailOpen(false)
 		refetch()
 		Analytics.event('habit_close_detail_model')
 	}
 
-	const confirmArchive = async () => {
-		if (!archiveConfirm || isArchiving) return
+	const archiveHabit = async (habitId: string) => {
+		if (isArchiving) return
 
-		const [error] = await safeAwait(archiveHabit(archiveConfirm))
+		const [error] = await safeAwait(archive(habitId))
 		if (error) {
 			autoFormatErrorToast(error)
 			return
 		}
 
-		setArchiveConfirm(null)
-		setDetailHabitId(null)
-		showToast('عادت بایگانی شد.', 'success')
+		setIsDetailOpen(false)
+		showToast('عادت حذف شد', 'success')
 		Analytics.event('habit_archived')
 		refetch()
 	}
@@ -90,14 +89,13 @@ export function useHabitActions() {
 		showForm,
 		editingHabit,
 		detailHabitId,
-		archiveConfirm,
-		setArchiveConfirm,
+		isDetailOpen,
 		openAddHabit,
 		openEditHabit,
 		closeForm,
 		openHabitDetail,
 		closeHabitDetail,
-		confirmArchive,
+		archiveHabit,
 		onRefresh,
 	}
 }

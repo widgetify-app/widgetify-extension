@@ -17,10 +17,13 @@ import { PetWidget } from './pet/pet.widget'
 import { TransparentClockWidget } from './transparent-clock/transparent-clock.widget'
 import { MoodTrackerWidget } from './mood-tracker/mood-tracker.widget'
 import { PhotoWidget } from './photo/photo.widget'
-import { DotCalendarWidget } from './dot-calendar/dot-calendar.widget'
+import {
+	DotCalendarWidget,
+	normalizeDotCalendarMeta,
+} from './dot-calendar/dot-calendar.widget'
 import { GoogleCalendarWidget } from './google-calendar/google-calendar.widget'
 import { TodosLayout } from './todos/todos.widget'
-import { isStickyVariant, NotesLayout } from './notes/notes.widget'
+import { NotesLayout, resolveNotesVariant } from './notes/notes.widget'
 import { WidgetContainer } from './components/widget-container'
 import { WidgetTabKeys } from '@/features/widgets/types'
 import { type WidgetDefinition, WidgetKeys } from './utils/layout-engine/types'
@@ -65,6 +68,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	[WidgetKeys.pet]: {
 		id: WidgetKeys.pet,
 		label: 'پت (حیوان خانگی)',
+		menuLabel: 'حیوان خانگی',
 		emoji: '🐾',
 		icon: 'paw',
 		category: 'lifestyle',
@@ -134,9 +138,10 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		],
 		defaultSize: { w: 2, h: 3 },
 		canDuplicate: true,
-		node: (_instanceId, size) => (
+		settingsTab: WidgetTabKeys.calendar_settings,
+		node: (_instanceId, size, meta) => (
 			<DateProvider>
-				<CalendarLayout size={size} />
+				<CalendarLayout size={size} meta={meta} />
 			</DateProvider>
 		),
 	},
@@ -219,6 +224,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	[WidgetKeys.comboWidget]: {
 		id: WidgetKeys.comboWidget,
 		label: 'ویجت ترکیبی (ارز و اخبار)',
+		menuLabel: 'ارز و اخبار',
 		emoji: '🔗',
 		icon: 'link',
 		category: 'info',
@@ -243,7 +249,10 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		category: 'productivity',
 		order: 1,
 		canToggle: true,
-		allowedSizes: [{ w: 2, h: 3 }],
+		allowedSizes: [
+			{ w: 2, h: 3 },
+			{ w: 4, h: 3, isVipOnly: true },
+		],
 		defaultSize: { w: 2, h: 3 },
 		canDuplicate: false,
 		node: (_instanceId, size) => <YadkarWidget size={size} />,
@@ -299,12 +308,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		canDuplicate: true,
 		node: (instanceId, size, meta) => (
 			<CurrencyProvider>
-				<WigiArzLayout
-					inComboWidget={false}
-					size={size}
-					meta={meta}
-					instanceId={instanceId}
-				/>
+				<WigiArzLayout size={size} meta={meta} instanceId={instanceId} />
 			</CurrencyProvider>
 		),
 	},
@@ -320,7 +324,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		defaultSize: { w: 2, h: 3 },
 		settingsTab: WidgetTabKeys.news_settings,
 		canDuplicate: false,
-		node: () => <NewsLayout inComboWidget={false} />,
+		node: () => <NewsLayout />,
 	},
 	[WidgetKeys.network]: {
 		id: WidgetKeys.network,
@@ -351,6 +355,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [
 			{ w: 2, h: 1 },
 			{ w: 2, h: 3 },
+			{ w: 4, h: 3, isVipOnly: true },
 		],
 		defaultSize: { w: 2, h: 3 },
 		canDuplicate: false,
@@ -370,7 +375,9 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		defaultSize: { w: 2, h: 3 },
 		canDuplicate: true,
 		node: (_instanceId, size) => (
-			<WidgetContainer>
+			<WidgetContainer
+				contentClassName={size.h === 1 ? 'px-3 py-2.5 gap-1.5' : 'p-3 gap-2'}
+			>
 				<TodosLayout size={size} />
 			</WidgetContainer>
 		),
@@ -384,6 +391,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [
 			{ w: 2, h: 3 },
 			{ w: 2, h: 2, isVipOnly: true },
+			{ w: 4, h: 3, isVipOnly: true },
 		],
 		defaultSize: { w: 2, h: 3 },
 		variants: [
@@ -400,13 +408,24 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 				isVipOnly: true,
 				meta: { variant: 'sticky' },
 			},
+			{
+				id: 'board',
+				label: 'دفتر یادداشت',
+				size: { w: 4, h: 3 },
+				isVipOnly: true,
+				meta: { variant: 'board' },
+			},
 		],
 		canDuplicate: true,
 		node: (instanceId, size, meta) => {
-			const isSticky = isStickyVariant(size, meta)
+			const isSticky = resolveNotesVariant(size, meta) === 'sticky'
 
 			return (
-				<WidgetContainer padding={!isSticky} background={!isSticky}>
+				<WidgetContainer
+					padding={!isSticky}
+					background={!isSticky}
+					contentClassName={isSticky ? undefined : 'p-3 gap-2'}
+				>
 					<NotesLayout size={size} meta={meta} instanceId={instanceId} />
 				</WidgetContainer>
 			)
@@ -446,6 +465,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	[WidgetKeys.moodTracker]: {
 		id: WidgetKeys.moodTracker,
 		label: 'حال روزانه (Mood)',
+		menuLabel: 'حال روزانه',
 		emoji: '🥰',
 		icon: 'mood',
 		category: 'lifestyle',
@@ -480,10 +500,14 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	[WidgetKeys.dotCalendar]: {
 		id: WidgetKeys.dotCalendar,
 		label: 'تقویم نقطه‌ای',
+		menuLabel: 'روزشمار',
 		emoji: '⏳',
 		icon: 'calendarRange',
 		category: 'time',
-		allowedSizes: [{ w: 2, h: 2 }],
+		allowedSizes: [
+			{ w: 2, h: 1 },
+			{ w: 2, h: 2 },
+		],
 		defaultSize: { w: 2, h: 2 },
 		variants: [
 			{
@@ -493,15 +517,29 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 				meta: { variant: 'year' },
 			},
 			{
+				id: 'year-count',
+				label: 'روزهای سال (عددی)',
+				size: { w: 2, h: 1 },
+				meta: { variant: 'year' },
+			},
+			{
 				id: 'goal',
 				label: 'روزشمار هدف',
 				size: { w: 2, h: 2 },
 				meta: { variant: 'goal' },
 				isVipOnly: true,
 			},
+			{
+				id: 'goal-count',
+				label: 'روزشمار هدف (عددی)',
+				size: { w: 2, h: 1 },
+				meta: { variant: 'goal' },
+				isVipOnly: true,
+			},
 		],
 		canResize: true,
 		settingsTab: WidgetTabKeys.dot_calendar_settings,
+		hasSettings: (meta) => normalizeDotCalendarMeta(meta).variant === 'goal',
 		canDuplicate: true,
 		node: (instanceId, size, meta) => (
 			<DotCalendarWidget instanceId={instanceId} size={size} meta={meta} />

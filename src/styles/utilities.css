@@ -64,3 +64,76 @@
 	filter: blur(0px);
 	transition: filter 300ms ease-in-out;
 }
+
+@utility widget-control {
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity var(--duration-fast) var(--ease-standard) 200ms;
+
+	[data-widget]:hover &,
+	[data-widget][data-keyboard-focus] &,
+	[data-widget][data-menu-open] & {
+		opacity: 1;
+		pointer-events: auto;
+		transition-delay: 0ms;
+	}
+
+	[data-widget][data-editing] & {
+		visibility: hidden;
+	}
+
+	@media (hover: none) {
+		opacity: 0.6;
+		pointer-events: auto;
+	}
+}
+
+@utility widget-info {
+	transition: opacity var(--duration-fast) var(--ease-standard) 200ms;
+
+	[data-widget]:hover &,
+	[data-widget][data-keyboard-focus] &,
+	[data-widget][data-menu-open] & {
+		opacity: 0;
+		pointer-events: none;
+		transition-delay: 0ms;
+	}
+
+	@media (hover: none) {
+		opacity: 0;
+		pointer-events: none;
+	}
+}
+
+@utility widget-control-fade {
+	--fade-under-control: linear-gradient(to top, transparent 1.75rem, black 2.5rem);
+	-webkit-mask-image: var(--fade-under-control);
+	mask-image: var(--fade-under-control);
+	-webkit-mask-repeat: no-repeat;
+	mask-repeat: no-repeat;
+	-webkit-mask-size: 100% calc(100% + 2.5rem);
+	mask-size: 100% calc(100% + 2.5rem);
+	-webkit-mask-position: 0 0;
+	mask-position: 0 0;
+	transition:
+		-webkit-mask-position var(--duration-fast) var(--ease-standard) 200ms,
+		mask-position var(--duration-fast) var(--ease-standard) 200ms;
+
+	[data-widget]:hover &,
+	[data-widget][data-keyboard-focus] &,
+	[data-widget][data-menu-open] & {
+		-webkit-mask-position: 0 100%;
+		mask-position: 0 100%;
+		transition-delay: 0ms;
+	}
+
+	[data-widget][data-editing] & {
+		-webkit-mask-position: 0 0;
+		mask-position: 0 0;
+	}
+
+	@media (hover: none) {
+		-webkit-mask-position: 0 100%;
+		mask-position: 0 100%;
+	}
+}

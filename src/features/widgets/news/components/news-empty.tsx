@@ -6,8 +6,8 @@ export function NewsEmpty() {
 	return (
 		<WidgetEmpty
 			art="outlineNewspaper"
-			title="هیچ منبع خبری فعالی نداری"
-			description="منابع پیش‌فرض رو روشن کن یا یک فید دلخواه اضافه کن"
+			title="هیچ منبع خبری‌ای روشن نیست"
+			description="اخبار پیش‌فرض یا یه منبع دیگه رو روشن کن"
 			action={{
 				label: 'تنظیمات اخبار',
 				onClick: () =>

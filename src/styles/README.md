@@ -88,7 +88,7 @@ anything else in it.
 | `animations.css` | every `@keyframes`. One that a class uses sits in `@theme` with its `--animate-*`, so it ships only while something uses it. |
 | `themes/<name>.css` | one theme: its daisyUI block and one block of variables. No selectors. |
 | `base.css` | element defaults, all inside `@layer base` so a utility always wins over them. |
-| `utilities.css` | `@utility` only: `transition-ui`, `focus-ring`, the `z-*` layers, the glass family, `scrollbar-none` and the blur-mode pair. |
+| `utilities.css` | `@utility` only: `transition-ui`, `focus-ring`, the `z-*` layers, the glass family, `scrollbar-none`, the blur-mode pair, `widget-control` / `widget-info`, which show and hide a widget's controls on hover, and `widget-control-fade`, which fades the content under a control laid over it (see `src/features/widgets/README.md`). |
 | `legacy.css` | Chrome 109 fallbacks for what daisyUI writes. |
 
 A class is only ever an `@utility`. A plain `.class {}` rule sits outside

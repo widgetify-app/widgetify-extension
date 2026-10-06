@@ -2,14 +2,14 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
-import { TextInput, Tooltip } from '@/components/ui'
+import { TextInput } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { Icon } from '@/icons'
 import { useGetUserInventory } from '@/services/market/get-user-inventory.hook'
 import { MarketItemType } from '@/services/market/market.interface'
 import { useFreeWidgets } from '@/features/widgets/widgets.context'
-import { PetOptionGrid } from './components/pet-option-grid'
 import { PetOptionTile } from './components/pet-option-tile'
+import { PetPreview } from './components/pet-preview'
 import {
 	BASE_PET_OPTIONS,
 	DEFAULT_PET_BACKGROUND,
@@ -17,7 +17,6 @@ import {
 	PET_BACKGROUNDS,
 	PET_ICON,
 	PET_NAME_SAVE_DEBOUNCE_MS,
-	PET_PREVIEW,
 	PET_SPECIES_LABEL,
 } from './constants'
 import { type PetBackground, type PetBackgroundId, type PetMeta, PetTypes } from './types'
@@ -32,6 +31,8 @@ const FREE_PETS = new Set<PetTypes>([
 	PetTypes.FROG,
 ])
 const FREE_BACKGROUNDS = new Set<string>(['none', 'forest', 'autumn', 'beach'])
+
+const PET_NAME_MAX_LENGTH = 20
 
 const TIPS = [
 	'واسه غذا دادن، هر جای محیطش کلیک کن',
@@ -274,161 +275,147 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 			: targetMeta?.backgroundMeta
 	)
 
-	return (
-		<div className="flex flex-col gap-4">
-			<section className="flex items-center gap-3 p-3 border rounded-2xl border-surface-3 bg-surface-2">
-				<div
-					className="flex items-end justify-center overflow-hidden border w-16 h-16 shrink-0 rounded-2xl border-surface-3"
-					style={{
-						backgroundImage: scene.image ? `url(${scene.image})` : undefined,
-						backgroundSize: 'cover',
-						backgroundPosition: 'bottom center',
-					}}
-				>
-					<img
-						key={petType}
-						src={PET_PREVIEW[petType]}
-						alt=""
-						className="object-contain w-11 h-11 drop-shadow-sm"
-					/>
-				</div>
+	const openPetMarket = () => {
+		Analytics.event('pet_market_opened')
+		callEvent('openMarketModal', { filter: MarketItemType.PET })
+	}
 
-				<div className="flex items-center justify-between min-w-0 flex-1">
-					<div className="flex items-center gap-2 min-w-0">
-						<h3 className="text-base font-semibold truncate text-fg">
-							{displayName}
-						</h3>
-						<span className="px-2 py-0.5 text-3xs leading-relaxed border rounded-full text-fg border-surface-3 bg-surface-2">
-							{PET_SPECIES_LABEL[petType]}
+	const openBackgroundMarket = () => {
+		Analytics.event('pet_background_market_opened')
+		callEvent('openMarketModal', { filter: MarketItemType.PET })
+	}
+
+	return (
+		<div className="flex flex-col gap-4 md:flex-row md:items-start">
+			<div className="flex flex-col gap-2.5 md:flex-none md:w-52">
+				<PetPreview scene={scene} petType={petType} name={displayName} />
+
+				<div className="flex flex-col gap-1.5">
+					<label
+						htmlFor="pet-name"
+						className="text-xs font-bold text-fg-strong"
+					>
+						اسم حیوونت
+					</label>
+					<div className="relative">
+						<TextInput
+							id="pet-name"
+							size="sm"
+							maxLength={PET_NAME_MAX_LENGTH}
+							value={petName}
+							onChange={onChangePetName}
+							placeholder="یه اسم براش بذار…"
+							className="pe-14"
+						/>
+						<span
+							aria-hidden="true"
+							className="absolute inset-y-0 flex items-center font-bold pointer-events-none end-3 text-3xs text-fg-faint tabular-nums"
+						>
+							{petName.length.toLocaleString('fa-IR')} /{' '}
+							{PET_NAME_MAX_LENGTH.toLocaleString('fa-IR')}
 						</span>
 					</div>
+				</div>
 
-					<Tooltip
-						content={
-							<ul
-								className="flex flex-col gap-1.5 p-1 text-right"
-								dir="rtl"
-							>
-								{TIPS.map((tip) => (
-									<li key={tip} className="flex items-center gap-2">
-										<span className="w-1.5 h-1.5 rounded-full shrink-0 bg-brand" />
-										<span className="text-xs leading-relaxed text-fg">
-											{tip}
-										</span>
-									</li>
-								))}
-							</ul>
-						}
-					>
+				<ul className="flex flex-col gap-1 text-2xs text-fg-muted">
+					{TIPS.map((tip) => (
+						<li key={tip} className="flex items-center gap-2">
+							<span
+								aria-hidden="true"
+								className="flex-none rounded-full size-1.25 bg-brand"
+							/>
+							{tip}
+						</li>
+					))}
+				</ul>
+			</div>
+
+			<div className="flex flex-col flex-1 min-w-0 gap-3.5">
+				<section className="flex flex-col gap-2">
+					<div className="flex items-center justify-between">
+						<h4
+							id="pet-type-label"
+							className="text-xs font-bold text-fg-strong"
+						>
+							حیوان خانگی
+						</h4>
 						<button
 							type="button"
-							aria-label="راهنمای تعامل با حیوان خانگی"
-							className="flex items-center justify-center rounded-full w-7 h-7 text-fg-muted opacity-70 transition-ui hover:opacity-100 hover:bg-fill-2 focus-visible:focus-ring"
+							onClick={openPetMarket}
+							className="flex items-center gap-1 font-bold rounded-sm cursor-pointer text-2xs text-brand transition-ui hover:opacity-80 focus-visible:focus-ring"
 						>
-							<Icon name="info" className="w-4 h-4" aria-hidden="true" />
+							<Icon name="shoppingBag" size={12} aria-hidden="true" />
+							فروشگاه
 						</button>
-					</Tooltip>
-				</div>
-			</section>
-
-			<section className="flex flex-col gap-2">
-				<div className="flex items-center justify-between">
-					<h4 id="pet-type-label" className="text-sm font-medium text-fg">
-						حیوان خانگی
-					</h4>
-					<button
-						type="button"
-						onClick={() => {
-							Analytics.event('pet_market_opened')
-							callEvent('openMarketModal', { filter: MarketItemType.PET })
-						}}
-						className="flex items-center gap-1 text-3xs text-fg-muted hover:text-brand transition-ui cursor-pointer"
+					</div>
+					<fieldset
+						aria-labelledby="pet-type-label"
+						className="grid grid-cols-4 gap-1.5"
 					>
-						<Icon name="shoppingBag" size={12} />
-						<span>فروشگاه</span>
-					</button>
-				</div>
-				<PetOptionGrid
-					labelledBy="pet-type-label"
-					className="grid-cols-5 max-h-49"
-				>
-					{allPets.map((type) => (
-						<PetOptionTile
-							key={type}
-							label={PET_SPECIES_LABEL[type]}
-							selected={petType === type}
-							locked={isPetLocked(type)}
-							onSelect={() => onChangePetType(type)}
-						>
-							<img
-								src={PET_ICON[type]}
-								alt=""
-								className="object-contain w-9 h-9 mt-2"
-							/>
-						</PetOptionTile>
-					))}
-				</PetOptionGrid>
-			</section>
+						{allPets.map((type) => (
+							<PetOptionTile
+								key={type}
+								label={PET_SPECIES_LABEL[type]}
+								selected={petType === type}
+								locked={isPetLocked(type)}
+								onSelect={() => onChangePetType(type)}
+							>
+								<span className="flex items-end justify-center h-9">
+									<img
+										src={PET_ICON[type]}
+										alt=""
+										className="object-contain max-h-9 max-w-12"
+									/>
+								</span>
+							</PetOptionTile>
+						))}
+					</fieldset>
+				</section>
 
-			<section className="flex flex-col gap-2">
-				<div className="flex items-center justify-between">
-					<h4 id="pet-background-label" className="text-sm font-medium text-fg">
+				<section className="flex flex-col gap-2">
+					<h4
+						id="pet-background-label"
+						className="text-xs font-bold text-fg-strong"
+					>
 						محیط
 					</h4>
-					<button
-						type="button"
-						onClick={() => {
-							Analytics.event('pet_background_market_opened')
-							callEvent('openMarketModal', { filter: MarketItemType.PET })
-						}}
-						className="flex items-center gap-1 text-3xs text-fg-muted hover:text-brand transition-ui cursor-pointer"
+					<fieldset
+						aria-labelledby="pet-background-label"
+						className="grid grid-cols-3 gap-1.5"
 					>
-						<Icon name="shoppingBag" size={12} />
-						<span>فروشگاه</span>
-					</button>
-				</div>
-				<PetOptionGrid
-					labelledBy="pet-background-label"
-					className="grid-cols-4 max-h-52"
-				>
-					{allBackgrounds.map((item) => (
+						{allBackgrounds.map((item) => (
+							<PetOptionTile
+								key={item.id}
+								label={item.label}
+								selected={background === item.id}
+								locked={isBackgroundLocked(item.id)}
+								onSelect={() => onChangeBackground(item.id)}
+							>
+								<span
+									className="w-full rounded-lg h-11 bg-fill-2"
+									style={
+										item.image
+											? {
+													backgroundImage: `url(${item.image})`,
+													backgroundSize: 'cover',
+													backgroundPosition: 'bottom center',
+												}
+											: undefined
+									}
+								/>
+							</PetOptionTile>
+						))}
 						<PetOptionTile
-							key={item.id}
-							label={item.label}
-							selected={background === item.id}
-							locked={isBackgroundLocked(item.id)}
-							onSelect={() => onChangeBackground(item.id)}
+							label="محیط‌های بیشتر"
+							onSelect={openBackgroundMarket}
 						>
-							<div
-								className="flex items-center justify-center w-full h-12 bg-fill-2"
-								style={
-									item.image
-										? {
-												backgroundImage: `url(${item.image})`,
-												backgroundSize: 'cover',
-												backgroundPosition: 'bottom center',
-											}
-										: undefined
-								}
-							></div>
+							<span className="grid w-full rounded-lg h-11 place-items-center bg-fill-2 text-fg-faint">
+								<Icon name="plus" size={16} aria-hidden="true" />
+							</span>
 						</PetOptionTile>
-					))}
-				</PetOptionGrid>
-			</section>
-
-			<section className="flex flex-col gap-2">
-				<label htmlFor="pet-name" className="text-sm font-medium text-fg">
-					نام حیوان خانگی
-				</label>
-				<TextInput
-					id="pet-name"
-					size="sm"
-					maxLength={20}
-					value={petName}
-					onChange={onChangePetName}
-					placeholder="اسم دلخواه..."
-				/>
-			</section>
+					</fieldset>
+				</section>
+			</div>
 		</div>
 	)
 }

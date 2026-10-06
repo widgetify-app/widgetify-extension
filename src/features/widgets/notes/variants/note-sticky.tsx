@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Button, ConfirmationModal, Spinner, TextInput, Tooltip } from '@/components/ui'
+import { ConfirmationModal, PopoverMenuItem } from '@/components/ui'
 import { useNotes } from '@/features/widgets/notes/notes.context'
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
@@ -8,10 +8,17 @@ import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
-import { PRIORITY_OPTIONS, STICKY_COLOR_MAP } from '../constants'
+import { STICKY_COLOR_MAP } from '../constants'
+import { NoteColorPicker } from '../components/note-color-picker'
+import { NoteFields } from '../components/note-fields'
 import type { NotePriority, NotesMeta } from '../types'
 import moment from 'jalali-moment'
 import { WidgetError } from '@/features/widgets/components/widget-error'
+import {
+	WidgetHeader,
+	WidgetHeaderButton,
+} from '@/features/widgets/components/widget-header'
+import { useWidgetMenuActions } from '@/features/widgets/widget-menu.context'
 
 interface NoteStickyProps {
 	meta?: NotesMeta
@@ -104,9 +111,8 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 		}
 	}
 
-	const handlePriorityChange = (priorityKey?: NotePriority) => {
+	const handlePriorityChange = (nextPriority?: NotePriority) => {
 		if (!currentNote) return
-		const nextPriority = localPriority === priorityKey ? undefined : priorityKey
 		setLocalPriority(nextPriority)
 		updateNote(currentNote.id, {
 			title: localTitle,
@@ -182,252 +188,187 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 		}
 	}
 
-	const currentPriorityKey = localPriority || 'default'
-	const colorTheme = STICKY_COLOR_MAP[currentPriorityKey] || STICKY_COLOR_MAP.default
+	useWidgetMenuActions(
+		<PopoverMenuItem
+			icon={<Icon name="refresh" size={14} />}
+			label="به‌روز کن"
+			onClick={() => {
+				refetch()
+				Analytics.event('note_refetch')
+			}}
+		/>
+	)
+
+	const colorTheme =
+		STICKY_COLOR_MAP[localPriority || 'default'] || STICKY_COLOR_MAP.default
+	const tone = colorTheme.onColor ? 'onColor' : 'default'
+
+	const frameClass = cn(
+		'relative flex flex-col w-full h-full gap-2 p-3 overflow-hidden select-none rounded-widget transition-ui',
+		colorTheme.bg,
+		colorTheme.text
+	)
 
 	if (isLoading && !notes.length) {
 		return (
-			<div
-				aria-hidden="true"
-				className={cn(
-					'flex flex-col h-full w-full gap-2 p-3 rounded-2xl',
-					colorTheme.bg
-				)}
-			>
-				<div className="w-1/2 h-3 rounded-sm skeleton" />
-				<div className="flex-1 rounded-xl skeleton" />
-				<div className="w-1/3 h-3 rounded-sm skeleton" />
+			<div aria-hidden="true" className={frameClass}>
+				<div className="flex items-center flex-none h-7">
+					<div className="w-16 h-3 rounded-sm skeleton" />
+				</div>
+				<div className="flex flex-col flex-1 min-h-0 gap-1.5 px-2">
+					<div className="w-1/2 h-4 rounded-sm skeleton" />
+					<div className="flex-1 rounded-xl skeleton" />
+				</div>
 			</div>
 		)
 	}
 
 	if (isError && !notes.length) {
 		return (
-			<div className={cn('h-full w-full rounded-2xl', colorTheme.bg)}>
-				<WidgetError message="یادداشت‌ها دریافت نشدند" onRetry={refetch} />
+			<div className={frameClass}>
+				<WidgetError message="نتونستیم یادداشت‌ها رو بیاریم" onRetry={refetch} />
 			</div>
 		)
 	}
 
-	return (
-		<div
-			className={cn(
-				'h-full w-full flex flex-col justify-between p-3 rounded-2xl transition-ui select-none overflow-hidden relative',
-				colorTheme.bg,
-				colorTheme.text
-			)}
-		>
-			<div
-				className={cn(
-					'flex items-center justify-between gap-2 pb-1.5 border-b',
-					colorTheme.divider
-				)}
-			>
-				<div className="flex items-center gap-1.5 flex-1 min-w-0">
-					{currentNote ? (
-						<TextInput
-							value={localTitle}
-							onChange={handleTitleChange}
-							debounce
-							debounceTime={600}
-							placeholder="عنوان یادداشت..."
-							direction="rtl"
-							className={cn(
-								'bg-transparent border-none text-xs font-bold outline-none w-full truncate placeholder:opacity-60 h-auto p-0 shadow-none focus:ring-0',
-								colorTheme.text
-							)}
-						/>
-					) : (
-						<span className="text-xs font-bold opacity-75">
-							استیک نوت جدید
-						</span>
-					)}
-				</div>
+	const noteDate = currentNote
+		? moment(currentNote.updatedAt || currentNote.createdAt).locale('fa')
+		: null
 
-				<div className="flex items-center gap-1 shrink-0">
-					{notes.length > 1 && (
-						<div
+	return (
+		<div className={frameClass}>
+			<WidgetHeader
+				tone={tone}
+				title="یادداشت"
+				badge={
+					isSaving && (
+						<span
 							className={cn(
-								'flex items-center gap-0.5 rounded-lg h-5 px-1 py-0.5 text-3xs'
+								'font-medium text-3xs',
+								tone === 'onColor' ? 'opacity-60' : 'text-fg-faint'
 							)}
 						>
-							<Tooltip content="یادداشت قبلی">
-								<Button
-									size="xs"
-									variant="ghost"
-									rounded="lg"
-									onClick={handlePrevNote}
-									className="w-4 h-4 p-0 border-none shadow-none hover:opacity-100 opacity-70 text-inherit"
-									aria-label="یادداشت قبلی"
-								>
-									<Icon
-										name="chevronRight"
-										size={12}
-										aria-hidden="true"
-									/>
-								</Button>
-							</Tooltip>
-							<Tooltip content="یادداشت بعدی">
-								<Button
-									size="xs"
-									variant="ghost"
-									rounded="lg"
-									onClick={handleNextNote}
-									className="w-4 h-4 p-0 border-none shadow-none hover:opacity-100 opacity-70 text-inherit"
-									aria-label="یادداشت بعدی"
-								>
-									<Icon
-										name="chevronLeft"
-										size={12}
-										aria-hidden="true"
-									/>
-								</Button>
-							</Tooltip>
-						</div>
-					)}
-
-					<Tooltip content="یادداشت جدید">
-						<Button
-							size="xs"
-							variant="ghost"
-							rounded="lg"
+							در حال ذخیره…
+						</span>
+					)
+				}
+				info={noteDate?.format('jD jMMM')}
+				actions={
+					<>
+						{currentNote && (
+							<WidgetHeaderButton
+								tone={tone}
+								label="حذف این یادداشت"
+								icon="trash"
+								onClick={() => setShowDeleteConfirm(true)}
+							/>
+						)}
+						<WidgetHeaderButton
+							tone={tone}
+							label="یادداشت جدید"
+							icon="plus"
 							onClick={handleCreateNote}
 							disabled={isCreatingNote}
-							className={cn(
-								'h-6 w-6 p-0 transition-ui hover:scale-105 border-none shadow-none text-inherit',
-								colorTheme.headerBg
-							)}
-						>
-							<Icon name="plus" size={12} aria-hidden="true" />
-						</Button>
-					</Tooltip>
+						/>
+					</>
+				}
+			/>
 
-					{currentNote && (
-						<Tooltip content="حذف">
-							<Button
-								size="xs"
-								variant="ghost"
-								rounded="lg"
-								onClick={() => setShowDeleteConfirm(true)}
-								className={cn(
-									'h-6 w-6 p-0 transition-ui hover:scale-105 hover:bg-danger-fill-2 hover:text-on-danger border-none shadow-none text-inherit',
-									colorTheme.headerBg
-								)}
-							>
-								<Icon name="trash" size={12} aria-hidden="true" />
-							</Button>
-						</Tooltip>
-					)}
-				</div>
-			</div>
-
-			<div className="flex-1 min-h-0 py-2">
+			<div
+				className={cn(
+					'flex flex-col flex-1 min-h-0',
+					currentNote && 'widget-control-fade'
+				)}
+			>
 				{currentNote ? (
-					<textarea
-						value={localBody}
-						onChange={(e) => handleBodyChange(e.target.value)}
-						placeholder="اینجا بنویس..."
-						className={cn(
-							'w-full h-full text-xs leading-relaxed resize-none outline-none bg-transparent font-normal scrollbar-none placeholder:opacity-60',
-							blurMode ? 'blur-mode' : 'disabled-blur-mode',
-							colorTheme.text
-						)}
-						dir="rtl"
+					<NoteFields
+						title={localTitle}
+						body={localBody}
+						onTitleChange={handleTitleChange}
+						onBodyChange={handleBodyChange}
+						tone={tone}
+						titleDebounceMs={600}
+						className={blurMode ? 'blur-mode' : 'disabled-blur-mode'}
+						bodyClassName="pb-10 scroll-pb-10"
 					/>
 				) : (
 					<button
 						type="button"
 						onClick={handleCreateNote}
-						className={cn(
-							'w-full h-full flex flex-col items-center justify-center text-center cursor-pointer transition-colors p-4 rounded-xl border border-dashed hover:opacity-100 opacity-80 focus-visible:focus-ring',
-							colorTheme.border,
-							colorTheme.headerBg
-						)}
+						className="flex flex-col items-center justify-center w-full h-full gap-1.5 text-center rounded-xl cursor-pointer transition-ui hover:bg-fill focus-visible:focus-ring"
 					>
 						<Icon
 							name="pen"
-							size={16}
+							size={20}
 							aria-hidden="true"
-							className="mb-1 opacity-60"
+							className="opacity-60"
 						/>
-						<span className="text-xs font-bold">ایجاد اولین یادداشت</span>
-						<span className="text-3xs opacity-70 mt-0.5">
-							برای شروع اینجا کلیک کن
+						<span className="text-xs font-bold">اولین یادداشتت رو بنویس</span>
+						<span className="opacity-60 text-3xs">
+							همین‌جا کلیک کن و شروع کن
 						</span>
 					</button>
 				)}
 			</div>
 
-			<footer
-				className={cn(
-					'flex items-center justify-between pt-1.5 border-t text-3xs',
-					colorTheme.divider
-				)}
-			>
-				<div className="flex items-center gap-1.5">
-					<Tooltip content="رنگ پیش‌فرض">
-						<button
-							type="button"
-							onClick={() => handlePriorityChange(undefined)}
-							aria-label="رنگ پیش‌فرض"
-							aria-pressed={!localPriority}
-							className={cn(
-								'w-3.5 h-3.5 rounded-full transition-transform cursor-pointer bg-fill-2 border border-line focus-visible:focus-ring',
-								!localPriority
-									? 'ring-2 ring-brand ring-offset-1 scale-110'
-									: 'opacity-60 hover:opacity-100'
-							)}
-						/>
-					</Tooltip>
-					{PRIORITY_OPTIONS.map((opt) => {
-						const isSelected = localPriority === opt.value
-						return (
-							<Tooltip key={opt.value} content={opt.ariaLabel}>
-								<button
-									type="button"
-									onClick={() => handlePriorityChange(opt.value)}
-									aria-label={opt.ariaLabel}
-									aria-pressed={isSelected}
-									className={cn(
-										'w-3.5 h-3.5 rounded-full transition-transform cursor-pointer focus-visible:focus-ring',
-										opt.bgColor,
-										isSelected
-											? 'ring-2 ring-brand ring-offset-1 scale-110'
-											: 'opacity-60 hover:opacity-100'
-									)}
-								/>
-							</Tooltip>
-						)
-					})}
-				</div>
-
-				<div className="flex items-center gap-1.5">
-					{isSaving ? (
-						<div className="flex items-center gap-1 text-brand">
-							<Spinner size="sm" aria-hidden="true" />
-							<span className="text-4xs">درحال ذخیره</span>
-						</div>
-					) : currentNote ? (
-						<time
-							dateTime={moment(
-								currentNote.updatedAt || currentNote.createdAt
-							).format('YYYY-MM-DD')}
-							className="opacity-80"
+			{currentNote && (
+				<footer className="absolute flex items-center justify-between gap-2 px-2 inset-x-3 bottom-3 h-5.5 widget-control">
+					<NoteColorPicker
+						tone={tone}
+						value={localPriority}
+						onChange={handlePriorityChange}
+					/>
+					{notes.length > 1 && (
+						<nav
+							aria-label="یادداشت‌های دیگه"
+							className="flex items-center gap-1 font-semibold text-3xs"
 						>
-							{moment(currentNote.updatedAt || currentNote.createdAt)
-								.locale('fa')
-								.format('jD jMMM')}
-						</time>
-					) : null}
-				</div>
-			</footer>
+							<StickyPagerButton
+								label="یادداشت قبلی"
+								icon="chevronRight"
+								onClick={handlePrevNote}
+							/>
+							<span className="opacity-70 tabular-nums">
+								{currentIndex + 1} از {notes.length}
+							</span>
+							<StickyPagerButton
+								label="یادداشت بعدی"
+								icon="chevronLeft"
+								onClick={handleNextNote}
+							/>
+						</nav>
+					)}
+				</footer>
+			)}
 
 			<ConfirmationModal
 				isOpen={showDeleteConfirm}
 				onClose={() => setShowDeleteConfirm(false)}
 				onConfirm={handleDelete}
-				message="از حذف این یادداشت مطمعنی؟"
+				title="این یادداشت حذف بشه؟"
+				message="دیگه نمی‌تونی برش گردونی."
+				confirmText="حذف"
+				cancelText="نه"
 			/>
 		</div>
+	)
+}
+
+interface StickyPagerButtonProps {
+	label: string
+	icon: 'chevronRight' | 'chevronLeft'
+	onClick: (e: React.MouseEvent) => void
+}
+
+function StickyPagerButton({ label, icon, onClick }: StickyPagerButtonProps) {
+	return (
+		<button
+			type="button"
+			onClick={onClick}
+			aria-label={label}
+			className="grid rounded-lg cursor-pointer place-items-center size-5.5 opacity-70 transition-ui hover:opacity-100 hover:bg-fill-2 focus-visible:focus-ring"
+		>
+			<Icon name={icon} size={14} aria-hidden="true" />
+		</button>
 	)
 }

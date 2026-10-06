@@ -3,11 +3,15 @@ import Analytics from '@/analytics'
 import { getFaviconFromUrl } from '@/features/widgets/utils/icon'
 import { NewBadge, Tooltip } from '@/components/ui'
 import { Page, usePage } from '@/context/page.context'
+import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
 import { useGetSearchboxData } from '@/services/trends/get-trends.hook'
 import { BookmarkPopover } from './bookmark-popover'
 
 const POPOVER_WIDTH = 288
+
+const SEARCH_CHIP_CLASS =
+	'inline-flex items-center gap-1.25 h-6.5 px-2.5 rounded-lg text-2xs font-semibold whitespace-nowrap shrink-0 cursor-pointer transition-ui focus-visible:focus-ring'
 
 export function BrowserBookmark() {
 	const { data: searchboxData } = useGetSearchboxData({ enabled: true })
@@ -55,81 +59,66 @@ export function BrowserBookmark() {
 	}
 
 	return (
-		<div className="relative flex flex-row items-center justify-start w-full gap-2 px-2 py-0.5">
-			<div className="flex flex-row items-center w-full gap-1 py-0.5 overflow-x-auto scrollbar-none scroll-smooth">
-				<div className="flex items-center shrink-0">
-					<button
-						type="button"
-						className="flex items-center p-0 bg-transparent border-none cursor-pointer group"
-						onClick={onClickToExplorer}
-					>
-						<div className="relative flex items-center justify-center w-fit px-1.5 gap-1 h-6 p-0.5 rounded-xl bg-surface-3 group-hover:scale-95 transition-transform">
-							<Icon
-								name="explorerOutline"
-								size={14}
-								className="text-fg-muted"
-								aria-hidden="true"
-							/>
-							<p className="font-medium text-fg-muted">کاوش</p>
-							{searchboxData?.explorer?.newBadge && (
-								<NewBadge className="top-0 left-0" />
-							)}
-						</div>
-					</button>
-				</div>
+		<div className="relative flex items-center w-full gap-1.5 overflow-x-auto h-6.5 shrink-0 scrollbar-none">
+			<button
+				type="button"
+				onClick={onClickToExplorer}
+				className={cn(
+					SEARCH_CHIP_CLASS,
+					'relative bg-fill text-fg-muted hover:bg-fill-2'
+				)}
+			>
+				<Icon name="explorerOutline" size={14} aria-hidden="true" />
+				کاوش
+				{searchboxData?.explorer?.newBadge && (
+					<NewBadge className="top-0 left-0" />
+				)}
+			</button>
 
-				<div ref={iconRef} className="flex items-center justify-center shrink-0">
-					<button
-						type="button"
-						className="flex items-center p-0 bg-transparent border-none cursor-pointer group"
-						onClick={handleTogglePopover}
-						aria-expanded={isOpen}
-					>
-						<div
-							className={`relative flex items-center justify-center w-fit px-1.5 gap-1 h-6 p-0.5 rounded-xl group-hover:scale-95 transition-transform ${
-								isOpen
-									? 'bg-brand text-on-brand shadow-lg'
-									: 'bg-surface-3 text-fg-muted'
-							}`}
-						>
-							<Icon name="folderSpecial" size={14} aria-hidden="true" />
-							<p className="font-medium">بوکمارک مرورگر</p>
-						</div>
-					</button>
-				</div>
-
-				<div
-					aria-hidden="true"
-					className="self-center w-px h-4 mx-1 bg-fill-2 shrink-0"
-				/>
-
-				<div className="flex flex-row items-center gap-1 flex-nowrap">
-					{searchboxData?.recommendedSites?.map((item) => (
-						<div
-							key={item.url}
-							className="flex items-center justify-center shrink-0"
-						>
-							<Tooltip content={item.name || item.title || ''}>
-								<a
-									href={item.url || '#'}
-									target="_blank"
-									rel="noreferrer"
-									className="flex items-center cursor-pointer group"
-								>
-									<img
-										src={
-											item.icon || getFaviconFromUrl(item.url || '')
-										}
-										className="object-cover w-6 h-6 p-1 transition-transform rounded-full group-hover:scale-95 bg-surface-3"
-										alt={item.name || item.title || ''}
-										loading="lazy"
-									/>
-								</a>
-							</Tooltip>
-						</div>
-					))}
-				</div>
+			<div ref={iconRef} className="shrink-0">
+				<button
+					type="button"
+					onClick={handleTogglePopover}
+					aria-expanded={isOpen}
+					className={cn(
+						SEARCH_CHIP_CLASS,
+						isOpen
+							? 'bg-brand-fill text-brand'
+							: 'bg-fill text-fg-muted hover:bg-fill-2'
+					)}
+				>
+					<Icon name="folderSpecial" size={14} aria-hidden="true" />
+					بوکمارک‌های مرورگر
+					<Icon name="chevronDown" size={12} aria-hidden="true" />
+				</button>
 			</div>
+
+			{!!searchboxData?.recommendedSites?.length && (
+				<span aria-hidden="true" className="w-px h-3.5 mx-0.5 bg-line shrink-0" />
+			)}
+
+			<ul className="flex items-center gap-1.5 shrink-0">
+				{searchboxData?.recommendedSites?.map((item) => (
+					<li key={item.url}>
+						<Tooltip content={item.name || item.title || ''}>
+							<a
+								href={item.url || '#'}
+								target="_blank"
+								rel="noreferrer"
+								aria-label={item.name || item.title || item.url || ''}
+								className="grid overflow-hidden rounded-lg size-6 place-items-center bg-fill transition-ui hover:bg-fill-2 focus-visible:focus-ring"
+							>
+								<img
+									src={item.icon || getFaviconFromUrl(item.url || '')}
+									className="object-cover size-4"
+									alt=""
+									loading="lazy"
+								/>
+							</a>
+						</Tooltip>
+					</li>
+				))}
+			</ul>
 
 			<BookmarkPopover
 				isOpen={isOpen}

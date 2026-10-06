@@ -44,7 +44,7 @@ describe('resolveHabitStep', () => {
 	it('stops an at-most goal at the target and says why', () => {
 		const step = resolveHabitStep(habit({ comparison: HabitComparison.AT_MOST }), 8)
 		expect(step.amount).toBe(0)
-		expect(step.blockedMessage).toBe('مقدار فعلی به حداکثر هدف (10) رسیده است.')
+		expect(step.blockedMessage).toBe('به سقف هدفت (10) رسیدی')
 	})
 
 	it('stops an exact goal at the target without a message', () => {
@@ -77,7 +77,7 @@ describe('resolveHabitStep', () => {
 			1
 		)
 		expect(step.amount).toBe(0)
-		expect(step.blockedMessage).toBe('مقدار فعلی به حداکثر هدف (1) رسیده است.')
+		expect(step.blockedMessage).toBe('به سقف هدفت (1) رسیدی')
 	})
 
 	it('treats a missing target as one', () => {

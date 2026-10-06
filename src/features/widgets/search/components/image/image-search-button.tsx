@@ -8,15 +8,15 @@ export function ImageSearchButton({ onClick }: { onClick: () => void }) {
 	}
 
 	return (
-		<Tooltip content="جستجوی با تصویر">
+		<Tooltip content="جستجو با عکس">
 			<button
 				type="button"
 				onClick={onClickHandle}
-				aria-label="جستجوی با تصویر"
-				className="relative flex items-center justify-center p-0 transition-colors bg-transparent border-none rounded-full cursor-pointer h-9 w-9 hover:bg-surface-3 shrink-0"
+				aria-label="جستجو با عکس"
+				className="grid rounded-lg cursor-pointer size-7 place-items-center shrink-0 text-fg-muted transition-ui hover:bg-fill-2 hover:text-fg-strong focus-visible:focus-ring"
 			>
 				<svg
-					className="w-6 h-6 transition-colors text-fg-faint"
+					className="size-4"
 					viewBox="0 -960 960 960"
 					xmlns="http://www.w3.org/2000/svg"
 					aria-hidden="true"

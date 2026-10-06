@@ -1,7 +1,11 @@
 import type { WidgetSize } from '../utils/layout-engine/types'
 import { WidgetContainer } from '../components/widget-container'
+import { WidgetCenteredHeader, WidgetHeader } from '../components/widget-header'
+import { formatUpdatedAt } from '../utils/updated-at'
+import { useWidgetSettingsSummary } from '../widget-menu.context'
 import { useWeatherSettings } from './hooks/use-weather-settings'
 import { useGetWeatherByLatLon } from '@/services/weather/get-weather-by-lat-lon.hook'
+import { cleanCityName } from './utils/clean-city-name'
 import { WeatherCompactSquare } from './variants/weather-1x1'
 import { WeatherCompactRow } from './variants/weather-2x1'
 import { Weather2x2 } from './variants/weather-2x2'
@@ -14,58 +18,62 @@ interface WeatherLayoutProps {
 
 export function WeatherLayout({ size = { w: 2, h: 3 } }: WeatherLayoutProps = {}) {
 	const settings = useWeatherSettings()
-	const { data, isError, refetch } = useGetWeatherByLatLon(true)
+	const { data, dataUpdatedAt, isError, refetch } = useGetWeatherByLatLon(true)
 
 	const fetchedWeather = data || null
+	const cityName = cleanCityName(fetchedWeather?.city?.fa)
+	useWidgetSettingsSummary(cityName ? `شهر: ${cityName}` : null)
+
+	const isSquare = size.w === 1 && size.h === 1
+	const frame = isSquare
+		? 'px-3 py-2.5'
+		: size.h === 1
+			? 'px-3 py-2.5 gap-1.5'
+			: 'p-3 gap-2'
 
 	if (isError && !fetchedWeather) {
 		return (
-			<WidgetContainer>
-				<WidgetError
-					message="آب و هوا دریافت نشد"
-					compact={size.w === 1 && size.h === 1}
-					onRetry={() => refetch()}
-				/>
-			</WidgetContainer>
-		)
-	}
-
-	if (size.w === 1 && size.h === 1) {
-		return (
-			<WidgetContainer>
-				<WeatherCompactSquare
-					fetchedWeather={fetchedWeather}
-					temperatureUnit={settings.temperatureUnit}
-				/>
-			</WidgetContainer>
-		)
-	}
-
-	if (size.w === 2 && size.h === 1) {
-		return (
-			<WidgetContainer>
-				<WeatherCompactRow
-					fetchedWeather={fetchedWeather}
-					temperatureUnit={settings.temperatureUnit}
-				/>
-			</WidgetContainer>
-		)
-	}
-
-	if (size.w === 2 && size.h === 2) {
-		return (
-			<WidgetContainer background={false}>
-				<Weather2x2
-					fetchedWeather={fetchedWeather}
-					temperatureUnit={settings.temperatureUnit}
-				/>
+			<WidgetContainer contentClassName={frame}>
+				{isSquare ? (
+					<WidgetCenteredHeader title="آب و هوا" />
+				) : (
+					<WidgetHeader title="آب و هوا" />
+				)}
+				<div className="flex-1 min-h-0">
+					<WidgetError
+						message="نتونستیم آب و هوا رو بیاریم"
+						compact={size.h === 1}
+						onRetry={() => refetch()}
+					/>
+				</div>
 			</WidgetContainer>
 		)
 	}
 
 	return (
-		<WidgetContainer>
-			<Weather2x3 fetchedWeather={fetchedWeather} settings={settings} />
+		<WidgetContainer contentClassName={frame}>
+			{isSquare ? (
+				<WeatherCompactSquare
+					fetchedWeather={fetchedWeather}
+					temperatureUnit={settings.temperatureUnit}
+				/>
+			) : size.w === 2 && size.h === 1 ? (
+				<WeatherCompactRow
+					fetchedWeather={fetchedWeather}
+					temperatureUnit={settings.temperatureUnit}
+				/>
+			) : size.w === 2 && size.h === 2 ? (
+				<Weather2x2
+					fetchedWeather={fetchedWeather}
+					temperatureUnit={settings.temperatureUnit}
+				/>
+			) : (
+				<Weather2x3
+					fetchedWeather={fetchedWeather}
+					temperatureUnit={settings.temperatureUnit}
+					updatedLabel={formatUpdatedAt(dataUpdatedAt)}
+				/>
+			)}
 		</WidgetContainer>
 	)
 }

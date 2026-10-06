@@ -1,13 +1,24 @@
-import { useEffect, useRef, useState } from 'react'
+import { type ReactNode, useEffect, useRef, useState } from 'react'
 import Analytics from '@/analytics'
+import { PopoverMenuItem } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
+import {
+	WidgetHeader,
+	WidgetHeaderButton,
+} from '@/features/widgets/components/widget-header'
+import { useWidgetMenuActions } from '@/features/widgets/widget-menu.context'
+import { Icon } from '@/icons'
 import { useGetTags } from '@/services/todo/get-tags.hook'
 import { useGetTodos } from '@/services/todo/get-todos.hook'
 import type { Todo } from '@/services/todo/todo.interface'
 import type { WidgetSize } from '../utils/layout-engine/types'
+import { TodoFilterChip, TodoFilterMenu } from './components/todo-filter-menu'
+import { TodoFormModal } from './components/todo-form-modal'
+import { DATE_FILTER_OPTIONS, UNFILTERED_TAGS } from './constants'
 import { useTodoFilters } from './hooks/use-todo-filters'
 import { sortTodos } from './utils/sort-todos'
+import { todoSummary } from './utils/todo-summary'
 import { TodoCompactRow } from './variants/todo-2x1'
 import { Todo2x3 } from './variants/todo-2x3'
 import { TodoBoard } from './variants/todo-4x3'
@@ -18,12 +29,15 @@ const LIST_PAGE_SIZE = 5
 
 interface TodosLayoutProps {
 	size?: WidgetSize
+	tabs?: ReactNode
 }
 
-export function TodosLayout({ size = { w: 2, h: 3 } }: TodosLayoutProps = {}) {
+export function TodosLayout({ size = { w: 2, h: 3 }, tabs }: TodosLayoutProps = {}) {
 	const { isAuthenticated } = useAuth()
 	const { blurMode } = useGeneralSetting()
 	const [editingTodo, setEditingTodo] = useState<Todo | null>(null)
+	const [formTodo, setFormTodo] = useState<Todo | null>(null)
+	const [isFormOpen, setIsFormOpen] = useState(false)
 	const {
 		dateFilter,
 		sort,
@@ -59,6 +73,11 @@ export function TodosLayout({ size = { w: 2, h: 3 } }: TodosLayoutProps = {}) {
 	})
 	const { data: fetchedTags } = useGetTags(isAuthenticated)
 
+	useEffect(() => {
+		if (!fetchedTags || UNFILTERED_TAGS.includes(tagFilter)) return
+		if (!fetchedTags.includes(tagFilter)) onTagFilterChange('-all-')
+	}, [fetchedTags, tagFilter, onTagFilterChange])
+
 	const allTodos = data?.pages.flatMap((page) => page.todos) || []
 	const sortedTodos = sortTodos(allTodos, sort)
 
@@ -87,8 +106,28 @@ export function TodosLayout({ size = { w: 2, h: 3 } }: TodosLayoutProps = {}) {
 	}
 
 	const openEditTodo = (todo: Todo) => {
-		setEditingTodo(todo)
+		if (isBoard) {
+			setEditingTodo(todo)
+		} else {
+			setFormTodo(todo)
+			setIsFormOpen(true)
+		}
 		Analytics.event('todo_edit_open')
+	}
+
+	const openCreateTodo = () => {
+		setFormTodo(null)
+		setIsFormOpen(true)
+	}
+
+	const closeTodoForm = () => {
+		setIsFormOpen(false)
+		if (formTodo) Analytics.event('todo_edit_close')
+	}
+
+	const onTodoChanged = () => {
+		refetch()
+		closeTodoForm()
 	}
 
 	const onRefresh = () => {
@@ -100,6 +139,14 @@ export function TodosLayout({ size = { w: 2, h: 3 } }: TodosLayoutProps = {}) {
 		Analytics.event('todo_refetch')
 	}
 
+	useWidgetMenuActions(
+		<PopoverMenuItem
+			icon={<Icon name="refresh" size={14} />}
+			label="به‌روز کن"
+			onClick={onRefresh}
+		/>
+	)
+
 	const tagFilterOptions = fetchedTags?.filter(Boolean).map((tag) => ({
 		label: tag,
 		value: tag,
@@ -108,32 +155,115 @@ export function TodosLayout({ size = { w: 2, h: 3 } }: TodosLayoutProps = {}) {
 		? [{ label: 'همه', value: '-all-' }, ...tagFilterOptions]
 		: []
 
-	const sharedProps = {
-		todos: sortedTodos,
-		isLoading: isLoading || (isAuthenticated && !isReady),
-		isError,
-		isAuthenticated,
-		onRefresh,
-	}
+	const isWaiting = isLoading || (isAuthenticated && !isReady)
+	const total = data?.pages[0]?.totals ?? allTodos.length
+	const completedCount = allTodos.filter((todo) => todo.completed).length
+	const hasTagFilter = !UNFILTERED_TAGS.includes(tagFilter)
+	const info =
+		isAuthenticated && !isWaiting && !isError
+			? todoSummary({
+					total,
+					completed: completedCount,
+					isPartial:
+						Boolean(tabs) ||
+						!!hasNextPage ||
+						dateFilter !== 'all' ||
+						hasTagFilter,
+				})
+			: undefined
 
-	if (size.w === 2 && size.h === 1) {
-		return <TodoCompactRow {...sharedProps} />
+	const dateFilterLabel = DATE_FILTER_OPTIONS.find(
+		(option) => option.value === dateFilter
+	)?.label
+	const filterChip =
+		dateFilter !== 'all' && dateFilterLabel ? (
+			<TodoFilterChip
+				label={dateFilterLabel}
+				onClear={() => onDateFilterChange('all')}
+			/>
+		) : hasTagFilter ? (
+			<TodoFilterChip
+				label={tagFilter}
+				onClear={() => onTagFilterChange('-all-')}
+			/>
+		) : undefined
+
+	const isCompact = size.w === 2 && size.h === 1
+
+	const header = (
+		<WidgetHeader
+			title={tabs ?? 'تسک‌ها'}
+			badge={isBoard ? filterChip : undefined}
+			info={info}
+			actions={
+				isAuthenticated && (
+					<>
+						{!isBoard && (
+							<WidgetHeaderButton
+								label="تسک جدید"
+								icon="plus"
+								onClick={openCreateTodo}
+							/>
+						)}
+						<TodoFilterMenu
+							dateFilter={dateFilter}
+							sort={sort}
+							tagFilter={tagFilter}
+							tagOptions={tagOptions}
+							onDateFilterChange={onDateFilterChange}
+							onSortChange={onSortChange}
+							onTagFilterChange={onTagFilterChange}
+						/>
+					</>
+				)
+			}
+		/>
+	)
+
+	const todoForm = !isBoard && (
+		<TodoFormModal
+			isOpen={isFormOpen}
+			todo={formTodo}
+			onClose={closeTodoForm}
+			onChanged={onTodoChanged}
+		/>
+	)
+
+	if (isCompact) {
+		return (
+			<>
+				<TodoCompactRow
+					header={header}
+					todos={sortedTodos}
+					total={total}
+					isLoading={isWaiting}
+					isError={isError}
+					isAuthenticated={isAuthenticated}
+					hasNextPage={!!hasNextPage}
+					isFetchingNextPage={isFetchingNextPage}
+					onLoadMore={fetchNextPage}
+					onRefresh={onRefresh}
+					onUpdated={refetch}
+					onAdd={openCreateTodo}
+					onOpen={openEditTodo}
+				/>
+				{todoForm}
+			</>
+		)
 	}
 
 	const listProps = {
-		...sharedProps,
+		header,
+		todos: sortedTodos,
+		isLoading: isWaiting,
+		isError,
+		isAuthenticated,
 		isFetchingNextPage,
 		hasNextPage: !!hasNextPage,
 		loadMoreRef,
 		blurMode,
-		tagFilterOptions: tagOptions,
-		dateFilter,
-		sort,
-		tagFilter,
 		editingTodo,
-		onDateFilterChange,
-		onSortChange,
-		onTagFilterChange,
+		onRefresh,
 		onEdit: openEditTodo,
 		onUpdated: refetch,
 		onCloseEditor: handleCloseTodoEditor,
@@ -143,5 +273,10 @@ export function TodosLayout({ size = { w: 2, h: 3 } }: TodosLayoutProps = {}) {
 		return <TodoBoard {...listProps} />
 	}
 
-	return <Todo2x3 {...listProps} />
+	return (
+		<>
+			<Todo2x3 {...listProps} onAdd={openCreateTodo} />
+			{todoForm}
+		</>
+	)
 }

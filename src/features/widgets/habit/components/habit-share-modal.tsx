@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { Button, Modal } from '@/components/ui'
-import { Icon } from '@/icons'
-import type { Habit } from '@/services/habit/habit.interface'
 import {
 	copyCanvasToClipboard,
 	downloadCanvasAsImage,
 } from '@/features/widgets/utils/canvas'
+import { Icon } from '@/icons'
+import type { Habit } from '@/services/habit/habit.interface'
 import { renderHabitShareCanvas } from '../utils/render-habit-share-canvas'
 
 interface HabitShareModalProps {
@@ -17,71 +17,53 @@ interface HabitShareModalProps {
 
 export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareModalProps) {
 	const canvasRef = useRef<HTMLCanvasElement | null>(null)
-	const [isGenerating, setIsGenerating] = useState(false)
+	const [isCopying, setIsCopying] = useState(false)
 
 	useEffect(() => {
-		if (!isOpen || !habit) return
+		if (!isOpen) return
 		renderHabitShareCanvas(canvasRef.current, { habit, color })
 	}, [isOpen, habit, color])
 
-	const handleCopyImage = async () => {
-		setIsGenerating(true)
+	const handleCopy = async () => {
+		setIsCopying(true)
 		await copyCanvasToClipboard(canvasRef.current)
-		setIsGenerating(false)
+		setIsCopying(false)
 	}
 
-	const handleDownloadImage = () => {
+	const handleDownload = () => {
 		downloadCanvasAsImage(canvasRef.current, `عادت-${habit.title || 'habit'}`)
 	}
 
 	return (
-		<Modal
-			isOpen={isOpen}
-			onClose={onClose}
-			size="xl"
-			title={
-				<div className="flex items-center gap-2">
-					<Icon name="camera" size={16} />
-					<span className="text-sm font-bold text-fg">اشتراک‌گذاری پیشرفت</span>
-				</div>
-			}
-		>
-			<div className="flex flex-col gap-4 p-2">
-				<div className="flex items-center justify-center overflow-hidden">
-					<canvas
-						ref={canvasRef}
-						className="h-auto max-w-full rounded-widget"
-					/>
-				</div>
-
-				<div className="flex flex-wrap items-center justify-between gap-2 px-2 pt-2.5 border-t border-line">
-					<Button variant="ghost" size="sm" rounded="xl" onClick={onClose}>
-						بستن
+		<Modal isOpen={isOpen} onClose={onClose} size="lg" title="اشتراک‌گذاری پیشرفت">
+			<div className="flex flex-col gap-3.5">
+				<canvas
+					ref={canvasRef}
+					role="img"
+					aria-label={`تصویر پیشرفت ${habit.title}`}
+					className="w-full h-auto rounded-2xl"
+				/>
+				<div className="flex items-center gap-1.5 pt-1">
+					<Button
+						size="md"
+						rounded="xl"
+						onClick={handleCopy}
+						disabled={isCopying}
+						icon={<Icon name="copy" size={14} />}
+						className="w-1/3"
+					>
+						کپی تصویر
 					</Button>
-
-					<div className="self-end space-x-2">
-						<Button
-							variant="outline"
-							size="md"
-							rounded="2xl"
-							onClick={handleCopyImage}
-							disabled={isGenerating}
-							icon={<Icon name="copy" size={14} />}
-						>
-							کپی تصویر
-						</Button>
-
-						<Button
-							color="brand"
-							size="md"
-							className="w-32"
-							rounded="2xl"
-							onClick={handleDownloadImage}
-							icon={<Icon name="download" size={14} />}
-						>
-							دانلود تصویر
-						</Button>
-					</div>
+					<Button
+						color="brand"
+						size="md"
+						rounded="xl"
+						onClick={handleDownload}
+						icon={<Icon name="download" size={14} />}
+						className="flex-1"
+					>
+						دانلود تصویر
+					</Button>
 				</div>
 			</div>
 		</Modal>

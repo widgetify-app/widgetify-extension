@@ -7,13 +7,13 @@ Presentational primitives. They know nothing about the app, the server or a feat
 | Need | Use |
 |---|---|
 | Action | `Button` (`variant`, `color`, `size`, `rounded`) |
-| Selectable pill | `Chip` (`selected`) |
+| Selectable pill | `Chip` (`selected`, `size`: `md`, or `sm` for a soft filter pill) |
 | Notice box | `Alert` (`tone`: danger, warning, info) |
 | Loading | `Spinner` (`xs` to `2xl`, `tone`) |
 | Dialog | `Modal`, `ConfirmationModal` |
 | Hint on hover | `Tooltip`; `ClickableTooltip` when a click opens it and you hold `isOpen` |
-| Form | `TextInput`, `SelectBox`, `Checkbox`, `ToggleSwitch`, `Slider`, `DatePicker`, `ColorPicker` |
-| Menu | `Dropdown` with `DropdownItem` and `DropdownDivider`; `PopoverMenu` with `PopoverMenuItem`, `PopoverMenuHeader` and `PopoverMenuDivider`; `FilterTooltip`, a button that opens a list of filter options |
+| Form | `TextInput` (`variant="bare"` drops the field chrome for an input set inside a card of its own), `TextArea` (the same field, several lines), `SelectBox`, `ToggleSwitch`, `Slider`, `DatePicker`, `ColorPicker` |
+| Menu | `Dropdown` with `DropdownItem` and `DropdownDivider`; `PopoverMenu` with `PopoverMenuItem` (an optional `description` adds a second line), `PopoverMenuHeader` and `PopoverMenuDivider`. `PopoverMenu` measures itself and opens above its anchor when there is no room below (`utils/menu-position.ts`); arrow keys move between its buttons and Escape returns focus to the trigger. A `Dropdown` closes on a click outside it, including a click elsewhere in the modal it sits in; it stays open only for a click in a layer opened above it (`use-dropdown.ts`). |
 | Overlays | `BottomSheet`, `Portal`, `StackedToaster` |
 | Small marks | `Badge`, `NewBadge` (a pulsing dot for something new), `VipBadge`, `FloatingBadge` (a sticker on a corner), `AvatarComponent`, `Kbd`, `ProgressRing` |
 | Layout helpers | `SectionPanel`, `TabNavigation`, `Pagination`, `ItemSelector`, `ImageSlider` |
@@ -37,7 +37,8 @@ Look here before writing any UI. If a component other areas would reuse is missi
 
 - Always right to left. `Modal` has no direction prop; it labels itself from `title` and its close button reads «بستن».
 - Escape and the backdrop close it when `dismissible` allows. Focus moves into the dialog on open and returns on close.
-- daisyUI already animates `.modal` in both directions. The dialog stays mounted and only toggles `open`; unmounting kills the exit. `@starting-style` covers `.modal` but not `.modal-box`, so `Modal` renders closed for one frame through `open={isOpen && isMounted}`. That line looks pointless and is not.
+- daisyUI already animates `.modal` in both directions, as a transition on the `open` attribute. `Modal` keeps its dialog in the page and sets or removes `open` from an effect; it does not call `showModal()`, so the dialog is not in the top layer and stacks by a z-index that grows with each open (`BASE_MODAL_Z_INDEX`). The children stay for `EXIT_ANIMATION_MS` after closing (`use-delayed-unmount.ts`), so the exit has something to fade.
+- So keep a modal mounted and toggle `isOpen`. A modal mounted already open can get `open` before its first paint, because React runs the effects of a click's render before the browser paints; `@starting-style` covers `.modal` but not `.modal-box`, so the box skips its enter. A modal unmounted on close skips its exit. Keep what it shows until it opens again, too: clearing its data on close swaps the content while it fades out.
 - Do not add an enter animation of your own.
 
 ## Writing the words

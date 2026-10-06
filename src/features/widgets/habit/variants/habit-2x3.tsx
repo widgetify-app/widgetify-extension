@@ -1,110 +1,71 @@
-import type React from 'react'
 import { cn } from '@/common/utils/cn'
-import { Button, Tooltip } from '@/components/ui'
+import type { WidgetifyDate } from '@/common/utils/date-events'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { getCurrentDate } from '@/common/utils/date-events'
-import { Icon } from '@/icons'
-import { HabitEmpty } from '../components/habit-empty'
-import { HabitItemSkeleton } from '../components/item/habit-item-skeleton'
-import { HabitItem } from '../components/item/habit-item'
-import type { useHabitActions } from '../hooks/use-habit-actions'
 import { WidgetError } from '@/features/widgets/components/widget-error'
+import { HabitEmpty, HabitSignedOut } from '../components/habit-empty'
+import { HabitItem } from '../components/item/habit-item'
+import { HabitItemSkeleton } from '../components/item/habit-item-skeleton'
+import type { useHabitActions } from '../hooks/use-habit-actions'
 
 const SKELETON_COUNT = 4
 
 interface Habit2x3Props {
 	actions: ReturnType<typeof useHabitActions>
+	today: WidgetifyDate
 }
 
-export const Habit2x3: React.FC<Habit2x3Props> = ({ actions }) => {
-	const { selected_timezone: timezone, blurMode } = useGeneralSetting()
-	const today = getCurrentDate(timezone.value)
-
+export function Habit2x3({ actions, today }: Habit2x3Props) {
+	const { blurMode } = useGeneralSetting()
 	const {
 		isAuthenticated,
 		habits,
 		isLoading,
 		isError,
-		isRefetching,
 		refetch,
 		openAddHabit,
 		openHabitDetail,
 		onRefresh,
 	} = actions
 
-	const isWaiting = isLoading || isRefetching
-	const isEmpty = (!isLoading && habits.length === 0) || !isAuthenticated
+	const body = !isAuthenticated ? (
+		<HabitSignedOut />
+	) : isLoading ? (
+		<div className="flex flex-col gap-0.5">
+			{Array.from({ length: SKELETON_COUNT }, (_, i) => (
+				<HabitItemSkeleton key={`habit-skeleton-${i}`} />
+			))}
+		</div>
+	) : isError ? (
+		<WidgetError message="نتونستیم عادت‌ها رو بیاریم" onRetry={onRefresh} />
+	) : habits.length === 0 ? (
+		<HabitEmpty onAdd={openAddHabit} />
+	) : (
+		<ul
+			className={cn(
+				'flex flex-col gap-0.5',
+				blurMode ? 'blur-mode' : 'disabled-blur-mode'
+			)}
+		>
+			{habits.map((habit) => (
+				<li key={habit.id}>
+					<HabitItem
+						habit={habit}
+						today={today}
+						onChanged={refetch}
+						onViewDetails={() => openHabitDetail(habit.id)}
+					/>
+				</li>
+			))}
+		</ul>
+	)
 
 	return (
-		<section className="flex flex-col h-full" aria-label="عادت‌ها">
-			<header className="flex items-center justify-between flex-none pb-1">
-				<Tooltip content="عادت جدید">
-					<Button
-						variant="ghost"
-						size="sm"
-						aria-label="عادت جدید"
-						className="w-7 h-7 p-0! border-none! hover:text-brand rounded-xl shrink-0 active:scale-95 transition-colors"
-						onClick={openAddHabit}
-					>
-						<Icon name="plus" size={16} aria-hidden="true" />
-					</Button>
-				</Tooltip>
-
-				<Tooltip content="بارگذاری مجدد">
-					<Button
-						variant="ghost"
-						size="sm"
-						aria-label="بارگذاری مجدد"
-						className="w-7 h-7 p-0! border-none! rounded-xl shrink-0 active:scale-95 transition-colors"
-						onClick={onRefresh}
-					>
-						<Icon
-							name="refresh"
-							size={16}
-							aria-hidden="true"
-							className="opacity-60 hover:opacity-100"
-							spin={isWaiting}
-						/>
-					</Button>
-				</Tooltip>
-			</header>
-
-			<div className="mt-1 overflow-hidden grow">
-				<div
-					aria-busy={isLoading}
-					className="h-full space-y-1.5 overflow-y-auto scrollbar-none"
-				>
-					{isLoading ? (
-						<div className="flex flex-col gap-1.5">
-							{Array.from({ length: SKELETON_COUNT }, (_, i) => (
-								<HabitItemSkeleton key={`habit-skeleton-${i}`} />
-							))}
-						</div>
-					) : isError && isAuthenticated ? (
-						<WidgetError message="عادت‌ها دریافت نشدند" onRetry={onRefresh} />
-					) : isEmpty ? (
-						<HabitEmpty />
-					) : (
-						<ul
-							className={cn(
-								'flex flex-col gap-1.5',
-								blurMode ? 'blur-mode' : 'disabled-blur-mode'
-							)}
-						>
-							{habits.map((habit) => (
-								<li key={habit.id}>
-									<HabitItem
-										habit={habit}
-										today={today}
-										onChanged={refetch}
-										onViewDetails={() => openHabitDetail(habit.id)}
-									/>
-								</li>
-							))}
-						</ul>
-					)}
-				</div>
-			</div>
+		<section
+			aria-label="عادت‌ها"
+			aria-busy={isLoading}
+			className="flex-1 min-h-0 overflow-y-auto scrollbar-none"
+		>
+			{body}
 		</section>
 	)
 }

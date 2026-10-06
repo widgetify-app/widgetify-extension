@@ -73,16 +73,16 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 					(w) => w.instanceId === editTarget.instanceId
 				)
 				if (def.variants && def.variants.length > 0) {
+					const storedModel = currentWidget?.meta?.variant
+					const isSameModel = (v: WidgetVariantOption) =>
+						!storedModel || v.meta?.variant === storedModel
+					const isSameSize = (v: WidgetVariantOption) =>
+						v.size.w === currentWidget?.size.w &&
+						v.size.h === currentWidget?.size.h
 					const match =
-						def.variants.find((v) => {
-							if (currentWidget?.meta?.variant) {
-								return v.meta?.variant === currentWidget.meta.variant
-							}
-							return (
-								v.size.w === currentWidget?.size.w &&
-								v.size.h === currentWidget?.size.h
-							)
-						}) || def.variants[0]
+						def.variants.find((v) => isSameModel(v) && isSameSize(v)) ||
+						def.variants.find(isSameModel) ||
+						def.variants[0]
 					setSelectedVariant(match)
 					setSelectedSize(match.size)
 				} else {

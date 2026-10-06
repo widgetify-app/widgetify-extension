@@ -9,6 +9,7 @@ import { cn } from '@/common/utils/cn'
 import { useAuth } from '@/context/auth.context'
 import { useDate } from '@/features/widgets/date.context'
 import { Icon } from '@/icons'
+import { Tooltip } from '@/components/ui'
 import { type ApiError, safeAwait } from '@/services/api'
 import type { FetchedAllEvents } from '@/services/date/get-events.hook'
 import type { MoodEntry } from '@/services/mood-log/get-moods.hook'
@@ -21,6 +22,7 @@ import {
 	type WidgetifyDate,
 } from '@/common/utils/date-events'
 import { moodLogKeys } from '@/services/mood-log/mood-log.keys'
+import { isSameJalaliDay } from '@/features/widgets/utils/jalali-date'
 
 const MOOD_BACKLOG_DAYS = 7
 
@@ -57,17 +59,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 	const handleMoodChange = async (value: MoodType) => {
 		if (isSavingMood) return
 		if (!isAuthenticated) {
-			showToast('برای ثبت حال روزانه باید وارد حساب کاربری خود شوید.', 'error')
-			return
-		}
-
-		if (isFuture) {
-			showToast('تاریخ انتخاب شده نمی‌تواند در آینده باشد.', 'error')
-			return
-		}
-
-		if (!isWithinMoodBacklog) {
-			showToast('تاریخ انتخاب شده نمی‌تواند بیش از ۷ روز گذشته باشد.', 'error')
+			showToast('برای ثبت حالت اول وارد حسابت شو', 'error')
 			return
 		}
 
@@ -88,13 +80,10 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 		onMoodChange?.(value)
 		if (response.action === 'removed') {
 			setMood('')
-			showToast(
-				'حال روزانت حذف شد. اگه بعدا خواستی دوباره می‌تونی یکی انتخاب کنی.',
-				'info'
-			)
+			showToast('حال این روز برداشته شد', 'info')
 		} else {
 			setMood(value)
-			showToast('حال روزانه شما با موفقیت ثبت شد.', 'success')
+			showToast('حالت ثبت شد', 'success')
 		}
 
 		Analytics.event('calendar_mood_clicked')
@@ -111,9 +100,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 
 	const gregorian = dayGregorian.format('DD MMM YYYY')
 	const isoDate = dayGregorian.format('YYYY-MM-DD')
-	const jalali = date.format('jYYYY/jMM/jD')
-	const jalaliDay = date.format('dddd')
-	const moodTitle = `حس و حال ${jalaliDay === today.format('dddd') ? 'امروز' : 'روز'}`
+	const moodTitle = `حس و حال ${isSameJalaliDay(date, today) ? 'امروز' : 'این روز'}`
 
 	useEffect(() => {
 		const existingMood = moods?.find((m) => m.date === isoDate)
@@ -122,29 +109,17 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 
 	return (
 		<section
-			className="flex flex-col overflow-hidden border w-60 bg-surface-2 border-surface-3 rounded-2xl"
+			className="flex flex-col gap-2.5 p-3 w-59 bg-surface-2 rounded-2xl"
 			aria-labelledby={headingId}
 		>
-			<header className="px-3 py-2 bg-brand text-on-brand">
-				<h2
-					id={headingId}
-					className="flex items-center justify-between text-sm font-medium"
-				>
-					{jalaliDay}
-					<time
-						dateTime={isoDate}
-						className="font-normal opacity-90 tabular-nums"
-					>
-						{jalali}
-					</time>
+			<header className="flex flex-col gap-0.5">
+				<h2 id={headingId} className="text-sm font-extrabold text-fg-strong">
+					<time dateTime={isoDate}>{date.format('dddd jD jMMMM jYYYY')}</time>
 				</h2>
-			</header>
-
-			<div className="p-2 space-y-2">
-				<dl className="flex items-center justify-between px-1 text-xs text-fg-muted">
+				<dl className="flex items-center gap-2.5 text-3xs text-fg-faint">
 					<div className="flex items-center gap-1">
-						<dt className="flex items-center">
-							<Icon name="moon" size={10} aria-hidden="true" />
+						<dt>
+							<Icon name="moon" size={12} aria-hidden="true" />
 							<span className="sr-only">تاریخ قمری</span>
 						</dt>
 						<dd>
@@ -152,75 +127,79 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 						</dd>
 					</div>
 					<div className="flex items-center gap-1">
-						<dt className="flex items-center">
-							<Icon name="globeAsia" size={10} aria-hidden="true" />
+						<dt>
+							<Icon name="globeAsia" size={12} aria-hidden="true" />
 							<span className="sr-only">تاریخ میلادی</span>
 						</dt>
-						<dd>
-							<time dateTime={isoDate}>{gregorian}</time>
-						</dd>
+						<dd dir="ltr">{gregorian}</dd>
 					</div>
 				</dl>
+			</header>
 
-				{!isFuture && isWithinMoodBacklog && (
-					<fieldset className="p-1.5 rounded-2xl bg-fill">
-						<legend className="sr-only">{moodTitle}</legend>
-						<span
-							aria-hidden="true"
-							className="block mb-1.5 px-0.5 text-3xs font-medium text-fg"
-						>
-							{moodTitle}
-						</span>
-						<div className="grid grid-cols-4 gap-1">
-							{moodOptions.map((option) => (
-								<button
-									key={option.value}
-									type="button"
-									onClick={() =>
-										handleMoodChange(option.value as MoodType)
-									}
-									disabled={isSavingMood}
-									aria-pressed={mood === option.value}
-									className={cn(
-										'p-1.5 rounded-xl transition-ui cursor-pointer',
-										'disabled:cursor-not-allowed disabled:opacity-60',
-										mood === option.value
-											? option.activeClass
-											: 'bg-surface-3 opacity-80 hover:opacity-100'
-									)}
-								>
-									<span className="block text-lg leading-none mb-0.5">
-										<MoodImage mood={option.value} />
-									</span>
-									<span className="block text-3xs leading-tight">
-										{option.label}
-									</span>
-								</button>
-							))}
-						</div>
-					</fieldset>
-				)}
-
-				{dayEvents.length > 0 && (
-					<ul className="flex flex-col p-1 space-y-1 overflow-y-auto max-h-28">
+			{dayEvents.length > 0 && (
+				<>
+					<span aria-hidden="true" className="h-px bg-line" />
+					<ul className="flex flex-col gap-1.5 overflow-y-auto text-xs max-h-28 scrollbar-none">
 						{dayEvents.map((event, idx) => (
 							<li
 								key={`e-${idx}`}
-								className={cn(
-									'flex items-center w-full gap-1 px-2 outline rounded-xl min-h-8',
-									event.isHoliday
-										? 'bg-danger-fill-2 text-danger outline-danger-fill-2'
-										: 'text-fg outline-surface-3 bg-fill'
-								)}
+								className="flex items-center gap-2 text-fg"
 							>
-								<span className="flex-1 min-w-0 text-2xs">
-									{event.title}
-								</span>
+								<span
+									aria-hidden="true"
+									className={cn(
+										'rounded-full size-1.75 shrink-0',
+										event.isHoliday ? 'bg-danger' : 'bg-brand-muted'
+									)}
+								/>
+								<span className="flex-1 min-w-0">{event.title}</span>
+								{event.isHoliday && (
+									<span className="px-2 font-semibold rounded-full h-5 leading-5 text-3xs bg-danger-fill text-danger shrink-0">
+										تعطیل
+									</span>
+								)}
 							</li>
 						))}
 					</ul>
-				)}
-			</div>
+				</>
+			)}
+
+			{!isFuture && isWithinMoodBacklog && (
+				<>
+					<span aria-hidden="true" className="h-px bg-line" />
+					<fieldset className="flex flex-col gap-1.5">
+						<legend className="mb-1.5 font-semibold text-3xs text-fg-faint">
+							{moodTitle}
+						</legend>
+						<div className="flex justify-between">
+							{moodOptions.map((option) => (
+								<Tooltip key={option.value} content={option.label}>
+									<button
+										type="button"
+										onClick={() =>
+											handleMoodChange(option.value as MoodType)
+										}
+										disabled={isSavingMood}
+										aria-label={option.label}
+										aria-pressed={mood === option.value}
+										className={cn(
+											'grid rounded-lg cursor-pointer size-8.5 place-items-center transition-ui focus-visible:focus-ring',
+											'disabled:cursor-not-allowed disabled:opacity-60',
+											mood === option.value
+												? 'bg-brand-fill ring-[1.5px] ring-inset ring-brand-muted'
+												: 'bg-fill hover:bg-fill-2'
+										)}
+									>
+										<span className="text-lg leading-none">
+											<MoodImage mood={option.value} />
+										</span>
+									</button>
+								</Tooltip>
+							))}
+						</div>
+					</fieldset>
+				</>
+			)}
 		</section>
 	)
 }

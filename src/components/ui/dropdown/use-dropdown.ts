@@ -22,10 +22,14 @@ export const useDropdown = () => {
 				dropdownContentRef.current &&
 				!dropdownContentRef.current.contains(target)
 			) {
-				const isInsideTopLayer = (target as Element).closest?.(
+				const layer = (target as Element).closest?.(
 					'[popover], dialog, [role="listbox"]'
 				)
-				if (isInsideTopLayer && isInsideTopLayer !== dropdownContentRef.current) {
+				const isLayerAbove =
+					layer &&
+					layer !== dropdownContentRef.current &&
+					!layer.contains(dropdownRef.current)
+				if (isLayerAbove) {
 					return
 				}
 				close()

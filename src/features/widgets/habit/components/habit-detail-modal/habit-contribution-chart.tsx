@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import type jalaliMoment from 'jalali-moment'
 import moment from 'moment'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
@@ -44,6 +44,7 @@ export function HabitContributionChart({
 }: HabitContributionChartProps) {
 	const queryClient = useQueryClient()
 	const { mutateAsync: logProgress, isPending: isUpdating } = useLogHabitProgress()
+	const headingId = useId()
 	const [hoveredDay, setHoveredDay] = useState<DayCell | null>(null)
 	const scrollContainerRef = useRef<HTMLDivElement>(null)
 	const todayCellRef = useRef<HTMLButtonElement>(null)
@@ -190,143 +191,129 @@ export function HabitContributionChart({
 	}, [weeks])
 
 	return (
-		<div className="flex flex-col w-full gap-4 select-none">
-			<div className="flex flex-col p-3 overflow-hidden border rounded-2xl bg-surface-2 border-surface-3">
-				<div ref={scrollContainerRef} className="pb-1 pl-1 overflow-x-auto">
-					<div className="inline-flex flex-col min-w-full gap-1">
-						<div className="flex items-center gap-1 pr-6 h-4 mb-0.5">
-							{weeks.map((week) => (
+		<section
+			aria-labelledby={headingId}
+			className="flex flex-col gap-2.5 p-3 overflow-hidden select-none rounded-2xl bg-fill"
+		>
+			<header className="flex items-center justify-between gap-2">
+				<h4 id={headingId} className="text-xs font-semibold text-fg">
+					۶ ماه اخیر
+				</h4>
+				<div className="flex items-center gap-1 text-3xs text-fg-muted shrink-0">
+					<span>کمتر</span>
+					<span className="size-2.5 rounded-xs bg-fill-2" />
+					{[`${color}33`, `${color}66`, `${color}aa`, color].map((shade) => (
+						<span
+							key={shade}
+							className="size-2.5 rounded-xs"
+							style={{ backgroundColor: shade }}
+						/>
+					))}
+					<span>بیشتر</span>
+				</div>
+			</header>
+
+			<div ref={scrollContainerRef} className="pb-1 pl-1 overflow-x-auto">
+				<div className="inline-flex flex-col min-w-full gap-1">
+					<div className="flex items-center gap-1 pr-6 h-4 mb-0.5">
+						{weeks.map((week) => (
+							<div
+								key={week.weekNumber}
+								className="relative w-3.5 md:w-4 shrink-0"
+							>
+								{week.monthLabel && (
+									<span className="absolute top-0 right-0 text-4xs font-medium leading-4 whitespace-nowrap text-fg-muted">
+										{week.monthLabel}
+									</span>
+								)}
+							</div>
+						))}
+					</div>
+
+					<div className="flex gap-1.5 items-start">
+						<div className="flex flex-col gap-1 shrink-0 text-3xs text-fg-muted font-medium">
+							{DISPLAY_WEEKDAYS.map((dayName) => (
 								<div
-									key={week.weekNumber}
-									className="relative w-3.5 md:w-4 shrink-0"
+									key={dayName}
+									aria-hidden="true"
+									className="w-4 h-3.5 md:h-4 flex items-center justify-center"
 								>
-									{week.monthLabel && (
-										<span className="absolute top-0 right-0 text-4xs font-medium leading-4 whitespace-nowrap text-fg-muted">
-											{week.monthLabel}
-										</span>
-									)}
+									{dayName}
 								</div>
 							))}
 						</div>
 
-						<div className="flex gap-1.5 items-start">
-							<div className="flex flex-col gap-1 shrink-0 text-3xs text-fg-muted font-medium">
-								{DISPLAY_WEEKDAYS.map((dayName) => (
-									<div
-										key={dayName}
-										aria-hidden="true"
-										className="w-4 h-3.5 md:h-4 flex items-center justify-center"
-									>
-										{dayName}
-									</div>
-								))}
-							</div>
+						<div className="flex gap-1">
+							{weeks.map((week) => (
+								<div
+									key={week.weekNumber}
+									className="flex flex-col gap-1 shrink-0"
+								>
+									{week.days.map((day) => {
+										const cellBg = getCellColor(day.level)
+										const dayLabel = `${day.jalaliDate.format('jD jMMMM')}: ${
+											day.value > 0
+												? `${day.value} ${unitLabel}`.trim()
+												: 'بدون ثبت'
+										}`
 
-							<div className="flex gap-1">
-								{weeks.map((week) => (
-									<div
-										key={week.weekNumber}
-										className="flex flex-col gap-1 shrink-0"
-									>
-										{week.days.map((day) => {
-											const cellBg = getCellColor(day.level)
-											const dayLabel = `${day.jalaliDate.format('jD jMMMM')}: ${
-												day.value > 0
-													? `${day.value} ${unitLabel}`.trim()
-													: 'بدون ثبت'
-											}`
-
-											return (
-												<button
-													key={day.gregorianDate}
-													ref={
-														day.isToday
-															? todayCellRef
-															: undefined
-													}
-													type="button"
-													disabled={day.isFuture}
-													aria-label={dayLabel}
-													onClick={() => handleDayClick(day)}
-													onFocus={() => setHoveredDay(day)}
-													onBlur={() => setHoveredDay(null)}
-													onMouseEnter={() =>
-														setHoveredDay(day)
-													}
-													onMouseLeave={() =>
-														setHoveredDay(null)
-													}
-													className={cn(
-														'w-3.5 h-3.5 md:w-4 md:h-4 rounded-sm transition-ui cursor-pointer select-none',
-														'focus-visible:focus-ring',
-														day.isFuture
-															? 'opacity-20 cursor-not-allowed bg-fill'
-															: 'hover:scale-125 hover:z-10',
-														day.isToday && 'ring-2 ring-line',
-														!cellBg &&
-															!day.isFuture &&
-															'bg-fill-2'
-													)}
-													style={{
-														backgroundColor: cellBg,
-													}}
-												/>
-											)
-										})}
-									</div>
-								))}
-							</div>
+										return (
+											<button
+												key={day.gregorianDate}
+												ref={
+													day.isToday ? todayCellRef : undefined
+												}
+												type="button"
+												disabled={day.isFuture}
+												aria-label={dayLabel}
+												onClick={() => handleDayClick(day)}
+												onFocus={() => setHoveredDay(day)}
+												onBlur={() => setHoveredDay(null)}
+												onMouseEnter={() => setHoveredDay(day)}
+												onMouseLeave={() => setHoveredDay(null)}
+												className={cn(
+													'w-3.5 h-3.5 md:w-4 md:h-4 rounded-sm transition-ui cursor-pointer select-none',
+													'focus-visible:focus-ring',
+													day.isFuture
+														? 'opacity-20 cursor-not-allowed bg-fill'
+														: 'hover:scale-125 hover:z-10',
+													day.isToday && 'ring-2 ring-line',
+													!cellBg &&
+														!day.isFuture &&
+														'bg-fill-2'
+												)}
+												style={{
+													backgroundColor: cellBg,
+												}}
+											/>
+										)
+									})}
+								</div>
+							))}
 						</div>
 					</div>
 				</div>
-
-				<div className="flex flex-wrap items-center justify-between gap-2 mt-3 pt-2.5 border-t border-line text-xs">
-					<div className="min-h-5 flex items-center gap-1.5 text-fg-muted text-2xs">
-						{hoveredDay ? (
-							<>
-								<span className="font-semibold text-fg">
-									{hoveredDay.jalaliDate.format('dddd، jD jMMMM')}
-								</span>
-								<span>:</span>
-								<span>
-									{hoveredDay.value > 0
-										? `${hoveredDay.value} ${unitLabel}`
-										: 'بدون ثبت'}
-								</span>
-								{hoveredDay.isDone && (
-									<span className="font-medium text-success">
-										(انجام شد)
-									</span>
-								)}
-							</>
-						) : (
-							<span>برای ثبت، روی روزها کلیک کن</span>
-						)}
-					</div>
-
-					<div className="flex items-center gap-1 text-3xs text-fg-muted shrink-0">
-						<span>کمتر</span>
-						<div className="w-2.5 h-2.5 rounded-xs bg-fill-2" />
-						<div
-							className="w-2.5 h-2.5 rounded-xs"
-							style={{ backgroundColor: `${color}33` }}
-						/>
-						<div
-							className="w-2.5 h-2.5 rounded-xs"
-							style={{ backgroundColor: `${color}66` }}
-						/>
-						<div
-							className="w-2.5 h-2.5 rounded-xs"
-							style={{ backgroundColor: `${color}aa` }}
-						/>
-						<div
-							className="w-2.5 h-2.5 rounded-xs"
-							style={{ backgroundColor: color }}
-						/>
-						<span>بیشتر</span>
-					</div>
-				</div>
 			</div>
-		</div>
+
+			<p className="flex items-center gap-1.5 min-h-5 text-2xs text-fg-muted">
+				{hoveredDay ? (
+					<>
+						<span className="font-semibold text-fg">
+							{hoveredDay.jalaliDate.format('dddd، jD jMMMM')}
+						</span>
+						<span>
+							{hoveredDay.value > 0
+								? `${hoveredDay.value} ${unitLabel}`
+								: 'بدون ثبت'}
+						</span>
+						{hoveredDay.isDone && (
+							<span className="font-medium text-success">انجام شد</span>
+						)}
+					</>
+				) : (
+					'برای ثبت، روی روزها کلیک کن'
+				)}
+			</p>
+		</section>
 	)
 }

@@ -1,18 +1,66 @@
+import type { ReactNode } from 'react'
 import { getCurrentDate } from '@/common/utils/date-events'
+import { PopoverMenuItem } from '@/components/ui'
 import { useGeneralSetting } from '@/context/general-setting.context'
+import { Icon } from '@/icons'
 import type { WidgetSize } from '../utils/layout-engine/types'
 import { WidgetContainer } from '../components/widget-container'
+import { WidgetHeader, WidgetHeaderButton } from '../components/widget-header'
+import { useWidgetMenuActions } from '../widget-menu.context'
 import { HabitModals } from './components/habit-modals'
 import { useHabitActions } from './hooks/use-habit-actions'
-import { HabitCompactWide } from './variants/habit-2x1'
+import { isHabitDoneToday } from './utils/habit-goal'
+import { Habit2x1 } from './variants/habit-2x1'
 import { Habit2x3 } from './variants/habit-2x3'
+import { Habit4x3 } from './variants/habit-4x3'
 
-export function HabitsContent() {
+interface HabitsContentProps {
+	size?: WidgetSize
+	tabs?: ReactNode
+}
+
+export function HabitsContent({ size = { w: 2, h: 3 }, tabs }: HabitsContentProps = {}) {
+	const { selected_timezone: timezone } = useGeneralSetting()
+	const today = getCurrentDate(timezone.value)
 	const actions = useHabitActions()
+	const { isAuthenticated, isLoading, habits, openAddHabit, onRefresh } = actions
+
+	useWidgetMenuActions(
+		<PopoverMenuItem
+			icon={<Icon name="refresh" size={14} />}
+			label="به‌روز کن"
+			onClick={onRefresh}
+		/>
+	)
+
+	const doneCount = habits.filter(isHabitDoneToday).length
+	const info =
+		isAuthenticated && !isLoading && habits.length > 0
+			? `${doneCount} از ${habits.length}${tabs ? '' : ' امروز'}`
+			: undefined
 
 	return (
 		<>
-			<Habit2x3 actions={actions} />
+			<WidgetHeader
+				title={tabs ?? 'عادت‌ها'}
+				info={info}
+				actions={
+					isAuthenticated && (
+						<WidgetHeaderButton
+							label="عادت جدید"
+							icon="plus"
+							onClick={openAddHabit}
+						/>
+					)
+				}
+			/>
+			{size.h === 1 ? (
+				<Habit2x1 actions={actions} today={today} />
+			) : size.w === 4 ? (
+				<Habit4x3 actions={actions} today={today} />
+			) : (
+				<Habit2x3 actions={actions} today={today} />
+			)}
 			<HabitModals actions={actions} />
 		</>
 	)
@@ -23,31 +71,11 @@ interface HabitsLayoutProps {
 }
 
 export function HabitsLayout({ size = { w: 2, h: 3 } }: HabitsLayoutProps = {}) {
-	const { selected_timezone: timezone } = useGeneralSetting()
-	const actions = useHabitActions()
-
-	if (size.w === 2 && size.h === 1) {
-		return (
-			<WidgetContainer>
-				<HabitCompactWide
-					habits={actions.habits}
-					isLoading={actions.isLoading}
-					isError={actions.isError}
-					isAuthenticated={actions.isAuthenticated}
-					today={getCurrentDate(timezone.value)}
-					onChanged={actions.refetch}
-					onRefresh={actions.onRefresh}
-					onAddHabit={actions.openAddHabit}
-					onViewDetails={actions.openHabitDetail}
-				/>
-				<HabitModals actions={actions} />
-			</WidgetContainer>
-		)
-	}
-
 	return (
-		<WidgetContainer>
-			<HabitsContent />
+		<WidgetContainer
+			contentClassName={size.h === 1 ? 'px-3 py-2.5 gap-1.5' : 'p-3 gap-2'}
+		>
+			<HabitsContent size={size} />
 		</WidgetContainer>
 	)
 }

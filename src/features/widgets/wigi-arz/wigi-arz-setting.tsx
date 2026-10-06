@@ -125,11 +125,11 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 							type="text"
 							value={searchQuery}
 							onChange={(e) => setSearchQuery(e)}
-							placeholder="جستجو ..."
+							placeholder="جستجو…"
 						/>
 						<SelectBox
 							options={[
-								{ value: 'all', label: 'همه ارزها' },
+								{ value: 'all', label: 'همه‌ی ارزها' },
 								{ value: CurrenciesType.CRYPTO, label: 'ارزهای دیجیتال' },
 								{ value: CurrenciesType.CURRENCY, label: 'ارزها' },
 								{ value: CurrenciesType.COIN, label: 'طلا و سکه' },

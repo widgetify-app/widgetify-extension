@@ -129,17 +129,17 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 
 	const handleSubmit = async () => {
 		if (!title.trim()) {
-			showToast('عنوان عادت را وارد کنید.', 'error')
+			showToast('یه عنوان برای عادت بنویس', 'error')
 			return
 		}
 
 		if (unit === HabitUnit.CUSTOM && !customUnit.trim()) {
-			showToast('واحد دلخواه را وارد کنید.', 'error')
+			showToast('اسم واحد دلخواهت رو بنویس', 'error')
 			return
 		}
 
 		if (target <= 0) {
-			showToast('هدف باید بزرگتر از صفر باشد', 'error')
+			showToast('هدف باید از صفر بیشتر باشه', 'error')
 			return
 		}
 
@@ -164,7 +164,7 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 			return
 		}
 
-		showToast(isEdit ? 'عادت ویرایش شد.' : 'عادت جدید اضافه شد.', 'success')
+		showToast(isEdit ? 'تغییرات ذخیره شد' : 'عادت جدید اضافه شد', 'success')
 		Analytics.event(isEdit ? 'habit_updated' : 'habit_created')
 		onSaved()
 	}
@@ -210,7 +210,7 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 								setTitle(val)
 								setActivePresetId(null)
 							}}
-							placeholder="عنوان عادت (مثلا: نوشیدن آب)"
+							placeholder="مثلاً نوشیدن آب"
 							className="flex-1 text-sm font-medium bg-transparent border-none shadow-none text-fg placeholder:text-fg-faint focus:outline-none focus:ring-0"
 						/>
 					</div>

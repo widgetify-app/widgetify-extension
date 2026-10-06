@@ -59,7 +59,7 @@ To show a refactor changed nothing, record the size and hash of `.output/chrome-
 
 ## background
 
-`entrypoints/background.ts` starts the background worker from `background/`. `events.ts` wires the install and toolbar click listeners, `cache.ts` registers the Workbox routes (`cache-config.ts` lists the paths for each strategy), `wallpaper-cache.ts` keeps the active wallpaper cached, `cache-names.ts` names the caches and `utils.ts` prunes them. It imports from `src/common` and never from React or `@/components`.
+`entrypoints/background.ts` starts the background worker from `background/`. `events.ts` wires the install and toolbar click listeners, `cache.ts` registers the Workbox routes (`cache-config.ts` lists the paths for each strategy; a request sent with `cache: 'no-cache'`, an explicit refresh, takes a network first route registered before the others), `wallpaper-cache.ts` keeps the active wallpaper cached, `cache-names.ts` names the caches and `utils.ts` prunes them. It imports from `src/common` and never from React or `@/components`.
 
 ## Mistakes that happened
 

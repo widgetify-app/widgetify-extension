@@ -8,15 +8,15 @@ export function VoiceSearchButton({ onClick }: { onClick: () => void }) {
 	}
 
 	return (
-		<Tooltip content="جستجوی گفتاری">
+		<Tooltip content="جستجوی صوتی">
 			<button
 				type="button"
 				onClick={onClickHandle}
-				aria-label="جستجوی گفتاری"
-				className="flex items-center justify-center p-0 transition-ui duration-300 bg-transparent border-none rounded-full cursor-pointer h-9 w-9 shrink-0 hover:bg-surface-3 group"
+				aria-label="جستجوی صوتی"
+				className="grid rounded-lg cursor-pointer size-7 place-items-center shrink-0 text-fg-muted transition-ui hover:bg-fill-2 hover:text-fg-strong focus-visible:focus-ring"
 			>
 				<svg
-					className="w-6 h-6 transition-colors text-fg-faint"
+					className="size-4"
 					viewBox="0 -960 960 960"
 					xmlns="http://www.w3.org/2000/svg"
 					aria-hidden="true"

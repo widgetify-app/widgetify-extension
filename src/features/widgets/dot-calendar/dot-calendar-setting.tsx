@@ -1,23 +1,19 @@
 import jalaliMoment from 'jalali-moment'
-import { cn } from '@/common/utils/cn'
-import { DatePicker, SectionPanel, TabNavigation, TextInput } from '@/components/ui'
+import { DatePicker, SectionPanel, TextInput } from '@/components/ui'
 import { useFreeWidgets } from '@/features/widgets/widgets.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { Icon } from '@/icons'
 import { WidgetSettingWrapper } from '@/features/widgets/components/widget-settings-wrapper'
 import { getCurrentDate } from '@/common/utils/date-events'
 import { toIsoDateKey } from '@/features/widgets/utils/jalali-date'
 import {
-	DOT_CALENDAR_VARIANT_LABEL,
 	GOAL_DATE_FORMAT,
 	GOAL_TITLE_MAX_LENGTH,
 	GOAL_TITLE_SAVE_DEBOUNCE_MS,
 } from './constants'
-import type { DotCalendarMeta, DotCalendarVariant } from './types'
+import type { DotCalendarMeta } from './types'
 import { getGoalProgress } from './utils/get-goal-progress'
-import { getYearProgress } from './utils/get-year-progress'
 import { isGoalDateAllowed } from './utils/is-goal-date-allowed'
-import { normalizeDotCalendarVariant } from './utils/normalize-variant'
+import { normalizeDotCalendarMeta } from './utils/normalize-meta'
 
 interface DotCalendarSettingProps {
 	instanceId?: string
@@ -40,17 +36,17 @@ export function DotCalendarSetting({ instanceId }: DotCalendarSettingProps = {})
 		)
 	}
 
-	const meta = (targetWidget.meta ?? {}) as DotCalendarMeta
-	const variant = normalizeDotCalendarVariant(meta.variant)
+	const storedMeta = (targetWidget.meta ?? {}) as DotCalendarMeta
+	const { goalTitle, goalStartDate, goalEndDate } = normalizeDotCalendarMeta(storedMeta)
 	const today = getCurrentDate(timezone.value).startOf('day')
-	const yearProgress = getYearProgress(today)
-	const goalProgress = getGoalProgress(meta.goalStartDate, meta.goalEndDate, today)
-	const goalDate = meta.goalEndDate
-		? jalaliMoment(meta.goalEndDate, GOAL_DATE_FORMAT).locale('fa')
-		: undefined
+	const progress = getGoalProgress(goalStartDate, goalEndDate, today)
+	const parsedGoalDate = goalEndDate
+		? jalaliMoment(goalEndDate, GOAL_DATE_FORMAT, true)
+		: null
+	const goalDate = parsedGoalDate?.isValid() ? parsedGoalDate.locale('fa') : undefined
 
 	const saveMeta = (next: Partial<DotCalendarMeta>) => {
-		updateWidgetSettings(instanceId, { ...meta, ...next })
+		updateWidgetSettings(instanceId, { ...storedMeta, ...next })
 	}
 
 	const onSelectGoalDate = (date: jalaliMoment.Moment) => {
@@ -62,88 +58,43 @@ export function DotCalendarSetting({ instanceId }: DotCalendarSettingProps = {})
 		})
 	}
 
+	const dateHint =
+		progress && goalDate
+			? progress.daysLeft > 0
+				? `${progress.daysLeft.toLocaleString('fa-IR')} روز مونده تا ${goalDate.format('jD jMMMM jYYYY')}`
+				: 'روز هدفت رسیده؛ یه روز تازه انتخاب کن'
+			: 'از فردا تا یه سال بعد رو می‌تونی انتخاب کنی'
+
 	return (
 		<WidgetSettingWrapper>
 			<div className="flex flex-col gap-3">
-				<TabNavigation<DotCalendarVariant>
-					tabMode="simple"
-					activeTab={variant}
-					onTabClick={(tab) => saveMeta({ variant: tab })}
-					tabs={[
-						{
-							id: 'year',
-							label: DOT_CALENDAR_VARIANT_LABEL.year,
-							icon: <Icon name="calendarDays" size={14} />,
-						},
-						{
-							id: 'goal',
-							label: DOT_CALENDAR_VARIANT_LABEL.goal,
-							icon: <Icon name="target" size={14} />,
-						},
-					]}
-					size="md"
-					className="w-full"
-				/>
+				<SectionPanel
+					title={<label htmlFor="dot-calendar-goal-title">اسم هدف</label>}
+					size="xs"
+				>
+					<TextInput
+						id="dot-calendar-goal-title"
+						size="sm"
+						defaultValue={goalTitle}
+						onChange={(value) => saveMeta({ goalTitle: value.trim() })}
+						debounce
+						debounceTime={GOAL_TITLE_SAVE_DEBOUNCE_MS}
+						maxLength={GOAL_TITLE_MAX_LENGTH}
+						placeholder="مثلاً کنکور، سفر یا تولد"
+					/>
+				</SectionPanel>
 
-				<div className="grid">
-					<div
-						className={cn(
-							'col-start-1 row-start-1',
-							variant !== 'year' && 'invisible'
-						)}
-					>
-						<SectionPanel title="روزهای سال" size="xs">
-							<p className="text-xs leading-relaxed text-fg-muted">
-								هر روز امسال یک نقطه است؛ روزهای گذشته پررنگ‌اند و امروز با
-								یک حلقه مشخص می‌شه.
-							</p>
-							<p className="mt-2 text-xs text-fg">
-								{`${yearProgress.passedDays.toLocaleString('fa-IR')} روز از سال ${yearProgress.year.toLocaleString('fa-IR', { useGrouping: false })} گذشته و ${yearProgress.daysLeft.toLocaleString('fa-IR')} روز مانده.`}
-							</p>
-						</SectionPanel>
-					</div>
-
-					<div
-						className={cn(
-							'flex flex-col gap-3 col-start-1 row-start-1',
-							variant !== 'goal' && 'invisible'
-						)}
-					>
-						<SectionPanel
-							title={
-								<label htmlFor="dot-calendar-goal-title">عنوان هدف</label>
-							}
-							size="xs"
-						>
-							<TextInput
-								id="dot-calendar-goal-title"
-								size="sm"
-								defaultValue={meta.goalTitle ?? ''}
-								onChange={(value) =>
-									saveMeta({ goalTitle: value.trim() })
-								}
-								debounce
-								debounceTime={GOAL_TITLE_SAVE_DEBOUNCE_MS}
-								maxLength={GOAL_TITLE_MAX_LENGTH}
-								placeholder="مثلا: کنکور، سفر، تولد..."
-							/>
-						</SectionPanel>
-
-						<SectionPanel title="تاریخ هدف" size="xs">
-							<DatePicker
-								size="lg"
-								selectedDate={goalDate}
-								onDateSelect={onSelectGoalDate}
-								isDateDisabled={(date) => !isGoalDateAllowed(date, today)}
-							/>
-							<p aria-live="polite" className="mt-2 text-xs text-fg-muted">
-								{goalProgress && goalDate
-									? `${goalProgress.daysLeft.toLocaleString('fa-IR')} روز مانده تا ${goalDate.format('jD jMMMM jYYYY')}`
-									: 'از فردا تا یک سال بعد رو می‌تونی انتخاب کنی.'}
-							</p>
-						</SectionPanel>
-					</div>
-				</div>
+				<SectionPanel title="روز هدف" size="xs">
+					<DatePicker
+						size="lg"
+						selectedDate={goalDate}
+						onDateSelect={onSelectGoalDate}
+						isDateDisabled={(date) => !isGoalDateAllowed(date, today)}
+					/>
+					<p aria-live="polite" className="mt-2 text-xs text-fg-muted">
+						{dateHint}
+					</p>
+				</SectionPanel>
 			</div>
 		</WidgetSettingWrapper>
 	)
