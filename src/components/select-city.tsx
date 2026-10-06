@@ -94,7 +94,7 @@ export function SelectCity({ size }: Prop) {
 					) : selected ? (
 						selected.city
 					) : (
-						'انتخاب شهر...'
+						'انتخاب شهر…'
 					)}
 					{isSettingCity ? (
 						<Spinner size="sm" />
@@ -104,8 +104,8 @@ export function SelectCity({ size }: Prop) {
 				</button>
 
 				{error && (
-					<Alert tone="danger" title="خطا در دریافت اطلاعات">
-						لطفا اتصال اینترنت خود را بررسی کرده و مجددا تلاش کنید.
+					<Alert tone="danger" title="نتونستیم فهرست شهرها رو بیاریم">
+						اینترنتت رو چک کن و دوباره امتحان کن
 					</Alert>
 				)}
 			</div>
@@ -127,7 +127,7 @@ export function SelectCity({ size }: Prop) {
 					<div className="relative">
 						<TextInput
 							type="text"
-							placeholder="جستجوی شهر..."
+							placeholder="جستجوی شهر…"
 							value={searchTerm}
 							ref={searchInputRef}
 							onChange={(value) => setSearchTerm(value)}
@@ -142,7 +142,7 @@ export function SelectCity({ size }: Prop) {
 						{isLoading ? (
 							<div className="flex items-center justify-center p-4 text-center text-brand">
 								<Spinner size="sm" aria-hidden="true" />
-								در حال بارگذاری...
+								یه لحظه…
 							</div>
 						) : filteredCities?.length > 0 ? (
 							filteredCities.map((city) => (
@@ -163,22 +163,22 @@ export function SelectCity({ size }: Prop) {
 							))
 						) : searchTerm ? (
 							<div className="p-4 text-center text-fg-muted">
-								نتیجه‌ای یافت نشد
+								شهری با این اسم پیدا نکردیم
 							</div>
 						) : cities && cities.length === 0 ? (
 							<div className="p-4 text-center text-fg-muted">
-								هیچ شهری موجود نیست
+								فعلاً شهری توی فهرست نیست
 							</div>
 						) : (
 							<div className="p-4 text-center text-fg-muted">
-								شهر مورد نظر خود را جستجو کنید
+								اسم شهرت رو بنویس
 							</div>
 						)}
 					</div>
 
 					<div className="pt-2 border-t border-surface-3">
 						<p className="text-sm text-center text-fg-muted">
-							اگه شهر شما تو لیست نبود، لطفا اطلاع بدید تا اضافه بشه🤝
+							اگه شهرت توی فهرست نبود، بهمون بگو تا اضافه‌ش کنیم 🤝
 						</p>
 					</div>
 				</div>

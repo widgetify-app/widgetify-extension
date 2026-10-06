@@ -1,62 +1,42 @@
-import type React from 'react'
-import { cleanCityName } from '../utils/clean-city-name'
-import { formatTemperature } from '../utils/format-temperature'
+import { WidgetCenteredHeader } from '@/features/widgets/components/widget-header'
 import type { FetchedWeather } from '@/services/weather/weather.interface'
+import { Temperature, WeatherIcon } from '../components/weather-reading'
 import type { TemperatureUnit } from '../types'
+import { cleanCityName } from '../utils/clean-city-name'
 
 interface WeatherCompactSquareProps {
 	fetchedWeather: FetchedWeather | null
 	temperatureUnit: TemperatureUnit
 }
 
-export const WeatherCompactSquare: React.FC<WeatherCompactSquareProps> = ({
+export function WeatherCompactSquare({
 	fetchedWeather,
 	temperatureUnit,
-}) => {
-	const temp = formatTemperature(
-		fetchedWeather?.weather?.temperature?.temp,
-		temperatureUnit
-	)
-	const cityName = cleanCityName(fetchedWeather?.city?.fa)
-	const description = fetchedWeather?.weather?.description?.text || ''
-	const iconUrl = fetchedWeather?.weather?.icon?.url
+}: WeatherCompactSquareProps) {
+	const weather = fetchedWeather?.weather
 
 	return (
-		<section
-			aria-label="آب و هوا"
-			aria-busy={!fetchedWeather}
-			className="relative flex flex-col justify-between w-full h-full p-[10.4cqh] overflow-hidden text-right select-none"
-		>
-			<div className="flex items-center justify-between w-full gap-1">
-				<span className="text-[11.5cqh] font-bold text-fg truncate max-w-[55px]">
-					{cityName || 'مکان شما'}
-				</span>
-				{iconUrl ? (
-					<img
-						src={iconUrl}
-						className="object-contain w-[29.2cqh] h-[29.2cqh] drop-shadow-xs"
-						alt=""
+		<>
+			<WidgetCenteredHeader
+				title={cleanCityName(fetchedWeather?.city?.fa) || 'آب و هوا'}
+			/>
+			<section
+				aria-label="آب و هوا"
+				aria-busy={!fetchedWeather}
+				className="flex flex-col items-center justify-center flex-1 min-h-0 gap-0.5 select-none"
+			>
+				<span className="flex items-center gap-1">
+					<WeatherIcon src={weather?.icon?.url} className="size-[34cqh]" />
+					<Temperature
+						value={weather?.temperature?.temp}
+						unit={temperatureUnit}
+						className="text-[32cqh]"
 					/>
-				) : (
-					<div
-						aria-hidden="true"
-						className="w-[25cqh] h-[25cqh] rounded-full bg-fill-2 animate-pulse"
-					/>
-				)}
-			</div>
-
-			<div className="flex items-baseline gap-0.5 my-auto leading-none">
-				<span className="text-[31.2cqh] font-black tracking-tight text-fg">
-					<data value={temp.value}>{temp.value}</data>
 				</span>
-				<span className="text-[12.5cqh] font-bold text-fg-muted">
-					{temp.symbol}
+				<span className="max-w-full font-medium leading-tight truncate text-3xs text-fg-muted">
+					{weather?.description?.text}
 				</span>
-			</div>
-
-			<span className="text-[10.4cqh] font-medium text-fg-muted truncate max-w-full leading-tight">
-				{description || 'درحال دریافت...'}
-			</span>
-		</section>
+			</section>
+		</>
 	)
 }

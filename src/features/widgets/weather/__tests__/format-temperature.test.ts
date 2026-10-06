@@ -8,14 +8,14 @@ describe('formatTemperature', () => {
 	})
 
 	it('returns the symbol for each supported unit', () => {
-		expect(formatTemperature(0, 'metric').symbol).toBe('°C')
+		expect(formatTemperature(0, 'metric').symbol).toBe('°')
 		expect(formatTemperature(0, 'imperial').symbol).toBe('°F')
 		expect(formatTemperature(0, 'standard').symbol).toBe('K')
 	})
 
-	it('falls back to celsius when the unit is missing', () => {
-		expect(formatTemperature(0, null).symbol).toBe('°C')
-		expect(formatTemperature(0, undefined).symbol).toBe('°C')
+	it('falls back to celsius, a bare degree, when the unit is missing', () => {
+		expect(formatTemperature(0, null).symbol).toBe('°')
+		expect(formatTemperature(0, undefined).symbol).toBe('°')
 	})
 
 	it('never renders NaN when the reading is missing', () => {
