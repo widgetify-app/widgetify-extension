@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import { moodOptions } from '@/common/constants/moods'
 import { cn } from '@/common/utils/cn'
 import { ClickableTooltip } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
@@ -10,9 +11,15 @@ import { PERSIAN_WEEKDAYS } from '@/features/widgets/constants'
 import { EMPTY_EVENTS } from '../constants'
 import { useDayDetailsPopup } from '../hooks/use-day-details-popup'
 import { toIsoDateKey } from '@/features/widgets/utils/jalali-date'
-import { getHijriEvents, getShamsiEvents } from '@/common/utils/date-events'
+import { WidgetMenuButton } from '@/features/widgets/components/widget-menu-button'
+import type { CalendarDisplay } from '../types'
+import { getDayMarks } from '../utils/day-marks'
 
-export function Calendar2x1() {
+interface Calendar2x1Props {
+	display: CalendarDisplay
+}
+
+export function Calendar2x1({ display }: Calendar2x1Props) {
 	const { today, selectedDate } = useDate()
 	const { isAuthenticated } = useAuth()
 	const { data: events } = useGetEvents()
@@ -31,29 +38,48 @@ export function Calendar2x1() {
 	)
 
 	const eventsForCalendar = events || EMPTY_EVENTS
+	const moods = moodsData?.moods ?? []
 
 	return (
 		<>
+			<div className="flex items-center justify-between h-4.5 shrink-0">
+				<span className="font-bold text-3xs text-fg-muted">
+					{today.format('jMMMM jYYYY')}
+				</span>
+				<span className="widget-control">
+					<WidgetMenuButton placement="compact" />
+				</span>
+			</div>
 			<ul
 				ref={weekRef}
-				className="grid w-full h-full grid-cols-7 gap-1 p-1.5 select-none"
+				className="grid flex-1 min-h-0 grid-cols-7 gap-0.5 select-none"
 			>
 				{weekDays.map((day, idx) => {
 					const isToday = day.isSame(today, 'day')
 					const isSelected = selectedDate && day.isSame(selectedDate, 'day')
 
-					const dayEvents = events
-						? [
-								...getShamsiEvents(events, day),
-								...getHijriEvents(events, day),
-							]
-						: []
-					const isHoliday =
-						day.day() === 5 || dayEvents.some((e) => e.isHoliday)
-					const dayLabel = day.format('dddd jD jMMMM jYYYY')
+					const { isHoliday, isHolidayEvent, hasEvent, eventCount } =
+						getDayMarks(eventsForCalendar, day)
+					const isoDate = toIsoDateKey(day)
+					const dayMood = display.showMoods
+						? moodOptions.find(
+								(option) =>
+									option.value ===
+									moods.find((mood) => mood.date === isoDate)?.mood
+							)
+						: undefined
+					const showEventDot = display.showEvents && hasEvent
+					const dayLabel = [
+						day.format('dddd jD jMMMM jYYYY'),
+						isHoliday && 'تعطیل',
+						display.showEvents && eventCount > 0 && `${eventCount} مناسبت`,
+						dayMood && `حال روز: ${dayMood.label}`,
+					]
+						.filter(Boolean)
+						.join('، ')
 
 					return (
-						<li key={idx} className="h-full">
+						<li key={idx}>
 							<button
 								type="button"
 								aria-label={dayLabel}
@@ -61,66 +87,50 @@ export function Calendar2x1() {
 								aria-current={isToday ? 'date' : undefined}
 								onClick={(e) => openFor(day, e.currentTarget)}
 								className={cn(
-									'flex flex-col items-center justify-center gap-0.5',
-									'w-full h-full rounded-xl cursor-pointer transition-ui active:scale-95',
-									'focus-visible:focus-ring',
-									isSelected && 'font-bold shadow-sm',
-									isSelected &&
-										(isHoliday
-											? 'bg-danger text-on-danger'
-											: 'bg-brand text-on-brand'),
-									!isSelected && isToday && 'font-bold ring-1',
-									!isSelected &&
-										isToday &&
-										(isHoliday
-											? 'bg-danger-fill text-danger ring-danger-fill-2'
-											: 'bg-brand-fill text-brand ring-brand-fill-2'),
-									!isSelected && !isToday && ' hover:bg-fill-2',
-									!isSelected &&
-										!isToday &&
-										(isHoliday ? 'text-danger' : 'text-fg')
+									'flex flex-col items-center justify-center w-full h-full gap-0.5 rounded-xl border-2 cursor-pointer tabular-nums transition-ui focus-visible:focus-ring',
+									dayMood ? dayMood.borderClass : 'border-transparent',
+									isToday
+										? 'bg-brand text-on-brand'
+										: isSelected
+											? 'bg-fill ring-1 ring-inset ring-brand-muted'
+											: 'hover:bg-fill'
 								)}
 							>
 								<span
 									className={cn(
-										'text-4xs font-medium leading-none',
-										isSelected
-											? 'opacity-90'
+										'font-semibold text-3xs',
+										isToday
+											? 'opacity-80'
 											: isHoliday
 												? 'text-danger'
-												: 'text-fg-muted'
+												: 'text-fg-faint'
 									)}
 								>
 									{PERSIAN_WEEKDAYS[idx].short}
 								</span>
-
 								<time
-									dateTime={day
-										.clone()
-										.doAsGregorian()
-										.format('YYYY-MM-DD')}
-									className="text-sm font-extrabold leading-none tabular-nums"
+									dateTime={isoDate}
+									className={cn(
+										'text-sm font-bold leading-none',
+										!isToday &&
+											(isHoliday ? 'text-danger' : 'text-fg-strong')
+									)}
 								>
 									{day.jDate()}
 								</time>
-
 								<span
-									className="flex items-center justify-center h-1"
 									aria-hidden="true"
-								>
-									{isToday && (
-										<span
-											className={cn(
-												'w-1 h-1 rounded-full',
-												isSelected
-													? 'bg-current'
-													: isHoliday
-														? 'bg-danger'
-														: 'bg-brand'
-											)}
-										/>
+									className={cn(
+										'rounded-full size-1',
+										!showEventDot
+											? 'bg-transparent'
+											: isToday
+												? 'bg-on-brand'
+												: isHolidayEvent
+													? 'bg-danger'
+													: 'bg-fg-faint'
 									)}
-								</span>
+								/>
 							</button>
 						</li>
 					)

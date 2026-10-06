@@ -1,3 +1,6 @@
+import { PopoverMenuItem } from '@/components/ui'
+import { useWidgetMenuActions } from '@/features/widgets/widget-menu.context'
+import { Icon } from '@/icons'
 import type { WidgetSize } from '../utils/layout-engine/types'
 import { WidgetContainer } from '../components/widget-container'
 import { GoogleCalendarAuth } from './components/google-calendar-auth'
@@ -32,39 +35,52 @@ export function GoogleCalendarWidget({
 		classifiedEvents,
 		rawEvents,
 		isLoading,
+		isError,
+		refetch,
 		openEvent,
 	} = useGoogleCalendarSchedule()
 
+	useWidgetMenuActions(
+		isCalendarConnected && (
+			<PopoverMenuItem
+				icon={<Icon name="refresh" size={14} />}
+				label="به‌روزرسانی رویدادها"
+				onClick={() => refetch()}
+			/>
+		)
+	)
+
+	const isCompact = size.h === 1
+	const containerClass = isCompact ? 'px-3 py-2.5' : 'p-3 gap-2'
+
 	if (!isCalendarConnected) {
 		return (
-			<WidgetContainer className="w-full h-full" padding={false}>
+			<WidgetContainer contentClassName={containerClass}>
 				<GoogleCalendarAuth isAuthenticated={isAuthenticated} size={size} />
 			</WidgetContainer>
 		)
 	}
 
+	const smallProps = {
+		classifiedEvents,
+		isLoading,
+		isError,
+		onEventClick: openEvent,
+		onRetry: refetch,
+	}
+
 	if (size.w === 1 && size.h === 1) {
 		return (
-			<WidgetContainer className="w-full h-full" padding={false}>
-				<GoogleCalendar1x1
-					today={today}
-					classifiedEvents={classifiedEvents}
-					isLoading={isLoading}
-					onEventClick={openEvent}
-				/>
+			<WidgetContainer contentClassName={containerClass}>
+				<GoogleCalendar1x1 {...smallProps} />
 			</WidgetContainer>
 		)
 	}
 
 	if (size.w === 2 && size.h === 1) {
 		return (
-			<WidgetContainer className="w-full h-full" padding={false}>
-				<GoogleCalendar2x1
-					today={today}
-					classifiedEvents={classifiedEvents}
-					isLoading={isLoading}
-					onEventClick={openEvent}
-				/>
+			<WidgetContainer contentClassName={containerClass}>
+				<GoogleCalendar2x1 {...smallProps} />
 			</WidgetContainer>
 		)
 	}
@@ -72,23 +88,28 @@ export function GoogleCalendarWidget({
 	const variant = meta?.variant || 'schedule'
 
 	return (
-		<WidgetContainer className="w-full h-full" padding={false}>
+		<WidgetContainer contentClassName={containerClass}>
 			{variant === 'timeline' ? (
 				<GoogleCalendarTimeline
 					selectedDay={selectedDay}
 					setSelectedDay={setSelectedDay}
 					classifiedEvents={classifiedEvents}
 					isLoading={isLoading}
+					isError={isError}
 					today={today}
+					currentTime={currentTime}
 					onEventClick={openEvent}
+					onRetry={refetch}
 				/>
 			) : variant === 'agenda' ? (
 				<GoogleCalendarAgenda
 					rawEvents={rawEvents}
 					isLoading={isLoading}
+					isError={isError}
 					today={today}
 					currentTime={currentTime}
 					onEventClick={openEvent}
+					onRetry={refetch}
 				/>
 			) : (
 				<GoogleCalendarSchedule
@@ -98,8 +119,10 @@ export function GoogleCalendarWidget({
 					eventsByDate={eventsByDate}
 					classifiedEvents={classifiedEvents}
 					isLoading={isLoading}
+					isError={isError}
 					today={today}
 					onEventClick={openEvent}
+					onRetry={refetch}
 				/>
 			)}
 		</WidgetContainer>

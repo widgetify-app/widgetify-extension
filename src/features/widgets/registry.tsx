@@ -134,9 +134,10 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		],
 		defaultSize: { w: 2, h: 3 },
 		canDuplicate: true,
-		node: (_instanceId, size) => (
+		settingsTab: WidgetTabKeys.calendar_settings,
+		node: (_instanceId, size, meta) => (
 			<DateProvider>
-				<CalendarLayout size={size} />
+				<CalendarLayout size={size} meta={meta} />
 			</DateProvider>
 		),
 	},

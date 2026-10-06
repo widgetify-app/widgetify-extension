@@ -57,6 +57,7 @@ export enum WidgetTabKeys {
 	combo_settings = 'combo_settings',
 	Pet = 'pet_settings',
 	dot_calendar_settings = 'dot_calendar_settings',
+	calendar_settings = 'calendar_settings',
 }
 
 declare module '@/common/utils/call-event' {

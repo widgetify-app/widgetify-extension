@@ -8,6 +8,7 @@ import { WeatherSetting } from '@/features/widgets/weather/weather-setting'
 import { WigiArzSetting } from '@/features/widgets/wigi-arz/wigi-arz-setting'
 import { ComboSetting } from '@/features/widgets/combo-widget/combo-widget-setting'
 import { DotCalendarSetting } from '@/features/widgets/dot-calendar/dot-calendar-setting'
+import { CalendarSetting } from '@/features/widgets/calendar/calendar-setting'
 import { WidgetTabKeys } from '../types'
 
 interface WidgetSettingModalConfig {
@@ -46,6 +47,11 @@ const WIDGET_SETTING_MODALS: Record<string, WidgetSettingModalConfig> = {
 		title: 'تنظیمات تقویم نقطه‌ای',
 		size: 'lg',
 		Component: DotCalendarSetting,
+	},
+	[WidgetTabKeys.calendar_settings]: {
+		title: 'تنظیمات تقویم',
+		size: 'md',
+		Component: CalendarSetting,
 	},
 }
 

@@ -33,11 +33,12 @@ export function useGoogleCalendarSchedule() {
 	const weekStartIso = toZonedDayStart(toIsoDateKey(weekDays[0]), timezone.value)
 	const weekEndIso = toZonedDayEnd(toIsoDateKey(weekDays[6]), timezone.value)
 
-	const { data: rawEvents, isLoading } = useGetGoogleCalendarEvents(
-		isCalendarConnected,
-		weekStartIso,
-		weekEndIso
-	)
+	const {
+		data: rawEvents,
+		isLoading,
+		isError,
+		refetch,
+	} = useGetGoogleCalendarEvents(isCalendarConnected, weekStartIso, weekEndIso)
 
 	const eventsByDate = useMemo(() => {
 		const map = new Map<string, GoogleCalendarEvent[]>()
@@ -100,6 +101,8 @@ export function useGoogleCalendarSchedule() {
 		classifiedEvents,
 		rawEvents,
 		isLoading,
+		isError,
+		refetch,
 		openEvent,
 	}
 }

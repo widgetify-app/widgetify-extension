@@ -84,7 +84,7 @@ export function WidgetContextMenu({
 				<div
 					className="flex flex-col gap-1"
 					onClickCapture={(e) => {
-						if ((e.target as Element).closest('button')) onClose()
+						if ((e.target as Element).closest('button')) setTimeout(onClose)
 					}}
 				>
 					{actions}

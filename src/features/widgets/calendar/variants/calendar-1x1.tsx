@@ -1,47 +1,44 @@
 import { useDate } from '@/features/widgets/date.context'
 import { cn } from '@/common/utils/cn'
+import { WidgetMenuButton } from '@/features/widgets/components/widget-menu-button'
 import { toIsoDateKey } from '@/features/widgets/utils/jalali-date'
 
 export function Calendar1x1() {
 	const { today, todayIsHoliday } = useDate()
-	const weekDayName = today.format('dddd')
-	const dayNumber = today.jDate()
-	const monthName = today.format('jMMMM')
-	const dayDigits = String(dayNumber).split('')
 
 	return (
-		<time
-			dateTime={toIsoDateKey(today)}
-			className="relative flex flex-col items-center justify-between w-full h-full px-2 py-[4cqh] overflow-hidden select-none"
-		>
-			<span className="sr-only">{today.format('dddd jD jMMMM jYYYY')}</span>
-
-			<span
-				aria-hidden="true"
-				className="text-[11cqh] font-semibold leading-none text-fg-muted"
+		<>
+			<time
+				dateTime={toIsoDateKey(today)}
+				className="flex flex-col items-center justify-between w-full h-full py-0.5 select-none"
 			>
-				{monthName}
-			</span>
+				<span className="sr-only">{today.format('dddd jD jMMMM jYYYY')}</span>
 
-			<span
-				dir="ltr"
-				aria-hidden="true"
-				className={cn(
-					'flex items-center justify-center flex-1 gap-x-[0.06em] text-[62cqh] font-black leading-none',
-					todayIsHoliday ? 'text-danger' : 'text-fg'
-				)}
-			>
-				{dayDigits.map((digit, index) => (
-					<span key={index}>{digit}</span>
-				))}
-			</span>
+				<span aria-hidden="true" className="font-bold text-2xs text-fg-muted">
+					{today.format('jMMMM')}
+				</span>
 
-			<span
-				aria-hidden="true"
-				className="text-[11cqh] font-medium leading-none text-fg-muted"
-			>
-				{weekDayName}
-			</span>
-		</time>
+				<span
+					aria-hidden="true"
+					className={cn(
+						'text-[48cqh] font-extrabold leading-none tabular-nums',
+						todayIsHoliday ? 'text-danger' : 'text-fg-strong'
+					)}
+				>
+					{today.jDate()}
+				</span>
+
+				<span
+					aria-hidden="true"
+					className={cn(
+						'font-semibold text-2xs',
+						todayIsHoliday ? 'text-danger' : 'text-fg-muted'
+					)}
+				>
+					{today.format('dddd')}
+				</span>
+			</time>
+			<WidgetMenuButton placement="floating" />
+		</>
 	)
 }

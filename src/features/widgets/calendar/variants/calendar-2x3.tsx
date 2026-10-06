@@ -1,8 +1,15 @@
 import type React from 'react'
 import { cn } from '@/common/utils/cn'
 import { useRef, useState } from 'react'
+import { TodayChip } from '@/features/widgets/components/today-chip'
+import {
+	WidgetHeader,
+	WidgetHeaderButton,
+	WidgetHeaderTabs,
+} from '@/features/widgets/components/widget-header'
+import { useWidgetMenuActions } from '@/features/widgets/widget-menu.context'
 import Analytics from '@/analytics'
-import { ClickableTooltip, TabNavigation, Tooltip } from '@/components/ui'
+import { ClickableTooltip, PopoverMenuItem } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { useDate } from '@/features/widgets/date.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
@@ -15,88 +22,33 @@ import { useDayDetailsPopup } from '../hooks/use-day-details-popup'
 import { GoogleCalendarTab } from '../../google-calendar/google-calendar.widget'
 import { PERSIAN_WEEKDAYS } from '@/features/widgets/constants'
 import { EMPTY_EVENTS } from '../constants'
-import type { CalendarTab } from '../types'
+import type { CalendarDisplay, CalendarTab } from '../types'
 import { formatDateStr } from '@/common/utils/date-events'
 import { toIsoDateKey } from '@/features/widgets/utils/jalali-date'
 import { buildMonthGrid } from '../utils/month-grid'
 
-const navButtonClass =
-	'h-7 w-7 flex items-center justify-center rounded-full cursor-pointer transition-ui text-fg-muted opacity-70 hover:bg-surface-3 hover:opacity-100 focus-visible:focus-ring'
-
-const MonthHeader: React.FC = () => {
-	const { currentDate, today, setCurrentDate, goToToday } = useDate()
-
-	const showTodayButton =
+const MonthTitle: React.FC = () => {
+	const { currentDate, today, goToToday } = useDate()
+	const isAwayFromToday =
 		currentDate.jMonth() !== today.jMonth() || currentDate.jYear() !== today.jYear()
 
-	const changeMonth = (delta: number) => {
-		setCurrentDate(currentDate.clone().add(delta, 'jMonth'))
-	}
-
 	return (
-		<header className="flex items-center justify-between gap-1">
-			<h3 className="text-xs font-medium truncate text-fg">
+		<div className="flex items-center justify-between h-5.5 px-1.5 shrink-0">
+			<h3 className="text-sm font-extrabold text-fg-strong">
 				<time dateTime={toIsoDateKey(currentDate)}>
-					{currentDate.format('dddd، jD jMMMM jYYYY')}
+					{currentDate.format('jMMMM jYYYY')}
 				</time>
 			</h3>
-
-			<nav className="flex gap-0.5 shrink-0" aria-label="پیمایش ماه">
-				{showTodayButton && (
-					<Tooltip content="برو به امروز">
-						<button
-							type="button"
-							onClick={goToToday}
-							aria-label="برو به امروز"
-							className={navButtonClass}
-						>
-							<Icon
-								name="undo"
-								size={12}
-								strokeWidth={1}
-								aria-hidden="true"
-							/>
-						</button>
-					</Tooltip>
-				)}
-
-				<Tooltip content="ماه قبل">
-					<button
-						type="button"
-						onClick={() => changeMonth(-1)}
-						aria-label="ماه قبل"
-						className={navButtonClass}
-					>
-						<Icon
-							name="chevronRight"
-							size={12}
-							strokeWidth={1}
-							aria-hidden="true"
-						/>
-					</button>
-				</Tooltip>
-
-				<Tooltip content="ماه بعد">
-					<button
-						type="button"
-						onClick={() => changeMonth(1)}
-						aria-label="ماه بعد"
-						className={navButtonClass}
-					>
-						<Icon
-							name="chevronLeft"
-							size={12}
-							strokeWidth={1}
-							aria-hidden="true"
-						/>
-					</button>
-				</Tooltip>
-			</nav>
-		</header>
+			{isAwayFromToday && <TodayChip onClick={goToToday} />}
+		</div>
 	)
 }
 
-const MonthGrid: React.FC = () => {
+interface MonthGridProps {
+	display: CalendarDisplay
+}
+
+const MonthGrid: React.FC<MonthGridProps> = ({ display }) => {
 	const { currentDate, selectedDate } = useDate()
 	const { isAuthenticated } = useAuth()
 	const { selected_timezone: timezone } = useGeneralSetting()
@@ -127,8 +79,8 @@ const MonthGrid: React.FC = () => {
 
 	return (
 		<>
-			<div ref={gridRef} className="flex-1 min-h-0 py-1">
-				<table className="w-full h-full table-fixed border-separate border-spacing-[1.3cqh]">
+			<div ref={gridRef} className="flex-1 min-h-0">
+				<table className="w-full table-fixed border-collapse">
 					<caption className="sr-only">
 						{currentDate.format('jMMMM jYYYY')}
 					</caption>
@@ -140,7 +92,12 @@ const MonthGrid: React.FC = () => {
 									key={weekday.short}
 									scope="col"
 									abbr={weekday.full}
-									className="pb-1 text-[4.6cqh] font-normal text-fg opacity-80"
+									className={cn(
+										'h-4.5 font-semibold text-3xs',
+										weekday.short === 'ج'
+											? 'text-danger'
+											: 'text-fg-faint'
+									)}
 								>
 									{weekday.short}
 								</th>
@@ -161,6 +118,7 @@ const MonthGrid: React.FC = () => {
 												selectedDateStr={selectedDateStr}
 												timezone={timezone.value}
 												moods={moodsData?.moods ?? []}
+												display={display}
 												onClick={openFor}
 											/>
 										</td>
@@ -168,7 +126,7 @@ const MonthGrid: React.FC = () => {
 										<td
 											key={`cell-${weekIndex}-${dayIndex}`}
 											aria-hidden="true"
-											className="text-[4cqh] text-center text-fg opacity-40"
+											className="h-8 text-xs font-semibold text-center tabular-nums text-fg-ghost"
 										>
 											{cell.day}
 										</td>
@@ -200,52 +158,80 @@ const MonthGrid: React.FC = () => {
 	)
 }
 
-export function Calendar2x3() {
+const CALENDAR_TABS: { id: CalendarTab; label: string }[] = [
+	{ id: 'calendar', label: 'تقویم' },
+	{ id: 'google', label: 'تقویم گوگل' },
+]
+
+interface Calendar2x3Props {
+	display: CalendarDisplay
+}
+
+export function Calendar2x3({ display }: Calendar2x3Props) {
 	const [activeTab, setActiveTab] = useState<CalendarTab>('calendar')
+	const { currentDate, today, setCurrentDate, goToToday } = useDate()
+
+	const isAwayFromToday =
+		currentDate.jMonth() !== today.jMonth() || currentDate.jYear() !== today.jYear()
 
 	const onTabClick = (tab: CalendarTab) => {
 		setActiveTab(tab)
 		Analytics.event(`calendar_tab_switch_to_${tab}`)
 	}
 
+	const changeMonth = (delta: number) => {
+		setCurrentDate(currentDate.clone().add(delta, 'jMonth'))
+	}
+
+	useWidgetMenuActions(
+		activeTab === 'calendar' && isAwayFromToday && (
+			<PopoverMenuItem
+				icon={<Icon name="undo" size={14} />}
+				label="برو به امروز"
+				onClick={goToToday}
+			/>
+		)
+	)
+
+	const tabs = (
+		<WidgetHeaderTabs
+			label="تقویم"
+			tabs={CALENDAR_TABS}
+			activeTab={activeTab}
+			onChange={onTabClick}
+		/>
+	)
+
+	if (activeTab === 'google') {
+		return <GoogleCalendarTab tabs={tabs} />
+	}
+
 	return (
 		<>
-			<section
-				className={cn(
-					'flex flex-col flex-1 min-h-0 overflow-hidden',
-					activeTab === 'calendar' && 'p-2 pb-0'
-				)}
-				aria-label={activeTab === 'calendar' ? 'تقویم شمسی' : 'تقویم گوگل'}
-			>
-				{activeTab === 'calendar' ? (
+			<WidgetHeader
+				title={tabs}
+				actions={
 					<>
-						<MonthHeader />
-						<MonthGrid />
+						<WidgetHeaderButton
+							label="ماه قبل"
+							icon="chevronRight"
+							onClick={() => changeMonth(-1)}
+						/>
+						<WidgetHeaderButton
+							label="ماه بعد"
+							icon="chevronLeft"
+							onClick={() => changeMonth(1)}
+						/>
 					</>
-				) : (
-					<GoogleCalendarTab />
-				)}
-			</section>
-
-			<TabNavigation
-				tabMode="simple"
-				activeTab={activeTab}
-				onTabClick={onTabClick}
-				tabs={[
-					{
-						id: 'calendar',
-						label: 'تقویم',
-						icon: <Icon name="calendar" size={12} />,
-					},
-					{
-						id: 'google',
-						label: 'تقویم گوگل',
-						icon: <Icon name="googleG" size={12} />,
-					},
-				]}
-				size="sm"
-				className="flex-none m-2 mt-0"
+				}
 			/>
+			<section
+				aria-label="تقویم شمسی"
+				className="flex flex-col flex-1 min-h-0 gap-1"
+			>
+				<MonthTitle />
+				<MonthGrid display={display} />
+			</section>
 		</>
 	)
 }

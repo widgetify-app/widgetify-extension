@@ -45,3 +45,19 @@ export function useWidgetMenuActions(actions: ReactNode) {
 		}
 	}, [menu])
 }
+
+export function useWidgetSettingsSummary(summary: string | null) {
+	const menu = useWidgetMenu()
+
+	useLayoutEffect(() => {
+		if (!menu) return
+		menu.settingsSummaryRef.current = summary
+	})
+
+	useLayoutEffect(() => {
+		if (!menu) return
+		return () => {
+			menu.settingsSummaryRef.current = null
+		}
+	}, [menu])
+}

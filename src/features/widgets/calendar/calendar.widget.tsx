@@ -1,20 +1,30 @@
 import type React from 'react'
 import type { WidgetSize } from '../utils/layout-engine/types'
 import { WidgetContainer } from '../components/widget-container'
+import { useWidgetSettingsSummary } from '../widget-menu.context'
+import type { CalendarDisplay } from './types'
+import { normalizeCalendarDisplay } from './utils/normalize-calendar-display'
 import { Calendar1x1 } from './variants/calendar-1x1'
 import { Calendar2x1 } from './variants/calendar-2x1'
 import { Calendar2x3 } from './variants/calendar-2x3'
 
 interface CalendarLayoutProps {
 	size?: WidgetSize
+	meta?: unknown
 }
 
 export const CalendarLayout: React.FC<CalendarLayoutProps> = ({
 	size = { w: 2, h: 3 },
+	meta,
 }) => {
-	if (size.w === 1 && size.h === 1) {
+	const display = normalizeCalendarDisplay(meta)
+	const isToday = size.w === 1 && size.h === 1
+
+	useWidgetSettingsSummary(isToday ? null : displaySummary(display))
+
+	if (isToday) {
 		return (
-			<WidgetContainer padding={false} className="h-full">
+			<WidgetContainer contentClassName="p-2">
 				<Calendar1x1 />
 			</WidgetContainer>
 		)
@@ -22,17 +32,24 @@ export const CalendarLayout: React.FC<CalendarLayoutProps> = ({
 
 	if (size.w === 2 && size.h === 1) {
 		return (
-			<WidgetContainer className="h-full">
-				<Calendar2x1 />
+			<WidgetContainer contentClassName="p-2 gap-1">
+				<Calendar2x1 display={display} />
 			</WidgetContainer>
 		)
 	}
 
 	return (
-		<WidgetContainer padding={false} className="flex flex-col h-full">
-			<Calendar2x3 />
+		<WidgetContainer contentClassName="p-3 gap-2">
+			<Calendar2x3 display={display} />
 		</WidgetContainer>
 	)
+}
+
+function displaySummary({ showEvents, showMoods }: CalendarDisplay): string {
+	if (showEvents && showMoods) return 'رویدادها و حال روز'
+	if (showEvents) return 'فقط رویدادها'
+	if (showMoods) return 'فقط حال روز'
+	return 'فقط تاریخ‌ها'
 }
 
 export default CalendarLayout
