@@ -81,7 +81,7 @@ export const TabManager = ({
 		<div dir={direction} className={`flex ${headClass}   overflow-hidden`}>
 			<aside className="flex flex-row justify-between overflow-hidden sm:flex-col md:h-full">
 				<div
-					className={`flex  w-full md:h-full justify-between overflow-x-auto rounded-lg ${contentClass}`}
+					className={`flex  w-full md:h-full gap-1 overflow-x-auto rounded-lg ${contentClass}`}
 				>
 					<div className="flex flex-row sm:flex-col sm:gap-4">
 						{tabs
