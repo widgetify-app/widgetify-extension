@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui'
-import { callEvent } from '@/common/utils/call-event'
 import type { WidgetSize } from '@/features/widgets/utils/layout-engine/types'
 import { Icon } from '@/icons'
 
@@ -15,13 +14,20 @@ interface AddWidgetActionsProps {
 	isLoading?: boolean
 	onSave: () => void
 	onRemove: () => void
+	onUpgrade: () => void
 }
 
-function ProUpgradeButton({ label }: { label: string }) {
+function ProUpgradeButton({
+	label,
+	onUpgrade,
+}: {
+	label: string
+	onUpgrade: () => void
+}) {
 	return (
 		<Button
 			type="button"
-			onClick={() => callEvent('openSettings', 'vip')}
+			onClick={onUpgrade}
 			className="w-full gap-2 font-bold"
 			rounded={'2xl'}
 			variant={'outline'}
@@ -60,6 +66,7 @@ export function AddWidgetActions({
 	isLoading = false,
 	onSave,
 	onRemove,
+	onUpgrade,
 }: AddWidgetActionsProps) {
 	if (isVipRequired && !isVip) {
 		return (
@@ -69,6 +76,7 @@ export function AddWidgetActions({
 						? 'ارتقا به پرو برای ذخیره این مدل'
 						: 'ارتقا به پرو برای فعال‌سازی'
 				}
+				onUpgrade={onUpgrade}
 			/>
 		)
 	}
@@ -98,6 +106,7 @@ export function AddWidgetActions({
 							? 'تکرار ویجت مخصوص کاربران پرو'
 							: 'تکمیل ظرفیت ویجت‌ها (ارتقا برای نامحدود)'
 					}
+					onUpgrade={onUpgrade}
 				/>
 				<RemoveFromPageButton onRemove={onRemove} />
 			</div>
@@ -105,7 +114,12 @@ export function AddWidgetActions({
 	}
 
 	if (isLimitReached) {
-		return <ProUpgradeButton label="تکمیل ظرفیت ویجت‌ها (ارتقا برای نامحدود)" />
+		return (
+			<ProUpgradeButton
+				label="تکمیل ظرفیت ویجت‌ها (ارتقا برای نامحدود)"
+				onUpgrade={onUpgrade}
+			/>
+		)
 	}
 
 	if (canAddCustom) {

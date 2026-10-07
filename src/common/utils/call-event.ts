@@ -61,7 +61,7 @@ export interface EventName {
 	close_friends_bottomSheet: null
 	resetWallpaper: null
 	openAddCustomWidgetModal:
-		| { instanceId?: string; widgetId?: string }
+		| { instanceId?: string; widgetId?: string; returnToSettings?: boolean }
 		| null
 		| undefined
 	openPresetLayoutsModal: null

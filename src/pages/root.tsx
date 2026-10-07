@@ -44,6 +44,7 @@ export function RootLayout() {
 function Main() {
 	const [isAddWidgetModalOpen, setIsAddWidgetModalOpen] = useState(false)
 	const [addWidgetEditTarget, setAddWidgetEditTarget] = useState<any>(null)
+	const [addWidgetReturnsToSettings, setAddWidgetReturnsToSettings] = useState(false)
 	const [showAuthRequired, setAuthRequired] = useState(false)
 	const { page, setPage } = usePage()
 
@@ -57,6 +58,7 @@ function Main() {
 				} else {
 					setAddWidgetEditTarget(null)
 				}
+				setAddWidgetReturnsToSettings(Boolean(payload?.returnToSettings))
 				setIsAddWidgetModalOpen(true)
 			}
 		)
@@ -107,6 +109,7 @@ function Main() {
 						setIsAddWidgetModalOpen(false)
 						setAddWidgetEditTarget(null)
 					}}
+					returnsToSettings={addWidgetReturnsToSettings}
 				/>
 			</FreeWidgetProvider>
 

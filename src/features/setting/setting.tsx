@@ -120,9 +120,8 @@ export const SettingModal = ({
 	const [isSteppedAside, setIsSteppedAside] = useState(false)
 
 	function openWidgetSettings() {
-		callEvent('openWidgetsSettings', { tab: null })
+		callEvent('openAddCustomWidgetModal', { returnToSettings: true })
 		Analytics.event('open_widgets_settings_from_settings_modal')
-		onClose()
 	}
 
 	useEffect(() => {

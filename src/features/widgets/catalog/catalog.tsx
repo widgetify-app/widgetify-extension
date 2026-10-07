@@ -20,7 +20,12 @@ import { AddWidgetOptions } from './components/options'
 import { AddWidgetPreview } from './components/preview'
 import { AddWidgetActions } from './components/actions'
 
-export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalProps) {
+export function AddWidgetModal({
+	isOpen,
+	editTarget,
+	onClose,
+	returnsToSettings,
+}: AddWidgetModalProps) {
 	const { isVip } = useAuth()
 	const {
 		isWidgetVipOnly,
@@ -178,11 +183,16 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 		removeWidget(target.instanceId)
 	}
 
+	const openVipSettings = () => {
+		callEvent('openSettings', 'vip')
+		if (returnsToSettings) onClose()
+	}
+
 	const handleSave = async () => {
 		if (!selectedDef || isLoading) return
 
 		if (isVipRequired && !isVip) {
-			callEvent('openSettings', 'vip')
+			openVipSettings()
 			return
 		}
 
@@ -199,7 +209,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 		}
 
 		if (isLimitReached) {
-			callEvent('openSettings', 'vip')
+			openVipSettings()
 			return
 		}
 
@@ -380,6 +390,7 @@ export function AddWidgetModal({ isOpen, editTarget, onClose }: AddWidgetModalPr
 										isLoading={isLoading}
 										onSave={handleSave}
 										onRemove={handleRemove}
+										onUpgrade={openVipSettings}
 									/>
 								</div>
 							</div>
