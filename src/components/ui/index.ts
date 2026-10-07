@@ -25,6 +25,8 @@ export * from './dropdown/dropdown'
 export * from './dropdown/dropdown-item'
 export * from './dropdown/dropdown-item.variants'
 
+export * from './empty-state/empty-state'
+
 export * from './image-slider/image-slider'
 export * from './image-slider/use-image-slider'
 
@@ -51,6 +53,8 @@ export * from './portal/portal'
 
 export * from './progress-ring/progress-ring'
 
+export * from './scroll-row/scroll-row'
+
 export * from './section-panel/section-panel'
 export * from './section-panel/section-panel.variants'
 
@@ -64,6 +68,9 @@ export * from './tabs/tabs'
 export * from './tabs/tabs.variants'
 
 export * from './stacked-toaster/stacked-toaster'
+
+export * from './tile/tile'
+export * from './tile/tile.variants'
 
 export * from './toggle/toggle'
 export * from './toggle/toggle.variants'
