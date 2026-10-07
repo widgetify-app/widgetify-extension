@@ -47,6 +47,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 			callEvent(goTo as any, target as any)
 			Analytics.event('notifications_action')
 		}
+		callEvent('closeAllDropdowns')
 	}
 
 	const headTitleStyle: React.CSSProperties = {
