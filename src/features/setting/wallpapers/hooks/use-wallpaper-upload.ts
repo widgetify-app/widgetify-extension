@@ -31,7 +31,7 @@ export function useWallpaperUpload({ onWallpaperChange }: UseWallpaperUploadProp
 
 		if (isAuthenticated && isVip) {
 			if (!isImage && !isVideo) {
-				showToast('لطفاً یه فایل عکس، گیف یا ویدیو انتخاب کن', 'error')
+				showToast('یه فایل عکس، گیف یا ویدیو انتخاب کن', 'error')
 				return
 			}
 
@@ -69,7 +69,7 @@ export function useWallpaperUpload({ onWallpaperChange }: UseWallpaperUploadProp
 		}
 
 		if (!isImage) {
-			showToast('لطفاً یه عکس انتخاب کن', 'error')
+			showToast('یه عکس انتخاب کن', 'error')
 			return
 		}
 

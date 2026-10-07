@@ -122,7 +122,7 @@ const TOAST_THEMES: Record<
 				<Icon name="exclamation" size={12} />
 			</div>
 		),
-		title: 'خطا',
+		title: 'یه مشکلی پیش اومد',
 		actionText: 'باشه',
 		messageClass: 'text-[#ffc9c9d9]',
 	},
@@ -133,8 +133,8 @@ const TOAST_THEMES: Record<
 				<Icon name="check" size={16} className="stroke-3" />
 			</div>
 		),
-		title: 'موفقیت آمیز',
-		actionText: 'تایید',
+		title: 'انجام شد',
+		actionText: 'باشه',
 		messageClass: 'text-[#a4f4cfd9]',
 	},
 	warning: {
@@ -144,7 +144,7 @@ const TOAST_THEMES: Record<
 				<Icon name="exclamation" size={12} />
 			</div>
 		),
-		title: 'هشدار',
+		title: 'حواست باشه',
 		actionText: 'متوجه شدم',
 		messageClass: 'text-[#fee685d9]',
 	},

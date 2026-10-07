@@ -45,7 +45,7 @@ export function SelectFriendLayout({
 					<Spinner size="lg" />
 				</div>
 			) : friends.length === 0 ? (
-				<FriendEmptyList emptyMessage="هنوز دوستی نداری." />
+				<FriendEmptyList emptyMessage="هنوز دوستی نداری" />
 			) : (
 				<div className="flex flex-col gap-1">
 					{friends.map((friend) => {

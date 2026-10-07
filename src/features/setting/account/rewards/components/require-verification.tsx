@@ -25,7 +25,7 @@ export const RequireVerification = ({
 			<div className="flex items-center justify-center h-full">
 				<div className="text-center">
 					<Spinner size="2xl" className="mx-auto" />
-					<p className="mt-2">در حال بارگذاری...</p>
+					<p className="mt-2">یه لحظه…</p>
 				</div>
 			</div>
 		)
@@ -44,9 +44,9 @@ export const RequireVerification = ({
 						}
 					>
 						<Icon name="verifyUser" size={20} className="text-success" />
-						<h3 className="text-lg font-semibold">نیاز به تأیید حساب</h3>
+						<h3 className="text-lg font-semibold">حسابت هنوز تایید نشده</h3>
 						<p className={'text-xs text-fg text-center'}>
-							برای دسترسی به این بخش، لطفا حساب کاربری خود را تأیید کنید.
+							برای دیدن این بخش اول حسابت رو تایید کن
 						</p>
 					</div>
 				</div>
@@ -63,9 +63,9 @@ export const RequireVerification = ({
 					'flex h-full flex-col items-center justify-center p-4 text-center rounded-lg text-fg'
 				}
 			>
-				<h3 className="mb-2 text-xl font-semibold">نیاز به تأیید حساب</h3>
+				<h3 className="mb-2 text-xl font-semibold">حسابت هنوز تایید نشده</h3>
 				<p className={'text-xs mb-4 text-fg text-center'}>
-					برای دسترسی به این بخش، لطفا حساب کاربری خود را تأیید کنید.
+					برای دیدن این بخش اول حسابت رو تایید کن
 				</p>
 				<Button onClick={handleVerificationClick} size="sm">
 					تأیید حساب

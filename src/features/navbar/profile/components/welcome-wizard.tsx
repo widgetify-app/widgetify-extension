@@ -85,7 +85,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 			selectedInterests.length === 0 ||
 			!selectedReferralSource
 		) {
-			showToast('لطفا تمام مراحل را تکمیل کنید.', 'error')
+			showToast('یه مرحله جا مونده، همه رو کامل کن', 'error')
 			return
 		}
 
@@ -98,7 +98,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 			})
 		)
 		if (err) {
-			showToast('خطا در ثبت اطلاعات. لطفا دوباره تلاش کنید.', 'error')
+			showToast('نتونستیم اطلاعاتت رو ثبت کنیم، دوباره امتحان کن', 'error')
 			Analytics.event('welcome_wizard_completion_failed')
 			return
 		}
@@ -155,7 +155,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 								<div className="flex flex-wrap gap-2 overflow-y-auto max-h-75 scrollbar-none">
 									{occupationsLoading ? (
 										<div className="col-span-2 py-10 text-center animate-pulse">
-											در حال بارگذاری...
+											یه لحظه…
 										</div>
 									) : (
 										occupations?.map((job) => {
@@ -212,7 +212,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 								<div className="flex flex-wrap gap-2 overflow-y-auto max-h-75 scrollbar-none">
 									{interestsLoading ? (
 										<div className="w-full py-10 text-center animate-pulse">
-											در حال بارگذاری...
+											یه لحظه…
 										</div>
 									) : (
 										interests?.map((item) => {
@@ -273,7 +273,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 									مرحله ۴: از کجا شنیدی؟
 								</h2>
 								<p className="text-sm font-medium leading-loose opacity-70 text-balance">
-									لطفا بگو از کجا با ویجتیفای آشنا شدی.
+									بگو از کجا با ویجتیفای آشنا شدی
 								</p>
 							</div>
 
@@ -315,7 +315,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 										<TextInput
 											value={referralCode}
 											onChange={setReferralCode}
-											placeholder="کد دعوت را وارد کنید"
+											placeholder="کد دعوت رو بنویس"
 										/>
 									</div>
 								)}
@@ -349,8 +349,8 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 									همه چیز آماده‌ست! 🚀
 								</h2>
 								<p className="text-sm font-medium leading-loose opacity-70">
-									تنظیمات پروفایلت با موفقیت انجام شد. حالا می‌تونی از
-									تمام امکانات استفاده کنی.
+									پروفایلت آماده‌ست. حالا می‌تونی از همه‌ی امکانات استفاده
+									کنی.
 								</p>
 							</div>
 							<Button
@@ -360,7 +360,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 								color={'brand'}
 								rounded={'2xl'}
 							>
-								شروع استفاده
+								شروع کنیم
 							</Button>
 						</div>
 						<StepImage

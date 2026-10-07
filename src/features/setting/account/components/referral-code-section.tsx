@@ -13,7 +13,7 @@ export const ReferralCodeSection = ({ code, className }: ReferralCodeSectionProp
 			showToast('کد دعوت کپی شد', 'success')
 		} catch (error) {
 			console.error('Failed to copy code:', error)
-			showToast('خطا در کپی کردن کد', 'error')
+			showToast('نتونستیم کد رو کپی کنیم', 'error')
 		}
 	}
 
@@ -21,7 +21,7 @@ export const ReferralCodeSection = ({ code, className }: ReferralCodeSectionProp
 		<SectionPanel
 			title={
 				<div className="flex items-center gap-2">
-					<span>کد دعوت شما</span>
+					<span>کد دعوتت</span>
 				</div>
 			}
 			size="sm"

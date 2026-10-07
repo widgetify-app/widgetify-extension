@@ -23,9 +23,9 @@ export const FriendRequestsBottomSheet = ({ isOpen, onClose }: Prop) => {
 				friendId,
 				state: 'accepted',
 			})
-			showToast('دوست شدید!', 'success')
+			showToast('حالا با هم دوستید', 'success')
 		} catch {
-			showToast('خطا در پردازش', 'error')
+			showToast('یه مشکلی پیش اومد، دوباره امتحان کن', 'error')
 		}
 	}
 
@@ -72,13 +72,13 @@ export const FriendRequestsBottomSheet = ({ isOpen, onClose }: Prop) => {
 			isOpen={isOpen}
 			onClose={() => onClose()}
 			size="lg"
-			title="درخواست های دوستی"
+			title="درخواست‌های دوستی"
 			closeOnBackdropClick
 		>
 			<FriendsList
 				status="PENDING"
 				renderFriendActions={renderFriendActions}
-				emptyMessage="درخواست دوستی جدیدی ندارید"
+				emptyMessage="درخواست دوستی تازه‌ای نداری"
 				caching={false}
 			/>
 		</Modal>

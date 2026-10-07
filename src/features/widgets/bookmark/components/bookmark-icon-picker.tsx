@@ -35,9 +35,9 @@ export function BookmarkIconPicker({ value, url, onChange, size = 'md' }: Props)
 
 	const handleFile = (file?: File) => {
 		if (!file?.type.startsWith('image/'))
-			return showToast('فرمت فایل نامعتبر است', 'error')
+			return showToast('این نوع فایل پشتیبانی نمی‌شه، یه عکس انتخاب کن', 'error')
 		if (file.size > 250 * 1024) {
-			return showToast('حجم فایل آیکون نباید بیشتر از ۲۵۰ کیلوبایت باشد', 'error')
+			return showToast('آیکون باید کمتر از ۲۵۰ کیلوبایت باشه', 'error')
 		}
 		setError(false)
 		onChange(file)

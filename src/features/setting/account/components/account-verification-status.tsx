@@ -17,7 +17,7 @@ export const AccountVerificationStatus = ({
 			<Alert
 				tone="warning"
 				icon="mail"
-				title="حساب شما تایید نشده است"
+				title="حسابت هنوز تایید نشده"
 				action={
 					<Button
 						onClick={onSendVerificationEmail}
@@ -40,7 +40,7 @@ export const AccountVerificationStatus = ({
 					</Button>
 				}
 			>
-				لطفا ایمیل خود را بررسی کنید یا ایمیل جدید درخواست کنید.
+				ایمیلت رو چک کن یا یه ایمیل تایید دیگه بگیر
 			</Alert>
 		</SectionPanel>
 	)

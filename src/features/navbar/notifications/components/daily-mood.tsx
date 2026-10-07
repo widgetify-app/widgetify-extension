@@ -52,13 +52,10 @@ export function DailyMoodNotification({ className }: Prop) {
 
 		if (response.action === 'removed') {
 			setMood(value)
-			showToast(
-				'حال روزانت حذف شد. اگه بعدا خواستی دوباره می‌تونی یکی انتخاب کنی.',
-				'info'
-			)
+			showToast('حال امروزت پاک شد، هر وقت خواستی دوباره انتخابش کن', 'info')
 		} else {
 			setMood(value as MoodType)
-			showToast('حال روزانه شما با موفقیت ثبت شد.', 'success')
+			showToast('حال امروزت ثبت شد', 'success')
 		}
 
 		setTimeout(() => {

@@ -34,7 +34,7 @@ export const InterestsSelector = ({
 		<div className="p-2 border w-82 bg-surface-2  rounded-2xl border-surface-3">
 			{isLoading ? (
 				<div className="py-3 text-3xs italic font-medium text-center animate-pulse text-fg-muted">
-					صبر کنید...
+					یه لحظه…
 				</div>
 			) : (
 				<div className="flex flex-wrap gap-0.5 p-1 overflow-x-hidden overflow-y-auto max-h-40">

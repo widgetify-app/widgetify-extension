@@ -77,7 +77,7 @@ export const FriendsLayout = () => {
 						status="ACCEPTED"
 						renderFriendActions={renderFriendActions}
 						itemsPerPage={8}
-						emptyMessage="هنوز هیچ دوستی اضافه نکرده‌اید"
+						emptyMessage="هنوز دوستی اضافه نکردی"
 						caching={true}
 					/>
 				</div>
@@ -92,7 +92,7 @@ export const FriendsLayout = () => {
 				isLoading={isRemoving}
 				onClose={() => setSelectedUser(null)}
 				onConfirm={() => handleRemoveFriend(selectedUser?.id || null)}
-				message={`"${selectedUser?.user.name}"، حذف بشه از لیست دوستات؟`}
+				message={`"${selectedUser?.user.name}" از لیست دوستات حذف بشه؟`}
 			/>
 		</>
 	)

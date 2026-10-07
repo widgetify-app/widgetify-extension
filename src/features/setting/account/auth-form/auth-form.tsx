@@ -123,7 +123,10 @@ const AuthForm = () => {
 			const content = translateError(err)
 			setError((prev) => ({
 				...prev,
-				api: typeof content === 'string' ? content : 'خطایی در ارسال کد رخ داد',
+				api:
+					typeof content === 'string'
+						? content
+						: 'نتونستیم کد رو بفرستیم، دوباره امتحان کن',
 			}))
 		}
 	}
@@ -281,7 +284,7 @@ const AuthForm = () => {
 							disabled={isOtpSending || !identifier.trim()}
 							className="w-full text-sm font-semibold transition-ui shadow-sm h-11 hover:brightness-105"
 						>
-							{isOtpSending ? 'درحال بررسی...' : 'ادامه'}
+							{isOtpSending ? 'در حال بررسی…' : 'ادامه'}
 						</Button>
 					</form>
 
@@ -359,7 +362,7 @@ const AuthForm = () => {
 							rounded="xl"
 							className="w-full text-sm font-semibold transition-ui shadow-sm h-11 hover:brightness-105"
 						>
-							{isSigningIn ? 'درحال ورود...' : 'ورود به حساب'}
+							{isSigningIn ? 'در حال ورود…' : 'ورود به حساب'}
 						</Button>
 
 						<button
@@ -370,7 +373,7 @@ const AuthForm = () => {
 						>
 							<Icon name="mail" className="w-4 h-4 text-fg-muted" />
 							<span>
-								{isOtpSending ? 'درحال ارسال...' : 'ورود با کد موقت'}
+								{isOtpSending ? 'در حال ارسال…' : 'ورود با کد موقت'}
 							</span>
 						</button>
 					</form>
@@ -438,7 +441,7 @@ const AuthForm = () => {
 									/>
 									<span>
 										{isOtpSending
-											? 'درحال ارسال...'
+											? 'در حال ارسال…'
 											: 'ارسال دوباره کد'}
 									</span>
 								</button>
@@ -476,7 +479,7 @@ const AuthForm = () => {
 							disabled={otp.length !== 6 || isOtpVerifying}
 							className="w-full mt-1 text-sm font-semibold transition-ui shadow-sm h-11 hover:brightness-105"
 						>
-							{isOtpVerifying ? 'درحال بررسی...' : 'تایید و ورود'}
+							{isOtpVerifying ? 'در حال بررسی…' : 'تایید و ورود'}
 						</Button>
 					</form>
 				</div>

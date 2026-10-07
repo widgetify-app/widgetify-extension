@@ -146,7 +146,7 @@ export function GalleryPickerModal({
 									size={32}
 									className="mb-2 opacity-30"
 								/>
-								<p className="text-sm font-medium">هیچ تصویری پیدا نشد</p>
+								<p className="text-sm font-medium">تصویری پیدا نکردیم</p>
 							</div>
 						) : type === 'BOOKMARK_ICON' ? (
 							<div className="grid grid-cols-4 gap-2.5 sm:grid-cols-5 md:grid-cols-6">

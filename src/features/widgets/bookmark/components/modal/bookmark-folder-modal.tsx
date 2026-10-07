@@ -149,7 +149,7 @@ export function BookmarkFolderModal({
 				})),
 			})
 		} catch {
-			showToast('خطا در مرتب‌سازی بوکمارک‌ها', 'error')
+			showToast('نتونستیم ترتیب بوکمارک‌ها رو ذخیره کنیم', 'error')
 		}
 
 		Analytics.event('bookmark_reorder')

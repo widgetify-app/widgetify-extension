@@ -27,8 +27,8 @@ export function GeneralSettingTab() {
 			>
 				<div className="flex">
 					<p className="flex-1 ml-1 text-sm font-light leading-relaxed text-fg-muted">
-						برای کاهش مصرف منابع، انیمیشن‌ها، حیوان خانگی، ثانیه‌شمار ساعت و
-						برخی افکت‌های بصری غیرفعال می‌شوند.
+						برای اینکه ویجتیفای سبک‌تر اجرا بشه، انیمیشن‌ها، حیوان خانگی،
+						ثانیه‌شمار ساعت و بعضی افکت‌ها خاموش می‌شن.
 					</p>
 					<ToggleSwitch
 						label="حالت بهینه"

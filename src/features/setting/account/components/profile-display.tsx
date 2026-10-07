@@ -68,12 +68,12 @@ export const ProfileDisplay = () => {
 
 	const handleUploadFile = (file: File) => {
 		if (file.size > 2 * 1024 * 1024) {
-			showToast('فایل بزرگتر از ۲ مگابایت است', 'error')
+			showToast('عکس باید کمتر از ۲ مگابایت باشه', 'error')
 			return
 		}
 		const validTypes = ['image/png', 'image/jpeg', 'image/webp']
 		if (!validTypes.includes(file.type)) {
-			showToast('فرمت فایل نامعتبر است', 'error')
+			showToast('این نوع فایل پشتیبانی نمی‌شه، یه عکس انتخاب کن', 'error')
 			return
 		}
 		setCropImage(URL.createObjectURL(file))
@@ -92,7 +92,7 @@ export const ProfileDisplay = () => {
 				setCropImage(null)
 			}
 		} catch {
-			showToast('خطا در بارگذاری تصویر', 'error')
+			showToast('نتونستیم عکس رو آپلود کنیم، دوباره امتحان کن', 'error')
 		}
 	}
 
@@ -112,7 +112,7 @@ export const ProfileDisplay = () => {
 			await refetchUser()
 			Analytics.event('avatar_updated_from_gallery')
 		} catch {
-			showToast('خطا در تغییر آواتار', 'error')
+			showToast('نتونستیم آواتارت رو عوض کنیم، دوباره امتحان کن', 'error')
 		}
 	}
 
@@ -268,8 +268,7 @@ export const ProfileDisplay = () => {
 			{user?.inCache && (
 				<div className="pt-2">
 					<Alert tone="danger" icon="offline">
-						اطلاعات کاربری از حافظه محلی بارگذاری شده‌اند. اتصال اینترنت خود را
-						بررسی کنید.
+						این اطلاعات مال آخرین باریه که آنلاین بودی. اینترنتت رو چک کن.
 					</Alert>
 				</div>
 			)}

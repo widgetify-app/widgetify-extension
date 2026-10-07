@@ -64,7 +64,7 @@ export function ExplorerCategory({ category, categoryRefs, onOpenPromoModal }: P
 							className="flex items-center justify-center w-full h-full text-3xs border border-dashed border-line rounded-2xl text-fg-faint"
 							key={link.url}
 						>
-							نیازمند بروزرسانی
+							افزونه رو به‌روز کن
 						</div>
 					)
 				)}

@@ -91,7 +91,7 @@ export default function LoginGoogleButton() {
 					/>
 				)}
 			</div>
-			<span>{isLoading ? 'درحال ورود...' : 'ورود با حساب گوگل'}</span>
+			<span>{isLoading ? 'در حال ورود…' : 'ورود با حساب گوگل'}</span>
 		</button>
 	)
 }

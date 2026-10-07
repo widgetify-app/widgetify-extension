@@ -34,10 +34,9 @@ export function WebAppAuthGate({ scopes, onConfirm }: Prop) {
 				{isAuthenticated ? (
 					<>
 						<div className="flex flex-col items-center gap-3">
-							<p className="text-sm font-semibold">نیاز به تایید دسترسی</p>
+							<p className="text-sm font-semibold">اجازه می‌دی؟</p>
 							<p className="max-w-xs text-xs leading-relaxed opacity-70">
-								این برنامک برای ادامه نیاز داره به اطلاعات زیر دسترسی
-								داشته باشه:
+								این برنامک برای ادامه به این اطلاعات دسترسی می‌خواد:
 							</p>
 
 							<ul className="flex flex-col w-full max-w-xs gap-2 text-xs">
@@ -66,11 +65,9 @@ export function WebAppAuthGate({ scopes, onConfirm }: Prop) {
 				) : (
 					<>
 						<div className="flex flex-col items-center gap-3">
-							<p className="text-sm font-semibold">
-								نیازمند ورود به حساب کاربری
-							</p>
+							<p className="text-sm font-semibold">اول وارد حسابت شو</p>
 							<p className="max-w-xs text-xs leading-relaxed opacity-70">
-								برای ورود به برنامک، باید وارد حساب کاربری شوید
+								برای باز کردن برنامک باید وارد حسابت بشی
 							</p>
 						</div>
 
@@ -82,7 +79,7 @@ export function WebAppAuthGate({ scopes, onConfirm }: Prop) {
 							color={'brand'}
 							className="w-full text-sm font-medium border-none"
 						>
-							باشه، ورود به حساب
+							ورود به حساب
 						</Button>
 					</>
 				)}

@@ -48,12 +48,12 @@ export function ManageActivityBottomSheet({
 
 	const handleSave = async () => {
 		if (!activity.trim()) {
-			showToast('لطفا متنی وارد کنید', 'error')
+			showToast('اول یه چیزی بنویس', 'error')
 			return
 		}
 
 		if (currentActivity) {
-			showToast('شما نمی‌توانید در این زمان نوشته جدید ارسال کنید', 'error')
+			showToast('فعلاً نمی‌تونی نوشته‌ی جدید بذاری', 'error')
 			return
 		}
 
@@ -80,11 +80,11 @@ export function ManageActivityBottomSheet({
 		try {
 			await removeAsync({ id: currentActivity.id })
 
-			showToast('نوشته شما حذف شد', 'success')
+			showToast('نوشته‌ت حذف شد', 'success')
 			setActivity('')
 			onClose()
 		} catch {
-			showToast('خطا در حذف نوشته', 'error')
+			showToast('نتونستیم نوشته رو حذف کنیم، دوباره امتحان کن', 'error')
 		}
 	}
 
@@ -93,7 +93,7 @@ export function ManageActivityBottomSheet({
 			<div className="flex flex-col gap-3 p-2 border min-w-96 max-w-96 bg-surface-2 border-surface-3 rounded-2xl">
 				<div className="flex flex-col gap-1">
 					<div className="flex flex-row items-center justify-between">
-						<p className="text-sm font-bold text-fg-muted">نوشته فعلی شما</p>
+						<p className="text-sm font-bold text-fg-muted">نوشته‌ی فعلیت</p>
 						<Button
 							type="button"
 							onClick={handleDelete}
@@ -120,7 +120,7 @@ export function ManageActivityBottomSheet({
 
 				<div className="flex flex-col">
 					<p className="mb-2 text-sm font-bold text-fg-muted">
-						واکنش ها ({fetchedReactions?.reactions?.length || 0})
+						واکنش‌ها ({fetchedReactions?.reactions?.length || 0})
 					</p>
 					{isPending ? (
 						<div className="flex flex-col gap-1 h-28">
@@ -181,7 +181,7 @@ export function ManageActivityBottomSheet({
 						<div className="flex justify-between">
 							<p className="flex text-sm font-medium text-fg">
 								متن نوشته
-								<Tooltip content="نوشته فقط برای دوستان نمایش داده میشه!">
+								<Tooltip content="نوشته‌ت رو فقط دوستات می‌بینن">
 									<Icon
 										name="info"
 										className="mr-1 text-fg-muted mt-0.5"
@@ -265,19 +265,17 @@ export function ManageActivityBottomSheet({
 				title="قوانین"
 			>
 				<div className="space-y-3 text-sm leading-relaxed text-fg-muted">
-					<p>
-						از درج هرگونه متن یا محتوای توهین‌آمیز، سیاسی یا دینی خودداری کنید.
-					</p>
+					<p>متن توهین‌آمیز، سیاسی یا دینی ننویس.</p>
 
-					<p>از اشتراک‌گذاری لینک‌ها و محتوای خارجی خودداری کنید.</p>
+					<p>لینک یا محتوای بیرونی نذار.</p>
 
 					<p>
-						در صورت گزارش محتوای نامناسب، حساب کاربری شما ممکن است محدود شود.
+						اگه نوشته‌ای ازت گزارش بشه و نامناسب باشه، ممکنه حسابت محدود بشه.
 					</p>
 
-					<p>لطفا با رعایت قوانین به ما در حفظ فضای امن و دوستانه کمک کنید.</p>
+					<p>کمکمون کن اینجا جای امن و دوستانه‌ای بمونه.</p>
 
-					<p>در هر روز فقط یک بار امکان انتشار نوشته جدید دارید.</p>
+					<p>هر روز فقط یه نوشته‌ی جدید می‌تونی بذاری.</p>
 				</div>
 
 				<Button

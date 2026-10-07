@@ -44,7 +44,7 @@ export function AddEmailModal(prop: AddPhoneProp) {
 			if (isEmpty(email))
 				return setError((prev) => ({
 					...prev,
-					email: 'لطفا ایمیل خود را وارد کنید.',
+					email: 'ایمیلت رو بنویس',
 				}))
 			const [err, _] = await safeAwait(requestChange(email))
 			if (err) {
@@ -59,7 +59,7 @@ export function AddEmailModal(prop: AddPhoneProp) {
 			if (isEmpty(otpCode) || isLessThan(otpCode, 6))
 				return setError((prev) => ({
 					...prev,
-					otp: 'لطفا کد ارسال شده را وارد کنید.',
+					otp: 'کدی که برات فرستادیم رو بنویس',
 				}))
 
 			const [err, _] = await safeAwait(
@@ -75,7 +75,7 @@ export function AddEmailModal(prop: AddPhoneProp) {
 					phone: null,
 				})
 			} else {
-				showToast('ایمیل با موفقیت اضافه شد', 'success')
+				showToast('ایمیلت اضافه شد', 'success')
 				prop.onClose('success')
 			}
 		}
@@ -90,8 +90,8 @@ export function AddEmailModal(prop: AddPhoneProp) {
 			<section>
 				<div>
 					<p className="text-xs text-fg-muted mt-0.5">
-						با اضافه کردن ایمیل، می‌تونی وقتی پسوردت رو فراموش کردی یا می‌خوای
-						امنیت حسابت رو بالا ببری، ازش استفاده کنی.
+						با ایمیل، اگه رمزت یادت رفت می‌تونی برگردونیش و حسابت هم امن‌تر
+						می‌شه.
 					</p>
 				</div>
 

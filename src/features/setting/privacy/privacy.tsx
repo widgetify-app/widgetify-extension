@@ -36,8 +36,8 @@ export function PrivacySettings() {
 								آمار و عملکرد افزونه (Analytics)
 							</h3>
 							<p className="text-xs font-normal leading-relaxed text-fg-muted">
-								جمع‌آوری آمار فنی و گزارش خطاهای ناشناس برای بهبود عملکرد
-								افزونه بدون ارسال هیچ‌گونه اطلاعات شخصی یا یادداشت‌ها
+								آمار فنی و گزارش خطاهای ناشناس رو می‌فرستیم تا افزونه رو
+								بهتر کنیم. هیچ اطلاعات شخصی یا یادداشتی فرستاده نمی‌شه
 							</p>
 						</div>
 						<div className="shrink-0 pt-0.5">
@@ -56,8 +56,8 @@ export function PrivacySettings() {
 									نمایش آیکون‌های بوکمارک‌ها
 								</h3>
 								<p className="text-xs font-normal leading-relaxed text-fg-muted">
-									دریافت فاوآیکون بوکمارک‌ها از سرویس امن گوگل با ارسال
-									دامنه سایت‌ها برای نمایش بصری بهتر
+									آیکون بوکمارک‌ها رو از سرویس گوگل می‌گیریم و برای این
+									کار فقط دامنه‌ی سایت فرستاده می‌شه
 								</p>
 							</div>
 							<div className="shrink-0 pt-0.5">
@@ -76,8 +76,8 @@ export function PrivacySettings() {
 								دسترسی به بوکمارک‌های مرورگر
 							</h3>
 							<p className="text-xs font-normal leading-relaxed text-fg-muted">
-								نمایش بوکمارک‌های ذخیره‌شده مرورگر در ویجت سرچ‌باکس، ذخیره یا
-								ارسال نمیشن
+								بوکمارک‌های مرورگرت توی ویجت جستجو نشون داده می‌شن و جایی
+								ذخیره یا فرستاده نمی‌شن
 							</p>
 						</div>
 						<div className="shrink-0 pt-0.5">
@@ -97,8 +97,8 @@ export function PrivacySettings() {
 								دسترسی به تب‌ها
 							</h3>
 							<p className="text-xs font-normal leading-relaxed text-fg-muted">
-								امکان باز کردن و مدیریت گروهی بوکمارک‌های داخل پوشه‌ها در
-								تب‌های مرورگر
+								تا بتونی همه‌ی بوکمارک‌های یه پوشه رو یه‌جا توی تب‌های مرورگر
+								باز کنی
 							</p>
 						</div>
 						<div className="shrink-0 pt-0.5">

@@ -272,20 +272,18 @@ export function BookmarkGrid({
 				message={
 					bookmarkToDelete?.type === 'FOLDER' ? (
 						<div>
-							<p>آیا از حذف پوشه "{bookmarkToDelete.title}" مطمئن هستی؟</p>
+							<p>پوشه‌ی «{bookmarkToDelete.title}» حذف بشه؟</p>
 							<Alert tone="danger" className="mt-2">
-								با حذف این پوشه، تمام بوکمارک‌های داخلش هم برای همیشه حذف
-								میشن و این عمل قابل بازگشت نیست!
+								همه‌ی بوکمارک‌های داخلش هم برای همیشه حذف می‌شن و دیگه
+								برنمی‌گردن
 							</Alert>
 						</div>
 					) : (
-						<p>
-							آیا از حذف بوکمارک "{bookmarkToDelete?.title}" اطمینان دارید؟
-						</p>
+						<p>بوکمارک «{bookmarkToDelete?.title}» حذف بشه؟</p>
 					)
 				}
-				confirmText={isRemoving ? 'در حال حذف...' : 'حذف'}
-				cancelText="انصراف"
+				confirmText={isRemoving ? 'در حال حذف…' : 'حذف'}
+				cancelText="نه"
 				variant="danger"
 				isLoading={isRemoving}
 			/>

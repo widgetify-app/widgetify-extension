@@ -288,10 +288,10 @@ export function ExplorerContent() {
 						<div className="flex flex-col items-center justify-center gap-3 py-24 text-center">
 							<div className="text-4xl opacity-40">🔍</div>
 							<p className="text-sm font-bold text-fg-strong">
-								نتیجه‌ای برای «{searchQuery}» پیدا نشد
+								برای «{searchQuery}» چیزی پیدا نکردیم
 							</p>
 							<p className="text-xs text-fg-faint">
-								می‌توانید عنوان دیگری را جستجو کنید یا فیلتر را پاک کنید
+								یه چیز دیگه رو جستجو کن یا فیلتر رو پاک کن
 							</p>
 							<button
 								type="button"

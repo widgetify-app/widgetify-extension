@@ -40,7 +40,7 @@ export const UserProfile = () => {
 	const handleSendVerificationEmail = async () => {
 		try {
 			await sendVerificationMutation.mutateAsync()
-			showToast('ایمیل تایید با موفقیت ارسال شد!', 'success')
+			showToast('ایمیل تایید رو فرستادیم، صندوقت رو چک کن', 'success')
 		} catch (err: any) {
 			showToast(translateError(err) as string, 'error')
 		}
@@ -49,10 +49,10 @@ export const UserProfile = () => {
 	const getMessageError = () => {
 		// @ts-expect-error
 		if (failureReason?.status === 401) {
-			return 'نیاز به ورود مجدد به حساب کاربری دارید.'
+			return 'دوباره وارد حسابت شو'
 		}
 
-		return 'خطا در بارگذاری پروفایل کاربری. لطفا دوباره تلاش کنید.'
+		return 'نتونستیم پروفایلت رو بیاریم، دوباره امتحان کن'
 	}
 
 	if (isLoading) {
@@ -101,7 +101,7 @@ export const UserProfile = () => {
 			<SectionPanel title="حساب کاربری" delay={0.3} size="xs">
 				<div className="p-2 space-y-3 transition-colors rounded-lg">
 					<p className={'text-sm font-light text-fg'}>
-						برای خروج از حساب کاربری خود، روی دکمه زیر کلیک کنید.
+						می‌خوای از حسابت بیرون بیای؟ دکمه‌ی پایین رو بزن.
 					</p>
 					<Button
 						onClick={() => setShowConfirm(true)}
@@ -120,7 +120,7 @@ export const UserProfile = () => {
 				onClose={() => setShowConfirm(false)}
 				onConfirm={() => onClickLogout()}
 				icon={<Icon name="logOut" />}
-				message="مطمعنی میخای از حسابت خارج بشی؟"
+				message="مطمئنی می‌خوای از حسابت خارج بشی؟"
 				title="خروج از حساب کاربری"
 				confirmText="بله، خروج"
 			></ConfirmationModal>

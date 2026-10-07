@@ -198,7 +198,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 				isLoading={isRemoving}
 				onClose={() => setSelectedUserToDelete(null)}
 				onConfirm={() => handleRemoveFriend(selectedUserToDelete?.id || null)}
-				message={`"${selectedUserToDelete?.user.name}"، از لیست دوستات حذف بشه؟`}
+				message={`"${selectedUserToDelete?.user.name}" از لیست دوستات حذف بشه؟`}
 			/>
 		</div>
 	)

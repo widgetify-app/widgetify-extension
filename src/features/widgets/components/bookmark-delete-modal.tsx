@@ -17,9 +17,9 @@ export function BookmarkDeleteModal({
 			onClose={onClose}
 			onConfirm={onConfirm}
 			title="حذف ویجت بوکمارک"
-			message="با حذف این ویجت، تمام بوکمارک‌های داخل آن نیز حذف خواهند شد. آیا از حذف ویجت بوکمارک اطمینان دارید؟"
+			message="همه‌ی بوکمارک‌های داخلش هم حذف می‌شن. ویجت بوکمارک حذف بشه؟"
 			confirmText="حذف ویجت"
-			cancelText="انصراف"
+			cancelText="نه"
 			variant="danger"
 		/>
 	)

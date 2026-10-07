@@ -15,7 +15,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 				{isLoading ? (
 					<div className="py-12 text-center">
 						<Spinner size="xl" className="mx-auto" />
-						<p className="mt-4 text-sm text-fg-muted">در حال بارگذاری...</p>
+						<p className="mt-4 text-sm text-fg-muted">یه لحظه…</p>
 					</div>
 				) : tasks.length > 0 ? (
 					tasks.map((taskItem, index) => {
@@ -115,10 +115,10 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 							<div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-transparent to-fill"></div>
 						</div>
 						<p className="text-sm font-medium text-fg-muted">
-							هیچ ماموریتی یافت نشد
+							فعلاً ماموریتی نیست
 						</p>
 						<p className="mt-1 text-xs text-fg-faint">
-							ماموریت‌های جدید به زودی اضافه می‌شوند
+							به‌زودی ماموریت‌های تازه میان
 						</p>
 					</div>
 				)}

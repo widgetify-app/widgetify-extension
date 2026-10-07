@@ -248,7 +248,7 @@ export function ImportBrowserBookmarksModal({
 				const newIds = [...ids].filter((id) => !prev.has(id))
 				if (prev.size + newIds.length > MAX_BROWSER_IMPORT_ITEMS) {
 					showToast(
-						`حداکثر ${MAX_BROWSER_IMPORT_ITEMS} مورد در هر بار قابل انتخاب است.`,
+						`هر بار تا ${MAX_BROWSER_IMPORT_ITEMS} مورد می‌تونی انتخاب کنی`,
 						'error'
 					)
 					return prev
@@ -268,7 +268,7 @@ export function ImportBrowserBookmarksModal({
 	const handleImport = async () => {
 		const importNodes = buildImportNodes(rootNodes, selectedIds)
 		if (importNodes.length === 0) {
-			showToast('حداقل یک بوکمارک را انتخاب کنید.', 'error')
+			showToast('حداقل یه بوکمارک انتخاب کن', 'error')
 			return
 		}
 
@@ -279,11 +279,11 @@ export function ImportBrowserBookmarksModal({
 		setIsImporting(false)
 
 		if (result && result.importedCount > 0) {
-			showToast(`${result.importedCount} مورد با موفقیت درون‌ریزی شد.`, 'success')
+			showToast(`${result.importedCount} مورد درون‌ریزی شد`, 'success')
 			onImported?.()
 			onClose()
 		} else if (result) {
-			showToast('موردی برای درون‌ریزی یافت نشد.', 'error')
+			showToast('چیزی برای درون‌ریزی پیدا نکردیم', 'error')
 		}
 	}
 
@@ -303,7 +303,7 @@ export function ImportBrowserBookmarksModal({
 					</div>
 					<p className="mb-1 text-sm font-bold">دسترسی به بوکمارک‌ها</p>
 					<p className="mb-4 text-xs leading-relaxed text-fg-muted">
-						برای درون‌ریزی بوکمارک‌های مرورگر، نیاز به دسترسی شما داریم.
+						برای درون‌ریزی بوکمارک‌های مرورگرت، اول بهمون اجازه‌ی دسترسی بده.
 					</p>
 					<Button
 						size="sm"
@@ -320,7 +320,7 @@ export function ImportBrowserBookmarksModal({
 						<span className="text-xs text-fg-muted">
 							{selectedIds.size > 0
 								? `${selectedIds.size} از ${MAX_BROWSER_IMPORT_ITEMS} مورد انتخاب شده`
-								: `حداکثر ${MAX_BROWSER_IMPORT_ITEMS} مورد قابل انتخاب است`}
+								: `تا ${MAX_BROWSER_IMPORT_ITEMS} مورد می‌تونی انتخاب کنی`}
 						</span>
 					</div>
 
@@ -343,7 +343,7 @@ export function ImportBrowserBookmarksModal({
 							))
 						) : (
 							<div className="py-8 text-xs text-center text-fg-muted">
-								بوکمارکی در مرورگر شما یافت نشد.
+								توی مرورگرت بوکمارکی پیدا نکردیم
 							</div>
 						)}
 					</div>
@@ -364,7 +364,7 @@ export function ImportBrowserBookmarksModal({
 							disabled={selectedIds.size === 0 || isImporting}
 							loading={isImporting}
 							loadingText={
-								<span className="text-xs">در حال درون‌ریزی...</span>
+								<span className="text-xs">در حال درون‌ریزی…</span>
 							}
 							rounded={'2xl'}
 							className="w-32"

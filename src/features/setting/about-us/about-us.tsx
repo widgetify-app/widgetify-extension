@@ -22,12 +22,12 @@ export function AboutUsTab() {
 				</div>
 
 				<p className={'max-w-lg mb-2 text-sm leading-relaxed text-fg'}>
-					ویجتیفای یک افزونه واسه مرورگر شماست که صفحه جدید را با ابزارهای
-					کاربردی و سبک زیبا به محیطی کارآمد و شخصی‌سازی شده تبدیل می‌کند.
+					ویجتیفای یه افزونه برای مرورگرته که تب جدید رو با ابزارهای کاربردی و
+					ظاهری قشنگ، به یه فضای کارآمد و مال خودت تبدیل می‌کنه.
 				</p>
 			</div>
 
-			<SectionPanel title="ارتباطات و شبکه های اجتماعی">
+			<SectionPanel title="راه‌های ارتباط با ما">
 				<div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
 					<a
 						href="https://widgetify.ir"

@@ -56,7 +56,7 @@ export function GalleryBookmarkIconItem({
 			{error && (
 				<div className="flex flex-col items-center justify-center w-full h-full text-danger">
 					<Icon name="alert" size={20} />
-					<p className="mt-1 text-3xs text-fg-muted">خطا در بارگذاری</p>
+					<p className="mt-1 text-3xs text-fg-muted">نتونستیم بیاریمش</p>
 				</div>
 			)}
 			<div className="relative z-10 flex items-center justify-center w-full h-full p-2">
@@ -106,7 +106,7 @@ export function GalleryBookmarkIconItem({
 					{asset.isOwned && !isSelected && (
 						<div className="absolute flex gap-0.5 px-1.5 rounded-tl-xl rounded-br-lg bg-success text-on-success shadow-sm items-center top-0 left-0 text-3xs h-4 z-20">
 							<Icon name="shoppingBag" size={10} />
-							<span>خریداری شده</span>
+							<span>مال توئه</span>
 						</div>
 					)}
 				</>

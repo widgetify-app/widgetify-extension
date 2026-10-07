@@ -133,7 +133,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 		removeFromStorage('customWallpaper')
 
 		if (wallpaper.coin && !isAuthenticated) {
-			showToast('برای انتخاب این تصویر زمینه باید وارد حساب کاربری شوید', 'error')
+			showToast('برای انتخاب این تصویر زمینه اول وارد حسابت شو', 'error')
 			return false
 		}
 

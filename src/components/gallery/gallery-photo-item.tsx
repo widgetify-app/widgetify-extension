@@ -45,7 +45,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 			{error && (
 				<div className="flex flex-col items-center justify-center w-full min-h-28 bg-danger-fill">
 					<Icon name="alert" className="text-danger" />
-					<p className="mt-1 text-3xs text-fg-muted">خطا در بارگذاری</p>
+					<p className="mt-1 text-3xs text-fg-muted">نتونستیم بیاریمش</p>
 				</div>
 			)}
 
@@ -96,7 +96,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 					{asset.isOwned && !isSelected && (
 						<div className="absolute flex gap-0.5 px-1.5 rounded-tl-2xl rounded-br-lg bg-success text-on-success shadow-sm items-center top-0 left-0 text-3xs h-4.5">
 							<Icon name="shoppingBag" size={10} />
-							<span>خریداری شده</span>
+							<span>مال توئه</span>
 						</div>
 					)}
 				</>

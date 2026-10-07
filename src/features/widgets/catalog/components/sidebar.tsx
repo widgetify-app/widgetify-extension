@@ -54,7 +54,7 @@ export function AddWidgetSidebar({
 			<div className="space-y-1.5 pr-0.5 scrollbar-none md:flex-1 md:overflow-y-auto">
 				{definitions.length === 0 ? (
 					<div className="flex items-center justify-center h-32 text-xs text-fg-muted">
-						ویجتی در این دسته‌بندی یافت نشد
+						توی این دسته ویجتی پیدا نکردیم
 					</div>
 				) : (
 					definitions.map((def) => {

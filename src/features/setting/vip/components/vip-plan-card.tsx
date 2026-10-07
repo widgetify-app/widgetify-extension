@@ -98,7 +98,7 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 								isClaimed ? 'text-fg-muted' : 'text-success'
 							)}
 						>
-							{isClaimed ? 'قبلا دریافت شده' : 'رایگان'}
+							{isClaimed ? 'قبلاً گرفتی' : 'رایگان'}
 						</span>
 					) : (
 						<>

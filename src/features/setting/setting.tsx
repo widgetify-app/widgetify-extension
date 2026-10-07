@@ -161,7 +161,7 @@ export const SettingModal = ({
 								size={20}
 								className="text-fg-muted"
 							/>
-							<span className="text-sm font-light">مدیریت ویجت ها</span>
+							<span className="text-sm font-light">مدیریت ویجت‌ها</span>
 						</button>
 						<button
 							type="button"

@@ -14,9 +14,7 @@ export function TimezoneSettings() {
 	return (
 		<SectionPanel title="منطقه‌ی زمانی" delay={0.1} size="sm">
 			<div className="space-y-3">
-				<p className={'text-sm text-fg-muted'}>
-					منطقه‌ی زمانی مورد نظر خود را انتخاب کنید.
-				</p>
+				<p className={'text-sm text-fg-muted'}>منطقه‌ی زمانی‌ت رو انتخاب کن.</p>
 
 				<div className="relative">
 					<div className="flex items-center gap-2">
@@ -26,7 +24,7 @@ export function TimezoneSettings() {
 							</div>
 						) : error ? (
 							<div className="w-full p-3 text-center text-danger">
-								خطا در دریافت اطلاعات مناطق زمانی
+								نتونستیم فهرست منطقه‌های زمانی رو بیاریم
 							</div>
 						) : (
 							<SelectBox

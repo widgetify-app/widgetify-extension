@@ -37,16 +37,16 @@ export function Connections() {
 
 	const handleConnectionClick = (platformId: string) => {
 		if (!profile?.verified) {
-			return showToast('لطفا اول حساب کاربری خود را تأیید کنید.', 'error')
+			return showToast('اول حسابت رو تایید کن', 'error')
 		}
 
 		const platform = platforms.find((p) => p.id === platformId)
 		if (!platform) {
-			return showToast('این پلتفرم در حال حاضر غیرفعال است.', 'error')
+			return showToast('این پلتفرم فعلاً غیرفعاله', 'error')
 		}
 
 		if (!platform.isActive && !platform.connected) {
-			return showToast('این پلتفرم هنوز آماده نیست.', 'error')
+			return showToast('این پلتفرم هنوز آماده نیست', 'error')
 		}
 
 		setSelectedPlatform(platform)
@@ -73,7 +73,7 @@ export function Connections() {
 					)
 				)
 
-				showToast(`اتصال به ${selectedPlatform.name} قطع شد.`, 'success')
+				showToast(`اتصال به ${selectedPlatform.name} قطع شد`, 'success')
 			} else {
 				const { url } = await connectPlatform(selectedPlatform.id)
 
@@ -87,7 +87,7 @@ export function Connections() {
 			)
 
 			showToast(
-				`خطا در ارتباط با ${selectedPlatform.name}. لطفا دوباره تلاش کنید.`,
+				`نتونستیم به ${selectedPlatform.name} وصل بشیم، دوباره امتحان کن`,
 				'error'
 			)
 		}
@@ -132,7 +132,7 @@ export function Connections() {
 									<p
 										className={`text-3xs  font-medium truncate ${platform.connected ? 'text-success' : 'text-fg-muted'}`}
 									>
-										{platform.connected ? 'متصل شده' : 'عدم اتصال'}
+										{platform.connected ? 'وصله' : 'وصل نیست'}
 									</p>
 								</div>
 							</div>

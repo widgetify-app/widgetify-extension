@@ -74,7 +74,7 @@ export function MiniAppsLayout() {
 					className={`flex-1 w-full h-full p-1 border-l border-surface-3 bg-glass-surface-2 rounded-tr-2xl rounded-br-2xl ${isFullScreen ? 'hidden' : ''} transition-ui duration-200`}
 				>
 					<div className="flex justify-between px-1 py-2">
-						<p className="text-lg font-bold"> برنامک ها</p>
+						<p className="text-lg font-bold">برنامک‌ها</p>
 						<button
 							type="button"
 							aria-label="درباره‌ی برنامک‌ها"
@@ -89,11 +89,9 @@ export function MiniAppsLayout() {
 							<div className="flex flex-col items-center justify-center gap-3 py-16 text-center rounded-2xl bg-surface-2">
 								<div className="text-5xl">📭</div>
 								<p className="text-base font-medium text-fg">
-									هنوز برنامکی وجود ندارد
+									هنوز برنامکی اینجا نیست
 								</p>
-								<p className="text-sm text-fg-muted">
-									به زودی پر میشه...
-								</p>
+								<p className="text-sm text-fg-muted">به‌زودی پر می‌شه</p>
 							</div>
 						)}
 						{isLoading
@@ -150,7 +148,7 @@ export function MiniAppsLayout() {
 				</div>
 			</div>
 
-			<Modal title="برنامک ها" isOpen={showInfo} onClose={() => setShowInfo(false)}>
+			<Modal title="برنامک‌ها" isOpen={showInfo} onClose={() => setShowInfo(false)}>
 				<div className="space-y-3 text-sm">
 					<p className="font-semibold">
 						برنامک‌ها برنامه‌های کوچیکی هستن که تو ویجتیفای اجرا می‌شن و راحت
@@ -165,8 +163,8 @@ export function MiniAppsLayout() {
 					</p>
 
 					<p>
-						اگر علاقه‌مند به همکاری با ما در این حوزه هستید، راه‌های ارتباطی در
-						دسترس شماست.
+						اگه دوست داری با ما برنامک بسازی، از بخش «درباره ما» بهمون پیام
+						بده.
 					</p>
 				</div>
 

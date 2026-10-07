@@ -203,7 +203,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 				inputBookmark.icon instanceof File &&
 				inputBookmark.icon.size > MAX_ICON_SIZE
 			) {
-				showToast('حجم فایل آیکون نباید بیشتر از ۲۵۰ کیلوبایت باشد', 'error')
+				showToast('آیکون باید کمتر از ۲۵۰ کیلوبایت باشه', 'error')
 				return
 			}
 
@@ -251,7 +251,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 			Analytics.event('add_bookmark')
 		} catch {
-			showToast('خطا در افزودن بوکمارک', 'error')
+			showToast('نتونستیم بوکمارک رو اضافه کنیم، دوباره امتحان کن', 'error')
 		}
 	}
 
@@ -261,7 +261,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		widgetId?: string | null
 	): Promise<{ importedCount: number; createdFolders: number } | null> => {
 		if (!isAuthenticated) {
-			showToast('برای درون‌ریزی بوکمارک‌ها باید وارد شوید.', 'error')
+			showToast('برای درون‌ریزی بوکمارک‌ها اول وارد حسابت شو', 'error')
 			return null
 		}
 
@@ -277,7 +277,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 		if (resolvedParentId && validate(resolvedParentId)) {
 			showToast(
-				'برای درون‌ریزی در این پوشه، لطفا ابتدا بوکمارک‌های خود را همگام‌سازی کنید.',
+				'برای درون‌ریزی توی این پوشه، اول بوکمارک‌هات رو همگام‌سازی کن',
 				'error',
 				{ duration: 8000 }
 			)
@@ -319,7 +319,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		if (!input.title?.trim() || !bookmarks) return
 
 		if (input.icon && input.icon instanceof File && input.icon.size > MAX_ICON_SIZE) {
-			showToast('حجم فایل آیکون نباید بیشتر از ۲۵۰ کیلوبایت باشد', 'error')
+			showToast('آیکون باید کمتر از ۲۵۰ کیلوبایت باشه', 'error')
 			return
 		}
 
@@ -338,7 +338,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 		if (!bookmarkIdToEdit || validate(bookmarkIdToEdit)) {
 			showToast(
-				'برای ویرایش این بوکمارک، لطفا ابتدا بوکمارک‌های خود را همگام‌سازی کنید.',
+				'برای ویرایش این بوکمارک، اول بوکمارک‌هات رو همگام‌سازی کن',
 				'error',
 				{
 					duration: 8000, // 8 seconds
@@ -386,13 +386,9 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		const idToDelete = bookmarkToDelete.onlineId || bookmarkToDelete.id
 
 		if (validate(idToDelete)) {
-			showToast(
-				'برای حـذف این بوکمارک، لطفا ابتدا بوکمارک‌های خود را همگام‌سازی کنید.',
-				'error',
-				{
-					duration: 8000, // 8 seconds
-				}
-			)
+			showToast('برای حذف این بوکمارک، اول بوکمارک‌هات رو همگام‌سازی کن', 'error', {
+				duration: 8000, // 8 seconds
+			})
 			return
 		}
 

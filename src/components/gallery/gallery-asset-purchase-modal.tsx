@@ -36,7 +36,7 @@ export function GalleryAssetPurchaseModal({
 
 		purchase(asset.id, {
 			onSuccess: (response) => {
-				showToast(`${asset.title || 'آیتم'} برای همیشه خریداری شد`, 'success')
+				showToast(`${asset.title || 'آیتم'} مال تو شد`, 'success')
 				const updatedAsset = response?.data?.asset || {
 					...asset,
 					isOwned: true,
@@ -45,7 +45,7 @@ export function GalleryAssetPurchaseModal({
 				onPurchaseSuccess(updatedAsset)
 			},
 			onError: () => {
-				showToast('خطا در دریافت آیتم', 'error')
+				showToast('نتونستیم آیتم رو بگیریم، دوباره امتحان کن', 'error')
 			},
 		})
 	}
@@ -105,8 +105,7 @@ export function GalleryAssetPurchaseModal({
 							</button>
 						}
 					>
-						موجودی ویج‌کوین ناکافیه ({asset.price - userCoins} ویج‌کوین کسری
-						داری)
+						{asset.price - userCoins} ویج‌کوین کم داری
 					</Alert>
 				)}
 
@@ -128,7 +127,7 @@ export function GalleryAssetPurchaseModal({
 									size="md"
 									disabled={!canAfford || isPending}
 									loading={isPending}
-									loadingText="در حال خرید..."
+									loadingText="داریم می‌خریم…"
 									className="flex-1"
 									rounded="2xl"
 								>
@@ -143,7 +142,7 @@ export function GalleryAssetPurchaseModal({
 								size="md"
 								disabled={!canAfford || isPending}
 								loading={isPending}
-								loadingText="در حال خرید..."
+								loadingText="داریم می‌خریم…"
 								className="flex-1"
 								rounded="2xl"
 								color={canAfford ? 'brand' : 'base'}

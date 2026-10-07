@@ -39,7 +39,7 @@ const RELEASE_HIGHLIGHTS: ReleaseHighlight[] = [
 		icon: 'theme',
 		tileClass: 'bg-brand-fill text-brand',
 		title: 'تم‌ها خوش‌رنگ‌تر شدن',
-		description: 'رنگ تمامی تم‌ها بهبود پیدا کرده',
+		description: 'رنگ همه‌ی تم‌ها بهتر شده',
 	},
 	{
 		id: 'sticky-note',

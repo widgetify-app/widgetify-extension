@@ -43,7 +43,7 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 			if (isEmpty(phone))
 				return setError((prev) => ({
 					...prev,
-					email: 'لطفا ایمیل/شماره موبایل خود را وارد کنید.',
+					email: 'شماره موبایلت رو بنویس',
 				}))
 			const [err, _] = await safeAwait(requestChange(phone))
 			if (err) {
@@ -58,7 +58,7 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 			if (isEmpty(otpCode) || isLessThan(otpCode, 6))
 				return setError((prev) => ({
 					...prev,
-					otp: 'لطفا کد ارسال شده را وارد کنید.',
+					otp: 'کدی که برات فرستادیم رو بنویس',
 				}))
 
 			const [err, _] = await safeAwait(
@@ -74,7 +74,7 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 					phone: null,
 				})
 			} else {
-				showToast('شماره موبایل با موفقیت اضافه شد', 'success')
+				showToast('شماره موبایلت اضافه شد', 'success')
 				prop.onClose()
 			}
 		}
@@ -89,7 +89,7 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 			<section>
 				<div>
 					<p className="text-xs text-fg-muted mt-0.5">
-						برای اینکه بتونی با شماره موبایلت هم وارد حسابت بشی!
+						تا بتونی با شماره موبایلت هم وارد حسابت بشی
 					</p>
 				</div>
 
@@ -111,7 +111,7 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 							name="email"
 							value={phone}
 							onChange={setPhone}
-							placeholder="شماره موبایل رو وارد کنید..."
+							placeholder="شماره موبایلت رو بنویس…"
 							disabled={isPending || step === 'enter-otp'}
 							className="w-full py-2.5! md:py-3.5!"
 							autoComplete="on"

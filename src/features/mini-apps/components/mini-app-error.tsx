@@ -25,9 +25,9 @@ export function MiniAppError({ handleReload, onClickToBack }: Prop) {
 				</svg>
 			</div>
 
-			<p className="text-lg font-bold text-fg">خطا در اجرای برنامک</p>
+			<p className="text-lg font-bold text-fg">برنامک باز نشد</p>
 			<p className="max-w-xs text-sm text-fg-muted">
-				عاممم یه مشکلی رخ داد، دوباره تلاش کنید.
+				یه مشکلی پیش اومد، دوباره امتحان کن
 			</p>
 			<div className="flex flex-col gap-2 mt-4 w-80">
 				<Button
@@ -38,7 +38,7 @@ export function MiniAppError({ handleReload, onClickToBack }: Prop) {
 					color={'brand'}
 					onClick={handleReload}
 				>
-					تلاش مجدد
+					دوباره امتحان کن
 				</Button>
 				<Button
 					type="button"

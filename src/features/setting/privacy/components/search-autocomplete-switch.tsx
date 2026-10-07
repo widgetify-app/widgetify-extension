@@ -10,7 +10,7 @@ export function SearchAutocompleteSwitch() {
 
 	const onToggle = async () => {
 		if (!isAuthenticated) {
-			showToast('نیازمند ورود به حساب کاربری', 'error')
+			showToast('برای این کار اول وارد حسابت شو', 'error')
 			return
 		}
 

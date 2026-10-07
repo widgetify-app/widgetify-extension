@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'bun:test'
 import { translateError } from '../utils/translate-error'
 
-const fallback = 'خطایی رخ داده، لطفا دوباره امتحان کن'
+const fallback = 'یه مشکلی پیش اومد، دوباره امتحان کن'
 
 describe('translateError', () => {
 	it('falls back to a friendly message when there is nothing to translate', () => {
@@ -12,11 +12,11 @@ describe('translateError', () => {
 	})
 
 	it('translates a known code, whether it is the error or the server message', () => {
-		expect(translateError('NOT_FOUND')).toBe('موردی پیدا نشد')
+		expect(translateError('NOT_FOUND')).toBe('چیزی پیدا نکردیم')
 		expect(
 			translateError({ response: { data: { message: 'USER_NOT_FOUND' } } })
-		).toBe('کاربر پیدا نشد')
-		expect(translateError({ message: 'NOT_FOUND' })).toBe('موردی پیدا نشد')
+		).toBe('این کاربر رو پیدا نکردیم')
+		expect(translateError({ message: 'NOT_FOUND' })).toBe('چیزی پیدا نکردیم')
 	})
 
 	it('prefers the message the server sent over the error object message', () => {
@@ -24,7 +24,7 @@ describe('translateError', () => {
 			message: 'NOT_FOUND',
 			response: { data: { message: 'USER_NOT_FOUND' } },
 		}
-		expect(translateError(error)).toBe('کاربر پیدا نشد')
+		expect(translateError(error)).toBe('این کاربر رو پیدا نکردیم')
 	})
 
 	it('shows an unknown message as it is instead of hiding it', () => {
@@ -82,6 +82,6 @@ describe('translateError', () => {
 		const error = {
 			response: { data: { formValidation: [], message: 'NOT_FOUND' } },
 		}
-		expect(translateError(error)).toBe('موردی پیدا نشد')
+		expect(translateError(error)).toBe('چیزی پیدا نکردیم')
 	})
 })

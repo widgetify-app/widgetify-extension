@@ -61,7 +61,7 @@ const StepOne = ({ onGetStarted }: StepOneProps) => {
 				}
 			>
 				<p className="font-bold text-fg-muted">
-					⚠️ برای فعالسازی افزونه، روی دکمه "Keep It" کلیک کنید.
+					⚠️ برای فعال شدن افزونه، دکمه‌ی "Keep It" رو بزن.
 				</p>
 			</div>
 
@@ -71,7 +71,7 @@ const StepOne = ({ onGetStarted }: StepOneProps) => {
 				className="w-full text-base font-light shadow-sm rounded-2xl shadow-brand outline-none!"
 				color="brand"
 			>
-				شروع کنید
+				شروع کنیم
 			</Button>
 		</>
 	)

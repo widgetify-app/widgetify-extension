@@ -35,13 +35,10 @@ export function ConnectionModal({
 				<div className="mb-6">
 					{platform.connected ? (
 						<div className="space-y-2">
-							<p className="text-fg">
-								آیا مطمئن هستید که می‌خواهید اتصال به {platform.name} را
-								قطع کنید؟
-							</p>
+							<p className="text-fg">اتصال به {platform.name} قطع بشه؟</p>
 							<div className="p-3 text-sm rounded-2xl text-on-warning bg-warning">
-								⚠️ با قطع اتصال، دسترسی به داده‌ها و ویژگی‌های مربوط به این
-								پلتفرم از دست خواهد رفت.
+								⚠️ با قطع اتصال، دیگه به داده‌ها و امکانات این پلتفرم دسترسی
+								نداری.
 							</div>
 						</div>
 					) : (
@@ -99,7 +96,7 @@ export function ConnectionModal({
 						loadingText={
 							<span className="flex items-center justify-center gap-2">
 								<Spinner size="sm" tone="image" />
-								در حال پردازش
+								یه لحظه…
 							</span>
 						}
 						className="flex-2 h-9 text-sm"

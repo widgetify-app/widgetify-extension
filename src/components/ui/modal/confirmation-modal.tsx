@@ -29,8 +29,8 @@ export function ConfirmationModal({
 	isOpen,
 	onClose,
 	onConfirm,
-	title = 'تایید عملیات',
-	message = 'آیا از انجام این عملیات اطمینان دارید؟',
+	title = 'مطمئنی؟',
+	message = 'این کار انجام بشه؟',
 	confirmText = 'تایید',
 	cancelText = 'انصراف',
 	variant = 'danger',
@@ -99,7 +99,7 @@ export function ConfirmationModal({
 						loadingText={
 							<div className="flex items-center gap-1">
 								<Spinner size="sm" tone="current" aria-hidden="true" />
-								<span className="text-xs">در حال انجام...</span>
+								<span className="text-xs">یه لحظه…</span>
 							</div>
 						}
 						color={variant}

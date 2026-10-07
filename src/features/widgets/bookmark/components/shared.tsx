@@ -23,7 +23,7 @@ export function TypeSelector({
 					</div>
 				}
 				className="p-2! h-auto min-h-[56px]"
-				description="ذخیره یک لینک یا وب‌سایت"
+				description="یه لینک یا سایت رو نگه دار"
 			/>
 			<ItemSelector
 				isActive={type === 'FOLDER'}

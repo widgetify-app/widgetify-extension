@@ -46,13 +46,13 @@ export function VipTab() {
 
 	const handlePurchase = () => {
 		if (!selectedPlan) {
-			showToast('لطفاً یک پلن رو انتخاب کن', 'error')
+			showToast('اول یه پلن انتخاب کن', 'error')
 			return
 		}
 
 		if (!isAuthenticated) {
 			Analytics.event('vip_plan_purchase_unauthenticated')
-			showToast(`برای خرید اشتراک ${VIP_LABEL} باید وارد حساب کاربری بشی`, 'error')
+			showToast(`برای خرید اشتراک ${VIP_LABEL} اول وارد حسابت شو`, 'error')
 			callEvent('openSettings', 'profile')
 			return
 		}
@@ -65,7 +65,7 @@ export function VipTab() {
 						setClaimedDays(res?.days || selectedPlan.days || 5)
 						setShowSuccessModal(true)
 					} else {
-						showToast('در حال انتقال به درگاه پرداخت...', 'success')
+						showToast('داریم می‌ریم درگاه پرداخت…', 'success')
 					}
 					Analytics.event('vip_plan_purchased')
 					refetchUser()
@@ -78,9 +78,13 @@ export function VipTab() {
 						(error as any)?.response?.data?.message ===
 							'FREE_PLAN_ALREADY_CLAIMED'
 					) {
-						showToast('شما قبلا این اشتراک رایگان را دریافت کرده‌اید', 'error')
+						showToast('این اشتراک رایگان رو قبلاً گرفتی', 'error')
 					} else {
-						showToast(errorMsg || `خطا در خرید اشتراک ${VIP_LABEL}`, 'error')
+						showToast(
+							errorMsg ||
+								`خرید اشتراک ${VIP_LABEL} انجام نشد، دوباره امتحان کن`,
+							'error'
+						)
 					}
 					Analytics.event('vip_plan_purchase_failed')
 				},
@@ -128,9 +132,7 @@ export function VipTab() {
 					</div>
 				) : (
 					<div className="flex flex-col items-center justify-center py-6 text-center border rounded-2xl border-line bg-fill">
-						<p className="text-xs text-fg-muted">
-							در حال حاضر پلن فعالی موجود نیست
-						</p>
+						<p className="text-xs text-fg-muted">فعلاً پلنی برای خرید نیست</p>
 					</div>
 				)}
 			</div>
@@ -156,9 +158,7 @@ export function VipTab() {
 						<div className="flex items-baseline gap-1">
 							{selectedPlan?.price === 0 ? (
 								<span className="text-base font-black sm:text-lg text-success">
-									{selectedPlan.isClaimed
-										? 'قبلا دریافت شده'
-										: 'رایگان'}
+									{selectedPlan.isClaimed ? 'قبلاً گرفتی' : 'رایگان'}
 								</span>
 							) : (
 								<>

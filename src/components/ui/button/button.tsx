@@ -38,7 +38,7 @@ export function Button({
 				loadingText || (
 					<>
 						<Spinner size="sm" tone="current" aria-hidden="true" />
-						<span className="text-xs">صبر کنید...</span>
+						<span className="text-xs">یه لحظه…</span>
 					</>
 				)
 			) : (

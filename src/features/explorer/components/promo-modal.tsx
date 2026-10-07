@@ -39,7 +39,7 @@ export function ExplorerPromoModal({ isOpen, onClose, item }: ExplorerPromoModal
 			showToast(`کد تخفیف ${promo.code} کپی شد`, 'success')
 			setTimeout(() => setIsCopied(false), 2500)
 		} catch {
-			showToast('خطا در کپی کردن کد', 'error')
+			showToast('نتونستیم کد رو کپی کنیم', 'error')
 		}
 	}
 

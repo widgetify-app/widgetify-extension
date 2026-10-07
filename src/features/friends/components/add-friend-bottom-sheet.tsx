@@ -22,7 +22,7 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 	const handleSendRequest = () => {
 		if (!canSendRequest) {
 			showToast(
-				'برای ارسال درخواست دوستی، ابتدا باید نام کاربری خود را در بخش پروفایل تنظیم کنید.',
+				'برای فرستادن درخواست دوستی، اول توی پروفایلت یه نام کاربری انتخاب کن',
 				'error'
 			)
 			return
@@ -36,7 +36,7 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 			{
 				onSuccess: () => {
 					setUsername('')
-					showToast('درخواست دوستی با موفقیت ارسال شد', 'success')
+					showToast('درخواست دوستی فرستاده شد', 'success')
 					setTranslatedError(null)
 					// Close the bottom sheet after successful request
 					setTimeout(() => {
@@ -81,14 +81,14 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 
 				<div className="text-center">
 					<p className="text-sm leading-relaxed text-fg-muted">
-						برای افزودن دوست جدید، نام کاربری او را وارد کنید
+						نام کاربری دوستت رو بنویس
 					</p>
 				</div>
 
 				{!canSendRequest && (
 					<Alert tone="warning">
-						برای ارسال درخواست دوستی، ابتدا باید نام کاربری خود را در بخش
-						پروفایل تنظیم کنید.
+						برای فرستادن درخواست دوستی، اول توی پروفایلت یه نام کاربری انتخاب
+						کن
 					</Alert>
 				)}
 
@@ -131,7 +131,7 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 						fullWidth
 						className="h-12 shadow-sm shadow-success-fill-2"
 					>
-						ارسال درخواست
+						فرستادن درخواست
 					</Button>
 				</div>
 			</div>

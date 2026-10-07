@@ -19,7 +19,7 @@ export function FriendEmptyList({ emptyMessage }: Prop) {
 				''
 			)}
 
-			<p className="mt-1 text-xs text-fg-faint">لیست خالیه!</p>
+			<p className="mt-1 text-xs text-fg-faint">هنوز چیزی اینجا نیست</p>
 		</div>
 	)
 }
