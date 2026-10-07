@@ -22,6 +22,7 @@ export const usePurchaseMarketItem = () => {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: userKeys.profile })
 			queryClient.invalidateQueries({ queryKey: marketKeys.inventoryAll })
+			queryClient.invalidateQueries({ queryKey: marketKeys.itemsAll })
 		},
 	})
 }

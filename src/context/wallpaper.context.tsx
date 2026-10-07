@@ -13,13 +13,14 @@ import { useAuth } from '@/context/auth.context'
 
 import { getRandomWallpaper } from '@/services/wallpapers/get-wallpaper-categories.hook'
 import { userKeys } from '@/services/user/user.keys'
+import { wallpapersKeys } from '@/services/wallpapers/wallpapers.keys'
 
 interface WallpaperContextValue {
 	selectedBackground: Wallpaper | null
 	customWallpaper: Wallpaper | null
 	currentStoredWallpaper: StoredWallpaper | null
 	allWallpapers: (fetchedWallpapers?: Wallpaper[]) => Wallpaper[]
-	handleSelectBackground: (wallpaper: Wallpaper) => Promise<void>
+	handleSelectBackground: (wallpaper: Wallpaper) => Promise<boolean>
 	handleCustomWallpaperChange: (wallpaper: Wallpaper) => void
 	handleRemoveCustomWallpaper: () => Promise<void>
 	syncWithFetchedWallpapers: (wallpapers: Wallpaper[]) => void
@@ -122,10 +123,10 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 		callEvent('wallpaper_change', wallpaperData)
 	}, [selectedBackground])
 
-	const handleSelectBackground = async (wallpaper: Wallpaper) => {
+	const handleSelectBackground = async (wallpaper: Wallpaper): Promise<boolean> => {
 		if (wallpaper.isCustom) {
 			setSelectedBackground(wallpaper)
-			return
+			return true
 		}
 
 		setCustomWallpaper(null)
@@ -133,7 +134,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 
 		if (wallpaper.coin && !isAuthenticated) {
 			showToast('برای انتخاب این تصویر زمینه باید وارد حساب کاربری شوید', 'error')
-			return
+			return false
 		}
 
 		const previousWallpaper: Wallpaper =
@@ -167,18 +168,23 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 					setSelectedBackground(previousWallpaper)
 				}
 				showToast(translateError(error) as string, 'error')
-				return
+				return false
 			}
 
 			if (wallpaper.coin && !wallpaper.isOwned) {
 				showToast('هووورا! تصویر زمینه فعال شد 🎉', 'success')
 				queryClient.invalidateQueries({ queryKey: userKeys.profile })
+				queryClient.invalidateQueries({
+					queryKey: wallpapersKeys.all,
+					refetchType: 'all',
+				})
 			}
 
 			if (!isSet) setSelectedBackground(responseWallpaper)
 		}
 
 		Analytics.event('wallpaper_changed')
+		return true
 	}
 
 	const handleCustomWallpaperChange = (newWallpaper: Wallpaper) => {
