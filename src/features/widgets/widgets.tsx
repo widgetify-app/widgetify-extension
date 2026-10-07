@@ -51,7 +51,6 @@ export function FreeWidgetCanvas() {
 		x: number
 		y: number
 	} | null>(null)
-	const pressStartedOnBackgroundRef = useRef(false)
 
 	useEffect(() => {
 		if (containerSize.width > 0) {
@@ -80,24 +79,38 @@ export function FreeWidgetCanvas() {
 		return () => window.removeEventListener('keydown', handleKeyDown)
 	}, [canvasMode, setSelectedInstanceId])
 
-	const isBackgroundTarget = (target: EventTarget | null) =>
-		target === containerRef.current || target === backgroundRef.current
+	useEffect(() => {
+		if (canvasMode !== 'edit') return
 
-	const handleCanvasPointerDown = (e: React.PointerEvent) => {
-		pressStartedOnBackgroundRef.current = isBackgroundTarget(e.target)
-	}
+		const isEmptySpace = (target: EventTarget | null) =>
+			target instanceof Node &&
+			(target === backgroundRef.current || target.contains(containerRef.current))
 
-	const handleCanvasPointerUp = (e: React.PointerEvent) => {
-		const startedOnBackground = pressStartedOnBackgroundRef.current
-		pressStartedOnBackgroundRef.current = false
+		let pressedOnEmptySpace = false
 
-		if (!startedOnBackground || !isBackgroundTarget(e.target)) return
+		const handlePointerDown = (e: PointerEvent) => {
+			pressedOnEmptySpace = e.button === 0 && isEmptySpace(e.target)
+		}
 
-		if (canvasMode === 'edit') {
+		const handlePointerUp = (e: PointerEvent) => {
+			const startedOnEmptySpace = pressedOnEmptySpace
+			pressedOnEmptySpace = false
+			if (!startedOnEmptySpace || !isEmptySpace(e.target)) return
+
 			setCanvasMode('normal')
 			setSelectedInstanceId(null)
 		}
-	}
+
+		document.addEventListener('pointerdown', handlePointerDown)
+		document.addEventListener('pointerup', handlePointerUp)
+		return () => {
+			document.removeEventListener('pointerdown', handlePointerDown)
+			document.removeEventListener('pointerup', handlePointerUp)
+		}
+	}, [canvasMode, setCanvasMode, setSelectedInstanceId])
+
+	const isBackgroundTarget = (target: EventTarget | null) =>
+		target === containerRef.current || target === backgroundRef.current
 
 	const handleCanvasContextMenu = (e: React.MouseEvent) => {
 		if (isBackgroundTarget(e.target)) {
@@ -181,8 +194,6 @@ export function FreeWidgetCanvas() {
 			ref={containerRef}
 			id="widgets-canvas"
 			className="relative w-full select-none"
-			onPointerDown={handleCanvasPointerDown}
-			onPointerUp={handleCanvasPointerUp}
 			onContextMenu={handleCanvasContextMenu}
 		>
 			<div
