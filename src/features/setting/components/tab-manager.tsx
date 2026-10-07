@@ -190,15 +190,17 @@ export const TabManager = ({
 						)}
 					</header>
 
-					<motion.div
-						key={active.value}
-						initial={{ opacity: 0, y: 6 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.2 }}
-						className="flex-1 min-h-0 pb-2 overflow-x-hidden overflow-y-auto pe-1"
-					>
-						{active.element}
-					</motion.div>
+					<div className="flex-1 min-h-0 overflow-hidden">
+						<motion.div
+							key={active.value}
+							initial={{ opacity: 0, y: 6 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.2 }}
+							className="h-full pb-2 overflow-x-hidden overflow-y-auto pe-1"
+						>
+							{active.element}
+						</motion.div>
+					</div>
 				</section>
 			)}
 		</div>
