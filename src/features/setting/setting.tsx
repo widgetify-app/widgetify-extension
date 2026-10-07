@@ -2,6 +2,7 @@ import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { Modal } from '@/components/ui'
 import { type TabItem, TabManager } from './components/tab-manager'
+import { FriendsActions } from '@/features/friends/friends'
 import { UpdateReleaseNotesModal } from '@/features/release-notes/release-notes'
 import { StoreTryOnProvider } from '@/features/market/store-try-on.context'
 import { AboutUsTab } from './about-us/about-us'
@@ -65,6 +66,7 @@ const tabs: TabItem[] = [
 				needAuth: true,
 				icon: <Icon name="friends" size={20} />,
 				element: <AllFriendsTab />,
+				actions: <FriendsActions />,
 			},
 		],
 	},

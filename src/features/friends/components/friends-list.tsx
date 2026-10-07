@@ -1,3 +1,4 @@
+import { cn } from '@/common/utils/cn'
 import { AvatarComponent } from '@/components/ui'
 import { type Friend, useGetFriends } from '@/services/friends/friend-service.hook'
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll'
@@ -11,6 +12,7 @@ interface PaginatedFriendsListProps {
 	emptyMessage: string
 	loading?: boolean
 	caching: boolean
+	className?: string
 }
 
 export const FriendsList = ({
@@ -19,6 +21,7 @@ export const FriendsList = ({
 	renderFriendActions,
 	emptyMessage,
 	caching,
+	className,
 }: PaginatedFriendsListProps) => {
 	const {
 		data: friendsData,
@@ -70,7 +73,10 @@ export const FriendsList = ({
 
 	return (
 		<div
-			className="h-full px-4 pb-4 mt-3 space-y-2 overflow-y-auto touch-pan-y scrollbar-none"
+			className={cn(
+				'h-full px-4 pb-4 mt-3 space-y-2 overflow-y-auto touch-pan-y scrollbar-none',
+				className
+			)}
 			ref={containerRef}
 		>
 			{allFriends.map((friend) => (

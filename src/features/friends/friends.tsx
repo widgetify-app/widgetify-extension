@@ -4,19 +4,13 @@ import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
 import { RemoveFriendButton } from './components/remove-button'
 import { FriendsList } from './components/friends-list'
-import { AddFriendBottomSheet } from './components/add-friend-bottom-sheet'
-import { Button, ConfirmationModal } from '@/components/ui'
-import { FriendRequestsButton } from './components/friend-requests-button'
-import { useAuth } from '@/context/auth.context'
-import { Icon } from '@/icons'
+import { ConfirmationModal } from '@/components/ui'
 
+export { FriendsActions } from './components/friends-actions'
 export { FriendsDirectView } from './components/friends-direct-view'
 export { SelectFriendLayout } from './components/select-friend'
 
 export const FriendsLayout = () => {
-	const { user } = useAuth()
-	const [isAddFriendOpen, setIsAddFriendOpen] = useState(false)
-
 	const [selectedUser, setSelectedUser] = useState<Friend | null>()
 
 	const { mutate: removeFriend, isPending: isRemoving } = useRemoveFriend()
@@ -45,47 +39,14 @@ export const FriendsLayout = () => {
 
 	return (
 		<>
-			<div className="space-y-4">
-				<div className="flex items-center justify-between px-4">
-					<div className="flex items-center gap-2">
-						<h2 className="text-lg font-semibold text-fg">دوستان</h2>
-					</div>
-
-					<div className="flex items-center gap-2">
-						<FriendRequestsButton
-							size="large"
-							pendingCount={user?.friendshipStats?.pending}
-						/>
-
-						<Button
-							onClick={() => setIsAddFriendOpen(true)}
-							type="button"
-							variant={'solid'}
-							color={'brand'}
-							size={'sm'}
-						>
-							<Icon name="usersPlus" className="w-4 h-4" />
-							<span className="hidden text-sm font-medium sm:inline">
-								افزودن دوست
-							</span>
-						</Button>
-					</div>
-				</div>
-
-				<div className="h-[calc(90vh-15rem)]">
-					<FriendsList
-						status="ACCEPTED"
-						renderFriendActions={renderFriendActions}
-						itemsPerPage={8}
-						emptyMessage="هنوز دوستی اضافه نکردی"
-						caching={true}
-					/>
-				</div>
-			</div>
-
-			{isAddFriendOpen && (
-				<AddFriendBottomSheet isOpen onClose={() => setIsAddFriendOpen(false)} />
-			)}
+			<FriendsList
+				status="ACCEPTED"
+				renderFriendActions={renderFriendActions}
+				itemsPerPage={8}
+				emptyMessage="هنوز دوستی اضافه نکردی"
+				caching={true}
+				className="px-0 pb-0 mt-0"
+			/>
 
 			<ConfirmationModal
 				isOpen={!!selectedUser}
