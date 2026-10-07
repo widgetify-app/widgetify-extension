@@ -1,7 +1,7 @@
-import { Icon } from '@/icons'
-import { Button, Spinner, Tooltip } from '@/components/ui'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
+import { Spinner, Tooltip } from '@/components/ui'
+import { Icon } from '@/icons'
 import { ProTooltipContent } from './pro-tooltip'
 
 interface UploadEmptyProps {
@@ -28,121 +28,59 @@ export function UploadEmpty({
 	onDrop,
 }: UploadEmptyProps) {
 	return (
-		<section
-			aria-label="بارگذاری تصویر زمینه"
-			onDragOver={onDragOver}
-			onDragEnter={onDragOver}
-			onDragLeave={onDragLeave}
-			onDrop={onDrop}
-			className={cn(
-				'relative p-3 overflow-hidden transition-ui border shadow-sm rounded-2xl border-surface-3 bg-surface-2',
-				isDragging && 'border-brand bg-brand-fill'
-			)}
-		>
-			<div className="flex items-center justify-between gap-3">
-				<div className="flex items-center min-w-0 gap-3">
+		<div className="relative">
+			<button
+				type="button"
+				disabled={isUploading}
+				onClick={onFileSelect}
+				onDragOver={onDragOver}
+				onDragEnter={onDragOver}
+				onDragLeave={onDragLeave}
+				onDrop={onDrop}
+				className={cn(
+					'flex flex-col items-center justify-center w-full gap-1.5 p-3 text-center border-2 border-dashed cursor-pointer aspect-video rounded-2xl transition-ui focus-visible:focus-ring disabled:cursor-wait',
+					isDragging
+						? 'border-brand bg-brand-fill text-brand'
+						: 'border-line bg-fill text-fg-muted hover:border-brand-muted hover:bg-brand-fill hover:text-brand'
+				)}
+			>
+				{isUploading ? (
+					<Spinner aria-hidden="true" />
+				) : (
+					<Icon name="uploadImage" size={24} />
+				)}
+				<span className="text-xs font-semibold text-fg">
+					{isDragging
+						? 'رهاش کن'
+						: isUploading
+							? 'داریم آپلودش می‌کنیم...'
+							: isVip
+								? 'عکس یا ویدیوی خودت'
+								: 'عکس خودت'}
+				</span>
+				<span className="text-3xs text-fg-faint">
+					{isVip
+						? `عکس، گیف یا ویدیو تا ${vipMaxSize} مگابایت`
+						: `تا ${freeMaxSize} مگابایت، روی همین مرورگر`}
+				</span>
+			</button>
+
+			{!isVip && (
+				<Tooltip
+					content={<ProTooltipContent vipMaxSize={vipMaxSize} />}
+					position="top"
+					className="absolute top-2 end-2"
+				>
 					<button
 						type="button"
-						disabled={isUploading}
-						onClick={onFileSelect}
-						className={cn(
-							'relative flex items-center justify-center w-24 h-16 overflow-hidden rounded-xl border border-dashed cursor-pointer shrink-0 transition-ui group bg-surface-2',
-							isDragging
-								? 'border-brand bg-brand-fill text-brand'
-								: 'border-line hover:border-brand-muted text-fg-muted hover:text-fg'
-						)}
+						onClick={() => callEvent('openSettings', 'vip')}
+						className="inline-flex items-center h-6 gap-1 px-2 font-bold border rounded-lg cursor-pointer text-3xs text-vip bg-vip-fill border-vip-fill-2 hover:bg-vip-fill-2 transition-ui focus-visible:focus-ring"
 					>
-						{isUploading ? (
-							<Spinner />
-						) : (
-							<div className="flex flex-col items-center justify-center gap-0.5">
-								<Icon
-									name="uploadImage"
-									size={16}
-									className="transition-transform group-hover:scale-110"
-								/>
-								<span className="text-3xs font-medium">
-									{isDragging ? 'رهاش کن' : 'آپلود'}
-								</span>
-							</div>
-						)}
+						<Icon name="diamond" size={12} />
+						ویدیو با پرو
 					</button>
-
-					<div className="flex flex-col min-w-0 gap-1">
-						<p className="text-sm font-bold truncate text-fg">
-							{isDragging
-								? 'فایل رو همین‌جا رها کن'
-								: isVip
-									? 'انتخاب عکس یا ویدیوی دلخواه'
-									: 'انتخاب عکس دلخواه'}
-						</p>
-						<div className="flex items-center gap-1.5 flex-wrap">
-							{isVip ? (
-								<>
-									<Tooltip
-										content={`عکس، گیف و ویدیو تا سقف ${vipMaxSize} مگابایت`}
-										position="top"
-									>
-										<span className="inline-flex items-center gap-1 text-2xs font-medium text-fg-muted bg-fill px-2 py-0.5 rounded-xl cursor-default">
-											<span>تا {vipMaxSize} مگابایت</span>
-										</span>
-									</Tooltip>
-									<Tooltip
-										content="روی سرور ذخیره می‌شه و روی اکانتت ذخیره می‌مونه"
-										position="top"
-									>
-										<span className="inline-flex items-center gap-1 text-2xs font-medium text-fg-muted bg-fill px-2 py-0.5 rounded-xl cursor-default">
-											<span>همگام سازی با اکانت</span>
-										</span>
-									</Tooltip>
-								</>
-							) : (
-								<>
-									<Tooltip
-										content={`عکس تا ${freeMaxSize} مگابایت روی همین مرورگرت ذخیره می‌شه`}
-										position="top"
-									>
-										<span className="inline-flex items-center gap-1 text-2xs font-medium text-fg-muted bg-fill px-2 py-0.5 rounded-xl cursor-default">
-											فقط عکس (تا {freeMaxSize} مگابایت)
-										</span>
-									</Tooltip>
-									<Tooltip
-										content={
-											<ProTooltipContent vipMaxSize={vipMaxSize} />
-										}
-										position="top"
-									>
-										<button
-											type="button"
-											onClick={(e) => {
-												e.stopPropagation()
-												callEvent('openSettings', 'vip')
-											}}
-											className="inline-flex items-center gap-1 text-2xs font-bold text-vip bg-vip-fill border border-vip-fill-2 px-2.5 py-0.5 rounded-xl hover:bg-vip-fill-2 active:scale-95 transition-ui cursor-pointer"
-										>
-											<Icon name="diamond" size={12} />
-											<span>ارتقا به پرو</span>
-										</button>
-									</Tooltip>
-								</>
-							)}
-						</div>
-					</div>
-				</div>
-
-				<div className="flex items-center gap-1.5 shrink-0">
-					<Button
-						onClick={onFileSelect}
-						size="sm"
-						rounded="xl"
-						variant="outline"
-						loading={isUploading}
-					>
-						<Icon name="uploadImage" size={14} />
-						<span>انتخاب فایل</span>
-					</Button>
-				</div>
-			</div>
-		</section>
+				</Tooltip>
+			)}
+		</div>
 	)
 }

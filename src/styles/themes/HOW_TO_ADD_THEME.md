@@ -122,12 +122,11 @@ export enum Theme {
 }
 ```
 
-`src/features/setting/appearance/components/theme-selector.tsx` — add an
-entry. The shape is `{ id, name, description? }`; the id must match the CSS
-`name`:
+`src/features/market/constants.ts` — add it to `BUNDLED_OPTIONS.THEME`, which
+the appearance settings list. The value must match the CSS `name`:
 
 ```ts
-{ id: 'newtheme', name: 'نام تم', description: 'توضیح کوتاه' },
+bundled('THEME', Theme.NewTheme, 'نام تم'),
 ```
 
 ## 4. Check it
