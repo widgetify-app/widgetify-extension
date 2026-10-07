@@ -9,7 +9,7 @@ A frameless clock drawn straight on the wallpaper, in Persian or English, at 2x1
 | `transparent-clock.widget.tsx` | Entry. Picks the language model. |
 | `variants/transparent-clock-persian.tsx`, `variants/transparent-clock-english.tsx` | Date text in each language. |
 | `components/transparent-clock-face.tsx`, `components/clock-digits.tsx` | Time and date, sized by the container, and ⋯. |
-| `hooks/use-wallpaper-clock-theme.ts` | Text colour and glow taken from the wallpaper. |
+| `../hooks/use-wallpaper-theme.ts` | Text colour and glow taken from the wallpaper. The canvas owns it, because the edit mode grid takes its colour from it too. |
 | `utils/normalize-variant.ts` | Reads the stored model. Tested. |
 
 ## Layout and menu

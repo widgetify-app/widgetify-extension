@@ -58,6 +58,7 @@ Keyboard focus means `data-keyboard-focus` on the frame, set by `hooks/use-keybo
 - `voice-search-portal.tsx` starts the microphone in a mount effect. Never make it always mounted.
 - Dragging a widget near the top or bottom of the page scrolls the page (`hooks/use-drag-auto-scroll.ts`; the speed rule is `utils/edge-scroll.ts`, tested). The drag offset adds how far the page has scrolled since the drag began, so the widget stays under the pointer while the page moves, wheel scrolling included. Before this, you carried a widget from low on the page to the top in steps: drop it at the top of the window, scroll, drag again.
 - A press that starts and ends on empty space leaves edit mode. Empty space is the canvas background or any element that contains the canvas, so the page around the grid counts, and a modal, the toolbar or a widget never does. A right click does not count; it opens the canvas menu.
+- The edit grid takes its colour from the wallpaper through `hooks/use-wallpaper-theme.ts`, the analysis the transparent clock uses. The theme's `line` and `fill` vanished on a wallpaper of the other lightness, such as a dark wallpaper under the light theme. The hook keeps its last result between mounts, so after the first time the grid opens in the right colour.
 
 ## Adding a widget
 

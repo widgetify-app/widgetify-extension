@@ -3,12 +3,13 @@ import { getFromStorage } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper } from '@/common/types/wallpaper.interface'
 
-interface WallpaperClockTheme {
+interface WallpaperTheme {
 	primaryColor: string
 	secondaryColor: string
 	accentGlow: string
 	isDark: boolean
 	isDerivedFromWallpaper: boolean
+	inkHsl: string
 }
 
 const CLOCK_SHADOW_SETTINGS = {
@@ -17,20 +18,25 @@ const CLOCK_SHADOW_SETTINGS = {
 	defaultShadow: '0 2px 6px rgba(0, 0, 0, 0.22)',
 }
 
-const DEFAULT_THEME: WallpaperClockTheme = {
+const LIGHT_INK_HSL = '210, 40%, 96%'
+const DARK_INK_HSL = '217, 33%, 17%'
+
+const DEFAULT_THEME: WallpaperTheme = {
 	primaryColor: '#f1f5f9',
 	secondaryColor: 'rgba(241, 245, 249, 0.85)',
 	accentGlow: CLOCK_SHADOW_SETTINGS.defaultShadow,
 	isDark: true,
 	isDerivedFromWallpaper: true,
+	inkHsl: LIGHT_INK_HSL,
 }
 
-const THEME_FALLBACK: WallpaperClockTheme = {
+const THEME_FALLBACK: WallpaperTheme = {
 	primaryColor: 'currentColor',
 	secondaryColor: 'currentColor',
 	accentGlow: 'none',
 	isDark: true,
 	isDerivedFromWallpaper: false,
+	inkHsl: LIGHT_INK_HSL,
 }
 
 const MIN_CONTRAST_RATIO = 4.5
@@ -250,7 +256,7 @@ function analyzePixels(data: Uint8ClampedArray): ImageColorStats {
 	return { avgLuminance, primary, secondary }
 }
 
-function buildTheme(stats: ImageColorStats): WallpaperClockTheme {
+function buildTheme(stats: ImageColorStats): WallpaperTheme {
 	const { avgLuminance, primary, secondary } = stats
 	const isDark = avgLuminance < 0.4
 
@@ -266,6 +272,7 @@ function buildTheme(stats: ImageColorStats): WallpaperClockTheme {
 					accentGlow: shadow,
 					isDark: true,
 					isDerivedFromWallpaper: true,
+					inkHsl: LIGHT_INK_HSL,
 				}
 			: {
 					primaryColor: '#1e293b',
@@ -273,6 +280,7 @@ function buildTheme(stats: ImageColorStats): WallpaperClockTheme {
 					accentGlow: shadow,
 					isDark: false,
 					isDerivedFromWallpaper: true,
+					inkHsl: DARK_INK_HSL,
 				}
 	}
 
@@ -283,7 +291,8 @@ function buildTheme(stats: ImageColorStats): WallpaperClockTheme {
 	const initialL = isDark ? 90 : 18
 	const finalL = ensureContrast(primary.hue, targetS, initialL, avgLuminance, isDark)
 
-	const primaryColor = `hsl(${primary.hue}, ${targetS}%, ${finalL}%)`
+	const inkHsl = `${primary.hue}, ${targetS}%, ${finalL}%`
+	const primaryColor = `hsl(${inkHsl})`
 
 	let secondaryColor: string
 	if (secondary) {
@@ -311,13 +320,14 @@ function buildTheme(stats: ImageColorStats): WallpaperClockTheme {
 		accentGlow: shadow,
 		isDark,
 		isDerivedFromWallpaper: true,
+		inkHsl,
 	}
 }
 
 function extractThemeFromGradient(gradient: {
 	from: string
 	to: string
-}): WallpaperClockTheme {
+}): WallpaperTheme {
 	const rgb1 = hexToRgb(gradient.from)
 	const rgb2 = hexToRgb(gradient.to)
 	const [h1, s1] = rgbToHsl(...rgb1)
@@ -345,7 +355,7 @@ function extractThemeFromGradient(gradient: {
 	})
 }
 
-async function extractThemeFromImage(src: string): Promise<WallpaperClockTheme> {
+async function extractThemeFromImage(src: string): Promise<WallpaperTheme> {
 	return new Promise((resolve) => {
 		const img = new Image()
 		img.crossOrigin = 'Anonymous'
@@ -385,16 +395,23 @@ async function extractThemeFromImage(src: string): Promise<WallpaperClockTheme> 
 	})
 }
 
-export function useWallpaperClockTheme(): WallpaperClockTheme {
-	const [theme, setTheme] = useState<WallpaperClockTheme>(THEME_FALLBACK)
+let lastTheme = THEME_FALLBACK
+
+export function useWallpaperTheme(): WallpaperTheme {
+	const [theme, setTheme] = useState<WallpaperTheme>(lastTheme)
 	const requestIdRef = useRef(0)
 
 	useEffect(() => {
 		let isMounted = true
 
+		function show(next: WallpaperTheme) {
+			lastTheme = next
+			setTheme(next)
+		}
+
 		async function updateFromWallpaper(wallpaper: StoredWallpaper | null) {
 			if (!wallpaper) {
-				if (isMounted) setTheme(THEME_FALLBACK)
+				if (isMounted) show(THEME_FALLBACK)
 				return
 			}
 
@@ -402,13 +419,12 @@ export function useWallpaperClockTheme(): WallpaperClockTheme {
 
 			if (wallpaper.type === 'IMAGE' && wallpaper.src) {
 				const computed = await extractThemeFromImage(wallpaper.src)
-				if (isMounted && requestId === requestIdRef.current) setTheme(computed)
+				if (isMounted && requestId === requestIdRef.current) show(computed)
 			} else if (wallpaper.type === 'GRADIENT' && wallpaper.gradient) {
 				const computed = extractThemeFromGradient(wallpaper.gradient)
-				if (isMounted && requestId === requestIdRef.current) setTheme(computed)
+				if (isMounted && requestId === requestIdRef.current) show(computed)
 			} else if (wallpaper.type === 'VIDEO') {
-				if (isMounted && requestId === requestIdRef.current)
-					setTheme(DEFAULT_THEME)
+				if (isMounted && requestId === requestIdRef.current) show(DEFAULT_THEME)
 			}
 		}
 

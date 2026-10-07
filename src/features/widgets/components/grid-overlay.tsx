@@ -1,4 +1,6 @@
 import { memo } from 'react'
+import { cn } from '@/common/utils/cn'
+import { useWallpaperTheme } from '../hooks/use-wallpaper-theme'
 
 interface GridOverlayProps {
 	totalGridRows: number
@@ -15,7 +17,16 @@ function GridOverlayImpl({
 	cellHeight,
 	gap,
 }: GridOverlayProps) {
+	const wallpaper = useWallpaperTheme()
+
 	if (cellWidth <= 0 || cellHeight <= 0) return null
+
+	const inkStyle = wallpaper.isDerivedFromWallpaper
+		? {
+				borderColor: `hsla(${wallpaper.inkHsl}, 0.4)`,
+				backgroundColor: `hsla(${wallpaper.inkHsl}, 0.1)`,
+			}
+		: undefined
 
 	return (
 		<div
@@ -41,8 +52,12 @@ function GridOverlayImpl({
 							style={{
 								width: `${cellWidth}px`,
 								height: `${cellHeight}px`,
+								...inkStyle,
 							}}
-							className="border border-dashed rounded-widget border-line bg-fill"
+							className={cn(
+								'border border-dashed rounded-widget',
+								!inkStyle && 'border-line bg-fill'
+							)}
 						/>
 					))}
 				</div>

@@ -1,7 +1,7 @@
 import type React from 'react'
 import { cn } from '@/common/utils/cn'
 import { WidgetMenuButton } from '@/features/widgets/components/widget-menu-button'
-import { useWallpaperClockTheme } from '../hooks/use-wallpaper-clock-theme'
+import { useWallpaperTheme } from '../../hooks/use-wallpaper-theme'
 import { ClockDigits } from './clock-digits'
 
 const CLOCK_FONT_SIZE = 'clamp(2rem, min(24cqw, 56cqh), 10rem)'
@@ -32,7 +32,7 @@ export const TransparentClockFace: React.FC<TransparentClockFaceProps> = ({
 	className,
 	metaStyle,
 }) => {
-	const theme = useWallpaperClockTheme()
+	const theme = useWallpaperTheme()
 	const usesWallpaperColors = theme.isDerivedFromWallpaper
 
 	return (
