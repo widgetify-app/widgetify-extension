@@ -335,8 +335,8 @@ const DisplayRow = ({
 	}
 
 	return (
-		<div className="flex items-center justify-between p-2 transition-colors border-b last:border-b-0 border-surface-3 hover:bg-fill">
-			<div className="flex items-center gap-3">
+		<div className="flex items-center justify-between gap-3 p-2 transition-colors border-b last:border-b-0 border-surface-3 hover:bg-fill">
+			<div className="flex items-center gap-3 shrink-0">
 				<div className="relative flex items-center justify-center w-7 h-7 rounded-xl bg-fill">
 					{icon}
 					{showBadge && (
@@ -345,23 +345,23 @@ const DisplayRow = ({
 				</div>
 				<span className="text-3xs font-medium opacity-60">{label}</span>
 			</div>
-			<div className="relative flex justify-end text-xs w-fit pr-1 font-semibold text-fg">
-				<div
-					dir={isLtr ? 'ltr' : undefined}
-					className="overflow-y-auto max-h-12 scrollbar-none"
-				>
-					{value || '-'}
-				</div>
+			<div className="flex items-center justify-end min-w-0 gap-1 text-xs font-semibold text-fg">
 				{editable && (
 					<button
 						type="button"
-						aria-label="ویرایش"
-						className="absolute p-1 -translate-y-1/2 cursor-pointer text-fg-muted -right-4 top-1/2 active:scale-95"
+						aria-label={`ویرایش ${label}`}
+						className="grid rounded-lg cursor-pointer size-7 shrink-0 place-items-center text-fg-muted hover:bg-fill-2 hover:text-fg transition-ui active:scale-95 focus-visible:focus-ring"
 						onClick={onClickEdit}
 					>
 						<Icon name="edit" />
 					</button>
 				)}
+				<div
+					dir={isLtr ? 'ltr' : undefined}
+					className="min-w-0 overflow-y-auto max-h-12 scrollbar-none"
+				>
+					{value || '-'}
+				</div>
 			</div>
 
 			{editable && EditModal && show && (
