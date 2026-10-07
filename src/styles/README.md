@@ -88,7 +88,7 @@ anything else in it.
 | `animations.css` | every `@keyframes`. One that a class uses sits in `@theme` with its `--animate-*`, so it ships only while something uses it. |
 | `themes/<name>.css` | one theme: its daisyUI block and one block of variables. No selectors. |
 | `base.css` | element defaults, all inside `@layer base` so a utility always wins over them. |
-| `utilities.css` | `@utility` only: `transition-ui`, `focus-ring`, the `z-*` layers, the glass family, `scrollbar-none`, the blur-mode pair, `widget-control` / `widget-info`, which show and hide a widget's controls on hover, and `widget-control-fade`, which fades the content under a control laid over it (see `src/features/widgets/README.md`). |
+| `utilities.css` | `@utility` only: `transition-ui`, `focus-ring`, the `z-*` layers, the glass family, `theme-scope` (see below), `scrollbar-none`, the blur-mode pair, `widget-control` / `widget-info`, which show and hide a widget's controls on hover, and `widget-control-fade`, which fades the content under a control laid over it (see `src/features/widgets/README.md`). |
 | `legacy.css` | Chrome 109 fallbacks for what daisyUI writes. |
 
 A class is only ever an `@utility`. A plain `.class {}` rule sits outside
@@ -171,6 +171,18 @@ children draw the background, and `bg-glass-modal` is the modal's heavier one.
 A theme opts in with four variables: `--glass-bg` and `--glass-filter`, and
 `--glass-modal-bg` and `--glass-modal-filter`. Leave out any of them and that
 part falls back to the plain token.
+
+## Showing another theme inside the page
+
+The store and the appearance settings draw a small picture of a theme that is
+not the active one. An element with `data-theme="<name>"` gets that theme's
+daisyUI variables, but Tailwind resolved the tokens above on `<html>`, so
+`bg-surface` inside it still paints the active theme. `theme-scope` declares the
+tokens the picture uses again on the element, and they resolve against the theme
+it names. When a picture starts using another token, add that token to the list.
+A theme from the CDN has no CSS on the page until you activate it, so the store
+fetches it and scopes its root rules to that one `data-theme`
+(`features/market/utils/theme-css.ts`).
 
 ## Adding a colour
 

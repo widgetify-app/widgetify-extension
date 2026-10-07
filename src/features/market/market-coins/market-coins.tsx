@@ -1,106 +1,160 @@
 import { useState } from 'react'
 import Analytics from '@/analytics'
-import { Pagination } from '@/components/ui'
+import { ConfigKey } from '@/common/constants/config-keys'
+import { callEvent } from '@/common/utils/call-event'
+import { Alert, Button, EmptyState } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
-import { CoinPackageCard } from './components/coin-package-card'
-import { CoinPackagePurchaseModal } from './components/coin-package-purchase-modal'
-import { showToast } from '@/common/toast'
-import type { CoinPackage } from '@/services/market/market-coins.interface'
-import { useGetCoinPackages } from '@/services/market/market-coins.hook'
 import { Icon } from '@/icons'
+import { useGetCoinPackages } from '@/services/market/market-coins.hook'
+import { CategoryHeader } from '../components/category-header'
+import { useCoinCheckout } from '../hooks/use-coin-checkout'
+import { bestValuePackageId, faNumber } from '../utils/store-item'
+import { CoinPackageOption } from './components/coin-package-option'
 
 export function MarketCoins() {
-	const { isAuthenticated, refetchUser } = useAuth()
-	const [currentPage, setCurrentPage] = useState(1)
-	const [selectedPackage, setSelectedPackage] = useState<CoinPackage | null>(null)
-	const [showPurchaseModal, setShowPurchaseModal] = useState(false)
+	const { isAuthenticated, user } = useAuth()
+	const { data, isLoading, isError, refetch } = useGetCoinPackages({ limit: 12 })
+	const { checkout, payingPackageId } = useCoinCheckout()
+	const [selectedId, setSelectedId] = useState<string | null>(null)
 
-	const {
-		data: packagesData,
-		isLoading,
-		refetch,
-	} = useGetCoinPackages({
-		limit: 12,
-		page: currentPage,
-	})
+	const packages = data?.packages ?? []
+	const selected = packages.find((pkg) => pkg.id === selectedId) ?? packages[0]
+	const bestValueId = bestValuePackageId(packages)
 
-	const handlePurchaseClick = (pkg: CoinPackage) => {
-		if (!isAuthenticated) {
-			Analytics.event('coin_package_purchase_unauthenticated')
-			showToast('برای خرید پکیج باید وارد حساب کاربری خود شوید.', 'error')
-			return
-		}
-		setSelectedPackage(pkg)
-		setShowPurchaseModal(true)
+	const signIn = () => {
+		Analytics.event('coin_package_purchase_unauthenticated')
+		callEvent('openProfile')
 	}
 
-	const handlePurchaseSuccess = () => {
-		setShowPurchaseModal(false)
-		setSelectedPackage(null)
-		refetchUser()
-		refetch()
+	const openRewards = () => {
+		if (!isAuthenticated) return signIn()
+		callEvent('openSettings', 'tasks')
 	}
 
 	return (
-		<>
-			{isLoading ? (
-				<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-					{Array.from({ length: 8 }).map((_, i) => (
-						<div
-							key={i}
-							className="overflow-hidden border rounded-2xl border-line bg-surface-veil"
-						>
-							<div className="h-28 skeleton opacity-40" />
-							<div className="p-3 space-y-2">
-								<div className="w-3/5 h-3 rounded-lg skeleton opacity-30" />
-								<div className="flex items-center justify-between pt-2 border-t border-line">
-									<div className="w-12 h-3 rounded-lg skeleton opacity-20" />
-									<div className="w-12 h-6 rounded-lg skeleton opacity-20" />
-								</div>
-							</div>
-						</div>
-					))}
+		<div className="flex flex-col min-h-full">
+			<CategoryHeader
+				title="ویج‌کوین"
+				description="با ویج‌کوین هر آیتمی رو یه بار می‌خری و برای همیشه مال تو می‌مونه."
+			/>
+
+			<div className="grid gap-3 mb-4 sm:grid-cols-2">
+				<div className="flex items-center gap-3 p-4 border rounded-2xl border-warning-fill-2 bg-warning-fill">
+					<img
+						src={ConfigKey.WIG_COIN_ICON}
+						alt=""
+						className="size-10 shrink-0"
+					/>
+					<div>
+						<p className="text-2xs text-fg-muted">موجودی فعلی</p>
+						{isAuthenticated ? (
+							<p className="text-2xl font-bold tabular-nums text-fg-strong">
+								{faNumber(user?.coins ?? 0)}
+							</p>
+						) : (
+							<p className="text-sm font-semibold text-fg">
+								برای دیدنش وارد شو
+							</p>
+						)}
+					</div>
 				</div>
-			) : packagesData?.packages?.length ? (
-				<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-					{packagesData.packages.map((pkg) => (
-						<CoinPackageCard
-							key={pkg.id}
-							package={pkg}
-							onPurchase={() => handlePurchaseClick(pkg)}
-							isAuthenticated={isAuthenticated}
+				<button
+					type="button"
+					onClick={openRewards}
+					className="flex items-center gap-3 p-4 border cursor-pointer text-start rounded-2xl border-surface-3 bg-surface-2 hover:border-brand-muted transition-ui focus-visible:focus-ring"
+				>
+					<span className="grid rounded-xl size-10 place-items-center bg-success-fill text-success shrink-0">
+						<Icon name="gift" size={20} />
+					</span>
+					<span className="flex-1">
+						<span className="block text-sm font-semibold text-fg-strong">
+							ویج‌کوین رایگان
+						</span>
+						<span className="block text-2xs text-fg-muted">
+							با انجام ماموریت‌ها و دعوت دوستات
+						</span>
+					</span>
+					<Icon name="chevronLeft" size={16} className="text-fg-faint" />
+				</button>
+			</div>
+
+			{isError ? (
+				<EmptyState
+					icon="coin"
+					title="بسته‌ها نیومدن"
+					description="اینترنتت رو چک کن و دوباره امتحان کن"
+					action={
+						<Button size="sm" onClick={() => refetch()}>
+							دوباره امتحان کن
+						</Button>
+					}
+				/>
+			) : isLoading ? (
+				<div className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(9.5rem,1fr))]">
+					{Array.from({ length: 4 }, (_, index) => (
+						<span
+							key={index}
+							aria-hidden="true"
+							className="block h-48 rounded-2xl skeleton"
 						/>
 					))}
 				</div>
+			) : packages.length === 0 ? (
+				<EmptyState icon="coin" title="فعلاً بسته‌ای برای خرید نیست" />
 			) : (
-				<div className="flex flex-col items-center justify-center h-48 gap-3">
-					<div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-fill-2">
-						<Icon name="coin" size={20} className="text-fg-ghost" />
-					</div>
-					<p className="text-xs text-fg-faint">فعلا چیزی برای خرید نیست</p>
-				</div>
+				<fieldset className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(9.5rem,1fr))]">
+					<legend className="mb-2 text-sm font-bold text-fg-strong">
+						یه بسته انتخاب کن
+					</legend>
+					{packages.map((pkg) => (
+						<CoinPackageOption
+							key={pkg.id}
+							pkg={pkg}
+							selected={pkg.id === selected?.id}
+							isBestValue={pkg.id === bestValueId}
+							onSelect={() => setSelectedId(pkg.id)}
+						/>
+					))}
+				</fieldset>
 			)}
 
-			<Pagination
-				currentPage={currentPage}
-				totalPages={packagesData?.totalPages || 1}
-				onNextPage={() => {
-					setCurrentPage((p) => p + 1)
-					Analytics.event('market_coins_next_page')
-				}}
-				onPrevPage={() => {
-					setCurrentPage((p) => p - 1)
-					Analytics.event('market_coins_prev_page')
-				}}
-				isLoading={isLoading}
-			/>
-
-			<CoinPackagePurchaseModal
-				isOpen={showPurchaseModal}
-				onClose={() => setShowPurchaseModal(false)}
-				package={selectedPackage}
-				onPurchaseSuccess={handlePurchaseSuccess}
-			/>
-		</>
+			{selected && (
+				<div className="sticky bottom-0 flex flex-wrap items-center justify-between gap-3 p-3 mt-4 border shadow-lg rounded-2xl border-surface-3 bg-glass-surface-2">
+					{isAuthenticated ? (
+						<>
+							<div className="min-w-0">
+								<p className="text-sm font-bold text-fg-strong">
+									{selected.title}، {faNumber(selected.coin)} ویج‌کوین
+								</p>
+								<p className="text-2xs text-fg-muted">
+									به درگاه بانک می‌ری و سکه‌ها همون لحظه به حسابت اضافه
+									می‌شن
+								</p>
+							</div>
+							<Button
+								color="brand"
+								onClick={() => checkout(selected)}
+								loading={payingPackageId === selected.id}
+								loadingText="انتقال به درگاه..."
+							>
+								پرداخت {faNumber(selected.price)} تومان
+							</Button>
+						</>
+					) : (
+						<Alert
+							tone="info"
+							className="w-full"
+							action={
+								<Button size="sm" color="brand" onClick={signIn}>
+									ورود
+								</Button>
+							}
+						>
+							برای خرید ویج‌کوین وارد حسابت شو
+						</Alert>
+					)}
+				</div>
+			)}
+		</div>
 	)
 }

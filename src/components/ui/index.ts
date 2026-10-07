@@ -43,8 +43,6 @@ export * from './modal/confirmation-modal.variants'
 export * from './modal/modal'
 export * from './modal/modal.variants'
 
-export * from './pagination/pagination'
-
 export * from './popover-menu/popover-menu'
 export * from './popover-menu/popover-menu-item'
 export * from './popover-menu/popover-menu.variants'

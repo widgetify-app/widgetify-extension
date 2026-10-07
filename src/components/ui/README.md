@@ -16,7 +16,7 @@ Presentational primitives. They know nothing about the app, the server or a feat
 | Menu | `Dropdown` with `DropdownItem` and `DropdownDivider`; `PopoverMenu` with `PopoverMenuItem` (an optional `description` adds a second line), `PopoverMenuHeader` and `PopoverMenuDivider`. `PopoverMenu` measures itself and opens above its anchor when there is no room below (`utils/menu-position.ts`); arrow keys move between its buttons and Escape returns focus to the trigger. A `Dropdown` closes on a click outside it, including a click elsewhere in the modal it sits in; it stays open only for a click in a layer opened above it (`use-dropdown.ts`). |
 | Overlays | `BottomSheet`, `Portal`, `StackedToaster` |
 | Small marks | `Badge`, `NewBadge` (a pulsing dot for something new), `VipBadge`, `FloatingBadge` (a sticker on a corner), `AvatarComponent`, `Kbd`, `ProgressRing` |
-| Layout helpers | `SectionPanel` (an optional `action` sits at the end of its header), `TabNavigation`, `Pagination`, `ItemSelector`, `ImageSlider` |
+| Layout helpers | `SectionPanel` (an optional `action` sits at the end of its header), `TabNavigation`, `ItemSelector`, `ImageSlider` |
 | Picking from a grid | `Tile`: a card with a picture on top and a title row (`bare` drops the row). `aspect` is `video`, `wide` or `short`; `selected` rings it; `actions` show on hover |
 | A row that scrolls sideways | `ScrollRow`, with previous and next buttons that appear only when there is more to see |
 | Nothing to show | `EmptyState`: an icon, a line, an optional second line and an optional action |
