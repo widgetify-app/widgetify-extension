@@ -56,6 +56,7 @@ Keyboard focus means `data-keyboard-focus` on the frame, set by `hooks/use-keybo
 - Canvas collision is push down only, with no compaction. Gaps between widgets are deliberate and survive a move. The earlier backtracking solver froze the extension for 112 seconds on one drag. Compaction exists behind an option and is off.
 - The canvas is `MAX_CANVAS_ROWS` (12) rows deep at 8 columns, scaled by `8 / cols` on narrower grids (`row-cap.ts`). `resolveLayoutChange` refuses a move, resize, add or duplicate whose result reaches past it, or past the layout's current bottom when that is already lower, so an old layout that is too tall still works but cannot grow. The drag clamps to the same row. In edit mode the canvas shows every row up to the cap, so it does not shrink under a widget dragged upward.
 - `voice-search-portal.tsx` starts the microphone in a mount effect. Never make it always mounted.
+- Dragging a widget near the top or bottom of the page scrolls the page (`hooks/use-drag-auto-scroll.ts`; the speed rule is `utils/edge-scroll.ts`, tested). The drag offset adds how far the page has scrolled since the drag began, so the widget stays under the pointer while the page moves, wheel scrolling included. Before this, you carried a widget from low on the page to the top in steps: drop it at the top of the window, scroll, drag again.
 
 ## Adding a widget
 
@@ -78,4 +79,4 @@ Keyboard focus means `data-keyboard-focus` on the frame, set by `hooks/use-keybo
 
 ## Tests
 
-Pure modules only: `__tests__/` covers the layout engine, push down, migration, size choice and zoned time; each widget covers its own maths and `normalize-*` helpers.
+Pure modules only: `__tests__/` covers the layout engine, push down, migration, size choice, zoned time and the drag's edge scrolling; each widget covers its own maths and `normalize-*` helpers.

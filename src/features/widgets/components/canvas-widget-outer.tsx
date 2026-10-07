@@ -12,6 +12,7 @@ import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { useFreeWidgetActions } from '@/features/widgets/widgets.context'
 import { getWidgetPixelRect } from '../utils/grid-geometry'
 import { useKeyboardFocusWithin } from '../hooks/use-keyboard-focus-within'
+import { useDragAutoScroll } from '../hooks/use-drag-auto-scroll'
 import { rowCapFor } from '../utils/layout-engine/row-cap'
 import {
 	type StoredWidget,
@@ -96,8 +97,14 @@ function CanvasWidgetOuterImpl({
 	const isDragActiveRef = useRef(false)
 	const activePointerIdRef = useRef<number | null>(null)
 	const rafRef = useRef<number | null>(null)
-	const pendingOffsetRef = useRef<{ x: number; y: number } | null>(null)
+	const lastPointerRef = useRef<{ x: number; y: number } | null>(null)
 	const previewPosRef = useRef<WidgetPosition | null>(null)
+	const {
+		start: startAutoScroll,
+		track: trackAutoScroll,
+		stop: stopAutoScroll,
+		scrolledBy,
+	} = useDragAutoScroll(() => scheduleDragFrame())
 
 	const anchorPosition = isDragging ? dragStartPosRef.current : widget.position
 	const pixelRect = getWidgetPixelRect(
@@ -120,13 +127,14 @@ function CanvasWidgetOuterImpl({
 		if (outerRef.current) {
 			outerRef.current.style.transform = baseTransformRef.current
 		}
+		stopAutoScroll()
 		pointerStartRef.current = null
 		isDragActiveRef.current = false
 		activePointerIdRef.current = null
-		pendingOffsetRef.current = null
+		lastPointerRef.current = null
 		previewPosRef.current = null
 		setIsDragging(false)
-	}, [])
+	}, [stopAutoScroll])
 
 	const finishDrag = useCallback(
 		(targetPosition: WidgetPosition | null) => {
@@ -207,58 +215,68 @@ function CanvasWidgetOuterImpl({
 		}
 	}
 
+	const getDragOffset = () => {
+		const start = pointerStartRef.current
+		const last = lastPointerRef.current
+		if (!start || !last) return { x: 0, y: 0 }
+		return { x: last.x - start.x, y: last.y - start.y + scrolledBy() }
+	}
+
+	const scheduleDragFrame = () => {
+		if (rafRef.current !== null) return
+		rafRef.current = requestAnimationFrame(() => {
+			rafRef.current = null
+			if (!isDragActiveRef.current) return
+
+			const offset = getDragOffset()
+			const base = dragBaseRectRef.current
+			if (outerRef.current) {
+				outerRef.current.style.transform = `translate3d(${base.left + offset.x}px, ${base.top + offset.y}px, 0)`
+			}
+
+			const target = getTargetPosition(offset)
+			const previous = previewPosRef.current
+			if (!previous || target.col !== previous.col || target.row !== previous.row) {
+				previewPosRef.current = target
+				updateDragPreview(widget.instanceId, target)
+			}
+		})
+	}
+
 	const handlePointerMove = (e: React.PointerEvent) => {
 		if (canvasMode !== 'edit' || !pointerStartRef.current) return
 		if (e.pointerId !== activePointerIdRef.current) return
 
-		const dx = e.clientX - pointerStartRef.current.x
-		const dy = e.clientY - pointerStartRef.current.y
-		const dist = Math.sqrt(dx * dx + dy * dy)
+		lastPointerRef.current = { x: e.clientX, y: e.clientY }
 
-		const dragThreshold = 6
+		if (!isDragActiveRef.current) {
+			const dx = e.clientX - pointerStartRef.current.x
+			const dy = e.clientY - pointerStartRef.current.y
+			const dist = Math.sqrt(dx * dx + dy * dy)
 
-		if (dist > dragThreshold) {
-			if (!isDragActiveRef.current) {
-				isDragActiveRef.current = true
-				previewPosRef.current = { ...dragStartPosRef.current }
-				startDragPreview()
-				setIsDragging(true)
-				try {
-					;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
-				} catch {}
-			}
-			pendingOffsetRef.current = { x: dx, y: dy }
-			if (rafRef.current === null) {
-				rafRef.current = requestAnimationFrame(() => {
-					rafRef.current = null
-					const offset = pendingOffsetRef.current
-					if (!offset) return
+			const dragThreshold = 6
 
-					const base = dragBaseRectRef.current
-					if (outerRef.current) {
-						outerRef.current.style.transform = `translate3d(${base.left + offset.x}px, ${base.top + offset.y}px, 0)`
-					}
+			if (dist <= dragThreshold) return
 
-					const target = getTargetPosition(offset)
-					const previous = previewPosRef.current
-					if (
-						!previous ||
-						target.col !== previous.col ||
-						target.row !== previous.row
-					) {
-						previewPosRef.current = target
-						updateDragPreview(widget.instanceId, target)
-					}
-				})
-			}
+			isDragActiveRef.current = true
+			previewPosRef.current = { ...dragStartPosRef.current }
+			startDragPreview()
+			setIsDragging(true)
+			startAutoScroll(outerRef.current, e.clientY)
+			try {
+				;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+			} catch {}
 		}
+
+		trackAutoScroll(e.clientY)
+		scheduleDragFrame()
 	}
 
 	const handlePointerUp = (e: React.PointerEvent) => {
 		if (e.pointerId !== activePointerIdRef.current) return
 
 		const dropTarget = isDragActiveRef.current
-			? getTargetPosition(pendingOffsetRef.current ?? { x: 0, y: 0 })
+			? getTargetPosition(getDragOffset())
 			: null
 
 		try {
