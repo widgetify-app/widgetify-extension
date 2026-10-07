@@ -14,6 +14,7 @@ import { WidgetTabKeys } from '../types'
 interface WidgetSettingModalConfig {
 	title: string
 	size: 'sm' | 'md' | 'lg' | 'xl'
+	className?: string
 	Component: React.ComponentType
 }
 
@@ -21,6 +22,7 @@ const WIDGET_SETTING_MODALS: Record<string, WidgetSettingModalConfig> = {
 	[WidgetTabKeys.Pet]: {
 		title: 'تنظیمات حیوان خانگی',
 		size: 'lg',
+		className: 'max-w-2xl',
 		Component: PetSettings,
 	},
 	[WidgetTabKeys.weather_settings]: {
@@ -86,6 +88,7 @@ export function WidgetSettings() {
 			onClose={() => setIsOpen(false)}
 			title={activeSettingConfig?.title}
 			size={activeSettingConfig?.size}
+			className={activeSettingConfig?.className}
 			closeOnBackdropClick
 		>
 			{activeSettingConfig && (

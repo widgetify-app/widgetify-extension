@@ -287,7 +287,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 
 	return (
 		<div className="flex flex-col gap-4 md:flex-row md:items-start">
-			<div className="flex flex-col gap-2.5 md:flex-none md:w-52">
+			<div className="flex flex-col gap-2.5 md:flex-none md:w-64">
 				<PetPreview scene={scene} petType={petType} name={displayName} />
 
 				<div className="flex flex-col gap-1.5">
@@ -332,25 +332,12 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 
 			<div className="flex flex-col flex-1 min-w-0 gap-3.5">
 				<section className="flex flex-col gap-2">
-					<div className="flex items-center justify-between">
-						<h4
-							id="pet-type-label"
-							className="text-xs font-bold text-fg-strong"
-						>
-							حیوان خانگی
-						</h4>
-						<button
-							type="button"
-							onClick={openPetMarket}
-							className="flex items-center gap-1 font-bold rounded-sm cursor-pointer text-2xs text-brand transition-ui hover:opacity-80 focus-visible:focus-ring"
-						>
-							<Icon name="shoppingBag" size={12} aria-hidden="true" />
-							فروشگاه
-						</button>
-					</div>
+					<h4 id="pet-type-label" className="text-xs font-bold text-fg-strong">
+						حیوان خانگی
+					</h4>
 					<fieldset
 						aria-labelledby="pet-type-label"
-						className="grid grid-cols-4 gap-1.5"
+						className="grid grid-cols-3 gap-1.5"
 					>
 						{allPets.map((type) => (
 							<PetOptionTile
@@ -360,15 +347,20 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 								locked={isPetLocked(type)}
 								onSelect={() => onChangePetType(type)}
 							>
-								<span className="flex items-end justify-center h-9">
+								<span className="flex items-end justify-center h-11">
 									<img
 										src={PET_ICON[type]}
 										alt=""
-										className="object-contain max-h-9 max-w-12"
+										className="object-contain max-h-11 max-w-15"
 									/>
 								</span>
 							</PetOptionTile>
 						))}
+						<PetOptionTile label="حیوان خانگی بیشتر" onSelect={openPetMarket}>
+							<span className="grid w-full rounded-lg h-11 place-items-center bg-fill-2 text-fg-faint">
+								<Icon name="plus" size={16} aria-hidden="true" />
+							</span>
+						</PetOptionTile>
 					</fieldset>
 				</section>
 
