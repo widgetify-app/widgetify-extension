@@ -1,5 +1,5 @@
 import type React from 'react'
-import { Badge, Button, Chip, VipBadge } from '@/components/ui'
+import { Badge, Button, Chip, ScrollRow, VipBadge } from '@/components/ui'
 import { cn } from '@/common/utils/cn'
 import type {
 	WidgetCategory,
@@ -38,17 +38,20 @@ export function AddWidgetSidebar({
 }: AddWidgetSidebarProps) {
 	return (
 		<div className="flex flex-col w-full pb-3 pl-0 border-b md:min-h-0 md:w-5/12 md:border-b-0 md:border-l border-line md:pl-3 md:pb-0">
-			<div className="flex items-center gap-1 pb-2 mb-2 overflow-x-auto border-b shrink-0 scrollbar-none border-line">
-				{categories.map((cat) => (
-					<Chip
-						onClick={() => onSelectCategory(cat.id)}
-						key={cat.id}
-						selected={activeCategory === cat.id}
-						className="px-2.5 py-1 rounded-xl text-xs whitespace-nowrap transition-ui cursor-pointer font-medium"
-					>
-						{cat.label}
-					</Chip>
-				))}
+			<div className="pb-2 mb-2 border-b shrink-0 border-line">
+				<ScrollRow>
+					{categories.map((cat) => (
+						<Chip
+							onClick={() => onSelectCategory(cat.id)}
+							key={cat.id}
+							size="sm"
+							selected={activeCategory === cat.id}
+							className="shrink-0"
+						>
+							{cat.label}
+						</Chip>
+					))}
+				</ScrollRow>
 			</div>
 
 			<div className="space-y-1.5 pr-0.5 scrollbar-none md:flex-1 md:overflow-y-auto">
