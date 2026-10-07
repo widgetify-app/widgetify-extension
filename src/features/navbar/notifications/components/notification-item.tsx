@@ -3,7 +3,7 @@ import { useState } from 'react'
 import Analytics from '@/analytics'
 import type { NotificationItem } from '@/services/extension/get-notifications.hook'
 import { Icon } from '@/icons'
-
+const CHARACTER_LIMIT = 85
 interface NotificationItemProps {
 	onClose(e: any, id: string): any
 	notification: NotificationItem
@@ -26,7 +26,6 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 	} = prop.notification
 
 	const [isExpanded, setIsExpanded] = useState(false)
-	const CHARACTER_LIMIT = 85
 
 	const toggleExpand = (e: React.MouseEvent) => {
 		e.preventDefault()
