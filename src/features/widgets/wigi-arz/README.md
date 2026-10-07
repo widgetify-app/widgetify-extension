@@ -16,11 +16,12 @@ Live prices of currencies, gold, coins and crypto. Two models: a list at 2x3 and
 | `components/currency-empty.tsx` | The empty list: the coin icon, a line and «افزودن ارز». |
 | `wigi-arz-setting.tsx` | Settings: choose the currencies. |
 | `hooks/use-currency-price.ts` | One price, cached in storage under `currency:<code>`. |
-| `utils/` | Price, change and the settings options. Tested. |
+| `utils/` | Price, change, the settings options and who owns a list. Tested. |
 
 ## Data
 
 - A 2x3 widget placed on the canvas keeps its own list in `meta.currencies`. Without one it shows the shared `currencies` list from `CurrencyProvider`, which the combo widget uses too.
+- `ownsCurrencyList` (`utils/owns-currency-list.ts`) decides which list a widget shows and which list the settings edit. The widget and the settings both call it, so they cannot disagree. It checks the widget id as well as the size. The settings used to decide by size alone, and the combo widget is 2x3 too: from the combo, every currency you picked went into the combo's own `meta.currencies`, which nothing reads, and the combo kept showing the shared default of USD, EUR and GRAM.
 - The 1x1 model keeps its code in `meta.currencyCode`.
 - The header time is the latest reply among the listed currencies, from `useCurrenciesUpdatedAt` in `src/services/currency`.
 - «به‌روز کن» calls `useRefreshCurrencies`, which asks for every price on the page again with `FRESH_REQUEST`. The service worker answers `/currencies` stale-while-revalidate, so a plain `refetch()` got the cached price back and the new one only on the request after.

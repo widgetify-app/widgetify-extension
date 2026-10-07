@@ -8,6 +8,7 @@ import type { WidgetSize } from '../utils/layout-engine/types'
 import { WidgetContainer } from '../components/widget-container'
 import { useWidgetMenuActions, useWidgetSettingsSummary } from '../widget-menu.context'
 import type { WigiArzMeta } from './types'
+import { ownsCurrencyList } from './utils/owns-currency-list'
 import { CurrencyCompactSquare } from './variants/wigi-arz-1x1'
 import { WigiArz2x3 } from './variants/wigi-arz-2x3'
 
@@ -28,10 +29,7 @@ export function WigiArzLayout({
 	const targetWidget = instanceId
 		? freeWidgets?.runtimeLayout.find((w) => w.instanceId === instanceId)
 		: null
-	const isListVariant = targetWidget
-		? targetWidget.size.w === 2 && targetWidget.size.h === 3
-		: size.w === 2 && size.h === 3
-	const ownsList = Boolean(isListVariant && instanceId && targetWidget)
+	const ownsList = ownsCurrencyList(targetWidget)
 
 	const effectiveCurrencies = ownsList
 		? Array.isArray(meta?.currencies)

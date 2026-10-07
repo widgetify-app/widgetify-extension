@@ -12,6 +12,7 @@ import { useGetSupportCurrencies } from '@/services/currency/get-support-currenc
 import type { WidgetSize } from '../utils/layout-engine/types'
 import { CurrenciesType, type WigiArzMeta } from './types'
 import { filterCurrencyGroups, getCurrencyOptions } from './utils/get-currency-options'
+import { ownsCurrencyList } from './utils/owns-currency-list'
 
 interface WigiArzSettingProps {
 	instanceId?: string
@@ -38,10 +39,7 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 			: false
 
 	const targetMeta = targetWidget?.meta as WigiArzMeta | undefined
-	const isListVariant = targetWidget
-		? targetWidget.size.w === 2 && targetWidget.size.h === 3
-		: !isCompact
-	const ownsList = Boolean(isListVariant && instanceId && targetWidget)
+	const ownsList = ownsCurrencyList(targetWidget)
 	const selectedCurrencies = ownsList
 		? Array.isArray(targetMeta?.currencies)
 			? targetMeta.currencies
