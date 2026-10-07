@@ -11,7 +11,7 @@ Live prices of currencies, gold, coins and crypto. Two models: a list at 2x3 and
 | `variants/wigi-arz-1x1.tsx` | One currency, centred like the other 1x1 widgets: `WidgetCenteredHeader` with the flag and the code, then the price, sized to fit, over the unit and the change. «انتخاب ارز» when none is set, «نتونستیم قیمت رو بیاریم» with «دوباره» when the price fails. |
 | `components/currency-list.tsx`, `components/sortable-currency-box.tsx` | Drag to reorder. |
 | `components/currency-box.tsx` | One row, padded like a task row: icon, code, name, price and change. The drag handle sits outside the row, in the card's margin beside it, and fades in on hover; the list reaches into that margin (`-ms-2.5 ps-2.5`) so its `overflow-x-hidden` does not clip the handle. |
-| `components/price-change.tsx` | The change in percent with its arrow and colour. |
+| `components/price-change.tsx` | The change in percent with its arrow and colour. Draws nothing when the change rounds to zero, so a row never says «۰٪». |
 | `components/currency-modal.tsx` | Details and the converter. Each row keeps its own modal mounted and only toggles it, so it opens and closes with the animation. |
 | `components/currency-empty.tsx` | The empty list: the coin icon, a line and «افزودن ارز». |
 | `wigi-arz-setting.tsx` | Settings: choose the currencies. |

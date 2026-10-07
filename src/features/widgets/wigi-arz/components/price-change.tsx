@@ -5,7 +5,6 @@ import { getPriceChange } from '../utils/get-price-change'
 const DIRECTION_STYLE = {
 	up: { className: 'text-danger', label: 'افزایش' },
 	down: { className: 'text-success', label: 'کاهش' },
-	flat: { className: 'text-fg-faint', label: 'بدون تغییر' },
 } as const
 
 interface PriceChangeProps {
@@ -14,6 +13,8 @@ interface PriceChangeProps {
 
 export function PriceChange({ changePercentage }: PriceChangeProps) {
 	const change = getPriceChange(changePercentage)
+	if (change.direction === 'flat') return null
+
 	const style = DIRECTION_STYLE[change.direction]
 
 	return (
@@ -23,13 +24,11 @@ export function PriceChange({ changePercentage }: PriceChangeProps) {
 				style.className
 			)}
 		>
-			{change.direction !== 'flat' && (
-				<Icon
-					name={change.direction === 'up' ? 'upLong' : 'downLong'}
-					size={10}
-					aria-hidden="true"
-				/>
-			)}
+			<Icon
+				name={change.direction === 'up' ? 'upLong' : 'downLong'}
+				size={10}
+				aria-hidden="true"
+			/>
 			<span className="sr-only">{style.label}</span>
 			{change.percent}
 		</span>
