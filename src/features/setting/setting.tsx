@@ -30,18 +30,22 @@ const tabs: TabItem[] = [
 			{
 				label: 'پروفایل من',
 				value: 'profile',
+				description: 'اطلاعات حسابت رو ببین و هر وقت خواستی عوضش کن',
 				icon: <Icon name="user" size={20} />,
 				element: <AccountTab />,
 			},
 			{
 				label: 'ویجتیفای پرو',
 				value: 'vip',
+				description: 'تجربه‌ای سریع‌تر، زیباتر و بدون هیچ مرزی در چیدمان ابزارها',
 				icon: <Icon name="diamond" size={20} />,
 				element: <VipTab />,
 			},
 			{
 				label: 'پلتفرم‌ها',
 				value: 'platforms',
+				description:
+					'پلتفرم‌های دیگه رو به ویجتیفای وصل کن و هر وقت خواستی قطعشون کن',
 				needAuth: true,
 				icon: <Icon name="platforms" size={20} />,
 				element: <ConnectionPlatformsTab />,
@@ -49,6 +53,7 @@ const tabs: TabItem[] = [
 			{
 				label: 'ماموریت‌ها و پاداش',
 				value: 'tasks',
+				description: 'ماموریت‌ها رو انجام بده و ویج‌کوین جایزه بگیر',
 				needAuth: true,
 				icon: <Icon name="gift" size={20} />,
 				element: <RewardsTab />,
@@ -56,6 +61,7 @@ const tabs: TabItem[] = [
 			{
 				label: 'دوستان',
 				value: 'friends',
+				description: 'دوستات رو اضافه کن و درخواست‌هاشون رو جواب بده',
 				needAuth: true,
 				icon: <Icon name="friends" size={20} />,
 				element: <AllFriendsTab />,
@@ -68,31 +74,36 @@ const tabs: TabItem[] = [
 			{
 				label: 'عمومی',
 				value: 'general',
-				icon: <Icon name="settings" size={16} />,
+				description: 'شهر، منطقه‌ی زمانی و سبکی ویجتیفای',
+				icon: <Icon name="settings" size={20} />,
 				element: <GeneralSettingTab />,
 			},
-
 			{
 				label: 'حریم خصوصی',
 				value: 'access',
+				description: 'خودت انتخاب کن ویجتیفای به چی دسترسی داشته باشه',
 				icon: <Icon name="shieldEllipsis" size={20} />,
 				element: <PrivacySettings key="privacy" />,
 			},
 			{
 				label: 'ظاهری',
 				value: 'appearance',
+				description: 'تم، فونت و عنوان تب رو به سلیقه‌ی خودت عوض کن',
 				icon: <Icon name="theme" size={20} />,
 				element: <AppearanceSettingTab />,
 			},
 			{
 				label: 'تصویر زمینه‌ها',
 				value: 'wallpapers',
+				description:
+					'یکی رو انتخاب کن تا همون لحظه پشت صفحه بشینه، یا عکس خودت رو بذار',
 				icon: <Icon name="wallpapers" size={20} />,
 				element: <WallpaperSetting />,
 			},
 			{
 				label: 'میانبرها',
 				value: 'shortcuts',
+				description: 'با این میانبرها کارت توی ویجتیفای سریع‌تر پیش می‌ره',
 				icon: <Icon name="shortcuts" size={20} />,
 				element: <ShortcutsTab />,
 			},
@@ -104,6 +115,7 @@ const tabs: TabItem[] = [
 			{
 				label: 'درباره ما',
 				value: 'about',
+				description: 'ویجتیفای رو بشناس و از راه‌های ارتباطی باهامون حرف بزن',
 				icon: <Icon name="info" size={20} />,
 				element: <AboutUsTab />,
 			},
@@ -147,31 +159,19 @@ export const SettingModal = ({
 					defaultTab="general"
 					selectedTab={selectedTab}
 					onTabChange={onTabChange}
-					direction="rtl"
-				>
-					<div className="flex flex-row gap-1 sm:flex-col">
-						<button
-							type="button"
-							className={`relative items-center  flex gap-3 px-4 py-3 rounded-full transition-ui duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-fg-muted hover:bg-surface-3 w-42`}
-							onClick={() => openWidgetSettings()}
-						>
-							<Icon
-								name="outlineSquares2X2"
-								size={20}
-								className="text-fg-muted"
-							/>
-							<span className="text-sm font-light">مدیریت ویجت‌ها</span>
-						</button>
-						<button
-							type="button"
-							className={`relative  items-center flex gap-3 px-4 py-3 rounded-full transition-ui duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-fg-muted hover:bg-surface-3 w-42`}
-							onClick={() => setUpdateModalOpen(true)}
-						>
-							<Icon name="lastUpdate" size={20} />
-							<span className="text-sm font-light">تغییرات اخیر</span>
-						</button>
-					</div>
-				</TabManager>
+					actions={[
+						{
+							label: 'مدیریت ویجت‌ها',
+							icon: <Icon name="outlineSquares2X2" size={20} />,
+							onClick: openWidgetSettings,
+						},
+						{
+							label: 'تغییرات اخیر',
+							icon: <Icon name="lastUpdate" size={20} />,
+							onClick: () => setUpdateModalOpen(true),
+						},
+					]}
+				/>
 			</StoreTryOnProvider>
 
 			<UpdateReleaseNotesModal

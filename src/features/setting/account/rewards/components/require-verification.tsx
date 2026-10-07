@@ -35,7 +35,7 @@ export const RequireVerification = ({
 		if (mode === 'preview') {
 			return (
 				<div className="relative w-full h-full overflow-hidden">
-					<div className="w-full h-full px-2 py-1 pointer-events-none opacity-60">
+					<div className="flex flex-col w-full h-full gap-4 pointer-events-none opacity-60">
 						{children}
 					</div>
 					<div

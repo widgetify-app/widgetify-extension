@@ -25,7 +25,6 @@ const COMMENT_BASELINE: Record<string, number> = {
 	'src/features/mini-apps/components/mini-app-runner.tsx': 2,
 	'src/features/navbar/notifications/components/profile-progress.tsx': 4,
 	'src/features/setting/about-us/about-us.tsx': 1,
-	'src/features/setting/components/tab-manager.tsx': 1,
 	'src/features/setting/shortcuts/shortcuts.tsx': 1,
 	'src/features/setting/vip/vip.tsx': 1,
 	'src/features/widgets/bookmark/bookmark.context.tsx': 1,

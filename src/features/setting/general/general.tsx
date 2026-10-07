@@ -13,7 +13,7 @@ export function GeneralSettingTab() {
 	}
 
 	return (
-		<div className="w-full max-w-xl mx-auto">
+		<div className="flex flex-col gap-4">
 			<SelectCity key={'selectCity'} />
 			<TimezoneSettings key="timezone" />
 			<SectionPanel

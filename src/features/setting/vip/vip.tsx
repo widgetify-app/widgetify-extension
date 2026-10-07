@@ -93,7 +93,7 @@ export function VipTab() {
 	}
 
 	return (
-		<div className="flex flex-col w-full max-w-4xl px-2 py-2 mx-auto space-y-5 text-right select-none sm:px-4">
+		<div className="flex flex-col w-full gap-4 text-right select-none">
 			{/* Top Hero Banner without media dependencies */}
 			<VipHeroBanner />
 

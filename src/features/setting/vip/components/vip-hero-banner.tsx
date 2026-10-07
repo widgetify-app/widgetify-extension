@@ -42,25 +42,7 @@ export function VipHeroBanner() {
 			<div className="absolute -top-12 -left-12 w-48 h-48 rounded-full bg-vip-fill-2 blur-3xl pointer-events-none" />
 			<div className="absolute -bottom-12 -right-12 w-48 h-48 rounded-full bg-vip-fill blur-3xl pointer-events-none" />
 
-			<div className="relative z-10 flex flex-col gap-5">
-				<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-line pb-4">
-					<div className="flex items-center gap-3">
-						<div className="flex items-center justify-center w-11 h-11 rounded-2xl  text-vip  shrink-0">
-							<Icon name="diamond" size={32} />
-						</div>
-						<div className="flex flex-col">
-							<div className="flex items-center gap-2">
-								<h2 className="text-lg sm:text-xl font-black text-fg tracking-tight">
-									ویجتیفای <span className="text-vip">پرو</span>
-								</h2>
-							</div>
-							<p className="text-xs text-fg-muted mt-0.5">
-								تجربه‌ای سریع‌تر، زیباتر و بدون هیچ مرزی در چیدمان ابزارها
-							</p>
-						</div>
-					</div>
-				</div>
-
+			<div className="relative z-10">
 				<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 					{VIP_FEATURES.map((feature) => (
 						<div

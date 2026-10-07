@@ -10,7 +10,7 @@ interface Prop {
 
 export function RewardTasks({ tasks, isLoading }: Prop) {
 	return (
-		<SectionPanel title={'ماموریت‌ها'} size="xs">
+		<SectionPanel title={'ماموریت‌ها'} size="sm">
 			<div className="flex flex-col gap-2 py-2">
 				{isLoading ? (
 					<div className="py-12 text-center">

@@ -4,7 +4,7 @@ import { Icon } from '@/icons'
 
 export function AboutUsTab() {
 	return (
-		<div className="w-full max-w-2xl mx-auto" dir="rtl">
+		<div className="flex flex-col gap-4" dir="rtl">
 			<div className="flex flex-col items-center p-3 text-center">
 				<h1
 					className={
@@ -27,7 +27,7 @@ export function AboutUsTab() {
 				</p>
 			</div>
 
-			<SectionPanel title="راه‌های ارتباط با ما">
+			<SectionPanel title="راه‌های ارتباط با ما" size="sm">
 				<div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
 					<a
 						href="https://widgetify.ir"
@@ -149,13 +149,13 @@ export function AboutUsTab() {
 			{/* Footer */}
 			<div
 				className={
-					'flex items-center justify-center mt-8 space-x-1 space-x-reverse text-sm text-fg opacity-75'
+					'flex items-center justify-center mt-4 space-x-1 space-x-reverse text-sm text-fg opacity-75'
 				}
 			>
 				<span>ساخته شده با</span>💙<span>در ایران</span>
 			</div>
 
-			<div className={'mt-2 mb-4 text-xs text-center text-fg opacity-55'}>
+			<div className={'-mt-2 text-xs text-center text-fg opacity-55'}>
 				© ویجتیفای - تمامی حقوق محفوظ است
 			</div>
 		</div>

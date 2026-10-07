@@ -69,43 +69,28 @@ export function ShortcutsTab() {
 		{} as Record<string, Shortcut[]>
 	)
 	return (
-		<div className="w-full max-w-xl mx-auto" dir="rtl">
-			<SectionPanel title="کلیدهای میانبر" delay={0.1}>
-				<div className="space-y-5">
-					<p className="text-fg-muted">
-						با این میانبرها کارت توی ویجتیفای سریع‌تر پیش می‌ره
-					</p>
-
-					{Object.entries(categories).map(([category, categoryShortcuts]) => (
-						<div key={category} className="mb-6">
-							<h3 className={'text-base font-medium mb-3 text-fg'}>
-								{category}
-							</h3>
-							<div className="space-y-2">
-								{categoryShortcuts.map((shortcut) => (
-									<div
-										key={shortcut.id}
-										className={
-											'flex items-center justify-between p-3 rounded-lg border border-surface-3'
-										}
-									>
-										<span className={'text-fg'}>
-											{shortcut.description}
-										</span>
-										<div className={'px-3 py-1 text-sm'} dir="ltr">
-											{formatShortcut(
-												isMac
-													? shortcut.macKey
-													: shortcut.windowsKey
-											)}
-										</div>
-									</div>
-								))}
+		<div className="flex flex-col gap-4" dir="rtl">
+			{Object.entries(categories).map(([category, categoryShortcuts]) => (
+				<SectionPanel key={category} title={category} size="sm">
+					<div className="space-y-2">
+						{categoryShortcuts.map((shortcut) => (
+							<div
+								key={shortcut.id}
+								className="flex items-center justify-between gap-3 p-3 border rounded-xl border-surface-3"
+							>
+								<span className="text-sm text-fg">
+									{shortcut.description}
+								</span>
+								<div className="text-sm shrink-0" dir="ltr">
+									{formatShortcut(
+										isMac ? shortcut.macKey : shortcut.windowsKey
+									)}
+								</div>
 							</div>
-						</div>
-					))}
-				</div>
-			</SectionPanel>
+						))}
+					</div>
+				</SectionPanel>
+			))}
 		</div>
 	)
 }

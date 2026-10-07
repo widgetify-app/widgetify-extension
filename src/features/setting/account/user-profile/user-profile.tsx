@@ -81,7 +81,7 @@ export const UserProfile = () => {
 	}
 
 	return (
-		<div className="w-full max-w-xl px-4 mx-auto space-y-4">
+		<div className="flex flex-col gap-4">
 			<VipBannerCard />
 			<ProfileDisplay />
 			{profile?.email && !profile?.verified && (
@@ -98,8 +98,8 @@ export const UserProfile = () => {
 				/>
 			)}
 
-			<SectionPanel title="حساب کاربری" delay={0.3} size="xs">
-				<div className="p-2 space-y-3 transition-colors rounded-lg">
+			<SectionPanel title="خروج از حساب" size="sm">
+				<div className="space-y-3">
 					<p className={'text-sm font-light text-fg'}>
 						می‌خوای از حسابت بیرون بیای؟ دکمه‌ی پایین رو بزن.
 					</p>

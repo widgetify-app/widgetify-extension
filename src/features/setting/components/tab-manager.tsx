@@ -1,18 +1,31 @@
-import { type ReactNode, useEffect, useRef, useState } from 'react'
+import { Fragment, type ReactNode, useEffect, useId, useRef, useState } from 'react'
 import Analytics from '@/analytics'
+import { Motion as motion } from '@/common/motion'
+import { cn } from '@/common/utils/cn'
+import { ScrollRow } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
+
+interface TabChild {
+	label: string
+	value: string
+	icon: ReactNode
+	element: ReactNode
+	description?: string
+	actions?: ReactNode
+	isNew?: boolean
+	needAuth?: boolean
+}
 
 export interface TabItem {
 	parentName?: string
 	needAuth?: boolean
-	children?: {
-		label: string
-		value: string
-		icon: ReactNode
-		element: ReactNode
-		isNew?: boolean
-		needAuth?: boolean
-	}[]
+	children?: TabChild[]
+}
+
+interface TabAction {
+	label: string
+	icon: ReactNode
+	onClick: () => void
 }
 
 interface TabManagerProps {
@@ -21,9 +34,7 @@ interface TabManagerProps {
 	defaultTab?: string
 	selectedTab?: string | null
 	onTabChange?: (tabValue: string) => void
-	direction?: 'rtl' | 'ltr'
-	tabPosition?: 'top' | 'side'
-	children?: ReactNode // for additional tab buttons at the end of aside (just pass the actual buttons)
+	actions?: TabAction[]
 }
 
 export const TabManager = ({
@@ -31,14 +42,12 @@ export const TabManager = ({
 	defaultTab,
 	selectedTab,
 	onTabChange,
-	direction = 'rtl',
 	tabOwner,
-	tabPosition,
-	children,
+	actions = [],
 }: TabManagerProps) => {
 	const { isAuthenticated } = useAuth()
 	const [activeTab, setActiveTab] = useState(defaultTab || '')
-	const contentRef = useRef<HTMLDivElement>(null)
+	const headingId = useId()
 
 	useEffect(() => {
 		if (selectedTab) {
@@ -48,10 +57,7 @@ export const TabManager = ({
 	}, [selectedTab])
 
 	useEffect(() => {
-		if (contentRef.current) {
-			contentRef.current.scrollTo({ top: 0, behavior: 'smooth' })
-			Analytics.event(`${tabOwner}_tab_change_${activeTab}`)
-		}
+		Analytics.event(`${tabOwner}_tab_change_${activeTab}`)
 	}, [activeTab])
 
 	const handleTabChange = (tabValue: string) => {
@@ -61,101 +67,187 @@ export const TabManager = ({
 		}
 	}
 
-	const getTabButtonStyle = (isActive: boolean) => {
-		return isActive ? 'text-brand bg-brand-fill' : 'text-fg-muted hover:bg-surface-3'
-	}
+	const groups = tabs
+		.filter((group) => !group.needAuth || isAuthenticated)
+		.map((group) => ({
+			...group,
+			children: (group.children ?? []).filter(
+				(child) => !child.needAuth || isAuthenticated
+			),
+		}))
+		.filter((group) => group.children.length > 0)
 
-	const getTabIconStyle = (isActive: boolean) => {
-		return isActive ? 'text-brand' : 'text-fg-muted'
-	}
+	const allTabs = tabs.flatMap((group) => group.children ?? [])
+	const active =
+		allTabs.find((tab) => tab.value === activeTab) ??
+		allTabs.find((tab) => tab.value === defaultTab) ??
+		allTabs[0]
 
-	const headClass =
-		tabPosition === 'top'
-			? 'flex-col gap-1 h-[80vh]'
-			: 'flex-col md:flex-row gap-4 h-[80vh]'
-	const contentClass =
-		tabPosition === 'top'
-			? 'shrink-0 md:overflow-y-auto w-full'
-			: 'md:flex-col md:w-48 shrink-0 md:overflow-y-auto'
 	return (
-		<div dir={direction} className={`flex ${headClass}   overflow-hidden`}>
-			<aside className="flex flex-row justify-between overflow-hidden sm:flex-col md:h-full">
-				<div
-					className={`flex  w-full md:h-full gap-1 overflow-x-auto rounded-lg ${contentClass}`}
-				>
-					<div className="flex flex-row sm:flex-col sm:gap-4">
-						{tabs
-							.filter((f) => !f.needAuth || isAuthenticated)
-							.map((group, idx) => {
-								const visibleChildren = group.children?.filter(
-									(child) => !child.needAuth || isAuthenticated
-								)
-								if (!visibleChildren?.length) return null
-
-								return (
-									<div key={idx} className="flex flex-col gap-1">
-										{group.parentName && (
-											<div className="flex items-center gap-2 mx-4 my-2">
-												<span className="text-xs font-medium text-fg-muted shrink-0">
-													{group.parentName}
-												</span>
-												<div className="h-px bg-surface-3 flex-1" />
-											</div>
-										)}
-
-										{visibleChildren.map(
-											({ label, value, icon, isNew }) => (
-												<button
-													type="button"
-													key={value}
-													onClick={() => handleTabChange(value)}
-													className={`relative flex items-center gap-3 px-4 py-3 rounded-full transition-ui duration-200 justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] ${getTabButtonStyle(
-														activeTab === value
-													)}`}
-												>
-													<span
-														className={`relative ${getTabIconStyle(
-															activeTab === value
-														)}`}
-													>
-														{icon}
-														{isNew && (
-															<span className="absolute left-0 z-30 w-2 h-2 rounded-full -bottom-1 bg-danger animate-ping" />
-														)}
-													</span>
-													<span className="text-sm">
-														{label}
-													</span>
-												</button>
-											)
-										)}
-									</div>
-								)
-							})}
-					</div>
-					{children}
-				</div>
-			</aside>
-
-			<div
-				className="relative flex-1 overflow-x-hidden overflow-y-auto rounded-lg"
-				ref={contentRef}
+		<div className="flex gap-4 h-[calc(100dvh-6rem)] md:h-[min(80vh,850px,calc(100dvh-8rem))] max-md:flex-col">
+			<nav
+				aria-label="بخش‌های تنظیمات"
+				className="flex-col hidden w-48 gap-4 overflow-y-auto md:flex shrink-0 scrollbar-none"
 			>
-				{tabs.flatMap((tab) =>
-					tab.children?.map(({ value, element }) => (
-						<div
-							key={value}
-							className={`absolute inset-0 p-1 rounded-lg transition-ui duration-200 ${
-								activeTab === value
-									? 'opacity-100 translate-x-0 z-10'
-									: 'opacity-0 translate-x-5 z-0 pointer-events-none'
-							}`}
-						>
-							{activeTab === value && element}
-						</div>
-					))
+				{groups.map((group) => (
+					<div key={group.parentName ?? group.children[0].value}>
+						{group.parentName && (
+							<div className="flex items-center gap-2 px-3.5 pb-1.5">
+								<span className="text-xs font-medium text-fg-faint shrink-0">
+									{group.parentName}
+								</span>
+								<span
+									aria-hidden="true"
+									className="flex-1 h-px bg-surface-3"
+								/>
+							</div>
+						)}
+						<ul className="flex flex-col gap-1">
+							{group.children.map((tab) => (
+								<li key={tab.value}>
+									<NavItem
+										icon={tab.icon}
+										label={tab.label}
+										isNew={tab.isNew}
+										isActive={tab.value === active?.value}
+										onClick={() => handleTabChange(tab.value)}
+									/>
+								</li>
+							))}
+						</ul>
+					</div>
+				))}
+
+				{actions.length > 0 && (
+					<ul className="flex flex-col gap-1 pt-3 mt-auto border-t border-surface-3">
+						{actions.map((action) => (
+							<li key={action.label}>
+								<NavItem
+									icon={action.icon}
+									label={action.label}
+									onClick={action.onClick}
+								/>
+							</li>
+						))}
+					</ul>
 				)}
-			</div>
+			</nav>
+
+			<nav aria-label="بخش‌های تنظیمات" className="md:hidden shrink-0">
+				<ScrollRow>
+					{groups.map((group, index) => (
+						<Fragment key={group.parentName ?? group.children[0].value}>
+							{index > 0 && <RowDivider />}
+							{group.children.map((tab) => (
+								<NavItem
+									key={tab.value}
+									compact
+									icon={tab.icon}
+									label={tab.label}
+									isNew={tab.isNew}
+									isActive={tab.value === active?.value}
+									onClick={() => handleTabChange(tab.value)}
+								/>
+							))}
+						</Fragment>
+					))}
+					{actions.length > 0 && <RowDivider />}
+					{actions.map((action) => (
+						<NavItem
+							key={action.label}
+							compact
+							icon={action.icon}
+							label={action.label}
+							onClick={action.onClick}
+						/>
+					))}
+				</ScrollRow>
+			</nav>
+
+			{active && (
+				<section
+					aria-labelledby={headingId}
+					className="flex flex-col flex-1 min-w-0 min-h-0"
+				>
+					<header className="flex items-start justify-between gap-3 pb-3 mb-3 border-b shrink-0 border-surface-3">
+						<div className="min-w-0">
+							<h2
+								id={headingId}
+								className="text-lg font-bold text-fg-strong"
+							>
+								{active.label}
+							</h2>
+							{active.description && (
+								<p className="text-xs text-fg-muted">
+									{active.description}
+								</p>
+							)}
+						</div>
+						{active.actions && (
+							<div className="flex items-center gap-2 shrink-0">
+								{active.actions}
+							</div>
+						)}
+					</header>
+
+					<motion.div
+						key={active.value}
+						initial={{ opacity: 0, y: 6 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.2 }}
+						className="flex-1 min-h-0 pb-2 overflow-x-hidden overflow-y-auto pe-1"
+					>
+						{active.element}
+					</motion.div>
+				</section>
+			)}
 		</div>
 	)
+}
+
+interface NavItemProps {
+	icon: ReactNode
+	label: string
+	onClick: () => void
+	isActive?: boolean
+	isNew?: boolean
+	compact?: boolean
+}
+
+function NavItem({ icon, label, onClick, isActive, isNew, compact }: NavItemProps) {
+	const buttonRef = useRef<HTMLButtonElement>(null)
+
+	useEffect(() => {
+		if (compact && isActive) {
+			buttonRef.current?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+		}
+	}, [compact, isActive])
+
+	return (
+		<button
+			ref={buttonRef}
+			type="button"
+			onClick={onClick}
+			aria-current={isActive ? 'page' : undefined}
+			className={cn(
+				'relative flex items-center gap-2.5 rounded-full text-sm cursor-pointer whitespace-nowrap transition-ui active:scale-98 focus-visible:focus-ring',
+				compact ? 'px-3 py-2 shrink-0' : 'w-full px-3.5 py-2.5',
+				isActive
+					? 'font-semibold bg-brand-fill text-brand'
+					: 'text-fg-muted hover:bg-surface-3'
+			)}
+		>
+			<span className="relative grid shrink-0 place-items-center">
+				{icon}
+				{isNew && (
+					<span className="absolute left-0 w-2 h-2 rounded-full -bottom-1 bg-danger animate-ping" />
+				)}
+			</span>
+			<span className="flex-1 text-start">{label}</span>
+		</button>
+	)
+}
+
+function RowDivider() {
+	return <span aria-hidden="true" className="w-px my-2 shrink-0 bg-surface-3" />
 }

@@ -14,7 +14,7 @@ export const RewardsTab = () => {
 	const tasks = data?.tasks || []
 
 	return (
-		<div className="space-y-2">
+		<div className="flex flex-col h-full gap-4">
 			<RequireVerification mode="preview">
 				<ReferralCodeSection code={code} />
 				<RewardTasks tasks={tasks} isLoading={isLoading} />

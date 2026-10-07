@@ -7,7 +7,7 @@ export const AccountTab = () => {
 	const { isAuthenticated } = useAuth()
 
 	return (
-		<div className="w-full h-full max-w-xl mx-auto">
+		<div className="w-full h-full">
 			<Presence mode="wait" initial={false}>
 				{isAuthenticated ? (
 					<motion.div
@@ -27,7 +27,7 @@ export const AccountTab = () => {
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, y: -10 }}
 						transition={{ duration: 0.3 }}
-						className="h-full"
+						className="w-full max-w-sm mx-auto"
 					>
 						<AuthForm />
 					</motion.div>

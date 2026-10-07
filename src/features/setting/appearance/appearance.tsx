@@ -5,7 +5,7 @@ import { MarketItemType } from '@/services/market/market.interface'
 
 export function AppearanceSettingTab() {
 	return (
-		<div className="w-full max-w-2xl mx-auto space-y-4">
+		<div className="flex flex-col gap-4">
 			<StoreItemPicker
 				type="THEME"
 				title="تم"
