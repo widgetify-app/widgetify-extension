@@ -24,6 +24,7 @@ type ModalProps = VariantProps<typeof modalBoxVariants> & {
 	closeOnBackdropClick?: boolean
 	showCloseButton?: boolean
 	dismissible?: boolean
+	stepAside?: boolean
 	className?: string
 	zIndex?: number
 }
@@ -40,6 +41,7 @@ export function Modal({
 	closeOnBackdropClick = true,
 	showCloseButton = true,
 	dismissible = true,
+	stepAside = false,
 	className,
 	zIndex: customZIndex,
 }: ModalProps) {
@@ -90,6 +92,7 @@ export function Modal({
 			dir="rtl"
 			aria-labelledby={title ? titleId : undefined}
 			aria-modal="true"
+			inert={stepAside}
 			tabIndex={-1}
 			onClick={(e) => {
 				e.stopPropagation()
@@ -104,7 +107,7 @@ export function Modal({
 			onContextMenu={(e) => e.stopPropagation()}
 			className={cn(
 				'flex items-center justify-center focus:outline-none',
-				modalDialogVariants()
+				modalDialogVariants({ stepAside })
 			)}
 			style={
 				{

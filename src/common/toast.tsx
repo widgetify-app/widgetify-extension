@@ -206,60 +206,8 @@ export function showToast(
 	)
 }
 
-export function showPreviewToast(itemName: string, onCancel: () => void): string {
-	const id = `preview-${Date.now()}`
-
-	playNativeToastSound('info')
-
-	toast.custom(
-		(t) => (
-			<div
-				className={cn(
-					'pointer-events-auto rounded-2xl p-2.5 flex items-center justify-between gap-3 shadow-xl backdrop-blur-xl border border-[rgba(255,255,255,0.1)] bg-[#18181b]/95 text-white select-none transition-ui duration-200',
-					t.visible
-						? 'opacity-100 translate-y-0 scale-100'
-						: 'opacity-0 -translate-y-2 scale-95'
-				)}
-			>
-				<div className="flex items-center flex-1 min-w-0 gap-3">
-					<div className="flex items-center justify-center w-8 h-8 text-sm font-bold rounded-full shrink-0 bg-brand-fill-2 text-brand">
-						<Icon name="info" size={16} />
-					</div>
-					<div className="flex-1 min-w-0">
-						<p className="text-3xs text-[rgba(255,255,255,0.5)] leading-none m-0 mb-0.5">
-							حالت پیش‌نمایش
-						</p>
-						<p className="m-0 text-sm font-bold text-white truncate">
-							{itemName}
-						</p>
-					</div>
-				</div>
-
-				<button
-					type="button"
-					onClick={() => {
-						toast.remove(id)
-						onCancel()
-					}}
-					className="shrink-0 px-3.5 py-1.5 rounded-xl bg-[rgba(255,255,255,0.1)] hover:bg-[#fb2c3633] hover:text-[#ffa2a2] active:scale-95 text-xs font-semibold text-white transition-ui cursor-pointer select-none flex items-center gap-1"
-				>
-					<Icon name="close" size={12} />
-					<span>بازگشت</span>
-				</button>
-			</div>
-		),
-		{ id, duration: Infinity, position: 'top-left' }
-	)
-
-	return id
-}
-
 export function dismissToasts() {
 	toast.dismiss()
-}
-
-export function removeToast(id: string) {
-	toast.remove(id)
 }
 
 export function autoFormatErrorToast(err: any) {

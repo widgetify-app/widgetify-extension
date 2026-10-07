@@ -11,6 +11,7 @@ const MarketContainer = lazy(() =>
 
 export function MarketModalListener() {
 	const [showMarket, setShowMarket] = useState(false)
+	const [isSteppedAside, setIsSteppedAside] = useState(false)
 	const [marketConfig, setMarketConfig] = useState<{
 		tab?: string
 		filter?: string
@@ -20,6 +21,11 @@ export function MarketModalListener() {
 		setMarketConfig(config || {})
 		setShowMarket(true)
 		Analytics.event('market_opened')
+	}
+
+	const handleClose = () => {
+		setShowMarket(false)
+		setIsSteppedAside(false)
 	}
 
 	useEffect(() => {
@@ -32,9 +38,10 @@ export function MarketModalListener() {
 	return (
 		<Modal
 			isOpen={showMarket}
-			onClose={() => setShowMarket(false)}
+			onClose={handleClose}
+			stepAside={isSteppedAside}
 			title="فروشگاه"
-			size="xl"
+			size="2xl"
 			closeOnBackdropClick={true}
 		>
 			<Suspense
@@ -47,6 +54,8 @@ export function MarketModalListener() {
 				<MarketContainer
 					initialTab={marketConfig.tab}
 					initialFilter={marketConfig.filter}
+					onStepAside={setIsSteppedAside}
+					onClose={handleClose}
 				/>
 			</Suspense>
 		</Modal>

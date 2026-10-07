@@ -1,103 +1,127 @@
-import { useState, useEffect } from 'react'
-import { useAuth } from '@/context/auth.context'
-import { MarketWallpaper } from './market-wallpaper/market-wallpaper'
-import { MarketOtherItems } from './other-items/other-items'
-import { UserCoin } from '@/components/user-coin'
+import { useEffect, useRef, useState } from 'react'
 import Analytics from '@/analytics'
-import { TabNavigation } from '@/components/ui'
-import { MarketCoins } from './market-coins/market-coins'
 import { listenEvent } from '@/common/utils/call-event'
-import { Icon } from '@/icons'
+import { cn } from '@/common/utils/cn'
+import { useGetWallpaperCategories } from '@/services/wallpapers/get-wallpaper-categories.hook'
+import { CategoryView } from './components/category-view'
+import { ItemDetail } from './components/store-item/item-detail'
+import { StoreNav } from './components/store-nav'
+import { useStoreItems } from './hooks/use-store-items'
+import { MarketCoins } from './market-coins/market-coins'
+import { MarketWallpaper } from './market-wallpaper/market-wallpaper'
+import { StoreTryOnProvider } from './store-try-on.context'
+import { Storefront } from './storefront/storefront'
+import type { StoreItem, StoreView } from './types'
+import { toStoreTarget } from './utils/store-item'
+
+export { StoreItemPicker } from './components/store-item-picker'
+export { WallpaperPicker } from './components/wallpaper-picker'
 
 interface MarketContainerProps {
 	initialTab?: string
 	initialFilter?: string
+	onStepAside: (aside: boolean) => void
+	onClose: () => void
 }
 
 export function MarketContainer({
 	initialTab,
 	initialFilter,
-}: MarketContainerProps = {}) {
-	const { isAuthenticated, user } = useAuth()
-	const [activeTab, setActiveTab] = useState(initialTab || 'other')
+	onStepAside,
+	onClose,
+}: MarketContainerProps) {
+	const [view, setView] = useState<StoreView>(
+		() => toStoreTarget(initialTab, initialFilter).view
+	)
+	const [petKind, setPetKind] = useState(
+		() => toStoreTarget(initialTab, initialFilter).petKind
+	)
+	const [detail, setDetail] = useState<StoreItem | null>(null)
+	const scrollRef = useRef<HTMLDivElement>(null)
+	const { items } = useStoreItems()
+	const { data: folders } = useGetWallpaperCategories()
 
-	const handleTabChange = (tabValue: string) => {
-		setActiveTab(tabValue)
-		Analytics.event(`market_select_tab_${tabValue}`)
+	const navigate = (next: StoreView) => {
+		setView(next)
+		setDetail(null)
+		scrollRef.current?.scrollTo({ top: 0 })
+		Analytics.event(`market_select_tab_${next}`)
 	}
 
 	useEffect(() => {
-		if (initialTab) {
-			setActiveTab(initialTab)
-		}
-	}, [initialTab])
+		const target = toStoreTarget(initialTab, initialFilter)
+		setView(target.view)
+		setPetKind(target.petKind)
+		setDetail(null)
+	}, [initialTab, initialFilter])
 
-	useEffect(() => {
-		const listen = listenEvent('market_change_tab', (tab) => {
-			setActiveTab(tab)
-		})
-		return () => {
-			listen()
-		}
-	}, [])
+	useEffect(
+		() =>
+			listenEvent('market_change_tab', (tab) => navigate(toStoreTarget(tab).view)),
+		[]
+	)
 
-	const tabs = [
-		{
-			id: 'other',
-			label: 'شخصی‌سازی',
-			icon: <Icon name="brush" />,
-			element: <MarketOtherItems initialFilter={initialFilter} />,
-		},
-		{
-			id: 'wallpapers',
-			label: 'تصویر زمینه‌ها',
-			icon: <Icon name="images" />,
-			element: <MarketWallpaper />,
-		},
-		{
-			id: 'coins',
-			label: 'خرید ویج‌‌کوین',
-			icon: <Icon name="coin" />,
-			element: <MarketCoins />,
-		},
-	]
+	const detailItem = detail && (items.find((item) => item.id === detail.id) ?? detail)
+	const selectedId = detailItem?.id ?? null
+	const hasNew: StoreView[] = folders.categories.some((folder) => folder.hasNewContent)
+		? ['WALLPAPER']
+		: []
 
 	return (
-		<div dir="rtl" className="flex flex-col h-[80vh] overflow-hidden">
-			<div className="flex flex-row items-center justify-between flex-shrink-0 w-full px-1 mb-2">
-				<TabNavigation
-					activeTab={activeTab}
-					onTabClick={(va) => handleTabChange(va)}
-					tabs={tabs}
-					tabMode="simple"
-					size="md"
-				/>
+		<StoreTryOnProvider onStepAside={onStepAside} onClose={onClose}>
+			<div className="flex gap-4 h-[80vh] max-md:flex-col">
+				<StoreNav view={view} hasNew={hasNew} onChange={navigate} />
 
-				{isAuthenticated && (
-					<div className="flex items-center">
-						<UserCoin coins={user?.coins || 0} title="موجودی ویج‌کوین" />
-					</div>
-				)}
-			</div>
-
-			<div className="relative flex-1 min-h-0 rounded-xl">
-				{tabs.map(({ id, element }) => (
+				<div className="relative flex flex-1 min-w-0 min-h-0 gap-4">
 					<div
-						key={id}
-						className={`absolute inset-0 transition-ui duration-300 ease-out ${
-							activeTab === id
-								? 'opacity-100 translate-y-0 z-10'
-								: 'opacity-0 translate-y-4 z-0 pointer-events-none'
-						}`}
+						ref={scrollRef}
+						className={cn(
+							'flex-1 min-w-0 pb-2 overflow-x-hidden overflow-y-auto pe-1',
+							detailItem && 'max-lg:hidden'
+						)}
 					>
-						{activeTab === id && (
-							<div className="h-full px-1 pb-2 overflow-x-hidden overflow-y-auto">
-								{element}
-							</div>
+						{view === 'home' && (
+							<Storefront
+								selectedId={selectedId}
+								onOpen={setDetail}
+								onNavigate={navigate}
+							/>
+						)}
+						{view === 'wallet' && <MarketCoins />}
+						{view === 'WALLPAPER' && (
+							<MarketWallpaper selectedId={selectedId} onOpen={setDetail} />
+						)}
+						{(view === 'THEME' ||
+							view === 'FONT' ||
+							view === 'BROWSER_TITLE' ||
+							view === 'PET') && (
+							<CategoryView
+								key={view}
+								type={view}
+								defaultPetKind={petKind}
+								selectedId={selectedId}
+								onOpen={setDetail}
+							/>
 						)}
 					</div>
-				))}
+
+					{detailItem && (
+						<aside
+							aria-label="جزئیات آیتم"
+							className="overflow-y-auto shrink-0 w-76 ps-4 border-s border-surface-3 max-lg:flex-1 max-lg:ps-0 max-lg:border-0"
+						>
+							<div className="max-lg:max-w-md max-lg:mx-auto">
+								<ItemDetail
+									key={detailItem.id}
+									item={detailItem}
+									onClose={() => setDetail(null)}
+									onSeeAllPackages={() => navigate('wallet')}
+								/>
+							</div>
+						</aside>
+					)}
+				</div>
 			</div>
-		</div>
+		</StoreTryOnProvider>
 	)
 }

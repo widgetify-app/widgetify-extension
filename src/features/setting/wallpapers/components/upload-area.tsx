@@ -11,12 +11,14 @@ import { UploadActive } from './upload/upload-active'
 
 interface UploadAreaProps {
 	customWallpaper: Wallpaper | null
+	isActive: boolean
 	onWallpaperChange: (newWallpaper: Wallpaper) => void
 	onWallpaperRemove?: () => void | Promise<void>
 }
 
 export function UploadArea({
 	customWallpaper,
+	isActive,
 	onWallpaperChange,
 	onWallpaperRemove,
 }: UploadAreaProps) {
@@ -101,6 +103,7 @@ export function UploadArea({
 			) : (
 				<UploadActive
 					customWallpaper={customWallpaper}
+					isActive={isActive}
 					isUploading={isUploading}
 					isRemoving={isRemoving}
 					onFileSelect={handleFileSelect}

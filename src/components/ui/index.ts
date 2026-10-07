@@ -25,6 +25,8 @@ export * from './dropdown/dropdown'
 export * from './dropdown/dropdown-item'
 export * from './dropdown/dropdown-item.variants'
 
+export * from './empty-state/empty-state'
+
 export * from './image-slider/image-slider'
 export * from './image-slider/use-image-slider'
 
@@ -41,8 +43,6 @@ export * from './modal/confirmation-modal.variants'
 export * from './modal/modal'
 export * from './modal/modal.variants'
 
-export * from './pagination/pagination'
-
 export * from './popover-menu/popover-menu'
 export * from './popover-menu/popover-menu-item'
 export * from './popover-menu/popover-menu.variants'
@@ -50,6 +50,8 @@ export * from './popover-menu/popover-menu.variants'
 export * from './portal/portal'
 
 export * from './progress-ring/progress-ring'
+
+export * from './scroll-row/scroll-row'
 
 export * from './section-panel/section-panel'
 export * from './section-panel/section-panel.variants'
@@ -64,6 +66,9 @@ export * from './tabs/tabs'
 export * from './tabs/tabs.variants'
 
 export * from './stacked-toaster/stacked-toaster'
+
+export * from './tile/tile'
+export * from './tile/tile.variants'
 
 export * from './toggle/toggle'
 export * from './toggle/toggle.variants'

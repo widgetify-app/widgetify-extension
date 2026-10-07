@@ -3,6 +3,7 @@ import { callEvent } from '@/common/utils/call-event'
 import { Modal } from '@/components/ui'
 import { type TabItem, TabManager } from './components/tab-manager'
 import { UpdateReleaseNotesModal } from '@/features/release-notes/release-notes'
+import { StoreTryOnProvider } from '@/features/market/store-try-on.context'
 import { AboutUsTab } from './about-us/about-us'
 import { AppearanceSettingTab } from './appearance/appearance'
 import { GeneralSettingTab } from './general/general'
@@ -116,6 +117,7 @@ export const SettingModal = ({
 	onTabChange,
 }: SettingModalProps) => {
 	const [isUpdateModalOpen, setUpdateModalOpen] = useState(false)
+	const [isSteppedAside, setIsSteppedAside] = useState(false)
 
 	function openWidgetSettings() {
 		callEvent('openWidgetsSettings', { tab: null })
@@ -132,38 +134,46 @@ export const SettingModal = ({
 	}, [isOpen])
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} size="2xl" title="تنظیمات">
-			<TabManager
-				tabOwner="setting"
-				tabs={tabs}
-				defaultTab="general"
-				selectedTab={selectedTab}
-				onTabChange={onTabChange}
-				direction="rtl"
-			>
-				<div className="flex flex-row gap-1 sm:flex-col">
-					<button
-						type="button"
-						className={`relative items-center  flex gap-3 px-4 py-3 rounded-full transition-ui duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-fg-muted hover:bg-surface-3 w-42`}
-						onClick={() => openWidgetSettings()}
-					>
-						<Icon
-							name="outlineSquares2X2"
-							size={20}
-							className="text-fg-muted"
-						/>
-						<span className="text-sm font-light">مدیریت ویجت ها</span>
-					</button>
-					<button
-						type="button"
-						className={`relative  items-center flex gap-3 px-4 py-3 rounded-full transition-ui duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-fg-muted hover:bg-surface-3 w-42`}
-						onClick={() => setUpdateModalOpen(true)}
-					>
-						<Icon name="lastUpdate" size={20} />
-						<span className="text-sm font-light">تغییرات اخیر</span>
-					</button>
-				</div>
-			</TabManager>
+		<Modal
+			isOpen={isOpen}
+			onClose={onClose}
+			stepAside={isSteppedAside}
+			size="2xl"
+			title="تنظیمات"
+		>
+			<StoreTryOnProvider onStepAside={setIsSteppedAside} onClose={onClose}>
+				<TabManager
+					tabOwner="setting"
+					tabs={tabs}
+					defaultTab="general"
+					selectedTab={selectedTab}
+					onTabChange={onTabChange}
+					direction="rtl"
+				>
+					<div className="flex flex-row gap-1 sm:flex-col">
+						<button
+							type="button"
+							className={`relative items-center  flex gap-3 px-4 py-3 rounded-full transition-ui duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-fg-muted hover:bg-surface-3 w-42`}
+							onClick={() => openWidgetSettings()}
+						>
+							<Icon
+								name="outlineSquares2X2"
+								size={20}
+								className="text-fg-muted"
+							/>
+							<span className="text-sm font-light">مدیریت ویجت ها</span>
+						</button>
+						<button
+							type="button"
+							className={`relative  items-center flex gap-3 px-4 py-3 rounded-full transition-ui duration-200 ease-in-out justify-start cursor-pointer whitespace-nowrap active:scale-[0.98] text-fg-muted hover:bg-surface-3 w-42`}
+							onClick={() => setUpdateModalOpen(true)}
+						>
+							<Icon name="lastUpdate" size={20} />
+							<span className="text-sm font-light">تغییرات اخیر</span>
+						</button>
+					</div>
+				</TabManager>
+			</StoreTryOnProvider>
 
 			<UpdateReleaseNotesModal
 				isOpen={isUpdateModalOpen}

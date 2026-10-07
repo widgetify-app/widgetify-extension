@@ -7,8 +7,6 @@ React hooks used by two or more unrelated areas. Nothing else lives here.
 | File | Does |
 |---|---|
 | `use-infinite-scroll.ts` | Loads the next page when the end of a list is visible |
-| `use-lazy-load.ts` | Runs a callback once an element scrolls into view |
-| `use-preview-handler.ts` | Previews a market item, with a toast to undo it |
 
 ## Rules
 

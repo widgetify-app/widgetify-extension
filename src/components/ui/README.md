@@ -10,13 +10,16 @@ Presentational primitives. They know nothing about the app, the server or a feat
 | Selectable pill | `Chip` (`selected`, `size`: `md`, or `sm` for a soft filter pill) |
 | Notice box | `Alert` (`tone`: danger, warning, info) |
 | Loading | `Spinner` (`xs` to `2xl`, `tone`) |
-| Dialog | `Modal`, `ConfirmationModal` |
+| Dialog | `Modal`, `ConfirmationModal`. `stepAside` hides an open modal without closing it. Its content keeps its state while you look at the page behind it, as the store's try-on does |
 | Hint on hover | `Tooltip`; `ClickableTooltip` when a click opens it and you hold `isOpen` |
 | Form | `TextInput` (`variant="bare"` drops the field chrome for an input set inside a card of its own), `TextArea` (the same field, several lines), `SelectBox`, `ToggleSwitch`, `Slider`, `DatePicker`, `ColorPicker` |
 | Menu | `Dropdown` with `DropdownItem` and `DropdownDivider`; `PopoverMenu` with `PopoverMenuItem` (an optional `description` adds a second line), `PopoverMenuHeader` and `PopoverMenuDivider`. `PopoverMenu` measures itself and opens above its anchor when there is no room below (`utils/menu-position.ts`); arrow keys move between its buttons and Escape returns focus to the trigger. A `Dropdown` closes on a click outside it, including a click elsewhere in the modal it sits in; it stays open only for a click in a layer opened above it (`use-dropdown.ts`). |
 | Overlays | `BottomSheet`, `Portal`, `StackedToaster` |
 | Small marks | `Badge`, `NewBadge` (a pulsing dot for something new), `VipBadge`, `FloatingBadge` (a sticker on a corner), `AvatarComponent`, `Kbd`, `ProgressRing` |
-| Layout helpers | `SectionPanel`, `TabNavigation`, `Pagination`, `ItemSelector`, `ImageSlider` |
+| Layout helpers | `SectionPanel` (an optional `action` sits at the end of its header), `TabNavigation`, `ItemSelector`, `ImageSlider` |
+| Picking from a grid | `Tile`: a card with a picture on top and a title row (`bare` drops the row). `aspect` is `video`, `wide` or `short`; `selected` rings it; `actions` show on hover |
+| A row that scrolls sideways | `ScrollRow`, with previous and next buttons that appear only when there is more to see |
+| Nothing to show | `EmptyState`: an icon, a line, an optional second line and an optional action |
 
 Look here before writing any UI. If a component other areas would reuse is missing, build it here, not inside a feature.
 

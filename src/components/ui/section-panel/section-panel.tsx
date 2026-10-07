@@ -14,6 +14,7 @@ interface SectionPanelProps extends VariantProps<typeof sectionPanelVariants> {
 	children: ReactNode
 	delay?: number
 	icon?: React.ReactElement
+	action?: ReactNode
 	className?: string
 }
 
@@ -22,15 +23,22 @@ export function SectionPanel({
 	children,
 	size,
 	icon,
+	action,
 	className,
 }: SectionPanelProps) {
 	return (
 		<div className={cn(sectionPanelVariants({ size }), className)}>
-			<div className={sectionPanelHeaderVariants({ size })}>
+			<div
+				className={cn(
+					sectionPanelHeaderVariants({ size }),
+					'flex items-center justify-between gap-2'
+				)}
+			>
 				<div className="flex items-center gap-2">
 					{icon && React.cloneElement(icon, {})}
 					<h3 className={sectionPanelTitleVariants({ size })}>{title}</h3>
 				</div>
+				{action}
 			</div>
 			<div className={sectionPanelContentVariants({ size })}>{children}</div>
 		</div>

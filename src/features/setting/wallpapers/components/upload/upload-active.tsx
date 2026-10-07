@@ -1,10 +1,11 @@
 import type { Wallpaper } from '@/common/types/wallpaper.interface'
-import { MediaPreview } from '../media-preview'
+import { Spinner, Tile, Tooltip, VipBadge } from '@/components/ui'
 import { Icon } from '@/icons'
-import { Button, Tooltip, VipBadge } from '@/components/ui'
+import { MediaPreview } from '../media-preview'
 
 interface UploadActiveProps {
 	customWallpaper: Wallpaper
+	isActive: boolean
 	isUploading: boolean
 	isRemoving: boolean
 	onFileSelect: () => void
@@ -13,85 +14,50 @@ interface UploadActiveProps {
 
 export function UploadActive({
 	customWallpaper,
+	isActive,
 	isUploading,
 	isRemoving,
 	onFileSelect,
 	onRemove,
 }: UploadActiveProps) {
 	const isCloudWallpaper = Boolean(customWallpaper.src?.startsWith('http'))
+	const caption = customWallpaper.type === 'IMAGE' ? 'عکس خودت' : 'ویدیوی خودت'
 
 	return (
-		<div className="relative p-3 overflow-hidden transition-ui border shadow-sm rounded-2xl border-surface-3 bg-surface-2">
-			<div className="flex items-center justify-between gap-3">
-				<div className="flex items-center min-w-0 gap-3">
-					<div className="relative w-24 h-16 overflow-hidden shadow-sm rounded-xl shrink-0 bg-surface-2">
-						<MediaPreview customWallpaper={customWallpaper} />
-						<div className="absolute inset-0 bg-scrim-soft" />
-
-						<span className="absolute top-1.5 right-1.5 px-1.5 py-0.5 text-3xs font-bold text-on-brand rounded-lg bg-brand-hover backdrop-blur-xs shadow-sm">
-							{customWallpaper.type === 'IMAGE' ? 'عکس' : 'ویدیو'}
-						</span>
-
-						{isCloudWallpaper && (
-							<div className="absolute top-1.5 left-1.5">
-								<VipBadge variant="solid" iconOnly size="xs" />
-							</div>
-						)}
-					</div>
-
-					<div className="flex flex-col min-w-0 gap-1">
-						<p className="text-sm font-bold truncate text-fg">
-							{customWallpaper.type === 'IMAGE'
-								? 'پس‌زمینه فعلی'
-								: 'ویدیو پس‌زمینه فعلی'}
-						</p>
-						<div className="flex items-center gap-1.5 flex-wrap">
-							{isCloudWallpaper ? (
-								<span className="inline-flex items-center gap-1 text-2xs font-medium text-fg-muted bg-fill px-2 py-0.5 rounded-xl cursor-default">
-									<Icon name="save" size={12} />
-									<span>همگام‌سازی شده با سرور</span>
-								</span>
-							) : (
-								<Tooltip
-									content="فقط روی همین مرورگر ذخیره شده و با اکانتت همگام‌سازی نمی‌شه"
-									position="top"
-								>
-									<span className="inline-flex items-center gap-1 text-2xs font-medium text-fg-muted bg-fill px-2 py-0.5 rounded-xl cursor-default">
-										ذخیره محلی
-									</span>
-								</Tooltip>
-							)}
-						</div>
-					</div>
-				</div>
-
-				<div className="flex items-center gap-1.5 shrink-0">
-					<Button
-						onClick={onFileSelect}
-						size="sm"
-						rounded="xl"
-						variant="outline"
-						loading={isUploading}
+		<Tile
+			bare
+			selected={isActive}
+			label={`${caption}؛ برای عوض کردنش بزن`}
+			onClick={onFileSelect}
+			media={<MediaPreview customWallpaper={customWallpaper} />}
+			overlay={
+				<span className="absolute inset-x-0 bottom-0 flex items-center gap-1.5 p-2 pt-6 font-medium bg-linear-to-t from-scrim to-transparent text-image-fg text-2xs">
+					{isUploading ? (
+						<Spinner size="xs" tone="image" aria-hidden="true" />
+					) : (
+						<Icon name="edit" size={12} />
+					)}
+					{caption}
+					{isCloudWallpaper && <VipBadge variant="solid" iconOnly size="xs" />}
+				</span>
+			}
+			actions={
+				<Tooltip content="حذفش کن">
+					<button
+						type="button"
+						onClick={onRemove}
+						disabled={isRemoving}
+						aria-label={`حذف ${caption}`}
+						className="grid rounded-lg cursor-pointer size-7 place-items-center bg-scrim text-image-fg backdrop-glass hover:bg-scrim-strong transition-ui focus-visible:focus-ring"
 					>
-						<Icon name="edit" size={14} />
-						<span>تغییر</span>
-					</Button>
-
-					<Tooltip content="حذف پس‌زمینه">
-						<Button
-							onClick={onRemove}
-							size="sm"
-							rounded="xl"
-							variant="ghost"
-							color="danger"
-							loading={isRemoving}
-							aria-label="حذف پس‌زمینه"
-						>
-							<Icon name="trash" size={16} />
-						</Button>
-					</Tooltip>
-				</div>
-			</div>
-		</div>
+						{isRemoving ? (
+							<Spinner size="xs" tone="image" aria-hidden="true" />
+						) : (
+							<Icon name="trash" size={14} />
+						)}
+					</button>
+				</Tooltip>
+			}
+		/>
 	)
 }
