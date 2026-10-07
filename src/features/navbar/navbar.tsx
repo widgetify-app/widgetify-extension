@@ -192,7 +192,7 @@ export function NavbarLayout(): JSX.Element {
 				></div>
 
 				<div className="relative flex items-center p-1.5 sm:p-2 justify-between gap-1 sm:gap-2 bg-glass-surface-2 rounded-2xl sm:rounded-widget h-12 sm:h-14">
-					<div className="relative z-10 flex items-center gap-1.5 sm:gap-2 pr-1 ml-0.5 flex-1">
+					<div className="relative z-10 flex items-center gap-1.5 sm:gap-2 pr-1 ml-0.5 sm:flex-1">
 						<a
 							href={WIDGETIFY_URLS.website}
 							target="_blank"
@@ -211,6 +211,7 @@ export function NavbarLayout(): JSX.Element {
 						<p className="hidden text-xs font-semibold sm:block sm:text-sm text-fg">
 							{getUserLabel(user)}
 						</p>
+						<span aria-hidden="true" className="w-px h-5 bg-line sm:hidden" />
 					</div>
 
 					<NavbarTabs />
