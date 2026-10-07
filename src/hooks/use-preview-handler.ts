@@ -61,9 +61,10 @@ export function usePreviewHandler() {
 
 	const previewHandler = useCallback(
 		async (item: MarketItem, currentValues: CurrentValues) => {
-			if (currentPreviewRef.current?.toastId) {
-				removeToast(currentPreviewRef.current.toastId)
-				restorePreview(currentPreviewRef.current)
+			const previous = currentPreviewRef.current
+			if (previous) {
+				removeToast(previous.toastId)
+				restorePreview(previous)
 				await sleep(150)
 			}
 
@@ -79,6 +80,7 @@ export function usePreviewHandler() {
 					oldValue = currentValues.browserTitle
 					break
 			}
+			if (previous?.type === item.type) oldValue = previous.oldValue
 
 			const toastId = showPreviewToast(item.name, cancelPreview)
 
