@@ -11,6 +11,7 @@ export interface TodoListProps {
 	todos: Todo[]
 	isLoading: boolean
 	isError: boolean
+	isAuthenticated: boolean
 	isFetchingNextPage: boolean
 	hasNextPage: boolean
 	loadMoreRef: React.RefObject<HTMLDivElement | null>
