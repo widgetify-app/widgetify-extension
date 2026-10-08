@@ -13,6 +13,7 @@ export function useBuyItem() {
 	const [isBuying, setIsBuying] = useState(false)
 
 	const buy = async (item: StoreItem): Promise<boolean> => {
+		Analytics.event('market_item_purchase_started')
 		setIsBuying(true)
 		const bought = await buyOnce(item)
 		setIsBuying(false)

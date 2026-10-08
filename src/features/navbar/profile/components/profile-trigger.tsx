@@ -6,15 +6,24 @@ interface ProfileTriggerProps {
 	user: UserProfile | null
 	isAuthenticated: boolean
 	profilePercentage: number | null
+	onClick?: () => void
 }
 
 export function ProfileTrigger({
 	user,
 	isAuthenticated,
 	profilePercentage,
+	onClick,
 }: ProfileTriggerProps) {
 	if (!isAuthenticated) {
-		return <NavIconButton id="profile-button" icon="user" label="ورود یا ثبت‌نام" />
+		return (
+			<NavIconButton
+				id="profile-button"
+				icon="user"
+				label="ورود یا ثبت‌نام"
+				onClick={onClick}
+			/>
+		)
 	}
 
 	return (
@@ -24,6 +33,7 @@ export function ProfileTrigger({
 			aria-label={
 				profilePercentage ? `پروفایل، ${profilePercentage}٪ تکمیل شده` : 'پروفایل'
 			}
+			onClick={onClick}
 			className="relative flex items-center justify-center cursor-pointer select-none group"
 		>
 			{profilePercentage ? (

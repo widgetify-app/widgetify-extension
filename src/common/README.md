@@ -43,7 +43,7 @@ Storage keys, analytics event names and widget ids live in places you do not con
 
 ## Analytics
 
-Events go through `Analytics` from `@/analytics`. The user can turn it off in settings, and the function checks that before it sends. Event names are data, like storage keys.
+Events go through `Analytics` from `@/analytics`. The user can turn it off in settings, and the function checks that before it sends. Event names are data, like storage keys. The first argument must be a string literal, and parameters must not carry personal or free-text data.
 
 ## Animation
 

@@ -1,4 +1,5 @@
 import { createContext, type ReactNode, useContext, useRef, useState } from 'react'
+import Analytics from '@/analytics'
 import { TryOnBar } from './components/store-item/try-on-bar'
 import { useTryOnPreview } from './hooks/use-try-on-preview'
 import type { StoreItem } from './types'
@@ -26,6 +27,7 @@ export function StoreTryOnProvider({
 	const returnFocusTo = useRef<HTMLElement | null>(null)
 
 	const tryOn = async (next: StoreItem) => {
+		Analytics.event('market_item_try_on')
 		const started = await start(next)
 		if (!started) return
 		returnFocusTo.current =

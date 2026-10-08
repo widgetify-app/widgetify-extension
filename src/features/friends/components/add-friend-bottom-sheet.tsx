@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Analytics from '@/analytics'
 import { TextInput } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { useSendFriendRequest } from '@/services/friends/friend-service.hook'
@@ -35,6 +36,7 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 			{ username },
 			{
 				onSuccess: () => {
+					Analytics.event('friends_request_sent')
 					setUsername('')
 					showToast('درخواست دوستی فرستاده شد', 'success')
 					setTranslatedError(null)

@@ -170,7 +170,10 @@ export const SettingModal = ({
 						{
 							label: 'تغییرات اخیر',
 							icon: <Icon name="lastUpdate" size={20} />,
-							onClick: () => setUpdateModalOpen(true),
+							onClick: () => {
+								Analytics.event('release_notes_opened')
+								setUpdateModalOpen(true)
+							},
 						},
 					]}
 				/>

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Analytics from '@/analytics'
 import { type Friend, useRemoveFriend } from '@/services/friends/friend-service.hook'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
@@ -24,6 +25,7 @@ export const FriendsLayout = () => {
 				showToast(msg as string, 'error')
 			},
 			onSuccess: () => {
+				Analytics.event('friends_removed')
 				setSelectedUser(null)
 			},
 		})

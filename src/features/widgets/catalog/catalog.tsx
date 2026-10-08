@@ -1,5 +1,6 @@
 import type React from 'react'
 import { useEffect, useMemo, useState } from 'react'
+import Analytics from '@/analytics'
 import { Badge, Button, Modal } from '@/components/ui'
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
@@ -119,6 +120,7 @@ export function AddWidgetModal({
 	const handleSelectWidget = (id: string) => {
 		if (isEditMode) return
 		setSelectedId(id)
+		Analytics.event('widget_catalog_selected')
 		const def = WIDGET_DEFINITIONS[id as keyof typeof WIDGET_DEFINITIONS]
 		if (def) {
 			if (def.variants && def.variants.length > 0) {
@@ -150,11 +152,13 @@ export function AddWidgetModal({
 	const handleVariantChange = (variant: WidgetVariantOption) => {
 		setSelectedVariant(variant)
 		setSelectedSize(variant.size)
+		Analytics.event('widget_catalog_variant_picked')
 	}
 
 	const handleSizeChange = (sizeOption: WidgetSize) => {
 		setSelectedVariant(null)
 		setSelectedSize(sizeOption)
+		Analytics.event('widget_catalog_size_picked')
 	}
 
 	const activeCount = runtimeLayout.filter((w) => w.id === selectedDef?.id).length
@@ -184,6 +188,7 @@ export function AddWidgetModal({
 	}
 
 	const openVipSettings = () => {
+		Analytics.event('widget_catalog_pro_locked')
 		callEvent('openSettings', 'vip')
 		if (returnsToSettings) onClose()
 	}

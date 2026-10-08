@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Analytics from '@/analytics'
 import { showToast } from '@/common/toast'
 import { Button, Modal } from '@/components/ui'
 import { useRemoveActivity, useSetActivity } from '@/services/user/user-service.hook'
@@ -59,6 +60,7 @@ export function ManageActivityBottomSheet({
 
 		try {
 			await mutateAsync({ content: activity, time })
+			Analytics.event('friends_activity_posted')
 			playAlarm('done_todo')
 			setActivity('')
 			onClose()

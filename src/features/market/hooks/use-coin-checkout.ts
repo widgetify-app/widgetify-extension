@@ -8,6 +8,7 @@ export function useCoinCheckout() {
 	const { mutate, isPending, variables } = usePurchaseCoinPackage()
 
 	const checkout = (pkg: CoinPackage) => {
+		Analytics.event('coin_package_purchase_started')
 		mutate(
 			{ packageId: pkg.id },
 			{

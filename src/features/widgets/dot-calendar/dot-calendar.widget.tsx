@@ -1,4 +1,5 @@
 import jalaliMoment from 'jalali-moment'
+import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { useZonedClock } from '@/features/widgets/hooks/use-zoned-clock'
@@ -42,6 +43,7 @@ export function DotCalendarWidget({ instanceId, size, meta }: DotCalendarWidgetP
 	)
 
 	const openSettings = () => {
+		Analytics.event('dot_calendar_settings_opened')
 		callEvent('openWidgetsSettings', {
 			tab: WidgetTabKeys.dot_calendar_settings,
 			instanceId,

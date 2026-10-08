@@ -1,4 +1,5 @@
 import { lazy, Suspense, useState, useEffect } from 'react'
+import Analytics from '@/analytics'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { ConfirmationModal, Dropdown, Modal, Spinner } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
@@ -20,6 +21,7 @@ export function ProfileNav() {
 	const [openedWizard, setOpenedWizard] = useState(false)
 
 	const handleConfirmLogout = async () => {
+		Analytics.event('navbar_logout')
 		setShowLogoutModal(false)
 		await logout()
 		location.reload()
@@ -66,6 +68,7 @@ export function ProfileNav() {
 						user={user}
 						isAuthenticated={isAuthenticated}
 						profilePercentage={profilePercentage}
+						onClick={() => Analytics.event('navbar_profile_opened')}
 					/>
 				}
 			>

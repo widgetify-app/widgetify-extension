@@ -1,5 +1,6 @@
 import type React from 'react'
 import { memo, useState } from 'react'
+import Analytics from '@/analytics'
 import { Button, ConfirmationModal, Modal, VipBadge } from '@/components/ui'
 import { Icon } from '@/icons'
 import { callEvent } from '@/common/utils/call-event'
@@ -31,6 +32,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 	const [isApplying, setIsApplying] = useState(false)
 
 	const handleOpenVipSettings = () => {
+		Analytics.event('widget_presets_pro_locked')
 		callEvent('openSettings', 'vip')
 		onClose()
 	}
@@ -52,6 +54,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 			const preset = selectedPresetToApply
 			const resolvedWidgets = resolvePresetWidgetsForViewport(preset)
 			await applyPresetLayout(resolvedWidgets)
+			Analytics.event('widget_presets_applied')
 			setSelectedPresetToApply(null)
 			onClose()
 		} finally {

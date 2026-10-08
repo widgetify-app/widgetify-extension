@@ -60,6 +60,7 @@ function Main() {
 				}
 				setAddWidgetReturnsToSettings(Boolean(payload?.returnToSettings))
 				setIsAddWidgetModalOpen(true)
+				Analytics.event('widget_catalog_opened')
 			}
 		)
 

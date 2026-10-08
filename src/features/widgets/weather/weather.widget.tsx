@@ -1,3 +1,4 @@
+import Analytics from '@/analytics'
 import type { WidgetSize } from '../utils/layout-engine/types'
 import { WidgetContainer } from '../components/widget-container'
 import { WidgetCenteredHeader, WidgetHeader } from '../components/widget-header'
@@ -43,7 +44,10 @@ export function WeatherLayout({ size = { w: 2, h: 3 } }: WeatherLayoutProps = {}
 					<WidgetError
 						message="نتونستیم آب و هوا رو بیاریم"
 						compact={size.h === 1}
-						onRetry={() => refetch()}
+						onRetry={() => {
+							Analytics.event('weather_retry_clicked')
+							refetch()
+						}}
 					/>
 				</div>
 			</WidgetContainer>

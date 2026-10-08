@@ -1,4 +1,5 @@
 import jalaliMoment from 'jalali-moment'
+import Analytics from '@/analytics'
 import { DatePicker, SectionPanel, TextInput } from '@/components/ui'
 import { useFreeWidgets } from '@/features/widgets/widgets.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
@@ -52,6 +53,7 @@ export function DotCalendarSetting({ instanceId }: DotCalendarSettingProps = {})
 	const onSelectGoalDate = (date: jalaliMoment.Moment) => {
 		if (!isGoalDateAllowed(date, today)) return
 
+		Analytics.event('dot_calendar_goal_date_set')
 		saveMeta({
 			goalStartDate: toIsoDateKey(today),
 			goalEndDate: toIsoDateKey(date),
@@ -76,7 +78,9 @@ export function DotCalendarSetting({ instanceId }: DotCalendarSettingProps = {})
 						id="dot-calendar-goal-title"
 						size="sm"
 						defaultValue={goalTitle}
-						onChange={(value) => saveMeta({ goalTitle: value.trim() })}
+						onChange={(value) => {
+							saveMeta({ goalTitle: value.trim() })
+						}}
 						debounce
 						debounceTime={GOAL_TITLE_SAVE_DEBOUNCE_MS}
 						maxLength={GOAL_TITLE_MAX_LENGTH}

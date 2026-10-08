@@ -17,7 +17,7 @@ The widget `meta` holds `imageSrc` and `isCustom` (true for an upload). An uploa
 
 ## Menu
 
-The picture itself does nothing on click. The shared menu has «عکس از دستگاه» (PRO badge for free users, who are sent to the PRO page), «انتخاب از گالری», and «برداشتن عکس» when there is one. All three are disabled during an upload.
+The picture itself does nothing on click. The shared menu has «عکس از دستگاه» (PRO badge for free users, who are sent to the PRO page), «انتخاب از گالری», and «برداشتن عکس» when there is one. All three are disabled during an upload. Those actions and upload failures each fire an analytics event name through `@/analytics`.
 
 ## Frame and states
 

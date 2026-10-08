@@ -1,5 +1,6 @@
 import type React from 'react'
 import { useEffect, useState } from 'react'
+import Analytics from '@/analytics'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { Modal } from '@/components/ui'
 import { PetSettings } from '@/features/widgets/pet/pet-setting'
@@ -75,6 +76,7 @@ export function WidgetSettings() {
 				} else {
 					setRequest(data)
 					setIsOpen(true)
+					Analytics.event('widget_settings_opened')
 				}
 			}),
 		[]

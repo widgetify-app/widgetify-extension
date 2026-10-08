@@ -1,3 +1,4 @@
+import Analytics from '@/analytics'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { ToggleSwitch } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
@@ -14,6 +15,7 @@ export function SearchAutocompleteSwitch() {
 			return
 		}
 
+		Analytics.event('search_autocomplete_toggled')
 		const [er] = await safeAwait(
 			mutateAsync({ isActive: !user?.searchAutocompleteEnabled })
 		)

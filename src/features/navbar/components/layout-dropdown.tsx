@@ -1,3 +1,4 @@
+import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { Dropdown, DropdownItem } from '@/components/ui'
 import { useAppearance } from '@/context/appearance.context'
@@ -22,6 +23,7 @@ export function LayoutDropdown() {
 			} else {
 				setCanvasMode(canvasMode === 'edit' ? 'normal' : 'edit')
 			}
+			Analytics.event('canvas_edit_mode_toggled')
 		})
 	}
 

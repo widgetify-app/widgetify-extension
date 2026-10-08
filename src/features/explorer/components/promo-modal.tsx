@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Analytics from '@/analytics'
 import { showToast } from '@/common/toast'
 import { Badge, Button, ImageSlider, Modal } from '@/components/ui'
 import { Icon } from '@/icons'
@@ -46,6 +47,7 @@ export function ExplorerPromoModal({ isOpen, onClose, item }: ExplorerPromoModal
 	const handleAction = () => {
 		const targetUrl = promo?.targetUrl || item.url
 		if (targetUrl) {
+			Analytics.event('explorer_site_opened')
 			const formattedUrl = targetUrl.startsWith('http')
 				? targetUrl
 				: `https://${targetUrl}`

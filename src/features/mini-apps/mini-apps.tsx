@@ -47,6 +47,7 @@ export function MiniAppsLayout() {
 			focusMiniAppWindow(windowId)
 			return
 		}
+		Analytics.event('mini_app_opened')
 		setSelectedAppId(appId)
 	}
 

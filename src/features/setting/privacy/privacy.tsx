@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Analytics from '@/analytics'
 import { ToggleSwitch } from '@/components/ui'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { SearchAutocompleteSwitch } from './components/search-autocomplete-switch'
@@ -17,10 +18,14 @@ export function PrivacySettings() {
 	const [allowFavicon, setAllowFaviconState] = useState(getFaviconConsent)
 
 	const handleToggleAnalytics = () => {
+		if (analyticsEnabled) {
+			Analytics.event('analytics_disabled')
+		}
 		setAnalyticsEnabled(!analyticsEnabled)
 	}
 
 	const handleToggleFavicon = () => {
+		Analytics.event('favicon_consent_toggled')
 		const nextValue = !allowFavicon
 		setAllowFaviconState(nextValue)
 		setFaviconConsent(nextValue)

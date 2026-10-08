@@ -1,3 +1,4 @@
+import Analytics from '@/analytics'
 import {
 	type Friend,
 	useHandleFriendRequest,
@@ -23,6 +24,7 @@ export const FriendRequestsBottomSheet = ({ isOpen, onClose }: Prop) => {
 				friendId,
 				state: 'accepted',
 			})
+			Analytics.event('friends_request_accepted')
 			showToast('حالا با هم دوستید', 'success')
 		} catch {
 			showToast('یه مشکلی پیش اومد، دوباره امتحان کن', 'error')
@@ -30,6 +32,7 @@ export const FriendRequestsBottomSheet = ({ isOpen, onClose }: Prop) => {
 	}
 
 	const rejectFriend = (friendId: string) => {
+		Analytics.event('friends_request_declined')
 		handleFriendAction({
 			friendId,
 			state: 'rejected',

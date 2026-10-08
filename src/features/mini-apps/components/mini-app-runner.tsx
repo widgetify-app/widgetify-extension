@@ -8,6 +8,7 @@ import { MiniAppIframe } from './mini-app-iframe-runner'
 import { WebAppAuthGate } from './mini-app-auth'
 import { Spinner } from '@/components/ui'
 import { cn } from '@/common/utils/cn'
+import Analytics from '@/analytics'
 const LOAD_TIMEOUT = 8000
 
 interface Prop {
@@ -50,6 +51,7 @@ export function MiniAppRunner({
 			setLaunchData(response.data)
 		} catch (error) {
 			console.error('Error launching app:', error)
+			Analytics.error('launch_failed', 'mini_app_launch')
 			setHasError(true)
 		}
 	}
@@ -69,6 +71,7 @@ export function MiniAppRunner({
 			setIsAppReady(false)
 			setLaunchData(null)
 			setHasError(true)
+			Analytics.error('timeout', 'mini_app_launch')
 		}, app?.timeout || LOAD_TIMEOUT)
 	}
 
@@ -112,6 +115,7 @@ export function MiniAppRunner({
 	}, [launchData])
 
 	const handleReload = () => {
+		Analytics.event('mini_app_reloaded')
 		doLaunch()
 	}
 

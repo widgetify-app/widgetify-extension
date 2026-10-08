@@ -183,6 +183,7 @@ export function useWidgetOperations({
 					prev.map((w) => (w.instanceId === instanceId ? { ...w, meta } : w))
 				)
 				playNativeToastSound('success')
+				Analytics.event('widget_style_changed')
 				return true
 			}
 

@@ -23,7 +23,7 @@ The weather in the user's city, at 1x1 (PRO), 2x1, 2x2 (PRO) and 2x3. Display on
 
 ## Frame
 
-The tasks frame: `px-3 py-2.5` at 1x1, `px-3 py-2.5 gap-1.5` at 2x1, `p-3 gap-2` above. Every size has a header with the ⋯, the error included («نتونستیم آب و هوا رو بیاریم», the compact form in a one-row cell).
+The tasks frame: `px-3 py-2.5` at 1x1, `px-3 py-2.5 gap-1.5` at 2x1, `p-3 gap-2` above. Every size has a header with the ⋯, the error included («نتونستیم آب و هوا رو بیاریم», the compact form in a one-row cell). The error state's retry fires `weather_retry_clicked`.
 
 ## Menu
 

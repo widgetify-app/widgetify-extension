@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Analytics from '@/analytics'
 import {
 	type Friend,
 	useGetFriends,
@@ -57,6 +58,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 				showToast(msg as string, 'error')
 			},
 			onSuccess: () => {
+				Analytics.event('friends_removed')
 				setSelectedUserToDelete(null)
 			},
 		})

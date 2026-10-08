@@ -48,6 +48,11 @@ export function MarketContainer({
 		Analytics.event(`market_select_tab_${next}`)
 	}
 
+	const openDetail = (item: StoreItem) => {
+		Analytics.event('market_item_previewed')
+		setDetail(item)
+	}
+
 	useEffect(() => {
 		const target = toStoreTarget(initialTab, initialFilter)
 		setView(target.view)
@@ -83,13 +88,16 @@ export function MarketContainer({
 						{view === 'home' && (
 							<Storefront
 								selectedId={selectedId}
-								onOpen={setDetail}
+								onOpen={openDetail}
 								onNavigate={navigate}
 							/>
 						)}
 						{view === 'wallet' && <MarketCoins />}
 						{view === 'WALLPAPER' && (
-							<MarketWallpaper selectedId={selectedId} onOpen={setDetail} />
+							<MarketWallpaper
+								selectedId={selectedId}
+								onOpen={openDetail}
+							/>
 						)}
 						{(view === 'THEME' ||
 							view === 'FONT' ||
@@ -100,7 +108,7 @@ export function MarketContainer({
 								type={view}
 								defaultPetKind={petKind}
 								selectedId={selectedId}
-								onOpen={setDetail}
+								onOpen={openDetail}
 							/>
 						)}
 					</div>

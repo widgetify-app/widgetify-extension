@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import Analytics from '@/analytics'
 import { WidgetContainer } from '../components/widget-container'
 import { WidgetMenuButton } from '../components/widget-menu-button'
 import type { WidgetSize } from '../utils/layout-engine/types'
@@ -49,6 +50,7 @@ export function PhotoWidget({
 		if (!file) return
 
 		if (!isVip) {
+			Analytics.event('photo_upload_vip_required')
 			callEvent('openSettings', 'vip')
 			return
 		}
@@ -68,6 +70,7 @@ export function PhotoWidget({
 		setIsUploading(false)
 
 		if (err || !res?.url) {
+			Analytics.event('photo_upload_failed')
 			showToast(translateError(err) as string, 'error')
 			return
 		}
@@ -77,6 +80,7 @@ export function PhotoWidget({
 
 	const handleSelectFromSystem = () => {
 		if (!isVip) {
+			Analytics.event('photo_upload_vip_required')
 			callEvent('openSettings', 'vip')
 			return
 		}
@@ -84,11 +88,13 @@ export function PhotoWidget({
 	}
 
 	const handleOpenGallery = () => {
+		Analytics.event('photo_gallery_opened')
 		setIsGalleryOpen(true)
 	}
 
 	const handleRemovePhoto = () => {
 		if (instanceId) {
+			Analytics.event('photo_removed')
 			updateWidgetSettings(instanceId, {
 				imageSrc: undefined,
 				isCustom: undefined,
@@ -99,6 +105,7 @@ export function PhotoWidget({
 
 	const handleGallerySelect = (asset: GalleryAsset) => {
 		if (instanceId) {
+			Analytics.event('photo_gallery_selected')
 			updateWidgetSettings(instanceId, {
 				imageSrc: asset.url,
 				isCustom: false,

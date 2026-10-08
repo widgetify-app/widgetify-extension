@@ -1,3 +1,4 @@
+import Analytics from '@/analytics'
 import { getContrastingTextColor } from '@/common/utils/color'
 import { NewBadge } from '@/components/ui'
 import { Icon } from '@/icons'
@@ -24,6 +25,8 @@ export function RenderContentSite({ link, onOpenPromoModal }: SiteProp) {
 		if (isModalAction && onOpenPromoModal) {
 			e.preventDefault()
 			onOpenPromoModal(link, e.currentTarget as HTMLElement)
+		} else {
+			Analytics.event('explorer_site_opened')
 		}
 	}
 

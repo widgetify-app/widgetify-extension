@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
 import { Button, Modal } from '@/components/ui'
@@ -82,15 +83,21 @@ export const UpdateReleaseNotesModal = ({
 		setCounter(0)
 	}, [isOpen, counterValue])
 
-	const handleOpenPets = () => {
+	const handleClose = () => {
+		Analytics.event('release_notes_closed')
 		onClose()
+	}
+
+	const handleOpenPets = () => {
+		Analytics.event('release_notes_link_clicked')
+		handleClose()
 		callEvent('openMarketModal', { filter: MarketItemType.PET })
 	}
 
 	return (
 		<Modal
 			isOpen={isOpen}
-			onClose={onClose}
+			onClose={handleClose}
 			title="پاییز اومد، با کلی چیز تازه"
 			size="xl"
 			className="max-w-3xl"
@@ -161,7 +168,7 @@ export const UpdateReleaseNotesModal = ({
 						type="button"
 						size="sm"
 						color="brand"
-						onClick={onClose}
+						onClick={handleClose}
 						disabled={counter > 0}
 						className="h-10 px-8 text-xs font-bold shadow-sm"
 						rounded="xl"

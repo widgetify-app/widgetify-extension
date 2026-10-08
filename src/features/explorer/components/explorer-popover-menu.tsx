@@ -1,3 +1,4 @@
+import Analytics from '@/analytics'
 import { showToast } from '@/common/toast'
 import {
 	Badge,
@@ -33,6 +34,7 @@ export function ExplorerPopoverMenu({
 
 	const handleItemClick = (url: string) => {
 		if (!url) return
+		Analytics.event('explorer_site_opened')
 		const targetUrl = url.startsWith('http') ? url : `https://${url}`
 		window.open(targetUrl, '_blank', 'noopener,noreferrer')
 		onClose()

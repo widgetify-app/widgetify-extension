@@ -1,6 +1,7 @@
 import type React from 'react'
 import type { ReactNode } from 'react'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import Analytics from '@/analytics'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { useFreeWidgets } from '@/features/widgets/widgets.context'
 import { useContainerSize } from '@/features/widgets/hooks/use-container-size'
@@ -61,6 +62,7 @@ export function FreeWidgetCanvas() {
 	useEffect(() => {
 		const removePresetListener = listenEvent('openPresetLayoutsModal', () => {
 			setIsPresetModalOpen(true)
+			Analytics.event('widget_presets_opened')
 		})
 		return () => {
 			removePresetListener()
@@ -207,10 +209,14 @@ export function FreeWidgetCanvas() {
 				{canvasMode === 'edit' && (
 					<CanvasEditToolbar
 						onAddWidget={() => callEvent('openAddCustomWidgetModal')}
-						onOpenPresets={() => setIsPresetModalOpen(true)}
+						onOpenPresets={() => {
+							setIsPresetModalOpen(true)
+							Analytics.event('widget_presets_opened')
+						}}
 						onExitEditMode={() => {
 							setCanvasMode('normal')
 							setSelectedInstanceId(null)
+							Analytics.event('canvas_edit_mode_toggled')
 						}}
 					/>
 				)}
@@ -255,9 +261,13 @@ export function FreeWidgetCanvas() {
 					onToggleEditMode={() => {
 						setCanvasMode(canvasMode === 'edit' ? 'normal' : 'edit')
 						setSelectedInstanceId(null)
+						Analytics.event('canvas_edit_mode_toggled')
 					}}
 					onOpenAddWidget={() => callEvent('openAddCustomWidgetModal')}
-					onOpenPresets={() => setIsPresetModalOpen(true)}
+					onOpenPresets={() => {
+						setIsPresetModalOpen(true)
+						Analytics.event('widget_presets_opened')
+					}}
 					onOpenAppearanceSettings={() =>
 						callEvent('openSettings', 'appearance')
 					}

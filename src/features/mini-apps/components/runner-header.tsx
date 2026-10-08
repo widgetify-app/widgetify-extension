@@ -3,6 +3,7 @@ import type { MiniApp } from '@/services/mini-apps/mini-apps.interface'
 import { Icon } from '@/icons'
 import { Button, PopoverMenu, PopoverMenuItem, Tooltip, VipBadge } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
+import Analytics from '@/analytics'
 
 interface Prop {
 	onClickToBack: () => void
@@ -26,11 +27,14 @@ export function MiniAppRunnerHeader({
 	const [menuOpen, setMenuOpen] = useState(false)
 	const menuAnchorRef = useRef<HTMLButtonElement>(null)
 	const { isVip } = useAuth()
+
 	const onToggleFullScreen = () => {
 		const newState = !isFullScreen
 		setIsFullScreen(newState)
 		callEvent('toggle_miniApp_fullScreen', newState)
+		Analytics.event('mini_app_fullscreen')
 	}
+
 	const fullScreenLabel = isFullScreen ? 'خروج از تمام‌صفحه' : 'تمام‌صفحه'
 	return (
 		<div className="sticky top-0 z-10 w-full border-b border-line">
@@ -146,7 +150,10 @@ export function MiniAppRunnerHeader({
 								onClick={() => {
 									setMenuOpen(false)
 									if (isVip) onOpenInWindow()
-									else callEvent('openSettings', 'vip')
+									else {
+										Analytics.event('mini_app_pro_gate_blocked')
+										callEvent('openSettings', 'vip')
+									}
 								}}
 							/>
 						)}

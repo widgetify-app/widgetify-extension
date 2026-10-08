@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Analytics from '@/analytics'
 import { Icon } from '@/icons'
 import { ImageSlider, useImageSlider } from '@/components/ui'
 import type { CatalogItem } from '../types'
@@ -36,6 +37,8 @@ export function RenderContentBanner({ link, onOpenPromoModal }: BannerProp) {
 		if (isModalAction && onOpenPromoModal) {
 			e.preventDefault()
 			onOpenPromoModal(link, e.currentTarget as HTMLElement)
+		} else {
+			Analytics.event('explorer_site_opened')
 		}
 	}
 
