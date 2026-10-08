@@ -10,7 +10,7 @@ export function HabitEmpty({ onAdd }: HabitEmptyProps) {
 		<WidgetEmpty
 			art="habits"
 			title="یه عادت خوب شروع کن"
-			description="مثلاً روزی ۸ لیوان آب، یا ۲۰ دقیقه مطالعه"
+			description="مثلاً روزی ۸ لیوان چای، یا ۲۰ دقیقه مطالعه"
 			action={{ label: 'عادت جدید', onClick: onAdd }}
 		/>
 	)

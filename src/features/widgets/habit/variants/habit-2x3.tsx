@@ -2,7 +2,7 @@ import { cn } from '@/common/utils/cn'
 import type { WidgetifyDate } from '@/common/utils/date-events'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { WidgetError } from '@/features/widgets/components/widget-error'
-import { HabitEmpty, HabitSignedOut } from '../components/habit-empty'
+import { HabitEmpty } from '../components/habit-empty'
 import { HabitItem } from '../components/item/habit-item'
 import { HabitItemSkeleton } from '../components/item/habit-item-skeleton'
 import type { useHabitActions } from '../hooks/use-habit-actions'
@@ -17,7 +17,6 @@ interface Habit2x3Props {
 export function Habit2x3({ actions, today }: Habit2x3Props) {
 	const { blurMode } = useGeneralSetting()
 	const {
-		isAuthenticated,
 		habits,
 		isLoading,
 		isError,
@@ -27,9 +26,7 @@ export function Habit2x3({ actions, today }: Habit2x3Props) {
 		onRefresh,
 	} = actions
 
-	const body = !isAuthenticated ? (
-		<HabitSignedOut />
-	) : isLoading ? (
+	const body = isLoading ? (
 		<div className="flex flex-col gap-0.5">
 			{Array.from({ length: SKELETON_COUNT }, (_, i) => (
 				<HabitItemSkeleton key={`habit-skeleton-${i}`} />

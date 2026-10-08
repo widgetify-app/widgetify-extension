@@ -1,7 +1,7 @@
 import type React from 'react'
 import type { ReactNode } from 'react'
 import type { Todo } from '@/services/todo/todo.interface'
-import { TodosEmpty, TodosSignedOut } from '../components/todo-empty'
+import { TodosEmpty } from '../components/todo-empty'
 import { TodoItem } from '../components/todo-item'
 import { TodoSkeleton } from '../components/todo-skeleton'
 import { WidgetError } from '@/features/widgets/components/widget-error'
@@ -11,7 +11,6 @@ export interface TodoListProps {
 	todos: Todo[]
 	isLoading: boolean
 	isError: boolean
-	isAuthenticated: boolean
 	isFetchingNextPage: boolean
 	hasNextPage: boolean
 	loadMoreRef: React.RefObject<HTMLDivElement | null>
@@ -37,7 +36,6 @@ export function TodoListBody({
 	todos,
 	isLoading,
 	isError,
-	isAuthenticated,
 	isFetchingNextPage,
 	hasNextPage,
 	loadMoreRef,
@@ -47,8 +45,6 @@ export function TodoListBody({
 	onUpdated,
 	onAdd,
 }: TodoListProps) {
-	if (!isAuthenticated) return <TodosSignedOut />
-
 	return (
 		<div
 			aria-busy={isLoading}

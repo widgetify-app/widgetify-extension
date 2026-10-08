@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import Analytics from '@/analytics'
-import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
 import type { WidgetifyDate } from '@/common/utils/date-events'
 import { useGeneralSetting } from '@/context/general-setting.context'
@@ -28,7 +27,6 @@ function HabitCompactContent({ actions, today }: Habit2x1Props) {
 	const { blurMode } = useGeneralSetting()
 	const [currentId, setCurrentId] = useState<string | null>(null)
 	const {
-		isAuthenticated,
 		habits,
 		isLoading,
 		isError,
@@ -37,17 +35,6 @@ function HabitCompactContent({ actions, today }: Habit2x1Props) {
 		openAddHabit,
 		openHabitDetail,
 	} = actions
-
-	if (!isAuthenticated) {
-		return (
-			<WidgetCompactEmpty
-				icon="user"
-				title="عادت‌هات توی حسابته"
-				description="برای دیدنشون وارد شو"
-				action={{ label: 'ورود', onClick: () => callEvent('openProfile') }}
-			/>
-		)
-	}
 
 	if (isLoading) {
 		return (

@@ -7,6 +7,7 @@ import {
 	WidgetHeader,
 } from '@/features/widgets/components/widget-header'
 import type { WidgetSize } from '../../utils/layout-engine/types'
+import { PHOTO_PLACEHOLDER_SRC } from '../constants'
 
 const WIDGET_TITLE = 'قاب عکس'
 const FAILED_TITLE = 'عکس باز نشد'
@@ -60,20 +61,32 @@ export function PhotoEmptyState({
 		)
 	}
 
+	const showsPlaceholder = size.w === 2 && size.h === 2 && !hasFailed
+
 	return (
 		<>
 			<WidgetHeader title={WIDGET_TITLE} />
 			<div className="flex flex-col items-center justify-center flex-1 min-h-0 gap-1.5 text-center select-none">
-				<span className="grid mb-0.5 rounded-xl size-11 place-items-center bg-fill text-fg-muted">
-					<Icon
-						name={hasFailed ? 'alert' : 'imagePlus'}
-						size={20}
-						aria-hidden="true"
+				{showsPlaceholder ? (
+					<img
+						src={PHOTO_PLACEHOLDER_SRC}
+						alt=""
+						className="flex-1 object-cover w-full min-h-0 rounded-xl"
 					/>
-				</span>
-				<p className="text-xs font-bold text-fg-strong">
-					{hasFailed ? FAILED_TITLE : 'یه عکس بذار اینجا'}
-				</p>
+				) : (
+					<>
+						<span className="grid mb-0.5 rounded-xl size-11 place-items-center bg-fill text-fg-muted">
+							<Icon
+								name={hasFailed ? 'alert' : 'imagePlus'}
+								size={20}
+								aria-hidden="true"
+							/>
+						</span>
+						<p className="text-xs font-bold text-fg-strong">
+							{hasFailed ? FAILED_TITLE : 'یه عکس بذار اینجا'}
+						</p>
+					</>
+				)}
 				{size.h > 2 && (
 					<p className="leading-relaxed text-2xs text-fg-muted">
 						{hasFailed
