@@ -7,7 +7,7 @@ interface NoteEmptyProps {
 export function NoteEmpty({ onAdd }: NoteEmptyProps) {
 	return (
 		<WidgetEmpty
-			art="notebook"
+			art="notes"
 			title="هنوز یادداشتی نداری"
 			description="ایده، لیست خرید یا یه جمله برای بعد؛ همین‌جا نگهش دار"
 			action={{ label: 'یادداشت جدید', onClick: onAdd }}

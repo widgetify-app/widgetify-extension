@@ -8,7 +8,7 @@ interface HabitEmptyProps {
 export function HabitEmpty({ onAdd }: HabitEmptyProps) {
 	return (
 		<WidgetEmpty
-			art="strike"
+			art="habits"
 			title="یه عادت خوب شروع کن"
 			description="مثلاً روزی ۸ لیوان آب، یا ۲۰ دقیقه مطالعه"
 			action={{ label: 'عادت جدید', onClick: onAdd }}

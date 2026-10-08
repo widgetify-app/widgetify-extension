@@ -4,7 +4,7 @@ import { WidgetEmpty } from '@/features/widgets/components/widget-empty'
 export function TodosEmpty({ onAdd }: { onAdd?: () => void }) {
 	return (
 		<WidgetEmpty
-			art="taskList"
+			art="tasks"
 			title="هنوز تسکی نداری"
 			description={
 				onAdd

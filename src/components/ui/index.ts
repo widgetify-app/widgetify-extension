@@ -25,6 +25,7 @@ export * from './dropdown/dropdown'
 export * from './dropdown/dropdown-item'
 export * from './dropdown/dropdown-item.variants'
 
+export * from './empty-art/empty-art'
 export * from './empty-state/empty-state'
 
 export * from './image-slider/image-slider'
