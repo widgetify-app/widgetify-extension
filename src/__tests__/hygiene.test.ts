@@ -7,7 +7,6 @@ const COMMENT_BASELINE: Record<string, number> = {
 	'background/cache-config.ts': 2,
 	'background/cache.ts': 9,
 	'background/wallpaper-cache.ts': 4,
-	'src/analytics.ts': 1,
 	'src/common/types/wallpaper.interface.ts': 2,
 	'src/common/utils/call-event.ts': 2,
 	'src/common/utils/date-events.ts': 3,

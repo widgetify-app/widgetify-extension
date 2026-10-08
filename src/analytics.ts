@@ -3,18 +3,81 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 
 const GA_MEASUREMENT_ID = 'G-7Z0R61E5BZ'
 const GA_API_SECRET = 'mqy2svrEQOu-qC-K4yxJdw'
-async function getClientId(): Promise<string> {
-	const data = await getFromStorage('gaClientId')
+const SESSION_EXPIRY_MS = 30 * 60 * 1000
+const SESSION_PERSIST_INTERVAL_MS = 60 * 1000
 
-	let clientId: string
-	if (data?.ga_client_id) {
-		clientId = data.ga_client_id
-	} else {
-		clientId = uuidv4()
-		await setToStorage('gaClientId', { ga_client_id: clientId })
+function isSessionActive(lastActivity: number, now: number): boolean {
+	return Number.isFinite(lastActivity) && now - lastActivity < SESSION_EXPIRY_MS
+}
+
+function shouldPersistSession(persistedAt: number, now: number): boolean {
+	return (
+		!Number.isFinite(persistedAt) || now - persistedAt >= SESSION_PERSIST_INTERVAL_MS
+	)
+}
+
+interface CachedSession {
+	id: string
+	lastActivity: number
+	persistedAt: number
+}
+
+let cachedClientId: Promise<string> | null = null
+let cachedSession: CachedSession | null = null
+let sessionLoad: Promise<CachedSession> | null = null
+
+async function loadClientId(): Promise<string> {
+	const data = await getFromStorage('gaClientId')
+	if (data?.ga_client_id) return data.ga_client_id
+
+	const clientId = uuidv4()
+	await setToStorage('gaClientId', { ga_client_id: clientId })
+	return clientId
+}
+
+function getClientId(): Promise<string> {
+	if (!cachedClientId) {
+		cachedClientId = loadClientId().catch((error) => {
+			cachedClientId = null
+			throw error
+		})
+	}
+	return cachedClientId
+}
+
+async function loadSession(now: number): Promise<CachedSession> {
+	const stored = await getFromStorage('analyticsSession')
+	const storedActivity = stored?.timestamp
+		? new Date(stored.timestamp).getTime()
+		: Number.NaN
+
+	if (stored?.session_id && isSessionActive(storedActivity, now)) {
+		return { id: stored.session_id, lastActivity: now, persistedAt: storedActivity }
+	}
+	return { id: uuidv4(), lastActivity: now, persistedAt: Number.NaN }
+}
+
+async function getSessionId(): Promise<string> {
+	const now = Date.now()
+
+	if (!cachedSession || !isSessionActive(cachedSession.lastActivity, now)) {
+		sessionLoad ??= loadSession(now).finally(() => {
+			sessionLoad = null
+		})
+		cachedSession = await sessionLoad
 	}
 
-	return clientId
+	const session = cachedSession
+	session.lastActivity = now
+
+	if (shouldPersistSession(session.persistedAt, now)) {
+		session.persistedAt = now
+		await setToStorage('analyticsSession', {
+			session_id: session.id,
+			timestamp: new Date(now).toISOString(),
+		})
+	}
+	return session.id
 }
 
 const Analytics = (() => {
@@ -65,35 +128,7 @@ const Analytics = (() => {
 		sendMeasurementEvent(payload)
 	}
 
-	async function getSessionId(): Promise<string> {
-		const sessionData = await getFromStorage('analyticsSession')
-		const SESSION_EXPIRY = 30 * 60 * 1000 // 30 minutes
-
-		if (sessionData?.session_id && sessionData?.timestamp) {
-			const lastActivity = new Date(sessionData.timestamp).getTime()
-			const now = Date.now()
-
-			if (now - lastActivity < SESSION_EXPIRY) {
-				await setToStorage('analyticsSession', {
-					session_id: sessionData.session_id,
-					timestamp: new Date().toISOString(),
-				})
-				return sessionData.session_id
-			}
-		}
-
-		const newSessionId = uuidv4()
-		await setToStorage('analyticsSession', {
-			session_id: newSessionId,
-			timestamp: new Date().toISOString(),
-		})
-		return newSessionId
-	}
-
 	async function error(errorMessage: string, errorSource: string): Promise<void> {
-		const setting = await getFromStorage('generalSettings')
-		if (setting?.disable_analytics || setting?.analyticsEnabled === false) return
-
 		await event('error', {
 			error_message: errorMessage,
 			error_source: errorSource,

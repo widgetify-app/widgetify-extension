@@ -78,9 +78,7 @@ export function DotCalendarSetting({ instanceId }: DotCalendarSettingProps = {})
 						id="dot-calendar-goal-title"
 						size="sm"
 						defaultValue={goalTitle}
-						onChange={(value) => {
-							saveMeta({ goalTitle: value.trim() })
-						}}
+						onChange={(value) => saveMeta({ goalTitle: value.trim() })}
 						debounce
 						debounceTime={GOAL_TITLE_SAVE_DEBOUNCE_MS}
 						maxLength={GOAL_TITLE_MAX_LENGTH}

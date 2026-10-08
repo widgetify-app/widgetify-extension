@@ -18,9 +18,6 @@ export function PrivacySettings() {
 	const [allowFavicon, setAllowFaviconState] = useState(getFaviconConsent)
 
 	const handleToggleAnalytics = () => {
-		if (analyticsEnabled) {
-			Analytics.event('analytics_disabled')
-		}
 		setAnalyticsEnabled(!analyticsEnabled)
 	}
 

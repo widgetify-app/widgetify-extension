@@ -8,7 +8,6 @@ import {
 	useRef,
 	useState,
 } from 'react'
-import Analytics from '@/analytics'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { useFreeWidgetActions } from '@/features/widgets/widgets.context'
 import { getWidgetPixelRect } from '../utils/grid-geometry'
@@ -309,7 +308,6 @@ function CanvasWidgetOuterImpl({
 					? { x: frame.left + 12, y: frame.top + 44 }
 					: { x: e.clientX, y: e.clientY },
 		})
-		Analytics.event('widget_context_menu_opened')
 	}
 
 	const closeMenu = useCallback(() => setMenuAnchor(null), [])
@@ -319,11 +317,9 @@ function CanvasWidgetOuterImpl({
 		() => ({
 			isOpen: isMenuOpen,
 			toggleFromButton: (button: HTMLElement) =>
-				setMenuAnchor((current) => {
-					if (current) return null
-					Analytics.event('widget_context_menu_opened')
-					return { trigger: { current: button } }
-				}),
+				setMenuAnchor((current) =>
+					current ? null : { trigger: { current: button } }
+				),
 			actionsRef: menuActionsRef,
 			settingsSummaryRef,
 		}),
