@@ -13,7 +13,8 @@ Shared code with no UI of its own, except `motion.tsx` and `toast.tsx`, which ar
 | `toast.tsx` | `showToast`: the only door to react-hot-toast |
 | `utils/cn.ts` | `cn()`, class merging (clsx and tailwind-merge) |
 | `utils/` | Small helpers: colour, dates, error translation, timeouts |
-| `types/` | Shapes shared by many features (`*.interface.ts`) |
+	| `i18n/` | Persian message catalog and `t()`; the only place UI copy lives |
+	| `types/` | Shapes shared by many features (`*.interface.ts`) |
 
 ## Storage
 
@@ -44,6 +45,10 @@ Storage keys, analytics event names and widget ids live in places you do not con
 ## Analytics
 
 Events go through `Analytics` from `@/analytics`. The user can turn it off in settings, and the function checks that before it sends. Event names are data, like storage keys. The first argument must be a string literal, and parameters must not carry personal or free-text data.
+
+## i18n
+
+UI copy lives in `src/common/i18n/fa/<area>.ts` and is read with `t()` from `@/common/i18n`. Keys are flat (`area.scope.name`), typed as `MessageKey`, and never built from a template or concatenation. Name a key after its purpose (`market.coin.amountLabel`, `setting.auth.continue`), never after a file path and never with a numeric suffix. Parameters use `{name}` and are typed from the message text. A constant that needs a label stores a `MessageKey` (`labelKey`, `titleKey`, …) and the render site calls `t(...)`. Primitives take finished text from props; they do not import the catalog. Catalog wording follows `.agents/TYPOGRAPHY.md`: write `فعلا` / `مثلا` / `دقیقا` without tanween (`ً`), and do not end a UI sentence with a lone `.` (ellipsis `...` / `…` is fine; domains like `widgetify.ir` stay). Numbers and digits are not converted by i18n: a digit stays as written, and existing `toLocaleString('fa-IR')` / Jalali formatting is left alone. The short allowlist in `src/__tests__/i18n.test.ts` is only for locale data and saved/compared values, not for UI copy. A second locale later is a new `<locale>/` folder with the same keys plus a way to pick it; that is not built now.
 
 ## Animation
 

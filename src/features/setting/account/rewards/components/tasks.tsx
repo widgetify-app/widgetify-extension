@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { ConfigKey } from '@/common/constants/config-keys'
 import { SectionPanel, Spinner } from '@/components/ui'
 import type { Task } from '@/services/user/referrals-service.hook'
@@ -10,12 +11,14 @@ interface Prop {
 
 export function RewardTasks({ tasks, isLoading }: Prop) {
 	return (
-		<SectionPanel title={'ماموریت‌ها'} size="sm">
+		<SectionPanel title={t('setting.rewards.tasksTitle')} size="sm">
 			<div className="flex flex-col gap-2 py-2">
 				{isLoading ? (
 					<div className="py-12 text-center">
 						<Spinner size="xl" className="mx-auto" />
-						<p className="mt-4 text-sm text-fg-muted">یه لحظه…</p>
+						<p className="mt-4 text-sm text-fg-muted">
+							{t('setting.interests.loading')}
+						</p>
 					</div>
 				) : tasks.length > 0 ? (
 					tasks.map((taskItem, index) => {
@@ -100,7 +103,7 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 										</span>
 										<img
 											src={ConfigKey.WIG_COIN_ICON}
-											alt="ویج‌کوین"
+											alt={t('setting.rewards.coinLabel')}
 											className="w-6 h-6"
 										/>
 									</div>
@@ -115,10 +118,10 @@ export function RewardTasks({ tasks, isLoading }: Prop) {
 							<div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-transparent to-fill"></div>
 						</div>
 						<p className="text-sm font-medium text-fg-muted">
-							فعلاً ماموریتی نیست
+							{t('setting.rewards.emptyTitle')}
 						</p>
 						<p className="mt-1 text-xs text-fg-faint">
-							به‌زودی ماموریت‌های تازه میان
+							{t('setting.rewards.emptyHint')}
 						</p>
 					</div>
 				)}

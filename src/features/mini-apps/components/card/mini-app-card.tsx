@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { getContrastingTextColor } from '@/common/utils/color'
 import { NewBadge } from '@/components/ui'
 import { Icon } from '@/icons'
@@ -70,7 +71,7 @@ export function MiniAppCard({ app, onLaunch, isSelected, isInWindow }: MiniAppCa
 				{isInWindow && (
 					<p className="flex items-center gap-1 mt-0.5 text-xs text-brand">
 						<Icon name="pictureInPicture" size={12} />
-						تو پنجره جدا بازه
+						{t('miniApps.card.openInWindow')}
 					</p>
 				)}
 			</div>

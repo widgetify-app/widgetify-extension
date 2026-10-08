@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import type {
 	WidgetDefinition,
 	WidgetSize,
@@ -45,7 +46,10 @@ export function AddWidgetPreview({
 			className="flex-1 flex flex-col items-center justify-center p-3 rounded-2xl bg-fill text-fg-ghost border border-line overflow-hidden relative min-h-47.5"
 		>
 			<div className="text-3xs text-fg-muted absolute top-2 right-2 font-medium bg-fill-2 px-2 py-0.5 rounded-lg border border-line z-10">
-				پیش‌نمایش در اندازه {previewSize.w}×{previewSize.h}
+				{t('widgets.catalog.previewSize', {
+					w: previewSize.w,
+					h: previewSize.h,
+				})}
 			</div>
 
 			<div

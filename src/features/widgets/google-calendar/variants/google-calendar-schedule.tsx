@@ -1,5 +1,6 @@
 import type React from 'react'
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import type { GoogleCalendarEvent } from '@/services/date/get-google-calendar-events.hook'
 import type { WidgetifyDate } from '@/common/utils/date-events'
 import {
@@ -54,18 +55,18 @@ export const GoogleCalendarSchedule: React.FC<GoogleCalendarScheduleProps> = ({
 	return (
 		<>
 			<WidgetHeader
-				title="تقویم گوگل"
+				title={t('widgets.googleCalendar.title')}
 				badge={!isSelectedToday && <TodayChip onClick={handleResetToday} />}
 				info={selectedDay.format('jMMMM jYYYY')}
 				actions={
 					<>
 						<WidgetHeaderButton
-							label="هفته‌ی قبل"
+							label={t('widgets.googleCalendar.prevWeek')}
 							icon="chevronRight"
 							onClick={() => goToWeek(-7, 'google_calendar_prev_week')}
 						/>
 						<WidgetHeaderButton
-							label="هفته‌ی بعد"
+							label={t('widgets.googleCalendar.nextWeek')}
 							icon="chevronLeft"
 							onClick={() => goToWeek(7, 'google_calendar_next_week')}
 						/>
@@ -87,12 +88,16 @@ export const GoogleCalendarSchedule: React.FC<GoogleCalendarScheduleProps> = ({
 					className="text-xs font-bold text-fg-strong"
 				>
 					{isSelectedToday
-						? `امروز، ${selectedDay.format('dddd')}`
+						? t('widgets.googleCalendar.todayWeekday', {
+								weekday: selectedDay.format('dddd'),
+							})
 						: selectedDay.format('dddd jD jMMMM')}
 				</time>
 				{classifiedEvents.length > 0 && (
 					<span className="font-medium text-3xs text-fg-faint tabular-nums">
-						{classifiedEvents.length} برنامه
+						{t('widgets.googleCalendar.eventCount', {
+							count: classifiedEvents.length,
+						})}
 					</span>
 				)}
 			</div>
@@ -105,10 +110,10 @@ export const GoogleCalendarSchedule: React.FC<GoogleCalendarScheduleProps> = ({
 					<GoogleCalendarEmpty
 						title={
 							isSelectedToday
-								? 'امروز برنامه‌ای نداری'
-								: 'این روز برنامه‌ای نداری'
+								? t('widgets.googleCalendar.emptyTodayTitle')
+								: t('widgets.googleCalendar.emptyDayTitle')
 						}
-						description="فرصت خوبیه برای کارهای شخصی"
+						description={t('widgets.googleCalendar.emptyDescription')}
 					/>
 				}
 				onRetry={onRetry}

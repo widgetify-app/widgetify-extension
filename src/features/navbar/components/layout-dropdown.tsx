@@ -5,6 +5,7 @@ import { useAppearance } from '@/context/appearance.context'
 import { Page, usePage } from '@/context/page.context'
 import { Icon } from '@/icons'
 import { NavIconButton } from './nav-icon-button'
+import { t } from '@/common/i18n'
 
 export function LayoutDropdown() {
 	const { canvasMode, setCanvasMode } = useAppearance()
@@ -42,14 +43,14 @@ export function LayoutDropdown() {
 				<NavIconButton
 					id="layout-menu-button"
 					icon="layout"
-					label="چیدمان ویجت‌ها"
+					label={t('navbar.layout.widgets')}
 				/>
 			}
 		>
 			<div className="bg-glass-surface-2 py-2 min-w-48 px-1" dir="rtl">
 				<DropdownItem
 					icon={<Icon name="outlineSquares2X2" size={14} />}
-					label="مدیریت ویجت‌ها"
+					label={t('navbar.layout.manage')}
 					onClick={handleOpenWidgetManager}
 				/>
 
@@ -57,15 +58,15 @@ export function LayoutDropdown() {
 					icon={<Icon name="edit" size={14} />}
 					label={
 						page === Page.Home && canvasMode === 'edit'
-							? 'پایان ویرایش'
-							: 'حالت ویرایش'
+							? t('navbar.layout.endEdit')
+							: t('navbar.layout.editMode')
 					}
 					onClick={handleToggleEditMode}
 				/>
 
 				<DropdownItem
 					icon={<Icon name="theme" size={14} />}
-					label="تنظیمات ظاهری"
+					label={t('navbar.layout.appearance')}
 					onClick={() =>
 						handleAction(() => callEvent('openSettings', 'appearance'))
 					}
@@ -73,7 +74,7 @@ export function LayoutDropdown() {
 
 				<DropdownItem
 					icon={<Icon name="wallpapers" size={14} />}
-					label="تصویر زمینه‌ها"
+					label={t('navbar.layout.wallpapers')}
 					onClick={() =>
 						handleAction(() => callEvent('openSettings', 'wallpapers'))
 					}

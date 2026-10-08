@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { Modal } from '@/components/ui'
 import { SectionPanel } from '@/components/ui'
 import { useUpdateUserProfile } from '@/services/auth/auth-service.hook'
@@ -6,15 +7,15 @@ import { FooterButtons } from './footer-buttons'
 
 const options = {
 	MALE: {
-		label: 'آقا هستم',
+		label: t('setting.modal.gender.male'),
 		icon: '🙋‍♂️',
 	},
 	FEMALE: {
-		label: 'خانم هستم',
+		label: t('setting.modal.gender.female'),
 		icon: '🙋‍♀️',
 	},
 	OTHER: {
-		label: 'بماند',
+		label: t('setting.modal.gender.preferNot'),
 		icon: '☃️',
 	},
 }
@@ -48,7 +49,7 @@ export function ChangeGenderModal({ show, onClose, currentValue }: Prop) {
 	return (
 		<Modal isOpen={show} onClose={onCloseHandler} showCloseButton={false}>
 			<div className="flex flex-col justify-between h-40 gap-4">
-				<SectionPanel title="جنسیت (کاملا اختیاری)" size="xs">
+				<SectionPanel title={t('setting.modal.gender.title')} size="xs">
 					<div className="flex gap-2 p-1.5 bg-surface-2 rounded-2xl">
 						{(['MALE', 'FEMALE', 'OTHER'] as const).map((g) => {
 							const isActive = value === g

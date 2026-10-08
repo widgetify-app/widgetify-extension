@@ -1,5 +1,6 @@
 import moment from 'jalali-moment'
 import { useEffect, useRef, useState } from 'react'
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { Tooltip } from '@/components/ui'
 import { useNotes } from '@/features/widgets/notes/notes.context'
@@ -44,7 +45,7 @@ export function NoteBoardEditor({
 
 	return (
 		<section
-			aria-label={note.title || 'یادداشت بدون عنوان'}
+			aria-label={note.title || t('widgets.notes.untitled')}
 			className="flex flex-col flex-1 min-w-0 min-h-0 gap-2 border-s border-line ps-3.5"
 		>
 			<NoteFields
@@ -72,16 +73,19 @@ export function NoteBoardEditor({
 				/>
 				<span className="flex-1 min-w-0 truncate text-end text-3xs text-fg-faint">
 					{isSaving
-						? 'در حال ذخیره…'
+						? t('widgets.notes.saving')
 						: words > 0
-							? `${words} کلمه · ${editedAt}`
+							? t('widgets.notes.wordCount', {
+									words,
+									editedAt,
+								})
 							: editedAt}
 				</span>
-				<Tooltip content="حذف این یادداشت" delay={500}>
+				<Tooltip content={t('widgets.notes.deleteThis')} delay={500}>
 					<button
 						type="button"
 						onClick={onDelete}
-						aria-label="حذف این یادداشت"
+						aria-label={t('widgets.notes.deleteThis')}
 						className="grid rounded-lg cursor-pointer place-items-center size-7 text-fg-muted transition-ui hover:bg-danger-fill hover:text-danger focus-visible:focus-ring"
 					>
 						<Icon name="trash" size={16} aria-hidden="true" />

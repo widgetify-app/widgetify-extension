@@ -1,5 +1,6 @@
 import Analytics from '@/analytics'
 import { moodOptions } from '@/common/constants/moods'
+import { t } from '@/common/i18n'
 import { MoodImage } from '@/components/mood-image'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { callEvent } from '@/common/utils/call-event'
@@ -52,10 +53,10 @@ export function DailyMoodNotification({ className }: Prop) {
 
 		if (response.action === 'removed') {
 			setMood(value)
-			showToast('حال امروزت پاک شد، هر وقت خواستی دوباره انتخابش کن', 'info')
+			showToast(t('navbar.mood.cleared'), 'info')
 		} else {
 			setMood(value as MoodType)
-			showToast('حال امروزت ثبت شد', 'success')
+			showToast(t('navbar.mood.saved'), 'success')
 		}
 
 		setTimeout(() => {
@@ -77,7 +78,8 @@ export function DailyMoodNotification({ className }: Prop) {
 			<div className="flex-1 min-w-0 ">
 				<div className="flex items-center justify-between">
 					<h4 className="text-3xs font-medium truncate text-fg">
-						{GetUserFirstName(user?.name || '')}، امروز حالت چطوره؟
+						{GetUserFirstName(user?.name || '')}
+						{t('navbar.mood.askSuffix')}
 					</h4>
 					<button
 						type="button"
@@ -92,37 +94,33 @@ export function DailyMoodNotification({ className }: Prop) {
 					</button>
 				</div>
 				<div className="flex justify-around w-full h-10 gap-1 mt-2">
-					{moodOptions
-						.filter((f) => f.label)
-						.map((option) => (
-							<button
-								type="button"
-								disabled={isAdding}
-								aria-pressed={mood === option.value}
-								key={option.value}
-								onClick={() =>
-									!isAdding && handleMoodChange(option.value)
-								}
-								className={`p-1.5 w-full shadow-sm rounded-xl transition-ui cursor-pointer ${
-									mood === option.value
-										? `${option.activeClass} scale-105`
-										: `bg-surface-3 hover:bg-fill-2 opacity-80 hover:opacity-100 hover:scale-95`
-								}`}
-							>
-								{isAdding ? (
-									<Spinner tone="current" className="mx-auto" />
-								) : (
-									<div className="flex flex-col items-center gap-0.5 hover:scale-95">
-										<div className="text-lg leading-none">
-											<MoodImage mood={option.value} />
-										</div>
-										<div className="text-3xs leading-tight">
-											{option.label}
-										</div>
+					{moodOptions.map((option) => (
+						<button
+							type="button"
+							disabled={isAdding}
+							aria-pressed={mood === option.value}
+							key={option.value}
+							onClick={() => !isAdding && handleMoodChange(option.value)}
+							className={`p-1.5 w-full shadow-sm rounded-xl transition-ui cursor-pointer ${
+								mood === option.value
+									? `${option.activeClass} scale-105`
+									: `bg-surface-3 hover:bg-fill-2 opacity-80 hover:opacity-100 hover:scale-95`
+							}`}
+						>
+							{isAdding ? (
+								<Spinner tone="current" className="mx-auto" />
+							) : (
+								<div className="flex flex-col items-center gap-0.5 hover:scale-95">
+									<div className="text-lg leading-none">
+										<MoodImage mood={option.value} />
 									</div>
-								)}
-							</button>
-						))}
+									<div className="text-3xs leading-tight">
+										{t(option.labelKey)}
+									</div>
+								</div>
+							)}
+						</button>
+					))}
 				</div>
 			</div>
 		</div>

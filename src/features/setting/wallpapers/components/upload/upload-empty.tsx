@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
 import { Spinner, Tooltip } from '@/components/ui'
@@ -51,17 +52,21 @@ export function UploadEmpty({
 				)}
 				<span className="text-xs font-semibold text-fg">
 					{isDragging
-						? 'رهاش کن'
+						? t('setting.wallpaperUpload.dropHere')
 						: isUploading
-							? 'داریم آپلودش می‌کنیم...'
+							? t('setting.wallpaperUpload.uploading')
 							: isVip
-								? 'عکس یا ویدیوی خودت'
-								: 'عکس خودت'}
+								? t('setting.wallpaperUpload.customMediaTitle')
+								: t('setting.wallpaperUpload.customPhoto')}
 				</span>
 				<span className="text-3xs text-fg-faint">
 					{isVip
-						? `عکس، گیف یا ویدیو تا ${vipMaxSize} مگابایت`
-						: `تا ${freeMaxSize} مگابایت، روی همین مرورگر`}
+						? t('setting.wallpaperUpload.sizeLimitHint', {
+								p0: vipMaxSize,
+							})
+						: t('setting.wallpaperUpload.localSizeHint', {
+								p0: freeMaxSize,
+							})}
 				</span>
 			</button>
 
@@ -77,7 +82,7 @@ export function UploadEmpty({
 						className="inline-flex items-center h-6 gap-1 px-2 font-bold border rounded-lg cursor-pointer text-3xs text-vip bg-vip-fill border-vip-fill-2 hover:bg-vip-fill-2 transition-ui focus-visible:focus-ring"
 					>
 						<Icon name="diamond" size={12} />
-						ویدیو با پرو
+						{t('setting.wallpaperUpload.videoRequiresProBadge')}
 					</button>
 				</Tooltip>
 			)}

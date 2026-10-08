@@ -3,6 +3,7 @@ import Cropper, { type Area, type Point } from 'react-easy-crop'
 import { Modal, Slider } from '@/components/ui'
 import { FooterButtons } from './footer-buttons'
 import { getCroppedImageFile } from '../../utils/avatar-crop'
+import { t } from '@/common/i18n'
 
 interface Prop {
 	show: boolean
@@ -11,7 +12,6 @@ interface Prop {
 	onCropComplete: (file: File) => Promise<void> | void
 	isUploading?: boolean
 }
-
 export function AvatarCropModal({
 	show,
 	image,
@@ -48,8 +48,9 @@ export function AvatarCropModal({
 		<Modal
 			isOpen={show}
 			onClose={() => !isPending && onClose()}
-			title="برش تصویر"
+			title={t('setting.modal.avatarCrop.title')}
 			showCloseButton={!isPending}
+			closeLabel={t('ui.common.close')}
 		>
 			<div className="flex flex-col w-full h-96">
 				<div className="relative flex-1 overflow-hidden rounded-lg bg-surface-3">
@@ -67,9 +68,11 @@ export function AvatarCropModal({
 				</div>
 
 				<div className="flex items-center gap-3 px-2 mt-4">
-					<span className="text-xs text-fg-muted">بزرگنمایی</span>
+					<span className="text-xs text-fg-muted">
+						{t('setting.modal.avatarCrop.zoomLabel')}
+					</span>
 					<Slider
-						label="بزرگنمایی"
+						label={t('setting.modal.avatarCrop.zoomLabel')}
 						min={1}
 						max={3}
 						step={0.1}

@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 function toMinutes(time: string): number | null {
 	const match = /^(\d{1,2}):(\d{2})/.exec(time)
 	if (!match) return null
@@ -21,6 +22,9 @@ export function minutesUntil(time: string, now: Date): number {
 export function formatTimeLeft(minutes: number): string {
 	const hours = Math.floor(minutes / 60)
 	const rest = minutes % 60
-	if (hours === 0) return `${rest} دقیقه دیگه`
-	return `${hours}:${String(rest).padStart(2, '0')} دیگه`
+	if (hours === 0) return t('widgets.tools.religious.nextInMinutes', { p0: rest })
+	return t('widgets.tools.religious.nextInClock', {
+		p0: hours,
+		p1: String(rest).padStart(2, '0'),
+	})
 }

@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 
 const RING_RADIUS = 15.9155
@@ -61,7 +62,7 @@ export function BoardSummary({
 				</svg>
 				<span className="relative flex flex-col items-center leading-control">
 					<span className="text-base font-bold tabular-nums text-fg-strong">
-						{percent}٪
+						{t('widgets.shell.percent', { percent })}
 					</span>
 					{caption && <span className="text-3xs text-fg-faint">{caption}</span>}
 				</span>

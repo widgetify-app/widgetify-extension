@@ -1,3 +1,4 @@
+import type { MessageKey } from '@/common/i18n'
 import type { NotePriority, StickyColorTheme } from './types'
 
 export const STICKY_COLOR_MAP: Record<string, StickyColorTheme> = {
@@ -15,10 +16,22 @@ export const PRIORITY_BG_COLORS: Record<NotePriority, string> = {
 
 export const PRIORITY_OPTIONS: {
 	value: NotePriority
-	ariaLabel: string
+	ariaLabelKey: MessageKey
 	bgColor: string
 }[] = [
-	{ value: 'high', ariaLabel: 'اولویت مهم', bgColor: PRIORITY_BG_COLORS.high },
-	{ value: 'medium', ariaLabel: 'اولویت متوسط', bgColor: PRIORITY_BG_COLORS.medium },
-	{ value: 'low', ariaLabel: 'اولویت کم‌اهمیت', bgColor: PRIORITY_BG_COLORS.low },
+	{
+		value: 'high',
+		ariaLabelKey: 'widgets.notes.priority.high',
+		bgColor: PRIORITY_BG_COLORS.high,
+	},
+	{
+		value: 'medium',
+		ariaLabelKey: 'widgets.notes.priority.medium',
+		bgColor: PRIORITY_BG_COLORS.medium,
+	},
+	{
+		value: 'low',
+		ariaLabelKey: 'widgets.notes.priority.low',
+		bgColor: PRIORITY_BG_COLORS.low,
+	},
 ]

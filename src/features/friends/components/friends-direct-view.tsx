@@ -8,6 +8,7 @@ import {
 import { AvatarComponent, ConfirmationModal, Spinner } from '@/components/ui'
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll'
 import { Icon } from '@/icons'
+import { t } from '@/common/i18n'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
 import { useAuth } from '@/context/auth.context'
@@ -66,13 +67,18 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 
 	return (
 		<div className="flex flex-col h-full overflow-hidden text-right" dir="rtl">
-			<section aria-label="وضعیت‌ها" className="shrink-0 pb-2 border-b border-line">
+			<section
+				aria-label={t('friends.direct.statuses')}
+				className="shrink-0 pb-2 border-b border-line"
+			>
 				<ActiveFriendsHorizontal />
 			</section>
 
 			<div className="flex items-center justify-between px-2 pt-2.5 pb-1.5 shrink-0">
 				<div className="flex items-center gap-1.5">
-					<span className="text-xs font-medium text-fg-muted">دوستان</span>
+					<span className="text-xs font-medium text-fg-muted">
+						{t('friends.direct.friends')}
+					</span>
 				</div>
 
 				<div className="flex items-center gap-1.5">
@@ -84,7 +90,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 						type="button"
 						onClick={() => setIsAddFriendOpen(true)}
 						className="flex items-center justify-center w-8 h-8 transition-ui rounded-xl bg-fill hover:bg-fill-2 active:scale-90 cursor-pointer border border-line text-fg-muted hover:text-fg-strong"
-						aria-label="افزودن دوست"
+						aria-label={t('friends.direct.add')}
 					>
 						<Icon name="usersPlus" size={16} />
 					</button>
@@ -118,14 +124,14 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 							<Icon name="users" size={16} />
 						</div>
 						<p className="text-xs font-normal text-fg-muted">
-							هنوز دوستی نداری
+							{t('friends.direct.empty')}
 						</p>
 						<button
 							type="button"
 							onClick={() => setIsAddFriendOpen(true)}
 							className="mt-1.5 text-2xs font-medium text-brand hover:underline cursor-pointer"
 						>
-							اولین دوستت رو اضافه کن
+							{t('friends.direct.addFirst')}
 						</button>
 					</div>
 				) : (
@@ -169,7 +175,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 											setSelectedUserToDelete(friend)
 										}}
 										className="p-1 text-fg-faint hover:text-danger hover:bg-danger-fill rounded-lg transition-colors cursor-pointer"
-										aria-label="حذف دوست"
+										aria-label={t('friends.direct.remove')}
 									>
 										<Icon name="trash" size={12} />
 									</button>
@@ -200,7 +206,12 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 				isLoading={isRemoving}
 				onClose={() => setSelectedUserToDelete(null)}
 				onConfirm={() => handleRemoveFriend(selectedUserToDelete?.id || null)}
-				message={`"${selectedUserToDelete?.user.name}" از لیست دوستات حذف بشه؟`}
+				title={t('ui.common.areYouSure')}
+				message={t('friends.direct.removeConfirm', {
+					name: selectedUserToDelete?.user.name ?? '',
+				})}
+				confirmText={t('ui.common.confirm')}
+				cancelText={t('ui.common.cancel')}
 			/>
 		</div>
 	)

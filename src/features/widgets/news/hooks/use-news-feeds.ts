@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useGetRssFeeds } from '@/services/news/get-news.hook'
 import type { RssFeed } from '../types'
 import { useNewsSettings } from './use-news-settings'
@@ -19,7 +20,7 @@ export function useNewsFeeds() {
 
 	const entries = feeds.map((feed, index) => ({
 		feed,
-		label: feed.id === DEFAULT_FEED.id ? 'اخبار پیش‌فرض' : feed.name,
+		label: feed.id === DEFAULT_FEED.id ? t('widgets.news.defaultFeed') : feed.name,
 		result: results[index],
 	}))
 

@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { ConfigKey } from '@/common/constants/config-keys'
 import { cn } from '@/common/utils/cn'
 import { Tile } from '@/components/ui'
@@ -31,7 +32,14 @@ export function WallpaperTile({
 			bare
 			selected={selected}
 			onClick={onPick}
-			label={locked ? `${item.name}، ${faNumber(item.price)} ویج‌کوین` : item.name}
+			label={
+				locked
+					? t('market.wallpaperTile.priceAria', {
+							p0: item.name,
+							p1: faNumber(item.price),
+						})
+					: item.name
+			}
 			media={item.wallpaper && <WallpaperMedia wallpaper={item.wallpaper} />}
 			overlay={
 				<>
@@ -42,7 +50,11 @@ export function WallpaperTile({
 								canTry && 'group-hover:opacity-0'
 							)}
 						>
-							<Icon name="play" size={12} aria-label="متحرک" />
+							<Icon
+								name="play"
+								size={12}
+								aria-label={t('market.wallpaperTile.animatedBadge')}
+							/>
 						</span>
 					)}
 					{(caption || locked) && (
@@ -64,7 +76,11 @@ export function WallpaperTile({
 					)}
 					{state === 'active' && (
 						<span className="absolute z-10 grid rounded-full shadow-sm top-2 start-2 size-6 place-items-center bg-brand text-on-brand">
-							<Icon name="check" size={14} aria-label="تصویر زمینه‌ی فعلی" />
+							<Icon
+								name="check"
+								size={14}
+								aria-label={t('market.wallpaperTile.currentBadge')}
+							/>
 						</span>
 					)}
 				</>
@@ -74,11 +90,13 @@ export function WallpaperTile({
 					<button
 						type="button"
 						onClick={onTry}
-						aria-label={`امتحان ${item.name} روی صفحه`}
+						aria-label={t('market.wallpaperTile.tryOnAria', {
+							p0: item.name,
+						})}
 						className="inline-flex items-center gap-1 px-2 font-semibold rounded-lg cursor-pointer h-7 bg-scrim text-image-fg text-2xs backdrop-glass hover:bg-scrim-strong transition-ui focus-visible:focus-ring"
 					>
 						<Icon name="outlineEye" size={12} />
-						امتحان
+						{t('market.wallpaperTile.tryOn')}
 					</button>
 				)
 			}

@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import moment from 'jalali-moment'
 import { getContrastingTextColor } from '@/common/utils/color'
 import { cn } from '@/common/utils/cn'
@@ -19,17 +20,21 @@ export function HabitWeek({ habit, week, todayKey }: HabitWeekProps) {
 	const unit = getHabitUnitLabel(habit)
 
 	return (
-		<ul aria-label="این هفته" className="flex gap-1 shrink-0">
+		<ul aria-label={t('widgets.habit.item.thisWeek')} className="flex gap-1 shrink-0">
 			{habitWeek(habit, week, todayKey).map((day) => {
 				const progress = Math.min(day.value / target, 1)
 				const label = `${moment(day.key, 'YYYY-MM-DD').locale('fa').format('dddd jD jMMMM')}: ${
 					day.isFuture
-						? 'هنوز نرسیده'
+						? t('widgets.habit.item.notYet')
 						: day.isDone
-							? 'انجام شد'
+							? t('widgets.habit.detail.chart.done')
 							: day.value > 0
-								? `${day.value} از ${target} ${unit}`.trim()
-								: 'ثبت نشده'
+								? t('widgets.habit.item.progressOf', {
+										p0: day.value,
+										p1: target,
+										p2: unit,
+									}).trim()
+								: t('widgets.habit.item.unlogged')
 				}`
 
 				return (

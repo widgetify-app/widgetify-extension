@@ -1,4 +1,5 @@
 import type React from 'react'
+import { t } from '@/common/i18n'
 import { TransparentClockFace } from '../components/transparent-clock-face'
 
 interface TransparentClockPersianProps {
@@ -20,7 +21,10 @@ export const TransparentClockPersian: React.FC<TransparentClockPersianProps> = (
 			minutes={minutes}
 			weekday={time.toLocaleDateString('fa-IR', { weekday: 'long' })}
 			date={time.toLocaleDateString('fa-IR', { day: 'numeric', month: 'long' })}
-			readableTime={`ساعت ${hours}:${minutes}`}
+			readableTime={t('widgets.transparentClock.readable', {
+				hours,
+				minutes,
+			})}
 			isoDateTime={isoDateTime}
 			dateColor="primary"
 			className="pr-3"

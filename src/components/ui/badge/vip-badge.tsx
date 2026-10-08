@@ -24,7 +24,7 @@ export function VipBadge({
 	size = 'sm',
 	variant = 'solid',
 	iconOnly = false,
-	text = 'پرو',
+	text,
 	className,
 	...props
 }: VipBadgeProps) {
@@ -44,7 +44,7 @@ export function VipBadge({
 			{...props}
 		>
 			<Icon name="diamond" size={iconSize} />
-			{!iconOnly && <span>{text}</span>}
+			{!iconOnly && text ? <span>{text}</span> : null}
 		</span>
 	)
 }

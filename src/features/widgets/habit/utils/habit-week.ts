@@ -1,6 +1,15 @@
+import { t } from '@/common/i18n'
 import type { Habit } from '@/services/habit/habit.interface'
 
-const WEEKDAY_INITIALS = ['ی', 'د', 'س', 'چ', 'پ', 'ج', 'ش']
+const WEEKDAY_INITIALS = [
+	t('ui.date.weekday.sun'),
+	t('ui.date.weekday.mon'),
+	t('ui.date.weekday.tue'),
+	t('ui.date.weekday.wed'),
+	t('ui.date.weekday.thu'),
+	t('ui.date.weekday.fri'),
+	t('ui.date.weekday.sat'),
+]
 const SATURDAY = 6
 
 interface HabitWeekDay {

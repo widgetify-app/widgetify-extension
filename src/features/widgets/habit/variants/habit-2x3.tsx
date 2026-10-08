@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import type { WidgetifyDate } from '@/common/utils/date-events'
 import { useGeneralSetting } from '@/context/general-setting.context'
@@ -33,7 +34,10 @@ export function Habit2x3({ actions, today }: Habit2x3Props) {
 			))}
 		</div>
 	) : isError ? (
-		<WidgetError message="نتونستیم عادت‌ها رو بیاریم" onRetry={onRefresh} />
+		<WidgetError
+			message={t('widgets.habit.variant2x1.loadError')}
+			onRetry={onRefresh}
+		/>
 	) : habits.length === 0 ? (
 		<HabitEmpty onAdd={openAddHabit} />
 	) : (
@@ -58,7 +62,7 @@ export function Habit2x3({ actions, today }: Habit2x3Props) {
 
 	return (
 		<section
-			aria-label="عادت‌ها"
+			aria-label={t('widgets.habit.widget.title')}
 			aria-busy={isLoading}
 			className="flex-1 min-h-0 overflow-y-auto scrollbar-none"
 		>

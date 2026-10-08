@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { TextInput } from '@/components/ui'
 import { Button, Spinner } from '@/components/ui'
@@ -67,7 +68,7 @@ export function ExpandableTodoInput({
 			if (editTodo.date) {
 				const parsedDate = jalaliMoment(
 					editTodo.date,
-					'dddd، jD jMMMM jYYYY'
+					t('widgets.todos.input.dateFormat')
 				).locale('fa')
 				if (!parsedDate.isValid()) {
 					setSelectedDate(
@@ -215,8 +216,8 @@ export function ExpandableTodoInput({
 					ref={inputRef}
 					defaultValue=""
 					onChange={handleTodoTextChange}
-					placeholder="تسک جدید"
-					aria-label="عنوان تسک جدید"
+					placeholder={t('widgets.todos.input.newTask')}
+					aria-label={t('widgets.todos.input.titleAria')}
 					variant="bare"
 					className={cn(
 						'text-xs',
@@ -232,7 +233,7 @@ export function ExpandableTodoInput({
 					<textarea
 						ref={notesRef}
 						onChange={(e) => handleNotesChange(e.target.value)}
-						placeholder="توضیح یا لینک، اگه لازمه"
+						placeholder={t('widgets.todos.input.notesPlaceholder')}
 						rows={2}
 						className="w-full p-0 leading-relaxed bg-transparent outline-none resize-none text-2xs text-fg-muted placeholder:text-fg-faint"
 					/>
@@ -268,7 +269,7 @@ export function ExpandableTodoInput({
 								variant="ghost"
 								rounded="lg"
 							>
-								انصراف
+								{t('ui.common.cancel')}
 							</Button>
 						)}
 						<Button
@@ -280,7 +281,9 @@ export function ExpandableTodoInput({
 							color="brand"
 							rounded="lg"
 						>
-							{isEdit ? 'ذخیره' : 'افزودن'}
+							{isEdit
+								? t('widgets.todos.input.save')
+								: t('widgets.todos.input.add')}
 						</Button>
 					</div>
 				</>

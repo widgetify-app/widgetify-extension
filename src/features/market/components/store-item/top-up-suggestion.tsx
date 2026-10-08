@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { ConfigKey } from '@/common/constants/config-keys'
 import { Button } from '@/components/ui'
 import { useGetCoinPackages } from '@/services/market/market-coins.hook'
@@ -18,7 +19,7 @@ export function TopUpSuggestion({ shortfall, onSeeAll }: TopUpSuggestionProps) {
 	return (
 		<div className="p-3 space-y-3 border rounded-2xl border-surface-3 bg-surface-2">
 			<p className="font-semibold text-2xs text-fg-muted">
-				ارزون‌ترین بسته‌ای که کسری رو پر می‌کنه
+				{t('market.topUp.cheapestHint')}
 			</p>
 			<div className="flex items-center gap-3">
 				<span className="grid rounded-xl size-11 place-items-center bg-warning-fill shrink-0">
@@ -26,7 +27,7 @@ export function TopUpSuggestion({ shortfall, onSeeAll }: TopUpSuggestionProps) {
 				</span>
 				<div className="flex-1 min-w-0">
 					<p className="text-sm font-bold text-fg-strong">
-						{faNumber(pkg.coin)} ویج‌کوین
+						{faNumber(pkg.coin)} {t('market.coin.amountLabel')}
 					</p>
 					<p className="truncate text-2xs text-fg-muted">{pkg.title}</p>
 				</div>
@@ -35,9 +36,9 @@ export function TopUpSuggestion({ shortfall, onSeeAll }: TopUpSuggestionProps) {
 					size="sm"
 					onClick={() => checkout(pkg)}
 					loading={payingPackageId === pkg.id}
-					loadingText="انتقال به درگاه..."
+					loadingText={t('market.topUp.redirecting')}
 				>
-					{faNumber(pkg.price)} تومان
+					{faNumber(pkg.price)} {t('market.topUp.currencyLabel')}
 				</Button>
 			</div>
 			<button
@@ -45,7 +46,7 @@ export function TopUpSuggestion({ shortfall, onSeeAll }: TopUpSuggestionProps) {
 				onClick={onSeeAll}
 				className="font-semibold rounded-sm cursor-pointer text-2xs text-brand hover:underline focus-visible:focus-ring"
 			>
-				بسته‌های دیگه رو ببین
+				{t('market.topUp.seeOtherPackages')}
 			</button>
 		</div>
 	)

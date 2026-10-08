@@ -12,6 +12,7 @@ import { WeatherCompactRow } from './variants/weather-2x1'
 import { Weather2x2 } from './variants/weather-2x2'
 import { Weather2x3 } from './variants/weather-2x3'
 import { WidgetError } from '@/features/widgets/components/widget-error'
+import { t } from '@/common/i18n'
 
 interface WeatherLayoutProps {
 	size?: WidgetSize
@@ -23,7 +24,9 @@ export function WeatherLayout({ size = { w: 2, h: 3 } }: WeatherLayoutProps = {}
 
 	const fetchedWeather = data || null
 	const cityName = cleanCityName(fetchedWeather?.city?.fa)
-	useWidgetSettingsSummary(cityName ? `شهر: ${cityName}` : null)
+	useWidgetSettingsSummary(
+		cityName ? t('widgets.weather.citySummary', { city: cityName }) : null
+	)
 
 	const isSquare = size.w === 1 && size.h === 1
 	const frame = isSquare
@@ -36,13 +39,13 @@ export function WeatherLayout({ size = { w: 2, h: 3 } }: WeatherLayoutProps = {}
 		return (
 			<WidgetContainer contentClassName={frame}>
 				{isSquare ? (
-					<WidgetCenteredHeader title="آب و هوا" />
+					<WidgetCenteredHeader title={t('widgets.weather.title')} />
 				) : (
-					<WidgetHeader title="آب و هوا" />
+					<WidgetHeader title={t('widgets.weather.title')} />
 				)}
 				<div className="flex-1 min-h-0">
 					<WidgetError
-						message="نتونستیم آب و هوا رو بیاریم"
+						message={t('widgets.weather.loadError')}
 						compact={size.h === 1}
 						onRetry={() => {
 							Analytics.event('weather_retry_clicked')

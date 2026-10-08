@@ -2,6 +2,7 @@ import { callEvent } from '@/common/utils/call-event'
 import { AvatarComponent, DropdownDivider, DropdownItem, VipBadge } from '@/components/ui'
 import { Icon } from '@/icons'
 import type { UserProfile } from '@/services/user/user-service.hook'
+import { t } from '@/common/i18n'
 
 interface ProfileDropdownMenuProps {
 	user: UserProfile | null
@@ -47,12 +48,14 @@ export function ProfileDropdownMenu({
 					<div className="flex flex-col min-w-0 flex-1 justify-center">
 						<div className="flex items-center gap-1.5 leading-tight">
 							<span className="text-xs font-bold text-fg truncate">
-								{user?.name || user?.username || 'کاربر ویجتیفای'}
+								{user?.name ||
+									user?.username ||
+									t('navbar.profile.defaultName')}
 							</span>
 							{isVip && <VipBadge size="xs" variant="subtle" iconOnly />}
 						</div>
 						<span className="text-2xs text-fg-muted truncate leading-body">
-							مشاهده پروفایل
+							{t('navbar.profile.view')}
 						</span>
 					</div>
 				</button>
@@ -66,9 +69,11 @@ export function ProfileDropdownMenu({
 						<Icon name="user" size={16} />
 					</div>
 					<div className="flex flex-col flex-1">
-						<span className="text-xs font-bold text-fg">ورود یا ثبت‌نام</span>
+						<span className="text-xs font-bold text-fg">
+							{t('navbar.profile.login')}
+						</span>
 						<span className="text-3xs text-fg-muted">
-							همگام‌سازی و دسترسی به امکانات
+							{t('navbar.profile.loginHint')}
 						</span>
 					</div>
 				</button>
@@ -77,7 +82,7 @@ export function ProfileDropdownMenu({
 			<div className="py-1">
 				<DropdownItem
 					icon={<Icon name="settings" size={14} />}
-					label="تنظیمات"
+					label={t('navbar.profile.settings')}
 					onClick={() =>
 						handleAction(() => callEvent('openSettings', 'general'))
 					}
@@ -85,14 +90,16 @@ export function ProfileDropdownMenu({
 
 				<DropdownItem
 					icon={<Icon name="shoppingBag" size={14} />}
-					label="فروشگاه"
+					label={t('navbar.profile.market')}
 					onClick={() => handleAction(() => callEvent('openMarketModal'))}
 				/>
 
 				<DropdownItem
 					icon={<Icon name="diamond" size={14} />}
-					label="ویجتیفای پرو"
-					badge={!isVip ? <VipBadge size="xs" /> : undefined}
+					label={t('navbar.profile.pro')}
+					badge={
+						!isVip ? <VipBadge size="xs" text={t('ui.vip.pro')} /> : undefined
+					}
 					onClick={() => handleAction(() => callEvent('openSettings', 'vip'))}
 				/>
 			</div>
@@ -103,7 +110,7 @@ export function ProfileDropdownMenu({
 					<DropdownItem
 						variant="danger"
 						icon={<Icon name="logOut" size={14} />}
-						label="خروج از حساب"
+						label={t('navbar.profile.logout')}
 						onClick={() => handleAction(onRequestLogout)}
 					/>
 				</>

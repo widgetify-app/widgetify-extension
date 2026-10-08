@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { connectPlatform, disconnectPlatform } from '@/services/user/platform-connections'
@@ -37,16 +38,16 @@ export function Connections() {
 
 	const handleConnectionClick = (platformId: string) => {
 		if (!profile?.verified) {
-			return showToast('اول حسابت رو تایید کن', 'error')
+			return showToast(t('setting.connections.verifyRequired'), 'error')
 		}
 
 		const platform = platforms.find((p) => p.id === platformId)
 		if (!platform) {
-			return showToast('این پلتفرم فعلاً غیرفعاله', 'error')
+			return showToast(t('setting.connections.platformDisabled'), 'error')
 		}
 
 		if (!platform.isActive && !platform.connected) {
-			return showToast('این پلتفرم هنوز آماده نیست', 'error')
+			return showToast(t('setting.connections.platformNotReady'), 'error')
 		}
 
 		setSelectedPlatform(platform)
@@ -73,7 +74,12 @@ export function Connections() {
 					)
 				)
 
-				showToast(`اتصال به ${selectedPlatform.name} قطع شد`, 'success')
+				showToast(
+					t('setting.connections.disconnectedToast', {
+						p0: selectedPlatform.name,
+					}),
+					'success'
+				)
 			} else {
 				const { url } = await connectPlatform(selectedPlatform.id)
 
@@ -87,7 +93,9 @@ export function Connections() {
 			)
 
 			showToast(
-				`نتونستیم به ${selectedPlatform.name} وصل بشیم، دوباره امتحان کن`,
+				t('setting.connections.connectError', {
+					p0: selectedPlatform.name,
+				}),
 				'error'
 			)
 		}
@@ -132,7 +140,9 @@ export function Connections() {
 									<p
 										className={`text-3xs  font-medium truncate ${platform.connected ? 'text-success' : 'text-fg-muted'}`}
 									>
-										{platform.connected ? 'وصله' : 'وصل نیست'}
+										{platform.connected
+											? t('setting.connections.connectedStatus')
+											: t('setting.connections.disconnectedStatus')}
 									</p>
 								</div>
 							</div>
@@ -148,9 +158,9 @@ export function Connections() {
 								{platform.isLoading ? (
 									<Spinner size="xs" tone="current" />
 								) : platform.connected ? (
-									'قطع'
+									t('setting.connections.disconnectAction')
 								) : (
-									'اتصال'
+									t('setting.connections.connectAction')
 								)}
 							</div>
 						</div>

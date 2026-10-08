@@ -4,6 +4,7 @@ import { Icon } from '@/icons'
 import { ConfirmationModal } from '@/components/ui'
 import Analytics from '@/analytics'
 import { NavIconButton } from './nav-icon-button'
+import { t } from '@/common/i18n'
 
 export function BlurModeButton() {
 	const { blurMode, updateSetting } = useGeneralSetting()
@@ -31,7 +32,7 @@ export function BlurModeButton() {
 		<>
 			<NavIconButton
 				icon={blurMode ? 'outlineEye' : 'outlineEyeSlash'}
-				label="حالت مخفی"
+				label={t('navbar.blur.title')}
 				pressed={blurMode}
 				onClick={handleBlurModeToggle}
 			/>
@@ -41,17 +42,11 @@ export function BlurModeButton() {
 				onClose={() => setShowConfirm(false)}
 				onConfirm={handleConfirm}
 				variant="brand"
-				title="حالت مخفی فعال میشه!"
+				title={t('navbar.blur.confirmTitle')}
 				icon={<Icon name="userSecret" />}
-				message={
-					<div>
-						با فعال کردن «حالت مخفی»، اطلاعات حساس، وظایف و محتوای ویجت‌ها
-						به‌صورت خودکار تار میشن تا اگر کسی از کنار صفحه یا پشت سرت نگاه
-						کرد، نتونه چیزی بخونه 🔒
-					</div>
-				}
-				confirmText="بریم تو حالت مخفی"
-				cancelText="نه فعلا"
+				message={<div>{t('navbar.blur.confirmBody')}</div>}
+				confirmText={t('navbar.blur.confirm')}
+				cancelText={t('navbar.blur.cancel')}
 			/>
 		</>
 	)

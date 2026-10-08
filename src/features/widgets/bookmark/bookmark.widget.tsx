@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import {
 	closestCenter,
 	DndContext,
@@ -134,7 +135,7 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 				})),
 			})
 		} catch {
-			showToast('نتونستیم ترتیب بوکمارک‌ها رو ذخیره کنیم', 'error')
+			showToast(t('widgets.bookmark.widget.reorderError'), 'error')
 		}
 
 		Analytics.event('bookmark_reorder')
@@ -211,7 +212,7 @@ export function BookmarksList({ size, instanceId }: BookmarksListProps = {}) {
 				<AuthRequiredModal
 					isOpen={true}
 					onClose={() => setShowAddBookmarkModal(false)}
-					message="برای افزودن بوکمارک جدید اول وارد حسابت شو"
+					message={t('widgets.bookmark.widget.addNeedAuth')}
 				/>
 			) : (
 				showAddBookmarkModal && (

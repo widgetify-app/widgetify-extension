@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useRef, useState } from 'react'
 import moment from 'jalali-moment'
 import {
@@ -75,7 +76,11 @@ export const ProfileHeader = ({
 				<div className="absolute z-10 top-4 right-4">
 					<Tooltip
 						content={
-							vipExpiryDate ? `اعتبار تا ${vipExpiryDate}` : 'اشتراک پرو'
+							vipExpiryDate
+								? t('setting.profileHeader.validUntil', {
+										p0: vipExpiryDate,
+									})
+								: t('setting.profileHeader.proSubscription')
 						}
 					>
 						<Button
@@ -88,7 +93,9 @@ export const ProfileHeader = ({
 							className="px-2.5 font-bold"
 						>
 							<Icon name="diamond" size={12} />
-							<span>اعتبار پرو: {vipRemaining}</span>
+							<span>
+								{t('setting.profileHeader.proCreditLabel')} {vipRemaining}
+							</span>
 						</Button>
 					</Tooltip>
 				</div>
@@ -104,14 +111,14 @@ export const ProfileHeader = ({
 						className="px-2.5 font-bold"
 					>
 						<Icon name="diamond" size={12} />
-						<span>اشتراک پرو</span>
+						<span>{t('setting.profileHeader.proSubscription')}</span>
 					</Button>
 				</div>
 			) : null}
 
 			<div className="absolute z-10 text-xs font-medium bottom-4 left-4 opacity-70">
 				<span>
-					شروعِ ماجرا از{' '}
+					{t('setting.profileHeader.joinedPrefix')}{' '}
 					{moment(user?.joinedAt).locale('fa').format('jMMMM jYYYY')}
 				</span>
 			</div>
@@ -121,7 +128,7 @@ export const ProfileHeader = ({
 					<button
 						ref={avatarAnchorRef}
 						type="button"
-						aria-label="تغییر تصویر پروفایل"
+						aria-label={t('setting.profileHeader.changeAvatar')}
 						aria-haspopup="menu"
 						aria-expanded={menuOpen}
 						onClick={() => setMenuOpen((prev) => !prev)}
@@ -129,7 +136,9 @@ export const ProfileHeader = ({
 					>
 						<AvatarComponent
 							url={user?.avatar || ''}
-							placeholder={user?.name || 'کاربر'}
+							placeholder={
+								user?.name || t('setting.profileHeader.userFallback')
+							}
 							size="xl"
 							className="w-16 h-16 text-2xl transition-ui ring-4 ring-brand-fill-2"
 						/>
@@ -150,7 +159,7 @@ export const ProfileHeader = ({
 					>
 						<PopoverMenuItem
 							icon={<Icon name="uploadImage" size={14} />}
-							label="بارگذاری از دستگاه"
+							label={t('setting.profileHeader.uploadFromDevice')}
 							onClick={() => {
 								setMenuOpen(false)
 								fileInputRef.current?.click()
@@ -158,7 +167,7 @@ export const ProfileHeader = ({
 						/>
 						<PopoverMenuItem
 							icon={<Icon name="image" size={14} />}
-							label="انتخاب از گالری"
+							label={t('setting.profileHeader.pickFromGallery')}
 							onClick={() => {
 								setMenuOpen(false)
 								onSelectFromGallery()
@@ -202,7 +211,7 @@ export const ProfileHeader = ({
 
 					<div className="absolute left-0 right-0 z-40 flex flex-col items-center bottom-2">
 						<h2 className="text-xl font-bold text-center text-fg">
-							{user?.name || 'کاربر'}
+							{user?.name || t('setting.profileHeader.userFallback')}
 						</h2>
 						<p className="text-sm opacity-60 text-center mt-0.5" dir="ltr">
 							@{user?.username || '-'}

@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { Button } from '@/components/ui'
 import type { WidgetSize } from '@/features/widgets/utils/layout-engine/types'
 import { Icon } from '@/icons'
@@ -49,7 +50,7 @@ function RemoveFromPageButton({ onRemove }: { onRemove: () => void }) {
 			variant={'outline'}
 			color={'danger'}
 		>
-			<span>حذف از صفحه</span>
+			<span>{t('widgets.catalog.removeFromPage')}</span>
 		</Button>
 	)
 }
@@ -73,8 +74,8 @@ export function AddWidgetActions({
 			<ProUpgradeButton
 				label={
 					isEditMode
-						? 'ارتقا به پرو برای ذخیره این مدل'
-						: 'ارتقا به پرو برای فعال‌سازی'
+						? t('widgets.catalog.upgradeToSave')
+						: t('widgets.catalog.upgradeToEnable')
 				}
 				onUpgrade={onUpgrade}
 			/>
@@ -92,7 +93,7 @@ export function AddWidgetActions({
 				loading={isLoading}
 				disabled={isLoading}
 			>
-				<span>ذخیره تغییرات</span>
+				<span>{t('widgets.catalog.saveChanges')}</span>
 			</Button>
 		)
 	}
@@ -103,8 +104,8 @@ export function AddWidgetActions({
 				<ProUpgradeButton
 					label={
 						isDuplicateRestricted
-							? 'تکرار ویجت مخصوص کاربران پرو'
-							: 'تکمیل ظرفیت ویجت‌ها (ارتقا برای نامحدود)'
+							? t('widgets.catalog.duplicateProOnly')
+							: t('widgets.catalog.limitReached')
 					}
 					onUpgrade={onUpgrade}
 				/>
@@ -116,7 +117,7 @@ export function AddWidgetActions({
 	if (isLimitReached) {
 		return (
 			<ProUpgradeButton
-				label="تکمیل ظرفیت ویجت‌ها (ارتقا برای نامحدود)"
+				label={t('widgets.catalog.limitReached')}
 				onUpgrade={onUpgrade}
 			/>
 		)
@@ -135,7 +136,10 @@ export function AddWidgetActions({
 			>
 				<span>+</span>
 				<span>
-					افزودن ویجت با اندازه {selectedSize.w}×{selectedSize.h}
+					{t('widgets.catalog.addWithSize', {
+						w: selectedSize.w,
+						h: selectedSize.h,
+					})}
 				</span>
 			</Button>
 		)
@@ -156,7 +160,7 @@ export function AddWidgetActions({
 			disabled={isLoading}
 		>
 			<span>+</span>
-			<span>افزودن به صفحه</span>
+			<span>{t('widgets.catalog.addToPage')}</span>
 		</Button>
 	)
 }

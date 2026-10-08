@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { useAuth } from '@/context/auth.context'
 import type { EngineMeta } from '@/services/trends/get-trends.hook'
@@ -175,20 +176,24 @@ function SearchFullContent() {
 							updateHistoryPosition()
 						}}
 						className={SEARCH_INPUT_CLASS}
-						placeholder={`جستجو در ${selectedEngine.label}`}
-						aria-label={`جستجو در ${selectedEngine.label}`}
+						placeholder={t('widgets.search.placeholderIn', {
+							engine: selectedEngine.label,
+						})}
+						aria-label={t('widgets.search.ariaIn', {
+							engine: selectedEngine.label,
+						})}
 						autoComplete="off"
 					/>
 
 					{searchQuery ? (
 						<>
 							<SearchBoxButton
-								label="پاک کردن متن"
+								label={t('widgets.search.clear')}
 								icon="close"
 								onClick={handleClearSearch}
 							/>
 							<SearchBoxButton
-								label="جستجو"
+								label={t('widgets.search.submit')}
 								icon="search"
 								onClick={handleSearchButtonClick}
 								isActive

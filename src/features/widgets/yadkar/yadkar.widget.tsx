@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { WidgetHeaderTabs } from '../components/widget-header'
 import { HabitsContent } from '../habit/habit.widget'
@@ -36,7 +37,7 @@ export function YadkarWidget({ size }: YadkarWidgetProps = {}) {
 
 	const tabs = (
 		<WidgetHeaderTabs
-			label="یادکار"
+			label={t('widgets.yadkar.label')}
 			tabs={YADKAR_TAB_LIST}
 			activeTab={tab}
 			onChange={onChangeTab}

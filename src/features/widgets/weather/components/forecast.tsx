@@ -2,6 +2,7 @@ import moment from 'jalali-moment'
 import type { FetchedForecast } from '@/services/weather/weather.interface'
 import type { TemperatureUnit } from '../types'
 import { Temperature, WeatherIcon } from './weather-reading'
+import { t } from '@/common/i18n'
 
 interface ForecastProps {
 	forecast: FetchedForecast[]
@@ -14,7 +15,7 @@ export function Forecast({ forecast, temperatureUnit, iconClassName }: ForecastP
 
 	return (
 		<ul
-			aria-label="پیش‌بینی ساعتی"
+			aria-label={t('widgets.weather.hourlyForecast')}
 			className="grid mt-auto text-center"
 			style={{ gridTemplateColumns: `repeat(${forecast.length}, minmax(0, 1fr))` }}
 		>

@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useState } from 'react'
 import Analytics from '@/analytics'
 import { showToast } from '@/common/toast'
@@ -26,10 +27,7 @@ export function useBuyItem() {
 		const [error] = await safeAwait(purchase({ itemId: item.id }))
 		if (error) {
 			Analytics.event('market_item_purchase_failed')
-			showToast(
-				(translateError(error) as string) || 'خرید انجام نشد، دوباره امتحان کن',
-				'error'
-			)
+			showToast((translateError(error) as string) || t('market.buy.error'), 'error')
 			return false
 		}
 		Analytics.event('market_item_purchased')

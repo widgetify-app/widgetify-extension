@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { t } from '@/common/i18n'
 import { callEvent } from '@/common/utils/call-event'
 import {
 	WidgetHeader,
@@ -27,12 +28,12 @@ export function WigiArz2x3({ currencies, onReorder, instanceId, tabs }: WigiArz2
 	return (
 		<>
 			<WidgetHeader
-				title={tabs ?? 'ویجی ارز'}
+				title={tabs ?? t('widgets.wigiArz.title')}
 				badge={
 					isRefreshing &&
 					updatedAt > 0 && (
 						<span className="font-medium text-3xs text-fg-faint whitespace-nowrap">
-							به‌روز می‌شه…
+							{t('widgets.wigiArz.updating')}
 						</span>
 					)
 				}
@@ -40,7 +41,7 @@ export function WigiArz2x3({ currencies, onReorder, instanceId, tabs }: WigiArz2
 				actions={
 					!tabs && (
 						<WidgetHeaderButton
-							label="افزودن ارز"
+							label={t('widgets.wigiArz.add')}
 							icon="plus"
 							onClick={() =>
 								callEvent('openWidgetsSettings', {

@@ -1,4 +1,5 @@
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { WidgetEmpty } from '@/features/widgets/components/widget-empty'
 import type { NewsFeedEntry } from '../hooks/use-news-feeds'
 import { headlineKey, mergeHeadlines } from '../utils/merge-headlines'
@@ -40,15 +41,15 @@ export const NewsContainer = ({ entries, now }: NewsContainerProps) => {
 		) : (
 			<WidgetEmpty
 				art="outlineNewspaper"
-				title="فعلاً خبر تازه‌ای نیست"
-				description="یه کم دیگه دوباره سر بزن"
+				title={t('widgets.news.emptyTitle')}
+				description={t('widgets.news.emptyDescription')}
 			/>
 		)
 	}
 
 	return (
 		<ul
-			aria-label="اخبار"
+			aria-label={t('widgets.news.aria')}
 			aria-busy={isLoading}
 			className="flex flex-col flex-1 min-h-0 gap-0.5 overflow-y-auto scrollbar-none"
 		>

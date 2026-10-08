@@ -1,5 +1,6 @@
 import { createPortal } from 'react-dom'
 import { Icon } from '@/icons'
+import { t } from '@/common/i18n'
 
 interface CanvasEditToolbarProps {
 	onAddWidget: () => void
@@ -19,7 +20,7 @@ export function CanvasEditToolbar({
 					<span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand opacity-75" />
 				</span>
 				<span className="text-xs font-bold text-fg whitespace-nowrap">
-					ویرایش چیدمان
+					{t('widgets.canvas.editLayout')}
 				</span>
 			</div>
 
@@ -30,7 +31,7 @@ export function CanvasEditToolbar({
 					className="px-3 py-1.5 text-xs font-bold rounded-xl bg-brand text-on-brand hover:bg-brand-hover active:scale-95 transition-ui flex items-center gap-1 cursor-pointer shadow-sm whitespace-nowrap"
 				>
 					<span>+</span>
-					<span>افزودن ویجت</span>
+					<span>{t('widgets.canvas.addWidget')}</span>
 				</button>
 
 				{onOpenPresets && (
@@ -40,7 +41,7 @@ export function CanvasEditToolbar({
 						className="px-3 py-1.5 text-xs font-bold rounded-xl bg-surface-3 hover:bg-fill-2 text-fg active:scale-95 transition-ui flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
 					>
 						<Icon name="squares2X2" size={12} />
-						<span>چیدمان‌های آماده</span>
+						<span>{t('widgets.canvas.presets')}</span>
 					</button>
 				)}
 
@@ -50,7 +51,7 @@ export function CanvasEditToolbar({
 					className="px-3 py-1.5 text-xs font-medium rounded-xl bg-surface-3 hover:bg-fill-2 text-fg active:scale-95 transition-ui flex items-center gap-1 cursor-pointer whitespace-nowrap"
 				>
 					<span>✓</span>
-					<span>پایان</span>
+					<span>{t('widgets.canvas.done')}</span>
 				</button>
 			</div>
 		</div>,

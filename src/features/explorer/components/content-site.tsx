@@ -1,4 +1,5 @@
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { getContrastingTextColor } from '@/common/utils/color'
 import { NewBadge } from '@/components/ui'
 import { Icon } from '@/icons'
@@ -68,7 +69,7 @@ export function RenderContentSite({ link, onOpenPromoModal }: SiteProp) {
 
 			<div className="flex-1 min-w-0 pr-1 flex flex-col justify-center">
 				<span className="text-xs font-bold text-fg group-hover:text-brand transition-colors truncate tracking-wide">
-					{link.name || 'بدون نام'}
+					{link.name || t('explorer.site.unnamed')}
 				</span>
 				{link.description && (
 					<span className="text-3xs text-fg-faint truncate mt-0.5">

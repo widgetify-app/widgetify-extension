@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { Icon } from '@/icons'
 import type { FolderPathItem } from '../types'
 
@@ -25,7 +26,7 @@ export function FolderPath({ folderPath, onNavigate, className }: FolderPathProp
 						}
 						aria-label="Go to root folder"
 					>
-						بازگشت
+						{t('widgets.bookmark.folder.back')}
 					</button>
 				</li>
 

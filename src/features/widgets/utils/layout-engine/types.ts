@@ -58,6 +58,7 @@ export interface GridBreakpoint {
 	gap: number
 }
 
+import type { MessageKey } from '@/common/i18n'
 import type { WidgetTabKeys } from '@/features/widgets/types'
 import type { IconName } from '@/icons'
 
@@ -71,7 +72,7 @@ export type WidgetCategory =
 
 export interface WidgetVariantOption {
 	id: string
-	label: string
+	label: MessageKey
 	size: WidgetSize
 	isVipOnly?: boolean
 	meta?: Record<string, any>
@@ -79,15 +80,15 @@ export interface WidgetVariantOption {
 
 export interface WidgetDefinition {
 	id: WidgetKeys
-	label: string
-	menuLabel?: string
+	label: MessageKey
+	menuLabel?: MessageKey
 	emoji: string
 	icon: IconName
 	category?: WidgetCategory
 	isVipOnly?: boolean
 	allowedSizes: WidgetSize[]
 	defaultSize: WidgetSize
-	canResize?: boolean // Allows manual resizing from the context menu even when the widget defines variants.
+	canResize?: boolean
 	variants?: WidgetVariantOption[]
 	settingsTab?: WidgetTabKeys
 	hasSettings?: (meta: unknown) => boolean

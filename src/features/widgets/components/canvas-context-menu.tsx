@@ -1,5 +1,6 @@
 import { Icon } from '@/icons'
 import { PopoverMenu, PopoverMenuItem, PopoverMenuDivider } from '@/components/ui'
+import { t } from '@/common/i18n'
 
 interface CanvasContextMenuProps {
 	x: number
@@ -30,7 +31,11 @@ export function CanvasContextMenu({
 		<PopoverMenu isOpen={true} onClose={onClose} position={{ x, y }} width={208}>
 			<PopoverMenuItem
 				icon={<Icon name="edit" size={14} />}
-				label={canvasMode === 'edit' ? 'پایان ویرایش' : 'ویرایش ویجت‌ها'}
+				label={
+					canvasMode === 'edit'
+						? t('widgets.canvas.editEnd')
+						: t('widgets.canvas.editWidgets')
+				}
 				onClick={() => {
 					onToggleEditMode()
 					onClose()
@@ -39,7 +44,7 @@ export function CanvasContextMenu({
 
 			<PopoverMenuItem
 				icon={<Icon name="plus" size={14} />}
-				label="افزودن ویجت"
+				label={t('widgets.canvas.addWidget')}
 				onClick={() => {
 					onOpenAddWidget()
 					onClose()
@@ -49,7 +54,7 @@ export function CanvasContextMenu({
 			{onOpenPresets && (
 				<PopoverMenuItem
 					icon={<Icon name="layout" size={14} />}
-					label="چیدمان‌های آماده"
+					label={t('widgets.canvas.presets')}
 					onClick={() => {
 						onOpenPresets()
 						onClose()
@@ -59,7 +64,7 @@ export function CanvasContextMenu({
 			<PopoverMenuDivider />
 			<PopoverMenuItem
 				icon={<Icon name="brush" size={14} />}
-				label="تنظیمات ظاهری"
+				label={t('widgets.canvas.appearanceSettings')}
 				onClick={() => {
 					onOpenAppearanceSettings()
 					onClose()
@@ -68,7 +73,7 @@ export function CanvasContextMenu({
 
 			<PopoverMenuItem
 				icon={<Icon name="wallpapers" size={14} />}
-				label="تصویر‌ زمینه‌ها"
+				label={t('widgets.canvas.wallpapers')}
 				onClick={() => {
 					onOpenWallpaperSettings()
 					onClose()
@@ -80,7 +85,7 @@ export function CanvasContextMenu({
 					<PopoverMenuDivider />
 					<PopoverMenuItem
 						icon={<Icon name="help" size={14} />}
-						label="راهنمای ویجت‌ها"
+						label={t('widgets.canvas.widgetsHelp')}
 						onClick={() => {
 							onOpenHelp()
 							onClose()

@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useEffect, useRef, useState } from 'react'
 import Analytics from '@/analytics'
 import { listenEvent } from '@/common/utils/call-event'
@@ -115,7 +116,7 @@ export function MarketContainer({
 
 					{detailItem && (
 						<aside
-							aria-label="جزئیات آیتم"
+							aria-label={t('market.page.itemDetailTitle')}
 							className="overflow-y-auto shrink-0 w-76 ps-4 border-s border-surface-3 max-lg:flex-1 max-lg:ps-0 max-lg:border-0"
 						>
 							<div className="max-lg:max-w-md max-lg:mx-auto">

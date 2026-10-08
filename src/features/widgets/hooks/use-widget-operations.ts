@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 import type React from 'react'
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { playNativeToastSound, showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
 import { callEvent } from '@/common/utils/call-event'
@@ -127,10 +128,7 @@ export function useWidgetOperations({
 			})
 
 			if (!result) {
-				showToast(
-					'برای این اندازه جا نیست! ویجت‌های کناری رو جابه‌جا کن تا جا باز بشه',
-					'error'
-				)
+				showToast(t('widgets.ops.noSpaceForSize'), 'error')
 				return false
 			}
 
@@ -197,10 +195,7 @@ export function useWidgetOperations({
 			})
 
 			if (!result) {
-				showToast(
-					'برای این مدل جا نیست! ویجت‌های کناری رو جابه‌جا کن یا مدل کوچک‌تری انتخاب کن',
-					'error'
-				)
+				showToast(t('widgets.ops.noSpaceForVariant'), 'error')
 				return false
 			}
 
@@ -305,7 +300,7 @@ export function useWidgetOperations({
 
 			const def = WIDGET_DEFINITIONS[original.id]
 			if (!def?.canDuplicate) {
-				showToast('امکان تکرار این ویجت وجود نداره', 'error')
+				showToast(t('widgets.ops.cannotDuplicate'), 'error')
 				return false
 			}
 

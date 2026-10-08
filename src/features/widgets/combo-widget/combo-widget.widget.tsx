@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { PopoverMenuItem } from '@/components/ui'
 import { NewsComboView } from '@/features/widgets/news/news.widget'
@@ -19,11 +20,11 @@ export function ComboWidget() {
 	const { refresh: refreshCurrencies } = useRefreshCurrencies()
 	const { refresh: refreshNews } = useRefreshRssFeeds()
 
-	useWidgetSettingsSummary('ارزها و منابع خبری')
+	useWidgetSettingsSummary(t('widgets.combo.settingsSummary'))
 	useWidgetMenuActions(
 		<PopoverMenuItem
 			icon={<Icon name="refresh" size={14} />}
-			label="به‌روز کن"
+			label={t('widgets.combo.refresh')}
 			onClick={activeTab === 'currency' ? refreshCurrencies : refreshNews}
 		/>
 	)
@@ -46,7 +47,7 @@ export function ComboWidget() {
 
 	const tabs = (
 		<WidgetHeaderTabs
-			label="ارز و اخبار"
+			label={t('widgets.combo.menuLabel')}
 			tabs={COMBO_TAB_LIST}
 			activeTab={activeTab}
 			onChange={onTabClick}

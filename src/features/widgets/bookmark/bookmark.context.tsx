@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { validate } from 'uuid'
 import React, { createContext, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
@@ -203,7 +204,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 				inputBookmark.icon instanceof File &&
 				inputBookmark.icon.size > MAX_ICON_SIZE
 			) {
-				showToast('آیکون باید کمتر از ۲۵۰ کیلوبایت باشه', 'error')
+				showToast(t('widgets.bookmark.context.iconTooLarge'), 'error')
 				return
 			}
 
@@ -251,7 +252,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 
 			Analytics.event('add_bookmark')
 		} catch {
-			showToast('نتونستیم بوکمارک رو اضافه کنیم، دوباره امتحان کن', 'error')
+			showToast(t('widgets.bookmark.context.addError'), 'error')
 		}
 	}
 
@@ -261,7 +262,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		widgetId?: string | null
 	): Promise<{ importedCount: number; createdFolders: number } | null> => {
 		if (!isAuthenticated) {
-			showToast('برای درون‌ریزی بوکمارک‌ها اول وارد حسابت شو', 'error')
+			showToast(t('widgets.bookmark.context.importNeedAuth'), 'error')
 			return null
 		}
 
@@ -276,11 +277,9 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		}
 
 		if (resolvedParentId && validate(resolvedParentId)) {
-			showToast(
-				'برای درون‌ریزی توی این پوشه، اول بوکمارک‌هات رو همگام‌سازی کن',
-				'error',
-				{ duration: 8000 }
-			)
+			showToast(t('widgets.bookmark.context.importNeedSync'), 'error', {
+				duration: 8000,
+			})
 			return null
 		}
 
@@ -319,7 +318,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		if (!input.title?.trim() || !bookmarks) return
 
 		if (input.icon && input.icon instanceof File && input.icon.size > MAX_ICON_SIZE) {
-			showToast('آیکون باید کمتر از ۲۵۰ کیلوبایت باشه', 'error')
+			showToast(t('widgets.bookmark.context.iconTooLarge'), 'error')
 			return
 		}
 
@@ -337,13 +336,9 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		}
 
 		if (!bookmarkIdToEdit || validate(bookmarkIdToEdit)) {
-			showToast(
-				'برای ویرایش این بوکمارک، اول بوکمارک‌هات رو همگام‌سازی کن',
-				'error',
-				{
-					duration: 8000, // 8 seconds
-				}
-			)
+			showToast(t('widgets.bookmark.context.editNeedSync'), 'error', {
+				duration: 8000, // 8 seconds
+			})
 			return
 		}
 
@@ -386,7 +381,7 @@ export const BookmarkProvider: React.FC<{ children: React.ReactNode }> = ({
 		const idToDelete = bookmarkToDelete.onlineId || bookmarkToDelete.id
 
 		if (validate(idToDelete)) {
-			showToast('برای حذف این بوکمارک، اول بوکمارک‌هات رو همگام‌سازی کن', 'error', {
+			showToast(t('widgets.bookmark.context.deleteNeedSync'), 'error', {
 				duration: 8000, // 8 seconds
 			})
 			return

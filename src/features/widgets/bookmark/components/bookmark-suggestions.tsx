@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { SectionPanel } from '@/components/ui'
 import {
 	type BookmarkSuggestion,
@@ -18,7 +19,7 @@ export function BookmarkSuggestions({ onSelect }: BookmarkSuggestionsProps) {
 
 	return (
 		<div className="mt-2">
-			<SectionPanel title="پیشنهاد ویجتیفای" size="xs">
+			<SectionPanel title={t('widgets.bookmark.suggestions.title')} size="xs">
 				<div className="grid grid-cols-5 gap-2 mt-1 py-1 max-h-24 overflow-y-auto">
 					{suggestions.map((suggestion, index) => (
 						<button

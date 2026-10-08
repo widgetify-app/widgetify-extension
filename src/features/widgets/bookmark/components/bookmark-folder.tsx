@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { memo, useMemo, useState } from 'react'
 import { addOpacityToColor } from '@/common/utils/color'
 import type { Bookmark } from '@/services/bookmark/bookmark.interface'
@@ -116,7 +117,7 @@ export const FolderBookmarkItem = memo(function FolderBookmarkItem({
 			{onMenuClick && (
 				<button
 					type="button"
-					aria-label="گزینه‌های پوشه"
+					aria-label={t('widgets.bookmark.folder.optionsAria')}
 					onClick={(e) => {
 						e.stopPropagation()
 						onMenuClick(e)

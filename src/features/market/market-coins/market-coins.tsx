@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useState } from 'react'
 import Analytics from '@/analytics'
 import { ConfigKey } from '@/common/constants/config-keys'
@@ -34,8 +35,8 @@ export function MarketCoins() {
 	return (
 		<div className="flex flex-col min-h-full">
 			<CategoryHeader
-				title="ویج‌کوین"
-				description="با ویج‌کوین هر آیتمی رو یه بار می‌خری و برای همیشه مال تو می‌مونه."
+				title={t('market.coin.amountLabel')}
+				description={t('market.coins.introBody')}
 			/>
 
 			<div className="grid gap-3 mb-4 sm:grid-cols-2">
@@ -46,14 +47,16 @@ export function MarketCoins() {
 						className="size-10 shrink-0"
 					/>
 					<div>
-						<p className="text-2xs text-fg-muted">موجودی فعلی</p>
+						<p className="text-2xs text-fg-muted">
+							{t('market.coins.balanceLabel')}
+						</p>
 						{isAuthenticated ? (
 							<p className="text-2xl font-bold tabular-nums text-fg-strong">
 								{faNumber(user?.coins ?? 0)}
 							</p>
 						) : (
 							<p className="text-sm font-semibold text-fg">
-								برای دیدنش وارد شو
+								{t('market.coins.loginToSee')}
 							</p>
 						)}
 					</div>
@@ -68,10 +71,10 @@ export function MarketCoins() {
 					</span>
 					<span className="flex-1">
 						<span className="block text-sm font-semibold text-fg-strong">
-							ویج‌کوین رایگان
+							{t('market.coins.freeTitle')}
 						</span>
 						<span className="block text-2xs text-fg-muted">
-							با انجام ماموریت‌ها و دعوت دوستات
+							{t('market.coins.freeHint')}
 						</span>
 					</span>
 					<Icon name="chevronLeft" size={16} className="text-fg-faint" />
@@ -81,11 +84,11 @@ export function MarketCoins() {
 			{isError ? (
 				<EmptyState
 					icon="coin"
-					title="بسته‌ها نیومدن"
-					description="اینترنتت رو چک کن و دوباره امتحان کن"
+					title={t('market.coins.loadErrorTitle')}
+					description={t('market.category.loadErrorHint')}
 					action={
 						<Button size="sm" onClick={() => refetch()}>
-							دوباره امتحان کن
+							{t('market.category.retry')}
 						</Button>
 					}
 				/>
@@ -100,11 +103,11 @@ export function MarketCoins() {
 					))}
 				</div>
 			) : packages.length === 0 ? (
-				<EmptyState icon="coin" title="فعلاً بسته‌ای برای خرید نیست" />
+				<EmptyState icon="coin" title={t('market.coins.emptyTitle')} />
 			) : (
 				<fieldset className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(9.5rem,1fr))]">
 					<legend className="mb-2 text-sm font-bold text-fg-strong">
-						یه بسته انتخاب کن
+						{t('market.coins.selectPackage')}
 					</legend>
 					{packages.map((pkg) => (
 						<CoinPackageOption
@@ -124,20 +127,23 @@ export function MarketCoins() {
 						<>
 							<div className="min-w-0">
 								<p className="text-sm font-bold text-fg-strong">
-									{selected.title}، {faNumber(selected.coin)} ویج‌کوین
+									{selected.title}
+									{t('market.coins.priceSeparator')}{' '}
+									{faNumber(selected.coin)}{' '}
+									{t('market.coin.amountLabel')}
 								</p>
 								<p className="text-2xs text-fg-muted">
-									به درگاه بانک می‌ری و سکه‌ها همون لحظه به حسابت اضافه
-									می‌شن
+									{t('market.coins.checkoutHint')}
 								</p>
 							</div>
 							<Button
 								color="brand"
 								onClick={() => checkout(selected)}
 								loading={payingPackageId === selected.id}
-								loadingText="انتقال به درگاه..."
+								loadingText={t('market.topUp.redirecting')}
 							>
-								پرداخت {faNumber(selected.price)} تومان
+								{t('market.coins.pay')} {faNumber(selected.price)}{' '}
+								{t('market.topUp.currencyLabel')}
 							</Button>
 						</>
 					) : (
@@ -146,11 +152,11 @@ export function MarketCoins() {
 							className="w-full"
 							action={
 								<Button size="sm" color="brand" onClick={signIn}>
-									ورود
+									{t('market.coins.login')}
 								</Button>
 							}
 						>
-							برای خرید ویج‌کوین وارد حسابت شو
+							{t('market.coins.loginHint')}
 						</Alert>
 					)}
 				</div>

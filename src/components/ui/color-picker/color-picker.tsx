@@ -1,6 +1,7 @@
 import type React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { HexColorPicker } from 'react-colorful'
+import { t } from '@/common/i18n'
 import { Portal } from '../portal/portal'
 import { isAnchorInViewport } from '../utils/anchored-position'
 
@@ -101,7 +102,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ color, onChange }) => 
 			<button
 				ref={triggerRef}
 				type="button"
-				aria-label="انتخاب رنگ"
+				aria-label={t('ui.common.pickColor')}
 				aria-expanded={isOpen}
 				onClick={() => setIsOpen((prev) => !prev)}
 				className="w-8 h-8 p-1 transition-transform border-0 shadow-sm cursor-pointer rounded-lg hover:scale-105 active:scale-95 focus-visible:focus-ring"

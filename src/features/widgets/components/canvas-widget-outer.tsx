@@ -30,6 +30,7 @@ import { type WidgetMenuAnchor, WidgetContextMenu } from './widget-context-menu'
 import { BookmarkDeleteModal } from './bookmark-delete-modal'
 import { WidgetMenuButton } from './widget-menu-button'
 import { WidgetSlot } from './widget-slot'
+import { t } from '@/common/i18n'
 
 interface CanvasWidgetOuterProps {
 	widget: StoredWidget
@@ -366,7 +367,7 @@ function CanvasWidgetOuterImpl({
 	return (
 		<>
 			<article
-				aria-label={definition.label}
+				aria-label={t(definition.label)}
 				ref={outerRef}
 				data-widget
 				{...keyboardFocus}
@@ -404,7 +405,7 @@ function CanvasWidgetOuterImpl({
 				{canvasMode === 'edit' && (
 					<button
 						type="button"
-						aria-label="حذف ویجت"
+						aria-label={t('widgets.canvas.deleteWidget')}
 						data-widget-delete
 						onPointerDown={(e) => e.stopPropagation()}
 						onPointerUp={(e) => e.stopPropagation()}
@@ -438,7 +439,7 @@ function CanvasWidgetOuterImpl({
 						{isLocked && canvasMode === 'normal' && (
 							<button
 								type="button"
-								aria-label="ارتقا به اشتراک پرو"
+								aria-label={t('widgets.canvas.upgradeProAria')}
 								className="absolute inset-0 z-25 rounded-widget bg-glass-surface-2 border border-vip-fill-2 flex flex-col items-center justify-center p-2 text-center select-none cursor-pointer overflow-hidden group transition-ui duration-200 hover:border-vip"
 								onClick={(e) => {
 									e.stopPropagation()
@@ -449,10 +450,11 @@ function CanvasWidgetOuterImpl({
 									<VipBadge
 										size={isCompactSize ? 'xs' : 'sm'}
 										variant="solid"
+										text={t('ui.vip.pro')}
 									/>
 									{!isCompactSize && (
 										<span className="text-2xs font-medium text-fg-muted transition-colors duration-200 group-hover:text-fg">
-											ارتقا به اشتراک پرو
+											{t('widgets.canvas.upgradePro')}
 										</span>
 									)}
 								</div>

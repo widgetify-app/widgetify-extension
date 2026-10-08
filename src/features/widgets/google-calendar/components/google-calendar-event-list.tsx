@@ -1,4 +1,5 @@
 import type { ReactNode, Ref } from 'react'
+import { t } from '@/common/i18n'
 import { WidgetError } from '@/features/widgets/components/widget-error'
 import { GoogleCalendarRowSkeleton } from './google-calendar-row-skeleton'
 
@@ -34,7 +35,10 @@ export function GoogleCalendarEventList({
 					))}
 				</div>
 			) : isError ? (
-				<WidgetError message="نتونستیم برنامه‌هات رو بیاریم" onRetry={onRetry} />
+				<WidgetError
+					message={t('widgets.googleCalendar.loadError')}
+					onRetry={onRetry}
+				/>
 			) : isEmpty ? (
 				empty
 			) : (

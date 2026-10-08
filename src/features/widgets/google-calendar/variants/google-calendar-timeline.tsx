@@ -1,6 +1,7 @@
 import type React from 'react'
 import { useLayoutEffect, useRef } from 'react'
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import type { GoogleCalendarEvent } from '@/services/date/get-google-calendar-events.hook'
 import type { WidgetifyDate } from '@/common/utils/date-events'
@@ -76,7 +77,9 @@ export const GoogleCalendarTimeline: React.FC<GoogleCalendarTimelineProps> = ({
 			<WidgetHeader
 				title={
 					isSelectedToday
-						? `امروز، ${selectedDay.format('dddd')}`
+						? t('widgets.googleCalendar.todayWeekday', {
+								weekday: selectedDay.format('dddd'),
+							})
 						: selectedDay.format('dddd')
 				}
 				badge={!isSelectedToday && <TodayChip onClick={handleResetDay} />}
@@ -84,12 +87,12 @@ export const GoogleCalendarTimeline: React.FC<GoogleCalendarTimelineProps> = ({
 				actions={
 					<>
 						<WidgetHeaderButton
-							label="روز قبل"
+							label={t('widgets.googleCalendar.prevDay')}
 							icon="chevronRight"
 							onClick={() => goToDay(-1, 'google_calendar_prev_day')}
 						/>
 						<WidgetHeaderButton
-							label="روز بعد"
+							label={t('widgets.googleCalendar.nextDay')}
 							icon="chevronLeft"
 							onClick={() => goToDay(1, 'google_calendar_next_day')}
 						/>
@@ -104,7 +107,7 @@ export const GoogleCalendarTimeline: React.FC<GoogleCalendarTimelineProps> = ({
 							key={event.id}
 							className="inline-flex items-center h-6 px-2 font-semibold rounded-lg bg-brand-fill text-brand text-3xs"
 						>
-							{event.summary || 'رویداد تمام روز'}
+							{event.summary || t('widgets.googleCalendar.allDayEvent')}
 						</li>
 					))}
 				</ul>
@@ -115,7 +118,11 @@ export const GoogleCalendarTimeline: React.FC<GoogleCalendarTimelineProps> = ({
 				isLoading={isLoading}
 				isError={isError}
 				isEmpty={classifiedEvents.length === 0}
-				empty={<GoogleCalendarEmpty title="این روز برنامه‌ای نداری" />}
+				empty={
+					<GoogleCalendarEmpty
+						title={t('widgets.googleCalendar.emptyDayTitle')}
+					/>
+				}
 				onRetry={onRetry}
 			>
 				<div className="relative" style={{ height: toY(24 * 60) + GRID_TOP }}>
@@ -147,7 +154,8 @@ export const GoogleCalendarTimeline: React.FC<GoogleCalendarTimelineProps> = ({
 						const { event, isNow, isPast, startTimeStr, endTimeStr } =
 							classified
 						const hasAction = !!(event.hangoutLink || event.location)
-						const title = event.summary || 'بدون عنوان'
+						const title =
+							event.summary || t('widgets.googleCalendar.untitled')
 
 						return (
 							<button
@@ -155,7 +163,11 @@ export const GoogleCalendarTimeline: React.FC<GoogleCalendarTimelineProps> = ({
 								type="button"
 								aria-disabled={!hasAction}
 								onClick={() => hasAction && onEventClick(event)}
-								aria-label={`${title}، ${startTimeStr} تا ${endTimeStr}`}
+								aria-label={t('widgets.googleCalendar.rangeAria', {
+									title,
+									start: startTimeStr,
+									end: endTimeStr,
+								})}
 								className={cn(
 									'absolute z-10 flex overflow-hidden px-2.5 rounded-xl text-start bg-brand-fill transition-ui focus-visible:focus-ring',
 									isShort
@@ -180,7 +192,10 @@ export const GoogleCalendarTimeline: React.FC<GoogleCalendarTimelineProps> = ({
 								<span className="text-3xs text-fg-muted whitespace-nowrap tabular-nums">
 									{isShort
 										? startTimeStr
-										: `${startTimeStr} تا ${endTimeStr}`}
+										: t('widgets.googleCalendar.timeRange', {
+												start: startTimeStr,
+												end: endTimeStr,
+											})}
 								</span>
 							</button>
 						)

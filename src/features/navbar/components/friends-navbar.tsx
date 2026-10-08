@@ -5,6 +5,7 @@ import { FriendsDirectView } from '@/features/friends/friends'
 import { listenEvent } from '@/common/utils/call-event'
 import Analytics from '@/analytics'
 import { NavIconButton } from './nav-icon-button'
+import { t } from '@/common/i18n'
 
 export function FriendsListNavbar() {
 	const { user, isAuthenticated } = useAuth()
@@ -36,7 +37,11 @@ export function FriendsListNavbar() {
 		<>
 			<NavIconButton
 				icon="friends"
-				label={hasPendingRequests ? 'دوستان، درخواست دوستی جدید داری' : 'دوستان'}
+				label={
+					hasPendingRequests
+						? t('navbar.friends.newRequest')
+						: t('navbar.friends.label')
+				}
 				onClick={clickToOpenSheet}
 			>
 				{hasPendingRequests && (

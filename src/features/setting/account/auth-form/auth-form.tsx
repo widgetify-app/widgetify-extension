@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useState, useEffect, useRef } from 'react'
 import { TextInput } from '@/components/ui'
 import {
@@ -73,7 +74,7 @@ const AuthForm = () => {
 		if (isEmpty(trimmed)) {
 			return setError((prev) => ({
 				...prev,
-				identifier: 'ایمیل یا شماره موبایلت رو وارد کن',
+				identifier: t('setting.auth.identifierRequired'),
 			}))
 		}
 
@@ -93,7 +94,7 @@ const AuthForm = () => {
 		if (isEmpty(inputTarget)) {
 			return setError((prev) => ({
 				...prev,
-				identifier: 'ایمیل یا شماره موبایلت رو وارد کن',
+				identifier: t('setting.auth.identifierRequired'),
 			}))
 		}
 
@@ -126,7 +127,7 @@ const AuthForm = () => {
 				api:
 					typeof content === 'string'
 						? content
-						: 'نتونستیم کد رو بفرستیم، دوباره امتحان کن',
+						: t('setting.auth.sendCodeError'),
 			}))
 		}
 	}
@@ -139,14 +140,14 @@ const AuthForm = () => {
 		if (isEmpty(password)) {
 			return setError((prev) => ({
 				...prev,
-				password: 'رمز عبورت رو وارد کن',
+				password: t('setting.auth.passwordRequired'),
 			}))
 		}
 
 		if (isLessThan(password, 6)) {
 			return setError((prev) => ({
 				...prev,
-				password: 'رمز عبور باید حداقل ۶ کاراکتر باشه',
+				password: t('setting.auth.passwordMinLength'),
 			}))
 		}
 
@@ -172,7 +173,7 @@ const AuthForm = () => {
 				} else {
 					setError((prev) => ({
 						...prev,
-						api: 'ایمیل یا رمز عبور اشتباهه',
+						api: t('setting.auth.credentialsError'),
 					}))
 				}
 			}
@@ -186,7 +187,7 @@ const AuthForm = () => {
 		if (isEmpty(otp) || isLessThan(otp, 6)) {
 			return setError((prev) => ({
 				...prev,
-				otp: 'کد ارسال شده رو وارد کن',
+				otp: t('setting.auth.otpRequired'),
 			}))
 		}
 
@@ -212,7 +213,7 @@ const AuthForm = () => {
 				if (err.response?.data?.message === 'INVALID_OTP_CODE') {
 					setError((prev) => ({
 						...prev,
-						otp: 'کد تایید اشتباهه، دوباره امتحان کن',
+						otp: t('setting.auth.otpError'),
 					}))
 				} else {
 					setError((prev) => ({ ...prev, api: content }))
@@ -220,7 +221,7 @@ const AuthForm = () => {
 			} else {
 				setError((prev) => ({
 					...prev,
-					otp: 'کد تایید اشتباهه، دوباره امتحان کن',
+					otp: t('setting.auth.otpError'),
 				}))
 			}
 		}
@@ -245,10 +246,10 @@ const AuthForm = () => {
 				<div className="flex flex-col">
 					<div className="mb-5 text-center">
 						<h2 className="text-lg font-bold tracking-tight text-fg">
-							ورود یا ساخت حساب
+							{t('setting.auth.title')}
 						</h2>
 						<p className="mt-1 text-xs text-fg-muted">
-							ایمیل یا شماره موبایلت رو وارد کن
+							{t('setting.auth.identifierRequired')}
 						</p>
 					</div>
 
@@ -266,7 +267,7 @@ const AuthForm = () => {
 									setIdentifier(val)
 									resetErrors()
 								}}
-								placeholder="شماره موبایل یا ایمیل..."
+								placeholder={t('setting.auth.identifierPlaceholder')}
 								disabled={isOtpSending}
 								className="w-full h-11 rounded-xl! text-sm"
 								autoComplete="on"
@@ -284,7 +285,9 @@ const AuthForm = () => {
 							disabled={isOtpSending || !identifier.trim()}
 							className="w-full text-sm font-semibold transition-ui shadow-sm h-11 hover:brightness-105"
 						>
-							{isOtpSending ? 'در حال بررسی…' : 'ادامه'}
+							{isOtpSending
+								? t('setting.auth.checking')
+								: t('setting.auth.continue')}
 						</Button>
 					</form>
 
@@ -295,7 +298,7 @@ const AuthForm = () => {
 						/>
 						<div className="relative z-10 flex justify-center">
 							<span className="px-3 py-0.5 text-xs font-medium text-fg-muted bg-surface rounded-full">
-								یا
+								{t('setting.auth.orDivider')}
 							</span>
 						</div>
 					</div>
@@ -308,7 +311,7 @@ const AuthForm = () => {
 				<div className="flex flex-col">
 					<div className="mb-5 text-center">
 						<h2 className="text-lg font-bold tracking-tight text-fg">
-							رمز عبور
+							{t('setting.auth.passwordLabel')}
 						</h2>
 						<div className="flex items-center justify-center gap-1.5 mt-1 text-xs text-fg-muted">
 							<span
@@ -324,7 +327,7 @@ const AuthForm = () => {
 								onClick={goBackToIdentifier}
 								className="font-medium cursor-pointer text-brand hover:underline"
 							>
-								تغییر
+								{t('setting.auth.change')}
 							</button>
 						</div>
 					</div>
@@ -345,7 +348,7 @@ const AuthForm = () => {
 									setPassword(val)
 									resetErrors()
 								}}
-								placeholder="رمز عبورت رو وارد کن..."
+								placeholder={t('setting.auth.passwordPlaceholder')}
 								disabled={isSigningIn}
 								className="w-full h-11 rounded-xl! text-sm"
 								direction={password ? 'ltr' : 'rtl'}
@@ -362,7 +365,9 @@ const AuthForm = () => {
 							rounded="xl"
 							className="w-full text-sm font-semibold transition-ui shadow-sm h-11 hover:brightness-105"
 						>
-							{isSigningIn ? 'در حال ورود…' : 'ورود به حساب'}
+							{isSigningIn
+								? t('setting.auth.signingIn')
+								: t('setting.auth.signIn')}
 						</Button>
 
 						<button
@@ -373,7 +378,9 @@ const AuthForm = () => {
 						>
 							<Icon name="mail" className="w-4 h-4 text-fg-muted" />
 							<span>
-								{isOtpSending ? 'در حال ارسال…' : 'ورود با کد موقت'}
+								{isOtpSending
+									? t('setting.auth.sending')
+									: t('setting.auth.loginWithOtp')}
 							</span>
 						</button>
 					</form>
@@ -384,10 +391,10 @@ const AuthForm = () => {
 				<div className="flex flex-col">
 					<div className="mb-5 text-center">
 						<h2 className="text-lg font-bold tracking-tight text-fg">
-							کد تایید
+							{t('setting.auth.otpLabel')}
 						</h2>
 						<p className="flex items-center justify-center gap-1 mt-1 text-xs text-fg-muted">
-							<span>کد ارسال شده به</span>
+							<span>{t('setting.auth.otpSentPrefix')}</span>
 							<span
 								dir="ltr"
 								className="font-mono font-semibold truncate text-fg max-w-44"
@@ -395,7 +402,7 @@ const AuthForm = () => {
 							>
 								{identifier}
 							</span>
-							<span>رو وارد کن</span>
+							<span>{t('setting.auth.otpSentSuffix')}</span>
 						</p>
 					</div>
 
@@ -424,7 +431,7 @@ const AuthForm = () => {
 										{String(resendCooldown % 60).padStart(2, '0')}
 									</span>
 									<span className="font-sans text-2xs mr-1">
-										تا امکان ارسال دوباره
+										{t('setting.auth.resendCountdown')}
 									</span>
 								</div>
 							) : (
@@ -441,8 +448,8 @@ const AuthForm = () => {
 									/>
 									<span>
 										{isOtpSending
-											? 'در حال ارسال…'
-											: 'ارسال دوباره کد'}
+											? t('setting.auth.sending')
+											: t('setting.auth.resendCode')}
 									</span>
 								</button>
 							)}
@@ -457,7 +464,7 @@ const AuthForm = () => {
 									}}
 									className="transition-colors cursor-pointer hover:text-brand"
 								>
-									ورود با رمز عبور
+									{t('setting.auth.loginWithPassword')}
 								</button>
 							) : (
 								<button
@@ -465,7 +472,7 @@ const AuthForm = () => {
 									onClick={goBackToIdentifier}
 									className="transition-colors cursor-pointer hover:text-fg"
 								>
-									تغییر شماره
+									{t('setting.auth.changeNumber')}
 								</button>
 							)}
 						</div>
@@ -479,7 +486,9 @@ const AuthForm = () => {
 							disabled={otp.length !== 6 || isOtpVerifying}
 							className="w-full mt-1 text-sm font-semibold transition-ui shadow-sm h-11 hover:brightness-105"
 						>
-							{isOtpVerifying ? 'در حال بررسی…' : 'تایید و ورود'}
+							{isOtpVerifying
+								? t('setting.auth.checking')
+								: t('setting.auth.confirmAndSignIn')}
 						</Button>
 					</form>
 				</div>

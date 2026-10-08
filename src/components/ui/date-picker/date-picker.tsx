@@ -1,4 +1,5 @@
 import { twMerge } from 'tailwind-merge'
+import { t } from '@/common/i18n'
 import { Icon } from '@/icons'
 import jalaliMoment from 'jalali-moment'
 import { useState } from 'react'
@@ -12,7 +13,15 @@ interface DatePickerProps {
 	isDateDisabled?: (date: jalaliMoment.Moment) => boolean
 }
 
-const WEEKDAYS = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج']
+const WEEKDAYS = () => [
+	t('ui.date.weekday.sat'),
+	t('ui.date.weekday.sun'),
+	t('ui.date.weekday.mon'),
+	t('ui.date.weekday.tue'),
+	t('ui.date.weekday.wed'),
+	t('ui.date.weekday.thu'),
+	t('ui.date.weekday.fri'),
+]
 
 export function DatePicker({
 	onDateSelect,
@@ -206,7 +215,9 @@ export function DatePicker({
 		>
 			<div className="flex items-center justify-between mb-3">
 				<h3 className="text-xs font-medium text-fg">
-					{currentDate.format('dddd، jD jMMMM jYYYY')}
+					{currentDate.format('dddd') +
+						t('ui.date.headingSep') +
+						currentDate.format('jD jMMMM jYYYY')}
 				</h3>
 				<div className="flex gap-0.5">
 					{showTodayButton && (
@@ -236,7 +247,7 @@ export function DatePicker({
 			</div>
 
 			<div className="grid grid-cols-7 gap-1 mb-2">
-				{WEEKDAYS.map((weekday, index) => (
+				{WEEKDAYS().map((weekday, index) => (
 					<div
 						key={weekday}
 						className={`h-6 flex items-center justify-center text-xs font-medium ${

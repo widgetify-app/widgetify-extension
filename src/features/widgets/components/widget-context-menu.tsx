@@ -15,6 +15,7 @@ import { useAuth } from '@/context/auth.context'
 import { useWidgetVipResolver } from '@/features/widgets/hooks/use-widget-vip-resolver'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
+import { t } from '@/common/i18n'
 
 export type WidgetMenuAnchor =
 	| { point: { x: number; y: number } }
@@ -54,7 +55,8 @@ export function WidgetContextMenu({
 	const { isVip } = useAuth()
 	const { isSizeVipOnly } = useWidgetVipResolver()
 
-	const menuLabel = definition.menuLabel ?? definition.label
+	const menuLabelKey = definition.menuLabel ?? definition.label
+	const menuLabel = t(menuLabelKey)
 	const hasVariants = Boolean(definition.variants && definition.variants.length > 0)
 	const fittingSizes = definition.allowedSizes.filter((s) => s.w <= cols)
 	const showResize =
@@ -72,7 +74,7 @@ export function WidgetContextMenu({
 			{onSettings && (
 				<PopoverMenuItem
 					icon={<Icon name="settings" size={14} />}
-					label={`تنظیمات ${menuLabel}`}
+					label={t('widgets.menu.settingsOf', { label: menuLabel })}
 					description={settingsSummary ?? undefined}
 					badge={
 						<Icon name="chevronLeft" size={14} className="text-fg-faint" />
@@ -95,7 +97,9 @@ export function WidgetContextMenu({
 
 	const sizeGroup = showResize && (
 		<div className="flex flex-col gap-1.5 px-2.5 pt-1 pb-2">
-			<span className="font-semibold text-2xs text-fg-faint">اندازه</span>
+			<span className="font-semibold text-2xs text-fg-faint">
+				{t('widgets.menu.size')}
+			</span>
 			<div
 				dir="ltr"
 				className={cn(
@@ -128,7 +132,7 @@ export function WidgetContextMenu({
 									name="diamond"
 									size={8}
 									className="text-vip"
-									aria-label="پرو"
+									aria-label={t('ui.vip.pro')}
 								/>
 							)}
 						</button>
@@ -143,20 +147,22 @@ export function WidgetContextMenu({
 			{onEditVariant && (
 				<PopoverMenuItem
 					icon={<Icon name="brush" size={14} />}
-					label="تغییر مدل و استایل"
+					label={t('widgets.menu.editVariant')}
 					onClick={runAndClose(onEditVariant)}
 				/>
 			)}
 			<PopoverMenuItem
 				icon={<Icon name="move" size={14} />}
-				label="جابجایی"
+				label={t('widgets.menu.move')}
 				onClick={runAndClose(onMove)}
 			/>
 			{definition.canDuplicate && (
 				<PopoverMenuItem
 					icon={<Icon name="copy" size={14} />}
-					label="تکرار ویجت"
-					badge={!isVip ? <VipBadge size="xs" /> : undefined}
+					label={t('widgets.menu.duplicate')}
+					badge={
+						!isVip ? <VipBadge size="xs" text={t('ui.vip.pro')} /> : undefined
+					}
 					onClick={isVip ? runAndClose(onDuplicate) : openVip}
 				/>
 			)}
@@ -166,7 +172,7 @@ export function WidgetContextMenu({
 	const deleteGroup = (
 		<PopoverMenuItem
 			icon={<Icon name="trash" size={14} />}
-			label="حذف ویجت"
+			label={t('widgets.menu.delete')}
 			variant="danger"
 			onClick={runAndClose(onDelete)}
 		/>

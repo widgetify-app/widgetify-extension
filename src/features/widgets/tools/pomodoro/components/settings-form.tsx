@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import type { ReactNode } from 'react'
 import { ToggleSwitch } from '@/components/ui'
 import { Icon } from '@/icons'
@@ -14,9 +15,9 @@ export function PomodoroSettingsForm({ settings, onChange }: PomodoroSettingsFor
 
 	return (
 		<ul className="flex flex-col divide-y rounded-2xl bg-fill divide-line">
-			<SettingRow label="زمان کار">
+			<SettingRow label={t('widgets.pomodoro.settings.workLabel')}>
 				<DurationStepper
-					label="زمان کار"
+					label={t('widgets.pomodoro.settings.workLabel')}
 					value={settings.workTime}
 					min={5}
 					max={90}
@@ -24,9 +25,9 @@ export function PomodoroSettingsForm({ settings, onChange }: PomodoroSettingsFor
 					onChange={(workTime) => update({ workTime })}
 				/>
 			</SettingRow>
-			<SettingRow label="استراحت">
+			<SettingRow label={t('widgets.pomodoro.settings.break')}>
 				<DurationStepper
-					label="زمان استراحت"
+					label={t('widgets.pomodoro.settings.breakLabel')}
 					value={settings.shortBreakTime}
 					min={1}
 					max={30}
@@ -34,9 +35,12 @@ export function PomodoroSettingsForm({ settings, onChange }: PomodoroSettingsFor
 					onChange={(shortBreakTime) => update({ shortBreakTime })}
 				/>
 			</SettingRow>
-			<SettingRow label="هشدار صوتی" description="آخر هر دور کار یه صدا پخش می‌شه">
+			<SettingRow
+				label={t('widgets.pomodoro.settings.soundAlert')}
+				description={t('widgets.pomodoro.settings.soundHint')}
+			>
 				<ToggleSwitch
-					label="هشدار صوتی"
+					label={t('widgets.pomodoro.settings.soundAlert')}
 					enabled={settings.alarmEnabled}
 					onToggle={() => update({ alarmEnabled: !settings.alarmEnabled })}
 				/>
@@ -89,20 +93,23 @@ function DurationStepper({
 		<span className="flex items-center gap-1 shrink-0">
 			<StepButton
 				icon="plus"
-				label={`بیشتر کردن ${label}`}
+				label={t('widgets.pomodoro.settings.increaseAria', { p0: label })}
 				disabled={value >= max}
 				onClick={() => change(1)}
 			/>
 			<output
 				aria-live="polite"
-				aria-label={`${label}: ${value} دقیقه`}
+				aria-label={t('widgets.pomodoro.settings.valueMinutes', {
+					p0: label,
+					p1: value,
+				})}
 				className="w-14 text-xs font-bold text-center tabular-nums text-fg-strong"
 			>
-				{value} دقیقه
+				{value} {t('widgets.pomodoro.settings.minutesUnit')}
 			</output>
 			<StepButton
 				icon="minus"
-				label={`کمتر کردن ${label}`}
+				label={t('widgets.pomodoro.settings.decreaseAria', { p0: label })}
 				disabled={value <= min}
 				onClick={() => change(-1)}
 			/>

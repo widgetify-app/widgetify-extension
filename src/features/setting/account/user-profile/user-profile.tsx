@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useEffect } from 'react'
 import { Button, SectionPanel, Spinner } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
@@ -40,7 +41,7 @@ export const UserProfile = () => {
 	const handleSendVerificationEmail = async () => {
 		try {
 			await sendVerificationMutation.mutateAsync()
-			showToast('ایمیل تایید رو فرستادیم، صندوقت رو چک کن', 'success')
+			showToast(t('setting.userProfile.verificationEmailSent'), 'success')
 		} catch (err: any) {
 			showToast(translateError(err) as string, 'error')
 		}
@@ -49,10 +50,10 @@ export const UserProfile = () => {
 	const getMessageError = () => {
 		// @ts-expect-error
 		if (failureReason?.status === 401) {
-			return 'دوباره وارد حسابت شو'
+			return t('setting.userProfile.reLoginRequired')
 		}
 
-		return 'نتونستیم پروفایلت رو بیاریم، دوباره امتحان کن'
+		return t('setting.userProfile.loadError')
 	}
 
 	if (isLoading) {
@@ -74,7 +75,7 @@ export const UserProfile = () => {
 					size="md"
 				>
 					<Icon name="logOut" size={16} />
-					خروج از حساب کاربری
+					{t('setting.userProfile.logoutTitle')}
 				</Button>
 			</div>
 		)
@@ -98,10 +99,10 @@ export const UserProfile = () => {
 				/>
 			)}
 
-			<SectionPanel title="خروج از حساب" size="sm">
+			<SectionPanel title={t('setting.userProfile.logoutAction')} size="sm">
 				<div className="space-y-3">
 					<p className={'text-sm font-light text-fg'}>
-						می‌خوای از حسابت بیرون بیای؟ دکمه‌ی پایین رو بزن.
+						{t('setting.userProfile.logoutHint')}
 					</p>
 					<Button
 						onClick={() => setShowConfirm(true)}
@@ -110,7 +111,7 @@ export const UserProfile = () => {
 						rounded={'2xl'}
 					>
 						<Icon name="logOut" size={16} />
-						خروج از حساب کاربری
+						{t('setting.userProfile.logoutTitle')}
 					</Button>
 				</div>
 			</SectionPanel>
@@ -120,9 +121,10 @@ export const UserProfile = () => {
 				onClose={() => setShowConfirm(false)}
 				onConfirm={() => onClickLogout()}
 				icon={<Icon name="logOut" />}
-				message="مطمئنی می‌خوای از حسابت خارج بشی؟"
-				title="خروج از حساب کاربری"
-				confirmText="بله، خروج"
+				message={t('setting.userProfile.logoutConfirm')}
+				title={t('setting.userProfile.logoutTitle')}
+				confirmText={t('setting.userProfile.logoutConfirmButton')}
+				cancelText={t('ui.common.cancel')}
 			></ConfirmationModal>
 		</div>
 	)

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { useEffect, useMemo, useState } from 'react'
+import { t } from '@/common/i18n'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import { Dropdown } from '@/components/ui'
@@ -77,7 +78,9 @@ export function EngineSelector({ trigger, onSelected }: EngineSelectorProps) {
 					<button
 						onClick={() => setIsExpanded(!isExpanded)}
 						type="button"
-						aria-label={`موتور جستجو: ${currentEngine.label}`}
+						aria-label={t('widgets.search.engineAria', {
+							engine: currentEngine.label,
+						})}
 						className="flex items-center h-8 gap-0.5 px-1 rounded-lg cursor-pointer shrink-0 text-fg-muted transition-ui hover:bg-fill-2 focus-visible:focus-ring"
 					>
 						<EngineIcon
@@ -97,7 +100,7 @@ export function EngineSelector({ trigger, onSelected }: EngineSelectorProps) {
 		>
 			<div className="flex flex-col gap-1 p-2 border-2 rounded-2xl min-w-40 bg-surface-2 border-surface-3">
 				<p className="px-2 mb-1 text-xs font-medium text-fg-muted">
-					انتخاب موتور جستجو
+					{t('widgets.search.enginePicker')}
 				</p>
 
 				{engines.map((engine) => {

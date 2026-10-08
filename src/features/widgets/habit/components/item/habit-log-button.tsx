@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { showToast } from '@/common/toast'
 import { getContrastingTextColor } from '@/common/utils/color'
 import type { WidgetifyDate } from '@/common/utils/date-events'
@@ -55,7 +56,9 @@ export function HabitLogButton({ habit, today, onLogged }: HabitLogButtonProps) 
 			type="button"
 			onClick={handleQuickLog}
 			disabled={isPending}
-			aria-label={`ثبت پیشرفت ${habit.title}`}
+			aria-label={t('widgets.habit.item.logProgressAria', {
+				p0: habit.title,
+			})}
 			className="relative grid rounded-full cursor-pointer place-items-center size-8 shrink-0 transition-ui active:scale-95 disabled:opacity-70 focus-visible:focus-ring"
 			style={
 				isDone

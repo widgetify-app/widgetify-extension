@@ -1,4 +1,5 @@
 import type React from 'react'
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { useRef, useState } from 'react'
 import { TodayChip } from '@/features/widgets/components/today-chip'
@@ -94,7 +95,7 @@ const MonthGrid: React.FC<MonthGridProps> = ({ display }) => {
 									abbr={weekday.full}
 									className={cn(
 										'h-4.5 font-semibold text-3xs',
-										weekday.short === 'ج'
+										weekday.short === PERSIAN_WEEKDAYS[6].short
 											? 'text-danger'
 											: 'text-fg-faint'
 									)}
@@ -159,8 +160,8 @@ const MonthGrid: React.FC<MonthGridProps> = ({ display }) => {
 }
 
 const CALENDAR_TABS: { id: CalendarTab; label: string }[] = [
-	{ id: 'calendar', label: 'تقویم' },
-	{ id: 'google', label: 'تقویم گوگل' },
+	{ id: 'calendar', label: t('widgets.calendar.tab.calendar') },
+	{ id: 'google', label: t('widgets.calendar.tab.google') },
 ]
 
 interface Calendar2x3Props {
@@ -187,7 +188,7 @@ export function Calendar2x3({ display }: Calendar2x3Props) {
 		activeTab === 'calendar' && isAwayFromToday && (
 			<PopoverMenuItem
 				icon={<Icon name="undo" size={14} />}
-				label="برو به امروز"
+				label={t('widgets.calendar.goToToday')}
 				onClick={goToToday}
 			/>
 		)
@@ -195,7 +196,7 @@ export function Calendar2x3({ display }: Calendar2x3Props) {
 
 	const tabs = (
 		<WidgetHeaderTabs
-			label="تقویم"
+			label={t('widgets.calendar.tabsLabel')}
 			tabs={CALENDAR_TABS}
 			activeTab={activeTab}
 			onChange={onTabClick}
@@ -213,12 +214,12 @@ export function Calendar2x3({ display }: Calendar2x3Props) {
 				actions={
 					<>
 						<WidgetHeaderButton
-							label="ماه قبل"
+							label={t('widgets.calendar.prevMonth')}
 							icon="chevronRight"
 							onClick={() => changeMonth(-1)}
 						/>
 						<WidgetHeaderButton
-							label="ماه بعد"
+							label={t('widgets.calendar.nextMonth')}
 							icon="chevronLeft"
 							onClick={() => changeMonth(1)}
 						/>
@@ -226,7 +227,7 @@ export function Calendar2x3({ display }: Calendar2x3Props) {
 				}
 			/>
 			<section
-				aria-label="تقویم شمسی"
+				aria-label={t('widgets.calendar.aria')}
 				className="flex flex-col flex-1 min-h-0 gap-1"
 			>
 				<MonthTitle />

@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useState } from 'react'
 import { cn } from '@/common/utils/cn'
 import { SectionPanel, Tile } from '@/components/ui'
@@ -76,8 +77,11 @@ export function StoreItemPicker({
 				>
 					<Icon name="shoppingBag" size={14} />
 					{inStore.length > 0
-						? `${faNumber(inStore.length)} ${title} دیگه توی فروشگاه`
-						: 'فروشگاه'}
+						? t('market.picker.moreInStore', {
+								p0: faNumber(inStore.length),
+								p1: title,
+							})
+						: t('market.picker.storeLink')}
 				</button>
 			}
 		>
@@ -98,7 +102,7 @@ export function StoreItemPicker({
 										<Icon
 											name="check"
 											size={12}
-											aria-label="انتخاب شده"
+											aria-label={t('market.picker.selectedBadge')}
 										/>
 									</span>
 								)
@@ -113,7 +117,7 @@ export function StoreItemPicker({
 				<>
 					<div className="flex items-center gap-2 mt-4 mb-2.5">
 						<span className="font-semibold text-2xs text-fg-faint">
-							از فروشگاه، امتحانشون مجانیه
+							{t('market.picker.freeTryHint')}
 						</span>
 						<span className="flex-1 h-px bg-line" />
 					</div>
@@ -129,7 +133,7 @@ export function StoreItemPicker({
 										<CoinAmount amount={item.price} />
 									) : (
 										<span className="font-semibold text-2xs text-fg">
-											رایگان
+											{t('market.itemState.free')}
 										</span>
 									)
 								}
@@ -138,7 +142,7 @@ export function StoreItemPicker({
 										<Icon
 											name="lock"
 											size={12}
-											aria-label="هنوز مال تو نیست"
+											aria-label={t('market.picker.notOwnedHint')}
 										/>
 									</span>
 								}

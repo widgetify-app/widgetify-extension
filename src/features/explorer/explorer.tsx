@@ -1,4 +1,5 @@
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { useGetContents } from '@/services/content/get-content.hook'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ExplorerCategory } from './components/category'
@@ -247,7 +248,7 @@ export function ExplorerContent() {
 							type="text"
 							value={searchQuery}
 							onChange={(e) => setSearchQuery(e.target.value)}
-							placeholder="جستجو در تمام سایت‌ها و دسته‌ها..."
+							placeholder={t('explorer.search.placeholder')}
 							className="w-full bg-surface-2 text-xs text-fg-strong placeholder-fg-faint px-3 py-2 rounded-xl border border-line focus:outline-none focus:border-brand-muted transition-ui pr-8 focus:placeholder:text-fg-ghost"
 						/>
 						<svg
@@ -288,17 +289,17 @@ export function ExplorerContent() {
 						<div className="flex flex-col items-center justify-center gap-3 py-24 text-center">
 							<div className="text-4xl opacity-40">🔍</div>
 							<p className="text-sm font-bold text-fg-strong">
-								برای «{searchQuery}» چیزی پیدا نکردیم
+								{t('explorer.search.noResults', { query: searchQuery })}
 							</p>
 							<p className="text-xs text-fg-faint">
-								یه چیز دیگه رو جستجو کن یا فیلتر رو پاک کن
+								{t('explorer.search.tryAgain')}
 							</p>
 							<button
 								type="button"
 								onClick={() => setSearchQuery('')}
 								className="px-3 py-1.5 text-xs font-semibold rounded-xl bg-surface-2 hover:bg-surface-3 text-fg-strong transition-colors mt-2"
 							>
-								پاک کردن جستجو
+								{t('explorer.search.clear')}
 							</button>
 						</div>
 					) : (

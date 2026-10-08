@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { AvatarComponent } from '@/components/ui'
 import { Dropdown } from '@/components/ui'
 import {
@@ -139,7 +140,7 @@ function ActivityReactionSelector({ reactions, activityId, index }: Prop) {
 			trigger={
 				<button
 					type="button"
-					aria-label="واکنش به این فعالیت"
+					aria-label={t('friends.activity.reactAria')}
 					className={`flex  items-center justify-center w-5 h-5 text-xs text-center transition-ui duration-200 rounded-full shadow-sm active:scale-95 bg-fill ${reacted ? 'opacity-85' : 'opacity-50'}`}
 					onClick={() => setEnable(true)}
 				>

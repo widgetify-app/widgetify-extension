@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
 import { WidgetCompactEmpty } from '@/features/widgets/components/widget-compact-empty'
@@ -18,13 +19,13 @@ export function NetworkCompactRow(props: NetworkViewProps) {
 	return (
 		<>
 			<WidgetHeader
-				title="شبکه"
+				title={t('widgets.network.title')}
 				info={<NetworkStatus isOnline={isOnline} />}
 				actions={
 					isAuthenticated &&
 					isOnline && (
 						<WidgetHeaderButton
-							label="به‌روز کن"
+							label={t('widgets.network.refresh')}
 							icon="refresh"
 							onClick={onRefresh}
 							disabled={isLoading}
@@ -53,9 +54,12 @@ function NetworkRowBody({
 		return (
 			<WidgetCompactEmpty
 				icon="wifi"
-				title="وارد حسابت نشدی"
-				description="برای دیدن IP و پینگت وارد شو"
-				action={{ label: 'ورود', onClick: () => callEvent('openProfile') }}
+				title={t('widgets.network.authTitle')}
+				description={t('widgets.network.authDescription')}
+				action={{
+					label: t('widgets.network.login'),
+					onClick: () => callEvent('openProfile'),
+				}}
 			/>
 		)
 	}
@@ -64,9 +68,9 @@ function NetworkRowBody({
 		return (
 			<WidgetCompactEmpty
 				icon="wifiOff"
-				title="اینترنت قطعه"
-				description="مودم یا وای‌فای رو چک کن"
-				action={{ label: 'دوباره', onClick: onRetryOffline }}
+				title={t('widgets.network.offlineTitle')}
+				description={t('widgets.network.offlineDescription')}
+				action={{ label: t('widgets.network.retry'), onClick: onRetryOffline }}
 			/>
 		)
 	}
@@ -87,7 +91,7 @@ function NetworkRowBody({
 	if (hasError) {
 		return (
 			<WidgetError
-				message="نتونستیم اطلاعات شبکه رو بیاریم"
+				message={t('widgets.network.loadError')}
 				compact
 				onRetry={onRefresh}
 			/>
@@ -99,13 +103,18 @@ function NetworkRowBody({
 			<CountryFlag src={info.countryIcon} />
 			<div className="flex flex-col flex-1 min-w-0">
 				<span className="text-xs font-semibold truncate text-fg">
-					{getPlaceLabel(info.city, info.isp) || 'مکان معلوم نیست'}
+					{getPlaceLabel(info.city, info.isp) ||
+						t('widgets.network.placeUnknown')}
 				</span>
 				<button
 					type="button"
 					onClick={() => copyIpToClipboard(info.ip)}
 					disabled={!info.ip}
-					aria-label={info.ip ? `کپی آدرس ${info.ip}` : 'آدرس IP رو نداریم'}
+					aria-label={
+						info.ip
+							? t('widgets.network.copyIpValue', { ip: info.ip })
+							: t('widgets.network.noIp')
+					}
 					dir="ltr"
 					className={cn(
 						'font-mono truncate text-3xs text-end text-fg-faint rounded-sm transition-ui focus-visible:focus-ring',

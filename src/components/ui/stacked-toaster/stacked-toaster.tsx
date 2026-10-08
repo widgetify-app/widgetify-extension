@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
 import { resolveValue, useToaster, type Toast, type ToastPosition } from 'react-hot-toast'
+import { t } from '@/common/i18n'
 import {
 	STACK_VISIBLE_LAYERS,
 	getStackAnchor,
@@ -99,7 +100,7 @@ export function StackedToaster() {
 
 	return (
 		<section
-			aria-label="اعلان‌ها"
+			aria-label={t('ui.common.notifications')}
 			style={{
 				position: 'fixed',
 				zIndex: CONTAINER_Z_INDEX,

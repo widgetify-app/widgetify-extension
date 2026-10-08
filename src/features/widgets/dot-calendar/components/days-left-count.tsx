@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import type { DotProgress } from '../types'
 
 interface DaysLeftCountProps {
@@ -16,7 +17,7 @@ export function DaysLeftCount({ progress, until }: DaysLeftCountProps) {
 					{progress.daysLeft}
 				</span>
 				<span className="min-w-0 text-xs font-semibold truncate text-fg-muted">
-					روز مونده تا {until}
+					{t('widgets.dotCalendar.daysLeftUntilLabel', { until })}
 				</span>
 			</p>
 			<span

@@ -1,4 +1,5 @@
 import type React from 'react'
+import { t } from '@/common/i18n'
 import { PERSIAN_WEEKDAYS } from '@/features/widgets/constants'
 import { cn } from '@/common/utils/cn'
 import type { WidgetifyDate } from '@/common/utils/date-events'
@@ -33,10 +34,11 @@ export const GoogleCalendarWeekStrip: React.FC<GoogleCalendarWeekStripProps> = (
 
 				const label = [
 					day.format('dddd jD jMMMM jYYYY'),
-					eventCount > 0 && `${eventCount} برنامه`,
+					eventCount > 0 &&
+						t('widgets.googleCalendar.eventCount', { count: eventCount }),
 				]
 					.filter(Boolean)
-					.join('، ')
+					.join(t('ui.date.headingSep'))
 
 				return (
 					<li key={dayIsoKey}>

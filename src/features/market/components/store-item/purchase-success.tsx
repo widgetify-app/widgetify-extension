@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { Button } from '@/components/ui'
 import { Icon } from '@/icons'
 import { ITEM_TYPE_META } from '../../constants'
@@ -25,11 +26,13 @@ export function PurchaseSuccess({
 			</span>
 			<div className="space-y-1">
 				<p className="text-sm font-bold text-fg-strong">
-					«{item.name}» مال تو شد
+					«{item.name}
+					{t('market.purchaseSuccess.ownedSuffix')}
 				</p>
 				<p className="text-2xs text-fg-muted">
-					هر وقت خواستی از «{ITEM_TYPE_META[item.type].whereToChange}» انتخابش
-					کن.
+					{t('market.purchaseSuccess.selectPrefix')}
+					{ITEM_TYPE_META[item.type].whereToChange}
+					{t('market.purchaseSuccess.selectSuffix')}
 				</p>
 			</div>
 			{canUseHere ? (
@@ -39,17 +42,17 @@ export function PurchaseSuccess({
 						className="flex-1"
 						onClick={onUse}
 						loading={isApplying}
-						loadingText="داریم عوضش می‌کنیم..."
+						loadingText={t('market.purchase.switching')}
 					>
-						همین الان استفاده کن
+						{t('market.purchaseSuccess.useNow')}
 					</Button>
 					<Button variant="ghost" onClick={onDone}>
-						بعداً
+						{t('market.purchaseSuccess.later')}
 					</Button>
 				</div>
 			) : (
 				<Button variant="ghost" fullWidth onClick={onDone}>
-					باشه
+					{t('market.purchaseSuccess.ok')}
 				</Button>
 			)}
 		</div>

@@ -1,21 +1,22 @@
+import { t } from '@/common/i18n'
 export interface TodoFilterOption {
 	value: string
 	label: string
 }
 
 export const DATE_FILTER_OPTIONS: TodoFilterOption[] = [
-	{ value: 'all', label: 'همه' },
-	{ value: 'today', label: 'امروز' },
-	{ value: 'this_month', label: 'این ماه' },
-	{ value: 'done', label: 'انجام‌شده' },
-	{ value: 'pending', label: 'انجام‌نشده' },
+	{ value: 'all', label: t('widgets.todos.filter.all') },
+	{ value: 'today', label: t('widgets.todos.filter.today') },
+	{ value: 'this_month', label: t('widgets.todos.filter.thisMonth') },
+	{ value: 'done', label: t('widgets.todos.filter.done') },
+	{ value: 'pending', label: t('widgets.todos.filter.undone') },
 ]
 
 export const SORT_OPTIONS: TodoFilterOption[] = [
-	{ value: 'def', label: 'پیش‌فرض' },
-	{ value: 'high', label: 'اول مهم‌ها' },
-	{ value: 'medium', label: 'اول متوسط‌ها' },
-	{ value: 'low', label: 'اول کم‌اهمیت‌ها' },
+	{ value: 'def', label: t('widgets.todos.filter.sortDefault') },
+	{ value: 'high', label: t('widgets.todos.filter.sortHighFirst') },
+	{ value: 'medium', label: t('widgets.todos.filter.sortMediumFirst') },
+	{ value: 'low', label: t('widgets.todos.filter.sortLowFirst') },
 ]
 
 export const LEGACY_DATE_FILTERS: Record<string, string> = {
@@ -25,9 +26,9 @@ export const LEGACY_DATE_FILTERS: Record<string, string> = {
 export const UNFILTERED_TAGS = ['', '-all-']
 
 export const PRIORITY_LABELS: Record<string, string> = {
-	low: 'کم‌اهمیت',
-	medium: 'متوسط',
-	high: 'مهم',
+	low: t('widgets.todos.priority.low'),
+	medium: t('widgets.todos.priority.medium'),
+	high: t('widgets.todos.priority.high'),
 }
 
 export const PRIORITY_BORDER_CLASS: Record<string, string> = {

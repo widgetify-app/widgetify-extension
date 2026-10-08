@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { getContrastingTextColor } from '@/common/utils/color'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
@@ -52,7 +53,7 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 
 			{isClaimed && (
 				<div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-surface text-fg-muted text-3xs font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-					<span>استفاده شده</span>
+					<span>{t('setting.vipPlan.used')}</span>
 				</div>
 			)}
 
@@ -67,7 +68,7 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 						{plan.title}
 					</h5>
 					<span className="text-3xs text-fg-muted">
-						{fmt(plan.days)} روز اعتبار
+						{fmt(plan.days)} {t('setting.vipPlan.daysCredit')}
 					</span>
 				</div>
 
@@ -98,14 +99,18 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 								isClaimed ? 'text-fg-muted' : 'text-success'
 							)}
 						>
-							{isClaimed ? 'قبلاً گرفتی' : 'رایگان'}
+							{isClaimed
+								? t('setting.vipPlan.alreadyClaimed')
+								: t('setting.vipPlan.free')}
 						</span>
 					) : (
 						<>
 							<span className="text-base font-black text-fg tabular-nums">
 								{fmt(plan.price)}
 							</span>
-							<span className="text-2xs text-fg-muted">تومان</span>
+							<span className="text-2xs text-fg-muted">
+								{t('setting.vipPlan.currencyToman')}
+							</span>
 						</>
 					)}
 				</div>

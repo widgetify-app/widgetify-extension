@@ -13,6 +13,7 @@ import { DailyMoodNotification } from './daily-mood'
 import { ProfileProgressNotification } from './profile-progress'
 import { safeAwait } from '@/services/api'
 import { Icon } from '@/icons'
+import { t } from '@/common/i18n'
 
 const localIds = ['notificationMood', 'update_profile']
 
@@ -138,9 +139,11 @@ export function NotificationCenter({ hasBorder }: Prop = { hasBorder: true }) {
 					<div className="flex items-center justify-center w-10 h-10 mb-2 text-fg-muted">
 						<Icon name="notification" size={16} />
 					</div>
-					<span className="text-xs font-bold text-fg">اعلان جدیدی نداری</span>
+					<span className="text-xs font-bold text-fg">
+						{t('navbar.notifications.emptyTitle')}
+					</span>
 					<span className="text-3xs text-fg-muted mt-0.5">
-						همه چیز به‌روز و مرتبه
+						{t('navbar.notifications.emptyBody')}
 					</span>
 				</div>
 			)}

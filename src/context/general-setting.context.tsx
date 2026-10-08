@@ -1,6 +1,7 @@
 import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { shouldReduceMotion } from '@/context/utils/reduced-motion'
 import { useUpdateExtensionSettings } from '@/services/extension/update-setting.hook'
@@ -31,7 +32,7 @@ const DEFAULT_SETTINGS: GeneralData = {
 	blurMode: false,
 	analyticsEnabled: import.meta.env.FIREFOX ? false : true,
 	selected_timezone: {
-		label: 'آسیا / تهران',
+		label: t('context.general.timezoneTehran'),
 		value: 'Asia/Tehran',
 		offset: '+03:30',
 	},

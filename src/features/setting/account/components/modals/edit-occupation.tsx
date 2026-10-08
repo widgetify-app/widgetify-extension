@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { Modal } from '@/components/ui'
 import { useUpdateUserProfile } from '@/services/auth/auth-service.hook'
 import { useState } from 'react'
@@ -39,7 +40,7 @@ export function ChangeOccupationModal({ show, onClose, currentValue }: Prop) {
 	return (
 		<Modal isOpen={show} onClose={onCloseHandler} showCloseButton={false}>
 			<div className="flex flex-col justify-between h-40 gap-4">
-				<SectionPanel title="چه‌کاره‌ای؟" size="xs">
+				<SectionPanel title={t('setting.modal.occupation.title')} size="xs">
 					<OccupationSelector
 						occupations={FetchedOccupations}
 						selectedOccupation={occupation}
@@ -60,7 +61,7 @@ export function ChangeOccupationModal({ show, onClose, currentValue }: Prop) {
 											? FetchedOccupations.find(
 													(o) => o.id === occupation
 												)?.title
-											: 'انتخاب شغل'}
+											: t('setting.modal.occupation.placeholder')}
 									</span>
 								</div>
 								<Icon

@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { Icon } from '@/icons'
 
 interface Prop {
@@ -19,7 +20,7 @@ export function FriendEmptyList({ emptyMessage }: Prop) {
 				''
 			)}
 
-			<p className="mt-1 text-xs text-fg-faint">هنوز چیزی اینجا نیست</p>
+			<p className="mt-1 text-xs text-fg-faint">{t('friends.empty.list')}</p>
 		</div>
 	)
 }

@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
-import { showToast } from '@/common/toast'
-import { TextInput } from '@/components/ui'
 import Analytics from '@/analytics'
-import { RequireAuth } from '@/features/widgets/components/require-auth'
-import { uploadSearchImage } from '@/services/search/upload-search-image'
+import { t } from '@/common/i18n'
+import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
-import { Button, Portal, Spinner } from '@/components/ui'
+import { Button, Portal, Spinner, TextInput } from '@/components/ui'
+import { RequireAuth } from '@/features/widgets/components/require-auth'
 import { Icon } from '@/icons'
+import { uploadSearchImage } from '@/services/search/upload-search-image'
 
 interface ImageSearchPortalProps {
 	onClose: () => void
@@ -35,12 +35,12 @@ export function ImageSearchPortal({
 
 	const handleUpload = async (file: File) => {
 		if (!file?.type?.startsWith('image/')) {
-			showToast('فقط عکس می‌تونی انتخاب کنی', 'error')
+			showToast(t('widgets.search.image.typeError'), 'error')
 			return
 		}
 
 		if (file.size > 1 * 1024 * 1024) {
-			showToast('عکس باید کمتر از ۱ مگابایت باشه', 'error')
+			showToast(t('widgets.search.image.sizeError'), 'error')
 			return
 		}
 
@@ -85,12 +85,12 @@ export function ImageSearchPortal({
 				ref={portalRef}
 				style={portalStyles}
 				role="dialog"
-				aria-label="جستجوی تصویر با گوگل"
+				aria-label={t('widgets.search.image.portalAria')}
 				className="z-20 p-4 overflow-hidden shadow-xl bg-glass-surface-2 -mt-26 rounded-2xl"
 			>
 				<div className="flex items-center justify-between px-2 mb-4">
 					<span className="text-sm font-black text-fg-muted">
-						جستجوی تصویر با گوگل
+						{t('widgets.search.image.title')}
 					</span>
 					<div className="flex flex-row items-center gap-1">
 						<a
@@ -104,7 +104,7 @@ export function ImageSearchPortal({
 						<button
 							type="button"
 							onClick={onClose}
-							aria-label="بستن جستجوی تصویر"
+							aria-label={t('widgets.search.image.close')}
 							className="p-1 rounded-full cursor-pointer transition-ui hover:bg-fill-2 text-fg-faint focus-visible:focus-ring"
 						>
 							<Icon name="close" size={20} aria-hidden="true" />
@@ -165,9 +165,9 @@ export function ImageSearchPortal({
 								</svg>
 							</div>
 							<p className="text-xs font-bold text-fg-muted">
-								یه عکس رو بکش اینجا یا{' '}
+								{t('widgets.search.image.dropHint')}{' '}
 								<span className="text-brand hover:underline">
-									انتخابش کن
+									{t('widgets.search.image.pick')}
 								</span>
 							</p>
 							{isUploading && (
@@ -175,7 +175,7 @@ export function ImageSearchPortal({
 									{previewUrl && (
 										<img
 											src={previewUrl}
-											alt="پیش‌نمایش تصویر"
+											alt={t('widgets.search.image.previewAlt')}
 											className="absolute inset-0 object-cover w-full h-full opacity-30"
 										/>
 									)}
@@ -186,8 +186,8 @@ export function ImageSearchPortal({
 										<div className="flex flex-col items-center gap-1">
 											<span className="text-xs font-black text-fg-strong">
 												{uploadProgress < 100
-													? 'در حال فرستادن عکس…'
-													: 'در حال جستجو توی گوگل…'}
+													? t('widgets.search.image.uploading')
+													: t('widgets.search.image.searching')}
 											</span>
 											<span className="text-3xs font-bold text-fg-faint tracking-widest">
 												{uploadProgress}%
@@ -213,7 +213,7 @@ export function ImageSearchPortal({
 							type="url"
 							value={imageUrl}
 							onChange={(v) => setImageUrl(v)}
-							placeholder="لینک عکس رو اینجا بذار…"
+							placeholder={t('widgets.search.image.urlPlaceholder')}
 							className="flex-1 py-2 text-xs bg-transparent border-none! outline-none! ring-transparent! focus:placeholder:opacity-50"
 							onKeyDown={(e) => e.key === 'Enter' && handleUrlSearch()}
 							direction={imageUrl ? 'auto' : 'rtl'}
@@ -225,7 +225,7 @@ export function ImageSearchPortal({
 							rounded={'2xl'}
 							className="w-20"
 						>
-							جستجو
+							{t('widgets.search.submit')}
 						</Button>
 					</div>
 				</div>

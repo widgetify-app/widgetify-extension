@@ -1,13 +1,14 @@
+import { t } from '@/common/i18n'
 type PingQuality = 'unknown' | 'good' | 'fair' | 'poor'
 
 export const GOOD_PING_MS = 150
 export const FAIR_PING_MS = 300
 
 const QUALITY_LABELS: Record<PingQuality, string> = {
-	unknown: 'معلوم نیست',
-	good: 'عالی',
-	fair: 'متوسط',
-	poor: 'ضعیف',
+	unknown: t('widgets.network.quality.unknown'),
+	good: t('widgets.network.quality.good'),
+	fair: t('widgets.network.quality.fair'),
+	poor: t('widgets.network.quality.poor'),
 }
 
 const QUALITY_BARS: Record<PingQuality, number> = {

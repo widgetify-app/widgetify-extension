@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { Button } from '@/components/ui'
 
 interface Prop {
@@ -17,7 +18,9 @@ export function FooterButtons({ handleCancel, handleConfirm, isPending }: Prop) 
 				onClick={() => handleConfirm()}
 				className="text-sm flex-2 h-10"
 			>
-				{isPending ? 'در حال ذخیره...' : 'ذخیره'}
+				{isPending
+					? t('setting.modal.footer.saving')
+					: t('setting.modal.footer.save')}
 			</Button>
 			<Button
 				size="sm"
@@ -26,7 +29,7 @@ export function FooterButtons({ handleCancel, handleConfirm, isPending }: Prop) 
 				rounded={'2xl'}
 				className="flex-1 h-10"
 			>
-				انصراف
+				{t('setting.modal.footer.cancel')}
 			</Button>
 		</div>
 	)

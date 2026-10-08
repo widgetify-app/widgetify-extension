@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { CategoryHeader } from '../components/category-header'
 import { WallpaperBrowser } from '../components/wallpaper-browser'
 import type { StoreItem } from '../types'
@@ -11,8 +12,8 @@ export function MarketWallpaper({ selectedId, onOpen }: MarketWallpaperProps) {
 	return (
 		<>
 			<CategoryHeader
-				title="تصویر زمینه"
-				description="پس‌زمینه‌ی صفحه‌ت. متحرک‌ها علامت پخش دارن و وقتی موس روشونه پخش می‌شن."
+				title={t('market.wallpaperBrowser.wallpaperLabel')}
+				description={t('market.wallpaperPage.introBody')}
 			/>
 			<WallpaperBrowser
 				defaultAccess="coin"

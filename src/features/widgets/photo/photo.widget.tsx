@@ -18,6 +18,7 @@ import { PopoverMenuItem, Spinner, VipBadge } from '@/components/ui'
 import type { GalleryAsset } from '@/services/gallery/get-gallery-assets.hook'
 import { PhotoEmptyState } from './components/photo-empty-state'
 import { getPhotoFileError } from './utils/get-photo-file-error'
+import { t } from '@/common/i18n'
 
 interface PhotoWidgetProps {
 	size?: WidgetSize
@@ -99,7 +100,7 @@ export function PhotoWidget({
 				imageSrc: undefined,
 				isCustom: undefined,
 			})
-			showToast('عکس برداشته شد', 'success')
+			showToast(t('widgets.photo.toast.removed'), 'success')
 		}
 	}
 
@@ -117,21 +118,21 @@ export function PhotoWidget({
 		<>
 			<PopoverMenuItem
 				icon={<Icon name="uploadImage" size={14} />}
-				label="عکس از دستگاه"
-				badge={!isVip ? <VipBadge size="xs" /> : undefined}
+				label={t('widgets.photo.fromDevice')}
+				badge={!isVip ? <VipBadge size="xs" text={t('ui.vip.pro')} /> : undefined}
 				onClick={handleSelectFromSystem}
 				disabled={isUploading}
 			/>
 			<PopoverMenuItem
 				icon={<Icon name="image" size={14} />}
-				label="انتخاب از گالری"
+				label={t('widgets.photo.fromGallery')}
 				onClick={handleOpenGallery}
 				disabled={isUploading}
 			/>
 			{imageSrc && (
 				<PopoverMenuItem
 					icon={<Icon name="trash" size={14} />}
-					label="برداشتن عکس"
+					label={t('widgets.photo.remove')}
 					onClick={handleRemovePhoto}
 					disabled={isUploading}
 				/>
@@ -181,7 +182,7 @@ export function PhotoWidget({
 					>
 						<Spinner aria-hidden="true" />
 						<span className="text-xs font-medium text-fg">
-							دارم آپلودش می‌کنم…
+							{t('widgets.photo.uploading')}
 						</span>
 					</div>
 				)}
@@ -200,7 +201,7 @@ export function PhotoWidget({
 				isOpen={isGalleryOpen}
 				onClose={() => setIsGalleryOpen(false)}
 				type="PHOTO_FRAME"
-				title="گالری قاب عکس"
+				title={t('widgets.photo.galleryTitle')}
 				onSelect={handleGallerySelect}
 				selectedAssetUrl={imageSrc}
 			/>

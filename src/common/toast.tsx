@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import toast from 'react-hot-toast'
+import { t } from '@/common/i18n'
 import { translateError } from '@/common/utils/translate-error'
 import { Icon } from '@/icons'
 import { cn } from '@/common/utils/cn'
@@ -99,8 +100,16 @@ const TOAST_THEMES: Record<
 	{
 		container: string
 		icon: ReactNode
-		title: string
-		actionText: string
+		titleKey:
+			| 'ui.toast.infoTitle'
+			| 'ui.toast.errorTitle'
+			| 'ui.toast.successTitle'
+			| 'ui.toast.warningTitle'
+		actionKey:
+			| 'ui.toast.infoAction'
+			| 'ui.toast.errorAction'
+			| 'ui.toast.successAction'
+			| 'ui.toast.warningAction'
 		messageClass: string
 	}
 > = {
@@ -111,8 +120,8 @@ const TOAST_THEMES: Record<
 				<Icon name="atSign" size={16} />
 			</div>
 		),
-		title: 'نکته',
-		actionText: 'متوجه شدم',
+		titleKey: 'ui.toast.infoTitle' as const,
+		actionKey: 'ui.toast.infoAction' as const,
 		messageClass: 'text-[#d4d4d4]',
 	},
 	error: {
@@ -122,8 +131,8 @@ const TOAST_THEMES: Record<
 				<Icon name="exclamation" size={12} />
 			</div>
 		),
-		title: 'یه مشکلی پیش اومد',
-		actionText: 'باشه',
+		titleKey: 'ui.toast.errorTitle' as const,
+		actionKey: 'ui.toast.errorAction' as const,
 		messageClass: 'text-[#ffc9c9d9]',
 	},
 	success: {
@@ -133,8 +142,8 @@ const TOAST_THEMES: Record<
 				<Icon name="check" size={16} className="stroke-3" />
 			</div>
 		),
-		title: 'انجام شد',
-		actionText: 'باشه',
+		titleKey: 'ui.toast.successTitle' as const,
+		actionKey: 'ui.toast.successAction' as const,
 		messageClass: 'text-[#a4f4cfd9]',
 	},
 	warning: {
@@ -144,8 +153,8 @@ const TOAST_THEMES: Record<
 				<Icon name="exclamation" size={12} />
 			</div>
 		),
-		title: 'حواست باشه',
-		actionText: 'متوجه شدم',
+		titleKey: 'ui.toast.warningTitle' as const,
+		actionKey: 'ui.toast.warningAction' as const,
 		messageClass: 'text-[#fee685d9]',
 	},
 }
@@ -160,13 +169,13 @@ export function showToast(
 	playNativeToastSound(type)
 
 	return toast.custom(
-		(t) => (
+		(toastItem) => (
 			<div
 				dir="rtl"
 				className={cn(
 					'w-full max-w-97.5 min-w-[320px] rounded-2xl p-3.5 flex items-center justify-between gap-3 shadow-xl backdrop-blur-xl border select-none transition-ui duration-200 pointer-events-auto',
 					theme.container,
-					t.visible
+					toastItem.visible
 						? 'opacity-100 translate-y-0 scale-100'
 						: 'opacity-0 -translate-y-2 scale-95'
 				)}
@@ -175,7 +184,7 @@ export function showToast(
 					{theme.icon}
 					<div className="flex-1 min-w-0">
 						<p className="m-0 text-sm font-bold leading-tight text-white truncate">
-							{theme.title}
+							{t(theme.titleKey)}
 						</p>
 						{message && (
 							<p
@@ -192,10 +201,10 @@ export function showToast(
 
 				<button
 					type="button"
-					onClick={() => toast.remove(t.id, t.toasterId)}
+					onClick={() => toast.remove(toastItem.id, toastItem.toasterId)}
 					className="shrink-0 px-3.5 py-1.5 rounded-xl bg-[rgba(255,255,255,0.1)] hover:bg-image-fill active:scale-95 text-xs font-semibold text-white transition-ui cursor-pointer select-none"
 				>
-					{theme.actionText}
+					{t(theme.actionKey)}
 				</button>
 			</div>
 		),

@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useRef, useEffect, useState } from 'react'
 import { isNumber } from '@/features/setting/account/utils/validators'
 
@@ -101,7 +102,9 @@ const OtpInput: React.FC<OtpInputProps> = ({ otp, setOtp, isError }) => {
 					inputMode="numeric"
 					maxLength={1}
 					value={digit}
-					aria-label={`کد تایید رقم ${index + 1}`}
+					aria-label={t('setting.otp.digitAria', {
+						p0: index + 1,
+					})}
 					onChange={(e) => handleChange(index, e.target.value)}
 					onKeyDown={(e) => handleKeyDown(index, e)}
 					onPaste={handlePaste}

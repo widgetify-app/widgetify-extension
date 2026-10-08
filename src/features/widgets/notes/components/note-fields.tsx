@@ -1,4 +1,5 @@
 import type { RefObject } from 'react'
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { TextInput } from '@/components/ui'
 import type { WidgetControlTone } from '@/features/widgets/components/widget-menu-button'
@@ -41,8 +42,8 @@ export function NoteFields({
 				debounce={titleDebounceMs !== undefined}
 				debounceTime={titleDebounceMs}
 				direction="rtl"
-				placeholder="یه عنوان بنویس"
-				aria-label="عنوان یادداشت"
+				placeholder={t('widgets.notes.field.titlePlaceholder')}
+				aria-label={t('widgets.notes.field.titleAria')}
 				className={cn(
 					'h-6 text-sm font-bold truncate',
 					isOnColor ? 'text-current' : 'text-fg-strong',
@@ -52,8 +53,8 @@ export function NoteFields({
 			<textarea
 				value={body}
 				onChange={(e) => onBodyChange(e.target.value)}
-				placeholder="هرچی می‌خوای اینجا بنویس"
-				aria-label="متن یادداشت"
+				placeholder={t('widgets.notes.field.bodyPlaceholder')}
+				aria-label={t('widgets.notes.field.bodyAria')}
 				dir="rtl"
 				className={cn(
 					'flex-1 w-full min-h-0 text-xs leading-loose bg-transparent outline-none resize-none scrollbar-none',

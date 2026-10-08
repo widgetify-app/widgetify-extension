@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { AvatarComponent } from '@/components/ui'
 import { UserCardPortal } from '../../components/user-card-portal'
 import type { TopUser } from '@/services/pomodoro/get-top-users.hook'
@@ -20,11 +21,18 @@ export function TopUserItem({
 	const convertToHours = (duration: number) => {
 		const hours = Math.floor(duration / 60)
 		const minutes = duration % 60
-		return `${hours} ساعت و ${minutes} دقیقه`
+		return t('widgets.pomodoro.leaderboard.hoursMinutes', {
+			p0: hours,
+			p1: minutes,
+		})
 	}
 
 	const duration: string =
-		user.duration > 500 ? convertToHours(user.duration) : `${user.duration} دقیقه`
+		user.duration > 500
+			? convertToHours(user.duration)
+			: t('widgets.pomodoro.leaderboard.minutesOnly', {
+					p0: user.duration,
+				})
 
 	return (
 		<>

@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { Icon } from '@/icons'
 
@@ -60,7 +61,9 @@ export function Suggestions({
 						{item.isRecent && (
 							<button
 								type="button"
-								aria-label={`حذف ${item.text} از تاریخچه`}
+								aria-label={t('widgets.search.removeHistory', {
+									text: item.text,
+								})}
 								onMouseDown={(e) => {
 									e.preventDefault()
 									e.stopPropagation()

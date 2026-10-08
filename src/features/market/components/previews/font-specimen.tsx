@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 
 interface FontSpecimenProps {
@@ -13,7 +14,7 @@ export function FontSpecimen({ family, size = 'sm' }: FontSpecimenProps) {
 			style={{ fontFamily: `"${family}", Vazir` }}
 		>
 			<span className={cn('leading-tight', size === 'lg' ? 'text-3xl' : 'text-xl')}>
-				دریاچه‌ای از آرامش
+				{t('market.preview.font.samplePhrase')}
 			</span>
 			<span
 				className={cn(
@@ -21,7 +22,7 @@ export function FontSpecimen({ family, size = 'sm' }: FontSpecimenProps) {
 					size === 'lg' ? 'text-base' : 'text-xs'
 				)}
 			>
-				آ ب پ ت ث ۱۲۳۴۵۶
+				{t('market.preview.font.alphabetSample')}
 			</span>
 		</span>
 	)

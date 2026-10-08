@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { WidgetEmpty } from '@/features/widgets/components/widget-empty'
 
 interface NoteEmptyProps {
@@ -8,9 +9,9 @@ export function NoteEmpty({ onAdd }: NoteEmptyProps) {
 	return (
 		<WidgetEmpty
 			art="notes"
-			title="هنوز یادداشتی نداری"
-			description="ایده، لیست خرید یا یه جمله برای بعد؛ همین‌جا نگهش دار"
-			action={{ label: 'یادداشت جدید', onClick: onAdd }}
+			title={t('widgets.notes.emptyTitle')}
+			description={t('widgets.notes.emptyDescription')}
+			action={{ label: t('widgets.notes.new'), onClick: onAdd }}
 		/>
 	)
 }

@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { Button, SectionPanel } from '@/components/ui'
 import { showToast } from '@/common/toast'
 
@@ -10,10 +11,10 @@ export const ReferralCodeSection = ({ code, className }: ReferralCodeSectionProp
 	const handleCopyCode = async () => {
 		try {
 			await navigator.clipboard.writeText(code)
-			showToast('کد دعوت کپی شد', 'success')
+			showToast(t('setting.referral.copiedToast'), 'success')
 		} catch (error) {
 			console.error('Failed to copy code:', error)
-			showToast('نتونستیم کد رو کپی کنیم', 'error')
+			showToast(t('setting.referral.copyError'), 'error')
 		}
 	}
 
@@ -21,7 +22,7 @@ export const ReferralCodeSection = ({ code, className }: ReferralCodeSectionProp
 		<SectionPanel
 			title={
 				<div className="flex items-center gap-2">
-					<span>کد دعوتت</span>
+					<span>{t('setting.referral.yourCodeTitle')}</span>
 				</div>
 			}
 			size="sm"
@@ -31,7 +32,9 @@ export const ReferralCodeSection = ({ code, className }: ReferralCodeSectionProp
 					className={`flex items-center justify-between p-4 bg-surface-2 rounded-2xl ${className}`}
 				>
 					<div>
-						<p className="mb-1 text-sm text-fg-muted">کد دعوت</p>
+						<p className="mb-1 text-sm text-fg-muted">
+							{t('setting.referral.codeLabel')}
+						</p>
 						<p className="text-lg font-semibold text-fg">{code}</p>
 					</div>
 					<Button
@@ -40,11 +43,11 @@ export const ReferralCodeSection = ({ code, className }: ReferralCodeSectionProp
 						rounded={'xl'}
 						color={'brand'}
 					>
-						کپی کد
+						{t('setting.referral.copyButton')}
 					</Button>
 				</div>
 				<p className="flex text-sm text-fg-muted gap-0.5 items-center">
-					با فرستادن این کد برای دوستات، هم خودت و هم دوستت ویج‌کوین می‌گیرید
+					{t('setting.referral.shareHint')}
 				</p>
 			</div>
 		</SectionPanel>

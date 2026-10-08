@@ -9,6 +9,7 @@ import {
 import { Icon } from '@/icons'
 import { useGetMoodStats } from '@/services/mood-log/get-mood-stats.hook'
 import { renderMoodShareCanvas } from '../utils/render-mood-share-canvas'
+import { t } from '@/common/i18n'
 
 interface MoodShareModalProps {
 	isOpen: boolean
@@ -39,8 +40,12 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 	}
 
 	const handleDownload = () => {
-		const monthName = statsData?.currentJalaliMonthName || 'ماه'
-		downloadCanvasAsImage(canvasRef.current, `گزارش-حال-${monthName}`)
+		const monthName =
+			statsData?.currentJalaliMonthName || t('widgets.moodTracker.monthFallback')
+		downloadCanvasAsImage(
+			canvasRef.current,
+			t('widgets.moodTracker.downloadFilename', { month: monthName })
+		)
 	}
 
 	const isReady = isAuthenticated && Boolean(statsData)
@@ -50,25 +55,28 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 			isOpen={isOpen}
 			onClose={onClose}
 			size="md"
-			title="اشتراک‌گذاری حال این ماه"
+			title={t('widgets.moodTracker.shareTitle')}
+			closeLabel={t('ui.common.close')}
 		>
 			<div className="flex flex-col gap-3.5">
 				{!isAuthenticated ? (
 					<div className="flex flex-col items-center justify-center h-64 gap-2 text-center text-fg-muted">
 						<Icon name="alert" size={20} aria-hidden="true" />
 						<span className="text-xs leading-relaxed">
-							برای ساختن گزارش ماهانه اول وارد حسابت شو
+							{t('widgets.moodTracker.shareNeedAuth')}
 						</span>
 					</div>
 				) : isLoading ? (
 					<div className="flex flex-col items-center justify-center h-64 gap-2 text-fg-muted">
 						<Spinner size="lg" aria-hidden="true" />
-						<span className="text-xs">دارم تصویر رو آماده می‌کنم…</span>
+						<span className="text-xs">
+							{t('widgets.moodTracker.sharePreparing')}
+						</span>
 					</div>
 				) : isError ? (
 					<div className="h-64">
 						<WidgetError
-							message="نتونستیم گزارش این ماه رو بیاریم"
+							message={t('widgets.moodTracker.shareLoadError')}
 							onRetry={() => refetch()}
 						/>
 					</div>
@@ -76,7 +84,7 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 					<canvas
 						ref={canvasRef}
 						role="img"
-						aria-label="تصویر حال این ماه"
+						aria-label={t('widgets.moodTracker.shareImageAria')}
 						className="self-center w-auto h-auto max-w-full max-h-[60vh] rounded-2xl"
 					/>
 				)}
@@ -90,7 +98,7 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 						icon={<Icon name="copy" size={14} />}
 						className="w-1/3"
 					>
-						کپی تصویر
+						{t('widgets.moodTracker.copyImage')}
 					</Button>
 					<Button
 						color="brand"
@@ -101,7 +109,7 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 						icon={<Icon name="download" size={14} />}
 						className="flex-1"
 					>
-						دانلود تصویر
+						{t('widgets.moodTracker.downloadImage')}
 					</Button>
 				</div>
 			</div>

@@ -5,6 +5,7 @@ import { ConfirmationModal, Dropdown, Modal, Spinner } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { ProfileDropdownMenu } from './components/profile-dropdown-menu'
 import { ProfileTrigger } from './components/profile-trigger'
+import { t } from '@/common/i18n'
 
 const AuthForm = lazy(() => import('@/features/setting/account/auth-form/auth-form'))
 
@@ -81,7 +82,12 @@ export function ProfileNav() {
 				/>
 			</Dropdown>
 
-			<Modal isOpen={showAuthModal} onClose={authModalCloseHandler} size="sm">
+			<Modal
+				isOpen={showAuthModal}
+				onClose={authModalCloseHandler}
+				size="sm"
+				closeLabel={t('ui.common.close')}
+			>
 				<Suspense
 					fallback={
 						<div className="flex justify-center py-16">
@@ -97,10 +103,10 @@ export function ProfileNav() {
 				isOpen={showLogoutModal}
 				onClose={() => setShowLogoutModal(false)}
 				onConfirm={handleConfirmLogout}
-				title="خروج از حساب"
-				message="مطمئنی می‌خوای از حسابت خارج بشی؟"
-				confirmText="خروج"
-				cancelText="بی‌خیال"
+				title={t('navbar.logout.title')}
+				message={t('navbar.logout.message')}
+				confirmText={t('navbar.logout.confirm')}
+				cancelText={t('navbar.logout.cancel')}
 				variant="danger"
 			/>
 

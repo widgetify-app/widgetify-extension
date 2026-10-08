@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { Spinner } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { type AuthResponse, useGoogleSignIn } from '@/services/auth/auth-service.hook'
@@ -91,7 +92,9 @@ export default function LoginGoogleButton() {
 					/>
 				)}
 			</div>
-			<span>{isLoading ? 'در حال ورود…' : 'ورود با حساب گوگل'}</span>
+			<span>
+				{isLoading ? t('setting.auth.signingIn') : t('setting.auth.googleButton')}
+			</span>
 		</button>
 	)
 }

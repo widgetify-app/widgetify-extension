@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
 import type { ItemState } from '../../types'
@@ -11,7 +12,7 @@ export function ItemStateTag({ state, price }: { state: ItemState; price: number
 		return (
 			<span className={cn(TAG, 'bg-brand-fill text-brand')}>
 				<Icon name="check" size={12} />
-				فعاله
+				{t('market.itemState.inUse')}
 			</span>
 		)
 	}
@@ -19,9 +20,11 @@ export function ItemStateTag({ state, price }: { state: ItemState; price: number
 		return (
 			<span className={cn(TAG, 'bg-success-fill text-fg')}>
 				<Icon name="check" size={12} className="text-success" />
-				مال توئه
+				{t('market.itemState.owned')}
 			</span>
 		)
 	}
-	return <span className={cn(TAG, 'bg-fill-2 text-fg')}>رایگان</span>
+	return (
+		<span className={cn(TAG, 'bg-fill-2 text-fg')}>{t('market.itemState.free')}</span>
+	)
 }

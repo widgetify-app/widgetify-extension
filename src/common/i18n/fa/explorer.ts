@@ -1,0 +1,18 @@
+export const explorer = {
+	'explorer.category.updateExtension': 'افزونه رو به‌روز کن',
+	'explorer.site.unnamed': 'بدون نام',
+	'explorer.promo.discountCopied': 'کد تخفیف {code} کپی شد',
+	'explorer.promo.discountCode': 'کد تخفیف',
+	'explorer.promo.copy': 'کپی',
+	'explorer.promo.viewAndEnter': 'مشاهده و ورود',
+	'explorer.promo.sponsor': 'اسپانسر',
+	'explorer.promo.copyFailed': 'نتونستیم کد رو کپی کنیم',
+	'explorer.promo.copyAndEnter': 'کپی کد و ورود به سایت',
+	'explorer.promo.exclusiveCode': 'کد تخفیف اختصاصی',
+	'explorer.promo.copied': 'کپی شد',
+	'explorer.promo.close': 'بستن',
+	'explorer.search.placeholder': 'جستجو در تمام سایت‌ها و دسته‌ها...',
+	'explorer.search.noResults': 'برای «{query}» چیزی پیدا نکردیم',
+	'explorer.search.tryAgain': 'یه چیز دیگه رو جستجو کن یا فیلتر رو پاک کن',
+	'explorer.search.clear': 'پاک کردن جستجو',
+} as const

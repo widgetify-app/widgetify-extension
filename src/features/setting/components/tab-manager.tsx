@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { Fragment, type ReactNode, useEffect, useId, useRef, useState } from 'react'
 import Analytics from '@/analytics'
 import { Motion as motion } from '@/common/motion'
@@ -86,7 +87,7 @@ export const TabManager = ({
 	return (
 		<div className="flex gap-4 h-[calc(100dvh-6rem)] md:h-[min(80vh,850px,calc(100dvh-8rem))] max-md:flex-col">
 			<nav
-				aria-label="بخش‌های تنظیمات"
+				aria-label={t('setting.tabManager.sectionsAria')}
 				className="flex-col hidden w-48 gap-4 overflow-y-auto md:flex shrink-0 scrollbar-none"
 			>
 				{groups.map((group) => (
@@ -133,7 +134,10 @@ export const TabManager = ({
 				)}
 			</nav>
 
-			<nav aria-label="بخش‌های تنظیمات" className="md:hidden shrink-0">
+			<nav
+				aria-label={t('setting.tabManager.sectionsAria')}
+				className="md:hidden shrink-0"
+			>
 				<ScrollRow>
 					{groups.map((group, index) => (
 						<Fragment key={group.parentName ?? group.children[0].value}>

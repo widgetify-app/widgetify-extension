@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useState } from 'react'
 import Analytics from '@/analytics'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
@@ -65,7 +66,7 @@ export function useHabitActions() {
 		}
 
 		setIsDetailOpen(false)
-		showToast('عادت حذف شد', 'success')
+		showToast(t('widgets.habit.toast.deleted'), 'success')
 		Analytics.event('habit_archived')
 		refetch()
 	}

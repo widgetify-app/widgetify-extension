@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import type { ReactNode } from 'react'
 import { getCurrentDate } from '@/common/utils/date-events'
 import { PopoverMenuItem } from '@/components/ui'
@@ -28,7 +29,7 @@ export function HabitsContent({ size = { w: 2, h: 3 }, tabs }: HabitsContentProp
 	useWidgetMenuActions(
 		<PopoverMenuItem
 			icon={<Icon name="refresh" size={14} />}
-			label="به‌روز کن"
+			label={t('widgets.habit.widget.refresh')}
 			onClick={onRefresh}
 		/>
 	)
@@ -36,18 +37,22 @@ export function HabitsContent({ size = { w: 2, h: 3 }, tabs }: HabitsContentProp
 	const doneCount = habits.filter(isHabitDoneToday).length
 	const info =
 		isAuthenticated && !isLoading && habits.length > 0
-			? `${doneCount} از ${habits.length}${tabs ? '' : ' امروز'}`
+			? t('widgets.habit.widget.progressOf', {
+					p0: doneCount,
+					p1: habits.length,
+					p2: tabs ? '' : t('widgets.habit.widget.todaySuffix'),
+				})
 			: undefined
 
 	return (
 		<>
 			<WidgetHeader
-				title={tabs ?? 'عادت‌ها'}
+				title={tabs ?? t('widgets.habit.widget.title')}
 				info={info}
 				actions={
 					isAuthenticated && (
 						<WidgetHeaderButton
-							label="عادت جدید"
+							label={t('widgets.habit.empty.cta')}
 							icon="plus"
 							onClick={openAddHabit}
 						/>

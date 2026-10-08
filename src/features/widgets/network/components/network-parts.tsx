@@ -1,6 +1,7 @@
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
 import { getPingBars, getPingLabel, getPingTextClass } from '../utils/ping-quality'
+import { t } from '@/common/i18n'
 
 const BAR_HEIGHTS = ['h-1.25', 'h-2', 'h-2.75', 'h-3.5']
 
@@ -22,7 +23,9 @@ export function NetworkStatus({ isOnline, className }: NetworkStatusProps) {
 				aria-hidden="true"
 				className="flex-none rounded-full size-1.5 bg-current"
 			/>
-			{isOnline ? 'متصل' : 'قطع'}
+			{isOnline
+				? t('widgets.network.status.online')
+				: t('widgets.network.status.offline')}
 		</span>
 	)
 }

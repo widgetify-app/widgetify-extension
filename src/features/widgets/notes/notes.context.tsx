@@ -7,6 +7,7 @@ import {
 	useState,
 } from 'react'
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { getFromStorage, setToStorage, watchStorage } from '@/common/storage'
 import { type ApiError, safeAwait } from '@/services/api'
 import { translateError } from '@/common/utils/translate-error'
@@ -166,7 +167,7 @@ export function NotesProvider({ children }: { children: ReactNode }) {
 			return showToast(translateError(err) as string, 'error')
 		}
 
-		showToast('یادداشت حذف شد', 'success')
+		showToast(t('widgets.notes.toast.deleted'), 'success')
 		await refetch()
 		Analytics.event('delete_notes')
 		setActiveNoteId(null)

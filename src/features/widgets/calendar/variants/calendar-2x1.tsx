@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { moodOptions } from '@/common/constants/moods'
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { ClickableTooltip } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
@@ -64,12 +65,15 @@ export function Calendar2x1({ display }: Calendar2x1Props) {
 					const showEventDot = display.showEvents && hasEvent
 					const dayLabel = [
 						day.format('dddd jD jMMMM jYYYY'),
-						isHoliday && 'تعطیل',
-						display.showEvents && eventCount > 0 && `${eventCount} مناسبت`,
-						dayMood && `حال روز: ${dayMood.label}`,
+						isHoliday && t('widgets.calendar.holiday'),
+						display.showEvents &&
+							eventCount > 0 &&
+							t('widgets.calendar.eventCount', { count: eventCount }),
+						dayMood &&
+							t('widgets.calendar.moodDay', { mood: t(dayMood.labelKey) }),
 					]
 						.filter(Boolean)
-						.join('، ')
+						.join(t('ui.date.headingSep'))
 
 					return (
 						<li key={idx}>

@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { Button, EmptyArt, VipBadge } from '@/components/ui'
 import { Icon, type IconName } from '@/icons'
@@ -8,9 +9,6 @@ import {
 } from '@/features/widgets/components/widget-header'
 import type { WidgetSize } from '../../utils/layout-engine/types'
 import { PHOTO_PLACEHOLDER_SRC } from '../constants'
-
-const WIDGET_TITLE = 'قاب عکس'
-const FAILED_TITLE = 'عکس باز نشد'
 
 interface PhotoEmptyStateProps {
 	size: WidgetSize
@@ -27,32 +25,33 @@ export function PhotoEmptyState({
 	onPickFromDevice,
 	onOpenGallery,
 }: PhotoEmptyStateProps) {
+	const widgetTitle = t('widgets.photo.title')
+	const failedTitle = t('widgets.photo.failedTitle')
+
 	if (size.h === 1) {
 		const isSquare = size.w === 1
 
 		return (
 			<>
 				{isSquare ? (
-					<WidgetCenteredHeader
-						title={hasFailed ? FAILED_TITLE : WIDGET_TITLE}
-					/>
+					<WidgetCenteredHeader title={hasFailed ? failedTitle : widgetTitle} />
 				) : (
 					<WidgetHeader
-						title={WIDGET_TITLE}
-						info={hasFailed ? FAILED_TITLE : undefined}
+						title={widgetTitle}
+						info={hasFailed ? failedTitle : undefined}
 					/>
 				)}
 				<div className="grid flex-1 min-h-0 grid-cols-2 gap-1.5">
 					<PhotoSourceButton
 						icon="uploadImage"
-						label="از دستگاه"
+						label={t('widgets.photo.fromDeviceShort')}
 						isStacked={isSquare}
 						badge={!isSquare && !isVip && <VipBadge size="xs" iconOnly />}
 						onClick={onPickFromDevice}
 					/>
 					<PhotoSourceButton
 						icon="image"
-						label="گالری"
+						label={t('widgets.photo.galleryShort')}
 						isStacked={isSquare}
 						onClick={onOpenGallery}
 					/>
@@ -65,7 +64,7 @@ export function PhotoEmptyState({
 
 	return (
 		<>
-			<WidgetHeader title={WIDGET_TITLE} />
+			<WidgetHeader title={widgetTitle} />
 			<div className="flex flex-col items-center justify-center flex-1 min-h-0 gap-1.5 text-center select-none">
 				{showsPlaceholder ? (
 					<img
@@ -80,15 +79,15 @@ export function PhotoEmptyState({
 							className="mb-0.5 size-12"
 						/>
 						<p className="text-xs font-bold text-fg-strong">
-							{hasFailed ? FAILED_TITLE : 'یه عکس بذار اینجا'}
+							{hasFailed ? failedTitle : t('widgets.photo.emptyPrompt')}
 						</p>
 					</>
 				)}
 				{size.h > 2 && (
 					<p className="leading-relaxed text-2xs text-fg-muted">
 						{hasFailed
-							? 'شاید پاک شده باشه، یکی دیگه انتخاب کن'
-							: 'عکس خودت یا یکی از عکس‌های گالری'}
+							? t('widgets.photo.failedHint')
+							: t('widgets.photo.emptyHint')}
 					</p>
 				)}
 				<div className="flex flex-wrap justify-center gap-1.5 mt-1">
@@ -99,8 +98,8 @@ export function PhotoEmptyState({
 						onClick={onPickFromDevice}
 						icon={<Icon name="uploadImage" size={12} />}
 					>
-						از دستگاه
-						{!isVip && <VipBadge size="xs" />}
+						{t('widgets.photo.fromDeviceShort')}
+						{!isVip && <VipBadge size="xs" text={t('ui.vip.pro')} />}
 					</Button>
 					<Button
 						size="xs"
@@ -109,7 +108,7 @@ export function PhotoEmptyState({
 						onClick={onOpenGallery}
 						icon={<Icon name="image" size={12} />}
 					>
-						گالری
+						{t('widgets.photo.galleryShort')}
 					</Button>
 				</div>
 			</div>

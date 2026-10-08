@@ -1,4 +1,5 @@
 import { useId, useMemo } from 'react'
+import { t } from '@/common/i18n'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { useZonedClock } from '@/features/widgets/hooks/use-zoned-clock'
 
@@ -53,7 +54,12 @@ export function ClockAnalog({ size = 76, time: propTime }: ClockAnalogProps) {
 			>
 				<svg
 					role="img"
-					aria-label={`ساعت ${time.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' })}`}
+					aria-label={t('widgets.clock.aria', {
+						time: time.toLocaleTimeString('fa-IR', {
+							hour: '2-digit',
+							minute: '2-digit',
+						}),
+					})}
 					width="100%"
 					height="100%"
 					viewBox="0 0 100 100"

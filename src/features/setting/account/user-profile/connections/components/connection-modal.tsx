@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { Button, Modal, Spinner } from '@/components/ui'
 import type { Platform } from './platform-config'
 
@@ -19,7 +20,12 @@ export function ConnectionModal({
 	if (!platform) return null
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} title={`مدیریت پلتفرم‌های متصل`}>
+		<Modal
+			isOpen={isOpen}
+			onClose={onClose}
+			title={t('setting.connections.modalTitle')}
+			closeLabel={t('ui.common.close')}
+		>
 			<div className="p-4">
 				<div className="flex items-center gap-3 mb-4">
 					<div
@@ -28,17 +34,22 @@ export function ConnectionModal({
 						{platform.icon}
 					</div>
 					<h2 className="text-xl font-semibold text-fg">
-						{platform.connected ? 'قطع اتصال از' : 'اتصال به'} {platform.name}
+						{platform.connected
+							? t('setting.connections.disconnectFromPrefix')
+							: t('setting.connections.connectToPrefix')}{' '}
+						{platform.name}
 					</h2>
 				</div>
 
 				<div className="mb-6">
 					{platform.connected ? (
 						<div className="space-y-2">
-							<p className="text-fg">اتصال به {platform.name} قطع بشه؟</p>
+							<p className="text-fg">
+								{t('setting.connections.connectToPrefix')} {platform.name}{' '}
+								{t('setting.connections.disconnectConfirmTitle')}
+							</p>
 							<div className="p-3 text-sm rounded-2xl text-on-warning bg-warning">
-								⚠️ با قطع اتصال، دیگه به داده‌ها و امکانات این پلتفرم دسترسی
-								نداری.
+								{t('setting.connections.disconnectWarning')}
 							</div>
 						</div>
 					) : (
@@ -47,7 +58,7 @@ export function ConnectionModal({
 							{platform.features && platform.features.length > 0 && (
 								<div>
 									<p className="mb-2 text-sm font-medium text-fg">
-										امکانات:
+										{t('setting.connections.featuresLabel')}
 									</p>
 									<ul className="space-y-1">
 										{platform.features.map(
@@ -67,7 +78,7 @@ export function ConnectionModal({
 							{platform.permissions && platform.permissions.length > 0 && (
 								<div>
 									<p className="mb-2 text-sm font-medium text-fg">
-										مجوزهای مورد نیاز:
+										{t('setting.connections.permissionsLabel')}
 									</p>
 									<ul className="space-y-1">
 										{platform.permissions.map(
@@ -96,14 +107,16 @@ export function ConnectionModal({
 						loadingText={
 							<span className="flex items-center justify-center gap-2">
 								<Spinner size="sm" tone="image" />
-								یه لحظه…
+								{t('setting.interests.loading')}
 							</span>
 						}
 						className="flex-2 h-9 text-sm"
 						rounded={'2xl'}
 						color={platform.connected ? 'danger' : 'brand'}
 					>
-						{platform.connected ? 'قطع اتصال' : 'تایید و شروع اتصال'}
+						{platform.connected
+							? t('setting.connections.disconnect')
+							: t('setting.connections.confirmConnect')}
 					</Button>
 					<Button
 						size="sm"
@@ -112,7 +125,7 @@ export function ConnectionModal({
 						rounded={'2xl'}
 						className="flex-1 h-9"
 					>
-						لغو
+						{t('setting.datePicker.cancel')}
 					</Button>
 				</div>
 			</div>

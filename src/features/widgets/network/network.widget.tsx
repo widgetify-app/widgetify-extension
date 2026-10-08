@@ -13,6 +13,7 @@ import { copyIpToClipboard } from './utils/copy-ip'
 import { NetworkCompactSquare } from './variants/network-1x1'
 import { NetworkCompactRow } from './variants/network-2x1'
 import { Network2x3 } from './variants/network-2x3'
+import { t } from '@/common/i18n'
 
 const EMPTY_NETWORK_INFO: NetworkInfo = {
 	ip: null,
@@ -98,13 +99,13 @@ export function NetworkLayout({ size = { w: 2, h: 3 } }: Prop) {
 				{networkInfo.ip && (
 					<PopoverMenuItem
 						icon={<Icon name="copy" size={14} />}
-						label="کپی آدرس IP"
+						label={t('widgets.network.copyIp')}
 						onClick={() => copyIpToClipboard(networkInfo.ip)}
 					/>
 				)}
 				<PopoverMenuItem
 					icon={<Icon name="refresh" size={14} />}
-					label="به‌روز کن"
+					label={t('widgets.network.refresh')}
 					onClick={handleRefresh}
 					disabled={isLoading}
 				/>

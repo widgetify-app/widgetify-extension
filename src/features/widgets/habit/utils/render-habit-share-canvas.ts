@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import jalaliMoment from 'jalali-moment'
 import moment from 'moment'
 import type { Habit } from '@/services/habit/habit.interface'
@@ -194,7 +195,7 @@ export function renderHabitShareCanvas(
 	ctx.textBaseline = 'middle'
 	ctx.font = '600 11px Vazir, "Segoe UI", sans-serif'
 	ctx.fillStyle = muted
-	ctx.fillText('افزونه نیوتب مرورگر ویجتیفای', 36, 35)
+	ctx.fillText(t('widgets.habit.share.canvas.brand'), 36, 35)
 
 	ctx.fillStyle = accent
 	ctx.beginPath()
@@ -214,7 +215,7 @@ export function renderHabitShareCanvas(
 
 	ctx.font = '500 13px Vazir, "Segoe UI", sans-serif'
 	ctx.fillStyle = secondary
-	ctx.fillText('روز پشت‌سرهم', width - 36, 145)
+	ctx.fillText(t('widgets.habit.share.canvas.streakDays'), width - 36, 145)
 
 	if (currentStreak > 0) {
 		ctx.font =
@@ -238,7 +239,11 @@ export function renderHabitShareCanvas(
 	ctx.textBaseline = 'top'
 	ctx.font = '700 25px Vazir, "Segoe UI", sans-serif'
 	ctx.fillStyle = primary
-	const title = fitText(ctx, habit.title || 'عادت من', 270)
+	const title = fitText(
+		ctx,
+		habit.title || t('widgets.habit.share.canvas.myHabit'),
+		270
+	)
 	ctx.fillText(title, identityCenterX, identityTop + 88)
 
 	ctx.font = '400 12px Vazir, "Segoe UI", sans-serif'
@@ -254,17 +259,33 @@ export function renderHabitShareCanvas(
 	ctx.textBaseline = 'top'
 	ctx.font = '600 12px Vazir, "Segoe UI", sans-serif'
 	ctx.fillStyle = secondary
-	ctx.fillText('فعالیت ۶ ماه اخیر', chartX + chartWidth, chartY)
+	ctx.fillText(
+		t('widgets.habit.share.canvas.recentActivity'),
+		chartX + chartWidth,
+		chartY
+	)
 
 	ctx.font = '400 10px Vazir, "Segoe UI", sans-serif'
 	ctx.fillStyle = muted
-	ctx.fillText(`${totalCompleted} روز موفق`, chartX + chartWidth - 105, chartY + 2)
+	ctx.fillText(
+		t('widgets.habit.share.canvas.successDays', { p0: totalCompleted }),
+		chartX + chartWidth - 105,
+		chartY + 2
+	)
 
 	const cellSize = 17
 	const gap = 4
 	const gridTop = chartY + 38
 	const gridRight = chartX + chartWidth - 27
-	const dayLabels = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج']
+	const dayLabels = [
+		t('ui.date.weekday.sat'),
+		t('ui.date.weekday.sun'),
+		t('ui.date.weekday.mon'),
+		t('ui.date.weekday.tue'),
+		t('ui.date.weekday.wed'),
+		t('ui.date.weekday.thu'),
+		t('ui.date.weekday.fri'),
+	]
 
 	ctx.font = '500 9px Arad, Vazir, sans-serif'
 	ctx.fillStyle = muted
@@ -331,10 +352,14 @@ export function renderHabitShareCanvas(
 	ctx.textBaseline = 'middle'
 	ctx.font = '400 10px Vazir, "Segoe UI", sans-serif'
 	ctx.fillStyle = muted
-	ctx.fillText(`بهترین رکورد ${longestStreak} روز`, 36, bottomY)
+	ctx.fillText(
+		t('widgets.habit.share.canvas.bestRecord', { p0: longestStreak }),
+		36,
+		bottomY
+	)
 
 	ctx.textAlign = 'right'
-	ctx.fillText('یه قدم کوچیک، هر روز', width - 36, bottomY)
+	ctx.fillText(t('widgets.habit.share.canvas.tagline'), width - 36, bottomY)
 
 	const legendY = 454
 	let legendX = width / 2 - 38

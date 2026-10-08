@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { t } from '@/common/i18n'
 import { Dropdown, Portal } from '@/components/ui'
 import { Icon } from '@/icons'
 import { useVoiceSearch, type VoiceSearchError } from '../../hooks/use-voice-search'
@@ -13,15 +14,14 @@ interface VoiceSearchPortalProps {
 type Language = 'fa-IR' | 'en-US'
 
 const languages = [
-	{ code: 'fa-IR' as Language, name: 'فارسی' },
+	{ code: 'fa-IR' as Language, name: t('widgets.search.voice.lang.fa') },
 	{ code: 'en-US' as Language, name: 'English' },
 ]
 
 const ERROR_MESSAGES: Record<Exclude<VoiceSearchError, null>, string> = {
-	'permission-denied':
-		'به میکروفون دسترسی نداریم. از نوار آدرس مرورگر اجازه‌ی میکروفون رو بده و دوباره امتحان کن',
-	unsupported: 'مرورگرت از جستجوی صوتی پشتیبانی نمی‌کنه',
-	failed: 'جستجوی صوتی شروع نشد، دوباره امتحان کن',
+	'permission-denied': t('widgets.search.voice.micDenied'),
+	unsupported: t('widgets.search.voice.unsupported'),
+	failed: t('widgets.search.voice.failed'),
 }
 
 export function VoiceSearchPortal({
@@ -51,12 +51,14 @@ export function VoiceSearchPortal({
 				ref={portalRef}
 				style={portalStyles}
 				role="dialog"
-				aria-label="جستجوی صوتی"
+				aria-label={t('widgets.search.voice.aria')}
 				className="z-20 p-5 overflow-hidden shadow-xl -mt-26 bg-glass-surface-2 rounded-2xl"
 			>
 				<div className="flex items-center justify-between px-1 mb-6">
 					<div className="flex items-center gap-2">
-						<span className="text-sm font-medium text-fg">جستجوی صوتی</span>
+						<span className="text-sm font-medium text-fg">
+							{t('widgets.search.voice.aria')}
+						</span>
 						<div aria-hidden="true" className="flex items-end h-3 gap-1 mb-1">
 							{[...Array(4)].map((_, i) => (
 								<div
@@ -70,7 +72,7 @@ export function VoiceSearchPortal({
 					<button
 						type="button"
 						onClick={onClose}
-						aria-label="بستن جستجوی صوتی"
+						aria-label={t('widgets.search.voice.close')}
 						className="p-2 rounded-full cursor-pointer transition-ui hover:bg-fill-2 text-fg-muted focus-visible:focus-ring"
 					>
 						<Icon name="close" size={20} aria-hidden="true" />
@@ -99,7 +101,7 @@ export function VoiceSearchPortal({
 							>
 								{currentTranscript ||
 									(selectedLanguage === 'fa-IR'
-										? 'دارم گوش می‌دم…'
+										? t('widgets.search.voice.listening')
 										: 'Listening...')}
 							</p>
 						)}
@@ -133,7 +135,11 @@ export function VoiceSearchPortal({
 							onClick={() =>
 								isListening ? stopVoiceSearch() : startVoiceSearch()
 							}
-							aria-label={isListening ? 'توقف ضبط صدا' : 'شروع ضبط صدا'}
+							aria-label={
+								isListening
+									? t('widgets.search.voice.stop')
+									: t('widgets.search.voice.start')
+							}
 							className={`w-12 h-12 cursor-pointer flex items-center justify-center rounded-full transition-ui focus-visible:focus-ring ${isListening ? 'bg-danger text-on-danger shadow-lg shadow-danger-fill-2' : 'bg-brand text-on-brand shadow-lg shadow-brand-fill-2'}`}
 						>
 							<Icon

@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { Button, EmptyState } from '@/components/ui'
 import { useGetWallpapers } from '@/services/wallpapers/get-wallpaper-categories.hook'
 import { StoreItemTile } from '../components/store-item/store-item-tile'
@@ -32,11 +33,11 @@ export function Storefront({ selectedId, onOpen, onNavigate }: StorefrontProps) 
 		return (
 			<EmptyState
 				icon="shoppingBag"
-				title="فروشگاه باز نشد"
-				description="اینترنتت رو چک کن و دوباره امتحان کن"
+				title={t('market.storefront.loadErrorTitle')}
+				description={t('market.category.loadErrorHint')}
 				action={
 					<Button size="sm" onClick={() => refetch()}>
-						دوباره امتحان کن
+						{t('market.category.retry')}
 					</Button>
 				}
 			/>
@@ -76,7 +77,10 @@ export function Storefront({ selectedId, onOpen, onNavigate }: StorefrontProps) 
 				<FeaturedBanner item={featured} onOpen={() => onOpen(featured)} />
 			)}
 
-			<Shelf title="تصویر زمینه‌ها" onSeeAll={() => onNavigate('WALLPAPER')}>
+			<Shelf
+				title={t('market.storefront.wallpapersSection')}
+				onSeeAll={() => onNavigate('WALLPAPER')}
+			>
 				{wallpapers.map((item) => (
 					<WallpaperTile
 						key={item.id}
@@ -89,19 +93,33 @@ export function Storefront({ selectedId, onOpen, onNavigate }: StorefrontProps) 
 				))}
 			</Shelf>
 
-			<Shelf title="تم‌ها" onSeeAll={() => onNavigate('THEME')}>
+			<Shelf
+				title={t('market.storefront.themesSection')}
+				onSeeAll={() => onNavigate('THEME')}
+			>
 				{shelf('THEME')}
 			</Shelf>
 
-			<Shelf title="حیوون‌ها و محیط‌هاشون" onSeeAll={() => onNavigate('PET')}>
+			<Shelf
+				title={t('market.storefront.petsSection')}
+				onSeeAll={() => onNavigate('PET')}
+			>
 				{shelf('PET', 'PET_BACKGROUND')}
 			</Shelf>
 
-			<Shelf title="فونت‌ها" wide onSeeAll={() => onNavigate('FONT')}>
+			<Shelf
+				title={t('market.storefront.fontsSection')}
+				wide
+				onSeeAll={() => onNavigate('FONT')}
+			>
 				{shelf('FONT')}
 			</Shelf>
 
-			<Shelf title="عنوان تب" wide onSeeAll={() => onNavigate('BROWSER_TITLE')}>
+			<Shelf
+				title={t('market.product.tabTitleTitle')}
+				wide
+				onSeeAll={() => onNavigate('BROWSER_TITLE')}
+			>
 				{shelf('BROWSER_TITLE')}
 			</Shelf>
 		</div>

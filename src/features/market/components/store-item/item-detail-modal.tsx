@@ -3,6 +3,7 @@ import { Modal } from '@/components/ui'
 import { useStoreTryOn } from '../../store-try-on.context'
 import type { StoreItem } from '../../types'
 import { ItemDetail } from './item-detail'
+import { t } from '@/common/i18n'
 
 interface ItemDetailModalProps {
 	item: StoreItem | null
@@ -19,7 +20,13 @@ export function ItemDetailModal({ item, isOpen, onClose }: ItemDetailModalProps)
 	}
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} size="sm" stepAside={isTryingOn}>
+		<Modal
+			isOpen={isOpen}
+			onClose={onClose}
+			size="sm"
+			stepAside={isTryingOn}
+			closeLabel={t('ui.common.close')}
+		>
 			{item && (
 				<ItemDetail
 					item={item}

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent } from '@/common/utils/call-event'
 import { TextInput } from '@/components/ui'
@@ -35,9 +36,9 @@ const FREE_BACKGROUNDS = new Set<string>(['none', 'forest', 'autumn', 'beach'])
 const PET_NAME_MAX_LENGTH = 20
 
 const TIPS = [
-	'واسه غذا دادن، هر جای محیطش کلیک کن',
-	'اسمش رو ببینی؟ موس رو ببر روش',
-	'همزمان بیشتر از سه تا غذا نمی‌شه گذاشت',
+	t('widgets.pet.tip.feed'),
+	t('widgets.pet.tip.hoverName'),
+	t('widgets.pet.tip.maxFood'),
 ]
 
 interface PetSettingsProps {
@@ -295,7 +296,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 						htmlFor="pet-name"
 						className="text-xs font-bold text-fg-strong"
 					>
-						اسم حیوونت
+						{t('widgets.pet.nameLabel')}
 					</label>
 					<div className="relative">
 						<TextInput
@@ -304,7 +305,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 							maxLength={PET_NAME_MAX_LENGTH}
 							value={petName}
 							onChange={onChangePetName}
-							placeholder="یه اسم براش بذار…"
+							placeholder={t('widgets.pet.namePlaceholder')}
 							className="pe-14"
 						/>
 						<span
@@ -333,7 +334,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 			<div className="flex flex-col flex-1 min-w-0 gap-3.5">
 				<section className="flex flex-col gap-2">
 					<h4 id="pet-type-label" className="text-xs font-bold text-fg-strong">
-						حیوان خانگی
+						{t('widgets.pet.section.pet')}
 					</h4>
 					<fieldset
 						aria-labelledby="pet-type-label"
@@ -356,7 +357,10 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 								</span>
 							</PetOptionTile>
 						))}
-						<PetOptionTile label="حیوان خانگی بیشتر" onSelect={openPetMarket}>
+						<PetOptionTile
+							label={t('widgets.pet.morePets')}
+							onSelect={openPetMarket}
+						>
 							<span className="grid w-full rounded-lg h-11 place-items-center bg-fill-2 text-fg-faint">
 								<Icon name="plus" size={16} aria-hidden="true" />
 							</span>
@@ -369,7 +373,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 						id="pet-background-label"
 						className="text-xs font-bold text-fg-strong"
 					>
-						محیط
+						{t('widgets.pet.section.background')}
 					</h4>
 					<fieldset
 						aria-labelledby="pet-background-label"
@@ -398,7 +402,7 @@ export function PetSettings({ instanceId }: PetSettingsProps = {}) {
 							</PetOptionTile>
 						))}
 						<PetOptionTile
-							label="محیط‌های بیشتر"
+							label={t('widgets.pet.moreBackgrounds')}
 							onSelect={openBackgroundMarket}
 						>
 							<span className="grid w-full rounded-lg h-11 place-items-center bg-fill-2 text-fg-faint">

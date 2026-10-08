@@ -7,6 +7,7 @@ import {
 import { Icon } from '@/icons'
 import type { Habit } from '@/services/habit/habit.interface'
 import { renderHabitShareCanvas } from '../utils/render-habit-share-canvas'
+import { t } from '@/common/i18n'
 
 interface HabitShareModalProps {
 	isOpen: boolean
@@ -31,16 +32,27 @@ export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareMod
 	}
 
 	const handleDownload = () => {
-		downloadCanvasAsImage(canvasRef.current, `عادت-${habit.title || 'habit'}`)
+		downloadCanvasAsImage(
+			canvasRef.current,
+			t('widgets.habit.share.filename', { p0: habit.title || 'habit' })
+		)
 	}
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} size="lg" title="اشتراک‌گذاری پیشرفت">
+		<Modal
+			isOpen={isOpen}
+			onClose={onClose}
+			size="lg"
+			title={t('widgets.habit.share.title')}
+			closeLabel={t('ui.common.close')}
+		>
 			<div className="flex flex-col gap-3.5">
 				<canvas
 					ref={canvasRef}
 					role="img"
-					aria-label={`تصویر پیشرفت ${habit.title}`}
+					aria-label={t('widgets.habit.share.imageAria', {
+						p0: habit.title,
+					})}
 					className="w-full h-auto rounded-2xl"
 				/>
 				<div className="flex items-center gap-1.5 pt-1">
@@ -52,7 +64,7 @@ export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareMod
 						icon={<Icon name="copy" size={14} />}
 						className="w-1/3"
 					>
-						کپی تصویر
+						{t('widgets.habit.share.copyImage')}
 					</Button>
 					<Button
 						color="brand"
@@ -62,7 +74,7 @@ export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareMod
 						icon={<Icon name="download" size={14} />}
 						className="flex-1"
 					>
-						دانلود تصویر
+						{t('widgets.habit.share.downloadImage')}
 					</Button>
 				</div>
 			</div>

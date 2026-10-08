@@ -5,6 +5,7 @@ import { useAuth } from '@/context/auth.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { useFreeWidgetActions } from '@/features/widgets/widgets.context'
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
@@ -191,7 +192,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 	useWidgetMenuActions(
 		<PopoverMenuItem
 			icon={<Icon name="refresh" size={14} />}
-			label="به‌روز کن"
+			label={t('widgets.notes.refresh')}
 			onClick={() => {
 				refetch()
 				Analytics.event('note_refetch')
@@ -226,7 +227,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 	if (isError && !notes.length) {
 		return (
 			<div className={frameClass}>
-				<WidgetError message="نتونستیم یادداشت‌ها رو بیاریم" onRetry={refetch} />
+				<WidgetError message={t('widgets.notes.loadError')} onRetry={refetch} />
 			</div>
 		)
 	}
@@ -239,7 +240,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 		<div className={frameClass}>
 			<WidgetHeader
 				tone={tone}
-				title="یادداشت"
+				title={t('widgets.notes.stickyTitle')}
 				badge={
 					isSaving && (
 						<span
@@ -248,7 +249,7 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 								tone === 'onColor' ? 'opacity-60' : 'text-fg-faint'
 							)}
 						>
-							در حال ذخیره…
+							{t('widgets.notes.saving')}
 						</span>
 					)
 				}
@@ -258,14 +259,14 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 						{currentNote && (
 							<WidgetHeaderButton
 								tone={tone}
-								label="حذف این یادداشت"
+								label={t('widgets.notes.deleteThis')}
 								icon="trash"
 								onClick={() => setShowDeleteConfirm(true)}
 							/>
 						)}
 						<WidgetHeaderButton
 							tone={tone}
-							label="یادداشت جدید"
+							label={t('widgets.notes.new')}
 							icon="plus"
 							onClick={handleCreateNote}
 							disabled={isCreatingNote}
@@ -303,9 +304,11 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 							aria-hidden="true"
 							className="opacity-60"
 						/>
-						<span className="text-xs font-bold">اولین یادداشتت رو بنویس</span>
+						<span className="text-xs font-bold">
+							{t('widgets.notes.emptyCtaTitle')}
+						</span>
 						<span className="opacity-60 text-3xs">
-							همین‌جا کلیک کن و شروع کن
+							{t('widgets.notes.emptyCtaHint')}
 						</span>
 					</button>
 				)}
@@ -320,19 +323,22 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 					/>
 					{notes.length > 1 && (
 						<nav
-							aria-label="یادداشت‌های دیگه"
+							aria-label={t('widgets.notes.otherNotesAria')}
 							className="flex items-center gap-1 font-semibold text-3xs"
 						>
 							<StickyPagerButton
-								label="یادداشت قبلی"
+								label={t('widgets.notes.prev')}
 								icon="chevronRight"
 								onClick={handlePrevNote}
 							/>
 							<span className="opacity-70 tabular-nums">
-								{currentIndex + 1} از {notes.length}
+								{t('widgets.notes.pager', {
+									current: currentIndex + 1,
+									total: notes.length,
+								})}
 							</span>
 							<StickyPagerButton
-								label="یادداشت بعدی"
+								label={t('widgets.notes.next')}
 								icon="chevronLeft"
 								onClick={handleNextNote}
 							/>
@@ -345,10 +351,10 @@ export function NoteSticky({ meta, instanceId }: NoteStickyProps = {}) {
 				isOpen={showDeleteConfirm}
 				onClose={() => setShowDeleteConfirm(false)}
 				onConfirm={handleDelete}
-				title="این یادداشت حذف بشه؟"
-				message="دیگه نمی‌تونی برش گردونی."
-				confirmText="حذف"
-				cancelText="نه"
+				title={t('widgets.notes.deleteConfirmTitle')}
+				message={t('widgets.notes.deleteConfirmMessage')}
+				confirmText={t('widgets.notes.deleteConfirm')}
+				cancelText={t('widgets.notes.deleteCancel')}
 			/>
 		</div>
 	)

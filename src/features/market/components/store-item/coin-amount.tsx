@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { ConfigKey } from '@/common/constants/config-keys'
 import { cn } from '@/common/utils/cn'
 import { faNumber } from '../../utils/store-item'
@@ -26,7 +27,7 @@ export function CoinAmount({ amount, size = 'sm', className }: CoinAmountProps) 
 			{faNumber(amount)}
 			<img
 				src={ConfigKey.WIG_COIN_ICON}
-				alt="ویج‌کوین"
+				alt={t('market.coin.amountLabel')}
 				className={cn('shrink-0', SIZES[size].icon)}
 			/>
 		</span>

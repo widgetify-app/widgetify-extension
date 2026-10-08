@@ -1,4 +1,5 @@
 import keepItImage from '@/assets/images/keep-it.png'
+import { t } from '@/common/i18n'
 import { Button } from '@/components/ui'
 import { Modal } from '@/components/ui'
 import { StepFirefoxConsent } from './step-firefox-consent'
@@ -36,7 +37,7 @@ const StepOne = ({ onGetStarted }: StepOneProps) => {
 		<>
 			<div className="mb-3">
 				<h3 className={'text-center text-2xl font-bold text-fg'}>
-					به ویجتیفای خوش اومدی!
+					{t('home.installed.welcome')}
 				</h3>
 			</div>
 
@@ -48,7 +49,7 @@ const StepOne = ({ onGetStarted }: StepOneProps) => {
 				<div className="flex items-center justify-center">
 					<img
 						src={keepItImage}
-						alt="نحوه فعالسازی افزونه"
+						alt={t('home.installed.howToEnable')}
 						className="h-auto max-w-full rounded-lg shadow-xl"
 						style={{ maxHeight: '220px' }}
 					/>
@@ -61,7 +62,7 @@ const StepOne = ({ onGetStarted }: StepOneProps) => {
 				}
 			>
 				<p className="font-bold text-fg-muted">
-					⚠️ برای فعال شدن افزونه، دکمه‌ی "Keep It" رو بزن.
+					{t('home.installed.keepItWarning')}
 				</p>
 			</div>
 
@@ -71,7 +72,7 @@ const StepOne = ({ onGetStarted }: StepOneProps) => {
 				className="w-full text-base font-light shadow-sm rounded-2xl shadow-brand outline-none!"
 				color="brand"
 			>
-				شروع کنیم
+				{t('home.installed.start')}
 			</Button>
 		</>
 	)

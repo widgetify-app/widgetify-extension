@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useRef, useState } from 'react'
 import type { Wallpaper } from '@/common/types/wallpaper.interface'
 import { useWallpaperUpload } from '../hooks/use-wallpaper-upload'
@@ -81,7 +82,7 @@ export function UploadArea({
 		if (onWallpaperRemove) {
 			await onWallpaperRemove()
 		}
-		showToast('تصویر زمینه حذف شد', 'info')
+		showToast(t('setting.wallpaper.removedToast'), 'info')
 	}
 
 	return (

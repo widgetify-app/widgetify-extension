@@ -97,18 +97,18 @@ kebab-case everywhere. A file is a tsx file exactly when it contains JSX. A role
 | `src/__tests__/hygiene.test.ts` | no assistant names, a comment count per file that never moves, no stray `console.log` |
 | `src/__tests__/data-names.test.ts` | storage keys, analytics events and widget ids keep their names |
 | `src/__tests__/browser-baseline.test.ts` | nothing newer than Chrome 109 and Firefox 115 |
+| `src/__tests__/i18n.test.ts` | no Persian outside `src/common/i18n/` and a short allowlist; every catalog key is used; `t()` keys are never built |
 
 What no test can show: how a screen looks, whether Persian copy sounds friendly, whether the pet loop moves the same. Those are the owner's visual check.
 
 ## Section guides
-
-Each folder with its own README owns the rules for that part.
+Each folder README owns the rules for that part.
 
 | Section | README |
 |---|---|
 | UI primitives | `components/ui/README.md` |
 | Shared components | `components/README.md` |
-| Storage, events, motion, toast | `common/README.md` |
+| Storage, events, motion, toast, i18n | `common/README.md` |
 | Hooks, context | `hooks/README.md`, `context/README.md` |
 | Server state | `services/README.md` |
 | Icons | `icons/README.md` |

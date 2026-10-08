@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useEffect } from 'react'
 import confetti from 'canvas-confetti'
 import { Button, Modal } from '@/components/ui'
@@ -34,7 +35,13 @@ export function FreeVipSuccessModal({
 	}
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} size="sm" closeOnBackdropClick>
+		<Modal
+			isOpen={isOpen}
+			onClose={onClose}
+			size="sm"
+			closeOnBackdropClick
+			closeLabel={t('ui.common.close')}
+		>
 			<div className="flex flex-col items-center text-center p-2 space-y-4 select-none">
 				<div className="flex justify-center">
 					<img
@@ -46,11 +53,11 @@ export function FreeVipSuccessModal({
 
 				<div className="space-y-1.5">
 					<h3 className="text-lg font-black text-fg">
-						مبارکه! دسترسی پرو باز شد
+						{t('setting.vipSuccess.title')}
 					</h3>
 					<p className="text-xs text-fg-muted leading-relaxed max-w-xs">
-						پلن رایگان {days} روزه روی حسابت فعال شد. برای اینکه همه‌ی قابلیت‌ها
-						باز بشن، یه بار صفحه رو دوباره باز کن
+						{t('setting.vipSuccess.freePlanLabel')} {days}{' '}
+						{t('setting.vipSuccess.body')}
 					</p>
 				</div>
 
@@ -62,7 +69,7 @@ export function FreeVipSuccessModal({
 						onClick={onClose}
 						className="flex-1 text-xs"
 					>
-						بعدا
+						{t('setting.vipSuccess.later')}
 					</Button>
 					<Button
 						variant="solid"
@@ -73,7 +80,7 @@ export function FreeVipSuccessModal({
 						className="flex-1 text-xs font-bold gap-1.5 shadow-sm"
 					>
 						<Icon name="refresh" size={14} />
-						<span>بارگذاری صفحه</span>
+						<span>{t('setting.vipSuccess.reload')}</span>
 					</Button>
 				</div>
 			</div>

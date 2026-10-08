@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { t } from '@/common/i18n'
 import { Button, ItemSelector } from '@/components/ui'
 import { Icon } from '@/icons'
 import { getFromStorage, setFaviconConsent, setToStorage } from '@/common/storage'
@@ -16,8 +17,7 @@ export const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) =>
 			// @ts-expect-error browser.management type definition in firefox
 			browser.management.uninstallSelf({
 				showConfirmDialog: true,
-				dialogMessage:
-					'برای کارکرد کامل افزونه به این دسترسی‌ها نیاز داریم، می‌خوای افزونه رو حذف کنی؟',
+				dialogMessage: t('home.firefox.uninstallConfirm'),
 			})
 		}
 	}
@@ -37,13 +37,15 @@ export const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) =>
 		<div className="flex flex-col gap-3 text-right">
 			<div className="space-y-1">
 				<div className="flex items-center justify-between">
-					<h3 className="text-xl font-bold text-fg">حریم خصوصی</h3>
+					<h3 className="text-xl font-bold text-fg">
+						{t('home.firefox.privacyTitle')}
+					</h3>
 					<span className="text-2xs font-medium px-2 py-0.5 rounded-lg bg-fill-2 text-fg-muted">
 						Privacy Notice
 					</span>
 				</div>
 				<p className="text-xs text-fg-muted leading-relaxed">
-					تمام تنظیمات در مرورگر خودت ذخیره می‌شن، انتخاب کن کدوم موارد فعال باشن
+					{t('home.firefox.privacyBody')}
 				</p>
 			</div>
 
@@ -51,20 +53,20 @@ export const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) =>
 				<ItemSelector
 					isActive={allowIcon}
 					onClick={() => setAllowIcon(!allowIcon)}
-					label="دریافت آیکون سایت‌ها (Google Favicon)"
-					description="ارسال دامنه سایت به سرویس رسمی گوگل برای نمایش آیکون بوکمارک‌ها"
+					label={t('home.firefox.faviconTitle')}
+					description={t('home.firefox.faviconBody')}
 				/>
 
 				<ItemSelector
 					isActive={allowAnalytics}
 					onClick={() => setAllowAnalytics(!allowAnalytics)}
-					label="ارسال آمار فنی و کارایی (Google Analytics)"
-					description="ارسال داده‌های کاملا ناشناس و بدون اطلاعات هویتی برای رفع باگ‌ها"
+					label={t('home.firefox.analyticsTitle')}
+					description={t('home.firefox.analyticsBody')}
 				/>
 			</div>
 
 			<div className="flex items-center justify-between text-2xs text-fg-muted pt-1">
-				<span>می‌تونی بعداً توی تنظیمات این موارد رو تغییر بدی</span>
+				<span>{t('home.firefox.changeLater')}</span>
 				<a
 					href="https://widgetify.ir/privacy"
 					target="_blank"
@@ -72,7 +74,7 @@ export const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) =>
 					className="flex items-center gap-1 text-brand hover:underline"
 				>
 					<Icon name="externalLink" className="w-3 h-3" />
-					سیاست حریم خصوصی
+					{t('home.firefox.privacyPolicy')}
 				</a>
 			</div>
 
@@ -85,7 +87,7 @@ export const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) =>
 					rounded="2xl"
 					className="flex-1 text-xs"
 				>
-					حذف افزونه
+					{t('home.firefox.removeExtension')}
 				</Button>
 				<Button
 					onClick={handleConfirm}
@@ -94,7 +96,7 @@ export const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) =>
 					rounded="2xl"
 					className="flex-1 text-xs"
 				>
-					تایید و ادامه
+					{t('home.firefox.confirmContinue')}
 				</Button>
 			</div>
 		</div>

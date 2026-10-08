@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
 import { useIsMutating } from '@tanstack/react-query'
 import Analytics from '@/analytics'
@@ -245,7 +246,7 @@ export function BookmarkGrid({
 						setShowEditBookmarkModal(false)
 						setBookmarkToEdit(null)
 					}}
-					message="برای ویرایش بوکمارک اول وارد حسابت شو"
+					message={t('widgets.bookmark.grid.editNeedAuth')}
 				/>
 			) : (
 				<EditBookmarkModal
@@ -268,22 +269,33 @@ export function BookmarkGrid({
 				isOpen={showDeleteConfirmationModal}
 				onClose={handleCancelDelete}
 				onConfirm={handleConfirmDelete}
-				title="حذف بوکمارک؟"
+				title={t('widgets.bookmark.grid.deleteBookmarkTitle')}
 				message={
 					bookmarkToDelete?.type === 'FOLDER' ? (
 						<div>
-							<p>پوشه‌ی «{bookmarkToDelete.title}» حذف بشه؟</p>
+							<p>
+								{t('widgets.bookmark.grid.deleteFolderPrefix')}
+								{bookmarkToDelete.title}
+								{t('widgets.bookmark.grid.deleteFolderSuffix')}
+							</p>
 							<Alert tone="danger" className="mt-2">
-								همه‌ی بوکمارک‌های داخلش هم برای همیشه حذف می‌شن و دیگه
-								برنمی‌گردن
+								{t('widgets.bookmark.grid.deleteFolderBody')}
 							</Alert>
 						</div>
 					) : (
-						<p>بوکمارک «{bookmarkToDelete?.title}» حذف بشه؟</p>
+						<p>
+							{t('widgets.bookmark.grid.deleteBookmarkPrefix')}
+							{bookmarkToDelete?.title}
+							{t('widgets.bookmark.grid.deleteFolderSuffix')}
+						</p>
 					)
 				}
-				confirmText={isRemoving ? 'در حال حذف…' : 'حذف'}
-				cancelText="نه"
+				confirmText={
+					isRemoving
+						? t('widgets.bookmark.grid.deleting')
+						: t('widgets.bookmark.grid.delete')
+				}
+				cancelText={t('widgets.bookmark.grid.deleteCancel')}
 				variant="danger"
 				isLoading={isRemoving}
 			/>

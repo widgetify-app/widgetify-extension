@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useAppearanceSetting } from '@/context/appearance.context'
 import { useTheme } from '@/context/theme.context'
 
@@ -32,7 +33,7 @@ export function MiniAppIframe({
 			ref={ref}
 			src={url}
 			className={`w-full h-full border-none transition-opacity duration-300 ${isAppReady ? 'opacity-100' : 'opacity-0'}`}
-			title={appName ?? 'برنامک'}
+			title={appName ?? t('miniApps.iframe.fallbackName')}
 			allow={allowPermission.join('; ')}
 			sandbox={sandboxPermission.join(' ')}
 		/>

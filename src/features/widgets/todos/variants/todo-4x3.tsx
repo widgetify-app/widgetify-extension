@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { BoardSummary } from '@/features/widgets/components/board-summary'
 import { ExpandableTodoInput } from '../components/expandable-todo-input'
 import { type TodoListProps, TodoListBody } from './todo-2x3'
@@ -30,13 +31,19 @@ export function TodoBoard(props: TodoListProps) {
 
 				{showStats && (
 					<BoardSummary
-						label="خلاصه‌ی تسک‌ها"
+						label={t('widgets.todos.variant4x3.summaryTitle')}
 						percent={percent}
-						percentLabel={`${percent} درصد تسک‌ها انجام شده`}
+						percentLabel={t('widgets.todos.variant4x3.percentDone', {
+							p0: percent,
+						})}
 						stats={[
-							{ label: 'انجام‌شده', value: completed },
-							{ label: 'انجام‌نشده', value: pending },
-							{ label: 'مهم', value: important, className: 'text-danger' },
+							{ label: t('widgets.todos.filter.done'), value: completed },
+							{ label: t('widgets.todos.filter.undone'), value: pending },
+							{
+								label: t('widgets.todos.priority.high'),
+								value: important,
+								className: 'text-danger',
+							},
 						]}
 					/>
 				)}

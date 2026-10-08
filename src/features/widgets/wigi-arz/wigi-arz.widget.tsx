@@ -11,6 +11,7 @@ import type { WigiArzMeta } from './types'
 import { ownsCurrencyList } from './utils/owns-currency-list'
 import { CurrencyCompactSquare } from './variants/wigi-arz-1x1'
 import { WigiArz2x3 } from './variants/wigi-arz-2x3'
+import { t } from '@/common/i18n'
 
 interface WigiArzLayoutProps {
 	size?: WidgetSize
@@ -45,11 +46,13 @@ export function WigiArzLayout({
 	useWidgetSettingsSummary(
 		isCompact
 			? compactCode
-				? `ارز: ${compactCode}`
-				: 'هنوز ارزی انتخاب نشده'
+				? t('widgets.wigiArz.summary.compact', { code: compactCode })
+				: t('widgets.wigiArz.summary.none')
 			: effectiveCurrencies.length
-				? `${effectiveCurrencies.length.toLocaleString('fa-IR')} ارز انتخاب شده`
-				: 'هنوز ارزی انتخاب نشده'
+				? t('widgets.wigiArz.summary.count', {
+						count: effectiveCurrencies.length.toLocaleString('fa-IR'),
+					})
+				: t('widgets.wigiArz.summary.none')
 	)
 
 	const { refresh } = useRefreshCurrencies()
@@ -58,7 +61,7 @@ export function WigiArzLayout({
 		hasPrices && (
 			<PopoverMenuItem
 				icon={<Icon name="refresh" size={14} />}
-				label="به‌روز کن"
+				label={t('widgets.wigiArz.refresh')}
 				onClick={refresh}
 			/>
 		)

@@ -1,5 +1,6 @@
 import { Chip, VipBadge } from '@/components/ui'
 import { cn } from '@/common/utils/cn'
+import { t } from '@/common/i18n'
 import type {
 	WidgetDefinition,
 	WidgetSize,
@@ -30,7 +31,9 @@ export function AddWidgetOptions({
 	if (definition.variants && definition.variants.length > 0) {
 		return (
 			<div className="flex flex-col gap-1.5">
-				<span className="text-xs font-bold text-fg">انتخاب مدل و استایل:</span>
+				<span className="text-xs font-bold text-fg">
+					{t('widgets.catalog.selectVariant')}
+				</span>
 				<div className="flex flex-wrap gap-1.5">
 					{definition.variants.map((variant) => {
 						const isCurrent =
@@ -53,11 +56,12 @@ export function AddWidgetOptions({
 										: 'bg-fill-2 hover:bg-surface-3 text-fg border border-line'
 								)}
 							>
-								<span>{variant.label}</span>
+								<span>{t(variant.label)}</span>
 								{isVipBadge && (
 									<VipBadge
 										size="xs"
 										variant={isCurrent ? 'inverse' : 'subtle'}
+										text={t('ui.vip.pro')}
 									/>
 								)}
 							</button>
@@ -70,7 +74,9 @@ export function AddWidgetOptions({
 
 	return (
 		<div className="flex flex-col gap-1.5">
-			<span className="text-xs font-bold text-fg">انتخاب اندازه ویجت:</span>
+			<span className="text-xs font-bold text-fg">
+				{t('widgets.catalog.selectSize')}
+			</span>
 			<div className="flex flex-wrap gap-1.5">
 				{definition.allowedSizes.map((sizeOption) => {
 					const isCurrentSize =
@@ -98,11 +104,12 @@ export function AddWidgetOptions({
 								<VipBadge
 									size="xs"
 									variant={isCurrentSize ? 'inverse' : 'subtle'}
+									text={t('ui.vip.pro')}
 								/>
 							)}
 							{isDefault && !isCurrentSize && !isVipBadge && (
 								<span className="text-4xs text-fg-muted mr-1">
-									(پیش‌فرض)
+									{t('widgets.catalog.defaultSize')}
 								</span>
 							)}
 						</Chip>

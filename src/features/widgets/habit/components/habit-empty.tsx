@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { callEvent } from '@/common/utils/call-event'
 import { WidgetEmpty } from '@/features/widgets/components/widget-empty'
 
@@ -9,9 +10,9 @@ export function HabitEmpty({ onAdd }: HabitEmptyProps) {
 	return (
 		<WidgetEmpty
 			art="habits"
-			title="یه عادت خوب شروع کن"
-			description="مثلاً روزی ۸ لیوان چای، یا ۲۰ دقیقه مطالعه"
-			action={{ label: 'عادت جدید', onClick: onAdd }}
+			title={t('widgets.habit.empty.title')}
+			description={t('widgets.habit.empty.hint')}
+			action={{ label: t('widgets.habit.empty.cta'), onClick: onAdd }}
 		/>
 	)
 }
@@ -20,9 +21,12 @@ export function HabitSignedOut() {
 	return (
 		<WidgetEmpty
 			art="user"
-			title="عادت‌هات توی حسابته"
-			description="برای دیدنشون وارد حسابت شو"
-			action={{ label: 'ورود', onClick: () => callEvent('openProfile') }}
+			title={t('widgets.habit.empty.authTitle')}
+			description={t('widgets.habit.empty.authHint')}
+			action={{
+				label: t('widgets.habit.empty.authCta'),
+				onClick: () => callEvent('openProfile'),
+			}}
 		/>
 	)
 }

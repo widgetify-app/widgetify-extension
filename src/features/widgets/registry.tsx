@@ -31,7 +31,8 @@ import { type WidgetDefinition, WidgetKeys } from './utils/layout-engine/types'
 export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	[WidgetKeys.search]: {
 		id: WidgetKeys.search,
-		label: 'جستجو',
+		label: 'widgets.registry.search.label',
+
 		emoji: '🔍',
 		icon: 'search',
 		category: 'productivity',
@@ -45,7 +46,8 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	},
 	[WidgetKeys.bookmarks]: {
 		id: WidgetKeys.bookmarks,
-		label: 'بوکمارک‌ها',
+		label: 'widgets.registry.bookmarks.label',
+
 		emoji: '🔖',
 		icon: 'outlineBookmark',
 		category: 'productivity',
@@ -67,8 +69,10 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	},
 	[WidgetKeys.pet]: {
 		id: WidgetKeys.pet,
-		label: 'پت (حیوان خانگی)',
-		menuLabel: 'حیوان خانگی',
+		label: 'widgets.registry.pet.label',
+
+		menuLabel: 'widgets.pet.section.pet',
+
 		emoji: '🐾',
 		icon: 'paw',
 		category: 'lifestyle',
@@ -82,7 +86,8 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	},
 	[WidgetKeys.clock]: {
 		id: WidgetKeys.clock,
-		label: 'ساعت',
+		label: 'widgets.clock.title',
+
 		emoji: '🕒',
 		icon: 'clock',
 		category: 'time',
@@ -94,26 +99,30 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		variants: [
 			{
 				id: 'digital',
-				label: 'ساعت دیجیتال',
+				label: 'widgets.registry.variant.clock.digital',
+
 				size: { w: 2, h: 1 },
 				meta: { variant: 'digital' },
 			},
 			{
 				id: 'flip',
-				label: 'ساعت فیلیپ (ورقه‌ای)',
+				label: 'widgets.registry.variant.clock.flip',
+
 				size: { w: 2, h: 1 },
 				meta: { variant: 'flip' },
 				isVipOnly: true,
 			},
 			{
 				id: 'digital-vertical',
-				label: 'ساعت دیجیتال عمودی',
+				label: 'widgets.registry.variant.clock.digital-vertical',
+
 				size: { w: 1, h: 1 },
 				meta: { variant: 'digital-vertical' },
 			},
 			{
 				id: 'analog',
-				label: 'ساعت آنالوگ',
+				label: 'widgets.registry.variant.clock.analog',
+
 				size: { w: 1, h: 1 },
 				meta: { variant: 'analog' },
 				isVipOnly: true,
@@ -124,7 +133,8 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	},
 	[WidgetKeys.calendar]: {
 		id: WidgetKeys.calendar,
-		label: 'تقویم',
+		label: 'widgets.registry.calendar.label',
+
 		emoji: '📅',
 		icon: 'calendarDays',
 		category: 'time',
@@ -147,7 +157,8 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	},
 	[WidgetKeys.googleCalendar]: {
 		id: WidgetKeys.googleCalendar,
-		label: 'تقویم گوگل',
+		label: 'widgets.registry.googleCalendar.label',
+
 		emoji: '📆',
 		icon: 'googleG',
 		category: 'productivity',
@@ -163,33 +174,38 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		variants: [
 			{
 				id: 'schedule',
-				label: 'تقویم هفتگی و روزانه',
+				label: 'widgets.registry.variant.googleCalendar.schedule',
+
 				size: { w: 2, h: 3 },
 				meta: { variant: 'schedule' },
 			},
 			{
 				id: 'timeline',
-				label: 'تایم‌لاین روزانه',
+				label: 'widgets.registry.variant.googleCalendar.timeline',
+
 				size: { w: 2, h: 3 },
 				meta: { variant: 'timeline' },
 			},
 			{
 				id: 'agenda',
-				label: 'برنامه‌های پیش‌رو',
+				label: 'widgets.registry.variant.googleCalendar.agenda',
+
 				size: { w: 2, h: 3 },
 				isVipOnly: true,
 				meta: { variant: 'agenda' },
 			},
 			{
 				id: 'compact-2x1',
-				label: 'نوار برنامه روزانه',
+				label: 'widgets.registry.variant.googleCalendar.compact-2x1',
+
 				size: { w: 2, h: 1 },
 				isVipOnly: true,
 				meta: { variant: 'compact-2x1' },
 			},
 			{
 				id: 'compact-1x1',
-				label: 'خلاصه سریع رویداد',
+				label: 'widgets.registry.variant.googleCalendar.compact-1x1',
+
 				size: { w: 1, h: 1 },
 				isVipOnly: true,
 				meta: { variant: 'compact-1x1' },
@@ -204,7 +220,8 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	},
 	[WidgetKeys.weather]: {
 		id: WidgetKeys.weather,
-		label: 'آب و هوا',
+		label: 'widgets.registry.weather.label',
+
 		emoji: '🌤️',
 		icon: 'cloudSun',
 		category: 'info',
@@ -223,8 +240,10 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	},
 	[WidgetKeys.comboWidget]: {
 		id: WidgetKeys.comboWidget,
-		label: 'ویجت ترکیبی (ارز و اخبار)',
-		menuLabel: 'ارز و اخبار',
+		label: 'widgets.registry.comboWidget.label',
+
+		menuLabel: 'widgets.combo.menuLabel',
+
 		emoji: '🔗',
 		icon: 'link',
 		category: 'info',
@@ -243,7 +262,8 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	},
 	[WidgetKeys.yadKar]: {
 		id: WidgetKeys.yadKar,
-		label: 'یادکار (وظایف/یادداشت/عادت‌ها)',
+		label: 'widgets.registry.yadKar.label',
+
 		emoji: '📒',
 		icon: 'notebook',
 		category: 'productivity',
@@ -259,7 +279,8 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	},
 	[WidgetKeys.tools]: {
 		id: WidgetKeys.tools,
-		label: 'ابزارها',
+		label: 'widgets.registry.tools.label',
+
 		emoji: '🧰',
 		icon: 'briefcase',
 		category: 'productivity',
@@ -278,7 +299,8 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	},
 	[WidgetKeys.arzLive]: {
 		id: WidgetKeys.arzLive,
-		label: 'ویجی ارز',
+		label: 'widgets.registry.arzLive.label',
+
 		emoji: '💰',
 		icon: 'coin',
 		category: 'info',
@@ -293,13 +315,15 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		variants: [
 			{
 				id: 'list',
-				label: 'لیست قیمت ارزها',
+				label: 'widgets.registry.variant.arzLive.list',
+
 				size: { w: 2, h: 3 },
 				meta: { variant: 'list' },
 			},
 			{
 				id: 'compact',
-				label: 'تک ارز',
+				label: 'widgets.registry.variant.arzLive.compact',
+
 				size: { w: 1, h: 1 },
 				meta: { currencyCode: 'USD', variant: 'compact' },
 				isVipOnly: true,
@@ -314,7 +338,8 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	},
 	[WidgetKeys.news]: {
 		id: WidgetKeys.news,
-		label: 'اخبار',
+		label: 'widgets.registry.news.label',
+
 		emoji: '📰',
 		icon: 'outlineNewspaper',
 		category: 'info',
@@ -328,7 +353,8 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	},
 	[WidgetKeys.network]: {
 		id: WidgetKeys.network,
-		label: 'شبکه',
+		label: 'widgets.registry.network.label',
+
 		emoji: '🌐',
 		icon: 'wifi',
 		category: 'info',
@@ -345,7 +371,8 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	},
 	[WidgetKeys.HabitTracker]: {
 		id: WidgetKeys.HabitTracker,
-		label: 'عادت‌ها',
+		label: 'widgets.registry.HabitTracker.label',
+
 		emoji: '🎯',
 		icon: 'target',
 		category: 'productivity',
@@ -363,7 +390,8 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	},
 	[WidgetKeys.todos]: {
 		id: WidgetKeys.todos,
-		label: 'تسک‌ها',
+		label: 'widgets.registry.todos.label',
+
 		emoji: '✅',
 		icon: 'taskList',
 		category: 'productivity',
@@ -384,7 +412,8 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	},
 	[WidgetKeys.notes]: {
 		id: WidgetKeys.notes,
-		label: 'یادداشت',
+		label: 'widgets.registry.notes.label',
+
 		emoji: '📝',
 		icon: 'edit',
 		category: 'productivity',
@@ -397,20 +426,23 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		variants: [
 			{
 				id: 'list',
-				label: 'لیست یادداشت‌ها',
+				label: 'widgets.registry.variant.notes.list',
+
 				size: { w: 2, h: 3 },
 				meta: { variant: 'list' },
 			},
 			{
 				id: 'sticky',
-				label: 'استیک نوت',
+				label: 'widgets.registry.variant.notes.sticky',
+
 				size: { w: 2, h: 2 },
 				isVipOnly: true,
 				meta: { variant: 'sticky' },
 			},
 			{
 				id: 'board',
-				label: 'دفتر یادداشت',
+				label: 'widgets.registry.variant.notes.board',
+
 				size: { w: 4, h: 3 },
 				isVipOnly: true,
 				meta: { variant: 'board' },
@@ -433,7 +465,8 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	},
 	[WidgetKeys.transparentClock]: {
 		id: WidgetKeys.transparentClock,
-		label: 'ساعت شفاف',
+		label: 'widgets.registry.transparentClock.label',
+
 		emoji: '🕒',
 		icon: 'clock',
 		category: 'time',
@@ -446,13 +479,15 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		variants: [
 			{
 				id: 'persian',
-				label: 'ساعت شفاف فارسی',
+				label: 'widgets.registry.variant.transparentClock.persian',
+
 				size: { w: 2, h: 2 },
 				meta: { variant: 'persian' },
 			},
 			{
 				id: 'english',
-				label: 'ساعت شفاف انگلیسی',
+				label: 'widgets.registry.variant.transparentClock.english',
+
 				size: { w: 2, h: 2 },
 				meta: { variant: 'english' },
 			},
@@ -464,8 +499,10 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	},
 	[WidgetKeys.moodTracker]: {
 		id: WidgetKeys.moodTracker,
-		label: 'حال روزانه (Mood)',
-		menuLabel: 'حال روزانه',
+		label: 'widgets.registry.moodTracker.label',
+
+		menuLabel: 'widgets.moodTracker.aria',
+
 		emoji: '🥰',
 		icon: 'mood',
 		category: 'lifestyle',
@@ -480,7 +517,8 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	},
 	[WidgetKeys.photo]: {
 		id: WidgetKeys.photo,
-		label: 'قاب عکس',
+		label: 'widgets.photo.title',
+
 		emoji: '🖼️',
 		icon: 'image',
 		category: 'lifestyle',
@@ -499,8 +537,10 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	},
 	[WidgetKeys.dotCalendar]: {
 		id: WidgetKeys.dotCalendar,
-		label: 'تقویم نقطه‌ای',
-		menuLabel: 'روزشمار',
+		label: 'widgets.registry.dotCalendar.label',
+
+		menuLabel: 'widgets.registry.dotCalendar.menuLabel',
+
 		emoji: '⏳',
 		icon: 'calendarRange',
 		category: 'time',
@@ -512,26 +552,30 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		variants: [
 			{
 				id: 'year',
-				label: 'روزهای سال',
+				label: 'widgets.registry.variant.dotCalendar.year',
+
 				size: { w: 2, h: 2 },
 				meta: { variant: 'year' },
 			},
 			{
 				id: 'year-count',
-				label: 'روزهای سال (عددی)',
+				label: 'widgets.registry.variant.dotCalendar.year-count',
+
 				size: { w: 2, h: 1 },
 				meta: { variant: 'year' },
 			},
 			{
 				id: 'goal',
-				label: 'روزشمار هدف',
+				label: 'widgets.registry.variant.dotCalendar.goal',
+
 				size: { w: 2, h: 2 },
 				meta: { variant: 'goal' },
 				isVipOnly: true,
 			},
 			{
 				id: 'goal-count',
-				label: 'روزشمار هدف (عددی)',
+				label: 'widgets.registry.variant.dotCalendar.goal-count',
+
 				size: { w: 2, h: 1 },
 				meta: { variant: 'goal' },
 				isVipOnly: true,

@@ -1,11 +1,12 @@
+import { t } from '@/common/i18n'
 import type { YadkarTab } from './types'
 
 export const DEFAULT_YADKAR_TAB: YadkarTab = 'todos'
 
 export const YADKAR_TAB_LIST: { id: YadkarTab; label: string }[] = [
-	{ id: 'todos', label: 'تسک' },
-	{ id: 'notes', label: 'یادداشت' },
-	{ id: 'habits', label: 'عادت' },
+	{ id: 'todos', label: t('widgets.yadkar.tab.todos') },
+	{ id: 'notes', label: t('widgets.yadkar.tab.notes') },
+	{ id: 'habits', label: t('widgets.yadkar.tab.habits') },
 ]
 
 export const YADKAR_TABS: YadkarTab[] = YADKAR_TAB_LIST.map((tab) => tab.id)

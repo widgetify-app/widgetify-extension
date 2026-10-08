@@ -1,5 +1,6 @@
 import moment from 'jalali-moment'
 import type React from 'react'
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { useKeyboardFocusWithin } from '@/features/widgets/hooks/use-keyboard-focus-within'
 import { Icon, type IconName } from '@/icons'
@@ -24,7 +25,7 @@ export const NoteItem: React.FC<NoteItemProps> = ({
 	const keyboardFocus = useKeyboardFocusWithin()
 
 	const createdAt = moment(note.createdAt).locale('fa')
-	const title = note.title || 'بدون عنوان'
+	const title = note.title || t('widgets.notes.untitledShort')
 
 	return (
 		<article
@@ -37,7 +38,7 @@ export const NoteItem: React.FC<NoteItemProps> = ({
 			<button
 				type="button"
 				onClick={() => onSelect(note.id)}
-				aria-label={`باز کردن یادداشت ${title}`}
+				aria-label={t('widgets.notes.openAria', { title })}
 				aria-current={isSelected || undefined}
 				className="flex items-start flex-1 min-w-0 gap-2.5 p-2 rounded-xl cursor-pointer text-start focus-visible:focus-ring"
 			>
@@ -82,13 +83,13 @@ export const NoteItem: React.FC<NoteItemProps> = ({
 					{onEdit && (
 						<RowButton
 							icon="edit"
-							label="ویرایش یادداشت"
+							label={t('widgets.notes.edit')}
 							onClick={() => onEdit(note.id)}
 						/>
 					)}
 					<RowButton
 						icon="trash"
-						label="حذف یادداشت"
+						label={t('widgets.notes.delete')}
 						onClick={() => onDelete(note.id)}
 						isDanger
 					/>

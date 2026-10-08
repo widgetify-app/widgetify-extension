@@ -1,6 +1,7 @@
 import type jalaliMoment from 'jalali-moment'
 import { useRef } from 'react'
 import { moodOptions } from '@/common/constants/moods'
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import type { FetchedAllEvents } from '@/services/date/get-events.hook'
 import type { MoodEntry } from '@/services/mood-log/get-moods.hook'
@@ -51,12 +52,14 @@ export function DayItem({
 
 	const label = [
 		cellDate.format('dddd jD jMMMM jYYYY'),
-		isHoliday && 'تعطیل',
-		display.showEvents && eventCount > 0 && `${eventCount} مناسبت`,
-		dayMood && `حال روز: ${dayMood.label}`,
+		isHoliday && t('widgets.calendar.holiday'),
+		display.showEvents &&
+			eventCount > 0 &&
+			t('widgets.calendar.eventCount', { count: eventCount }),
+		dayMood && t('widgets.calendar.moodDay', { mood: t(dayMood.labelKey) }),
 	]
 		.filter(Boolean)
-		.join('، ')
+		.join(t('ui.date.headingSep'))
 
 	function onClickHandler() {
 		if (dayRef.current) {

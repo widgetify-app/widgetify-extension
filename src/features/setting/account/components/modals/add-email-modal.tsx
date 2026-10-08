@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Button, Modal } from '@/components/ui'
 import { TextInput } from '@/components/ui'
 import { isEmpty, isLessThan } from '@/features/setting/account/utils/validators'
@@ -8,6 +9,7 @@ import {
 import { safeAwait } from '@/services/api'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
+import { t } from '@/common/i18n'
 import InputTextError from '../input-text-error'
 import OtpInput from '../otp-input'
 
@@ -44,7 +46,7 @@ export function AddEmailModal(prop: AddPhoneProp) {
 			if (isEmpty(email))
 				return setError((prev) => ({
 					...prev,
-					email: 'ایمیلت رو بنویس',
+					email: t('setting.modal.email.required'),
 				}))
 			const [err, _] = await safeAwait(requestChange(email))
 			if (err) {
@@ -59,7 +61,7 @@ export function AddEmailModal(prop: AddPhoneProp) {
 			if (isEmpty(otpCode) || isLessThan(otpCode, 6))
 				return setError((prev) => ({
 					...prev,
-					otp: 'کدی که برات فرستادیم رو بنویس',
+					otp: t('setting.modal.email.otpRequired'),
 				}))
 
 			const [err, _] = await safeAwait(
@@ -75,7 +77,7 @@ export function AddEmailModal(prop: AddPhoneProp) {
 					phone: null,
 				})
 			} else {
-				showToast('ایمیلت اضافه شد', 'success')
+				showToast(t('setting.modal.email.successToast'), 'success')
 				prop.onClose('success')
 			}
 		}
@@ -83,15 +85,15 @@ export function AddEmailModal(prop: AddPhoneProp) {
 
 	return (
 		<Modal
-			title="اضافه کردن ایمیل"
+			title={t('setting.modal.email.title')}
 			isOpen={prop.show}
 			onClose={() => prop.onClose('cancel')}
+			closeLabel={t('ui.common.close')}
 		>
 			<section>
 				<div>
 					<p className="text-xs text-fg-muted mt-0.5">
-						با ایمیل، اگه رمزت یادت رفت می‌تونی برگردونیش و حسابت هم امن‌تر
-						می‌شه.
+						{t('setting.modal.email.body')}
 					</p>
 				</div>
 
@@ -104,7 +106,7 @@ export function AddEmailModal(prop: AddPhoneProp) {
 							htmlFor="email"
 							className="block mb-1 md:mb-1.5 text-xs md:text-sm font-semibold text-fg"
 						>
-							ایمیل
+							{t('setting.modal.email.label')}
 						</label>
 
 						<TextInput
@@ -124,7 +126,7 @@ export function AddEmailModal(prop: AddPhoneProp) {
 					{step === 'enter-code' && (
 						<div>
 							<p className="block mb-2 md:mb-2.5 text-xs md:text-sm font-semibold text-fg">
-								کد تایید
+								{t('setting.modal.email.otpLabel')}
 							</p>
 
 							<OtpInput
@@ -145,7 +147,9 @@ export function AddEmailModal(prop: AddPhoneProp) {
 						className="text-base"
 					>
 						<span className="transition-transform duration-200 group-hover:scale-105">
-							{step === 'enter-code' ? 'تایید' : 'ادامه'}
+							{step === 'enter-code'
+								? t('setting.modal.email.confirm')
+								: t('setting.modal.email.continue')}
 						</span>
 					</Button>
 				</form>

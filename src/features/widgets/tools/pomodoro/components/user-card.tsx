@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useAuth } from '@/context/auth.context'
 import { useSendFriendRequest } from '@/services/friends/friend-service.hook'
 import { translateError } from '@/common/utils/translate-error'
@@ -24,7 +25,7 @@ export function UserCard({ user, className = '' }: UserCardProps) {
 			{ username: user.username },
 			{
 				onSuccess: () => {
-					showToast('درخواست دوستی فرستاده شد', 'success')
+					showToast(t('widgets.pomodoro.userCard.requestSentToast'), 'success')
 				},
 				onError: (err) => {
 					const message = translateError(err)
@@ -66,11 +67,13 @@ export function UserCard({ user, className = '' }: UserCardProps) {
 												className="flex items-center text-3xs!"
 												color="brand"
 												loading={isSending}
-												loadingText="در حال ارسال…"
+												loadingText={t(
+													'widgets.pomodoro.userCard.sending'
+												)}
 												onClick={() => onAddClick()}
 											>
 												<Icon name="usersPlus" size={14} />
-												درخواست
+												{t('widgets.pomodoro.userCard.request')}
 											</Button>
 										)}
 
@@ -80,7 +83,7 @@ export function UserCard({ user, className = '' }: UserCardProps) {
 													'text-sm text-fg opacity-70 bg-glass-surface-2 rounded-2xl px-1'
 												}
 											>
-												ارسال شده
+												{t('widgets.pomodoro.userCard.sent')}
 											</p>
 										)}
 									</div>

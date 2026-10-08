@@ -5,6 +5,7 @@ import { useGetNotifications } from '@/services/extension/get-notifications.hook
 import { NotificationCenter } from '@/features/navbar/notifications/components/notification-center'
 import Analytics from '@/analytics'
 import { NavIconButton } from '../components/nav-icon-button'
+import { t } from '@/common/i18n'
 
 export function NotificationNavbar() {
 	const { data: notificationsData } = useGetNotifications()
@@ -27,7 +28,9 @@ export function NotificationNavbar() {
 					id="notifications-button"
 					icon="notification"
 					label={
-						hasCloseableNotifications ? 'اعلان‌ها، اعلان جدید داری' : 'اعلان‌ها'
+						hasCloseableNotifications
+							? t('navbar.notifications.new')
+							: t('navbar.notifications.label')
 					}
 					onClick={handleOpen}
 				>
@@ -39,7 +42,9 @@ export function NotificationNavbar() {
 				<div className="sticky top-0 z-10 flex items-center justify-between pb-1 mb-2 border-b border-line shrink-0">
 					<div className="flex items-center gap-1.5 text-fg">
 						<Icon name="notification" size={14} />
-						<span className="text-xs font-bold">اعلان‌ها</span>
+						<span className="text-xs font-bold">
+							{t('navbar.notifications.label')}
+						</span>
 					</div>
 				</div>
 

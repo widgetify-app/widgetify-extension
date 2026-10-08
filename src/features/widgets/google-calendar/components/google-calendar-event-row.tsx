@@ -1,4 +1,5 @@
 import type React from 'react'
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { useKeyboardFocusWithin } from '@/features/widgets/hooks/use-keyboard-focus-within'
 import { Icon } from '@/icons'
@@ -29,9 +30,9 @@ export const GoogleCalendarEventRow: React.FC<GoogleCalendarEventRowProps> = ({
 		minsRemaining,
 	} = classified
 	const hasAction = !!(event.hangoutLink || event.location)
-	const title = event.summary || 'بدون عنوان'
+	const title = event.summary || t('widgets.googleCalendar.untitled')
 	const subtitle = isNow
-		? `الان · ${minsRemaining} دقیقه مونده`
+		? t('widgets.googleCalendar.nowRemaining', { mins: minsRemaining })
 		: event.location || durationLabel
 
 	return (
@@ -49,8 +50,12 @@ export const GoogleCalendarEventRow: React.FC<GoogleCalendarEventRowProps> = ({
 				onClick={() => hasAction && onEventClick(event)}
 				aria-label={
 					isAllDay
-						? `${title}، تمام روز`
-						: `${title}، ${startTimeStr} تا ${endTimeStr}`
+						? t('widgets.googleCalendar.allDayAria', { title })
+						: t('widgets.googleCalendar.rangeAria', {
+								title,
+								start: startTimeStr,
+								end: endTimeStr,
+							})
 				}
 				className={cn(
 					'flex items-center flex-1 min-w-0 gap-2.5 py-1 text-start rounded-lg focus-visible:focus-ring',
@@ -59,7 +64,9 @@ export const GoogleCalendarEventRow: React.FC<GoogleCalendarEventRowProps> = ({
 			>
 				<span className="flex flex-col w-9.5 shrink-0 leading-tight tabular-nums">
 					{isAllDay ? (
-						<span className="font-bold text-3xs text-brand">تمام روز</span>
+						<span className="font-bold text-3xs text-brand">
+							{t('widgets.googleCalendar.allDay')}
+						</span>
 					) : (
 						<>
 							<time
@@ -106,7 +113,7 @@ export const GoogleCalendarEventRow: React.FC<GoogleCalendarEventRowProps> = ({
 					className="inline-flex items-center h-6 gap-1 px-2 font-bold rounded-lg cursor-pointer shrink-0 bg-brand text-on-brand text-3xs transition-ui hover:bg-brand-hover focus-visible:focus-ring"
 				>
 					<Icon name="videoCamera" size={12} aria-hidden="true" />
-					ورود
+					{t('widgets.googleCalendar.action.login')}
 				</button>
 			)}
 		</div>

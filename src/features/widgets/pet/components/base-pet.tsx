@@ -1,4 +1,5 @@
 import { memo, useState } from 'react'
+import { t } from '@/common/i18n'
 import { PetTooltip } from './pet-tooltip'
 import { cn } from '@/common/utils/cn'
 import type { CollectibleItem, PetAssets, PetDimensions } from '../types'
@@ -77,7 +78,7 @@ export const BasePetContainer = memo(function BasePetContainer({
 		<button
 			type="button"
 			ref={containerRef}
-			aria-label={`غذا دادن به ${name}`}
+			aria-label={t('widgets.pet.feedAria', { name })}
 			className={cn(
 				'absolute top-0 bottom-0 flex w-full overflow-hidden focus-visible:focus-ring',
 				className
@@ -105,7 +106,7 @@ export const BasePetContainer = memo(function BasePetContainer({
 					{showToolTip && (
 						<PetTooltip
 							direction={direction}
-							content={isHungry ? 'غذاااا بدهه' : name}
+							content={isHungry ? t('widgets.pet.hungryBubble') : name}
 							emoji={isHungry ? '🍽️' : undefined}
 							isAnimation={isHungry}
 							placement={airborne ? 'bottom' : 'top'}

@@ -1,4 +1,5 @@
 import type React from 'react'
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
 
@@ -14,7 +15,10 @@ export const PetHud: React.FC<PetHudProps> = ({ level }) => {
 	return (
 		<div
 			role="img"
-			aria-label={`سیری: ${filled} از ${HEART_COUNT}`}
+			aria-label={t('widgets.pet.hungerAria', {
+				filled,
+				total: HEART_COUNT,
+			})}
 			className="z-10 flex items-center gap-0.5 drop-shadow-[0_1px_1px_rgba(0,0,0,0.55)]"
 		>
 			{Array.from({ length: HEART_COUNT }, (_, i) => (

@@ -1,3 +1,5 @@
+import { t } from '@/common/i18n'
+
 export function formatUpdatedAt(timestamp: number): string | null {
 	if (!timestamp) return null
 
@@ -6,5 +8,5 @@ export function formatUpdatedAt(timestamp: number): string | null {
 		minute: '2-digit',
 		hourCycle: 'h23',
 	})
-	return `به‌روز ${time}`
+	return t('widgets.updatedAt', { time })
 }

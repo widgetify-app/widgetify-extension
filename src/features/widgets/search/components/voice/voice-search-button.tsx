@@ -1,4 +1,5 @@
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { Tooltip } from '@/components/ui'
 
 export function VoiceSearchButton({ onClick }: { onClick: () => void }) {
@@ -8,11 +9,11 @@ export function VoiceSearchButton({ onClick }: { onClick: () => void }) {
 	}
 
 	return (
-		<Tooltip content="جستجوی صوتی">
+		<Tooltip content={t('widgets.search.voice.tooltip')}>
 			<button
 				type="button"
 				onClick={onClickHandle}
-				aria-label="جستجوی صوتی"
+				aria-label={t('widgets.search.voice.aria')}
 				className="grid rounded-lg cursor-pointer size-7 place-items-center shrink-0 text-fg-muted transition-ui hover:bg-fill-2 hover:text-fg-strong focus-visible:focus-ring"
 			>
 				<svg

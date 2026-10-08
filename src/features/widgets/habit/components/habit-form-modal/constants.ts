@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import type { CreateHabitInput } from '@/services/habit/habit.interface'
 import {
 	HabitComparison,
@@ -16,11 +17,11 @@ export interface HabitPresetItem {
 export const HABIT_QUICK_PRESETS: HabitPresetItem[] = [
 	{
 		id: 'water',
-		label: '۸ لیوان آب',
+		label: t('widgets.habit.preset.waterGoal'),
 		emoji: '💧',
 		color: '#3b82f6',
 		values: {
-			title: 'نوشیدن آب',
+			title: t('widgets.habit.preset.waterTitle'),
 			emoji: '💧',
 			color: '#3b82f6',
 			comparison: HabitComparison.AT_LEAST,
@@ -32,16 +33,16 @@ export const HABIT_QUICK_PRESETS: HabitPresetItem[] = [
 	},
 	{
 		id: 'walk',
-		label: '۳ کیلومتر پیاده‌روی',
+		label: t('widgets.habit.preset.walkGoal'),
 		emoji: '🏃',
 		color: '#f97316',
 		values: {
-			title: 'پیاده‌روی',
+			title: t('widgets.habit.preset.walkTitle'),
 			emoji: '🏃',
 			color: '#f97316',
 			comparison: HabitComparison.AT_LEAST,
 			unit: HabitUnit.CUSTOM,
-			customUnit: 'کیلومتر',
+			customUnit: t('widgets.habit.preset.walkUnit'),
 			target: 3,
 			frequency: HabitFrequency.DAILY,
 			frequencyCount: 1,
@@ -49,11 +50,11 @@ export const HABIT_QUICK_PRESETS: HabitPresetItem[] = [
 	},
 	{
 		id: 'book',
-		label: '۲۰ صفحه کتاب',
+		label: t('widgets.habit.preset.bookGoal'),
 		emoji: '📖',
 		color: '#06b6d4',
 		values: {
-			title: 'مطالعه کتاب',
+			title: t('widgets.habit.preset.bookTitle'),
 			emoji: '📖',
 			color: '#06b6d4',
 			comparison: HabitComparison.AT_LEAST,
@@ -65,11 +66,11 @@ export const HABIT_QUICK_PRESETS: HabitPresetItem[] = [
 	},
 	{
 		id: 'meditation',
-		label: 'مدیتیشن',
+		label: t('widgets.habit.preset.meditationTitle'),
 		emoji: '🧘',
 		color: '#8b5cf6',
 		values: {
-			title: 'مدیتیشن و تنفس',
+			title: t('widgets.habit.preset.meditationDesc'),
 			emoji: '🧘',
 			color: '#8b5cf6',
 			comparison: HabitComparison.AT_LEAST,
@@ -90,22 +91,22 @@ interface EmojiCategory {
 export const HABIT_EMOJI_CATEGORIES: EmojiCategory[] = [
 	{
 		id: 'health',
-		label: 'سلامتی',
+		label: t('widgets.habit.preset.categoryHealth'),
 		emojis: ['💧', '🥗', '💊', '😴', '🧘', '🦷', '🚭'],
 	},
 	{
 		id: 'sport',
-		label: 'ورزش',
+		label: t('widgets.habit.preset.categorySport'),
 		emojis: ['🏃', '🚴', '🏋️', '🏊', '⚽', '🤸', '🧗'],
 	},
 	{
 		id: 'study',
-		label: 'مطالعه',
+		label: t('widgets.habit.preset.categoryStudy'),
 		emojis: ['📖', '✍️', '💻', '🎨', '🧠', '🎧', '🎯'],
 	},
 	{
 		id: 'lifestyle',
-		label: 'سبک زندگی',
+		label: t('widgets.habit.preset.categoryLifestyle'),
 		emojis: ['☕', '🍵', '🧹', '🪴', '🍎', '🚶', '✨'],
 	},
 ]

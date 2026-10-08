@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { HABIT_UNIT_STEP } from '@/features/widgets/habit/constants'
 import { HabitComparison, type Habit } from '@/services/habit/habit.interface'
 
@@ -17,7 +18,7 @@ export function resolveHabitStep(habit: Habit, currentValue: number): HabitStep 
 	if (habit.comparison === HabitComparison.AT_MOST) {
 		return {
 			amount: 0,
-			blockedMessage: `به سقف هدفت (${target}) رسیدی`,
+			blockedMessage: t('widgets.habit.goal.ceilingReached', { p0: target }),
 		}
 	}
 

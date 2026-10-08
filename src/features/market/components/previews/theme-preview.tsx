@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useMemo } from 'react'
 import type { StoredWallpaper, Wallpaper } from '@/common/types/wallpaper.interface'
 import { cn } from '@/common/utils/cn'
@@ -51,7 +52,7 @@ export function ThemePreview({ theme }: { theme: string }) {
 				</span>
 				<span className="flex flex-col items-center justify-center flex-1 gap-[8%] rounded-lg bg-surface backdrop-glass shadow-md">
 					<span className="font-bold leading-none text-fg-strong text-[8.5cqw] tabular-nums">
-						۱۲:۴۵
+						{t('market.preview.theme.clockSample')}
 					</span>
 					<span className="rounded-full w-[18cqw] h-[4.6cqw] bg-brand" />
 				</span>

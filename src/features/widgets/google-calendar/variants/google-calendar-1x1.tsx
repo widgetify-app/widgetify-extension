@@ -1,4 +1,5 @@
 import type React from 'react'
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { WidgetError } from '@/features/widgets/components/widget-error'
 import { WidgetCenteredHeader } from '@/features/widgets/components/widget-header'
@@ -18,7 +19,9 @@ export const GoogleCalendar1x1: React.FC<GoogleCalendar1x1Props> = (props) => {
 	const target = currentOrNextEvent(props.classifiedEvents)
 	const timeLeft =
 		!props.isLoading && !props.isError && target?.isNow
-			? `${target.minsRemaining} دقیقه مونده`
+			? t('widgets.googleCalendar.minsRemaining', {
+					mins: target.minsRemaining,
+				})
 			: null
 
 	return (
@@ -28,7 +31,7 @@ export const GoogleCalendar1x1: React.FC<GoogleCalendar1x1Props> = (props) => {
 					timeLeft ? (
 						<span className="text-brand">{timeLeft}</span>
 					) : (
-						'جلسه‌ی بعدی'
+						t('widgets.googleCalendar.nextMeeting')
 					)
 				}
 			/>
@@ -65,7 +68,7 @@ function GoogleCalendar1x1Content({
 	if (isError) {
 		return (
 			<WidgetError
-				message="نتونستیم برنامه‌هات رو بیاریم"
+				message={t('widgets.googleCalendar.loadError')}
 				compact
 				onRetry={onRetry}
 			/>
@@ -75,22 +78,32 @@ function GoogleCalendar1x1Content({
 	if (!target) {
 		return (
 			<div className="flex flex-col items-center justify-center h-full gap-0.5 text-center">
-				<span className="text-sm font-bold text-fg-strong">برنامه‌ای نداری</span>
-				<span className="text-2xs text-fg-muted">امروز آزادی</span>
+				<span className="text-sm font-bold text-fg-strong">
+					{t('widgets.googleCalendar.noPlan')}
+				</span>
+				<span className="text-2xs text-fg-muted">
+					{t('widgets.googleCalendar.freeToday')}
+				</span>
 			</div>
 		)
 	}
 
 	const { event, isNow, start, startTimeStr } = target
 	const hasAction = !!(event.hangoutLink || event.location)
-	const title = event.summary || 'بدون عنوان'
+	const title = event.summary || t('widgets.googleCalendar.untitled')
 
 	return (
 		<button
 			type="button"
 			aria-disabled={!hasAction}
 			onClick={() => hasAction && onEventClick(event)}
-			aria-label={`${isNow ? 'جلسه‌ی الان' : 'جلسه‌ی بعدی'}: ${title}، ${startTimeStr}`}
+			aria-label={t('widgets.googleCalendar.meetingAria', {
+				kind: isNow
+					? t('widgets.googleCalendar.nowMeeting')
+					: t('widgets.googleCalendar.nextMeeting'),
+				title,
+				start: startTimeStr,
+			})}
 			className={cn(
 				'flex flex-col items-center justify-center w-full h-full gap-1 text-center rounded-lg focus-visible:focus-ring',
 				hasAction ? 'cursor-pointer' : 'cursor-default'

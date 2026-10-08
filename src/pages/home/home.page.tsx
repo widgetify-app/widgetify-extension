@@ -1,4 +1,5 @@
 import { HomeContentCustom } from './components/home-content-custom'
+import { t } from '@/common/i18n'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { ConfigKey } from '@/common/constants/config-keys'
 import { ExtensionInstalledModal } from './components/extension-installed-modal'
@@ -14,18 +15,22 @@ const steps: Step[] = [
 		target: '#chrome-footer',
 		content: (
 			<div className="flex flex-col gap-2 text-center">
-				<h4 className="text-sm font-black text-brand">خلوت کردن فضای مرورگر</h4>
+				<h4 className="text-sm font-black text-brand">
+					{t('home.tour.step1.title')}
+				</h4>
 
 				<p className="text-xs leading-5 text-fg-muted font-medium">
-					برای مخفی کردن این نوار، کافیه روش{' '}
-					<span className="font-black text-danger">راست‌کلیک</span> کنی و این
-					گزینه رو بزنی:
+					{t('home.tour.step1.bodyBefore')}{' '}
+					<span className="font-black text-danger">
+						{t('home.tour.step1.rightClick')}
+					</span>{' '}
+					{t('home.tour.step1.bodyAfter')}
 				</p>
 
 				<div className="relative overflow-hidden border rounded-xl border-line">
 					<img
 						src="https://cdn.widgetify.ir/extension/how-to-disable-footer.png"
-						alt="نحوه مخفی کردن نوار پایین مرورگر"
+						alt={t('home.tour.step1.imageAlt')}
 						className="object-cover w-full shadow-md rounded-xl"
 					/>
 				</div>
@@ -53,21 +58,18 @@ const steps: Step[] = [
 					/>
 				</div>
 				<p className="text-xs leading-relaxed text-fg font-medium">
-					برای تغییر اندازه، جابه‌جایی، تغییر استایل، کپی یا حذف هر ویجت، کافیه
-					روش راست‌کلیک کنی تا منوش باز بشه
+					{t('home.tour.step2.body')}
 				</p>
 			</div>
 		),
 	},
 	{
 		target: '#layout-menu-button',
-		content:
-			'از این بخش می‌تونی ویجت جدید اضافه کنی، وارد حالت ویرایش بشی، ظاهر صفحه رو شخصی‌سازی کنی یا تصویر زمینه رو تغییر بدی',
+		content: t('home.tour.step3.body'),
 	},
 	{
 		target: '#profile-button',
-		content:
-			'از این منو می‌تونی به پروفایل، تنظیمات کلی، فروشگاه، اشتراک پرو و مدیریت محیط کارها دسترسی داشته باشی',
+		content: t('home.tour.step4.body'),
 	},
 ]
 
@@ -146,12 +148,12 @@ export function HomePage() {
 				continuous
 				tooltipComponent={TourTooltip}
 				locale={{
-					back: 'قبلی',
-					close: 'بستن',
-					last: 'پایان',
-					next: 'بعدی',
-					nextWithProgress: 'بعدی',
-					skip: 'رد کردن',
+					back: t('home.tour.prev'),
+					close: t('home.tour.close'),
+					last: t('home.tour.finish'),
+					next: t('home.tour.next'),
+					nextWithProgress: t('home.tour.next'),
+					skip: t('home.tour.skip'),
 				}}
 				options={{
 					showProgress: true,

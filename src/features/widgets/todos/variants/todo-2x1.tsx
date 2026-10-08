@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import jalaliMoment from 'jalali-moment'
 import { type ReactNode, useState } from 'react'
 import Analytics from '@/analytics'
@@ -73,9 +74,12 @@ function TodoCompactContent({
 		return (
 			<WidgetCompactEmpty
 				icon="user"
-				title="تسک‌هات توی حسابته"
-				description="برای دیدنشون وارد شو"
-				action={{ label: 'ورود', onClick: () => callEvent('openProfile') }}
+				title={t('widgets.todos.variant2x1.authTitle')}
+				description={t('widgets.todos.variant2x1.authHint')}
+				action={{
+					label: t('widgets.todos.variant2x1.authCta'),
+					onClick: () => callEvent('openProfile'),
+				}}
 			/>
 		)
 	}
@@ -94,7 +98,11 @@ function TodoCompactContent({
 
 	if (isError) {
 		return (
-			<WidgetError message="نتونستیم تسک‌ها رو بیاریم" compact onRetry={onRefresh} />
+			<WidgetError
+				message={t('widgets.todos.variant2x1.loadError')}
+				compact
+				onRetry={onRefresh}
+			/>
 		)
 	}
 
@@ -102,9 +110,12 @@ function TodoCompactContent({
 		return (
 			<WidgetCompactEmpty
 				icon="check"
-				title="هنوز تسکی نداری"
-				description="یه کار برای امروز بنویس"
-				action={{ label: 'تسک جدید', onClick: onAdd }}
+				title={t('widgets.todos.empty.title')}
+				description={t('widgets.todos.variant2x1.emptyHint')}
+				action={{
+					label: t('widgets.todos.input.newTask'),
+					onClick: onAdd,
+				}}
 			/>
 		)
 	}
@@ -136,7 +147,7 @@ function TodoCompactContent({
 
 	const openCurrent = () => {
 		if (isTemp) {
-			showToast('این تسک هنوز ذخیره نشده، یه لحظه صبر کن', 'error')
+			showToast(t('widgets.todos.item.notSavedYet'), 'error')
 			return
 		}
 		onOpen(current)
@@ -150,7 +161,13 @@ function TodoCompactContent({
 	const dueLabel = isDone
 		? null
 		: todoDueLabel(parseTodoDate(current.date), jalaliMoment())
-	const subtitle = [dueLabel, `${index + 1} از ${Math.max(total, todos.length)}`]
+	const subtitle = [
+		dueLabel,
+		t('widgets.todos.variant2x1.progressOf', {
+			p0: index + 1,
+			p1: Math.max(total, todos.length),
+		}),
+	]
 		.filter(Boolean)
 		.join(' · ')
 
@@ -190,8 +207,8 @@ function TodoCompactContent({
 			</div>
 
 			<CompactPager
-				previousLabel="تسک قبلی"
-				nextLabel="تسک بعدی"
+				previousLabel={t('widgets.todos.variant2x1.prev')}
+				nextLabel={t('widgets.todos.variant2x1.next')}
 				onPrevious={() => setCurrentId(todos[index - 1].id)}
 				onNext={goNext}
 				isPreviousDisabled={index === 0}

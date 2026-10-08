@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Modal } from '@/components/ui'
+import { t, type MessageKey } from '@/common/i18n'
 import {
 	useGetOccupations,
 	useGetInterests,
@@ -20,6 +21,16 @@ enum ReferralSource {
 	Friends = 'friends',
 	SearchOther = 'search_other',
 }
+
+const REFERRAL_SOURCE_OPTIONS: {
+	value: ReferralSource
+	labelKey: MessageKey
+}[] = [
+	{ value: ReferralSource.Social, labelKey: 'navbar.wizard.sourceSocial' },
+	{ value: ReferralSource.Youtube, labelKey: 'navbar.wizard.sourceYoutube' },
+	{ value: ReferralSource.Friends, labelKey: 'navbar.wizard.sourceFriends' },
+	{ value: ReferralSource.SearchOther, labelKey: 'navbar.wizard.sourceOther' },
+]
 
 interface WelcomeWizardProps {
 	isOpen: boolean
@@ -85,7 +96,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 			selectedInterests.length === 0 ||
 			!selectedReferralSource
 		) {
-			showToast('یه مرحله جا مونده، همه رو کامل کن', 'error')
+			showToast(t('navbar.wizard.oneStepLeft'), 'error')
 			return
 		}
 
@@ -98,7 +109,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 			})
 		)
 		if (err) {
-			showToast('نتونستیم اطلاعاتت رو ثبت کنیم، دوباره امتحان کن', 'error')
+			showToast(t('navbar.wizard.saveFailed'), 'error')
 			Analytics.event('welcome_wizard_completion_failed')
 			return
 		}
@@ -115,11 +126,10 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 						<div className="flex flex-col items-center justify-center w-full p-8 text-center md:w-1/2 md:p-12">
 							<div className="mb-10 space-y-4">
 								<h2 className="text-2xl font-black text-fg">
-									خوش اومدی!
+									{t('navbar.wizard.welcomeTitle')}
 								</h2>
 								<p className="text-sm font-medium leading-loose opacity-70">
-									خیلی خوشحالیم که اینجایی. بیا با هم پروفایلت رو کامل
-									کنیم تا تجربه بهتری داشته باشی.
+									{t('navbar.wizard.welcomeBody')}
 								</p>
 							</div>
 							<Button
@@ -129,7 +139,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 								color={'brand'}
 								rounded={'2xl'}
 							>
-								بزن بریم
+								{t('navbar.wizard.letsGo')}
 							</Button>
 						</div>
 						<StepImage
@@ -146,16 +156,16 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 							<div className="w-full">
 								<div className="mb-6 text-right">
 									<h2 className="mb-2 text-2xl font-black text-fg">
-										چه کاره‌ای؟
+										{t('navbar.wizard.occupationTitle')}
 									</h2>
 									<p className="text-sm font-medium opacity-60">
-										حرفه‌ات رو انتخاب کن
+										{t('navbar.wizard.occupationBody')}
 									</p>
 								</div>
 								<div className="flex flex-wrap gap-2 overflow-y-auto max-h-75 scrollbar-none">
 									{occupationsLoading ? (
 										<div className="col-span-2 py-10 text-center animate-pulse">
-											یه لحظه…
+											{t('navbar.wizard.moment')}
 										</div>
 									) : (
 										occupations?.map((job) => {
@@ -185,7 +195,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 									color={'brand'}
 									rounded={'2xl'}
 								>
-									تایید و ادامه
+									{t('navbar.wizard.confirmContinue')}
 								</Button>
 							</div>
 						</div>
@@ -203,16 +213,16 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 							<div className="w-full">
 								<div className="mb-6 text-right">
 									<h2 className="mb-2 text-2xl font-black text-fg">
-										به چی علاقه داری؟
+										{t('navbar.wizard.interestsTitle')}
 									</h2>
 									<p className="text-sm font-medium opacity-60">
-										هر تعداد که دوست داری انتخاب کن
+										{t('navbar.wizard.interestsBody')}
 									</p>
 								</div>
 								<div className="flex flex-wrap gap-2 overflow-y-auto max-h-75 scrollbar-none">
 									{interestsLoading ? (
 										<div className="w-full py-10 text-center animate-pulse">
-											یه لحظه…
+											{t('navbar.wizard.moment')}
 										</div>
 									) : (
 										interests?.map((item) => {
@@ -253,7 +263,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 									color={'brand'}
 									rounded={'2xl'}
 								>
-									ادامه
+									{t('navbar.wizard.continue')}
 								</Button>
 							</div>
 						</div>
@@ -270,38 +280,21 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 						<div className="flex flex-col items-center justify-center w-full p-8 text-center md:w-1/2 md:p-12">
 							<div className="mb-10 space-y-4">
 								<h2 className="text-2xl font-black text-fg">
-									مرحله ۴: از کجا شنیدی؟
+									{t('navbar.wizard.sourceTitle')}
 								</h2>
 								<p className="text-sm font-medium leading-loose opacity-70 text-balance">
-									بگو از کجا با ویجتیفای آشنا شدی
+									{t('navbar.wizard.sourceBody')}
 								</p>
 							</div>
 
 							<div className="w-full max-w-md space-y-4">
 								<div className="flex flex-wrap gap-2">
-									{[
-										{
-											value: ReferralSource.Social,
-											label: 'شبکه‌های اجتماعی',
-										},
-										{
-											value: ReferralSource.Youtube,
-											label: 'یوتیوب',
-										},
-										{
-											value: ReferralSource.Friends,
-											label: 'دوستان',
-										},
-										{
-											value: ReferralSource.SearchOther,
-											label: 'جستجو یا سایر',
-										},
-									].map((option) => (
+									{REFERRAL_SOURCE_OPTIONS.map((option) => (
 										<ItemSelector
 											isActive={
 												selectedReferralSource === option.value
 											}
-											label={option.label}
+											label={t(option.labelKey)}
 											key={option.value}
 											onClick={() =>
 												setSelectedReferralSource(option.value)
@@ -315,7 +308,9 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 										<TextInput
 											value={referralCode}
 											onChange={setReferralCode}
-											placeholder="کد دعوت رو بنویس"
+											placeholder={t(
+												'navbar.wizard.invitePlaceholder'
+											)}
 										/>
 									</div>
 								)}
@@ -330,7 +325,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 								color={'brand'}
 								rounded={'2xl'}
 							>
-								ادامه
+								{t('navbar.wizard.continue')}
 							</Button>
 						</div>
 						<StepImage
@@ -346,11 +341,10 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 						<div className="flex flex-col items-center justify-center w-full p-8 text-center md:w-1/2 md:p-12">
 							<div className="mb-10 space-y-4">
 								<h2 className="text-2xl font-black text-fg">
-									همه چیز آماده‌ست! 🚀
+									{t('navbar.wizard.readyTitle')}
 								</h2>
 								<p className="text-sm font-medium leading-loose opacity-70">
-									پروفایلت آماده‌ست. حالا می‌تونی از همه‌ی امکانات استفاده
-									کنی.
+									{t('navbar.wizard.readyBody')}
 								</p>
 							</div>
 							<Button
@@ -360,7 +354,7 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 								color={'brand'}
 								rounded={'2xl'}
 							>
-								شروع کنیم
+								{t('navbar.wizard.start')}
 							</Button>
 						</div>
 						<StepImage
@@ -373,7 +367,12 @@ export const WelcomeWizard = ({ isOpen, onClose }: WelcomeWizardProps) => {
 	}
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} size="xl">
+		<Modal
+			isOpen={isOpen}
+			onClose={onClose}
+			size="xl"
+			closeLabel={t('ui.common.close')}
+		>
 			<div className="relative overflow-hidden rounded-sm bg-surface">
 				{currentStep > 1 && currentStep < totalSteps && (
 					<button

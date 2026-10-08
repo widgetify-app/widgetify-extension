@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useEffect, useRef, useState } from 'react'
 import { ConfigKey } from '@/common/constants/config-keys'
 import { showToast } from '@/common/toast'
@@ -55,7 +56,9 @@ export function TryOnBar({ item, onKept, onBack }: TryOnBarProps) {
 		setIsApplying(false)
 		if (!applied) return
 		showToast(
-			mustBuy ? `«${item.name}» مال تو شد و فعالش کردیم` : `«${item.name}» فعال شد`,
+			mustBuy
+				? t('market.tryOn.ownedActivatedToast', { p0: item.name })
+				: t('market.tryOn.activatedToast', { p0: item.name }),
 			'success'
 		)
 		onKept()
@@ -64,7 +67,7 @@ export function TryOnBar({ item, onKept, onBack }: TryOnBarProps) {
 	return (
 		<Portal>
 			<section
-				aria-label="امتحان آیتم روی صفحه"
+				aria-label={t('market.tryOn.previewAria')}
 				onKeyDown={keepEscapeFromHost}
 				className="fixed z-nav flex items-center gap-3 p-2 -translate-x-1/2 border shadow-xl bottom-20 left-1/2 rounded-widget bg-glass-surface-2 border-surface-3 max-w-[calc(100vw-2rem)]"
 			>
@@ -73,7 +76,7 @@ export function TryOnBar({ item, onKept, onBack }: TryOnBarProps) {
 				</span>
 				<span className="min-w-0 pe-2">
 					<span className="block text-2xs text-fg-muted">
-						داری امتحانش می‌کنی
+						{t('market.tryOn.tryingHint')}
 					</span>
 					<span className="block text-sm font-bold truncate text-fg-strong">
 						{item.name}
@@ -86,22 +89,22 @@ export function TryOnBar({ item, onKept, onBack }: TryOnBarProps) {
 					className="shrink-0"
 					onClick={keep}
 					loading={isBuying || isApplying}
-					loadingText="یه لحظه..."
+					loadingText={t('market.tryOn.loading')}
 				>
 					{mustBuy && item.price > 0 ? (
 						<>
-							نگهش دار
+							{t('market.tryOn.keep')}
 							<span className="inline-flex items-center gap-0.5 ps-1.5 ms-0.5 border-s border-on-brand tabular-nums">
 								{faNumber(item.price)}
 								<img
 									src={ConfigKey.WIG_COIN_ICON}
-									alt="ویج‌کوین"
+									alt={t('market.coin.amountLabel')}
 									className="size-4"
 								/>
 							</span>
 						</>
 					) : (
-						'نگهش دار'
+						t('market.tryOn.keep')
 					)}
 				</Button>
 				<Button
@@ -111,7 +114,7 @@ export function TryOnBar({ item, onKept, onBack }: TryOnBarProps) {
 					onClick={onBack}
 					icon={<Icon name="undo" size={14} />}
 				>
-					برگرد
+					{t('market.tryOn.revert')}
 				</Button>
 			</section>
 		</Portal>

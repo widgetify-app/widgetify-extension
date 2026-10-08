@@ -1,5 +1,6 @@
 import type { IconName } from '@/icons'
 import type { FetchedWeather } from '@/services/weather/weather.interface'
+import { t } from '@/common/i18n'
 
 interface WeatherMetric {
 	label: string
@@ -12,11 +13,19 @@ export function getWeatherMetrics(
 ): WeatherMetric[] {
 	return [
 		{
-			label: 'باد',
+			label: t('widgets.weather.metric.wind'),
 			icon: 'wind',
 			value: `${Math.round(reading?.wind_speed || 0)} m/s`,
 		},
-		{ label: 'رطوبت', icon: 'humidity', value: `${reading?.humidity || 0}%` },
-		{ label: 'ابر', icon: 'cloudy', value: `${reading?.clouds || 0}%` },
+		{
+			label: t('widgets.weather.metric.humidity'),
+			icon: 'humidity',
+			value: `${reading?.humidity || 0}%`,
+		},
+		{
+			label: t('widgets.weather.metric.clouds'),
+			icon: 'cloudy',
+			value: `${reading?.clouds || 0}%`,
+		},
 	]
 }

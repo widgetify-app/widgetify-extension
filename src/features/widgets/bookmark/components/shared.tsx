@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { Button, ItemSelector } from '@/components/ui'
 import type { BookmarkType } from '@/services/bookmark/bookmark.interface'
 import { Icon } from '@/icons'
@@ -19,11 +20,11 @@ export function TypeSelector({
 						className={`flex items-center gap-1 ${type === 'BOOKMARK' ? 'text-brand' : 'text-fg-muted'}`}
 					>
 						<Icon name="bookmark" />
-						بوکمارک
+						{t('widgets.bookmark.modal.edit.bookmark')}
 					</div>
 				}
 				className="p-2! h-auto min-h-[56px]"
-				description="یه لینک یا سایت رو نگه دار"
+				description={t('widgets.bookmark.shared.keepLink')}
 			/>
 			<ItemSelector
 				isActive={type === 'FOLDER'}
@@ -33,11 +34,11 @@ export function TypeSelector({
 						className={`flex items-center gap-1 ${type === 'FOLDER' ? 'text-brand' : 'text-fg-muted'}`}
 					>
 						<Icon name="folder" />
-						پوشه
+						{t('widgets.bookmark.modal.edit.folder')}
 					</div>
 				}
 				className="p-2! h-auto min-h-[56px]"
-				description="دسته‌بندی و مرتب‌سازی بوکمارک‌ها"
+				description={t('widgets.bookmark.shared.organize')}
 			/>
 		</div>
 	)
@@ -59,7 +60,11 @@ export function ShowAdvancedButton({
 			rounded="2xl"
 			variant="ghost"
 		>
-			<span>{showAdvanced ? 'گزینه‌های کمتر' : 'گزینه‌های بیشتر'}</span>
+			<span>
+				{showAdvanced
+					? t('widgets.bookmark.shared.fewerOptions')
+					: t('widgets.bookmark.shared.moreOptions')}
+			</span>
 			<Icon
 				name="chevronUp"
 				size={16}

@@ -3,6 +3,7 @@ import { useEffect, useId, useState } from 'react'
 import { useIsMutating } from '@tanstack/react-query'
 import Analytics from '@/analytics'
 import { moodOptions } from '@/common/constants/moods'
+import { t } from '@/common/i18n'
 import { MoodImage } from '@/components/mood-image'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { cn } from '@/common/utils/cn'
@@ -59,7 +60,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 	const handleMoodChange = async (value: MoodType) => {
 		if (isSavingMood) return
 		if (!isAuthenticated) {
-			showToast('برای ثبت حالت اول وارد حسابت شو', 'error')
+			showToast(t('widgets.calendar.toast.needAuth'), 'error')
 			return
 		}
 
@@ -80,10 +81,10 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 		onMoodChange?.(value)
 		if (response.action === 'removed') {
 			setMood('')
-			showToast('حال این روز برداشته شد', 'info')
+			showToast(t('widgets.calendar.toast.moodRemoved'), 'info')
 		} else {
 			setMood(value)
-			showToast('حالت ثبت شد', 'success')
+			showToast(t('widgets.calendar.toast.moodSaved'), 'success')
 		}
 
 		Analytics.event('calendar_mood_clicked')
@@ -100,7 +101,9 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 
 	const gregorian = dayGregorian.format('DD MMM YYYY')
 	const isoDate = dayGregorian.format('YYYY-MM-DD')
-	const moodTitle = `حس و حال ${isSameJalaliDay(date, today) ? 'امروز' : 'این روز'}`
+	const moodTitle = isSameJalaliDay(date, today)
+		? t('widgets.calendar.moodTitle.today')
+		: t('widgets.calendar.moodTitle.day')
 
 	useEffect(() => {
 		const existingMood = moods?.find((m) => m.date === isoDate)
@@ -120,7 +123,9 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 					<div className="flex items-center gap-1">
 						<dt>
 							<Icon name="moon" size={12} aria-hidden="true" />
-							<span className="sr-only">تاریخ قمری</span>
+							<span className="sr-only">
+								{t('widgets.calendar.hijriDate')}
+							</span>
 						</dt>
 						<dd>
 							{hijriDate} {hijriMonthName}
@@ -129,7 +134,9 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 					<div className="flex items-center gap-1">
 						<dt>
 							<Icon name="globeAsia" size={12} aria-hidden="true" />
-							<span className="sr-only">تاریخ میلادی</span>
+							<span className="sr-only">
+								{t('widgets.calendar.gregorianDate')}
+							</span>
 						</dt>
 						<dd dir="ltr">{gregorian}</dd>
 					</div>
@@ -155,7 +162,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 								<span className="flex-1 min-w-0">{event.title}</span>
 								{event.isHoliday && (
 									<span className="px-2 font-semibold rounded-full h-5 leading-5 text-3xs bg-danger-fill text-danger shrink-0">
-										تعطیل
+										{t('widgets.calendar.holiday')}
 									</span>
 								)}
 							</li>
@@ -173,14 +180,14 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 						</legend>
 						<div className="flex justify-between">
 							{moodOptions.map((option) => (
-								<Tooltip key={option.value} content={option.label}>
+								<Tooltip key={option.value} content={t(option.labelKey)}>
 									<button
 										type="button"
 										onClick={() =>
 											handleMoodChange(option.value as MoodType)
 										}
 										disabled={isSavingMood}
-										aria-label={option.label}
+										aria-label={t(option.labelKey)}
 										aria-pressed={mood === option.value}
 										className={cn(
 											'grid rounded-lg cursor-pointer size-8.5 place-items-center transition-ui focus-visible:focus-ring',

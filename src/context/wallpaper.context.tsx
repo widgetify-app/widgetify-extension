@@ -8,6 +8,7 @@ import { useChangeWallpaper } from '@/services/extension/update-setting.hook'
 import { translateError } from '@/common/utils/translate-error'
 import Analytics from '@/analytics'
 import { showToast } from '@/common/toast'
+import { t } from '@/common/i18n'
 import { useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '@/context/auth.context'
 
@@ -60,7 +61,9 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 			} else if (wallpaper.type === 'GRADIENT' && wallpaper.gradient) {
 				setSelectedBackground({
 					id: wallpaper.id,
-					name: wallpaper.id.includes('custom') ? 'گرادیان سفارشی' : 'گرادیان',
+					name: wallpaper.id.includes('custom')
+						? t('context.wallpaper.customGradient')
+						: t('context.wallpaper.gradient'),
 					type: 'GRADIENT',
 					src: '',
 					previewSrc: '',
@@ -133,7 +136,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 		removeFromStorage('customWallpaper')
 
 		if (wallpaper.coin && !isAuthenticated) {
-			showToast('برای انتخاب این تصویر زمینه اول وارد حسابت شو', 'error')
+			showToast(t('context.wallpaper.loginRequired'), 'error')
 			return false
 		}
 
@@ -172,7 +175,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 			}
 
 			if (wallpaper.coin && !wallpaper.isOwned) {
-				showToast('هووورا! تصویر زمینه فعال شد 🎉', 'success')
+				showToast(t('context.wallpaper.activated'), 'success')
 				queryClient.invalidateQueries({ queryKey: userKeys.profile })
 				queryClient.invalidateQueries({
 					queryKey: wallpapersKeys.all,

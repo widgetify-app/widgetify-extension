@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useGeneralSetting } from '@/context/general-setting.context'
+import { t } from '@/common/i18n'
 import { getCurrentDate } from '@/common/utils/date-events'
 import { toIsoDateKey } from '@/features/widgets/utils/jalali-date'
 import { useAuth } from '@/context/auth.context'
@@ -88,12 +89,12 @@ export function MoodTrackerWidget({ size = { w: 2, h: 1 } }: MoodTrackerWidgetPr
 			if (dateToLog === todayDateStr) {
 				setOptimisticMood(null)
 			}
-			showToast('حالت پاک شد', 'info')
+			showToast(t('widgets.moodTracker.toast.cleared'), 'info')
 		} else {
 			if (dateToLog === todayDateStr) {
 				setOptimisticMood(moodValue)
 			}
-			showToast('حالت ثبت شد', 'success')
+			showToast(t('widgets.moodTracker.toast.saved'), 'success')
 		}
 
 		queryClient.invalidateQueries({ queryKey: moodLogKeys.all })
@@ -107,7 +108,7 @@ export function MoodTrackerWidget({ size = { w: 2, h: 1 } }: MoodTrackerWidgetPr
 	useWidgetMenuActions(
 		<PopoverMenuItem
 			icon={<Icon name="camera" size={14} aria-hidden="true" />}
-			label="اشتراک‌گذاری ماه"
+			label={t('widgets.moodTracker.shareMonth')}
 			onClick={handleOpenShare}
 		/>
 	)

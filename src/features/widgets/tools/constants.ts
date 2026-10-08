@@ -1,11 +1,12 @@
+import { t } from '@/common/i18n'
 import type { ToolsTabType } from './types'
 
 export const DEFAULT_TOOLS_TAB: ToolsTabType = 'pomodoro'
 
 export const TOOLS_TABS: { id: ToolsTabType; label: string }[] = [
-	{ id: 'pomodoro', label: 'پومودورو' },
-	{ id: 'religious-time', label: 'اوقات شرعی' },
-	{ id: 'currency-converter', label: 'تبدیل' },
+	{ id: 'pomodoro', label: t('widgets.tools.tab.pomodoro') },
+	{ id: 'religious-time', label: t('widgets.tools.tab.religious') },
+	{ id: 'currency-converter', label: t('widgets.tools.tab.convert') },
 ]
 
 export const CONVERTER_DEFAULT_PAIR = {
@@ -14,7 +15,7 @@ export const CONVERTER_DEFAULT_PAIR = {
 }
 
 export const TOOLS_TAB_TITLES: Record<ToolsTabType, string> = {
-	pomodoro: 'تایمر پومودورو',
-	'religious-time': 'اوقات شرعی',
-	'currency-converter': 'تبدیل ارز',
+	pomodoro: t('widgets.tools.tab.pomodoroTitle'),
+	'religious-time': t('widgets.tools.tab.religious'),
+	'currency-converter': t('widgets.tools.tab.currencyTitle'),
 }

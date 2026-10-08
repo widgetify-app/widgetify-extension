@@ -8,6 +8,7 @@ import type {
 import type { WidgetTabKeys } from '@/features/widgets/types'
 import { Icon } from '@/icons'
 import { CATEGORIES, type CategoryItem } from '../types'
+import { t } from '@/common/i18n'
 
 interface AddWidgetSidebarProps {
 	activeCategory: WidgetCategory
@@ -48,7 +49,7 @@ export function AddWidgetSidebar({
 							selected={activeCategory === cat.id}
 							className="shrink-0"
 						>
-							{cat.label}
+							{t(cat.labelKey)}
 						</Chip>
 					))}
 				</ScrollRow>
@@ -57,7 +58,7 @@ export function AddWidgetSidebar({
 			<div className="space-y-1.5 pr-0.5 scrollbar-none md:flex-1 md:overflow-y-auto">
 				{definitions.length === 0 ? (
 					<div className="flex items-center justify-center h-32 text-xs text-fg-muted">
-						توی این دسته ویجتی پیدا نکردیم
+						{t('widgets.catalog.emptyCategory')}
 					</div>
 				) : (
 					definitions.map((def) => {
@@ -99,14 +100,16 @@ export function AddWidgetSidebar({
 												: 'font-medium text-fg'
 										)}
 									>
-										{def.label}
+										{t(def.label)}
 									</span>
-									{isWidgetNew?.(def.id) && <Badge>جدید</Badge>}
+									{isWidgetNew?.(def.id) && (
+										<Badge>{t('widgets.catalog.badge.new')}</Badge>
+									)}
 								</button>
 
 								<div className="flex items-center gap-1.5 shrink-0 mr-2">
 									{!isVip && isWidgetVipOnly(def.id) && (
-										<VipBadge size="xs" />
+										<VipBadge size="xs" text={t('ui.vip.pro')} />
 									)}
 									{def.settingsTab && (
 										<Button
@@ -114,7 +117,9 @@ export function AddWidgetSidebar({
 											onClick={(e) =>
 												onOpenWidgetSettings(e, def.settingsTab)
 											}
-											aria-label="تنظیمات ویجت"
+											aria-label={t(
+												'widgets.catalog.widgetSettings'
+											)}
 											size={'xs'}
 											variant={'ghost'}
 											className="relative z-10 px-1!"
@@ -133,12 +138,14 @@ export function AddWidgetSidebar({
 											)}
 										>
 											<span>
-												{isActive ? `${count}` : 'قابل تکرار'}
+												{isActive
+													? `${count}`
+													: t('widgets.catalog.repeatable')}
 											</span>
 										</span>
 									) : isActive ? (
 										<span className="text-3xs px-1.5 py-0.5 rounded-lg bg-surface-3 text-fg-muted font-medium">
-											فعال
+											{t('widgets.catalog.active')}
 										</span>
 									) : null}
 								</div>

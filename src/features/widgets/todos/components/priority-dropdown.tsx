@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { Dropdown } from '@/components/ui'
 import { TodoPriority } from '@/services/todo/todo.interface'
@@ -9,19 +10,19 @@ const OPTION_CLASS =
 const priorityOptions = [
 	{
 		value: TodoPriority.Low,
-		label: 'کم‌اهمیت',
+		label: t('widgets.todos.priority.low'),
 		color: 'text-success',
 		bg: 'bg-success-fill',
 	},
 	{
 		value: TodoPriority.Medium,
-		label: 'متوسط',
+		label: t('widgets.todos.priority.medium'),
 		color: 'text-warning',
 		bg: 'bg-warning-fill',
 	},
 	{
 		value: TodoPriority.High,
-		label: 'مهم',
+		label: t('widgets.todos.priority.high'),
 		color: 'text-danger',
 		bg: 'bg-danger-fill',
 	},
@@ -40,7 +41,7 @@ export function PriorityDropdown({ priority, setPriority }: PriorityDropdownProp
 			trigger={
 				<TodoComposerTool
 					icon="outlineFilterList"
-					label="اولویت"
+					label={t('widgets.todos.priority.label')}
 					isActive={Boolean(selected)}
 				>
 					{selected?.label}
@@ -59,7 +60,7 @@ export function PriorityDropdown({ priority, setPriority }: PriorityDropdownProp
 							: 'text-fg-muted hover:bg-fill'
 					)}
 				>
-					بدون اولویت
+					{t('widgets.todos.priority.none')}
 				</button>
 
 				{priorityOptions.map((option) => (

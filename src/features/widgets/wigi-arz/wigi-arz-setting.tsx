@@ -13,6 +13,7 @@ import type { WidgetSize } from '../utils/layout-engine/types'
 import { CurrenciesType, type WigiArzMeta } from './types'
 import { filterCurrencyGroups, getCurrencyOptions } from './utils/get-currency-options'
 import { ownsCurrencyList } from './utils/owns-currency-list'
+import { t } from '@/common/i18n'
 
 interface WigiArzSettingProps {
 	instanceId?: string
@@ -115,7 +116,11 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 		<WidgetSettingWrapper>
 			<div className="flex flex-col gap-3 transition-ui duration-300 ease-out">
 				<SectionPanel
-					title={isCompact ? 'انتخاب ارز برای ویجت' : 'انتخاب ارزها'}
+					title={
+						isCompact
+							? t('widgets.wigiArz.settingTitleCompact')
+							: t('widgets.wigiArz.settingTitle')
+					}
 					size="xs"
 				>
 					<div className="flex flex-col gap-1 mb-2">
@@ -123,14 +128,23 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 							type="text"
 							value={searchQuery}
 							onChange={(e) => setSearchQuery(e)}
-							placeholder="جستجو…"
+							placeholder={t('widgets.wigiArz.searchPlaceholder')}
 						/>
 						<SelectBox
 							options={[
-								{ value: 'all', label: 'همه‌ی ارزها' },
-								{ value: CurrenciesType.CRYPTO, label: 'ارزهای دیجیتال' },
-								{ value: CurrenciesType.CURRENCY, label: 'ارزها' },
-								{ value: CurrenciesType.COIN, label: 'طلا و سکه' },
+								{ value: 'all', label: t('widgets.wigiArz.filter.all') },
+								{
+									value: CurrenciesType.CRYPTO,
+									label: t('widgets.wigiArz.filter.crypto'),
+								},
+								{
+									value: CurrenciesType.CURRENCY,
+									label: t('widgets.wigiArz.filter.currency'),
+								},
+								{
+									value: CurrenciesType.COIN,
+									label: t('widgets.wigiArz.filter.coin'),
+								},
 							]}
 							value={currencyType}
 							onChange={(value) => setCurrencyType(value)}

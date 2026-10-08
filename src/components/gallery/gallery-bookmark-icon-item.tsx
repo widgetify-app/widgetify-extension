@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import { Icon } from '@/icons'
 import { UserCoin } from '@/components/user-coin'
+import { t } from '@/common/i18n'
 import { useLazyLoad } from './use-lazy-load'
 import type { GalleryAsset } from '@/services/gallery/get-gallery-assets.hook'
 import { Spinner } from '@/components/ui'
@@ -56,13 +57,15 @@ export function GalleryBookmarkIconItem({
 			{error && (
 				<div className="flex flex-col items-center justify-center w-full h-full text-danger">
 					<Icon name="alert" size={20} />
-					<p className="mt-1 text-3xs text-fg-muted">نتونستیم بیاریمش</p>
+					<p className="mt-1 text-3xs text-fg-muted">
+						{t('gallery.bookmark.fetchFailed')}
+					</p>
 				</div>
 			)}
 			<div className="relative z-10 flex items-center justify-center w-full h-full p-2">
 				<img
 					ref={imgRef}
-					alt={asset.title || 'آیکون بوکمارک'}
+					alt={asset.title || t('gallery.bookmark.iconAlt')}
 					onLoad={() => {
 						setLoaded(true)
 						setError(false)
@@ -86,7 +89,10 @@ export function GalleryBookmarkIconItem({
 					)}
 					{asset.price > 0 && !asset.isOwned && (
 						<div className="absolute bottom-2 right-2 z-20 origin-bottom-right scale-75">
-							<UserCoin coins={asset.price} title="قیمت خرید" />
+							<UserCoin
+								coins={asset.price}
+								title={t('gallery.bookmark.price')}
+							/>
 						</div>
 					)}
 
@@ -99,14 +105,14 @@ export function GalleryBookmarkIconItem({
 						<div className="absolute top-1.5 left-1.5 z-20">
 							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip-hover backdrop-blur-xs text-on-vip text-4xs font-bold shadow-sm border border-image-line">
 								<Icon name="diamond" size={10} />
-								<span>رایگان با پرو</span>
+								<span>{t('gallery.bookmark.freeWithPro')}</span>
 							</span>
 						</div>
 					)}
 					{asset.isOwned && !isSelected && (
 						<div className="absolute flex gap-0.5 px-1.5 rounded-tl-xl rounded-br-lg bg-success text-on-success shadow-sm items-center top-0 left-0 text-3xs h-4 z-20">
 							<Icon name="shoppingBag" size={10} />
-							<span>مال توئه</span>
+							<span>{t('gallery.bookmark.owned')}</span>
 						</div>
 					)}
 				</>

@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { type ReactNode, useEffect, useRef, useState } from 'react'
 import Analytics from '@/analytics'
 import { PopoverMenuItem } from '@/components/ui'
@@ -142,7 +143,7 @@ export function TodosLayout({ size = { w: 2, h: 3 }, tabs }: TodosLayoutProps = 
 	useWidgetMenuActions(
 		<PopoverMenuItem
 			icon={<Icon name="refresh" size={14} />}
-			label="به‌روز کن"
+			label={t('widgets.todos.widget.refresh')}
 			onClick={onRefresh}
 		/>
 	)
@@ -152,7 +153,7 @@ export function TodosLayout({ size = { w: 2, h: 3 }, tabs }: TodosLayoutProps = 
 		value: tag,
 	}))
 	const tagOptions = tagFilterOptions?.length
-		? [{ label: 'همه', value: '-all-' }, ...tagFilterOptions]
+		? [{ label: t('widgets.todos.filter.all'), value: '-all-' }, ...tagFilterOptions]
 		: []
 
 	const isWaiting = isLoading || (isAuthenticated && !isReady)
@@ -192,7 +193,7 @@ export function TodosLayout({ size = { w: 2, h: 3 }, tabs }: TodosLayoutProps = 
 
 	const header = (
 		<WidgetHeader
-			title={tabs ?? 'تسک‌ها'}
+			title={tabs ?? t('widgets.todos.widget.title')}
 			badge={isBoard ? filterChip : undefined}
 			info={info}
 			actions={
@@ -200,7 +201,7 @@ export function TodosLayout({ size = { w: 2, h: 3 }, tabs }: TodosLayoutProps = 
 					<>
 						{!isBoard && (
 							<WidgetHeaderButton
-								label="تسک جدید"
+								label={t('widgets.todos.input.newTask')}
 								icon="plus"
 								onClick={openCreateTodo}
 							/>

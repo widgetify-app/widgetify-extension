@@ -14,6 +14,7 @@ import { ReligiousTime } from './components/religious-time'
 import type { ToolsTabType } from './types'
 import { normalizeToolsTab } from './utils/normalize-tools-tab'
 import { ToolsCompactRow } from './variants/tools-2x1'
+import { t } from '@/common/i18n'
 
 interface ToolsLayoutProps {
 	size?: WidgetSize
@@ -73,6 +74,7 @@ export const ToolsLayout: React.FC<ToolsLayoutProps> = ({ size = { w: 2, h: 3 } 
 					onClose={() => setIsModalOpen(false)}
 					title={TOOLS_TAB_TITLES[modalTool]}
 					size={modalTool === 'pomodoro' ? 'lg' : 'md'}
+					closeLabel={t('ui.common.close')}
 				>
 					<div className="flex flex-col gap-2 h-80">
 						{renderTool(modalTool)}
@@ -84,7 +86,7 @@ export const ToolsLayout: React.FC<ToolsLayoutProps> = ({ size = { w: 2, h: 3 } 
 
 	const tabs = (
 		<WidgetHeaderTabs
-			label="ابزارها"
+			label={t('widgets.tools.widget.title')}
 			tabs={TOOLS_TABS}
 			activeTab={activeTab}
 			onChange={onTabClick}
@@ -93,7 +95,10 @@ export const ToolsLayout: React.FC<ToolsLayoutProps> = ({ size = { w: 2, h: 3 } 
 
 	return (
 		<WidgetContainer contentClassName="p-3">
-			<section aria-label="ابزارها" className="flex flex-col flex-1 min-h-0 gap-2">
+			<section
+				aria-label={t('widgets.tools.widget.title')}
+				className="flex flex-col flex-1 min-h-0 gap-2"
+			>
 				{renderTool(activeTab, tabs)}
 			</section>
 		</WidgetContainer>

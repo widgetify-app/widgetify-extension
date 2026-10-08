@@ -1,5 +1,6 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef } from 'react'
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { Alert, Spinner } from '@/components/ui'
 import { Modal } from '@/components/ui'
 import { SectionPanel } from '@/components/ui'
@@ -81,7 +82,7 @@ export function SelectCity({ size }: Prop) {
 		: null
 
 	return (
-		<SectionPanel title="انتخاب شهر" size={size ? size : 'sm'}>
+		<SectionPanel title={t('city.select.title')} size={size ? size : 'sm'}>
 			<div className="space-y-2">
 				<button
 					type="button"
@@ -94,7 +95,7 @@ export function SelectCity({ size }: Prop) {
 					) : selected ? (
 						selected.city
 					) : (
-						'انتخاب شهر…'
+						t('city.select.placeholder')
 					)}
 					{isSettingCity ? (
 						<Spinner size="sm" />
@@ -104,15 +105,15 @@ export function SelectCity({ size }: Prop) {
 				</button>
 
 				{error && (
-					<Alert tone="danger" title="نتونستیم فهرست شهرها رو بیاریم">
-						اینترنتت رو چک کن و دوباره امتحان کن
+					<Alert tone="danger" title={t('city.select.loadFailedTitle')}>
+						{t('city.select.loadFailedBody')}
 					</Alert>
 				)}
 			</div>
 			<AuthRequiredModal
 				isOpen={showAuthModal}
 				onClose={() => setShowAuthModal(!showAuthModal)}
-				message="برای انتخاب شهر اول وارد حسابت شو"
+				message={t('city.select.loginRequired')}
 			/>
 			<Modal
 				isOpen={isModalOpen}
@@ -120,14 +121,15 @@ export function SelectCity({ size }: Prop) {
 					setIsModalOpen(false)
 					setSearchTerm('')
 				}}
-				title="انتخاب شهر"
+				title={t('city.select.title')}
 				size="lg"
+				closeLabel={t('ui.common.close')}
 			>
 				<div className="space-y-2 overflow-hidden">
 					<div className="relative">
 						<TextInput
 							type="text"
-							placeholder="جستجوی شهر…"
+							placeholder={t('city.select.searchPlaceholder')}
 							value={searchTerm}
 							ref={searchInputRef}
 							onChange={(value) => setSearchTerm(value)}
@@ -142,7 +144,7 @@ export function SelectCity({ size }: Prop) {
 						{isLoading ? (
 							<div className="flex items-center justify-center p-4 text-center text-brand">
 								<Spinner size="sm" aria-hidden="true" />
-								یه لحظه…
+								{t('city.select.loading')}
 							</div>
 						) : filteredCities?.length > 0 ? (
 							filteredCities.map((city) => (
@@ -163,22 +165,22 @@ export function SelectCity({ size }: Prop) {
 							))
 						) : searchTerm ? (
 							<div className="p-4 text-center text-fg-muted">
-								شهری با این اسم پیدا نکردیم
+								{t('city.select.noMatch')}
 							</div>
 						) : cities && cities.length === 0 ? (
 							<div className="p-4 text-center text-fg-muted">
-								فعلاً شهری توی فهرست نیست
+								{t('city.select.emptyList')}
 							</div>
 						) : (
 							<div className="p-4 text-center text-fg-muted">
-								اسم شهرت رو بنویس
+								{t('city.select.typeName')}
 							</div>
 						)}
 					</div>
 
 					<div className="pt-2 border-t border-surface-3">
 						<p className="text-sm text-center text-fg-muted">
-							اگه شهرت توی فهرست نبود، بهمون بگو تا اضافه‌ش کنیم 🤝
+							{t('city.select.missingHint')}
 						</p>
 					</div>
 				</div>

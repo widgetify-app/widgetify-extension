@@ -22,6 +22,7 @@ import { FolderPath } from '../folder-path'
 import { AddBookmarkModal } from './add-bookmark-modal'
 import { ImportBrowserBookmarksModal } from './import-browser-bookmarks-modal'
 import { validate } from 'uuid'
+import { t } from '@/common/i18n'
 
 const POINTER_SENSOR_OPTIONS = {
 	activationConstraint: {
@@ -149,7 +150,7 @@ export function BookmarkFolderModal({
 				})),
 			})
 		} catch {
-			showToast('نتونستیم ترتیب بوکمارک‌ها رو ذخیره کنیم', 'error')
+			showToast(t('widgets.bookmark.widget.reorderError'), 'error')
 		}
 
 		Analytics.event('bookmark_reorder')
@@ -174,11 +175,12 @@ export function BookmarkFolderModal({
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
+			closeLabel={t('ui.common.close')}
 			title={
 				<div className="flex items-center gap-2">
 					<span className="text-xl">📁</span>
 					<span className="max-w-xs text-sm font-bold truncate text-fg">
-						{currentFolder?.title || 'پوشه بوکمارک'}
+						{currentFolder?.title || t('widgets.bookmark.modal.folder.title')}
 					</span>
 				</div>
 			}
@@ -216,7 +218,7 @@ export function BookmarkFolderModal({
 				<AuthRequiredModal
 					isOpen={true}
 					onClose={() => setShowAddModal(false)}
-					message="برای افزودن بوکمارک جدید اول وارد حسابت شو"
+					message={t('widgets.bookmark.widget.addNeedAuth')}
 				/>
 			) : (
 				showAddModal && (

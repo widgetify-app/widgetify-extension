@@ -4,6 +4,7 @@ import { Icon } from '@/icons'
 import { Button, PopoverMenu, PopoverMenuItem, Tooltip, VipBadge } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 
 interface Prop {
 	onClickToBack: () => void
@@ -35,7 +36,9 @@ export function MiniAppRunnerHeader({
 		Analytics.event('mini_app_fullscreen')
 	}
 
-	const fullScreenLabel = isFullScreen ? 'خروج از تمام‌صفحه' : 'تمام‌صفحه'
+	const fullScreenLabel = isFullScreen
+		? t('miniApps.header.exitFullscreen')
+		: t('miniApps.header.fullscreen')
 	return (
 		<div className="sticky top-0 z-10 w-full border-b border-line">
 			<div className="relative flex items-center justify-between px-4 py-3">
@@ -45,7 +48,7 @@ export function MiniAppRunnerHeader({
 						size={'md'}
 						className="bg-fill-2 px-3! py-0!"
 						color={'base'}
-						aria-label="بازگشت"
+						aria-label={t('miniApps.header.back')}
 						onClick={onClickToBack}
 					>
 						<Icon
@@ -85,13 +88,13 @@ export function MiniAppRunnerHeader({
 				</div>
 
 				<div className="flex gap-1">
-					<Tooltip content="بارگذاری دوباره">
+					<Tooltip content={t('miniApps.header.reload')}>
 						<Button
 							type="button"
 							size={'md'}
 							className="bg-fill-2"
 							color={'base'}
-							aria-label="بارگذاری دوباره"
+							aria-label={t('miniApps.header.reload')}
 							onClick={handleReload}
 						>
 							<Icon
@@ -109,7 +112,7 @@ export function MiniAppRunnerHeader({
 						size={'md'}
 						color={'base'}
 						className="bg-fill-2"
-						aria-label="گزینه‌های بیشتر"
+						aria-label={t('miniApps.header.more')}
 						aria-expanded={menuOpen}
 						onClick={() => setMenuOpen((open) => !open)}
 					>
@@ -144,8 +147,12 @@ export function MiniAppRunnerHeader({
 						{onOpenInWindow && (
 							<PopoverMenuItem
 								icon={<Icon name="pictureInPicture" size={14} />}
-								label="باز کردن تو پنجره جدا"
-								badge={isVip ? undefined : <VipBadge size="xs" />}
+								label={t('miniApps.header.openWindow')}
+								badge={
+									isVip ? undefined : (
+										<VipBadge size="xs" text={t('ui.vip.pro')} />
+									)
+								}
 								disabled={isVip && (isLoading || isConnecting)}
 								onClick={() => {
 									setMenuOpen(false)

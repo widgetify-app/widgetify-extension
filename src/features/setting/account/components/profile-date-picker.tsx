@@ -1,21 +1,22 @@
+import { t } from '@/common/i18n'
 import { callEvent } from '@/common/utils/call-event'
 import { Button, Dropdown } from '@/components/ui'
 import { Icon } from '@/icons'
 import { useRef, useState, useEffect } from 'react'
 
 const PERSIAN_MONTHS = [
-	'فروردین',
-	'اردیبهشت',
-	'خرداد',
-	'تیر',
-	'مرداد',
-	'شهریور',
-	'مهر',
-	'آبان',
-	'آذر',
-	'دی',
-	'بهمن',
-	'اسفند',
+	t('setting.datePicker.monthFarvardin'),
+	t('setting.datePicker.monthOrdibehesht'),
+	t('setting.datePicker.monthKhordad'),
+	t('setting.datePicker.monthTir'),
+	t('setting.datePicker.monthMordad'),
+	t('setting.datePicker.monthShahrivar'),
+	t('setting.datePicker.monthMehr'),
+	t('setting.datePicker.monthAban'),
+	t('setting.datePicker.monthAzar'),
+	t('setting.datePicker.monthDey'),
+	t('setting.datePicker.monthBahman'),
+	t('setting.datePicker.monthEsfand'),
 ]
 
 const MONTH_DAYS = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29]
@@ -104,7 +105,7 @@ export default function JalaliDatePicker({
 						<div className="flex items-center gap-3">
 							<Icon name="calendarDays" size={14} className="text-brand" />
 							<span className={value ? 'text-fg' : 'text-fg-muted'}>
-								{value || 'انتخاب تاریخ'}
+								{value || t('setting.datePicker.title')}
 							</span>
 						</div>
 						<Icon name="chevronRight" size={16} className="text-fg-muted" />
@@ -116,21 +117,21 @@ export default function JalaliDatePicker({
 			<div className="p-2 border min-w-52 bg-surface-2 rounded-2xl border-surface-3">
 				<div className="flex gap-3 mb-5">
 					<ScrollWheel
-						label="روز"
+						label={t('setting.datePicker.dayLabel')}
 						value={tempDate.day}
 						max={getDaysInMonth(tempDate.month, tempDate.year)}
 						onChange={handleDayChange}
 						type="number"
 					/>
 					<ScrollWheel
-						label="ماه"
+						label={t('setting.datePicker.monthLabel')}
 						value={tempDate.month}
 						max={12}
 						onChange={handleMonthChange}
 						type="month"
 					/>
 					<ScrollWheel
-						label="سال"
+						label={t('setting.datePicker.yearLabel')}
 						value={tempDate.year}
 						max={80}
 						onChange={handleYearChange}
@@ -148,7 +149,7 @@ export default function JalaliDatePicker({
 						className="flex-1"
 					>
 						<Icon name="check" size={16} className="ml-1" />
-						تایید{' '}
+						{t('setting.modal.email.confirm')}{' '}
 					</Button>
 					<Button
 						onClick={handleCancel}
@@ -156,7 +157,7 @@ export default function JalaliDatePicker({
 						rounded={'2xl'}
 						className="w-20"
 					>
-						لغو
+						{t('setting.datePicker.cancel')}
 					</Button>
 				</div>
 			</div>

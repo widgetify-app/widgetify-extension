@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { FriendRequestsBottomSheet } from './friend-requests-bottom-sheet'
 import { Icon } from '@/icons'
+import { t } from '@/common/i18n'
 
 interface Prop {
 	size: 'small' | 'large'
@@ -18,7 +19,7 @@ export function FriendRequestsButton({ size, pendingCount }: Prop) {
 					className="flex items-center relative gap-1.5 px-2.5 py-1 text-xs font-medium transition-ui rounded-lg text-fg hover:bg-fill-2 active:scale-95 cursor-pointer"
 				>
 					<Icon name="inbox" size={14} />
-					<span>درخواست‌ها</span>
+					<span>{t('friends.requests.button')}</span>
 					{pendingCount ? (
 						<div className="flex items-center justify-center min-w-4 h-4 px-1 text-3xs font-bold text-on-danger bg-danger rounded-full text-center">
 							{pendingCount}
@@ -30,7 +31,7 @@ export function FriendRequestsButton({ size, pendingCount }: Prop) {
 					type="button"
 					onClick={() => setIsRequestsOpen(true)}
 					className="flex relative items-center justify-center w-8 h-8 transition-ui rounded-xl bg-fill hover:bg-fill-2 active:scale-90 cursor-pointer border border-line text-fg-muted hover:text-fg-strong"
-					aria-label="درخواست‌های دوستی"
+					aria-label={t('friends.requests.title')}
 				>
 					<Icon
 						name="inbox"

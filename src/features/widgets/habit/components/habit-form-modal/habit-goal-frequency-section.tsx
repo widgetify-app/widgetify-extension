@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import React, { useCallback, useMemo } from 'react'
 import {
 	type HabitComparison,
@@ -136,7 +137,9 @@ const UnitSelectionRow = React.memo<UnitSelectionRowProps>(({ unit, onChangeUnit
 						className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium shrink-0"
 					>
 						<span>
-							{isMoreUnitSelected ? selectedMoreUnit?.label : 'بیشتر'}
+							{isMoreUnitSelected
+								? selectedMoreUnit?.label
+								: t('widgets.habit.detail.chart.legendMore')}
 						</span>
 						<Icon name="chevronDown" size={12} />
 					</Chip>
@@ -177,12 +180,15 @@ const FrequencyComparisonRow = React.memo<FrequencyComparisonRowProps>(
 		)
 
 		const currentComparisonLabel =
-			HABIT_COMPARISON_OPTIONS.find((c) => c.value === comparison)?.label || 'حداقل'
+			HABIT_COMPARISON_OPTIONS.find((c) => c.value === comparison)?.label ||
+			t('widgets.habit.form.goalAtLeast')
 
 		return (
 			<div className="flex items-center justify-between pt-3">
 				<div className="flex items-center gap-2">
-					<span className="text-xs font-bold text-fg">تکرار</span>
+					<span className="text-xs font-bold text-fg">
+						{t('widgets.habit.form.frequency')}
+					</span>
 					<div className="flex items-center gap-1.5">
 						{HABIT_FREQUENCY_OPTIONS.map((freqOpt) => (
 							<Chip
@@ -248,7 +254,7 @@ export const HabitGoalFrequencySection: React.FC<HabitGoalFrequencySectionProps>
 					<div className="flex items-center justify-between gap-2 pb-1">
 						<div className="flex items-center gap-2.5 shrink-0">
 							<span className="text-xs font-bold text-fg whitespace-nowrap">
-								هدف روزانه
+								{t('widgets.habit.form.dailyGoal')}
 							</span>
 							<StepperCounter
 								target={target}
@@ -263,12 +269,14 @@ export const HabitGoalFrequencySection: React.FC<HabitGoalFrequencySectionProps>
 					{unit === HabitUnit.CUSTOM && onChangeCustomUnit && (
 						<div className="flex items-center gap-2 py-1">
 							<span className="text-xs text-fg-muted shrink-0">
-								اسم واحد دلخواه
+								{t('widgets.habit.form.customUnitLabel')}
 							</span>
 							<TextInput
 								value={customUnit}
 								onChange={(val) => onChangeCustomUnit(val)}
-								placeholder="مثلاً کیلومتر، ست یا فنجان"
+								placeholder={t(
+									'widgets.habit.form.customUnitPlaceholder'
+								)}
 								size="sm"
 								className="flex-1 text-xs"
 							/>

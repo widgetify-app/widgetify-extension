@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import Analytics from '@/analytics'
 import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
@@ -13,13 +14,13 @@ export function useCoinCheckout() {
 			{ packageId: pkg.id },
 			{
 				onSuccess: () => {
-					showToast('داریم می‌ریم درگاه پرداخت...', 'success')
+					showToast(t('market.checkout.redirecting'), 'success')
 					Analytics.event('coin_package_purchased')
 				},
 				onError: (error) => {
 					showToast(
 						(translateError(error) as string) ||
-							'درگاه پرداخت باز نشد، دوباره امتحان کن',
+							t('market.checkout.openError'),
 						'error'
 					)
 					Analytics.event('coin_package_purchase_failed')

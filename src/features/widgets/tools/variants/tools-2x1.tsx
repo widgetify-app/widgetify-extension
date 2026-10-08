@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import type { ReactNode } from 'react'
 import type { WidgetifyDate } from '@/common/utils/date-events'
 import { WidgetHeader } from '@/features/widgets/components/widget-header'
@@ -26,14 +27,14 @@ export function ToolsCompactRow({ currentDate, onSelectTab }: ToolsCompactRowPro
 
 	return (
 		<>
-			<WidgetHeader title="ابزارها" />
+			<WidgetHeader title={t('widgets.tools.widget.title')} />
 			<ul
-				aria-label="ابزارها"
+				aria-label={t('widgets.tools.widget.title')}
 				className="grid flex-1 min-h-0 grid-cols-3 gap-1.5 select-none"
 			>
 				<ToolTile
 					icon="timer"
-					label="پومودورو"
+					label={t('widgets.tools.tab.pomodoro')}
 					onClick={() => onSelectTab('pomodoro')}
 				>
 					{formatTimer(pomodoro.secondsLeft)}
@@ -47,7 +48,7 @@ export function ToolsCompactRow({ currentDate, onSelectTab }: ToolsCompactRowPro
 				</ToolTile>
 				<ToolTile
 					icon="currency"
-					label="تبدیل ارز"
+					label={t('widgets.tools.tab.currencyTitle')}
 					onClick={() => onSelectTab('currency-converter')}
 				>
 					<span dir="ltr" className="inline-flex items-center gap-1">

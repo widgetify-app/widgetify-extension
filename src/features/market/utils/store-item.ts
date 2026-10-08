@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import type { Wallpaper } from '@/common/types/wallpaper.interface'
 import type { MarketItem, UserInventoryItem } from '@/services/market/market.interface'
 import type {
@@ -61,7 +62,7 @@ export function inventoryItemToStoreItem(
 	return {
 		id: item.id,
 		type,
-		name: item.name || 'بدون نام',
+		name: item.name || t('market.storeItem.untitled'),
 		value: item.value,
 		price: 0,
 		isOwned: true,
@@ -78,7 +79,7 @@ export function wallpaperToStoreItem(wallpaper: Wallpaper): StoreItem {
 	return {
 		id: wallpaper.id,
 		type: 'WALLPAPER',
-		name: wallpaperCaption(wallpaper) || 'تصویر زمینه',
+		name: wallpaperCaption(wallpaper) || t('market.wallpaperBrowser.wallpaperLabel'),
 		value: wallpaper.id,
 		price: wallpaper.coin ?? 0,
 		isOwned: Boolean(wallpaper.isOwned),

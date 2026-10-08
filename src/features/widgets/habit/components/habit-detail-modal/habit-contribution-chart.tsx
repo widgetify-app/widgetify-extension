@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import type jalaliMoment from 'jalali-moment'
 import moment from 'moment'
@@ -34,7 +35,15 @@ interface WeekColumn {
 	monthLabel?: string
 }
 
-const DISPLAY_WEEKDAYS = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج']
+const DISPLAY_WEEKDAYS = [
+	t('ui.date.weekday.sat'),
+	t('ui.date.weekday.sun'),
+	t('ui.date.weekday.mon'),
+	t('ui.date.weekday.tue'),
+	t('ui.date.weekday.wed'),
+	t('ui.date.weekday.thu'),
+	t('ui.date.weekday.fri'),
+]
 const NUM_WEEKS = 26
 
 export function HabitContributionChart({
@@ -197,10 +206,10 @@ export function HabitContributionChart({
 		>
 			<header className="flex items-center justify-between gap-2">
 				<h4 id={headingId} className="text-xs font-semibold text-fg">
-					۶ ماه اخیر
+					{t('widgets.habit.detail.chart.periodLabel')}
 				</h4>
 				<div className="flex items-center gap-1 text-3xs text-fg-muted shrink-0">
-					<span>کمتر</span>
+					<span>{t('widgets.habit.detail.chart.legendLess')}</span>
 					<span className="size-2.5 rounded-xs bg-fill-2" />
 					{[`${color}33`, `${color}66`, `${color}aa`, color].map((shade) => (
 						<span
@@ -209,7 +218,7 @@ export function HabitContributionChart({
 							style={{ backgroundColor: shade }}
 						/>
 					))}
-					<span>بیشتر</span>
+					<span>{t('widgets.habit.detail.chart.legendMore')}</span>
 				</div>
 			</header>
 
@@ -254,7 +263,7 @@ export function HabitContributionChart({
 										const dayLabel = `${day.jalaliDate.format('jD jMMMM')}: ${
 											day.value > 0
 												? `${day.value} ${unitLabel}`.trim()
-												: 'بدون ثبت'
+												: t('widgets.habit.detail.chart.emptyDay')
 										}`
 
 										return (
@@ -299,19 +308,23 @@ export function HabitContributionChart({
 				{hoveredDay ? (
 					<>
 						<span className="font-semibold text-fg">
-							{hoveredDay.jalaliDate.format('dddd، jD jMMMM')}
+							{hoveredDay.jalaliDate.format(
+								t('widgets.habit.detail.chart.dayFormat')
+							)}
 						</span>
 						<span>
 							{hoveredDay.value > 0
 								? `${hoveredDay.value} ${unitLabel}`
-								: 'بدون ثبت'}
+								: t('widgets.habit.detail.chart.emptyDay')}
 						</span>
 						{hoveredDay.isDone && (
-							<span className="font-medium text-success">انجام شد</span>
+							<span className="font-medium text-success">
+								{t('widgets.habit.detail.chart.done')}
+							</span>
 						)}
 					</>
 				) : (
-					'برای ثبت، روی روزها کلیک کن'
+					t('widgets.habit.detail.chart.clickHint')
 				)}
 			</p>
 		</section>

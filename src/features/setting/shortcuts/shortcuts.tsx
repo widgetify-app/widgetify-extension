@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { Kbd, SectionPanel } from '@/components/ui'
 import React from 'react'
 import { useEffect, useState } from 'react'
@@ -32,29 +33,29 @@ export function ShortcutsTab() {
 			id: 'open_bookmark_new_tab',
 			windowsKey: 'CTRL + Left-click',
 			macKey: '⌘ + Left-click',
-			description: 'باز کردن بوکمارک در تب جدید',
-			category: 'بوکمارک‌ها',
+			description: t('setting.shortcuts.openBookmarkNewTab'),
+			category: t('setting.shortcuts.bookmarksCategory'),
 		},
 		{
 			id: 'open_bookmark_middle_click',
 			windowsKey: 'Middle-click',
 			macKey: 'Middle-click',
-			description: 'باز کردن بوکمارک در تب جدید با دکمه اسکرول',
-			category: 'بوکمارک‌ها',
+			description: t('setting.shortcuts.openBookmarkMiddleClick'),
+			category: t('setting.shortcuts.bookmarksCategory'),
 		},
 		{
 			id: 'open_all_bookmarks',
 			windowsKey: 'CTRL + Left-click',
 			macKey: '⌘ + Left-click',
-			description: 'باز کردن همه بوکمارک‌های یک پوشه',
-			category: 'بوکمارک‌ها',
+			description: t('setting.shortcuts.openFolderBookmarks'),
+			category: t('setting.shortcuts.bookmarksCategory'),
 		},
 		{
 			id: 'toggle_theme',
 			windowsKey: 'CTRL + ALT + T',
 			macKey: '⌘ + ALT + T',
-			description: 'تغییر تم',
-			category: 'ظاهری',
+			description: t('setting.shortcuts.toggleTheme'),
+			category: t('setting.tab.appearance'),
 		},
 	]
 

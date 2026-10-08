@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { showToast } from '@/common/toast'
 
 declare global {
@@ -35,7 +36,7 @@ export function useVoiceSearch(
 			window.SpeechRecognition || window.webkitSpeechRecognition
 		if (!SpeechRecognition) {
 			setError('unsupported')
-			showToast('مرورگرت از جستجوی صوتی پشتیبانی نمی‌کنه', 'error')
+			showToast(t('widgets.search.voice.unsupported'), 'error')
 			return null
 		}
 

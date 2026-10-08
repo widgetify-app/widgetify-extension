@@ -8,6 +8,7 @@ import { AdvancedModal } from './advanced-modal'
 import { useIsMutating } from '@tanstack/react-query'
 import { BookmarkIconPicker } from '../bookmark-icon-picker'
 import { bookmarkKeys } from '@/services/bookmark/bookmark.keys'
+import { t } from '@/common/i18n'
 
 interface EditBookmarkModalProps {
 	isOpen: boolean
@@ -147,9 +148,15 @@ export function EditBookmarkModal({
 				isOpen={isOpen}
 				onClose={onClose}
 				size="md"
-				title={`ویرایش ${type === 'FOLDER' ? 'پوشه' : 'بوکمارک'}`}
+				title={t('widgets.bookmark.modal.edit.title', {
+					p0:
+						type === 'FOLDER'
+							? t('widgets.bookmark.modal.edit.folder')
+							: t('widgets.bookmark.modal.edit.bookmark'),
+				})}
 				className="overflow-y-hidden!"
 				closeOnBackdropClick={false}
+				closeLabel={t('ui.common.close')}
 			>
 				<form
 					onSubmit={(e) => {
@@ -181,7 +188,9 @@ export function EditBookmarkModal({
 									type="text"
 									name="title"
 									placeholder={
-										type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'
+										type === 'FOLDER'
+											? t('widgets.bookmark.modal.add.folderName')
+											: t('widgets.bookmark.modal.add.bookmarkName')
 									}
 									value={formData.title}
 									onChange={(value) => updateFormData('title', value)}
@@ -219,7 +228,7 @@ export function EditBookmarkModal({
 								disabled={isUpdating}
 								className="w-20 transition-colors duration-300 ease-in-out shadow-none rounded-2xl"
 							>
-								لغو
+								{t('widgets.bookmark.modal.add.cancel')}
 							</Button>
 							<Button
 								type="submit"
@@ -233,7 +242,7 @@ export function EditBookmarkModal({
 								className="transition-colors duration-300 ease-in-out border-none shadow-none w-28 rounded-2xl"
 								color="brand"
 							>
-								ذخیره
+								{t('widgets.bookmark.modal.add.save')}
 							</Button>
 						</div>
 					</div>
@@ -247,7 +256,7 @@ export function EditBookmarkModal({
 				}}
 				isOpen={showAdvanced}
 				onClose={handleAdvancedModalClose}
-				title="تنظیمات پیشرفته"
+				title={t('widgets.bookmark.modal.add.advanced')}
 			/>
 		</>
 	)

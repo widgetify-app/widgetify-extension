@@ -1,15 +1,16 @@
+import { t, type MessageKey } from '@/common/i18n'
 import type { SupportedCurrencies } from '@/services/currency/get-support-currencies.hook'
 import { CurrenciesType, type CurrencyGroup } from '../types'
 
-const GROUP_LABELS: { type: CurrenciesType; label: string }[] = [
-	{ type: CurrenciesType.CRYPTO, label: '🪙 ارزهای دیجیتال' },
-	{ type: CurrenciesType.CURRENCY, label: '💵 ارزها' },
-	{ type: CurrenciesType.COIN, label: '🥇 طلا و سکه' },
+const GROUP_LABELS: { type: CurrenciesType; labelKey: MessageKey }[] = [
+	{ type: CurrenciesType.CRYPTO, labelKey: 'widgets.wigiArz.group.crypto' },
+	{ type: CurrenciesType.CURRENCY, labelKey: 'widgets.wigiArz.group.currency' },
+	{ type: CurrenciesType.COIN, labelKey: 'widgets.wigiArz.group.coin' },
 ]
 
 export function getCurrencyOptions(supported: SupportedCurrencies): CurrencyGroup[] {
-	return GROUP_LABELS.map(({ type, label }) => ({
-		label,
+	return GROUP_LABELS.map(({ type, labelKey }) => ({
+		label: t(labelKey),
 		options: supported
 			.filter((currency) => currency.type === type)
 			.map((currency) => ({ value: currency.key, label: currency.label.fa })),

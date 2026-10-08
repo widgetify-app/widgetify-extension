@@ -1,5 +1,6 @@
 import jalaliMoment from 'jalali-moment'
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { callEvent } from '@/common/utils/call-event'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { useZonedClock } from '@/features/widgets/hooks/use-zoned-clock'
@@ -38,8 +39,13 @@ export function DotCalendarWidget({ instanceId, size, meta }: DotCalendarWidgetP
 		options.variant !== 'goal'
 			? null
 			: goalEndLabel
-				? `هدف: ${options.goalTitle || 'هدف من'} · ${goalEndLabel}`
-				: 'هنوز هدفی نداری'
+				? t('widgets.dotCalendar.summaryWithGoal', {
+						title:
+							options.goalTitle ||
+							t('widgets.dotCalendar.defaultGoalTitle'),
+						end: goalEndLabel,
+					})
+				: t('widgets.dotCalendar.noGoalYet')
 	)
 
 	const openSettings = () => {

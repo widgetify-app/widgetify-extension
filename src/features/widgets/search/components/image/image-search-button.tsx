@@ -1,4 +1,5 @@
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { Tooltip } from '@/components/ui'
 
 export function ImageSearchButton({ onClick }: { onClick: () => void }) {
@@ -8,11 +9,11 @@ export function ImageSearchButton({ onClick }: { onClick: () => void }) {
 	}
 
 	return (
-		<Tooltip content="جستجو با عکس">
+		<Tooltip content={t('widgets.search.image.tooltip')}>
 			<button
 				type="button"
 				onClick={onClickHandle}
-				aria-label="جستجو با عکس"
+				aria-label={t('widgets.search.image.aria')}
 				className="grid rounded-lg cursor-pointer size-7 place-items-center shrink-0 text-fg-muted transition-ui hover:bg-fill-2 hover:text-fg-strong focus-visible:focus-ring"
 			>
 				<svg

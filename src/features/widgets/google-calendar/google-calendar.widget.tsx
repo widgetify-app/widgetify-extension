@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { PopoverMenuItem } from '@/components/ui'
 import { useWidgetMenuActions } from '@/features/widgets/widget-menu.context'
 import { Icon } from '@/icons'
@@ -44,7 +45,7 @@ export function GoogleCalendarWidget({
 		isCalendarConnected && (
 			<PopoverMenuItem
 				icon={<Icon name="refresh" size={14} />}
-				label="به‌روز کن"
+				label={t('widgets.googleCalendar.refresh')}
 				onClick={() => refetch()}
 			/>
 		)

@@ -1,4 +1,5 @@
 import type React from 'react'
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { WidgetCompactEmpty } from '@/features/widgets/components/widget-compact-empty'
 import { WidgetError } from '@/features/widgets/components/widget-error'
@@ -24,12 +25,14 @@ export const GoogleCalendar2x1: React.FC<GoogleCalendar2x1Props> = (props) => {
 	const { classifiedEvents, isLoading, isError } = props
 	const info =
 		!isLoading && !isError && classifiedEvents.length > 0
-			? `${classifiedEvents.length} برنامه`
+			? t('widgets.googleCalendar.eventCount', {
+					count: classifiedEvents.length,
+				})
 			: undefined
 
 	return (
 		<>
-			<WidgetHeader title="تقویم گوگل" info={info} />
+			<WidgetHeader title={t('widgets.googleCalendar.title')} info={info} />
 			<div className="flex-1 min-h-0">
 				<GoogleCalendar2x1Content {...props} />
 			</div>
@@ -62,7 +65,7 @@ function GoogleCalendar2x1Content({
 	if (isError) {
 		return (
 			<WidgetError
-				message="نتونستیم برنامه‌هات رو بیاریم"
+				message={t('widgets.googleCalendar.loadError')}
 				compact
 				onRetry={onRetry}
 			/>
@@ -75,15 +78,15 @@ function GoogleCalendar2x1Content({
 		return (
 			<WidgetCompactEmpty
 				icon="calendar"
-				title="امروز برنامه‌ای نداری"
-				description="فرصت خوبیه برای کارهای شخصی"
+				title={t('widgets.googleCalendar.emptyTodayTitle')}
+				description={t('widgets.googleCalendar.emptyDescription')}
 			/>
 		)
 	}
 
 	const { event, isNow, start, end, startTimeStr, endTimeStr, durationLabel } = target
 	const hasAction = !!(event.hangoutLink || event.location)
-	const title = event.summary || 'بدون عنوان'
+	const title = event.summary || t('widgets.googleCalendar.untitled')
 	const countdown = countdownParts(isNow ? target.minsRemaining : target.minsUntilStart)
 
 	return (
@@ -98,7 +101,14 @@ function GoogleCalendar2x1Content({
 					type="button"
 					aria-disabled={!hasAction}
 					onClick={() => hasAction && onEventClick(event)}
-					aria-label={`${isNow ? 'جلسه‌ی الان' : 'جلسه‌ی بعدی'}: ${title}، ${startTimeStr} تا ${endTimeStr}`}
+					aria-label={t('widgets.googleCalendar.meetingRangeAria', {
+						kind: isNow
+							? t('widgets.googleCalendar.nowMeeting')
+							: t('widgets.googleCalendar.nextMeeting'),
+						title,
+						start: startTimeStr,
+						end: endTimeStr,
+					})}
 					className={cn(
 						'flex items-center flex-1 min-w-0 gap-2.5 py-1 text-start rounded-lg focus-visible:focus-ring',
 						hasAction ? 'cursor-pointer' : 'cursor-default'
@@ -132,7 +142,9 @@ function GoogleCalendar2x1Content({
 								isNow ? 'font-semibold text-brand' : 'text-fg-faint'
 							)}
 						>
-							{isNow ? 'الان در جریانه' : event.location || durationLabel}
+							{isNow
+								? t('widgets.googleCalendar.happeningNow')
+								: event.location || durationLabel}
 						</span>
 					</span>
 				</button>
@@ -143,7 +155,7 @@ function GoogleCalendar2x1Content({
 						className="inline-flex items-center h-6 gap-1 px-2 font-bold rounded-lg cursor-pointer shrink-0 bg-brand text-on-brand text-3xs transition-ui hover:bg-brand-hover focus-visible:focus-ring"
 					>
 						<Icon name="videoCamera" size={12} aria-hidden="true" />
-						ورود
+						{t('widgets.googleCalendar.action.login')}
 					</button>
 				) : (
 					<span className="flex flex-col items-end shrink-0 leading-control text-end">
@@ -151,7 +163,10 @@ function GoogleCalendar2x1Content({
 							{countdown.value}
 						</span>
 						<span className="text-3xs text-fg-faint">
-							{countdown.unit} {isNow ? 'مونده' : 'تا شروع'}
+							{countdown.unit}{' '}
+							{isNow
+								? t('widgets.googleCalendar.remainingUnit')
+								: t('widgets.googleCalendar.untilStart')}
 						</span>
 					</span>
 				)}

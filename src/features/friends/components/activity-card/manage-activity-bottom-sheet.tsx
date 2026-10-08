@@ -17,6 +17,7 @@ import { Chip } from '@/components/ui'
 import { SelectBox } from '@/components/ui'
 import { Tooltip } from '@/components/ui'
 import { Icon } from '@/icons'
+import { t } from '@/common/i18n'
 
 interface ManageActivityBottomSheetProps {
 	isOpen: boolean
@@ -49,12 +50,12 @@ export function ManageActivityBottomSheet({
 
 	const handleSave = async () => {
 		if (!activity.trim()) {
-			showToast('اول یه چیزی بنویس', 'error')
+			showToast(t('friends.activity.writeFirst'), 'error')
 			return
 		}
 
 		if (currentActivity) {
-			showToast('فعلاً نمی‌تونی نوشته‌ی جدید بذاری', 'error')
+			showToast(t('friends.activity.cannotPost'), 'error')
 			return
 		}
 
@@ -82,11 +83,11 @@ export function ManageActivityBottomSheet({
 		try {
 			await removeAsync({ id: currentActivity.id })
 
-			showToast('نوشته‌ت حذف شد', 'success')
+			showToast(t('friends.activity.deleted'), 'success')
 			setActivity('')
 			onClose()
 		} catch {
-			showToast('نتونستیم نوشته رو حذف کنیم، دوباره امتحان کن', 'error')
+			showToast(t('friends.activity.deleteFailed'), 'error')
 		}
 	}
 
@@ -95,7 +96,9 @@ export function ManageActivityBottomSheet({
 			<div className="flex flex-col gap-3 p-2 border min-w-96 max-w-96 bg-surface-2 border-surface-3 rounded-2xl">
 				<div className="flex flex-col gap-1">
 					<div className="flex flex-row items-center justify-between">
-						<p className="text-sm font-bold text-fg-muted">نوشته‌ی فعلیت</p>
+						<p className="text-sm font-bold text-fg-muted">
+							{t('friends.activity.current')}
+						</p>
 						<Button
 							type="button"
 							onClick={handleDelete}
@@ -108,7 +111,7 @@ export function ManageActivityBottomSheet({
 						>
 							<div className="flex items-center justify-center gap-1 text-on-danger leading-1">
 								<Icon name="trash" />
-								حذف نوشته
+								{t('friends.activity.delete')}
 							</div>
 						</Button>
 					</div>
@@ -122,7 +125,9 @@ export function ManageActivityBottomSheet({
 
 				<div className="flex flex-col">
 					<p className="mb-2 text-sm font-bold text-fg-muted">
-						واکنش‌ها ({fetchedReactions?.reactions?.length || 0})
+						{t('friends.activity.reactions', {
+							count: fetchedReactions?.reactions?.length || 0,
+						})}
 					</p>
 					{isPending ? (
 						<div className="flex flex-col gap-1 h-28">
@@ -167,7 +172,7 @@ export function ManageActivityBottomSheet({
 						</div>
 					) : (
 						<div className="flex items-start justify-center h-24 text-fg-muted">
-							فعلا واکنشی نداری 😶‍🌫️
+							{t('friends.activity.noReactions')}
 						</div>
 					)}
 				</div>
@@ -182,8 +187,8 @@ export function ManageActivityBottomSheet({
 					<div className="space-y-1">
 						<div className="flex justify-between">
 							<p className="flex text-sm font-medium text-fg">
-								متن نوشته
-								<Tooltip content="نوشته‌ت رو فقط دوستات می‌بینن">
+								{t('friends.activity.textLabel')}
+								<Tooltip content={t('friends.activity.friendsOnly')}>
 									<Icon
 										name="info"
 										className="mr-1 text-fg-muted mt-0.5"
@@ -193,19 +198,19 @@ export function ManageActivityBottomSheet({
 							<SelectBox
 								options={[
 									{
-										label: '1 روز نمایش بده',
+										label: t('friends.activity.duration1Day'),
 										value: '24',
 									},
 									{
-										label: '4 ساعت نمایش بده',
+										label: t('friends.activity.duration4Hours'),
 										value: '4',
 									},
 									{
-										label: '1 ساعت نمایش بده',
+										label: t('friends.activity.duration1Hour'),
 										value: '1',
 									},
 								]}
-								optionalText="نمایش"
+								optionalText={t('friends.activity.display')}
 								value={String(time)}
 								className="w-32! border-none"
 								onChange={(val) =>
@@ -220,7 +225,7 @@ export function ManageActivityBottomSheet({
 							onChange={(e) =>
 								setActivity(e.target.value.slice(0, MAX_ACTIVITY_LENGTH))
 							}
-							placeholder="یه چیزی بگو..."
+							placeholder={t('friends.activity.placeholder')}
 							className="w-full h-16 px-4 py-2 mt-1 text-base leading-relaxed transition-ui border-none outline-none resize-none max-h-16 bg-surface-2 text-fg-muted rounded-2xl placeholder:font-light focus:placeholder:text-fg-ghost"
 							rows={4}
 							dir={!activity ? 'rtl' : 'auto'}
@@ -254,7 +259,7 @@ export function ManageActivityBottomSheet({
 						rounded={'2xl'}
 						loading={isSubmitting}
 					>
-						انتشار نوشته
+						{t('friends.activity.publish')}
 					</Button>
 				</div>
 			</div>
@@ -264,20 +269,18 @@ export function ManageActivityBottomSheet({
 				onClose={() => setShowModal(false)}
 				showCloseButton={false}
 				className="px-4"
-				title="قوانین"
+				title={t('friends.activity.rulesTitle')}
 			>
 				<div className="space-y-3 text-sm leading-relaxed text-fg-muted">
-					<p>متن توهین‌آمیز، سیاسی یا دینی ننویس.</p>
+					<p>{t('friends.activity.rule1')}</p>
 
-					<p>لینک یا محتوای بیرونی نذار.</p>
+					<p>{t('friends.activity.rule2')}</p>
 
-					<p>
-						اگه نوشته‌ای ازت گزارش بشه و نامناسب باشه، ممکنه حسابت محدود بشه.
-					</p>
+					<p>{t('friends.activity.rule3')}</p>
 
-					<p>کمکمون کن اینجا جای امن و دوستانه‌ای بمونه.</p>
+					<p>{t('friends.activity.rule4')}</p>
 
-					<p>هر روز فقط یه نوشته‌ی جدید می‌تونی بذاری.</p>
+					<p>{t('friends.activity.rule5')}</p>
 				</div>
 
 				<Button
@@ -288,7 +291,7 @@ export function ManageActivityBottomSheet({
 					className="h-12 mt-5 text-base font-bold shadow-sm"
 					onClick={() => setShowModal(false)}
 				>
-					متوجه شدم
+					{t('friends.activity.gotIt')}
 				</Button>
 			</Modal>
 		</>

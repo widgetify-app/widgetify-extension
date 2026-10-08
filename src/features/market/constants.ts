@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { Theme } from '@/context/theme.context'
 import type { IconName } from '@/icons'
 import type {
@@ -17,50 +18,54 @@ interface ItemTypeMeta {
 
 export const ITEM_TYPE_META: Record<StoreItemType, ItemTypeMeta> = {
 	WALLPAPER: {
-		label: 'تصویر زمینه',
+		label: t('market.wallpaperBrowser.wallpaperLabel'),
 		icon: 'images',
-		changes: 'پس‌زمینه‌ی کل صفحه',
-		whereToChange: 'تنظیمات › تصویر زمینه‌ها',
+		changes: t('market.product.wallpaperBlurb'),
+		whereToChange: t('market.product.wallpaperSettingsPath'),
 	},
 	THEME: {
-		label: 'تم',
+		label: t('market.product.themeTitle'),
 		icon: 'theme',
-		changes: 'رنگ ویجت‌ها، منوها و پنجره‌ها',
-		whereToChange: 'تنظیمات › ظاهری',
+		changes: t('market.product.themeBlurb'),
+		whereToChange: t('market.product.appearanceSettingsPath'),
 	},
 	FONT: {
-		label: 'فونت',
+		label: t('market.product.fontTitle'),
 		icon: 'pen',
-		changes: 'نوشته‌های همه‌ی بخش‌های ویجتیفای',
-		whereToChange: 'تنظیمات › ظاهری',
+		changes: t('market.product.fontBlurb'),
+		whereToChange: t('market.product.appearanceSettingsPath'),
 	},
 	PET: {
-		label: 'حیوان خانگی',
+		label: t('market.product.petTitle'),
 		icon: 'paw',
-		changes: 'حیوونی که توی ویجت پت زندگی می‌کنه',
-		whereToChange: 'تنظیمات ویجت پت',
+		changes: t('market.product.petBlurb'),
+		whereToChange: t('market.product.petSettingsPath'),
 	},
 	PET_BACKGROUND: {
-		label: 'محیط حیوون',
+		label: t('market.product.petEnvTitle'),
 		icon: 'image',
-		changes: 'پس‌زمینه‌ی ویجت پت',
-		whereToChange: 'تنظیمات ویجت پت',
+		changes: t('market.product.petEnvBlurb'),
+		whereToChange: t('market.product.petSettingsPath'),
 	},
 	BROWSER_TITLE: {
-		label: 'عنوان تب',
+		label: t('market.product.tabTitleTitle'),
 		icon: 'globe',
-		changes: 'اسمی که روی تب مرورگر می‌بینی',
-		whereToChange: 'تنظیمات › ظاهری',
+		changes: t('market.product.tabTitleBlurb'),
+		whereToChange: t('market.product.appearanceSettingsPath'),
 	},
 }
 
 export const STORE_NAV: { view: StoreView; label: string; icon: IconName }[] = [
-	{ view: 'home', label: 'ویترین', icon: 'compass' },
-	{ view: 'WALLPAPER', label: 'تصویر زمینه', icon: 'images' },
-	{ view: 'THEME', label: 'تم', icon: 'theme' },
-	{ view: 'FONT', label: 'فونت', icon: 'pen' },
-	{ view: 'PET', label: 'حیوان خانگی', icon: 'paw' },
-	{ view: 'BROWSER_TITLE', label: 'عنوان تب', icon: 'globe' },
+	{ view: 'home', label: t('market.product.showcaseTitle'), icon: 'compass' },
+	{
+		view: 'WALLPAPER',
+		label: t('market.wallpaperBrowser.wallpaperLabel'),
+		icon: 'images',
+	},
+	{ view: 'THEME', label: t('market.product.themeTitle'), icon: 'theme' },
+	{ view: 'FONT', label: t('market.product.fontTitle'), icon: 'pen' },
+	{ view: 'PET', label: t('market.product.petTitle'), icon: 'paw' },
+	{ view: 'BROWSER_TITLE', label: t('market.product.tabTitleTitle'), icon: 'globe' },
 ]
 
 export const CATEGORY_COPY: Record<
@@ -68,23 +73,22 @@ export const CATEGORY_COPY: Record<
 	{ title: string; description: string; wide?: boolean }
 > = {
 	THEME: {
-		title: 'تم',
-		description:
-			'رنگ‌بندی کل ویجتیفای. هر پیش‌نمایش روی تصویر زمینه‌ی خودت نشون داده می‌شه.',
+		title: t('market.product.themeTitle'),
+		description: t('market.product.themeShowcaseBody'),
 	},
 	FONT: {
-		title: 'فونت',
-		description: 'فونت همه‌ی نوشته‌های ویجتیفای، از ساعت تا منوها.',
+		title: t('market.product.fontTitle'),
+		description: t('market.product.fontShowcaseBody'),
 		wide: true,
 	},
 	BROWSER_TITLE: {
-		title: 'عنوان تب',
-		description: 'اسمی که روی تب مرورگرت می‌بینی، تا بین تب‌ها زود پیداش کنی.',
+		title: t('market.product.tabTitleTitle'),
+		description: t('market.product.tabTitleShowcaseBody'),
 		wide: true,
 	},
 	PET: {
-		title: 'حیوان خانگی',
-		description: 'یه هم‌خونه برای ویجت پت، و محیطی که توش زندگی کنه.',
+		title: t('market.product.petTitle'),
+		description: t('market.product.petShowcaseBody'),
 	},
 }
 
@@ -104,7 +108,7 @@ export const INVENTORY_LIST: Record<
 export const DEFAULT_BROWSER_TITLE: StoreItem = {
 	id: 'default',
 	type: 'BROWSER_TITLE',
-	name: 'پیش‌فرض',
+	name: t('market.product.themeDefault'),
 	value: '✨ New Tab',
 	price: 0,
 	isOwned: true,
@@ -125,17 +129,17 @@ function bundled(type: AppearanceItemType, value: string, name: string): StoreIt
 
 export const BUNDLED_OPTIONS: Record<AppearanceItemType, StoreItem[]> = {
 	THEME: [
-		bundled('THEME', Theme.Light, 'روشن'),
-		bundled('THEME', Theme.Dark, 'تیره'),
-		bundled('THEME', Theme.Glass, 'شیشه‌ای'),
-		bundled('THEME', Theme.Icy, 'یخی'),
-		bundled('THEME', Theme.Zarna, 'زرنا'),
+		bundled('THEME', Theme.Light, t('market.product.themeLight')),
+		bundled('THEME', Theme.Dark, t('market.product.themeDark')),
+		bundled('THEME', Theme.Glass, t('market.product.themeGlass')),
+		bundled('THEME', Theme.Icy, t('market.product.themeIcy')),
+		bundled('THEME', Theme.Zarna, t('market.product.fontZarna')),
 	],
 	FONT: [
-		bundled('FONT', 'Vazir', 'وزیر'),
-		bundled('FONT', 'Samim', 'صمیم'),
-		bundled('FONT', 'Pofak', 'پفـک'),
-		bundled('FONT', 'rooyin', 'رویین'),
+		bundled('FONT', 'Vazir', t('market.product.fontVazir')),
+		bundled('FONT', 'Samim', t('market.product.fontSamim')),
+		bundled('FONT', 'Pofak', t('market.product.fontPofak')),
+		bundled('FONT', 'rooyin', t('market.product.fontRoyin')),
 	],
 	BROWSER_TITLE: [DEFAULT_BROWSER_TITLE],
 }

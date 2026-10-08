@@ -1,6 +1,7 @@
 import type React from 'react'
 import { useMemo } from 'react'
 import jalaliMoment from 'jalali-moment'
+import { t } from '@/common/i18n'
 import type { GoogleCalendarEvent } from '@/services/date/get-google-calendar-events.hook'
 import type { WidgetifyDate } from '@/common/utils/date-events'
 import { WidgetHeader } from '@/features/widgets/components/widget-header'
@@ -77,9 +78,11 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 
 				let dayLabel = jDate.locale('fa').format('dddd jD jMMMM')
 				if (isTodayGroup) {
-					dayLabel = 'امروز'
+					dayLabel = t('widgets.googleCalendar.today')
 				} else if (isTomorrow) {
-					dayLabel = `فردا، ${jDate.locale('fa').format('dddd')}`
+					dayLabel = t('widgets.googleCalendar.tomorrow', {
+						weekday: jDate.locale('fa').format('dddd'),
+					})
 				}
 
 				return { dateStr, dayLabel, items }
@@ -88,7 +91,10 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 
 	return (
 		<>
-			<WidgetHeader title="برنامه‌های پیش‌رو" info={today.format('jD jMMMM')} />
+			<WidgetHeader
+				title={t('widgets.googleCalendar.upcomingTitle')}
+				info={today.format('jD jMMMM')}
+			/>
 
 			<GoogleCalendarEventList
 				isLoading={isLoading}
@@ -96,8 +102,8 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 				isEmpty={groupedEvents.length === 0}
 				empty={
 					<GoogleCalendarEmpty
-						title="برنامه‌ی پیش‌رویی نداری"
-						description="هر چی توی تقویم گوگلت بذاری، اینجا میاد"
+						title={t('widgets.googleCalendar.upcomingEmptyTitle')}
+						description={t('widgets.googleCalendar.upcomingEmptyDesc')}
 					/>
 				}
 				onRetry={onRetry}

@@ -7,6 +7,7 @@ import { useCurrencyPrice } from '../hooks/use-currency-price'
 import { getPrice } from '../utils/get-price'
 import { CurrencyModalComponent } from './currency-modal'
 import { PriceChange } from './price-change'
+import { t } from '@/common/i18n'
 
 const PARTNER_REDIRECT_DELAY_MS = 1000
 
@@ -21,7 +22,7 @@ export const CurrencyBox = ({ code, dragHandle }: CurrencyBoxProps) => {
 
 	function toggleCurrencyModal() {
 		if (currency?.url && currency?.isPartnerShip) {
-			showToast('🔗 در حال رفتن به سایت همکار…', 'success')
+			showToast(t('widgets.wigiArz.toast.partner'), 'success')
 			setTimeout(() => {
 				dismissToasts()
 				Analytics.event('currency_sponsor', {
@@ -47,7 +48,7 @@ export const CurrencyBox = ({ code, dragHandle }: CurrencyBoxProps) => {
 					<button
 						type="button"
 						{...dragHandle}
-						aria-label={`جابه‌جایی ${code}`}
+						aria-label={t('widgets.wigiArz.reorderAria', { code })}
 						className="absolute inset-y-0 grid w-2.5 opacity-0 -start-2.5 place-items-center cursor-grab active:cursor-grabbing text-fg-faint transition-ui group-hover/row:opacity-100 focus-visible:opacity-100"
 					>
 						<Icon name="dragIndicator" size={12} aria-hidden="true" />
@@ -57,7 +58,10 @@ export const CurrencyBox = ({ code, dragHandle }: CurrencyBoxProps) => {
 				<button
 					type="button"
 					onClick={toggleCurrencyModal}
-					aria-label={`${currency?.name?.fa || code}${price ? `، ${price.formatted}` : ''}`}
+					aria-label={t('widgets.wigiArz.priceAria', {
+						name: currency?.name?.fa || code,
+						price: price ? price.formatted : '',
+					})}
 					className="flex items-center flex-1 min-w-0 gap-2.5 py-1.5 rounded-lg cursor-pointer text-start focus-visible:focus-ring"
 				>
 					<span className="relative flex-none">
@@ -78,7 +82,7 @@ export const CurrencyBox = ({ code, dragHandle }: CurrencyBoxProps) => {
 							<img
 								className="absolute right-0 size-3 -bottom-0.5"
 								src={currency.partnershipLogo}
-								alt="نماد همکار"
+								alt={t('widgets.wigiArz.partnerAlt')}
 							/>
 						)}
 					</span>
@@ -92,7 +96,7 @@ export const CurrencyBox = ({ code, dragHandle }: CurrencyBoxProps) => {
 						</span>
 						<span className="truncate text-3xs text-fg-faint">
 							{currency?.name?.fa}
-							{price?.isDollar && ' · دلار'}
+							{price?.isDollar && t('widgets.wigiArz.dollarSuffix')}
 						</span>
 					</span>
 
