@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { cn } from '@/common/utils/cn'
-import { Button, VipBadge } from '@/components/ui'
+import { Button, EmptyArt, VipBadge } from '@/components/ui'
 import { Icon, type IconName } from '@/icons'
 import {
 	WidgetCenteredHeader,
@@ -75,13 +75,10 @@ export function PhotoEmptyState({
 					/>
 				) : (
 					<>
-						<span className="grid mb-0.5 rounded-xl size-11 place-items-center bg-fill text-fg-muted">
-							<Icon
-								name={hasFailed ? 'alert' : 'imagePlus'}
-								size={20}
-								aria-hidden="true"
-							/>
-						</span>
+						<EmptyArt
+							name={hasFailed ? 'photoError' : 'photo'}
+							className="mb-0.5 size-12"
+						/>
 						<p className="text-xs font-bold text-fg-strong">
 							{hasFailed ? FAILED_TITLE : 'یه عکس بذار اینجا'}
 						</p>

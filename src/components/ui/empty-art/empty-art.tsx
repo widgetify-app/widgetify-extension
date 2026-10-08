@@ -141,6 +141,43 @@ const arts = {
 			</g>
 		</>
 	),
+	photo: (
+		<>
+			<path
+				className="fill-warning"
+				d="M54 5.5 55.8 9.5 59.8 11.3 55.8 13.1 54 17.1 52.2 13.1 48.2 11.3 52.2 9.5z"
+			/>
+			<rect className="fill-brand" x="6" y="14" width="46" height="40" rx="7" />
+			<rect className="fill-on-brand" x="10" y="18" width="38" height="32" rx="4" />
+			<circle className="fill-warning" cx="38" cy="27" r="5" />
+			<path
+				className="fill-success"
+				d="M10 42 22 29l9 10 6-6 11 10v4a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4Z"
+			/>
+		</>
+	),
+	photoError: (
+		<>
+			<rect className="fill-danger" x="8" y="10" width="48" height="44" rx="7" />
+			<rect
+				className="fill-on-danger"
+				x="12"
+				y="14"
+				width="40"
+				height="36"
+				rx="4"
+			/>
+			<rect
+				className="fill-danger"
+				x="30.5"
+				y="21"
+				width="3"
+				height="14"
+				rx="1.5"
+			/>
+			<circle className="fill-danger" cx="32" cy="41" r="2.2" />
+		</>
+	),
 } satisfies Record<string, ReactElement>
 
 export type EmptyArtName = keyof typeof arts

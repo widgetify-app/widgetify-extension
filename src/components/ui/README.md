@@ -20,7 +20,7 @@ Presentational primitives. They know nothing about the app, the server or a feat
 | Picking from a grid | `Tile`: a card with a picture on top and a title row (`bare` drops the row). `aspect` is `video`, `wide` or `short`; `selected` rings it; `actions` show on hover |
 | A row that scrolls sideways | `ScrollRow`, with previous and next buttons that appear only when there is more to see |
 | Nothing to show | `EmptyState`: an icon, a line, an optional second line and an optional action |
-| A coloured picture for an empty widget | `EmptyArt` (`tasks`, `habits`, `notes`): a 64 by 64 SVG with no background, drawn only with token classes so it follows the theme. `isEmptyArtName` tells it apart from an icon name; the widget empty state takes either as `art` |
+| A coloured picture for an empty widget | `EmptyArt` (`tasks`, `habits`, `notes`, `photo`, `photoError`): a 64 by 64 SVG with no background, drawn only with token classes so it follows the theme. `isEmptyArtName` tells it apart from an icon name; the widget empty state takes either as `art` |
 
 Look here before writing any UI. If a component other areas would reuse is missing, build it here, not inside a feature.
 
