@@ -56,9 +56,9 @@ describe('formatHabitGoal', () => {
 		expect(formatHabitGoal(habit({ comparison: HabitComparison.AT_MOST }))).toBe(
 			'حداکثر 5 صفحه در روز'
 		)
-expect(formatHabitGoal(habit({ comparison: HabitComparison.EXACT }))).toBe(
-				'دقیقا 5 صفحه در روز'
-			)
+		expect(formatHabitGoal(habit({ comparison: HabitComparison.EXACT }))).toBe(
+			'دقیقا 5 صفحه در روز'
+		)
 	})
 
 	it('adds the progress of the period for a weekly or monthly goal', () => {
