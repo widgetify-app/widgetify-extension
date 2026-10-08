@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import {
 	closestCenter,
 	DndContext,
@@ -53,7 +54,7 @@ export const CurrencyList: React.FC<CurrencyListProps> = ({
 			onDragEnd={handleDragEnd}
 		>
 			<SortableContext items={currencies} strategy={verticalListSortingStrategy}>
-				<ul className={className} aria-label="لیست ارزها">
+				<ul className={className} aria-label={t('widgets.wigiArz.listAria')}>
 					{currencies.map((currency) => (
 						<li key={currency}>
 							<SortableCurrencyBox id={currency} code={currency} />

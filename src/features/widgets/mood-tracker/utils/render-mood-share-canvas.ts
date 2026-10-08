@@ -2,6 +2,7 @@ import excited from '@/assets/images/moods/excited.webp'
 import happy from '@/assets/images/moods/happy.webp'
 import normal from '@/assets/images/moods/normal.webp'
 import sad from '@/assets/images/moods/sad.webp'
+import { t } from '@/common/i18n'
 import type { MoodStatsResponse } from '@/services/mood-log/get-mood-stats.hook'
 import { drawRoundedRect, fitText } from '@/features/widgets/utils/canvas'
 
@@ -13,27 +14,27 @@ const FONT_STACK = 'Vazir, Tahoma, Arial, sans-serif'
 
 const moodConfig: Record<string, { label: string; image: string; colors: string[] }> = {
 	excited: {
-		label: 'سرحال',
+		label: t('widgets.moodTracker.share.short.excited'),
 		image: excited,
 		colors: ['#00ff87', '#60efff'],
 	},
 	happy: {
-		label: 'اوکی',
+		label: t('widgets.moodTracker.share.short.happy'),
 		image: happy,
 		colors: ['#00f2fe', '#4facfe'],
 	},
 	normal: {
-		label: 'خسته',
+		label: t('widgets.moodTracker.share.short.normal'),
 		image: normal,
 		colors: ['#ffb020', '#e69500'],
 	},
 	tired: {
-		label: 'خسته',
+		label: t('widgets.moodTracker.share.short.normal'),
 		image: normal,
 		colors: ['#ffb020', '#e69500'],
 	},
 	sad: {
-		label: 'ناراحت',
+		label: t('widgets.moodTracker.share.short.sad'),
 		image: sad,
 		colors: ['#ff4a5a', '#ff1f36'],
 	},
@@ -188,8 +189,9 @@ export async function renderMoodShareCanvas(
 		drawDefaultAvatar(ctx, centerX, centerY, dominantColor)
 	}
 
+	const userFallback = t('widgets.moodTracker.share.userFallback')
 	const userName =
-		(data.userName || userNameDefault || 'کاربر عزیز').trim() || 'کاربر عزیز'
+		(data.userName || userNameDefault || userFallback).trim() || userFallback
 
 	ctx.save()
 	ctx.textAlign = 'right'
@@ -198,7 +200,11 @@ export async function renderMoodShareCanvas(
 	ctx.fillText(fitText(ctx, userName, 450), avatarX - 25, 135)
 	ctx.fillStyle = 'rgba(255, 255, 255, 0.55)'
 	ctx.font = `24px ${FONT_STACK}`
-	ctx.fillText(`حس و حال ثبت شده در ماه ${monthName}`, avatarX - 25, 175)
+	ctx.fillText(
+		t('widgets.moodTracker.share.monthSubtitle', { month: monthName }),
+		avatarX - 25,
+		175
+	)
 	ctx.restore()
 
 	const moodImage = await loadImageAsync(dominantMoodConfig.image)
@@ -212,7 +218,10 @@ export async function renderMoodShareCanvas(
 	ctx.restore()
 
 	const badge = data.badge || {
-		label: dominant === 'excited' ? 'روی موج بودم 🌊' : 'آروم بودم، خوب بودم 🌿',
+		label:
+			dominant === 'excited'
+				? t('widgets.moodTracker.share.badgeExcited')
+				: t('widgets.moodTracker.share.badgeCalm'),
 		color: dominant === 'excited' ? '#00ff87' : '#00f2fe',
 	}
 
@@ -311,7 +320,7 @@ export async function renderMoodShareCanvas(
 	const insightText =
 		data.insightText && data.insightText.trim().length > 0
 			? data.insightText.trim()
-			: `${userName} جان این آرامشی که داشتی واقعیه! نه ساختگی نه اجباری، از دل میومد`
+			: t('widgets.moodTracker.share.insightDefault', { userName })
 
 	ctx.save()
 	ctx.textAlign = 'center'
@@ -326,7 +335,7 @@ export async function renderMoodShareCanvas(
 	ctx.textAlign = 'center'
 	ctx.fillStyle = 'rgba(255, 255, 255, 0.35)'
 	ctx.font = `22px ${FONT_STACK}`
-	ctx.fillText('افزونه مرورگر ویجتیفای - widgetify.ir', W / 2, H - 45)
+	ctx.fillText(t('widgets.moodTracker.share.footer'), W / 2, H - 45)
 	ctx.restore()
 }
 

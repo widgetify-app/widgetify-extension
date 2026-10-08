@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { t } from '@/common/i18n'
 import { Icon } from '@/icons'
 import { cn } from '@/common/utils/cn'
 import { useImageSlider, type UseImageSliderOptions } from './use-image-slider'
@@ -52,7 +53,7 @@ function ImageSliderDots({
 								? 'w-1.5 bg-image-line hover:bg-image-fg-muted'
 								: 'w-1 bg-[rgba(var(--color-base-content-rgb),0.3)] hover:bg-[rgba(var(--color-base-content-rgb),0.6)]'
 					)}
-					aria-label={`اسلاید ${idx + 1}`}
+					aria-label={t('ui.slider.slide', { n: idx + 1 })}
 				/>
 			))}
 		</div>
@@ -92,7 +93,7 @@ function ImageSliderArrows({
 						? 'bg-scrim hover:bg-scrim-strong text-image-fg backdrop-blur-md border border-image-fill'
 						: 'bg-surface-veil hover:bg-surface text-fg backdrop-blur-xs border border-surface-3'
 				)}
-				aria-label="عکس قبلی"
+				aria-label={t('ui.slider.prevImage')}
 			>
 				<Icon name="chevronRight" size={12} />
 			</button>
@@ -109,7 +110,7 @@ function ImageSliderArrows({
 						? 'bg-scrim hover:bg-scrim-strong text-image-fg backdrop-blur-md border border-image-fill'
 						: 'bg-surface-veil hover:bg-surface text-fg backdrop-blur-xs border border-surface-3'
 				)}
-				aria-label="عکس بعدی"
+				aria-label={t('ui.slider.nextImage')}
 			>
 				<Icon name="chevronLeft" size={12} />
 			</button>
@@ -183,8 +184,8 @@ export function ImageSlider({
 
 	return (
 		<section
-			aria-roledescription="اسلایدر"
-			aria-label={alt || 'تصاویر'}
+			aria-roledescription={t('ui.slider.role')}
+			aria-label={alt || t('ui.slider.images')}
 			className={cn(
 				'relative w-full h-full select-none overflow-hidden',
 				className

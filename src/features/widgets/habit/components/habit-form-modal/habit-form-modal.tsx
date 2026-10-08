@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useCallback, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import {
@@ -129,17 +130,17 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 
 	const handleSubmit = async () => {
 		if (!title.trim()) {
-			showToast('یه عنوان برای عادت بنویس', 'error')
+			showToast(t('widgets.habit.form.titleRequired'), 'error')
 			return
 		}
 
 		if (unit === HabitUnit.CUSTOM && !customUnit.trim()) {
-			showToast('اسم واحد دلخواهت رو بنویس', 'error')
+			showToast(t('widgets.habit.form.customUnitRequired'), 'error')
 			return
 		}
 
 		if (target <= 0) {
-			showToast('هدف باید از صفر بیشتر باشه', 'error')
+			showToast(t('widgets.habit.form.goalMustBePositive'), 'error')
 			return
 		}
 
@@ -164,7 +165,12 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 			return
 		}
 
-		showToast(isEdit ? 'تغییرات ذخیره شد' : 'عادت جدید اضافه شد', 'success')
+		showToast(
+			isEdit
+				? t('widgets.habit.form.savedToast')
+				: t('widgets.habit.form.addedToast'),
+			'success'
+		)
 		Analytics.event(isEdit ? 'habit_updated' : 'habit_created')
 		onSaved()
 	}
@@ -190,7 +196,7 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 
 				<div className="flex flex-col gap-1.5">
 					<label htmlFor="habit-title" className="text-xs text-fg-muted">
-						عنوان
+						{t('widgets.habit.form.titleLabel')}
 					</label>
 					<div className="flex items-center px-3 py-2 transition-colors border rounded-2xl border-surface-3 bg-surface-2 focus-within:border-brand">
 						<div
@@ -210,7 +216,7 @@ export const HabitFormModal: React.FC<HabitFormModalProps> = ({
 								setTitle(val)
 								setActivePresetId(null)
 							}}
-							placeholder="مثلاً نوشیدن آب"
+							placeholder={t('widgets.habit.form.titlePlaceholder')}
 							className="flex-1 text-sm font-medium bg-transparent border-none shadow-none text-fg placeholder:text-fg-faint focus:outline-none focus:ring-0"
 						/>
 					</div>

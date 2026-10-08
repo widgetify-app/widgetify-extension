@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { ConfigKey } from '@/common/constants/config-keys'
 import { cn } from '@/common/utils/cn'
 import type { CoinPackage } from '@/services/market/market-coins.interface'
@@ -30,7 +31,7 @@ export function CoinPackageOption({
 		>
 			{isBestValue && (
 				<span className="absolute inline-flex items-center h-5 px-2 font-bold rounded-lg shadow-sm -top-2.5 bg-success text-on-success text-3xs">
-					به‌صرفه‌ترین
+					{t('market.coinPackage.bestValueBadge')}
 				</span>
 			)}
 			<img src={ConfigKey.WIG_COIN_ICON} alt="" className="size-9" />
@@ -41,10 +42,14 @@ export function CoinPackageOption({
 			<span className="w-full pt-2 mt-1 border-t border-line">
 				<span className="block text-sm font-bold tabular-nums text-fg">
 					{faNumber(pkg.price)}{' '}
-					<span className="font-normal text-2xs text-fg-muted">تومان</span>
+					<span className="font-normal text-2xs text-fg-muted">
+						{t('market.topUp.currencyLabel')}
+					</span>
 				</span>
 				<span className="block text-3xs text-fg-faint tabular-nums">
-					هر ۱۰۰ سکه {faNumber(pricePerHundredCoins(pkg))} تومان
+					{t('market.coinPackage.perHundredLabel')}{' '}
+					{faNumber(pricePerHundredCoins(pkg))}{' '}
+					{t('market.topUp.currencyLabel')}
 				</span>
 			</span>
 		</button>

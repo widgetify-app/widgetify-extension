@@ -7,6 +7,7 @@ import { getEmojiList } from '@/services/emoji/get-emoji-list'
 import { BookmarkItem } from '../bookmark-item'
 import type { BookmarkType } from '@/services/bookmark/bookmark.interface'
 import { Icon } from '@/icons'
+import { t } from '@/common/i18n'
 
 interface AdvancedModalProps {
 	title: string
@@ -150,14 +151,19 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 	}
 
 	return (
-		<Modal title={title} isOpen={isOpen} onClose={() => onClose(null)}>
+		<Modal
+			title={title}
+			isOpen={isOpen}
+			onClose={() => onClose(null)}
+			closeLabel={t('ui.common.close')}
+		>
 			<div className={'flex flex-col gap-4 rounded-lg'}>
 				<div className="relative z-30">
 					<label
 						htmlFor="bookmark-background-color"
 						className={'block text-sm font-medium mb-1.5 text-fg'}
 					>
-						رنگ پس زمینه (اختیاری)
+						{t('widgets.bookmark.modal.advanced.bgColor')}
 					</label>
 					<div className="relative flex flex-1 gap-0.5">
 						<TextInput
@@ -192,7 +198,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						htmlFor="bookmark-text-color"
 						className={'block text-sm font-medium mb-1.5 text-fg'}
 					>
-						رنگ متن (اختیاری)
+						{t('widgets.bookmark.modal.advanced.textColor')}
 					</label>
 					<div className="relative flex flex-1 gap-0.5">
 						<TextInput
@@ -224,7 +230,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 
 				<div className="relative z-10" ref={emojiPopoverRef}>
 					<p className={'block text-sm font-medium mb-1.5 text-fg'}>
-						انتخاب استیکر (اختیاری)
+						{t('widgets.bookmark.modal.advanced.pickSticker')}
 					</p>
 
 					<div className="flex items-center gap-2 mt-1">
@@ -255,11 +261,15 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 										</span>
 									)}
 									<span className="text-xs font-medium">
-										تغییر استیکر
+										{t(
+											'widgets.bookmark.modal.advanced.changeSticker'
+										)}
 									</span>
 								</>
 							) : (
-								<span className="text-xs font-medium">انتخاب استیکر</span>
+								<span className="text-xs font-medium">
+									{t('widgets.bookmark.modal.advanced.selectSticker')}
+								</span>
 							)}
 						</Button>
 
@@ -271,7 +281,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 									'px-3 py-1.5 cursor-pointer text-xs rounded-lg text-danger hover:bg-danger-fill'
 								}
 							>
-								حذف
+								{t('widgets.bookmark.grid.delete')}
 							</button>
 						)}
 					</div>
@@ -290,7 +300,9 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 				</div>
 
 				<div className="pt-2 space-y-2">
-					<p className={'block text-sm font-medium text-fg'}>پیش‌نمایش:</p>
+					<p className={'block text-sm font-medium text-fg'}>
+						{t('widgets.bookmark.modal.advanced.previewLabel')}
+					</p>
 					<div
 						className="flex justify-center p-4 overflow-hidden rounded-lg"
 						style={{
@@ -308,7 +320,9 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 									sticker: sticker,
 									order: null,
 									icon: bookmark.icon,
-									title: bookmark.title || 'پیش‌نمایش',
+									title:
+										bookmark.title ||
+										t('widgets.bookmark.modal.advanced.preview'),
 									url: 'https://widgetify.ir',
 									id: 'preview',
 									isLocal: false,
@@ -329,7 +343,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						rounded={'2xl'}
 						className="w-20 transition-colors duration-300 ease-in-out shadow-none rounded-2xl"
 					>
-						لغو
+						{t('widgets.bookmark.modal.add.cancel')}
 					</Button>
 					<Button
 						type="submit"
@@ -339,7 +353,7 @@ export function AdvancedModal({ title, onClose, isOpen, bookmark }: AdvancedModa
 						rounded={'2xl'}
 						className={'w-fit px-8  border-none'}
 					>
-						ذخیره
+						{t('widgets.bookmark.modal.add.save')}
 					</Button>
 				</div>
 			</div>

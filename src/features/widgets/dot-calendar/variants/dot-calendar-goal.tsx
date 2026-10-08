@@ -1,4 +1,5 @@
 import jalaliMoment from 'jalali-moment'
+import { t } from '@/common/i18n'
 import { WidgetCompactEmpty } from '@/features/widgets/components/widget-compact-empty'
 import { WidgetEmpty } from '@/features/widgets/components/widget-empty'
 import { WidgetHeader } from '@/features/widgets/components/widget-header'
@@ -25,17 +26,20 @@ export function DotCalendarGoal({
 	const progress = getGoalProgress(options.goalStartDate, options.goalEndDate, today)
 
 	if (!progress) {
-		const setGoal = { label: 'تعیین هدف', onClick: onOpenSettings }
+		const setGoal = {
+			label: t('widgets.dotCalendar.setGoal'),
+			onClick: onOpenSettings,
+		}
 
 		return (
 			<>
-				<WidgetHeader title="روزشمار هدف" />
+				<WidgetHeader title={t('widgets.dotCalendar.headerGoal')} />
 				{isCompact ? (
 					<div className="flex-1 min-h-0">
 						<WidgetCompactEmpty
 							icon="target"
-							title="هنوز هدفی نداری"
-							description="یه هدف و روزش رو بده"
+							title={t('widgets.dotCalendar.emptyTitle')}
+							description={t('widgets.dotCalendar.emptyDescription')}
 							action={setGoal}
 						/>
 					</div>
@@ -43,7 +47,7 @@ export function DotCalendarGoal({
 					<div className="flex-1 min-h-0">
 						<WidgetEmpty
 							art="target"
-							title="هنوز هدفی نداری"
+							title={t('widgets.dotCalendar.emptyTitle')}
 							action={setGoal}
 						/>
 					</div>
@@ -56,19 +60,24 @@ export function DotCalendarGoal({
 		.locale('fa')
 		.format('jD jMMMM')
 	const isReached = progress.daysLeft === 0
-	const dateLabel = isReached ? endDateLabel : `تا ${endDateLabel}`
+	const dateLabel = isReached
+		? endDateLabel
+		: t('widgets.dotCalendar.untilPrefix', { date: endDateLabel })
 
 	const reachedLine = (
 		<p className="flex items-center flex-none gap-1.5 text-xs font-bold text-success">
 			<Icon name="check" size={14} aria-hidden="true" />
-			رسیدی به روز هدفت
+			{t('widgets.dotCalendar.reachedMessage')}
 		</p>
 	)
 
 	if (isCompact) {
 		return (
 			<>
-				<WidgetHeader title="روزشمار هدف" info={dateLabel} />
+				<WidgetHeader
+					title={t('widgets.dotCalendar.headerGoal')}
+					info={dateLabel}
+				/>
 				{isReached ? (
 					<div className="flex items-center flex-1 min-h-0 px-2">
 						{reachedLine}
@@ -76,20 +85,28 @@ export function DotCalendarGoal({
 				) : (
 					<DaysLeftCount
 						progress={progress}
-						until={options.goalTitle || 'روز هدفت'}
+						until={
+							options.goalTitle || t('widgets.dotCalendar.goalDayFallback')
+						}
 					/>
 				)}
 			</>
 		)
 	}
 
-	const title = options.goalTitle || 'هدف من'
+	const title = options.goalTitle || t('widgets.dotCalendar.defaultGoalTitle')
 
 	return (
 		<>
 			<WidgetHeader
-				title="روزشمار هدف"
-				info={isReached ? undefined : `${progress.daysLeft} روز مونده`}
+				title={t('widgets.dotCalendar.headerGoal')}
+				info={
+					isReached
+						? undefined
+						: t('widgets.dotCalendar.daysLeftInfo', {
+								days: progress.daysLeft,
+							})
+				}
 			/>
 
 			<p className="flex items-baseline justify-between flex-none gap-2 px-2">
@@ -104,7 +121,11 @@ export function DotCalendarGoal({
 			<DotGrid
 				totalDays={progress.totalDays}
 				passedDays={progress.passedDays}
-				label={`${progress.passedDays.toLocaleString('fa-IR')} روز از ${progress.totalDays.toLocaleString('fa-IR')} روز تا ${title} گذشته`}
+				label={t('widgets.dotCalendar.goalProgressAria', {
+					passed: progress.passedDays.toLocaleString('fa-IR'),
+					total: progress.totalDays.toLocaleString('fa-IR'),
+					title,
+				})}
 			/>
 
 			{isReached && reachedLine}

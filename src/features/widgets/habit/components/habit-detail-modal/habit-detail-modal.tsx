@@ -11,6 +11,7 @@ import { DEFAULT_HABIT_COLOR } from '../../constants'
 import { formatHabitGoal, formatHabitToday } from '../../utils/habit-goal'
 import { HabitContributionChart } from './habit-contribution-chart'
 import { HabitStatsCards } from './habit-stats-cards'
+import { t } from '@/common/i18n'
 
 const HabitShareModal = lazy(() =>
 	import('../habit-share-modal').then((module) => ({
@@ -56,19 +57,25 @@ export function HabitDetailModal({
 
 	return (
 		<>
-			<Modal isOpen={isOpen} onClose={onClose} size="lg" title={habit?.title}>
+			<Modal
+				isOpen={isOpen}
+				onClose={onClose}
+				size="lg"
+				title={habit?.title}
+				closeLabel={t('ui.common.close')}
+			>
 				{isLoading ? (
 					<HabitDetailSkeleton />
 				) : isError ? (
 					<div className="h-60">
 						<WidgetError
-							message="نتونستیم جزئیات این عادت رو بیاریم"
+							message={t('widgets.habit.detail.loadError')}
 							onRetry={() => refetch()}
 						/>
 					</div>
 				) : !habit ? (
 					<p className="py-16 text-xs text-center text-fg-muted">
-						این عادت پیدا نشد
+						{t('widgets.habit.detail.notFound')}
 					</p>
 				) : (
 					<div className="flex flex-col gap-3.5">
@@ -101,7 +108,7 @@ export function HabitDetailModal({
 						{isConfirmingDelete ? (
 							<div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-danger-fill">
 								<span className="flex-1 text-xs text-fg">
-									این عادت و سابقه‌اش برای همیشه حذف بشه؟
+									{t('widgets.habit.detail.deleteConfirm')}
 								</span>
 								<Button
 									size="sm"
@@ -110,7 +117,7 @@ export function HabitDetailModal({
 									onClick={() => setIsConfirmingDelete(false)}
 									disabled={isDeleting}
 								>
-									نه
+									{t('widgets.habit.detail.deleteCancel')}
 								</Button>
 								<Button
 									size="sm"
@@ -119,7 +126,9 @@ export function HabitDetailModal({
 									onClick={onDelete}
 									disabled={isDeleting}
 								>
-									{isDeleting ? 'در حال حذف…' : 'حذف'}
+									{isDeleting
+										? t('widgets.habit.detail.deleting')
+										: t('widgets.habit.detail.delete')}
 								</Button>
 							</div>
 						) : (
@@ -132,7 +141,7 @@ export function HabitDetailModal({
 									onClick={() => setIsConfirmingDelete(true)}
 									icon={<Icon name="trash" size={14} />}
 								>
-									حذف
+									{t('widgets.habit.detail.delete')}
 								</Button>
 								<Button
 									size="md"
@@ -141,7 +150,7 @@ export function HabitDetailModal({
 									icon={<Icon name="pen" size={14} />}
 									className="w-1/4 ms-auto"
 								>
-									ویرایش
+									{t('widgets.habit.detail.edit')}
 								</Button>
 								<Button
 									color="brand"
@@ -151,7 +160,7 @@ export function HabitDetailModal({
 									icon={<Icon name="camera" size={14} />}
 									className="flex-1"
 								>
-									اشتراک‌گذاری تصویر
+									{t('widgets.habit.detail.shareImage')}
 								</Button>
 							</div>
 						)}

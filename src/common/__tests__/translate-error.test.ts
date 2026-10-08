@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'bun:test'
+import { error } from '../i18n/fa/error'
 import { translateError } from '../utils/translate-error'
 
-const fallback = 'یه مشکلی پیش اومد، دوباره امتحان کن'
+const fallback = error['error.default']
 
 describe('translateError', () => {
 	it('falls back to a friendly message when there is nothing to translate', () => {
@@ -12,19 +13,19 @@ describe('translateError', () => {
 	})
 
 	it('translates a known code, whether it is the error or the server message', () => {
-		expect(translateError('NOT_FOUND')).toBe('چیزی پیدا نکردیم')
+		expect(translateError('NOT_FOUND')).toBe(error['error.notFound'])
 		expect(
 			translateError({ response: { data: { message: 'USER_NOT_FOUND' } } })
-		).toBe('این کاربر رو پیدا نکردیم')
-		expect(translateError({ message: 'NOT_FOUND' })).toBe('چیزی پیدا نکردیم')
+		).toBe(error['error.userNotFound'])
+		expect(translateError({ message: 'NOT_FOUND' })).toBe(error['error.notFound'])
 	})
 
 	it('prefers the message the server sent over the error object message', () => {
-		const error = {
+		const err = {
 			message: 'NOT_FOUND',
 			response: { data: { message: 'USER_NOT_FOUND' } },
 		}
-		expect(translateError(error)).toBe('این کاربر رو پیدا نکردیم')
+		expect(translateError(err)).toBe(error['error.userNotFound'])
 	})
 
 	it('shows an unknown message as it is instead of hiding it', () => {
@@ -32,7 +33,7 @@ describe('translateError', () => {
 	})
 
 	it('returns one message per field for form validation errors', () => {
-		const error = {
+		const err = {
 			response: {
 				data: {
 					formValidation: [
@@ -42,13 +43,13 @@ describe('translateError', () => {
 				},
 			},
 		}
-		const result = translateError(error)
+		const result = translateError(err)
 		expect(typeof result).toBe('object')
 		expect(Object.keys(result as Record<string, string>)).toEqual(['email', 'name'])
 	})
 
 	it('translates a known validation message and keeps an unknown one', () => {
-		const error = {
+		const err = {
 			response: {
 				data: {
 					formValidation: [
@@ -58,14 +59,14 @@ describe('translateError', () => {
 				},
 			},
 		}
-		expect(translateError(error)).toEqual({
-			username: 'نام کاربری نمی‌تونه خالی باشه',
+		expect(translateError(err)).toEqual({
+			username: error['error.validation.usernameEmpty'],
 			bio: 'something the server added',
 		})
 	})
 
 	it('returns the field map even when only one field failed', () => {
-		const error = {
+		const err = {
 			response: {
 				data: {
 					formValidation: [
@@ -75,13 +76,15 @@ describe('translateError', () => {
 				},
 			},
 		}
-		expect(translateError(error)).toEqual({ username: 'این نام کاربری وجود نداره' })
+		expect(translateError(err)).toEqual({
+			username: error['error.validation.usernameMissing'],
+		})
 	})
 
 	it('ignores an empty validation list and uses the message instead', () => {
-		const error = {
+		const err = {
 			response: { data: { formValidation: [], message: 'NOT_FOUND' } },
 		}
-		expect(translateError(error)).toBe('چیزی پیدا نکردیم')
+		expect(translateError(err)).toBe(error['error.notFound'])
 	})
 })

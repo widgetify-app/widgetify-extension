@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
+import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { Motion, Presence } from '@/common/motion'
 import { getFaviconFromUrl } from '@/features/widgets/utils/icon'
 import { Button, Portal } from '@/components/ui'
@@ -8,7 +10,6 @@ import {
 	type FetchedBrowserBookmark,
 	getBrowserBookmarks,
 } from '@/features/widgets/utils/browser-bookmarks'
-import Analytics from '@/analytics'
 
 interface BookmarkPopoverProps {
 	isOpen: boolean
@@ -77,7 +78,8 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 	}
 
 	const currentFolderTitle =
-		fetchedBookmarks.find((b) => b.id === currentFolderId)?.title || 'بوکمارک‌های من'
+		fetchedBookmarks.find((b) => b.id === currentFolderId)?.title ||
+		t('widgets.search.bookmark.mine')
 
 	return (
 		<Portal>
@@ -104,11 +106,10 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 									/>
 								</div>
 								<p className="mb-1 text-sm font-bold">
-									دسترسی به بوکمارک‌ها
+									{t('widgets.search.bookmark.permissionTitle')}
 								</p>
 								<p className="mb-4 text-xs leading-relaxed text-fg-muted">
-									برای دیدن بوکمارک‌های مرورگرت اینجا، باید بهمون اجازه
-									بدی
+									{t('widgets.search.bookmark.permissionBody')}
 								</p>
 								<Button
 									size="sm"
@@ -117,7 +118,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 									color="brand"
 									rounded="2xl"
 								>
-									اجازه بده
+									{t('widgets.search.bookmark.allow')}
 								</Button>
 							</div>
 						) : (
@@ -137,7 +138,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 												name="chevronRight"
 												aria-hidden="true"
 											/>
-											بازگشت
+											{t('widgets.search.bookmark.back')}
 										</Button>
 									)}
 								</div>
@@ -186,7 +187,7 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 										))
 									) : (
 										<li className="py-8 text-xs text-center text-fg-muted">
-											این پوشه خالیه
+											{t('widgets.search.bookmark.empty')}
 										</li>
 									)}
 								</ul>

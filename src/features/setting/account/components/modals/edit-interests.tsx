@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { Chip, Modal } from '@/components/ui'
 import { useUpdateUserProfile } from '@/services/auth/auth-service.hook'
 import { useEffect, useState } from 'react'
@@ -40,7 +41,7 @@ export function ChangeInterestsModal({ show, onClose, currentValue }: Prop) {
 
 	return (
 		<Modal isOpen={show} onClose={onCloseHandler} showCloseButton={false}>
-			<SectionPanel title="به چی علاقه داری؟" size="xs">
+			<SectionPanel title={t('setting.modal.interests.title')} size="xs">
 				<InterestsSelector
 					interests={fetchedInterests}
 					selectedInterests={interests}
@@ -61,7 +62,7 @@ export function ChangeInterestsModal({ show, onClose, currentValue }: Prop) {
 								))
 							) : (
 								<span className="text-xs text-fg-muted">
-									انتخاب زمینه‌های مورد علاقه...
+									{t('setting.modal.interests.placeholder')}
 								</span>
 							)}
 						</div>

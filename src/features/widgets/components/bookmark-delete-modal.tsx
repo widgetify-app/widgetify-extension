@@ -1,4 +1,5 @@
 import { ConfirmationModal } from '@/components/ui'
+import { t } from '@/common/i18n'
 
 interface BookmarkDeleteModalProps {
 	isOpen: boolean
@@ -16,10 +17,10 @@ export function BookmarkDeleteModal({
 			isOpen={isOpen}
 			onClose={onClose}
 			onConfirm={onConfirm}
-			title="حذف ویجت بوکمارک"
-			message="همه‌ی بوکمارک‌های داخلش هم حذف می‌شن. ویجت بوکمارک حذف بشه؟"
-			confirmText="حذف ویجت"
-			cancelText="نه"
+			title={t('widgets.bookmarkDelete.title')}
+			message={t('widgets.bookmarkDelete.message')}
+			confirmText={t('widgets.bookmarkDelete.confirm')}
+			cancelText={t('widgets.bookmarkDelete.cancel')}
 			variant="danger"
 		/>
 	)

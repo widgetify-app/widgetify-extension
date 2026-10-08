@@ -14,7 +14,7 @@ One folder per product feature. Widgets are features too and live in `widgets/` 
 - **Contexts** are `<name>.context.tsx` at the feature root and are public.
 - Server calls go through `src/services`. A feature never calls the API client.
 - A feature's own storage keys and events are declared in its `types.ts` (see `src/common/README.md`).
-- UI is built from `@/components/ui`. Text is Persian, right to left, and friendly (see `src/components/ui/README.md`).
+- UI is built from `@/components/ui`. Text is Persian, right to left, and friendly (see `src/components/ui/README.md`). A feature's copy goes in its area file under `src/common/i18n/fa/`, not in the feature folder.
 - Do not animate a container-query sized element, and draw loading, error and empty states distinctly (see `widgets/README.md`; the same defects appear outside widgets).
 
 ## Adding a feature

@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import type React from 'react'
 import { useEffect, useState } from 'react'
 import { cn } from '@/common/utils/cn'
@@ -44,17 +45,19 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 
 	const isPending = isUpdating || isRemoving
 	const handleDelete = (e: React.MouseEvent) => {
-		if (isTemp) return showToast('این تسک هنوز ذخیره نشده، یه لحظه صبر کن', 'error')
+		if (isTemp) return showToast(t('widgets.todos.item.notSavedYet'), 'error')
 		e.stopPropagation()
 		if (isPending) return
-		if (!isAuthenticated) return showToast('برای حذفش اول وارد حسابت شو', 'error')
+		if (!isAuthenticated)
+			return showToast(t('widgets.todos.item.deleteNeedAuth'), 'error')
 		setShowConfirmation(true)
 	}
 
 	const handleEdit = (e: React.MouseEvent) => {
-		if (isTemp) return showToast('این تسک هنوز ذخیره نشده، یه لحظه صبر کن', 'error')
+		if (isTemp) return showToast(t('widgets.todos.item.notSavedYet'), 'error')
 		e.stopPropagation()
-		if (!isAuthenticated) return showToast('برای ویرایشش اول وارد حسابت شو', 'error')
+		if (!isAuthenticated)
+			return showToast(t('widgets.todos.item.editNeedAuth'), 'error')
 		onEdit(todo)
 	}
 
@@ -67,7 +70,7 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 			showToast(translateError(err) as string, 'error')
 			return
 		}
-		showToast('تسک حذف شد', 'success')
+		showToast(t('widgets.todos.form.deletedToast'), 'success')
 		onUpdated?.()
 		Analytics.event('todo_removed')
 	}
@@ -145,7 +148,7 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 							name="users"
 							size={12}
 							className="text-fg-faint"
-							aria-label="مشترک"
+							aria-label={t('widgets.todos.item.shared')}
 						/>
 					)}
 					{!isDone && dueLabel && (
@@ -161,7 +164,7 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 							<button
 								type="button"
 								onClick={handleEdit}
-								aria-label="ویرایش تسک"
+								aria-label={t('widgets.todos.form.editTitle')}
 								className="grid rounded-lg cursor-pointer place-items-center size-6 text-fg-muted transition-ui hover:bg-fill-2 hover:text-fg-strong focus-visible:focus-ring"
 							>
 								<Icon name="edit" size={14} aria-hidden="true" />
@@ -170,7 +173,7 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 						<button
 							type="button"
 							onClick={handleDelete}
-							aria-label="حذف تسک"
+							aria-label={t('widgets.todos.item.delete')}
 							className="grid rounded-lg cursor-pointer place-items-center size-6 text-fg-muted transition-ui hover:bg-danger-fill hover:text-danger focus-visible:focus-ring"
 						>
 							<Icon name="trash" size={14} aria-hidden="true" />
@@ -213,11 +216,17 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 				isOpen={showConfirmation}
 				onClose={() => setShowConfirmation(false)}
 				onConfirm={onConfirmDelete}
-				confirmText={isPending ? <Spinner size="sm" tone="current" /> : 'حذف'}
-				cancelText="نه"
-				message="دیگه نمی‌تونی برش گردونی."
+				confirmText={
+					isPending ? (
+						<Spinner size="sm" tone="current" />
+					) : (
+						t('widgets.todos.form.delete')
+					)
+				}
+				cancelText={t('widgets.todos.form.deleteCancel')}
+				message={t('widgets.todos.item.deleteIrreversible')}
 				variant="danger"
-				title="این تسک حذف بشه؟"
+				title={t('widgets.todos.item.deleteConfirm')}
 			/>
 		</div>
 	)

@@ -3,6 +3,7 @@ import { MiniAppCard } from './components/card/mini-app-card'
 import { MiniAppCardSkeleton } from './components/card/mini-app-card-skeleton'
 import { useEffect, useRef } from 'react'
 import { MiniAppRunner } from './components/mini-app-runner'
+import { t } from '@/common/i18n'
 import { listenEvent } from '@/common/utils/call-event'
 import Analytics from '@/analytics'
 import { Button, Modal } from '@/components/ui'
@@ -94,10 +95,10 @@ export function MiniAppsLayout() {
 					className={`flex-1 w-full h-full p-1 border-l border-surface-3 bg-glass-surface-2 rounded-tr-2xl rounded-br-2xl ${isFullScreen ? 'hidden' : ''} transition-ui duration-200`}
 				>
 					<div className="flex justify-between px-1 py-2">
-						<p className="text-lg font-bold">برنامک‌ها</p>
+						<p className="text-lg font-bold">{t('miniApps.page.title')}</p>
 						<button
 							type="button"
-							aria-label="درباره‌ی برنامک‌ها"
+							aria-label={t('miniApps.page.aboutTitle')}
 							onClick={() => onClickToShowInfo()}
 							className="p-1 text-lg font-bold cursor-pointer text-fg-muted hover:text-fg-strong active:scale-95"
 						>
@@ -109,9 +110,11 @@ export function MiniAppsLayout() {
 							<div className="flex flex-col items-center justify-center gap-3 py-16 text-center rounded-2xl bg-surface-2">
 								<div className="text-5xl">📭</div>
 								<p className="text-base font-medium text-fg">
-									هنوز برنامکی اینجا نیست
+									{t('miniApps.page.emptyTitle')}
 								</p>
-								<p className="text-sm text-fg-muted">به‌زودی پر می‌شه</p>
+								<p className="text-sm text-fg-muted">
+									{t('miniApps.page.emptyBody')}
+								</p>
 							</div>
 						)}
 						{isLoading
@@ -164,8 +167,8 @@ export function MiniAppsLayout() {
 							/>
 							<p className="text-lg font-bold text-fg">
 								{runningApps.length > 0
-									? 'برنامک تو پنجره جدا در حال اجراست'
-									: 'یه برنامک انتخاب کن'}
+									? t('miniApps.page.runningInWindow')
+									: t('miniApps.page.pickOne')}
 							</p>
 							{runningApps.length > 0 && (
 								<div className="flex flex-col gap-2 mt-3">
@@ -178,7 +181,7 @@ export function MiniAppsLayout() {
 											rounded="2xl"
 											onClick={() => onLaunchApp(app.appId)}
 										>
-											بیارش جلو: {app.name}
+											{t('miniApps.page.bringForward')} {app.name}
 										</Button>
 									))}
 								</div>
@@ -188,24 +191,18 @@ export function MiniAppsLayout() {
 				</div>
 			</div>
 
-			<Modal title="برنامک‌ها" isOpen={showInfo} onClose={() => setShowInfo(false)}>
+			<Modal
+				title={t('miniApps.page.title')}
+				isOpen={showInfo}
+				onClose={() => setShowInfo(false)}
+				closeLabel={t('ui.common.close')}
+			>
 				<div className="space-y-3 text-sm">
-					<p className="font-semibold">
-						برنامک‌ها برنامه‌های کوچیکی هستن که تو ویجتیفای اجرا می‌شن و راحت
-						می‌تونی ازشون استفاده کنی، بدون اینکه مجبور باشی از اپ اصلی بری
-						بیرون.
-					</p>
+					<p className="font-semibold">{t('miniApps.about.p1')}</p>
 
-					<p>
-						خیالت راحت! این برنامک‌ها به طور پیش‌فرض به هیچ اطلاعاتی ازت دسترسی
-						ندارن و فقط و فقط با اجازه خودت می‌تونن به اطلاعاتت دسترسی پیدا
-						کنن.
-					</p>
+					<p>{t('miniApps.about.p2')}</p>
 
-					<p>
-						اگه دوست داری با ما برنامک بسازی، از بخش «درباره ما» بهمون پیام
-						بده.
-					</p>
+					<p>{t('miniApps.about.p3')}</p>
 				</div>
 
 				<Button
@@ -217,7 +214,7 @@ export function MiniAppsLayout() {
 					fullWidth
 					className="h-12 mt-2 text-base font-bold shadow-sm"
 				>
-					باشه
+					{t('miniApps.about.ok')}
 				</Button>
 			</Modal>
 		</div>

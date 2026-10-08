@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { useAuth } from '@/context/auth.context'
 import type { EngineMeta } from '@/services/trends/get-trends.hook'
@@ -154,13 +155,17 @@ export function SearchCompactRow() {
 							Analytics.event('search_input_focused_2x1')
 						}}
 						className={SEARCH_INPUT_CLASS}
-						placeholder="جستجو…"
-						aria-label="جستجو"
+						placeholder={t('widgets.search.placeholderShort')}
+						aria-label={t('widgets.search.aria')}
 						autoComplete="off"
 					/>
 
 					<SearchBoxButton
-						label={hasQuery ? 'پاک کردن متن' : 'جستجو'}
+						label={
+							hasQuery
+								? t('widgets.search.clear')
+								: t('widgets.search.submit')
+						}
 						icon={hasQuery ? 'close' : 'search'}
 						onClick={hasQuery ? handleClearSearch : handleSearchButtonClick}
 					/>

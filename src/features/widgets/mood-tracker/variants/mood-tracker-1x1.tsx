@@ -1,4 +1,5 @@
 import { moodOptions } from '@/common/constants/moods'
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { MoodImage } from '@/components/mood-image'
 import type { MoodEntry } from '@/services/mood-log/get-moods.hook'
@@ -15,7 +16,7 @@ export function Mood1x1({ todayMood, onSelectMood, isSaving }: Mood1x1Props) {
 
 	return (
 		<section
-			aria-label="حال روزانه"
+			aria-label={t('widgets.moodTracker.aria')}
 			className="flex flex-col items-center justify-between w-full h-full text-center select-none"
 		>
 			<span
@@ -24,7 +25,9 @@ export function Mood1x1({ todayMood, onSelectMood, isSaving }: Mood1x1Props) {
 					currentOption ? 'text-brand' : 'text-fg-muted'
 				)}
 			>
-				{currentOption ? currentOption.label : 'حس امروزت؟'}
+				{currentOption
+					? t(currentOption.labelKey)
+					: t('widgets.moodTracker.askShort')}
 			</span>
 
 			<MoodImage
@@ -42,7 +45,7 @@ export function Mood1x1({ todayMood, onSelectMood, isSaving }: Mood1x1Props) {
 							type="button"
 							disabled={isSaving}
 							aria-pressed={isSelected}
-							aria-label={opt.label}
+							aria-label={t(opt.labelKey)}
 							onClick={() => onSelectMood(opt.value as MoodType)}
 							className={cn(
 								'grid place-items-center size-[23cqh] rounded-full cursor-pointer transition-ui',

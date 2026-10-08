@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { tileMediaVariants } from '@/components/ui'
 import { Icon } from '@/icons'
@@ -29,7 +30,7 @@ export function ItemDetail({
 					<button
 						type="button"
 						onClick={onClose}
-						aria-label="بستن جزئیات"
+						aria-label={t('market.itemDetail.closeAria')}
 						className="grid rounded-lg cursor-pointer size-7 place-items-center text-fg-muted hover:bg-fill-2 hover:text-fg transition-ui focus-visible:focus-ring"
 					>
 						<Icon name="chevronRight" size={16} />
@@ -59,7 +60,7 @@ export function ItemDetail({
 				)}
 				<p className="flex items-center gap-1.5 text-2xs text-fg-faint">
 					<Icon name="wandSparkles" size={12} />
-					عوض می‌کنه: {meta.changes}
+					{t('market.itemDetail.affectsLabel')} {meta.changes}
 				</p>
 			</header>
 

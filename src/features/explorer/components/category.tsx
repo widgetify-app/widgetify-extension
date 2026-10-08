@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import type { CatalogItem, CategoryItem } from '../types'
 import { RenderContentBanner } from './content-banner'
 import { RenderContentIframe } from './content-iframe'
@@ -64,7 +65,7 @@ export function ExplorerCategory({ category, categoryRefs, onOpenPromoModal }: P
 							className="flex items-center justify-center w-full h-full text-3xs border border-dashed border-line rounded-2xl text-fg-faint"
 							key={link.url}
 						>
-							افزونه رو به‌روز کن
+							{t('explorer.category.updateExtension')}
 						</div>
 					)
 				)}

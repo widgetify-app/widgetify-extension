@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
 import { buttonVariants } from '@/components/ui'
@@ -48,12 +49,11 @@ export function VipBannerCard({
 				<div className="flex flex-col min-w-0 text-right">
 					<div className="flex items-center gap-2">
 						<h3 className="text-sm font-black truncate sm:text-base text-fg">
-							{title || 'فراتر از یک تب ساده؛ با نسخه پرو'}
+							{title || t('setting.vipBanner.title')}
 						</h3>
 					</div>
 					<p className="text-2xs text-fg-muted truncate mt-0.5 max-w-xs sm:max-w-md">
-						{description ||
-							'والپیپرهای ویدیویی، ابعاد و مدل‌های اختصاصی ویجت‌ها و امکانات ویژه گالری'}
+						{description || t('setting.vipBanner.body')}
 					</p>
 				</div>
 			</div>
@@ -70,7 +70,7 @@ export function VipBannerCard({
 						'px-3 py-1.5 font-bold gap-1'
 					)}
 				>
-					<span>ارتقا به پرو</span>
+					<span>{t('setting.vipBanner.upgradeCta')}</span>
 					<Icon name="chevronLeft" size={12} />
 				</span>
 			</div>

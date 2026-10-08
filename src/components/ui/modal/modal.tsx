@@ -23,6 +23,7 @@ type ModalProps = VariantProps<typeof modalBoxVariants> & {
 	children: ReactNode
 	closeOnBackdropClick?: boolean
 	showCloseButton?: boolean
+	closeLabel?: string
 	dismissible?: boolean
 	stepAside?: boolean
 	className?: string
@@ -40,6 +41,7 @@ export function Modal({
 	children,
 	closeOnBackdropClick = true,
 	showCloseButton = true,
+	closeLabel,
 	dismissible = true,
 	stepAside = false,
 	className,
@@ -135,7 +137,7 @@ export function Modal({
 								onClick={onClose}
 								disabled={!dismissible}
 								className="flex items-center justify-center ms-auto transition-ui cursor-pointer w-7 h-7 md:w-8 md:h-8 bg-surface-3 text-fg-muted hover:bg-fill-2 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shrink-0 border-0! rounded-lg focus-visible:focus-ring"
-								aria-label="بستن"
+								aria-label={closeLabel}
 							>
 								<Icon name="close" size={16} className="md:hidden" />
 								<Icon

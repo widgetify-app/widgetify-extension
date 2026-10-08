@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { memo } from 'react'
 import { addOpacityToColor, getContrastingTextColor } from '@/common/utils/color'
 import type { Bookmark } from '@/services/bookmark/bookmark.interface'
@@ -78,7 +79,7 @@ export const BookmarkItem = memo(function BookmarkItem({
 			{onMenuClick && (
 				<button
 					type="button"
-					aria-label="گزینه‌های بوکمارک"
+					aria-label={t('widgets.bookmark.item.optionsAria')}
 					onMouseDown={(e) => {
 						e.stopPropagation()
 						onMenuClick(e)

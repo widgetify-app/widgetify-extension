@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import type React from 'react'
 import { cn } from '@/common/utils/cn'
 import type { TimerMode } from '../types'
@@ -22,7 +23,10 @@ export const TimerDisplay: React.FC<TimerDisplayProps> = ({
 }) => (
 	<div
 		role="timer"
-		aria-label={`${formatTimer(timeLeft)}، ${label}`}
+		aria-label={t('widgets.pomodoro.timer.statusLine', {
+			p0: formatTimer(timeLeft),
+			p1: label,
+		})}
 		className={cn(
 			'relative grid place-items-center shrink-0',
 			isLarge ? 'size-40' : 'size-32'

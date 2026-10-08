@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useState } from 'react'
 import Analytics from '@/analytics'
 import { ToggleSwitch } from '@/components/ui'
@@ -33,16 +34,15 @@ export function PrivacySettings() {
 			<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-fill">
 				<div className="flex-1 space-y-1">
 					<h3 className="text-sm font-medium text-fg">
-						آمار و عملکرد افزونه (Analytics)
+						{t('setting.privacy.analyticsTitle')}
 					</h3>
 					<p className="text-xs font-normal leading-relaxed text-fg-muted">
-						آمار فنی و گزارش خطاهای ناشناس رو می‌فرستیم تا افزونه رو بهتر کنیم.
-						هیچ اطلاعات شخصی یا یادداشتی فرستاده نمی‌شه
+						{t('setting.privacy.analyticsHint')}
 					</p>
 				</div>
 				<div className="shrink-0 pt-0.5">
 					<ToggleSwitch
-						label="آمار و عملکرد افزونه"
+						label={t('setting.privacy.analyticsLabel')}
 						enabled={analyticsEnabled}
 						onToggle={handleToggleAnalytics}
 					/>
@@ -53,16 +53,15 @@ export function PrivacySettings() {
 				<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-fill">
 					<div className="flex-1 space-y-1">
 						<h3 className="text-sm font-medium text-fg">
-							نمایش آیکون‌های بوکمارک‌ها
+							{t('setting.privacy.bookmarkIconsLabel')}
 						</h3>
 						<p className="text-xs font-normal leading-relaxed text-fg-muted">
-							آیکون بوکمارک‌ها رو از سرویس گوگل می‌گیریم و برای این کار فقط
-							دامنه‌ی سایت فرستاده می‌شه
+							{t('setting.privacy.bookmarkIconsHint')}
 						</p>
 					</div>
 					<div className="shrink-0 pt-0.5">
 						<ToggleSwitch
-							label="نمایش آیکون‌های بوکمارک‌ها"
+							label={t('setting.privacy.bookmarkIconsLabel')}
 							enabled={allowFavicon}
 							onToggle={handleToggleFavicon}
 						/>
@@ -73,16 +72,15 @@ export function PrivacySettings() {
 			<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-fill">
 				<div className="flex-1 space-y-1">
 					<h3 className="text-sm font-medium text-fg">
-						دسترسی به بوکمارک‌های مرورگر
+						{t('setting.privacy.bookmarksAccessLabel')}
 					</h3>
 					<p className="text-xs font-normal leading-relaxed text-fg-muted">
-						بوکمارک‌های مرورگرت توی ویجت جستجو نشون داده می‌شن و جایی ذخیره یا
-						فرستاده نمی‌شن
+						{t('setting.privacy.bookmarksAccessHint')}
 					</p>
 				</div>
 				<div className="shrink-0 pt-0.5">
 					<ToggleSwitch
-						label="دسترسی به بوکمارک‌های مرورگر"
+						label={t('setting.privacy.bookmarksAccessLabel')}
 						enabled={browserBookmarksEnabled}
 						onToggle={() =>
 							setBrowserBookmarksEnabled(!browserBookmarksEnabled)
@@ -93,14 +91,16 @@ export function PrivacySettings() {
 
 			<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-fill">
 				<div className="flex-1 space-y-1">
-					<h3 className="text-sm font-medium text-fg">دسترسی به تب‌ها</h3>
+					<h3 className="text-sm font-medium text-fg">
+						{t('setting.privacy.tabsAccessLabel')}
+					</h3>
 					<p className="text-xs font-normal leading-relaxed text-fg-muted">
-						تا بتونی همه‌ی بوکمارک‌های یه پوشه رو یه‌جا توی تب‌های مرورگر باز کنی
+						{t('setting.privacy.tabsAccessHint')}
 					</p>
 				</div>
 				<div className="shrink-0 pt-0.5">
 					<ToggleSwitch
-						label="دسترسی به تب‌ها"
+						label={t('setting.privacy.tabsAccessLabel')}
 						enabled={browserTabsEnabled}
 						onToggle={() => setBrowserTabsEnabled(!browserTabsEnabled)}
 					/>

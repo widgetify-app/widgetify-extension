@@ -11,9 +11,10 @@ import { ComboSetting } from '@/features/widgets/combo-widget/combo-widget-setti
 import { DotCalendarSetting } from '@/features/widgets/dot-calendar/dot-calendar-setting'
 import { CalendarSetting } from '@/features/widgets/calendar/calendar-setting'
 import { WidgetTabKeys } from '../types'
+import { t, type MessageKey } from '@/common/i18n'
 
 interface WidgetSettingModalConfig {
-	title: string
+	titleKey: MessageKey
 	size: 'sm' | 'md' | 'lg' | 'xl'
 	className?: string
 	Component: React.ComponentType
@@ -21,38 +22,38 @@ interface WidgetSettingModalConfig {
 
 const WIDGET_SETTING_MODALS: Record<string, WidgetSettingModalConfig> = {
 	[WidgetTabKeys.Pet]: {
-		title: 'تنظیمات حیوان خانگی',
+		titleKey: 'widgets.settings.pet.title',
 		size: 'lg',
 		className: 'max-w-2xl',
 		Component: PetSettings,
 	},
 	[WidgetTabKeys.weather_settings]: {
-		title: 'تنظیمات آب و هوا',
+		titleKey: 'widgets.settings.weather.title',
 		size: 'lg',
 		Component: WeatherSetting,
 	},
 	[WidgetTabKeys.wigiArz]: {
-		title: 'تنظیمات ویجی ارز',
+		titleKey: 'widgets.settings.wigiArz.title',
 		size: 'lg',
 		Component: WigiArzSetting,
 	},
 	[WidgetTabKeys.news_settings]: {
-		title: 'تنظیمات اخبار',
+		titleKey: 'widgets.settings.news.title',
 		size: 'md',
 		Component: RssFeedSetting,
 	},
 	[WidgetTabKeys.combo_settings]: {
-		title: 'تنظیمات ویجت ترکیبی',
+		titleKey: 'widgets.settings.combo.title',
 		size: 'lg',
 		Component: ComboSetting,
 	},
 	[WidgetTabKeys.dot_calendar_settings]: {
-		title: 'تنظیمات روزشمار',
+		titleKey: 'widgets.settings.dotCalendar.title',
 		size: 'md',
 		Component: DotCalendarSetting,
 	},
 	[WidgetTabKeys.calendar_settings]: {
-		title: 'تنظیمات تقویم',
+		titleKey: 'widgets.settings.calendar.title',
 		size: 'md',
 		Component: CalendarSetting,
 	},
@@ -88,10 +89,11 @@ export function WidgetSettings() {
 		<Modal
 			isOpen={isOpen && !!activeSettingConfig}
 			onClose={() => setIsOpen(false)}
-			title={activeSettingConfig?.title}
+			title={activeSettingConfig ? t(activeSettingConfig.titleKey) : undefined}
 			size={activeSettingConfig?.size}
 			className={activeSettingConfig?.className}
 			closeOnBackdropClick
+			closeLabel={t('ui.common.close')}
 		>
 			{activeSettingConfig && (
 				<activeSettingConfig.Component

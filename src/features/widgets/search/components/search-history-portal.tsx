@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { t } from '@/common/i18n'
 import { Motion, Presence } from '@/common/motion'
 import { Portal } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
@@ -146,10 +147,10 @@ export function SearchHistoryPortal({
 									</div>
 									<div className="space-y-1">
 										<p className="text-xs font-medium text-fg-muted">
-											پیشنهادهای جستجو
+											{t('widgets.search.history.suggestions')}
 										</p>
 										<p className="text-2xs text-fg-faint leading-relaxed">
-											اگه روشنش کنی، موقع تایپ پیشنهاد می‌گیری
+											{t('widgets.search.history.suggestionsHint')}
 										</p>
 									</div>
 									<button
@@ -160,12 +161,12 @@ export function SearchHistoryPortal({
 										}}
 										className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-xl cursor-pointer bg-fill text-fg-muted transition-ui hover:text-brand hover:bg-brand-fill focus-visible:focus-ring"
 									>
-										روشنش کن
+										{t('widgets.search.history.enable')}
 									</button>
 								</div>
 							) : (
 								<p className="px-4 py-6 text-xs text-center text-fg-faint">
-									هنوز چیزی اینجا نیست
+									{t('widgets.search.history.empty')}
 								</p>
 							)}
 						</Motion.div>

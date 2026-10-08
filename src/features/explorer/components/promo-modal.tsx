@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { showToast } from '@/common/toast'
 import { Badge, Button, ImageSlider, Modal } from '@/components/ui'
 import { Icon } from '@/icons'
@@ -28,7 +29,9 @@ export function ExplorerPromoModal({ isOpen, onClose, item }: ExplorerPromoModal
 	const description = meta?.description || item.description
 	const highlights: string[] = Array.isArray(meta?.highlights) ? meta.highlights : []
 	const isSponsor =
-		item.badge === 'اسپانسر' || item.badgeColor?.includes('amber') || meta?.isSponsor
+		item.badge === t('explorer.promo.sponsor') ||
+		item.badgeColor?.includes('amber') ||
+		meta?.isSponsor
 
 	const handleCopy = async (e?: React.MouseEvent) => {
 		if (e) e.stopPropagation()
@@ -37,10 +40,10 @@ export function ExplorerPromoModal({ isOpen, onClose, item }: ExplorerPromoModal
 		try {
 			await navigator.clipboard.writeText(promo.code)
 			setIsCopied(true)
-			showToast(`کد تخفیف ${promo.code} کپی شد`, 'success')
+			showToast(t('explorer.promo.discountCopied', { code: promo.code }), 'success')
 			setTimeout(() => setIsCopied(false), 2500)
 		} catch {
-			showToast('نتونستیم کد رو کپی کنیم', 'error')
+			showToast(t('explorer.promo.copyFailed'), 'error')
 		}
 	}
 
@@ -58,7 +61,9 @@ export function ExplorerPromoModal({ isOpen, onClose, item }: ExplorerPromoModal
 		}
 	}
 
-	const ctaText = promo?.code ? 'کپی کد و ورود به سایت' : 'مشاهده و ورود'
+	const ctaText = promo?.code
+		? t('explorer.promo.copyAndEnter')
+		: t('explorer.promo.viewAndEnter')
 
 	return (
 		<Modal
@@ -67,6 +72,7 @@ export function ExplorerPromoModal({ isOpen, onClose, item }: ExplorerPromoModal
 			size="md"
 			closeOnBackdropClick={true}
 			showCloseButton={true}
+			closeLabel={t('ui.common.close')}
 		>
 			<div className="space-y-3.5 pt-0.5">
 				{/* Visual / Gallery Container */}
@@ -103,7 +109,7 @@ export function ExplorerPromoModal({ isOpen, onClose, item }: ExplorerPromoModal
 						</div>
 						{isSponsor && (
 							<Badge variant="neutral" size="sm">
-								اسپانسر
+								{t('explorer.promo.sponsor')}
 							</Badge>
 						)}
 					</div>
@@ -137,7 +143,7 @@ export function ExplorerPromoModal({ isOpen, onClose, item }: ExplorerPromoModal
 					<div className="p-3 rounded-2xl bg-surface-2 border border-surface-3 space-y-2">
 						<div className="flex items-center justify-between text-xs">
 							<span className="font-semibold text-fg">
-								{promo.title || 'کد تخفیف اختصاصی'}
+								{promo.title || t('explorer.promo.exclusiveCode')}
 							</span>
 							{promo.discount && (
 								<span className="text-2xs font-bold text-brand">
@@ -163,7 +169,9 @@ export function ExplorerPromoModal({ isOpen, onClose, item }: ExplorerPromoModal
 										size={12}
 										className="ml-1"
 									/>
-									{isCopied ? 'کپی شد' : 'کپی'}
+									{isCopied
+										? t('explorer.promo.copied')
+										: t('explorer.promo.copy')}
 								</Button>
 							</div>
 						)}
@@ -178,7 +186,7 @@ export function ExplorerPromoModal({ isOpen, onClose, item }: ExplorerPromoModal
 						rounded="2xl"
 						className="text-xs px-4"
 					>
-						بستن
+						{t('explorer.promo.close')}
 					</Button>
 					<Button
 						onClick={handleAction}

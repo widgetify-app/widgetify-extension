@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import React from 'react'
 import { Button } from '@/components/ui'
 
@@ -20,7 +21,7 @@ export const HabitFormActions: React.FC<HabitFormActionsProps> = React.memo(
 					disabled={isPending}
 					className="w-1/4 text-xs font-bold h-11"
 				>
-					انصراف
+					{t('ui.common.cancel')}
 				</Button>
 
 				<Button
@@ -33,10 +34,10 @@ export const HabitFormActions: React.FC<HabitFormActionsProps> = React.memo(
 					className="flex-1 w-full text-xs font-bold shadow-md h-11 shadow-brand-fill-2"
 				>
 					{isPending
-						? 'در حال ذخیره…'
+						? t('widgets.habit.form.saving')
 						: isEdit
-							? 'ذخیره تغییرات'
-							: 'افزودن عادت'}
+							? t('widgets.habit.form.saveChanges')
+							: t('widgets.habit.form.add')}
 				</Button>
 			</div>
 		)

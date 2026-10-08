@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { t } from '@/common/i18n'
 import { Button } from '../button/button'
 import { Modal } from './modal'
 import { Spinner } from '../spinner/spinner'
@@ -10,10 +11,10 @@ interface ConfirmationModalProps {
 	isOpen: boolean
 	onClose: () => void
 	onConfirm: () => void
-	title?: string
-	message?: string | ReactNode
-	confirmText?: ReactNode
-	cancelText?: string
+	title: string
+	message: string | ReactNode
+	confirmText: ReactNode
+	cancelText: string
 	variant?: 'danger' | 'warning' | 'brand'
 	isLoading?: boolean
 	icon?: ReactNode
@@ -29,10 +30,10 @@ export function ConfirmationModal({
 	isOpen,
 	onClose,
 	onConfirm,
-	title = 'مطمئنی؟',
-	message = 'این کار انجام بشه؟',
-	confirmText = 'تایید',
-	cancelText = 'انصراف',
+	title,
+	message,
+	confirmText,
+	cancelText,
 	variant = 'danger',
 	isLoading = false,
 	icon,
@@ -58,6 +59,7 @@ export function ConfirmationModal({
 			size="sm"
 			closeOnBackdropClick={!isLoading}
 			showCloseButton={!isLoading}
+			closeLabel={t('ui.common.close')}
 			title={
 				<div className="flex items-center gap-3">
 					<div
@@ -99,7 +101,7 @@ export function ConfirmationModal({
 						loadingText={
 							<div className="flex items-center gap-1">
 								<Spinner size="sm" tone="current" aria-hidden="true" />
-								<span className="text-xs">یه لحظه…</span>
+								<span className="text-xs">{t('ui.common.moment')}</span>
 							</div>
 						}
 						color={variant}

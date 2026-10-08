@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
 import { PRIORITY_BORDER_CLASS, priorityClass } from '../constants'
@@ -24,7 +25,9 @@ export function TodoCheck({
 			disabled={disabled}
 			aria-pressed={isDone}
 			aria-label={
-				isDone ? `${text} رو برگردون به انجام‌نشده` : `${text} رو انجام‌شده کن`
+				isDone
+					? t('widgets.todos.item.markUndoneAria', { p0: text })
+					: t('widgets.todos.item.markDoneAria', { p0: text })
 			}
 			className={cn(
 				'grid flex-none rounded-full place-items-center size-4 border-[1.5px] cursor-pointer transition-ui focus-visible:focus-ring disabled:cursor-not-allowed disabled:opacity-60',

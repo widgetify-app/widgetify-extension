@@ -1,4 +1,5 @@
 import Analytics from '@/analytics'
+import { t, type MessageKey } from '@/common/i18n'
 import { callEvent } from '@/common/utils/call-event'
 import { Button } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
@@ -10,9 +11,9 @@ interface Prop {
 	onConfirm: any
 }
 
-let SCOPES_LABEL: Record<MiniAppScopeEnum, string> = {
-	ACCOUNT: 'شماره همراه و ایمیل',
-	PROFILE: 'اطلاعات پروفایل (نام، نام کاربری، تصویر پروفایل)',
+const SCOPES_LABEL: Record<MiniAppScopeEnum, MessageKey> = {
+	ACCOUNT: 'miniApps.auth.scope.phoneEmail',
+	PROFILE: 'miniApps.auth.scope.profile',
 }
 
 export function WebAppAuthGate({ scopes, onConfirm }: Prop) {
@@ -34,9 +35,11 @@ export function WebAppAuthGate({ scopes, onConfirm }: Prop) {
 				{isAuthenticated ? (
 					<>
 						<div className="flex flex-col items-center gap-3">
-							<p className="text-sm font-semibold">اجازه می‌دی؟</p>
+							<p className="text-sm font-semibold">
+								{t('miniApps.auth.allowTitle')}
+							</p>
 							<p className="max-w-xs text-xs leading-relaxed opacity-70">
-								این برنامک برای ادامه به این اطلاعات دسترسی می‌خواد:
+								{t('miniApps.auth.allowBody')}
 							</p>
 
 							<ul className="flex flex-col w-full max-w-xs gap-2 text-xs">
@@ -45,7 +48,7 @@ export function WebAppAuthGate({ scopes, onConfirm }: Prop) {
 										key={s}
 										className="px-3 py-2 rounded-lg bg-fill text-fg-muted"
 									>
-										{SCOPES_LABEL[s] || s}
+										{SCOPES_LABEL[s] ? t(SCOPES_LABEL[s]) : s}
 									</li>
 								))}
 							</ul>
@@ -59,15 +62,17 @@ export function WebAppAuthGate({ scopes, onConfirm }: Prop) {
 							color={'brand'}
 							className="w-full text-sm font-medium border-none"
 						>
-							تایید و ادامه
+							{t('miniApps.auth.confirm')}
 						</Button>
 					</>
 				) : (
 					<>
 						<div className="flex flex-col items-center gap-3">
-							<p className="text-sm font-semibold">اول وارد حسابت شو</p>
+							<p className="text-sm font-semibold">
+								{t('miniApps.auth.loginTitle')}
+							</p>
 							<p className="max-w-xs text-xs leading-relaxed opacity-70">
-								برای باز کردن برنامک باید وارد حسابت بشی
+								{t('miniApps.auth.loginBody')}
 							</p>
 						</div>
 
@@ -79,7 +84,7 @@ export function WebAppAuthGate({ scopes, onConfirm }: Prop) {
 							color={'brand'}
 							className="w-full text-sm font-medium border-none"
 						>
-							ورود به حساب
+							{t('miniApps.auth.login')}
 						</Button>
 					</>
 				)}

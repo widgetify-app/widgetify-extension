@@ -2,6 +2,7 @@ import { memo, useState } from 'react'
 import { Modal, Button } from '@/components/ui'
 import { Icon } from '@/icons'
 import { cn } from '@/common/utils/cn'
+import { t, type MessageKey } from '@/common/i18n'
 
 interface WidgetHelpModalProps {
 	isOpen: boolean
@@ -12,13 +13,13 @@ type TabType = 'move' | 'styles' | 'add' | 'presets'
 
 interface HelpTabItem {
 	id: TabType
-	label: string
+	labelKey: MessageKey
 	icon: 'move' | 'viewGridAdd' | 'plus' | 'squares2X2'
 	videoUrl: string
-	badge: string
-	title: string
-	description: string
-	tips: string[]
+	badgeKey: MessageKey
+	titleKey: MessageKey
+	descriptionKey: MessageKey
+	tipKeys: MessageKey[]
 }
 
 const CDN_BASE_URL = 'https://cdn.widgetify.ir/extension/help_videos/'
@@ -26,80 +27,76 @@ const CDN_BASE_URL = 'https://cdn.widgetify.ir/extension/help_videos/'
 const HELP_TABS: HelpTabItem[] = [
 	{
 		id: 'move',
-		label: 'جابه‌جایی آزاد',
+		labelKey: 'widgets.help.tab.move.label',
 		icon: 'move',
 		videoUrl: `${CDN_BASE_URL}JABEJAIE-WIDGET-HA.webm`,
-		badge: 'چیدمان آزاد',
-		title: 'جابجایی و درگ آزاد ویجت‌ها',
-		description:
-			'ویجت‌ها رو بدون محدودیت به هر نقطه از صفحه بکش و چیدمان دلخواهت رو خلق کن',
-		tips: [
-			'روی فضای خالی صفحه کلیک راست کن و «ویرایش ویجت‌ها» رو بزن',
-			'ویجت‌ها رو با درگ کردن به موقعیت دلخواهت ببر',
-			'در آخر دکمه «پایان» نوار پایین صفحه رو بزن تا چیدمان قفل و ذخیره بشه',
+		badgeKey: 'widgets.help.tab.move.badge',
+		titleKey: 'widgets.help.tab.move.title',
+		descriptionKey: 'widgets.help.tab.move.description',
+		tipKeys: [
+			'widgets.help.tab.move.tipEnterEdit',
+			'widgets.help.tab.move.tipDrag',
+			'widgets.help.tab.move.tipFinish',
 		],
 	},
 	{
 		id: 'styles',
-		label: 'سایز و استایل',
+		labelKey: 'widgets.help.tab.styles.label',
 		icon: 'viewGridAdd',
 		videoUrl: `${CDN_BASE_URL}WIDGET-STYLES.webm`,
-		badge: 'شخصی‌سازی',
-		title: 'تغییر ابعاد و استایل ظاهری',
-		description:
-			'با کلیک راست روی هر ویجت، اندازه، ظاهر و نحوه نمایش اون رو به سلیقه خودت تغییر بده',
-		tips: [
-			'روی ویجت موردنظرت کلیک راست کن',
-			'از منوی باز شده اندازه دلخواه (کوچک، متوسط یا بزرگ) رو انتخاب کن',
-			'برای ویجت‌های دارای استایل اختصاصی، از گزینه «تغییر مدل و استایل» استفاده کن',
+		badgeKey: 'widgets.help.tab.styles.badge',
+		titleKey: 'widgets.help.tab.styles.title',
+		descriptionKey: 'widgets.help.tab.styles.description',
+		tipKeys: [
+			'widgets.help.tab.styles.tipRightClick',
+			'widgets.help.tab.styles.tipPickSize',
+			'widgets.help.tab.styles.tipChangeStyle',
 		],
 	},
 	{
 		id: 'add',
-		label: 'افزودن و تکرار',
+		labelKey: 'widgets.help.tab.add.label',
 		icon: 'plus',
 		videoUrl: `${CDN_BASE_URL}ADD-NEW-ITEM-AND-NEW-LIST.webm`,
-		badge: 'تنوع بی‌نهایت',
-		title: 'افزودن ویجت یا ساخت چند نسخه',
-		description:
-			'از منوی پایین صفحه ویجت جدید اضافه کن یا از یک ویجت چندین نمونه با کاربردهای جداگانه بساز',
-		tips: [
-			'در حالت ویرایش، از نوار پایین گزینه «افزودن ویجت» رو بزن',
-			'ویجت دلخواهت رو به صفحه اضافه کن',
-			'می‌تونی چند ویجت مشابه (مثلاً چند لیست کار یا یادداشت مجزا) در صفحه داشته باشی',
+		badgeKey: 'widgets.help.tab.add.badge',
+		titleKey: 'widgets.help.tab.add.title',
+		descriptionKey: 'widgets.help.tab.add.description',
+		tipKeys: [
+			'widgets.help.tab.add.tipOpenAdd',
+			'widgets.help.tab.add.tipPickWidget',
+			'widgets.help.tab.add.tipMultiple',
 		],
 	},
 	{
 		id: 'presets',
-		label: 'چیدمان‌های آماده',
+		labelKey: 'widgets.help.tab.presets.label',
 		icon: 'squares2X2',
 		videoUrl: `${CDN_BASE_URL}CHANGE-PREPARED-ITEMS-2.webm`,
-		badge: 'یک کلیک',
-		title: 'قالب‌ها و چیدمان‌های آماده',
-		description:
-			'برای تغییر سریع ظاهر تب، از الگوهای حرفه‌ای و چیدمان‌های آماده پیش‌فرض استفاده کن',
-		tips: [
-			'در حالت ویرایش صفحه، گزینه «چیدمان‌های آماده» رو انتخاب کن',
-			'پیش‌نمایش قالب‌های مختلف رو ببین',
-			'با یک کلیک قالب مدنظرت رو اعمال کن و در صورت نیاز شخصی‌سازیش کن',
+		badgeKey: 'widgets.help.tab.presets.badge',
+		titleKey: 'widgets.help.tab.presets.title',
+		descriptionKey: 'widgets.help.tab.presets.description',
+		tipKeys: [
+			'widgets.help.tab.presets.tipOpenPresets',
+			'widgets.help.tab.presets.tipPreview',
+			'widgets.help.tab.presets.tipApply',
 		],
 	},
 ]
 
 function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 	const [activeTabId, setActiveTabId] = useState<TabType>('move')
-	const activeTab = HELP_TABS.find((t) => t.id === activeTabId) ?? HELP_TABS[0]
+	const activeTab = HELP_TABS.find((tab) => tab.id === activeTabId) ?? HELP_TABS[0]
 
 	return (
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			title="راهنمای مدیریت و چیدمان ویجت‌ها"
+			title={t('widgets.help.modalTitle')}
 			size="lg"
 			closeOnBackdropClick
+			closeLabel={t('ui.common.close')}
 		>
 			<div className="flex flex-col gap-4 p-1 select-none text-right" dir="rtl">
-				{/* Tab Selector */}
 				<div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-1 border-b border-line">
 					{HELP_TABS.map((tab) => {
 						const isCurrent = tab.id === activeTabId
@@ -116,13 +113,12 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 								)}
 							>
 								<Icon name={tab.icon} size={14} />
-								<span>{tab.label}</span>
+								<span>{t(tab.labelKey)}</span>
 							</button>
 						)
 					})}
 				</div>
 
-				{/* Video Container */}
 				<div className="relative flex items-center justify-center w-full overflow-hidden border shadow-sm aspect-video max-h-56 rounded-2xl border-line bg-fill shrink-0">
 					<video
 						key={activeTab.videoUrl}
@@ -134,38 +130,35 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 						className="object-cover w-full h-full"
 					/>
 					<div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-surface-veil backdrop-blur-md border border-line text-2xs font-bold text-fg shadow-sm">
-						{activeTab.badge}
+						{t(activeTab.badgeKey)}
 					</div>
 				</div>
 
-				{/* Tab Detail Info */}
 				<div className="flex items-start gap-3 p-3.5 rounded-2xl bg-fill-2 border border-line transition-ui">
 					<div className="w-9 h-9 rounded-xl bg-brand-fill text-brand flex items-center justify-center shrink-0 mt-0.5">
 						<Icon name={activeTab.icon} size={16} />
 					</div>
 					<div className="flex flex-col gap-1 justify-center">
 						<span className="text-xs font-bold text-fg">
-							{activeTab.title}
+							{t(activeTab.titleKey)}
 						</span>
 						<p className="text-2xs leading-relaxed text-fg-muted">
-							{activeTab.description}
+							{t(activeTab.descriptionKey)}
 						</p>
 					</div>
 				</div>
 
-				{/* Tips List */}
 				<div className="flex flex-col gap-2 p-3 border bg-fill rounded-2xl border-line">
-					{activeTab.tips.map((tip, idx) => (
-						<div key={tip} className="flex items-start gap-2.5">
+					{activeTab.tipKeys.map((tipKey, idx) => (
+						<div key={tipKey} className="flex items-start gap-2.5">
 							<span className="w-5 h-5 rounded-full bg-brand-fill text-brand flex items-center justify-center text-3xs font-bold shrink-0 mt-0.5">
 								{idx + 1}
 							</span>
-							<p className="text-xs leading-relaxed text-fg">{tip}</p>
+							<p className="text-xs leading-relaxed text-fg">{t(tipKey)}</p>
 						</div>
 					))}
 				</div>
 
-				{/* Footer Action */}
 				<div className="flex justify-end pt-2 border-t border-line">
 					<Button
 						type="button"
@@ -175,7 +168,7 @@ function WidgetHelpModalComponent({ isOpen, onClose }: WidgetHelpModalProps) {
 						rounded="xl"
 						className="px-6 text-xs font-bold"
 					>
-						متوجه شدم
+						{t('widgets.help.gotIt')}
 					</Button>
 				</div>
 			</div>

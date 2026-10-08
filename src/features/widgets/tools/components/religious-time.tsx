@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import type { ReactNode } from 'react'
 import { cn } from '@/common/utils/cn'
 import type { WidgetifyDate } from '@/common/utils/date-events'
@@ -8,13 +9,13 @@ import { formatTimeLeft, minutesUntil, nextPrayerIndex } from '../utils/next-pra
 import { ToolHeader } from './tool-header'
 
 const DAILY_ZIKR: Record<string, string> = {
-	شنبه: 'یا رَبَّ الْعَالَمِینَ',
-	یک‌شنبه: 'یا ذَالْجَلَالِ وَالْإِکْرَامِ',
-	دوشنبه: 'یا قاضی الحاجات',
-	سه‌شنبه: 'یا أَرْحَمَ الرَّاحِمِینَ',
-	چهارشنبه: 'یا حَیُّ یا قَیُّومُ',
-	پنج‌شنبه: 'لا إِلَهَ إِلَّا اللَّهُ الْمَلِکُ الْحَقُّ الْمُبِینُ',
-	جمعه: 'اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَ آلِ مُحَمَّدٍ',
+	شنبه: t('widgets.tools.religious.dhikrRabbilAlamin'),
+	یک‌شنبه: t('widgets.tools.religious.dhikrDhalJalali'),
+	دوشنبه: t('widgets.tools.religious.dhikrQadiAlHajat'),
+	سه‌شنبه: t('widgets.tools.religious.dhikrArhamAlRahimin'),
+	چهارشنبه: t('widgets.tools.religious.dhikrHayyQayyum'),
+	پنج‌شنبه: t('widgets.tools.religious.dhikrLaIlaha'),
+	جمعه: t('widgets.tools.religious.dhikrSalawat'),
 }
 
 interface ReligiousTimeProps {
@@ -52,7 +53,7 @@ export function ReligiousTime({ currentDate, tabs }: ReligiousTimeProps) {
 				</div>
 			) : isError ? (
 				<WidgetError
-					message="نتونستیم اوقات شرعی رو بیاریم"
+					message={t('widgets.tools.religious.loadError')}
 					onRetry={() => refetch()}
 				/>
 			) : (
@@ -100,7 +101,9 @@ export function ReligiousTime({ currentDate, tabs }: ReligiousTimeProps) {
 							<span className="text-sm font-semibold text-fg-strong">
 								{zikr}
 							</span>
-							<span className="text-3xs text-fg-faint">ذکر {weekDay}</span>
+							<span className="text-3xs text-fg-faint">
+								{t('widgets.tools.religious.dhikrLabel')} {weekDay}
+							</span>
 						</div>
 					)}
 				</>

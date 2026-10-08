@@ -57,7 +57,7 @@ describe('formatHabitGoal', () => {
 			'حداکثر 5 صفحه در روز'
 		)
 		expect(formatHabitGoal(habit({ comparison: HabitComparison.EXACT }))).toBe(
-			'دقیقاً 5 صفحه در روز'
+			'دقیقا 5 صفحه در روز'
 		)
 	})
 

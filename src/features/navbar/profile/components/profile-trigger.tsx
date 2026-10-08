@@ -1,6 +1,7 @@
 import { AvatarComponent, ProgressRing } from '@/components/ui'
 import type { UserProfile } from '@/services/user/user-service.hook'
 import { NavIconButton } from '../../components/nav-icon-button'
+import { t } from '@/common/i18n'
 
 interface ProfileTriggerProps {
 	user: UserProfile | null
@@ -20,7 +21,7 @@ export function ProfileTrigger({
 			<NavIconButton
 				id="profile-button"
 				icon="user"
-				label="ورود یا ثبت‌نام"
+				label={t('navbar.profile.triggerLogin')}
 				onClick={onClick}
 			/>
 		)
@@ -31,7 +32,9 @@ export function ProfileTrigger({
 			type="button"
 			id="profile-button"
 			aria-label={
-				profilePercentage ? `پروفایل، ${profilePercentage}٪ تکمیل شده` : 'پروفایل'
+				profilePercentage
+					? t('navbar.profile.triggerProgress', { percent: profilePercentage })
+					: t('navbar.profile.trigger')
 			}
 			onClick={onClick}
 			className="relative flex items-center justify-center cursor-pointer select-none group"

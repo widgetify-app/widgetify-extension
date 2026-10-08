@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useState, useRef } from 'react'
 import { Dropdown } from '@/components/ui'
 import type { ProfileMetaItem } from '@/services/profile/get-profile-meta.hook'
@@ -34,7 +35,7 @@ export const OccupationSelector = ({
 		<div className="w-64 p-2 border bg-surface-2 rounded-2xl border-surface-3">
 			{isLoading ? (
 				<div className="py-4 text-xs italic font-medium text-center animate-pulse">
-					یه لحظه…
+					{t('setting.interests.loading')}
 				</div>
 			) : (
 				<div className="flex flex-row flex-wrap gap-1 overflow-x-hidden overflow-y-auto max-h-40">

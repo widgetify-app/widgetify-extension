@@ -1,9 +1,10 @@
+import { t } from '@/common/i18n'
 import type { EngineMeta } from '@/services/trends/get-trends.hook'
 
 export const DEFAULT_ENGINE: EngineMeta = {
 	id: 'google',
 	prefix: '',
-	label: 'گوگل',
+	label: t('widgets.search.engine.google'),
 	icon: '',
 }
 

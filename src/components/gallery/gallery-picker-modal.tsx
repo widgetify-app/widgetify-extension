@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Modal, Chip } from '@/components/ui'
 import { Icon } from '@/icons'
 import { playNativeToastSound, showToast } from '@/common/toast'
+import { t } from '@/common/i18n'
 import { useAuth } from '@/context/auth.context'
 import { callEvent } from '@/common/utils/call-event'
 import {
@@ -27,7 +28,7 @@ export function GalleryPickerModal({
 	isOpen,
 	onClose,
 	type,
-	title = 'گالری تصاویر',
+	title = t('gallery.picker.title'),
 	onSelect,
 	selectedAssetUrl,
 }: GalleryPickerModalProps) {
@@ -58,7 +59,7 @@ export function GalleryPickerModal({
 
 		if (!user) {
 			callEvent('openProfile')
-			showToast('برای استفاده از این مورد اول وارد حسابت شو', 'error')
+			showToast(t('gallery.picker.loginRequired'), 'error')
 			return
 		}
 
@@ -91,6 +92,7 @@ export function GalleryPickerModal({
 				size="xl"
 				className=""
 				closeOnBackdropClick={true}
+				closeLabel={t('ui.common.close')}
 			>
 				<div className="flex flex-col w-full gap-4 p-1 h-[70vh]">
 					{categories.length > 0 && (
@@ -100,7 +102,7 @@ export function GalleryPickerModal({
 								onClick={() => setSelectedCategory('ALL')}
 								className="text-xs"
 							>
-								همه
+								{t('gallery.picker.all')}
 							</Chip>
 							{categories.map((cat) => (
 								<Chip
@@ -146,7 +148,9 @@ export function GalleryPickerModal({
 									size={32}
 									className="mb-2 opacity-30"
 								/>
-								<p className="text-sm font-medium">تصویری پیدا نکردیم</p>
+								<p className="text-sm font-medium">
+									{t('gallery.picker.empty')}
+								</p>
 							</div>
 						) : type === 'BOOKMARK_ICON' ? (
 							<div className="grid grid-cols-4 gap-2.5 sm:grid-cols-5 md:grid-cols-6">

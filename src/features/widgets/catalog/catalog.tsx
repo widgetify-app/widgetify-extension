@@ -20,6 +20,7 @@ import { AddWidgetSidebar } from './components/sidebar'
 import { AddWidgetOptions } from './components/options'
 import { AddWidgetPreview } from './components/preview'
 import { AddWidgetActions } from './components/actions'
+import { t } from '@/common/i18n'
 
 export function AddWidgetModal({
 	isOpen,
@@ -244,7 +245,10 @@ export function AddWidgetModal({
 		if (!hasNewWidgets) return CATEGORIES
 		return [
 			CATEGORIES[0],
-			{ id: 'new' as WidgetCategory, label: 'جدید' },
+			{
+				id: 'new' as WidgetCategory,
+				labelKey: 'widgets.catalog.category.new' as const,
+			},
 			...CATEGORIES.slice(1),
 		]
 	}, [hasNewWidgets])
@@ -285,12 +289,13 @@ export function AddWidgetModal({
 			<Modal
 				isOpen={isOpen}
 				onClose={onClose}
+				closeLabel={t('ui.common.close')}
 				title={
 					<div className="flex items-center gap-2.5">
 						<span>
 							{editTarget
-								? 'تغییر مدل و استایل ویجت'
-								: 'مدیریت و افزودن ویجت‌ها'}
+								? t('widgets.catalog.title.edit')
+								: t('widgets.catalog.title.add')}
 						</span>
 						<Button
 							type="button"
@@ -301,7 +306,7 @@ export function AddWidgetModal({
 							className="gap-1 text-xs px-2.5 py-1 border-line font-normal"
 						>
 							<Icon name="help" size={12} />
-							<span>راهنما</span>
+							<span>{t('widgets.catalog.help')}</span>
 						</Button>
 					</div>
 				}
@@ -336,16 +341,22 @@ export function AddWidgetModal({
 											<div>
 												<div className="flex items-center gap-1.5">
 													<h3 className="text-sm font-bold text-fg">
-														{selectedDef.label}
+														{t(selectedDef.label)}
 													</h3>
 													{isWidgetNew?.(selectedDef.id) && (
-														<Badge>جدید</Badge>
+														<Badge>
+															{t(
+																'widgets.catalog.badge.new'
+															)}
+														</Badge>
 													)}
 												</div>
 												<p className="text-2xs text-fg-muted">
 													{selectedDef.canDuplicate
-														? 'امکان افزودن چندین نمونه از این ویجت وجود دارد'
-														: 'ویجت تکی صفحه اصلی'}
+														? t(
+																'widgets.catalog.duplicateHint'
+															)
+														: t('widgets.catalog.singleHint')}
 												</p>
 											</div>
 										</div>
@@ -359,7 +370,9 @@ export function AddWidgetModal({
 												className="gap-1.5 text-xs px-3 py-1.5 hover:text-brand"
 											>
 												<Icon name="settings" size={12} />
-												<span>تنظیمات ویجت</span>
+												<span>
+													{t('widgets.catalog.widgetSettings')}
+												</span>
 											</Button>
 										)}
 									</div>

@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { Button } from '@/components/ui'
 import { Icon } from '@/icons'
@@ -24,18 +25,21 @@ export function Network2x3({
 	onRefresh,
 	onRetryOffline,
 }: NetworkViewProps) {
-	const place = [info.city, info.country].filter(Boolean).join('، ')
+	const place = [info.city, info.country].filter(Boolean).join(t('ui.date.headingSep'))
 
 	return (
-		<section aria-label="شبکه" className="flex flex-col w-full h-full min-h-0 gap-2">
+		<section
+			aria-label={t('widgets.network.aria')}
+			className="flex flex-col w-full h-full min-h-0 gap-2"
+		>
 			<WidgetHeader
-				title="شبکه"
+				title={t('widgets.network.title')}
 				info={<NetworkStatus isOnline={isOnline} />}
 				actions={
 					isAuthenticated &&
 					isOnline && (
 						<WidgetHeaderButton
-							label="به‌روز کن"
+							label={t('widgets.network.refresh')}
 							icon="refresh"
 							onClick={onRefresh}
 							disabled={isLoading}
@@ -50,9 +54,11 @@ export function Network2x3({
 						<span className="grid mb-0.5 rounded-xl size-11 place-items-center bg-fill text-danger">
 							<Icon name="wifiOff" size={20} aria-hidden="true" />
 						</span>
-						<p className="text-xs font-bold text-fg-strong">اینترنت قطعه</p>
+						<p className="text-xs font-bold text-fg-strong">
+							{t('widgets.network.offlineTitle')}
+						</p>
 						<p className="leading-relaxed text-2xs text-fg-muted">
-							اتصال مودم یا وای‌فای رو چک کن؛ وصل که بشی خودش به‌روز می‌شه
+							{t('widgets.network.offlineHint')}
 						</p>
 						<Button
 							size="sm"
@@ -61,14 +67,14 @@ export function Network2x3({
 							className="mt-1"
 							onClick={onRetryOffline}
 						>
-							دوباره امتحان کن
+							{t('widgets.network.retryFull')}
 						</Button>
 					</div>
 				) : isInitialLoading ? (
 					<NetworkLoadingSkeleton />
 				) : hasError ? (
 					<WidgetError
-						message="نتونستیم اطلاعات شبکه رو بیاریم"
+						message={t('widgets.network.loadError')}
 						onRetry={onRefresh}
 					/>
 				) : (
@@ -77,19 +83,19 @@ export function Network2x3({
 							<CountryFlag src={info.countryIcon} />
 							<div className="flex flex-col flex-1 min-w-0">
 								<span className="text-xs font-semibold truncate text-fg">
-									{place || 'مکان معلوم نیست'}
+									{place || t('widgets.network.placeUnknown')}
 								</span>
 								<span className="truncate text-3xs text-fg-faint">
 									{info.isp
 										? cleanIspName(info.isp)
-										: 'سرویس‌دهنده معلوم نیست'}
+										: t('widgets.network.ispUnknown')}
 								</span>
 							</div>
 						</div>
 
 						<dl className="flex flex-col gap-1 px-1 py-2.5 border-t border-line">
 							<dt className="font-semibold text-3xs text-fg-faint">
-								آدرس IP
+								{t('widgets.network.ipLabel')}
 							</dt>
 							<dd className="flex items-center justify-between gap-2">
 								<span
@@ -103,7 +109,7 @@ export function Network2x3({
 								</span>
 								{info.ip && (
 									<WidgetHeaderButton
-										label="کپی آدرس IP"
+										label={t('widgets.network.copyIp')}
 										icon="copy"
 										onClick={() => copyIpToClipboard(info.ip)}
 									/>
@@ -112,14 +118,16 @@ export function Network2x3({
 						</dl>
 
 						<dl className="flex flex-col gap-1 px-1 py-2.5 border-t border-line">
-							<dt className="font-semibold text-3xs text-fg-faint">پینگ</dt>
+							<dt className="font-semibold text-3xs text-fg-faint">
+								{t('widgets.network.ping')}
+							</dt>
 							<dd className="flex items-center justify-between gap-2">
 								<span className="flex items-baseline gap-1">
 									<span className="text-2xl font-extrabold leading-none tracking-tight tabular-nums text-fg-strong">
 										{info.ping ?? '--'}
 									</span>
 									<span className="font-medium text-3xs text-fg-faint">
-										میلی‌ثانیه
+										{t('widgets.network.ms')}
 									</span>
 								</span>
 								<PingSignal ping={info.ping} />

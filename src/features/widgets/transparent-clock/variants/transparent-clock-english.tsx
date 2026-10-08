@@ -1,4 +1,5 @@
 import type React from 'react'
+import { t } from '@/common/i18n'
 import { TransparentClockFace } from '../components/transparent-clock-face'
 
 interface TransparentClockEnglishProps {
@@ -20,7 +21,10 @@ export const TransparentClockEnglish: React.FC<TransparentClockEnglishProps> = (
 			minutes={minutes}
 			weekday={time.toLocaleDateString('en-US', { weekday: 'long' })}
 			date={time.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
-			readableTime={`ساعت ${hours}:${minutes}`}
+			readableTime={t('widgets.transparentClock.readable', {
+				hours,
+				minutes,
+			})}
 			isoDateTime={isoDateTime}
 			dateColor="secondary"
 			className="pr-2 font-latin"

@@ -7,6 +7,7 @@ import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
 import { Alert, Button, Modal } from '@/components/ui'
 import { Icon } from '@/icons'
+import { t } from '@/common/i18n'
 
 interface AddFriendBottomSheetProps {
 	isOpen: boolean
@@ -22,10 +23,7 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 
 	const handleSendRequest = () => {
 		if (!canSendRequest) {
-			showToast(
-				'برای فرستادن درخواست دوستی، اول توی پروفایلت یه نام کاربری انتخاب کن',
-				'error'
-			)
+			showToast(t('friends.add.setUsernameFirst'), 'error')
 			return
 		}
 		if (!username.trim()) return
@@ -38,7 +36,7 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 				onSuccess: () => {
 					Analytics.event('friends_request_sent')
 					setUsername('')
-					showToast('درخواست دوستی فرستاده شد', 'success')
+					showToast(t('friends.add.sent'), 'success')
 					setTranslatedError(null)
 					// Close the bottom sheet after successful request
 					setTimeout(() => {
@@ -70,7 +68,13 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 		onClose()
 	}
 	return (
-		<Modal isOpen={isOpen} onClose={handleClose} size="lg" title="افزودن دوست جدید">
+		<Modal
+			isOpen={isOpen}
+			onClose={handleClose}
+			size="lg"
+			title={t('friends.add.title')}
+			closeLabel={t('ui.common.close')}
+		>
 			<div className="flex flex-col gap-3 p-5">
 				<div className="flex items-center justify-center">
 					<div className="relative mb-2">
@@ -83,15 +87,12 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 
 				<div className="text-center">
 					<p className="text-sm leading-relaxed text-fg-muted">
-						نام کاربری دوستت رو بنویس
+						{t('friends.add.prompt')}
 					</p>
 				</div>
 
 				{!canSendRequest && (
-					<Alert tone="warning">
-						برای فرستادن درخواست دوستی، اول توی پروفایلت یه نام کاربری انتخاب
-						کن
-					</Alert>
+					<Alert tone="warning">{t('friends.add.setUsernameFirstLong')}</Alert>
 				)}
 
 				<div className="space-y-4">
@@ -100,7 +101,7 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 							htmlFor="friend-username"
 							className="block text-sm font-medium text-fg-strong"
 						>
-							نام کاربری
+							{t('friends.add.usernameLabel')}
 						</label>
 
 						<TextInput
@@ -109,9 +110,9 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 							type="text"
 							value={username}
 							onChange={handleUsernameChange}
-							placeholder="مثال: john_doe"
+							placeholder={t('friends.add.usernameExample')}
 							className="w-full"
-							aria-label="نام کاربری دوست"
+							aria-label={t('friends.add.friendUsername')}
 							disabled={!user?.username}
 						/>
 
@@ -133,7 +134,7 @@ export function AddFriendBottomSheet({ isOpen, onClose }: AddFriendBottomSheetPr
 						fullWidth
 						className="h-12 shadow-sm shadow-success-fill-2"
 					>
-						فرستادن درخواست
+						{t('friends.add.send')}
 					</Button>
 				</div>
 			</div>

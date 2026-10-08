@@ -1,5 +1,6 @@
 import jalaliMoment from 'jalali-moment'
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { DatePicker, SectionPanel, TextInput } from '@/components/ui'
 import { useFreeWidgets } from '@/features/widgets/widgets.context'
 import { useGeneralSetting } from '@/context/general-setting.context'
@@ -31,7 +32,7 @@ export function DotCalendarSetting({ instanceId }: DotCalendarSettingProps = {})
 		return (
 			<WidgetSettingWrapper>
 				<p className="text-sm leading-relaxed text-fg-muted">
-					اول ویجت رو به صفحه اضافه کن، بعد از منوی خود ویجت تنظیمش کن.
+					{t('widgets.dotCalendar.addWidgetFirst')}
 				</p>
 			</WidgetSettingWrapper>
 		)
@@ -63,15 +64,22 @@ export function DotCalendarSetting({ instanceId }: DotCalendarSettingProps = {})
 	const dateHint =
 		progress && goalDate
 			? progress.daysLeft > 0
-				? `${progress.daysLeft.toLocaleString('fa-IR')} روز مونده تا ${goalDate.format('jD jMMMM jYYYY')}`
-				: 'روز هدفت رسیده؛ یه روز تازه انتخاب کن'
-			: 'از فردا تا یه سال بعد رو می‌تونی انتخاب کنی'
+				? t('widgets.dotCalendar.daysLeftUntil', {
+						days: progress.daysLeft.toLocaleString('fa-IR'),
+						date: goalDate.format('jD jMMMM jYYYY'),
+					})
+				: t('widgets.dotCalendar.goalReachedPickNew')
+			: t('widgets.dotCalendar.pickHint')
 
 	return (
 		<WidgetSettingWrapper>
 			<div className="flex flex-col gap-3">
 				<SectionPanel
-					title={<label htmlFor="dot-calendar-goal-title">اسم هدف</label>}
+					title={
+						<label htmlFor="dot-calendar-goal-title">
+							{t('widgets.dotCalendar.goalNameLabel')}
+						</label>
+					}
 					size="xs"
 				>
 					<TextInput
@@ -82,11 +90,11 @@ export function DotCalendarSetting({ instanceId }: DotCalendarSettingProps = {})
 						debounce
 						debounceTime={GOAL_TITLE_SAVE_DEBOUNCE_MS}
 						maxLength={GOAL_TITLE_MAX_LENGTH}
-						placeholder="مثلاً کنکور، سفر یا تولد"
+						placeholder={t('widgets.dotCalendar.goalNamePlaceholder')}
 					/>
 				</SectionPanel>
 
-				<SectionPanel title="روز هدف" size="xs">
+				<SectionPanel title={t('widgets.dotCalendar.goalDayLabel')} size="xs">
 					<DatePicker
 						size="lg"
 						selectedDate={goalDate}

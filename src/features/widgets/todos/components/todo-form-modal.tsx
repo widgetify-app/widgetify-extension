@@ -18,6 +18,7 @@ import { toTodoDueDate } from '../utils/todo-due-date'
 import { PriorityDropdown } from './priority-dropdown'
 import { TodoSelectFriends } from './select-friends'
 import { TodoCategoryDropdown, TodoDateDropdown } from './todo-form-tools'
+import { t } from '@/common/i18n'
 
 const today = () => jalaliMoment().locale('fa')
 
@@ -71,7 +72,7 @@ export function TodoFormModal({ isOpen, todo, onClose, onChanged }: TodoFormModa
 		if (isPending || !canEdit) return
 		const title = text.trim()
 		if (!title) {
-			showToast('یه عنوان برای تسک بنویس', 'error')
+			showToast(t('widgets.todos.form.titleRequired'), 'error')
 			return
 		}
 
@@ -113,7 +114,7 @@ export function TodoFormModal({ isOpen, todo, onClose, onChanged }: TodoFormModa
 			return
 		}
 
-		showToast('تسک حذف شد', 'success')
+		showToast(t('widgets.todos.form.deletedToast'), 'success')
 		Analytics.event('todo_removed')
 		onChanged()
 	}
@@ -123,13 +124,18 @@ export function TodoFormModal({ isOpen, todo, onClose, onChanged }: TodoFormModa
 			isOpen={isOpen}
 			onClose={onClose}
 			size="lg"
-			title={isEdit ? 'ویرایش تسک' : 'تسک جدید'}
+			title={
+				isEdit
+					? t('widgets.todos.form.editTitle')
+					: t('widgets.todos.input.newTask')
+			}
 			closeOnBackdropClick={false}
+			closeLabel={t('ui.common.close')}
 		>
 			<div className="flex flex-col gap-3.5">
 				{!canEdit && (
 					<p className="px-3 py-2 rounded-xl bg-fill text-2xs text-fg-muted">
-						این تسک رو یکی از دوستات ساخته؛ فقط خودش می‌تونه ویرایشش کنه.
+						{t('widgets.todos.form.friendOwnedHint')}
 					</p>
 				)}
 
@@ -139,7 +145,7 @@ export function TodoFormModal({ isOpen, todo, onClose, onChanged }: TodoFormModa
 							htmlFor="todo-form-title"
 							className="text-xs text-fg-muted"
 						>
-							عنوان
+							{t('widgets.todos.form.titleLabel')}
 						</label>
 						<TextInput
 							id="todo-form-title"
@@ -148,7 +154,7 @@ export function TodoFormModal({ isOpen, todo, onClose, onChanged }: TodoFormModa
 							onKeyDown={(e) => {
 								if (e.key === 'Enter') handleSubmit()
 							}}
-							placeholder="مثلاً خرید نون"
+							placeholder={t('widgets.todos.form.titlePlaceholder')}
 							debounce={false}
 						/>
 					</div>
@@ -158,13 +164,13 @@ export function TodoFormModal({ isOpen, todo, onClose, onChanged }: TodoFormModa
 							htmlFor="todo-form-description"
 							className="text-xs text-fg-muted"
 						>
-							توضیح
+							{t('widgets.todos.form.notesLabel')}
 						</label>
 						<TextArea
 							id="todo-form-description"
 							value={description}
 							onChange={(e) => setDescription(e.target.value)}
-							placeholder="توضیح یا لینک، اگه لازمه"
+							placeholder={t('widgets.todos.input.notesPlaceholder')}
 							rows={5}
 						/>
 					</div>
@@ -189,7 +195,7 @@ export function TodoFormModal({ isOpen, todo, onClose, onChanged }: TodoFormModa
 				{isConfirmingDelete ? (
 					<div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-danger-fill">
 						<span className="flex-1 text-xs text-fg">
-							این تسک برای همیشه حذف بشه؟
+							{t('widgets.todos.form.deleteConfirm')}
 						</span>
 						<Button
 							size="sm"
@@ -198,7 +204,7 @@ export function TodoFormModal({ isOpen, todo, onClose, onChanged }: TodoFormModa
 							onClick={() => setIsConfirmingDelete(false)}
 							disabled={isPending}
 						>
-							نه
+							{t('widgets.todos.form.deleteCancel')}
 						</Button>
 						<Button
 							size="sm"
@@ -207,7 +213,9 @@ export function TodoFormModal({ isOpen, todo, onClose, onChanged }: TodoFormModa
 							onClick={handleDelete}
 							disabled={isPending}
 						>
-							{isRemoving ? 'در حال حذف…' : 'حذف'}
+							{isRemoving
+								? t('widgets.todos.form.deleting')
+								: t('widgets.todos.form.delete')}
 						</Button>
 					</div>
 				) : (
@@ -222,7 +230,7 @@ export function TodoFormModal({ isOpen, todo, onClose, onChanged }: TodoFormModa
 								disabled={isPending}
 								icon={<Icon name="trash" size={14} />}
 							>
-								حذف
+								{t('widgets.todos.form.delete')}
 							</Button>
 						)}
 						<Button
@@ -232,7 +240,7 @@ export function TodoFormModal({ isOpen, todo, onClose, onChanged }: TodoFormModa
 							disabled={isPending}
 							className="w-1/4 ms-auto"
 						>
-							انصراف
+							{t('ui.common.cancel')}
 						</Button>
 						{canEdit && (
 							<Button
@@ -244,10 +252,10 @@ export function TodoFormModal({ isOpen, todo, onClose, onChanged }: TodoFormModa
 								className="flex-1"
 							>
 								{isPending
-									? 'در حال ذخیره…'
+									? t('widgets.todos.form.saving')
 									: isEdit
-										? 'ذخیره تغییرات'
-										: 'افزودن تسک'}
+										? t('widgets.todos.form.saveChanges')
+										: t('widgets.todos.form.add')}
 							</Button>
 						)}
 					</div>

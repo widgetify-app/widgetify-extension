@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { Button } from '@/components/ui'
 
 interface Prop {
@@ -25,10 +26,8 @@ export function MiniAppError({ handleReload, onClickToBack }: Prop) {
 				</svg>
 			</div>
 
-			<p className="text-lg font-bold text-fg">برنامک باز نشد</p>
-			<p className="max-w-xs text-sm text-fg-muted">
-				یه مشکلی پیش اومد، دوباره امتحان کن
-			</p>
+			<p className="text-lg font-bold text-fg">{t('miniApps.error.title')}</p>
+			<p className="max-w-xs text-sm text-fg-muted">{t('miniApps.error.body')}</p>
 			<div className="flex flex-col gap-2 mt-4 w-80">
 				<Button
 					size="sm"
@@ -38,7 +37,7 @@ export function MiniAppError({ handleReload, onClickToBack }: Prop) {
 					color={'brand'}
 					onClick={handleReload}
 				>
-					دوباره امتحان کن
+					{t('miniApps.error.retry')}
 				</Button>
 				{onClickToBack && (
 					<Button
@@ -47,7 +46,7 @@ export function MiniAppError({ handleReload, onClickToBack }: Prop) {
 						rounded={'2xl'}
 						onClick={onClickToBack}
 					>
-						بازگشت
+						{t('miniApps.error.back')}
 					</Button>
 				)}
 			</div>

@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { showToast } from '@/common/toast'
 import { Modal } from '@/components/ui'
 import { SectionPanel } from '@/components/ui'
@@ -50,10 +51,10 @@ export function ChangeUsernameModal({ show, onClose, currentValue }: Prop) {
 	return (
 		<Modal isOpen={show} onClose={onCloseHandler} showCloseButton={false}>
 			<div className="flex flex-col justify-between h-40 gap-4">
-				<SectionPanel title={'نام کاربری (یوزرنیم)'} size="xs">
+				<SectionPanel title={t('setting.modal.username.label')} size="xs">
 					<TextInput
 						value={value}
-						placeholder="مثلا: i_rez..."
+						placeholder={t('setting.modal.username.placeholder')}
 						className="mt-2"
 						direction="ltr"
 						onChange={(val) => setValue(val)}

@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { type ReactNode, useEffect, useMemo, useState } from 'react'
 import { Button, Chip, EmptyState, ScrollRow, TabNavigation } from '@/components/ui'
 import { useWallpaperContext } from '@/context/wallpaper.context'
@@ -20,16 +21,16 @@ import { TileGrid, TileSkeletons } from './tile-grid'
 const PAGE_SIZE = 18
 
 const ACCESS_TABS: { id: WallpaperAccess; label: string }[] = [
-	{ id: 'all', label: 'همه' },
-	{ id: 'free', label: 'رایگان' },
-	{ id: 'coin', label: 'ویج‌کوینی' },
-	{ id: 'mine', label: 'خریده‌هام' },
+	{ id: 'all', label: t('market.category.allFilter') },
+	{ id: 'free', label: t('market.itemState.free') },
+	{ id: 'coin', label: t('market.wallpaperBrowser.coinFilter') },
+	{ id: 'mine', label: t('market.wallpaperBrowser.ownedFilter') },
 ]
 
 const KIND_TABS: { id: WallpaperKind; label: string }[] = [
-	{ id: 'all', label: 'همه' },
-	{ id: 'image', label: 'ثابت' },
-	{ id: 'animated', label: 'متحرک' },
+	{ id: 'all', label: t('market.category.allFilter') },
+	{ id: 'image', label: t('market.wallpaperBrowser.staticFilter') },
+	{ id: 'animated', label: t('market.wallpaperTile.animatedBadge') },
 ]
 
 interface WallpaperBrowserProps {
@@ -100,7 +101,7 @@ export function WallpaperBrowser({
 					onClick={() => setFolderId(null)}
 					className="shrink-0"
 				>
-					همه
+					{t('market.category.allFilter')}
 				</Chip>
 				{folders.categories.map((folder) => (
 					<Chip
@@ -114,7 +115,7 @@ export function WallpaperBrowser({
 						{folder.hasNewContent && (
 							<span
 								role="img"
-								aria-label="تازه"
+								aria-label={t('market.nav.newBadge')}
 								className="rounded-full size-1.5 bg-danger"
 							/>
 						)}
@@ -144,11 +145,11 @@ export function WallpaperBrowser({
 			{isError ? (
 				<EmptyState
 					icon="image"
-					title="تصویر زمینه‌ها نیومدن"
-					description="اینترنتت رو چک کن و دوباره امتحان کن"
+					title={t('market.wallpaperBrowser.loadErrorTitle')}
+					description={t('market.category.loadErrorHint')}
 					action={
 						<Button size="sm" onClick={() => refetch()}>
-							دوباره امتحان کن
+							{t('market.category.retry')}
 						</Button>
 					}
 				/>
@@ -174,11 +175,11 @@ export function WallpaperBrowser({
 					{visible.length === 0 && !hasNextPage && (
 						<EmptyState
 							icon="image"
-							title="با این فیلترها چیزی پیدا نکردیم"
-							description="یه پوشه‌ی دیگه رو امتحان کن یا فیلترها رو پاک کن"
+							title={t('market.wallpaperBrowser.emptyFilteredTitle')}
+							description={t('market.wallpaperBrowser.emptyFilteredHint')}
 							action={
 								<Button size="sm" onClick={clearFilters}>
-									پاک کردن فیلترها
+									{t('market.wallpaperBrowser.clearFilters')}
 								</Button>
 							}
 						/>
@@ -194,7 +195,8 @@ export function WallpaperBrowser({
 
 			{visible.length > 0 && (
 				<p className="text-2xs text-fg-faint">
-					نمایش {faNumber(visible.length)} تصویر زمینه
+					{t('market.wallpaperBrowser.viewLabel')} {faNumber(visible.length)}{' '}
+					{t('market.wallpaperBrowser.wallpaperLabel')}
 				</p>
 			)}
 		</div>

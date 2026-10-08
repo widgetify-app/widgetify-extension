@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import type { ComboTabType } from './types'
 
 export const DEFAULT_COMBO_TAB: ComboTabType = 'currency'
@@ -8,11 +9,11 @@ export const COMBO_TAB_LIST: {
 }[] = [
 	{
 		id: 'currency',
-		label: 'ارزها',
+		label: t('widgets.combo.tab.currency'),
 	},
 	{
 		id: 'news',
-		label: 'اخبار',
+		label: t('widgets.combo.tab.news'),
 	},
 ]
 

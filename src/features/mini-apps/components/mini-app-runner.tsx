@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { t } from '@/common/i18n'
 import { useLaunchMiniApp } from '@/services/mini-apps/launch-mini-app.hook'
 import { useGetMiniApp } from '@/services/mini-apps/get-mini-app.hook'
 import { MiniAppError } from './mini-app-error'
@@ -157,7 +158,9 @@ export function MiniAppRunner({
 					<MiniAppLoadingState
 						icon={app?.icon}
 						name={app?.name}
-						label={`در حال اجرای ${app?.name || 'برنامک'}...`}
+						label={t('miniApps.runner.running', {
+							name: app?.name || t('miniApps.iframe.fallbackName'),
+						})}
 						labelIcon={
 							<Spinner size="sm" aria-hidden="true" className="ml-1" />
 						}
@@ -173,7 +176,9 @@ export function MiniAppRunner({
 					<MiniAppLoadingState
 						icon={app?.icon}
 						name={app?.name}
-						label={`در حال اتصال به ${app?.name || 'برنامک'}...`}
+						label={t('miniApps.runner.connecting', {
+							name: app?.name || t('miniApps.iframe.fallbackName'),
+						})}
 						labelIcon={
 							<Spinner size="sm" aria-hidden="true" className="ml-1" />
 						}

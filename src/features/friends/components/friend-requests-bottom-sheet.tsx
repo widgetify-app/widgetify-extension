@@ -3,6 +3,7 @@ import {
 	type Friend,
 	useHandleFriendRequest,
 } from '@/services/friends/friend-service.hook'
+import { t } from '@/common/i18n'
 
 import { RemoveFriendButton } from './remove-button'
 import { FriendsList } from './friends-list'
@@ -25,9 +26,9 @@ export const FriendRequestsBottomSheet = ({ isOpen, onClose }: Prop) => {
 				state: 'accepted',
 			})
 			Analytics.event('friends_request_accepted')
-			showToast('حالا با هم دوستید', 'success')
+			showToast(t('friends.requests.nowFriends'), 'success')
 		} catch {
-			showToast('یه مشکلی پیش اومد، دوباره امتحان کن', 'error')
+			showToast(t('friends.requests.error'), 'error')
 		}
 	}
 
@@ -53,18 +54,20 @@ export const FriendRequestsBottomSheet = ({ isOpen, onClose }: Prop) => {
 						color="success"
 					>
 						<Icon name="userCheck" size={16} />
-						<span className="text-xs font-medium">دوست شیم</span>
+						<span className="text-xs font-medium">
+							{t('friends.requests.accept')}
+						</span>
 					</Button>
 					<RemoveFriendButton
 						friend={friend}
 						onClick={() => rejectFriend(friend.id)}
 						disabled={isProcessing}
-						label="رد کردن"
+						label={t('friends.requests.decline')}
 					/>
 				</>
 			) : (
 				<span className="flex items-center px-3 text-xs font-medium rounded-lg h-9 text-fg bg-surface-2">
-					ارسال شده
+					{t('friends.requests.sent')}
 				</span>
 			)}
 		</div>
@@ -75,13 +78,14 @@ export const FriendRequestsBottomSheet = ({ isOpen, onClose }: Prop) => {
 			isOpen={isOpen}
 			onClose={() => onClose()}
 			size="lg"
-			title="درخواست‌های دوستی"
+			title={t('friends.requests.title')}
 			closeOnBackdropClick
+			closeLabel={t('ui.common.close')}
 		>
 			<FriendsList
 				status="PENDING"
 				renderFriendActions={renderFriendActions}
-				emptyMessage="درخواست دوستی تازه‌ای نداری"
+				emptyMessage={t('friends.requests.empty')}
 				caching={false}
 			/>
 		</Modal>

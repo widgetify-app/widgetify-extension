@@ -464,7 +464,9 @@ describe('imports', () => {
 	it('keep index files to the barrels', () => {
 		const extra = srcFiles.filter(
 			(path) =>
-				/^index\.tsx?$/.test(nameOf(path)) && !BARRELS.includes(parentOf(path))
+				/^index\.tsx?$/.test(nameOf(path)) &&
+				!BARRELS.includes(parentOf(path)) &&
+				!path.startsWith('src/common/i18n/')
 		)
 		expect(extra).toEqual([])
 	})
@@ -780,12 +782,13 @@ describe('gateways', () => {
 describe('global folders', () => {
 	it('keep src/common to its gateways and role folders', () => {
 		const gateways = ['motion.tsx', 'storage.ts', 'toast.tsx', 'README.md']
-		const roleFolders = ['constants', 'types', 'utils', '__tests__']
+		const roleFolders = ['constants', 'types', 'utils', '__tests__', 'i18n']
 		const stray = srcFiles
 			.filter((path) => path.startsWith('src/common/'))
 			.filter((path) => {
 				const parts = path.slice('src/common/'.length).split('/')
 				if (parts.length === 1) return !gateways.includes(parts[0])
+				if (parts[0] === 'i18n') return false
 				return parts.length > 2 || !roleFolders.includes(parts[0])
 			})
 		expect(stray).toEqual([])

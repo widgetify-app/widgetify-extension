@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { Tooltip } from '@/components/ui'
 import { Icon } from '@/icons'
@@ -22,7 +23,7 @@ export function WidgetMenuButton({
 
 	return (
 		<Tooltip
-			content="گزینه‌های ویجت"
+			content={t('widgets.menu.options')}
 			delay={500}
 			className={cn(
 				(isFloating || isOnImage) && 'widget-control absolute top-2 left-2 z-30',
@@ -31,7 +32,7 @@ export function WidgetMenuButton({
 		>
 			<button
 				type="button"
-				aria-label="گزینه‌های ویجت"
+				aria-label={t('widgets.menu.options')}
 				aria-haspopup="menu"
 				aria-expanded={menu.isOpen}
 				onClick={(e) => menu.toggleFromButton(e.currentTarget)}

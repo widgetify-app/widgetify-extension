@@ -18,8 +18,8 @@ function preset(
 ): PresetLayout {
 	return {
 		id: 'p',
-		title: 'p',
-		description: 'p',
+		titleKey: 'widgets.presets.default.title',
+		descriptionKey: 'widgets.presets.default.description',
 		isVip: false,
 		isFeatured: false,
 		category: 'minimal',

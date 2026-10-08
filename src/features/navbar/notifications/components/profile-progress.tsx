@@ -2,6 +2,7 @@ import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
 import { Icon } from '@/icons'
+import { t } from '@/common/i18n'
 
 interface Prop {
 	className: string
@@ -29,13 +30,13 @@ export function ProfileProgressNotification({ className }: Prop) {
 			>
 				<RadialProgressSmall percentage={profilePercentage} size={15} />
 				<p className="text-2xs w-fit font-normal text-fg-muted">
-					پروفایلت رو کامل کن و پاداش بگیر!
+					{t('navbar.notifications.completeProfile')}
 				</p>
 			</button>
 			<div className="flex items-start justify-between">
 				<button
 					type="button"
-					aria-label="بستن"
+					aria-label={t('navbar.notifications.close')}
 					className="flex p-0.5 transition-opacity rounded-lg cursor-pointer top-2 left-2 bg-fill text-fg-faint hover:bg-danger-fill hover:text-danger"
 					onClick={(e) => {
 						e.preventDefault()

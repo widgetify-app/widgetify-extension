@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { getFaviconFromUrl } from '@/features/widgets/utils/icon'
 import { NewBadge, Tooltip } from '@/components/ui'
 import { Page, usePage } from '@/context/page.context'
@@ -69,7 +70,7 @@ export function BrowserBookmark() {
 				)}
 			>
 				<Icon name="explorerOutline" size={14} aria-hidden="true" />
-				کاوش
+				{t('widgets.search.bookmark.explorer')}
 				{searchboxData?.explorer?.newBadge && (
 					<NewBadge className="top-0 left-0" />
 				)}
@@ -88,7 +89,7 @@ export function BrowserBookmark() {
 					)}
 				>
 					<Icon name="folderSpecial" size={14} aria-hidden="true" />
-					بوکمارک‌های مرورگر
+					{t('widgets.search.bookmark.browser')}
 					<Icon name="chevronDown" size={12} aria-hidden="true" />
 				</button>
 			</div>

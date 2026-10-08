@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Button, Modal } from '@/components/ui'
 import { TextInput } from '@/components/ui'
 import { isEmpty, isLessThan } from '@/features/setting/account/utils/validators'
@@ -10,6 +11,7 @@ import {
 import { safeAwait } from '@/services/api'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
+import { t } from '@/common/i18n'
 
 interface AddPhoneProp {
 	isOpen: boolean
@@ -43,7 +45,7 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 			if (isEmpty(phone))
 				return setError((prev) => ({
 					...prev,
-					email: 'شماره موبایلت رو بنویس',
+					email: t('setting.modal.phone.required'),
 				}))
 			const [err, _] = await safeAwait(requestChange(phone))
 			if (err) {
@@ -58,7 +60,7 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 			if (isEmpty(otpCode) || isLessThan(otpCode, 6))
 				return setError((prev) => ({
 					...prev,
-					otp: 'کدی که برات فرستادیم رو بنویس',
+					otp: t('setting.modal.phone.otpRequired'),
 				}))
 
 			const [err, _] = await safeAwait(
@@ -74,7 +76,7 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 					phone: null,
 				})
 			} else {
-				showToast('شماره موبایلت اضافه شد', 'success')
+				showToast(t('setting.modal.phone.successToast'), 'success')
 				prop.onClose()
 			}
 		}
@@ -82,14 +84,15 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 
 	return (
 		<Modal
-			title="اضافه کردن شماره موبایل"
+			title={t('setting.modal.phone.title')}
 			isOpen={prop.isOpen}
 			onClose={() => prop.onClose()}
+			closeLabel={t('ui.common.close')}
 		>
 			<section>
 				<div>
 					<p className="text-xs text-fg-muted mt-0.5">
-						تا بتونی با شماره موبایلت هم وارد حسابت بشی
+						{t('setting.modal.phone.body')}
 					</p>
 				</div>
 
@@ -102,7 +105,7 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 							htmlFor="email"
 							className="block mb-1 md:mb-1.5 text-xs md:text-sm font-semibold text-fg"
 						>
-							شماره موبایل
+							{t('setting.modal.phone.label')}
 						</label>
 
 						<TextInput
@@ -111,7 +114,7 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 							name="email"
 							value={phone}
 							onChange={setPhone}
-							placeholder="شماره موبایلت رو بنویس…"
+							placeholder={t('setting.modal.phone.placeholder')}
 							disabled={isPending || step === 'enter-otp'}
 							className="w-full py-2.5! md:py-3.5!"
 							autoComplete="on"
@@ -122,7 +125,7 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 					{step === 'enter-otp' && (
 						<div>
 							<p className="block mb-2 md:mb-2.5 text-xs md:text-sm font-semibold text-fg">
-								کد تایید
+								{t('setting.modal.phone.otpLabel')}
 							</p>
 
 							<OtpInput
@@ -143,7 +146,9 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 						className="text-sm md:text-base"
 					>
 						<span className="transition-transform duration-200 group-hover:scale-105">
-							{step === 'enter-otp' ? 'تایید' : 'ادامه'}
+							{step === 'enter-otp'
+								? t('setting.modal.phone.confirm')
+								: t('setting.modal.phone.continue')}
 						</span>
 					</Button>
 				</form>

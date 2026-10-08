@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { WidgetHeader } from '@/features/widgets/components/widget-header'
 
 interface Clock2x1Props {
@@ -10,7 +11,7 @@ interface Clock2x1Props {
 export function Clock2x1({ time, timezoneLabel, hours, minutes }: Clock2x1Props) {
 	return (
 		<>
-			<WidgetHeader title="ساعت" info={timezoneLabel} />
+			<WidgetHeader title={t('widgets.clock.title')} info={timezoneLabel} />
 			<div className="flex items-center flex-1 min-h-0 px-2 select-none">
 				<p className="flex items-baseline justify-between w-full min-w-0 gap-2">
 					<span

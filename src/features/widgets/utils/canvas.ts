@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { showToast } from '@/common/toast'
 
 export function drawRoundedRect(
@@ -65,7 +66,7 @@ export async function copyCanvasToClipboard(
 		canvas.toBlob(
 			async (blob) => {
 				if (!blob) {
-					showToast('نتونستیم تصویر رو بسازیم', 'error')
+					showToast(t('widgets.canvas.imageBuildFailed'), 'error')
 					resolve(false)
 					return
 				}
@@ -76,10 +77,10 @@ export async function copyCanvasToClipboard(
 							'image/png': blob,
 						}),
 					])
-					showToast('تصویر کپی شد', 'success')
+					showToast(t('widgets.canvas.imageCopied'), 'success')
 					resolve(true)
 				} catch {
-					showToast('مرورگرت اجازه‌ی کپی نمی‌ده، تصویر رو دانلود کن', 'warning')
+					showToast(t('widgets.canvas.imageCopyDenied'), 'warning')
 					resolve(false)
 				}
 			},
@@ -101,10 +102,10 @@ export function downloadCanvasAsImage(
 		link.download = filename.endsWith('.png') ? filename : `${filename}.png`
 		link.href = dataUrl
 		link.click()
-		showToast('تصویر دانلود شد', 'success')
+		showToast(t('widgets.canvas.imageDownloaded'), 'success')
 		return true
 	} catch {
-		showToast('نتونستیم تصویر رو دانلود کنیم', 'error')
+		showToast(t('widgets.canvas.imageDownloadFailed'), 'error')
 		return false
 	}
 }

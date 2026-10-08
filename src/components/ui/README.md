@@ -47,7 +47,7 @@ Look here before writing any UI. If a component other areas would reuse is missi
 
 ## Writing the words
 
-Persian, friendly, short. Talk to the person, not at them. Say what happened and what to do next.
+Persian, friendly, short. Talk to the person, not at them. Say what happened and what to do next. Primitives take their text from props and have no Persian defaults; the real wording lives in `src/common/i18n/` and callers pass `t(...)`.
 
 | Instead of | Write |
 |---|---|

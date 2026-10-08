@@ -5,11 +5,12 @@ import { WidgetCenteredHeader } from '@/features/widgets/components/widget-heade
 import { WidgetError } from '@/features/widgets/components/widget-error'
 import type { NetworkViewProps } from '../types'
 import { getPingLabel, getPingTextClass } from '../utils/ping-quality'
+import { t } from '@/common/i18n'
 
 export function NetworkCompactSquare(props: NetworkViewProps) {
 	return (
 		<>
-			<WidgetCenteredHeader title="شبکه" />
+			<WidgetCenteredHeader title={t('widgets.network.title')} />
 			<div className="flex flex-col items-center justify-center flex-1 min-h-0 gap-1.5 text-center select-none">
 				<NetworkSquareBody {...props} />
 			</div>
@@ -29,14 +30,16 @@ function NetworkSquareBody({
 	if (!isAuthenticated) {
 		return (
 			<>
-				<span className="text-2xs text-fg-muted">وارد حسابت نشدی</span>
+				<span className="text-2xs text-fg-muted">
+					{t('widgets.network.authTitle')}
+				</span>
 				<Button
 					size="xs"
 					color="brand"
 					rounded="lg"
 					onClick={() => callEvent('openProfile')}
 				>
-					ورود
+					{t('widgets.network.login')}
 				</Button>
 			</>
 		)
@@ -45,9 +48,11 @@ function NetworkSquareBody({
 	if (!isOnline) {
 		return (
 			<>
-				<span className="font-semibold text-2xs text-danger">اینترنت قطعه</span>
+				<span className="font-semibold text-2xs text-danger">
+					{t('widgets.network.offlineTitle')}
+				</span>
 				<Button size="xs" color="base" rounded="lg" onClick={onRetryOffline}>
-					دوباره
+					{t('widgets.network.retry')}
 				</Button>
 			</>
 		)
@@ -65,7 +70,7 @@ function NetworkSquareBody({
 	if (hasError) {
 		return (
 			<WidgetError
-				message="نتونستیم اطلاعات شبکه رو بیاریم"
+				message={t('widgets.network.loadError')}
 				compact
 				onRetry={onRefresh}
 			/>

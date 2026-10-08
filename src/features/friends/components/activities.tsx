@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useGetActivities } from '@/services/friends/friend-service.hook'
 import { useAuth } from '@/context/auth.context'
+import { t } from '@/common/i18n'
 import { ActivityCard } from './activity-card/activity-card'
 import { ManageActivityBottomSheet } from './activity-card/manage-activity-bottom-sheet'
 import { EmptyActivityCard } from './activity-card/empty-activity-card'
@@ -42,7 +43,7 @@ export const ActiveFriendsHorizontal = () => {
 							trigger={
 								<ActivityCard
 									avatar={user.avatar || ''}
-									name={'شما'}
+									name={t('friends.you')}
 									activity={currentUserActivity?.content || ''}
 									onClick={() => setIsBottomSheetOpen(true)}
 									reactions={
@@ -76,7 +77,7 @@ export const ActiveFriendsHorizontal = () => {
 							trigger={
 								<EmptyActivityCard
 									avatar={user.avatar || ''}
-									name={'شما'}
+									name={t('friends.you')}
 									onClick={() => setIsBottomSheetOpen(true)}
 								/>
 							}

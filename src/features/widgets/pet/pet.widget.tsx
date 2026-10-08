@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import { t } from '@/common/i18n'
 import { PopoverMenuItem } from '@/components/ui'
 import { Icon } from '@/icons'
 import { getPetBackground } from './utils/get-pet-background'
@@ -23,7 +24,7 @@ function PetScene() {
 	useWidgetMenuActions(
 		<PopoverMenuItem
 			icon={<Icon name="heart" size={14} />}
-			label="غذا دادن"
+			label={t('widgets.pet.feed')}
 			onClick={() => sceneRef.current?.querySelector('button')?.click()}
 		/>
 	)
@@ -32,7 +33,7 @@ function PetScene() {
 		<WidgetContainer padding={false} background={!scene.image}>
 			<section
 				ref={sceneRef}
-				aria-label="حیوان خانگی"
+				aria-label={t('widgets.pet.aria')}
 				className="relative w-full h-full overflow-hidden isolate rounded-widget"
 				style={
 					{

@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { Button, Spinner } from '@/components/ui'
 import { useNotes } from '@/features/widgets/notes/notes.context'
 import type { FetchedNote } from '@/services/note/note.interface'
@@ -57,7 +58,7 @@ export function NoteEditor({ note }: NoteEditorProps) {
 					rounded="lg"
 					className="px-3 h-7"
 				>
-					ذخیره
+					{t('widgets.notes.save')}
 				</Button>
 			</footer>
 		</div>

@@ -5,6 +5,7 @@ import type { StoredWallpaper, Wallpaper } from '@/common/types/wallpaper.interf
 import { useAuth } from '@/context/auth.context'
 import { getAccountSync } from '@/services/extension/get-account-sync'
 import type { UserInventoryItem } from '@/services/market/market.interface'
+import { t } from '@/common/i18n'
 
 export function useSyncAccount() {
 	const { isAuthenticated } = useAuth()
@@ -89,7 +90,7 @@ async function processBrowserTitle(browserTitle: UserInventoryItem | null) {
 
 		await setToStorage('browserTitle', {
 			id: browserTitle.id,
-			name: browserTitle.name || 'بدون نام',
+			name: browserTitle.name || t('navbar.sync.unnamed'),
 			template: browserTitle.value,
 		})
 

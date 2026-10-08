@@ -5,6 +5,7 @@ import { Temperature, WeatherIcon } from '../components/weather-reading'
 import type { TemperatureUnit } from '../types'
 import { cleanCityName } from '../utils/clean-city-name'
 import { getWeatherMetrics } from '../utils/weather-metrics'
+import { t } from '@/common/i18n'
 
 const ROW_METRICS = 2
 
@@ -22,11 +23,13 @@ export function WeatherCompactRow({
 	return (
 		<>
 			<WidgetHeader
-				title={cleanCityName(fetchedWeather?.city?.fa) || 'آب و هوا'}
+				title={
+					cleanCityName(fetchedWeather?.city?.fa) || t('widgets.weather.title')
+				}
 				info={weather?.description?.text}
 			/>
 			<section
-				aria-label="آب و هوا"
+				aria-label={t('widgets.weather.aria')}
 				aria-busy={!fetchedWeather}
 				className="flex items-center flex-1 min-h-0 gap-2.5 px-1 select-none"
 			>

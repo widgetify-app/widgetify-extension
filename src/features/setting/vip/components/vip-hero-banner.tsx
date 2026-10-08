@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { Icon } from '@/icons'
 import type { IconName } from '@/icons'
 
@@ -12,27 +13,26 @@ const VIP_FEATURES: VipFeatureItem[] = [
 	{
 		id: 'unlimited_widgets',
 		icon: 'outlineSquares2X2',
-		title: 'آزادی بیشتر در چیدمان',
-		description: 'ویجت‌هات رو هرجور دوست داری بچین، حتی چندتا از یک ویجت',
+		title: t('setting.vipHero.layoutFreedomTitle'),
+		description: t('setting.vipHero.layoutFreedomBody'),
 	},
 	{
 		id: 'exclusive_widgets',
 		icon: 'diamond',
-		title: 'دسترسی کامل به ویجت‌ها',
-		description:
-			'از بین طرح‌ها و اندازه‌های مختلف انتخاب کن و ویجت‌هات رو متناسب با چیدمانت تنظیم کن',
+		title: t('setting.vipHero.widgetsAccessTitle'),
+		description: t('setting.vipHero.widgetsAccessBody'),
 	},
 	{
 		id: 'custom_wallpapers',
 		icon: 'videoCamera',
-		title: 'والپیپر ویدیویی و متحرک',
-		description: 'گذاشتن ویدیوهای دلخواه به عنوان پس‌زمینه و ذخیره دائمی روی حسابت',
+		title: t('setting.vipHero.videoWallpaperTitle'),
+		description: t('setting.vipHero.videoWallpaperBody'),
 	},
 	{
 		id: 'gallery_assets',
 		icon: 'shoppingBag',
-		title: 'دسترسی کامل به گالری',
-		description: 'به مجموعه کامل تم‌ها، والپیپرها و طرح‌های ویژه دسترسی داشته باش',
+		title: t('setting.vipHero.galleryAccessTitle'),
+		description: t('setting.vipHero.galleryAccessBody'),
 	},
 ]
 

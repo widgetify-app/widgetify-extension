@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import type { Wallpaper } from '@/common/types/wallpaper.interface'
 import Analytics from '@/analytics'
 import { showToast } from '@/common/toast'
@@ -31,12 +32,15 @@ export function useWallpaperUpload({ onWallpaperChange }: UseWallpaperUploadProp
 
 		if (isAuthenticated && isVip) {
 			if (!isImage && !isVideo) {
-				showToast('یه فایل عکس، گیف یا ویدیو انتخاب کن', 'error')
+				showToast(t('setting.wallpaperUpload.pickMediaFile'), 'error')
 				return
 			}
 
 			if (file.size > vipMaxSize * 1024 * 1024) {
-				showToast(`حجم فایل نباید بیشتر از ${vipMaxSize} مگابایت باشه`, 'error')
+				showToast(
+					t('setting.wallpaperUpload.fileTooLarge', { p0: vipMaxSize }),
+					'error'
+				)
 				return
 			}
 
@@ -53,8 +57,8 @@ export function useWallpaperUpload({ onWallpaperChange }: UseWallpaperUploadProp
 				onWallpaperChange(uploadedWallpaper)
 				showToast(
 					isVideo
-						? 'ویدیو ذخیره شد و با اکانتت همگام‌سازی شد'
-						: 'عکس ذخیره شد و با اکانتت همگام‌سازی شد',
+						? t('setting.wallpaperUpload.videoSyncedToast')
+						: t('setting.wallpaperUpload.photoSyncedToast'),
 					'success'
 				)
 				Analytics.event('custom_wallpaper_selected')
@@ -63,25 +67,30 @@ export function useWallpaperUpload({ onWallpaperChange }: UseWallpaperUploadProp
 		}
 
 		if (isVideo) {
-			showToast('برای گذاشتن ویدیو به عنوان پس‌زمینه اشتراک پرو لازمه', 'info')
+			showToast(t('setting.wallpaperUpload.videoRequiresPro'), 'info')
 			callEvent('openSettings', 'vip')
 			return
 		}
 
 		if (!isImage) {
-			showToast('یه عکس انتخاب کن', 'error')
+			showToast(t('setting.wallpaperUpload.pickPhoto'), 'error')
 			return
 		}
 
 		if (file.size > freeMaxSize * 1024 * 1024) {
 			if (file.size <= vipMaxSize * 1024 * 1024) {
 				showToast(
-					`برای آپلود فایل تا ${vipMaxSize} مگابایت اشتراک پرو لازمه`,
+					t('setting.wallpaperUpload.largeUploadRequiresPro', {
+						p0: vipMaxSize,
+					}),
 					'info'
 				)
 				callEvent('openSettings', 'vip')
 			} else {
-				showToast(`حجم فایل نباید بیشتر از ${freeMaxSize} مگابایت باشه`, 'error')
+				showToast(
+					t('setting.wallpaperUpload.fileTooLarge', { p0: freeMaxSize }),
+					'error'
+				)
 			}
 			return
 		}
@@ -93,7 +102,7 @@ export function useWallpaperUpload({ onWallpaperChange }: UseWallpaperUploadProp
 				type: 'IMAGE',
 				previewSrc: '',
 				src: reader.result as string,
-				name: 'عکس دلخواه',
+				name: t('setting.wallpaperUpload.customPhotoLabel'),
 				isCustom: true,
 			}
 

@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import type React from 'react'
 import { type TopUsersType, useGetTopUsers } from '@/services/pomodoro/get-top-users.hook'
 import { TopUserItem } from './components/top-user-item'
@@ -31,14 +32,14 @@ export const TopUsersTab: React.FC<TopUsersTabProps> = ({ type }) => {
 	if (error) {
 		return (
 			<WidgetError
-				message="نتونستیم فهرست برترین‌ها رو بیاریم"
+				message={t('widgets.pomodoro.leaderboard.loadError')}
 				onRetry={() => refetch()}
 			/>
 		)
 	}
 
 	if (!data?.tops || data.tops.length === 0) {
-		return <WidgetEmpty art="users" title="هنوز کسی توی این فهرست نیست" />
+		return <WidgetEmpty art="users" title={t('widgets.pomodoro.leaderboard.empty')} />
 	}
 
 	return (

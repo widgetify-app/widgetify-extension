@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import { Icon } from '@/icons'
 import { UserCoin } from '@/components/user-coin'
+import { t } from '@/common/i18n'
 import { useLazyLoad } from './use-lazy-load'
 import type { GalleryAsset } from '@/services/gallery/get-gallery-assets.hook'
 import { Spinner } from '@/components/ui'
@@ -45,7 +46,9 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 			{error && (
 				<div className="flex flex-col items-center justify-center w-full min-h-28 bg-danger-fill">
 					<Icon name="alert" className="text-danger" />
-					<p className="mt-1 text-3xs text-fg-muted">نتونستیم بیاریمش</p>
+					<p className="mt-1 text-3xs text-fg-muted">
+						{t('gallery.photo.fetchFailed')}
+					</p>
 				</div>
 			)}
 
@@ -73,7 +76,10 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 
 						{asset.price > 0 && !asset.isOwned ? (
 							<div className="origin-bottom-left scale-75">
-								<UserCoin coins={asset.price} title="قیمت خرید" />
+								<UserCoin
+									coins={asset.price}
+									title={t('gallery.photo.price')}
+								/>
 							</div>
 						) : null}
 					</div>
@@ -88,7 +94,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 						<div className="absolute top-1.5 left-1.5 z-10">
 							<span className="flex items-center gap-1 px-1.5 py-0.5 rounded-lg bg-vip-hover backdrop-blur-xs text-on-vip text-3xs font-bold shadow-sm border border-image-line">
 								<Icon name="diamond" size={10} />
-								<span>رایگان با پرو</span>
+								<span>{t('gallery.photo.freeWithPro')}</span>
 							</span>
 						</div>
 					)}
@@ -96,7 +102,7 @@ export function GalleryPhotoItem({ asset, isSelected, onClick }: GalleryPhotoIte
 					{asset.isOwned && !isSelected && (
 						<div className="absolute flex gap-0.5 px-1.5 rounded-tl-2xl rounded-br-lg bg-success text-on-success shadow-sm items-center top-0 left-0 text-3xs h-4.5">
 							<Icon name="shoppingBag" size={10} />
-							<span>مال توئه</span>
+							<span>{t('gallery.photo.owned')}</span>
 						</div>
 					)}
 				</>

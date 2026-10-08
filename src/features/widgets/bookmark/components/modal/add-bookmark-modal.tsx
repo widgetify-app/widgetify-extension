@@ -10,6 +10,7 @@ import { useIsMutating } from '@tanstack/react-query'
 import { BookmarkIconPicker } from '../bookmark-icon-picker'
 import type { BookmarkSuggestion } from '@/services/bookmark/get-bookmarks.hook'
 import { bookmarkKeys } from '@/services/bookmark/bookmark.keys'
+import { t } from '@/common/i18n'
 
 interface AddBookmarkModalProps {
 	isOpen: boolean
@@ -187,9 +188,10 @@ export function AddBookmarkModal({
 				isOpen={isOpen}
 				onClose={() => onCloseHandler()}
 				size="md"
-				title={`${type === 'FOLDER' ? 'پوشه جدید' : 'بوکمارک جدید'}`}
+				title={`${type === 'FOLDER' ? t('widgets.bookmark.modal.add.folderTitle') : t('widgets.bookmark.modal.add.bookmarkTitle')}`}
 				className="overflow-y-hidden!"
 				closeOnBackdropClick={false}
+				closeLabel={t('ui.common.close')}
 			>
 				<form
 					onSubmit={handleAdd}
@@ -213,7 +215,9 @@ export function AddBookmarkModal({
 									type="text"
 									name="title"
 									placeholder={
-										type === 'FOLDER' ? 'نام پوشه' : 'عنوان بوکمارک'
+										type === 'FOLDER'
+											? t('widgets.bookmark.modal.add.folderName')
+											: t('widgets.bookmark.modal.add.bookmarkName')
 									}
 									value={formData.title}
 									onChange={(v) => updateFormData('title', v)}
@@ -249,7 +253,9 @@ export function AddBookmarkModal({
 								className="flex items-center justify-center gap-1.5 px-3 py-1.5 text-2xs font-medium transition-colors rounded-xl cursor-pointer hover:text-brand text-fg-muted bg-fill hover:bg-brand-fill"
 							>
 								<Icon name="download" size={12} />
-								<span>درون‌ریزی از بوکمارک‌های مرورگر</span>
+								<span>
+									{t('widgets.bookmark.modal.add.importFromBrowser')}
+								</span>
 							</button>
 						</div>
 					)}
@@ -267,7 +273,7 @@ export function AddBookmarkModal({
 								size="md"
 								className="w-20 transition-colors duration-300 ease-in-out shadow-none rounded-2xl"
 							>
-								لغو
+								{t('widgets.bookmark.modal.add.cancel')}
 							</Button>
 							<Button
 								type="submit"
@@ -281,7 +287,7 @@ export function AddBookmarkModal({
 								className="transition-colors duration-300 ease-in-out border-none shadow-none w-28 rounded-2xl"
 								color="brand"
 							>
-								ذخیره
+								{t('widgets.bookmark.modal.add.save')}
 							</Button>
 						</div>
 					</div>
@@ -292,7 +298,7 @@ export function AddBookmarkModal({
 				bookmark={formData}
 				isOpen={showAdvanced}
 				onClose={handleAdvancedModalClose}
-				title="تنظیمات پیشرفته"
+				title={t('widgets.bookmark.modal.add.advanced')}
 			/>
 		</>
 	)

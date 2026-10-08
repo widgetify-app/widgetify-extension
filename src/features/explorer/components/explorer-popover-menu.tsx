@@ -1,4 +1,5 @@
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { showToast } from '@/common/toast'
 import {
 	Badge,
@@ -43,7 +44,7 @@ export function ExplorerPopoverMenu({
 	const handleCopy = (code?: string) => {
 		if (!code) return
 		navigator.clipboard.writeText(code)
-		showToast(`کد تخفیف ${code} کپی شد`, 'success')
+		showToast(t('explorer.promo.discountCopied', { code }), 'success')
 	}
 
 	return (
@@ -106,7 +107,7 @@ export function ExplorerPopoverMenu({
 					<div className="p-2 rounded-xl bg-fill-2 border border-surface-3 my-1 space-y-1.5">
 						<div className="flex items-center justify-between text-2xs">
 							<span className="font-medium text-fg">
-								{promo.title || 'کد تخفیف'}
+								{promo.title || t('explorer.promo.discountCode')}
 							</span>
 							{promo.discount && (
 								<span className="font-bold text-brand text-3xs">
@@ -126,7 +127,7 @@ export function ExplorerPopoverMenu({
 								}}
 								className="text-3xs font-medium px-2 py-0.5 rounded-lg bg-surface-2 hover:bg-surface-3 text-fg transition-colors cursor-pointer"
 							>
-								کپی
+								{t('explorer.promo.copy')}
 							</button>
 						</div>
 					</div>
@@ -135,7 +136,7 @@ export function ExplorerPopoverMenu({
 
 			{menuItems.length === 0 && item.url && (
 				<PopoverMenuItem
-					label="مشاهده و ورود"
+					label={t('explorer.promo.viewAndEnter')}
 					icon={<Icon name="externalLink" size={12} />}
 					onClick={() => handleItemClick(item.url)}
 				/>

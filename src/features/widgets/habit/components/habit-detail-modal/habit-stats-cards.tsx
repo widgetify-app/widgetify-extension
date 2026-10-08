@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import React, { useMemo } from 'react'
 import moment from 'moment'
 import type { WidgetifyDate } from '@/common/utils/date-events'
@@ -42,9 +43,21 @@ export const HabitStatsCards: React.FC<HabitStatsCardsProps> = React.memo(
 
 		return (
 			<dl className="grid grid-cols-3 p-1 rounded-2xl bg-fill">
-				<Stat label="پشت‌سرهم" value={stats.currentStreak} unit="روز" />
-				<Stat label="بهترین رکورد" value={stats.longestStreak} unit="روز" />
-				<Stat label="روزهای موفق" value={stats.totalCompleted} unit="روز" />
+				<Stat
+					label={t('widgets.habit.detail.stats.streak')}
+					value={stats.currentStreak}
+					unit={t('widgets.habit.detail.stats.dayUnit')}
+				/>
+				<Stat
+					label={t('widgets.habit.detail.stats.bestRecord')}
+					value={stats.longestStreak}
+					unit={t('widgets.habit.detail.stats.dayUnit')}
+				/>
+				<Stat
+					label={t('widgets.habit.detail.stats.successDays')}
+					value={stats.totalCompleted}
+					unit={t('widgets.habit.detail.stats.dayUnit')}
+				/>
 			</dl>
 		)
 	}

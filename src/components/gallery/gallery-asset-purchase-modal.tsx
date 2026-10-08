@@ -2,6 +2,7 @@ import { Alert, Button, Modal } from '@/components/ui'
 import { UserCoin } from '@/components/user-coin'
 import { callEvent } from '@/common/utils/call-event'
 import { showToast } from '@/common/toast'
+import { t } from '@/common/i18n'
 import type { GalleryAsset } from '@/services/gallery/get-gallery-assets.hook'
 import { usePurchaseGalleryAsset } from '@/services/gallery/get-gallery-assets.hook'
 
@@ -36,7 +37,12 @@ export function GalleryAssetPurchaseModal({
 
 		purchase(asset.id, {
 			onSuccess: (response) => {
-				showToast(`${asset.title || 'آیتم'} مال تو شد`, 'success')
+				showToast(
+					t('gallery.purchase.owned', {
+						name: asset.title || t('gallery.purchase.itemFallback'),
+					}),
+					'success'
+				)
 				const updatedAsset = response?.data?.asset || {
 					...asset,
 					isOwned: true,
@@ -45,7 +51,7 @@ export function GalleryAssetPurchaseModal({
 				onPurchaseSuccess(updatedAsset)
 			},
 			onError: () => {
-				showToast('نتونستیم آیتم رو بگیریم، دوباره امتحان کن', 'error')
+				showToast(t('gallery.purchase.fetchFailed'), 'error')
 			},
 		})
 	}
@@ -66,7 +72,13 @@ export function GalleryAssetPurchaseModal({
 	}
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} size="md" dismissible={!isPending}>
+		<Modal
+			isOpen={isOpen}
+			onClose={onClose}
+			size="md"
+			dismissible={!isPending}
+			closeLabel={t('ui.common.close')}
+		>
 			<div className="space-y-4">
 				<div className="relative overflow-hidden rounded-2xl bg-fill-2 max-h-[340px] flex items-center justify-center">
 					<img
@@ -79,16 +91,19 @@ export function GalleryAssetPurchaseModal({
 				<div className="space-y-2">
 					<div className="flex items-center justify-between">
 						<h3 className="text-base font-semibold text-fg">
-							{asset.title || 'تصویر گالری'}
+							{asset.title || t('gallery.purchase.imageAlt')}
 						</h3>
 						{asset.price > 0 && (
-							<UserCoin coins={asset.price} title="قیمت خرید دائمی" />
+							<UserCoin
+								coins={asset.price}
+								title={t('gallery.purchase.permanentPrice')}
+							/>
 						)}
 					</div>
 					<p className="text-xs text-fg-muted">
 						{isVipUnlocked
-							? 'چون اشتراک پرو داری می‌تونی این تصویر رو رایگان فعال کنی یا با ویج‌کوین دائمی بخریش'
-							: 'این تصویر رو با ویج‌کوین باز کن و همیشه ازش استفاده کن'}
+							? t('gallery.purchase.vipHint')
+							: t('gallery.purchase.buyHint')}
 					</p>
 				</div>
 
@@ -101,11 +116,13 @@ export function GalleryAssetPurchaseModal({
 								onClick={handleOpenCoins}
 								className="font-medium underline cursor-pointer"
 							>
-								خرید ویج‌کوین
+								{t('gallery.purchase.buyCoins')}
 							</button>
 						}
 					>
-						{asset.price - userCoins} ویج‌کوین کم داری
+						{t('gallery.purchase.coinsShort', {
+							count: asset.price - userCoins,
+						})}
 					</Alert>
 				)}
 
@@ -119,7 +136,7 @@ export function GalleryAssetPurchaseModal({
 								rounded="2xl"
 								color="brand"
 							>
-								استفاده رایگان با پرو
+								{t('gallery.purchase.freeWithPro')}
 							</Button>
 							{asset.price > 0 && (
 								<Button
@@ -127,11 +144,11 @@ export function GalleryAssetPurchaseModal({
 									size="md"
 									disabled={!canAfford || isPending}
 									loading={isPending}
-									loadingText="داریم می‌خریم…"
+									loadingText={t('gallery.purchase.buying')}
 									className="flex-1"
 									rounded="2xl"
 								>
-									خرید دائمی
+									{t('gallery.purchase.buyPermanent')}
 								</Button>
 							)}
 						</div>
@@ -142,12 +159,12 @@ export function GalleryAssetPurchaseModal({
 								size="md"
 								disabled={!canAfford || isPending}
 								loading={isPending}
-								loadingText="داریم می‌خریم…"
+								loadingText={t('gallery.purchase.buying')}
 								className="flex-1"
 								rounded="2xl"
 								color={canAfford ? 'brand' : 'base'}
 							>
-								خرید دائمی
+								{t('gallery.purchase.buyPermanent')}
 							</Button>
 							<Button
 								onClick={onClose}
@@ -155,7 +172,7 @@ export function GalleryAssetPurchaseModal({
 								rounded="2xl"
 								disabled={isPending}
 							>
-								انصراف
+								{t('gallery.purchase.cancel')}
 							</Button>
 						</div>
 					)}

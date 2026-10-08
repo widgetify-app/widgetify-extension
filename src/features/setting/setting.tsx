@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { Modal } from '@/components/ui'
@@ -26,43 +27,42 @@ interface SettingModalProps {
 }
 const tabs: TabItem[] = [
 	{
-		parentName: 'حساب کاربری',
+		parentName: t('setting.tab.accountGroup'),
 		children: [
 			{
-				label: 'پروفایل من',
+				label: t('setting.tab.profile'),
 				value: 'profile',
-				description: 'اطلاعات حسابت رو ببین و هر وقت خواستی عوضش کن',
+				description: t('setting.tab.profileHint'),
 				icon: <Icon name="user" size={20} />,
 				element: <AccountTab />,
 			},
 			{
-				label: 'ویجتیفای پرو',
+				label: t('setting.tab.vip'),
 				value: 'vip',
-				description: 'تجربه‌ای سریع‌تر، زیباتر و بدون هیچ مرزی در چیدمان ابزارها',
+				description: t('setting.tab.vipHint'),
 				icon: <Icon name="diamond" size={20} />,
 				element: <VipTab />,
 			},
 			{
-				label: 'پلتفرم‌ها',
+				label: t('setting.tab.platforms'),
 				value: 'platforms',
-				description:
-					'پلتفرم‌های دیگه رو به ویجتیفای وصل کن و هر وقت خواستی قطعشون کن',
+				description: t('setting.tab.platformsHint'),
 				needAuth: true,
 				icon: <Icon name="platforms" size={20} />,
 				element: <ConnectionPlatformsTab />,
 			},
 			{
-				label: 'ماموریت‌ها و پاداش',
+				label: t('setting.tab.rewards'),
 				value: 'tasks',
-				description: 'ماموریت‌ها رو انجام بده و ویج‌کوین جایزه بگیر',
+				description: t('setting.tab.rewardsHint'),
 				needAuth: true,
 				icon: <Icon name="gift" size={20} />,
 				element: <RewardsTab />,
 			},
 			{
-				label: 'دوستان',
+				label: t('setting.tab.friends'),
 				value: 'friends',
-				description: 'دوستات رو اضافه کن و درخواست‌هاشون رو جواب بده',
+				description: t('setting.tab.friendsHint'),
 				needAuth: true,
 				icon: <Icon name="friends" size={20} />,
 				element: <AllFriendsTab />,
@@ -71,53 +71,52 @@ const tabs: TabItem[] = [
 		],
 	},
 	{
-		parentName: 'تنظیمات',
+		parentName: t('setting.tab.settingsGroup'),
 		children: [
 			{
-				label: 'عمومی',
+				label: t('setting.tab.general'),
 				value: 'general',
-				description: 'شهر، منطقه‌ی زمانی و سبکی ویجتیفای',
+				description: t('setting.tab.generalHint'),
 				icon: <Icon name="settings" size={20} />,
 				element: <GeneralSettingTab />,
 			},
 			{
-				label: 'حریم خصوصی',
+				label: t('setting.tab.privacy'),
 				value: 'access',
-				description: 'خودت انتخاب کن ویجتیفای به چی دسترسی داشته باشه',
+				description: t('setting.tab.privacyHint'),
 				icon: <Icon name="shieldEllipsis" size={20} />,
 				element: <PrivacySettings key="privacy" />,
 			},
 			{
-				label: 'ظاهری',
+				label: t('setting.tab.appearance'),
 				value: 'appearance',
-				description: 'تم، فونت و عنوان تب رو به سلیقه‌ی خودت عوض کن',
+				description: t('setting.tab.appearanceHint'),
 				icon: <Icon name="theme" size={20} />,
 				element: <AppearanceSettingTab />,
 			},
 			{
-				label: 'تصویر زمینه‌ها',
+				label: t('setting.tab.wallpapers'),
 				value: 'wallpapers',
-				description:
-					'یکی رو انتخاب کن تا همون لحظه پشت صفحه بشینه، یا عکس خودت رو بذار',
+				description: t('setting.tab.wallpapersHint'),
 				icon: <Icon name="wallpapers" size={20} />,
 				element: <WallpaperSetting />,
 			},
 			{
-				label: 'میانبرها',
+				label: t('setting.tab.shortcuts'),
 				value: 'shortcuts',
-				description: 'با این میانبرها کارت توی ویجتیفای سریع‌تر پیش می‌ره',
+				description: t('setting.tab.shortcutsHint'),
 				icon: <Icon name="shortcuts" size={20} />,
 				element: <ShortcutsTab />,
 			},
 		],
 	},
 	{
-		parentName: 'ویجتیفای',
+		parentName: t('setting.about.brandName'),
 		children: [
 			{
-				label: 'درباره ما',
+				label: t('setting.tab.about'),
 				value: 'about',
-				description: 'ویجتیفای رو بشناس و از راه‌های ارتباطی باهامون حرف بزن',
+				description: t('setting.tab.aboutHint'),
 				icon: <Icon name="info" size={20} />,
 				element: <AboutUsTab />,
 			},
@@ -152,7 +151,8 @@ export const SettingModal = ({
 			onClose={onClose}
 			stepAside={isSteppedAside}
 			size="2xl"
-			title="تنظیمات"
+			title={t('setting.tab.settingsGroup')}
+			closeLabel={t('ui.common.close')}
 		>
 			<StoreTryOnProvider onStepAside={setIsSteppedAside} onClose={onClose}>
 				<TabManager
@@ -163,12 +163,12 @@ export const SettingModal = ({
 					onTabChange={onTabChange}
 					actions={[
 						{
-							label: 'مدیریت ویجت‌ها',
+							label: t('setting.tab.widgetsManage'),
 							icon: <Icon name="outlineSquares2X2" size={20} />,
 							onClick: openWidgetSettings,
 						},
 						{
-							label: 'تغییرات اخیر',
+							label: t('setting.tab.changelog'),
 							icon: <Icon name="lastUpdate" size={20} />,
 							onClick: () => {
 								Analytics.event('release_notes_opened')

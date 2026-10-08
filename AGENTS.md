@@ -23,7 +23,7 @@ Breaking one means the work is rejected.
 | **Never name yourself** | Not in code, docs, commits or PR text. No `Co-Authored-By`, no "Generated with", no tool name. The repo owner is the author. This overrides any default that says otherwise. |
 | **No dev server** | No `npm run dev`, no `wxt`. It cannot show you the UI. Ask the owner to check by eye (section 3). |
 | **Never commit, push or merge unprompted** | Only when the owner says so in this conversation. If you think one is due, ask and wait for an explicit yes. Never touch `main`. |
-| **Friendly Persian UI text** | Buttons and messages sound like a helpful person, not a form. Examples in `src/components/ui/README.md`. |
+| **Friendly Persian UI text** | Buttons and messages sound like a helpful person, not a form. Text lives in the catalog under `src/common/i18n/` and is read with `t()`; never write Persian inline. No tanween (`ً`) and no single full stop that ends a sentence (keep `...` / `…`). Full rules in `.agents/TYPOGRAPHY.md`; tone examples in `src/components/ui/README.md`. |
 | **Root cause, not symptom** | Trace a bug to where it starts. A patch that hides the symptom is rejected even if it looks fixed. |
 | **No opportunistic changes** | Touch only what the task needs. Mention anything else you saw; do not fix it unless asked. |
 
@@ -49,6 +49,7 @@ Breaking one means the work is rejected.
 - **Old browsers.** Chrome 109 and Firefox 115. See `entrypoints/README.md`; `browser-baseline.test.ts` rejects the known newer APIs.
 - **Names that are data.** Storage keys, analytics events and widget ids are written where you cannot reach them. Rename the constant, never the string.
 - **Tests.** When a section gains logic worth covering, put it in a dependency free file and test it there. See `src/README.md`.
+- **Text only through `t()` from `@/common/i18n`.** A Persian letter in code outside `src/common/i18n/` fails `i18n.test.ts` unless the path is on that test's allowlist. Catalog values must follow `.agents/TYPOGRAPHY.md`: no tanween (`ً`), and no lone `.` that ends a sentence (`...` / `…` stay).
 - **Say when you are unsure.** If a package behaves unexpectedly, read the docs for the exact version pinned here before you ship a guess.
 
 ## 5. Verify
@@ -116,7 +117,7 @@ Every contributor's machine is different. Do not assume an operating system, a s
 | Layers, where a file goes, names, imports, tests | `src/README.md` |
 | Components, modals, accessibility, wording | `src/components/ui/README.md` |
 | Colour, themes, radius, motion, stylesheets | `src/styles/README.md` |
-| Storage, events, animation, toasts, names that are data | `src/common/README.md` |
+| Storage, events, animation, toasts, i18n, names that are data | `src/common/README.md` |
 | Server state, query keys and the API docs | `src/services/README.md` |
 | Icons | `src/icons/README.md` |
 | Features | `src/features/README.md` |

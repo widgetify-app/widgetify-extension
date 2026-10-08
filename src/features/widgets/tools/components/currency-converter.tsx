@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import type React from 'react'
 import { type ReactNode, useState } from 'react'
 import { SelectBox, TextInput } from '@/components/ui'
@@ -65,7 +66,7 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = ({ tabs }) =>
 							type="number"
 							value={amount.toString()}
 							onChange={(value) => setAmount(Number(value))}
-							aria-label="مقدار"
+							aria-label={t('widgets.tools.currency.amount')}
 							className="flex-1 min-w-0 h-auto! p-0! text-lg font-extrabold tabular-nums bg-transparent! border-none! shadow-none! ring-0! text-fg-strong"
 						/>
 						<SelectBox
@@ -79,7 +80,7 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = ({ tabs }) =>
 					<button
 						type="button"
 						onClick={handleSwap}
-						aria-label="جابه‌جایی دو ارز"
+						aria-label={t('widgets.tools.currency.swap')}
 						className="relative z-10 grid self-center -my-3.5 rounded-full shadow-sm cursor-pointer size-7.5 place-items-center bg-surface ring-1 ring-line text-fg-muted transition-ui hover:text-fg-strong active:scale-95 focus-visible:focus-ring"
 					>
 						<Icon name="upDown" size={14} aria-hidden="true" />
@@ -99,8 +100,9 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = ({ tabs }) =>
 
 					{fromCurrencyData && (
 						<p className="mt-1.5 text-center font-medium text-3xs text-fg-faint">
-							هر {fromCurrency} {formatNumber(fromCurrencyData.rialPrice)}{' '}
-							تومان
+							{t('widgets.tools.currency.per')} {fromCurrency}{' '}
+							{formatNumber(fromCurrencyData.rialPrice)}{' '}
+							{t('widgets.tools.currency.toman')}
 						</p>
 					)}
 				</div>

@@ -13,6 +13,7 @@ import { useChangeFont, useChangeUI } from '@/services/extension/update-setting.
 import { useAuth } from './auth.context'
 import { safeAwait } from '@/services/api'
 import { showToast } from '@/common/toast'
+import { t } from '@/common/i18n'
 import { translateError } from '@/common/utils/translate-error'
 import { listenEvent } from '@/common/utils/call-event'
 
@@ -151,8 +152,7 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 	}
 
 	const setUI = async (ui: UI, isAuth: boolean) => {
-		if (!isAuth)
-			return showToast('برای استفاده از این حالت اول وارد حسابت شو', 'error')
+		if (!isAuth) return showToast(t('context.appearance.loginRequired'), 'error')
 
 		const currentUI = settings.ui
 		updateSetting('ui', ui)

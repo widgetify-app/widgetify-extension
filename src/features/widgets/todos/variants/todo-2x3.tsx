@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import type React from 'react'
 import type { ReactNode } from 'react'
 import type { Todo } from '@/services/todo/todo.interface'
@@ -58,7 +59,10 @@ export function TodoListBody({
 					))}
 				</div>
 			) : isError ? (
-				<WidgetError message="نتونستیم تسک‌ها رو بیاریم" onRetry={onRefresh} />
+				<WidgetError
+					message={t('widgets.todos.variant2x1.loadError')}
+					onRetry={onRefresh}
+				/>
 			) : todos.length === 0 ? (
 				<TodosEmpty onAdd={onAdd} />
 			) : (

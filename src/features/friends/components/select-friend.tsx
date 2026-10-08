@@ -1,6 +1,7 @@
 import { AvatarComponent, Spinner } from '@/components/ui'
 import { useGetFriends, type Friend } from '@/services/friends/friend-service.hook'
 import { FriendEmptyList } from './empty-friend-list'
+import { t } from '@/common/i18n'
 
 interface SelectFriendBottomSheetProps {
 	onChange: (friends: Friend[]) => void
@@ -45,7 +46,7 @@ export function SelectFriendLayout({
 					<Spinner size="lg" />
 				</div>
 			) : friends.length === 0 ? (
-				<FriendEmptyList emptyMessage="هنوز دوستی نداری" />
+				<FriendEmptyList emptyMessage={t('friends.select.empty')} />
 			) : (
 				<div className="flex flex-col gap-1">
 					{friends.map((friend) => {

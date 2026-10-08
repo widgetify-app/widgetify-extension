@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { listenEvent } from '@/common/utils/call-event'
 import { Modal, Spinner } from '@/components/ui'
+import { t } from '@/common/i18n'
 
 const MarketContainer = lazy(() =>
 	import('@/features/market/market').then((module) => ({
@@ -40,9 +41,10 @@ export function MarketModalListener() {
 			isOpen={showMarket}
 			onClose={handleClose}
 			stepAside={isSteppedAside}
-			title="فروشگاه"
+			title={t('navbar.market.title')}
 			size="2xl"
 			closeOnBackdropClick={true}
+			closeLabel={t('ui.common.close')}
 		>
 			<Suspense
 				fallback={

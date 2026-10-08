@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
 import { Button, Spinner } from '@/components/ui'
+import { t } from '@/common/i18n'
 
 interface RequireAuthProps {
 	children: ReactNode
@@ -22,7 +23,7 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 			<div className="flex items-center justify-center h-full">
 				<div className="text-center">
 					<Spinner size="2xl" className="mx-auto" />
-					<p className="mt-2">یه لحظه…</p>
+					<p className="mt-2">{t('ui.common.moment')}</p>
 				</div>
 			</div>
 		)
@@ -40,9 +41,11 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 							'absolute inset-0 p-4 flex flex-col items-center justify-center gap-y-2 bg-[rgba(var(--color-base-300-rgb),calc(var(--color-base-300-a)*0.2))] backdrop-blur-xs rounded-xl'
 						}
 					>
-						<h3 className="text-lg font-semibold">اول وارد حسابت شو</h3>
+						<h3 className="text-lg font-semibold">
+							{t('widgets.auth.loginTitle')}
+						</h3>
 						<p className={'text-xs text-fg text-center'}>
-							بعدش این بخش برات باز می‌شه
+							{t('widgets.auth.loginHint')}
 						</p>
 						<Button
 							onClick={handleAuthClick}
@@ -50,7 +53,7 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 							color="brand"
 							className="mt-2 w-fit px-6 border-none shadow-none rounded-widget"
 						>
-							ورود
+							{t('widgets.auth.login')}
 						</Button>
 					</div>
 				</div>
@@ -67,9 +70,11 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 					'flex h-full flex-col items-center justify-center p-4 text-center rounded-lg text-fg'
 				}
 			>
-				<h3 className="mb-2 text-xl font-semibold">اول وارد حسابت شو</h3>
+				<h3 className="mb-2 text-xl font-semibold">
+					{t('widgets.auth.loginTitle')}
+				</h3>
 				<p className={'text-xs mb-4 text-fg text-center'}>
-					بعدش این بخش برات باز می‌شه
+					{t('widgets.auth.loginHint')}
 				</p>
 				<Button
 					onClick={handleAuthClick}
@@ -77,7 +82,7 @@ export const RequireAuth = ({ children, fallback, mode = 'block' }: RequireAuthP
 					color="brand"
 					className="mt-2 w-fit px-6 border-none shadow-none rounded-widget"
 				>
-					ورود
+					{t('widgets.auth.login')}
 				</Button>
 			</motion.div>
 		)

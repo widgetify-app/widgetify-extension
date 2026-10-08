@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import type { Wallpaper } from '@/common/types/wallpaper.interface'
 import { Spinner, Tile, Tooltip, VipBadge } from '@/components/ui'
 import { Icon } from '@/icons'
@@ -21,13 +22,16 @@ export function UploadActive({
 	onRemove,
 }: UploadActiveProps) {
 	const isCloudWallpaper = Boolean(customWallpaper.src?.startsWith('http'))
-	const caption = customWallpaper.type === 'IMAGE' ? 'عکس خودت' : 'ویدیوی خودت'
+	const caption =
+		customWallpaper.type === 'IMAGE'
+			? t('setting.wallpaperUpload.customPhoto')
+			: t('setting.wallpaperUpload.customVideo')
 
 	return (
 		<Tile
 			bare
 			selected={isActive}
-			label={`${caption}؛ برای عوض کردنش بزن`}
+			label={t('setting.wallpaperUpload.replaceHint', { p0: caption })}
 			onClick={onFileSelect}
 			media={<MediaPreview customWallpaper={customWallpaper} />}
 			overlay={
@@ -42,12 +46,14 @@ export function UploadActive({
 				</span>
 			}
 			actions={
-				<Tooltip content="حذفش کن">
+				<Tooltip content={t('setting.wallpaperUpload.remove')}>
 					<button
 						type="button"
 						onClick={onRemove}
 						disabled={isRemoving}
-						aria-label={`حذف ${caption}`}
+						aria-label={t('setting.wallpaperUpload.removeAria', {
+							p0: caption,
+						})}
 						className="grid rounded-lg cursor-pointer size-7 place-items-center bg-scrim text-image-fg backdrop-glass hover:bg-scrim-strong transition-ui focus-visible:focus-ring"
 					>
 						{isRemoving ? (

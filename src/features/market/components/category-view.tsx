@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useState } from 'react'
 import { Button, Chip, EmptyState, TabNavigation } from '@/components/ui'
 import { CATEGORY_COPY } from '../constants'
@@ -19,8 +20,8 @@ const OWNERSHIP_STATES: Record<Ownership, ItemState[]> = {
 }
 
 const PET_KINDS: { id: PetKind; label: string }[] = [
-	{ id: 'PET', label: 'حیوون‌ها' },
-	{ id: 'PET_BACKGROUND', label: 'محیط‌ها' },
+	{ id: 'PET', label: t('market.category.petsTab') },
+	{ id: 'PET_BACKGROUND', label: t('market.category.environmentsTab') },
 ]
 
 interface CategoryViewProps {
@@ -78,20 +79,20 @@ export function CategoryView({
 							className="w-44 me-2"
 						/>
 					)}
-					{filterChip('all', 'همه')}
-					{filterChip('buyable', 'قابل خرید')}
-					{filterChip('mine', 'مال من')}
+					{filterChip('all', t('market.category.allFilter'))}
+					{filterChip('buyable', t('market.category.buyableFilter'))}
+					{filterChip('mine', t('market.category.ownedFilter'))}
 				</div>
 			</CategoryHeader>
 
 			{isError ? (
 				<EmptyState
 					icon="shoppingBag"
-					title="آیتم‌ها نیومدن"
-					description="اینترنتت رو چک کن و دوباره امتحان کن"
+					title={t('market.category.loadErrorTitle')}
+					description={t('market.category.loadErrorHint')}
 					action={
 						<Button size="sm" onClick={() => refetch()}>
-							دوباره امتحان کن
+							{t('market.category.retry')}
 						</Button>
 					}
 				/>
@@ -127,20 +128,24 @@ function EmptyCategory({
 	onShowAll: () => void
 }) {
 	if (ownership === 'all') {
-		return <EmptyState icon="shoppingBag" title="هنوز چیزی اینجا نیست" />
+		return <EmptyState icon="shoppingBag" title={t('market.category.emptyTitle')} />
 	}
 	return (
 		<EmptyState
 			icon="shoppingBag"
-			title={ownership === 'mine' ? 'هنوز چیزی از اینجا نخریدی' : 'همه‌ش مال توئه'}
+			title={
+				ownership === 'mine'
+					? t('market.category.emptyOwnedTitle')
+					: t('market.category.allOwnedTitle')
+			}
 			description={
 				ownership === 'mine'
-					? 'هر چی بخری اینجا کنار هم می‌مونه'
-					: 'فعلاً آیتم تازه‌ای برای خرید نیست'
+					? t('market.category.emptyOwnedHint')
+					: t('market.category.emptyBuyableHint')
 			}
 			action={
 				<Button size="sm" onClick={onShowAll}>
-					همه رو نشونم بده
+					{t('market.category.showAll')}
 				</Button>
 			}
 		/>

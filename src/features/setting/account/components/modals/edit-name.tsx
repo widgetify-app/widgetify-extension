@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { Modal } from '@/components/ui'
 import { SectionPanel } from '@/components/ui'
 import { TextInput } from '@/components/ui'
@@ -34,10 +35,10 @@ export function ChangeNameModal({ show, onClose, currentValue }: Prop) {
 	return (
 		<Modal isOpen={show} onClose={onCloseHandler} showCloseButton={false}>
 			<div className="flex flex-col justify-between h-40 gap-4">
-				<SectionPanel title={'نام کامل'} size="xs">
+				<SectionPanel title={t('setting.modal.name.label')} size="xs">
 					<TextInput
 						value={value}
-						placeholder="مثلا: ایلان رضایی"
+						placeholder={t('setting.modal.name.placeholder')}
 						className="mt-2"
 						onChange={(val) => setValue(val)}
 					/>

@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import type { WidgetifyDate } from '@/common/utils/date-events'
 import { useGeneralSetting } from '@/context/general-setting.context'
@@ -47,7 +48,10 @@ export function Habit4x3({ actions, today }: Habit4x3Props) {
 			))}
 		</div>
 	) : isError ? (
-		<WidgetError message="نتونستیم عادت‌ها رو بیاریم" onRetry={onRefresh} />
+		<WidgetError
+			message={t('widgets.habit.variant2x1.loadError')}
+			onRetry={onRefresh}
+		/>
 	) : total === 0 ? (
 		<HabitEmpty onAdd={openAddHabit} />
 	) : (
@@ -83,7 +87,7 @@ export function Habit4x3({ actions, today }: Habit4x3Props) {
 	return (
 		<div className="flex flex-1 min-h-0 gap-3">
 			<section
-				aria-label="عادت‌ها"
+				aria-label={t('widgets.habit.widget.title')}
 				aria-busy={isLoading}
 				className="flex flex-col flex-1 min-w-0 min-h-0"
 			>
@@ -92,13 +96,18 @@ export function Habit4x3({ actions, today }: Habit4x3Props) {
 
 			{showStats && (
 				<BoardSummary
-					label="خلاصه‌ی عادت‌های امروز"
+					label={t('widgets.habit.variant4x3.summaryTitle')}
 					percent={percent}
-					percentLabel={`${percent} درصد عادت‌های امروز انجام شده`}
-					caption="امروز"
+					percentLabel={t('widgets.habit.variant4x3.percentDone', {
+						p0: percent,
+					})}
+					caption={t('widgets.habit.variant4x3.today')}
 					stats={[
-						{ label: 'انجام‌شده', value: done },
-						{ label: 'انجام‌نشده', value: total - done },
+						{ label: t('widgets.habit.variant4x3.done'), value: done },
+						{
+							label: t('widgets.habit.variant4x3.undone'),
+							value: total - done,
+						},
 					]}
 				/>
 			)}

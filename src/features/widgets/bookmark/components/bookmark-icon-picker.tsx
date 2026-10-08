@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { showToast } from '@/common/toast'
 import { getFaviconFromUrl } from '@/features/widgets/utils/icon'
 import { Icon } from '@/icons'
@@ -35,9 +36,9 @@ export function BookmarkIconPicker({ value, url, onChange, size = 'md' }: Props)
 
 	const handleFile = (file?: File) => {
 		if (!file?.type.startsWith('image/'))
-			return showToast('این نوع فایل پشتیبانی نمی‌شه، یه عکس انتخاب کن', 'error')
+			return showToast(t('widgets.bookmark.icon.unsupportedType'), 'error')
 		if (file.size > 250 * 1024) {
-			return showToast('آیکون باید کمتر از ۲۵۰ کیلوبایت باشه', 'error')
+			return showToast(t('widgets.bookmark.context.iconTooLarge'), 'error')
 		}
 		setError(false)
 		onChange(file)
@@ -96,7 +97,7 @@ export function BookmarkIconPicker({ value, url, onChange, size = 'md' }: Props)
 			/>
 
 			<div className="relative inline-flex group">
-				<Tooltip content="انتخاب یا تغییر آیکون">
+				<Tooltip content={t('widgets.bookmark.icon.pickOrChange')}>
 					<button
 						ref={triggerRef}
 						type="button"
@@ -112,7 +113,7 @@ export function BookmarkIconPicker({ value, url, onChange, size = 'md' }: Props)
 								? 'border-brand bg-brand-fill shadow-lg'
 								: 'border-surface-3 hover:border-brand-muted bg-surface hover:bg-surface-2'
 						}`}
-						aria-label="انتخاب یا تغییر آیکون"
+						aria-label={t('widgets.bookmark.icon.pickOrChange')}
 					>
 						{iconSrc && !error ? (
 							<img
@@ -147,13 +148,13 @@ export function BookmarkIconPicker({ value, url, onChange, size = 'md' }: Props)
 
 				{Boolean(value) && (
 					<Tooltip
-						content="حذف آیکون"
+						content={t('widgets.bookmark.icon.remove')}
 						className="absolute z-10 -top-1 -right-1"
 					>
 						<button
 							type="button"
 							onClick={handleRemove}
-							aria-label="حذف آیکون"
+							aria-label={t('widgets.bookmark.icon.remove')}
 							className="flex items-center justify-center w-4.5 h-4.5 rounded-full bg-danger text-on-danger text-3xs shadow-md hover:scale-110 active:scale-95 transition-transform cursor-pointer border border-surface-3"
 						>
 							<span className="mb-0.5">✕</span>
@@ -171,7 +172,7 @@ export function BookmarkIconPicker({ value, url, onChange, size = 'md' }: Props)
 			>
 				<PopoverMenuItem
 					icon={<Icon name="uploadImage" size={14} />}
-					label="بارگذاری از دستگاه"
+					label={t('widgets.bookmark.icon.upload')}
 					onClick={() => {
 						setIsMenuOpen(false)
 						if (fileInputRef.current) {
@@ -182,7 +183,7 @@ export function BookmarkIconPicker({ value, url, onChange, size = 'md' }: Props)
 				/>
 				<PopoverMenuItem
 					icon={<Icon name="brush" size={14} />}
-					label="انتخاب از گالری"
+					label={t('widgets.bookmark.icon.pickFromGallery')}
 					onClick={() => {
 						setIsMenuOpen(false)
 						setIsGalleryOpen(true)
@@ -193,7 +194,7 @@ export function BookmarkIconPicker({ value, url, onChange, size = 'md' }: Props)
 						<PopoverMenuDivider />
 						<PopoverMenuItem
 							icon={<Icon name="trash" size={14} />}
-							label="حذف آیکون"
+							label={t('widgets.bookmark.icon.remove')}
 							variant="danger"
 							onClick={() => {
 								setIsMenuOpen(false)
@@ -212,7 +213,7 @@ export function BookmarkIconPicker({ value, url, onChange, size = 'md' }: Props)
 					isOpen={isGalleryOpen}
 					onClose={() => setIsGalleryOpen(false)}
 					type="BOOKMARK_ICON"
-					title="گالری آیکون بوکمارک"
+					title={t('widgets.bookmark.icon.galleryTitle')}
 					onSelect={handleGallerySelect}
 					selectedAssetUrl={typeof value === 'string' ? value : undefined}
 				/>

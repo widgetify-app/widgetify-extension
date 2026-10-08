@@ -8,6 +8,7 @@ import { Button, Modal, Spinner } from '@/components/ui'
 import { useBookmarkStore } from '../../bookmark.context'
 import { MAX_BROWSER_IMPORT_ITEMS } from '../../constants'
 import type { BrowserImportNode } from '../../types'
+import { t } from '@/common/i18n'
 import {
 	type FetchedBrowserBookmark,
 	getBrowserBookmarks,
@@ -36,7 +37,8 @@ function buildImportNodes(
 		if (selectedIds.has(node.id)) {
 			if (node.type === 'FOLDER') {
 				result.push({
-					title: node.title || 'پوشه بدون عنوان',
+					title:
+						node.title || t('widgets.bookmark.modal.import.untitledFolder'),
 					type: 'FOLDER',
 					url: null,
 					children: node.children
@@ -106,7 +108,11 @@ function TreeNode({
 						type="button"
 						onClick={() => onToggleExpand(node.id)}
 						aria-expanded={isExpanded}
-						aria-label={isExpanded ? 'بستن پوشه' : 'باز کردن پوشه'}
+						aria-label={
+							isExpanded
+								? t('widgets.bookmark.modal.import.collapseFolder')
+								: t('widgets.bookmark.modal.import.expandFolder')
+						}
 						className="flex items-center justify-center w-4 h-4 shrink-0 text-fg-muted cursor-pointer"
 					>
 						<Icon
@@ -156,7 +162,7 @@ function TreeNode({
 					)}
 
 					<span className="flex-1 text-xs font-medium truncate">
-						{node.title || 'بدون عنوان'}
+						{node.title || t('widgets.bookmark.modal.import.untitled')}
 					</span>
 				</button>
 			</div>
@@ -248,7 +254,9 @@ export function ImportBrowserBookmarksModal({
 				const newIds = [...ids].filter((id) => !prev.has(id))
 				if (prev.size + newIds.length > MAX_BROWSER_IMPORT_ITEMS) {
 					showToast(
-						`هر بار تا ${MAX_BROWSER_IMPORT_ITEMS} مورد می‌تونی انتخاب کنی`,
+						t('widgets.bookmark.modal.import.maxSelectToast', {
+							p0: MAX_BROWSER_IMPORT_ITEMS,
+						}),
 						'error'
 					)
 					return prev
@@ -268,7 +276,7 @@ export function ImportBrowserBookmarksModal({
 	const handleImport = async () => {
 		const importNodes = buildImportNodes(rootNodes, selectedIds)
 		if (importNodes.length === 0) {
-			showToast('حداقل یه بوکمارک انتخاب کن', 'error')
+			showToast(t('widgets.bookmark.modal.import.selectAtLeastOne'), 'error')
 			return
 		}
 
@@ -279,11 +287,16 @@ export function ImportBrowserBookmarksModal({
 		setIsImporting(false)
 
 		if (result && result.importedCount > 0) {
-			showToast(`${result.importedCount} مورد درون‌ریزی شد`, 'success')
+			showToast(
+				t('widgets.bookmark.modal.import.importedToast', {
+					p0: result.importedCount,
+				}),
+				'success'
+			)
 			onImported?.()
 			onClose()
 		} else if (result) {
-			showToast('چیزی برای درون‌ریزی پیدا نکردیم', 'error')
+			showToast(t('widgets.bookmark.modal.import.nothingFound'), 'error')
 		}
 	}
 
@@ -292,18 +305,21 @@ export function ImportBrowserBookmarksModal({
 			isOpen={isOpen}
 			onClose={onClose}
 			size="md"
-			title="درون‌ریزی از بوکمارک‌های مرورگر"
+			title={t('widgets.bookmark.modal.add.importFromBrowser')}
 			className="overflow-y-hidden!"
 			closeOnBackdropClick={!isImporting}
+			closeLabel={t('ui.common.close')}
 		>
 			{!browserBookmarksEnabled ? (
 				<div className="flex flex-col items-center justify-center h-64 px-4 text-center">
 					<div className="flex items-center justify-center w-10 h-10 mb-3 rounded-full bg-brand-fill">
 						<Icon name="lock" className="text-brand" size={20} />
 					</div>
-					<p className="mb-1 text-sm font-bold">دسترسی به بوکمارک‌ها</p>
+					<p className="mb-1 text-sm font-bold">
+						{t('widgets.bookmark.modal.import.permissionTitle')}
+					</p>
 					<p className="mb-4 text-xs leading-relaxed text-fg-muted">
-						برای درون‌ریزی بوکمارک‌های مرورگرت، اول بهمون اجازه‌ی دسترسی بده.
+						{t('widgets.bookmark.modal.import.permissionBody')}
 					</p>
 					<Button
 						size="sm"
@@ -311,7 +327,7 @@ export function ImportBrowserBookmarksModal({
 						rounded={'2xl'}
 						color={'brand'}
 					>
-						فعال‌سازی دسترسی
+						{t('widgets.bookmark.modal.import.enableAccess')}
 					</Button>
 				</div>
 			) : (
@@ -319,8 +335,13 @@ export function ImportBrowserBookmarksModal({
 					<div className="flex items-center justify-between mb-2 shrink-0">
 						<span className="text-xs text-fg-muted">
 							{selectedIds.size > 0
-								? `${selectedIds.size} از ${MAX_BROWSER_IMPORT_ITEMS} مورد انتخاب شده`
-								: `تا ${MAX_BROWSER_IMPORT_ITEMS} مورد می‌تونی انتخاب کنی`}
+								? t('widgets.bookmark.modal.import.selectedOf', {
+										p0: selectedIds.size,
+										p1: MAX_BROWSER_IMPORT_ITEMS,
+									})
+								: t('widgets.bookmark.modal.import.maxSelectHint', {
+										p0: MAX_BROWSER_IMPORT_ITEMS,
+									})}
 						</span>
 					</div>
 
@@ -343,7 +364,7 @@ export function ImportBrowserBookmarksModal({
 							))
 						) : (
 							<div className="py-8 text-xs text-center text-fg-muted">
-								توی مرورگرت بوکمارکی پیدا نکردیم
+								{t('widgets.bookmark.modal.import.emptyBrowser')}
 							</div>
 						)}
 					</div>
@@ -355,7 +376,7 @@ export function ImportBrowserBookmarksModal({
 							disabled={isImporting}
 							className="w-20 transition-colors duration-300 ease-in-out rounded-2xl"
 						>
-							انصراف
+							{t('ui.common.cancel')}
 						</Button>
 						<Button
 							onClick={handleImport}
@@ -364,12 +385,14 @@ export function ImportBrowserBookmarksModal({
 							disabled={selectedIds.size === 0 || isImporting}
 							loading={isImporting}
 							loadingText={
-								<span className="text-xs">در حال درون‌ریزی…</span>
+								<span className="text-xs">
+									{t('widgets.bookmark.modal.import.importing')}
+								</span>
 							}
 							rounded={'2xl'}
 							className="w-32"
 						>
-							درون‌ریزی
+							{t('widgets.bookmark.modal.import.submit')}
 						</Button>
 					</div>
 				</div>

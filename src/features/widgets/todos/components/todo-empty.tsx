@@ -1,16 +1,22 @@
+import { t } from '@/common/i18n'
 import { WidgetEmpty } from '@/features/widgets/components/widget-empty'
 
 export function TodosEmpty({ onAdd }: { onAdd?: () => void }) {
 	return (
 		<WidgetEmpty
 			art="tasks"
-			title="هنوز تسکی نداری"
+			title={t('widgets.todos.empty.title')}
 			description={
-				onAdd
-					? 'اولین کاری که باید انجام بدی رو بنویس'
-					: 'اولین کاری که باید انجام بدی رو همین پایین بنویس'
+				onAdd ? t('widgets.todos.empty.hint') : t('widgets.todos.empty.hintBelow')
 			}
-			action={onAdd ? { label: 'تسک جدید', onClick: onAdd } : undefined}
+			action={
+				onAdd
+					? {
+							label: t('widgets.todos.input.newTask'),
+							onClick: onAdd,
+						}
+					: undefined
+			}
 		/>
 	)
 }

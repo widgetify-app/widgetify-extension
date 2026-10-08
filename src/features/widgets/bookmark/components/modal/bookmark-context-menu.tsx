@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { PopoverMenu, PopoverMenuItem, PopoverMenuDivider } from '@/components/ui'
 import { Icon } from '@/icons'
 
@@ -22,7 +23,7 @@ export function BookmarkContextMenu({
 			{onOpenInNewTab && (
 				<PopoverMenuItem
 					icon={<Icon name="plus" size={12} />}
-					label="در تب جدید"
+					label={t('widgets.bookmark.menu.openInNewTab')}
 					onClick={() => {
 						onOpenInNewTab()
 						onClose()
@@ -32,7 +33,7 @@ export function BookmarkContextMenu({
 
 			<PopoverMenuItem
 				icon={<Icon name="pen" size={12} />}
-				label="ویرایش"
+				label={t('widgets.bookmark.menu.edit')}
 				onClick={() => {
 					onEdit()
 					onClose()
@@ -43,7 +44,7 @@ export function BookmarkContextMenu({
 
 			<PopoverMenuItem
 				icon={<Icon name="trash" size={12} />}
-				label="حذف"
+				label={t('widgets.bookmark.grid.delete')}
 				variant="danger"
 				onClick={() => {
 					onDelete()

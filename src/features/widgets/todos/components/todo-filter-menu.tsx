@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useCallback, useRef, useState } from 'react'
 import { Chip, PopoverMenu, PopoverMenuDivider } from '@/components/ui'
 import { WidgetHeaderButton } from '@/features/widgets/components/widget-header'
@@ -37,19 +38,19 @@ export function TodoFilterMenu({
 
 	const sections = [
 		{
-			label: 'زمان',
+			label: t('widgets.todos.filter.time'),
 			options: DATE_FILTER_OPTIONS,
 			value: dateFilter,
 			onChange: onDateFilterChange,
 		},
 		{
-			label: 'برچسب',
+			label: t('widgets.todos.filter.tag'),
 			options: tagOptions,
 			value: tagFilter || '-all-',
 			onChange: onTagFilterChange,
 		},
 		{
-			label: 'ترتیب',
+			label: t('widgets.todos.filter.sort'),
 			options: SORT_OPTIONS,
 			value: sort,
 			onChange: onSortChange,
@@ -60,7 +61,7 @@ export function TodoFilterMenu({
 		<>
 			<WidgetHeaderButton
 				ref={triggerRef}
-				label="فیلتر"
+				label={t('widgets.todos.filter.label')}
 				icon="filter"
 				isActive={isFiltered || isOpen}
 				onClick={() => setIsOpen(!isOpen)}
@@ -109,7 +110,7 @@ export function TodoFilterChip({ label, onClear }: TodoFilterChipProps) {
 		<button
 			type="button"
 			onClick={onClear}
-			aria-label={`برداشتن فیلتر ${label}`}
+			aria-label={t('widgets.todos.filter.clearAria', { p0: label })}
 			className="inline-flex items-center gap-1 px-2 font-semibold rounded-full cursor-pointer h-5.5 shrink-0 bg-brand-fill text-brand text-2xs transition-ui hover:bg-brand-fill-2 focus-visible:focus-ring"
 		>
 			{label}

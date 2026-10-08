@@ -4,8 +4,10 @@ import type { PresetLayout } from './types'
 export const PRESET_LAYOUTS: PresetLayout[] = [
 	{
 		id: 'default',
-		title: 'چیدمان پیش‌فرض',
-		description: 'چیدمان استاندارد و کامل ویجتیفای با دسترسی به تمام ابزارها',
+		titleKey: 'widgets.presets.default.title',
+
+		descriptionKey: 'widgets.presets.default.description',
+
 		isVip: false,
 		isFeatured: true,
 		category: 'daily',
@@ -81,8 +83,10 @@ export const PRESET_LAYOUTS: PresetLayout[] = [
 	},
 	{
 		id: 'simple-appearance',
-		title: 'ظاهری ساده',
-		description: 'جستجوی بالا و ابزارهای متمرکز در پایین صفحه',
+		titleKey: 'widgets.presets.simple-appearance.title',
+
+		descriptionKey: 'widgets.presets.simple-appearance.description',
+
 		isVip: false,
 		isFeatured: true,
 		category: 'daily',
@@ -135,8 +139,10 @@ export const PRESET_LAYOUTS: PresetLayout[] = [
 	},
 	{
 		id: 'deep-work-flow',
-		title: 'تمرکز کاری و تسک‌ها',
-		description: 'مدیریت وظایف روزانه، یادداشت‌ها، تقویم و ابزارها برای کار عمیق',
+		titleKey: 'widgets.presets.deep-work-flow.title',
+
+		descriptionKey: 'widgets.presets.deep-work-flow.description',
+
 		isVip: false,
 		isFeatured: true,
 		category: 'productivity',
@@ -195,8 +201,10 @@ export const PRESET_LAYOUTS: PresetLayout[] = [
 	},
 	{
 		id: 'student-study-hub',
-		title: 'میز مطالعه و دانش‌آموز',
-		description: 'برنامه درسی با تقویم گوگل، مدیریت تسک‌ها و قاب عکس انگیزشی',
+		titleKey: 'widgets.presets.student-study-hub.title',
+
+		descriptionKey: 'widgets.presets.student-study-hub.description',
+
 		isVip: false,
 		isFeatured: false,
 		category: 'productivity',
@@ -255,8 +263,10 @@ export const PRESET_LAYOUTS: PresetLayout[] = [
 	},
 	{
 		id: 'news-culture-magazine',
-		title: 'مجله اخبار و فرهنگ',
-		description: 'پیگیری داغ‌ترین خبرهای روز در کنار نرخ ارز و آب‌وهوا',
+		titleKey: 'widgets.presets.news-culture-magazine.title',
+
+		descriptionKey: 'widgets.presets.news-culture-magazine.description',
+
 		isVip: false,
 		isFeatured: false,
 		category: 'daily',
@@ -315,8 +325,10 @@ export const PRESET_LAYOUTS: PresetLayout[] = [
 	},
 	{
 		id: 'cozy-lifestyle',
-		title: 'گوشه دنج و خاطرات',
-		description: 'آلبوم قاب عکس، همراهی پت، پیگیری احوال و وضعیت آب‌وهوا',
+		titleKey: 'widgets.presets.cozy-lifestyle.title',
+
+		descriptionKey: 'widgets.presets.cozy-lifestyle.description',
+
 		isVip: false,
 		isFeatured: false,
 		category: 'lifestyle',
@@ -380,8 +392,10 @@ export const PRESET_LAYOUTS: PresetLayout[] = [
 	},
 	{
 		id: 'habit-builder-compact',
-		title: 'توسعه فردی و عادت‌سازی',
-		description: 'تمرکز ویژه بر ردیابی عادت‌ها، اهداف روزانه و پایش پیوسته حس‌وحال',
+		titleKey: 'widgets.presets.habit-builder-compact.title',
+
+		descriptionKey: 'widgets.presets.habit-builder-compact.description',
+
 		isVip: false,
 		isFeatured: false,
 		category: 'productivity',
@@ -440,8 +454,10 @@ export const PRESET_LAYOUTS: PresetLayout[] = [
 	},
 	{
 		id: 'crypto-finance-hub',
-		title: 'مرکز ترید و ارز دیجیتال',
-		description: 'قیمت‌های زنده بازار، نرخ لحظه‌ای ارزها، وضعیت پینگ و ابزارها',
+		titleKey: 'widgets.presets.crypto-finance-hub.title',
+
+		descriptionKey: 'widgets.presets.crypto-finance-hub.description',
+
 		isVip: true,
 		isFeatured: true,
 		category: 'finance',
@@ -489,8 +505,10 @@ export const PRESET_LAYOUTS: PresetLayout[] = [
 	},
 	{
 		id: 'developer-cockpit',
-		title: 'میز کار برنامه‌نویس',
-		description: 'تودوهای عریض، پینگ سرور، یادداشت استیکی و بوکمارک‌های دم‌دست',
+		titleKey: 'widgets.presets.developer-cockpit.title',
+
+		descriptionKey: 'widgets.presets.developer-cockpit.description',
+
 		isVip: true,
 		isFeatured: false,
 		category: 'productivity',
@@ -549,8 +567,10 @@ export const PRESET_LAYOUTS: PresetLayout[] = [
 	},
 	{
 		id: 'habit-mindfulness',
-		title: 'سلامت روان و عادات',
-		description: 'ثبت حال روحی، پیگیری مستمر عادت‌ها و حیوان خانگی همراه',
+		titleKey: 'widgets.presets.habit-mindfulness.title',
+
+		descriptionKey: 'widgets.presets.habit-mindfulness.description',
+
 		isVip: true,
 		isFeatured: false,
 		category: 'lifestyle',

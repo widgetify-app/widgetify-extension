@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useState, useEffect } from 'react'
 import Analytics from '@/analytics'
 import { cn } from '@/common/utils/cn'
@@ -13,7 +14,7 @@ import { FreeVipSuccessModal } from './components/free-vip-success-modal'
 import { VipPlanCard } from './components/vip-plan-card'
 import { VipHeroBanner } from './components/vip-hero-banner'
 
-const VIP_LABEL = 'پرو'
+const VIP_LABEL = t('setting.vip.proLabel')
 
 const fmt = (n: number) => new Intl.NumberFormat('fa-IR').format(n)
 
@@ -46,13 +47,13 @@ export function VipTab() {
 
 	const handlePurchase = () => {
 		if (!selectedPlan) {
-			showToast('اول یه پلن انتخاب کن', 'error')
+			showToast(t('setting.vip.selectPlanFirst'), 'error')
 			return
 		}
 
 		if (!isAuthenticated) {
 			Analytics.event('vip_plan_purchase_unauthenticated')
-			showToast(`برای خرید اشتراک ${VIP_LABEL} اول وارد حسابت شو`, 'error')
+			showToast(t('setting.vip.loginRequired', { p0: VIP_LABEL }), 'error')
 			callEvent('openSettings', 'profile')
 			return
 		}
@@ -65,7 +66,7 @@ export function VipTab() {
 						setClaimedDays(res?.days || selectedPlan.days || 5)
 						setShowSuccessModal(true)
 					} else {
-						showToast('داریم می‌ریم درگاه پرداخت…', 'success')
+						showToast(t('setting.vip.redirectingToPayment'), 'success')
 					}
 					Analytics.event('vip_plan_purchased')
 					refetchUser()
@@ -78,11 +79,10 @@ export function VipTab() {
 						(error as any)?.response?.data?.message ===
 							'FREE_PLAN_ALREADY_CLAIMED'
 					) {
-						showToast('این اشتراک رایگان رو قبلاً گرفتی', 'error')
+						showToast(t('setting.vip.freeAlreadyClaimed'), 'error')
 					} else {
 						showToast(
-							errorMsg ||
-								`خرید اشتراک ${VIP_LABEL} انجام نشد، دوباره امتحان کن`,
+							errorMsg || t('setting.vip.purchaseError', { p0: VIP_LABEL }),
 							'error'
 						)
 					}
@@ -98,7 +98,9 @@ export function VipTab() {
 			<VipHeroBanner />
 
 			<div className="space-y-2.5 pt-1">
-				<h4 className="text-xs font-bold text-fg">پلن مناسب خودت رو انتخاب کن</h4>
+				<h4 className="text-xs font-bold text-fg">
+					{t('setting.vip.selectPlanTitle')}
+				</h4>
 
 				{isLoading ? (
 					<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -132,7 +134,9 @@ export function VipTab() {
 					</div>
 				) : (
 					<div className="flex flex-col items-center justify-center py-6 text-center border rounded-2xl border-line bg-fill">
-						<p className="text-xs text-fg-muted">فعلاً پلنی برای خرید نیست</p>
+						<p className="text-xs text-fg-muted">
+							{t('setting.vip.emptyPlans')}
+						</p>
 					</div>
 				)}
 			</div>
@@ -144,28 +148,37 @@ export function VipTab() {
 					</div>
 					<div className="flex flex-col">
 						<span className="text-xs font-bold text-fg">
-							{selectedPlan?.title || 'اشتراک'} {VIP_LABEL}
+							{selectedPlan?.title || t('setting.vip.subscriptionLabel')}{' '}
+							{VIP_LABEL}
 						</span>
 						<span className="text-2xs text-fg-muted">
-							دسترسی کامل به تمام امکانات {VIP_LABEL}
+							{t('setting.vip.fullAccessHint')} {VIP_LABEL}
 						</span>
 					</div>
 				</div>
 
 				<div className="flex items-center justify-between w-full gap-4 sm:justify-end sm:w-auto">
 					<div className="flex flex-col items-start sm:items-end">
-						<span className="text-2xs text-fg-muted">مبلغ قابل پرداخت</span>
+						<span className="text-2xs text-fg-muted">
+							{t('setting.vip.payableAmount')}
+						</span>
 						<div className="flex items-baseline gap-1">
 							{selectedPlan?.price === 0 ? (
 								<span className="text-base font-black sm:text-lg text-success">
-									{selectedPlan.isClaimed ? 'قبلاً گرفتی' : 'رایگان'}
+									{selectedPlan.isClaimed
+										? t('setting.vipPlan.alreadyClaimed')
+										: t('setting.vipPlan.free')}
 								</span>
 							) : (
 								<>
 									<span className="text-base font-black sm:text-lg text-fg tabular-nums">
-										{selectedPlan ? fmt(selectedPlan.price) : '۰'}
+										{selectedPlan
+											? fmt(selectedPlan.price)
+											: t('setting.vip.zeroAmount')}
 									</span>
-									<span className="text-xs text-fg-muted">تومان</span>
+									<span className="text-xs text-fg-muted">
+										{t('setting.vipPlan.currencyToman')}
+									</span>
 								</>
 							)}
 						</div>
@@ -181,7 +194,7 @@ export function VipTab() {
 								Boolean(selectedPlan?.isClaimed)
 							}
 							loading={isPending}
-							loadingText="در حال انتقال..."
+							loadingText={t('setting.vip.transferring')}
 							onClick={handlePurchase}
 							className="font-bold transition-ui px-6 h-10 shadow-sm"
 							color="vip"
@@ -189,8 +202,8 @@ export function VipTab() {
 							<Icon name="diamond" size={14} />
 							<span>
 								{selectedPlan?.isClaimed
-									? 'دریافت شده'
-									: `فعال‌سازی ${VIP_LABEL}`}
+									? t('setting.vip.received')
+									: t('setting.vip.activatePlan', { p0: VIP_LABEL })}
 							</span>
 						</Button>
 					</div>

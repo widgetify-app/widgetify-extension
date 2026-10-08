@@ -1,4 +1,5 @@
 import type { TooltipRenderProps } from 'react-joyride'
+import { t } from '@/common/i18n'
 import { Icon } from '@/icons'
 
 export function TourTooltip({
@@ -34,7 +35,7 @@ export function TourTooltip({
 						))}
 					</div>
 					<span className="text-2xs font-bold text-fg-muted">
-						{index + 1} از {size}
+						{index + 1} {t('home.tour.from')} {size}
 					</span>
 				</div>
 
@@ -59,7 +60,7 @@ export function TourTooltip({
 							{...skipProps}
 							className="text-2xs font-bold text-fg-faint hover:text-fg-strong px-2 py-1.5 rounded-lg hover:bg-fill-2 transition-colors cursor-pointer"
 						>
-							رد کردن
+							{t('home.tour.skip')}
 						</button>
 					)}
 				</div>
@@ -71,7 +72,7 @@ export function TourTooltip({
 							{...backProps}
 							className="text-xs font-bold text-fg-muted hover:text-fg-strong px-3 py-1.5 rounded-xl hover:bg-surface-3 transition-colors cursor-pointer"
 						>
-							قبلی
+							{t('home.tour.prev')}
 						</button>
 					)}
 
@@ -80,7 +81,7 @@ export function TourTooltip({
 						{...primaryProps}
 						className="px-4 py-1.5 rounded-xl bg-brand text-on-brand ring-0! outline-0! font-bold text-xs hover:bg-brand-hover transition-ui shadow-md active:scale-95 cursor-pointer"
 					>
-						{isLastStep ? 'پایان' : 'بعدی'}
+						{isLastStep ? t('home.tour.finish') : t('home.tour.next')}
 					</button>
 				</div>
 			</div>

@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { t } from '@/common/i18n'
 import { PopoverMenuItem } from '@/components/ui'
 import { Icon } from '@/icons'
 import { useRefreshRssFeeds } from '@/services/news/get-news.hook'
@@ -15,14 +16,16 @@ export function NewsLayout() {
 
 	useWidgetSettingsSummary(
 		entries.length
-			? `${entries.length.toLocaleString('fa-IR')} منبع روشنه`
-			: 'هیچ منبعی روشن نیست'
+			? t('widgets.news.sourcesOn', {
+					count: entries.length.toLocaleString('fa-IR'),
+				})
+			: t('widgets.news.sourcesOff')
 	)
 	useWidgetMenuActions(
 		entries.length > 0 && (
 			<PopoverMenuItem
 				icon={<Icon name="refresh" size={14} />}
-				label="به‌روز کن"
+				label={t('widgets.news.refresh')}
 				onClick={refresh}
 			/>
 		)
@@ -30,7 +33,7 @@ export function NewsLayout() {
 
 	return (
 		<WidgetContainer contentClassName="p-3 gap-2">
-			<NewsView title="اخبار" entries={entries} />
+			<NewsView title={t('widgets.news.title')} entries={entries} />
 		</WidgetContainer>
 	)
 }
@@ -59,7 +62,7 @@ function NewsView({ title, entries }: NewsViewProps) {
 					isRefreshing &&
 					hasHeadlines && (
 						<span className="font-medium text-3xs text-fg-faint whitespace-nowrap">
-							به‌روز می‌شه…
+							{t('widgets.news.updating')}
 						</span>
 					)
 				}

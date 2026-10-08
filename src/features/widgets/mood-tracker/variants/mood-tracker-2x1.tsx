@@ -1,4 +1,5 @@
 import { moodOptions } from '@/common/constants/moods'
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { MoodImage } from '@/components/mood-image'
 import { WidgetMenuButton } from '@/features/widgets/components/widget-menu-button'
@@ -15,15 +16,19 @@ interface Mood2x1Props {
 export function Mood2x1({ todayMood, onSelectMood, isSaving }: Mood2x1Props) {
 	return (
 		<section
-			aria-label="حال روزانه"
+			aria-label={t('widgets.moodTracker.aria')}
 			className="flex flex-col w-full h-full min-h-0 gap-1.5 select-none"
 		>
 			<header className="flex items-center flex-none h-5 min-w-0 gap-2">
 				<h3 className="text-xs font-bold truncate text-fg-strong">
-					{todayMood ? 'حال امروز' : 'امروز چه حسی داری؟'}
+					{todayMood
+						? t('widgets.moodTracker.todayTitle')
+						: t('widgets.moodTracker.askToday')}
 				</h3>
 				{todayMood && (
-					<span className="font-medium text-3xs text-fg-faint">ثبت شد</span>
+					<span className="font-medium text-3xs text-fg-faint">
+						{t('widgets.moodTracker.recorded')}
+					</span>
 				)}
 				<span className="ms-auto widget-control">
 					<WidgetMenuButton placement="compact" />
@@ -53,7 +58,7 @@ export function Mood2x1({ todayMood, onSelectMood, isSaving }: Mood2x1Props) {
 							)}
 						>
 							<MoodImage mood={opt.value} className="size-[24cqh]" />
-							<span className="max-w-full truncate">{opt.label}</span>
+							<span className="max-w-full truncate">{t(opt.labelKey)}</span>
 						</button>
 					)
 				})}

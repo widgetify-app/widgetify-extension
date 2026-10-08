@@ -1,4 +1,5 @@
 import type React from 'react'
+import { t } from '@/common/i18n'
 import type { WidgetSize } from '../utils/layout-engine/types'
 import { WidgetContainer } from '../components/widget-container'
 import { useWidgetSettingsSummary } from '../widget-menu.context'
@@ -46,10 +47,10 @@ export const CalendarLayout: React.FC<CalendarLayoutProps> = ({
 }
 
 function displaySummary({ showEvents, showMoods }: CalendarDisplay): string {
-	if (showEvents && showMoods) return 'رویدادها و حال روز'
-	if (showEvents) return 'فقط رویدادها'
-	if (showMoods) return 'فقط حال روز'
-	return 'فقط تاریخ‌ها'
+	if (showEvents && showMoods) return t('widgets.calendar.summary.eventsAndMoods')
+	if (showEvents) return t('widgets.calendar.summary.eventsOnly')
+	if (showMoods) return t('widgets.calendar.summary.moodsOnly')
+	return t('widgets.calendar.summary.datesOnly')
 }
 
 export default CalendarLayout

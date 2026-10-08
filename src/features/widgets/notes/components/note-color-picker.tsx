@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
 import type { WidgetControlTone } from '@/features/widgets/components/widget-menu-button'
@@ -16,8 +17,16 @@ export function NoteColorPicker({
 	tone = 'default',
 }: NoteColorPickerProps) {
 	const swatches = [
-		{ value: undefined, ariaLabel: 'رنگ پیش‌فرض', bgColor: 'bg-fill-3' },
-		...PRIORITY_OPTIONS,
+		{
+			value: undefined as NotePriority | undefined,
+			ariaLabel: t('widgets.notes.color.default'),
+			bgColor: 'bg-fill-3',
+		},
+		...PRIORITY_OPTIONS.map((option) => ({
+			value: option.value as NotePriority | undefined,
+			ariaLabel: t(option.ariaLabelKey),
+			bgColor: option.bgColor,
+		})),
 	]
 
 	return (

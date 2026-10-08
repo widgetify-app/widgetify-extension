@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import type { GoogleCalendarEvent } from '@/services/date/get-google-calendar-events.hook'
 import type { ClassifiedCalendarEvent } from '../types'
 
@@ -24,16 +25,28 @@ export function getDurationLabel(start: Date, end: Date): string {
 	if (diffMins >= 60) {
 		const hours = Math.floor(diffMins / 60)
 		const remMins = diffMins % 60
-		return remMins > 0 ? `${hours} ساعت و ${remMins} دقیقه` : `${hours} ساعت`
+		return remMins > 0
+			? t('widgets.googleCalendar.duration.hoursMins', {
+					hours,
+					mins: remMins,
+				})
+			: t('widgets.googleCalendar.duration.hours', { hours })
 	}
 
-	return `${diffMins} دقیقه`
+	return t('widgets.googleCalendar.duration.mins', { mins: diffMins })
 }
 
 export function countdownParts(minutes: number): { value: string; unit: string } {
-	if (minutes < 60) return { value: String(minutes), unit: 'دقیقه' }
+	if (minutes < 60)
+		return {
+			value: String(minutes),
+			unit: t('widgets.googleCalendar.unit.minute'),
+		}
 	const remainder = String(minutes % 60).padStart(2, '0')
-	return { value: `${Math.floor(minutes / 60)}:${remainder}`, unit: 'ساعت' }
+	return {
+		value: `${Math.floor(minutes / 60)}:${remainder}`,
+		unit: t('widgets.googleCalendar.unit.hour'),
+	}
 }
 
 export function currentOrNextEvent(
@@ -85,7 +98,9 @@ export function classifyEvent(
 		end,
 		startTimeStr: formatPersianTime(start),
 		endTimeStr: formatPersianTime(end),
-		durationLabel: isAllDay ? 'تمام روز' : getDurationLabel(start, end),
+		durationLabel: isAllDay
+			? t('widgets.googleCalendar.allDay')
+			: getDurationLabel(start, end),
 		minsRemaining,
 		minsUntilStart,
 		elapsedPercent,

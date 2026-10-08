@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import type React from 'react'
 import { type ReactNode, useEffect, useMemo, useState } from 'react'
 import Analytics from '@/analytics'
@@ -124,11 +125,11 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ tabs, onComplete }
 
 		if (Notification.permission === 'granted') {
 			const textList: Record<TimerMode, string> = {
-				work: 'وقت کار تموم شد، یه استراحت کوتاه بکن',
-				'short-break': 'استراحت تموم شد، آماده‌ای برگردی سر کار؟',
+				work: t('widgets.pomodoro.notify.workDone'),
+				'short-break': t('widgets.pomodoro.notify.breakDone'),
 			}
 
-			new Notification('تایمر پومودورو', {
+			new Notification(t('widgets.tools.tab.pomodoroTitle'), {
 				body: textList[mode],
 				dir: 'rtl',
 			})
@@ -282,13 +283,16 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ tabs, onComplete }
 		Analytics.event(`${val}_top_users_view`)
 	}
 
-	const settingsSummary = `کار ${settings.workTime} · استراحت ${settings.shortBreakTime} دقیقه`
+	const settingsSummary = t('widgets.pomodoro.timer.sessionSummary', {
+		p0: settings.workTime,
+		p1: settings.shortBreakTime,
+	})
 	const openSettings = () => setShowSettings(true)
 
 	useWidgetMenuActions(
 		<PopoverMenuItem
 			icon={<Icon name="timer" size={14} />}
-			label="تنظیمات تایمر"
+			label={t('widgets.pomodoro.settings.panelTitle')}
 			description={settingsSummary}
 			onClick={openSettings}
 		/>
@@ -298,8 +302,8 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ tabs, onComplete }
 	const isInModal = !tabs
 	const timerLabel = isRunning
 		? isBreak
-			? 'تا کار'
-			: 'تا استراحت'
+			? t('widgets.pomodoro.timer.untilWork')
+			: t('widgets.pomodoro.timer.untilBreak')
 		: modeFullLabels[mode]
 
 	const timerView = (
@@ -309,8 +313,11 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ tabs, onComplete }
 				activeTab={mode}
 				onTabClick={(value) => handleModeChange(value)}
 				tabs={[
-					{ label: 'کار', id: 'work' as const },
-					{ label: 'استراحت', id: 'short-break' as const },
+					{ label: t('widgets.pomodoro.timer.work'), id: 'work' as const },
+					{
+						label: t('widgets.pomodoro.settings.break'),
+						id: 'short-break' as const,
+					},
 				]}
 				size="sm"
 				className="h-7 p-0.5 border-none rounded-xl w-37.5 bg-fill"
@@ -327,18 +334,22 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ tabs, onComplete }
 			/>
 
 			<div className="flex items-center gap-4.5">
-				<ControlButton icon="reload" label="از اول" onClick={handleReset} />
+				<ControlButton
+					icon="reload"
+					label={t('widgets.pomodoro.timer.reset')}
+					onClick={handleReset}
+				/>
 				{isRunning ? (
 					<ControlButton
 						icon="pause"
-						label="مکث"
+						label={t('widgets.pomodoro.timer.pause')}
 						onClick={handlePause}
 						isPrimary
 					/>
 				) : (
 					<ControlButton
 						icon="play"
-						label="شروع"
+						label={t('widgets.pomodoro.timer.start')}
 						onClick={handleStart}
 						isPrimary
 					/>
@@ -346,13 +357,13 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ tabs, onComplete }
 				{isBreak ? (
 					<ControlButton
 						icon="check"
-						label="برو به کار"
+						label={t('widgets.pomodoro.timer.goToWork')}
 						onClick={() => handleModeChange('work')}
 					/>
 				) : (
 					<ControlButton
 						icon="coffee"
-						label="برو به استراحت"
+						label={t('widgets.pomodoro.timer.goToBreak')}
 						onClick={() => handleModeChange('short-break')}
 					/>
 				)}
@@ -366,10 +377,10 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ tabs, onComplete }
 				<>
 					<ToolHeader
 						tabs={tabs}
-						title="جدول برترین‌ها"
+						title={t('widgets.pomodoro.leaderboard.open')}
 						leading={
 							<WidgetBackButton
-								label="بازگشت به تایمر"
+								label={t('widgets.pomodoro.leaderboard.back')}
 								onClick={() => setCurrentTab('timer')}
 							/>
 						}
@@ -379,9 +390,18 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ tabs, onComplete }
 						activeTab={topUsersType}
 						onTabClick={onChangeTopUsersType}
 						tabs={[
-							{ label: 'امروز', id: TopUsersType.DAILY },
-							{ label: 'این هفته', id: TopUsersType.WEEKLY },
-							{ label: 'همه', id: TopUsersType.ALL_TIME },
+							{
+								label: t('widgets.pomodoro.leaderboard.today'),
+								id: TopUsersType.DAILY,
+							},
+							{
+								label: t('widgets.pomodoro.leaderboard.thisWeek'),
+								id: TopUsersType.WEEKLY,
+							},
+							{
+								label: t('widgets.pomodoro.leaderboard.all'),
+								id: TopUsersType.ALL_TIME,
+							},
 						]}
 						size="sm"
 						className="h-7 p-0.5 border-none rounded-xl shrink-0 bg-fill"
@@ -394,10 +414,12 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ tabs, onComplete }
 				<div className="flex flex-1 min-h-0 gap-5">
 					{timerView}
 					<aside
-						aria-label="تنظیمات تایمر"
+						aria-label={t('widgets.pomodoro.settings.panelTitle')}
 						className="flex flex-col w-60 gap-2.5 shrink-0 border-s border-line ps-5"
 					>
-						<h4 className="text-xs font-bold text-fg-strong">تنظیمات</h4>
+						<h4 className="text-xs font-bold text-fg-strong">
+							{t('widgets.pomodoro.settings.open')}
+						</h4>
 						<PomodoroSettingsForm
 							settings={settings}
 							onChange={handleUpdateSettings}
@@ -413,7 +435,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ tabs, onComplete }
 								aria-hidden="true"
 								className="text-warning"
 							/>
-							جدول برترین‌ها
+							{t('widgets.pomodoro.leaderboard.open')}
 							<Icon
 								name="chevronLeft"
 								size={14}
@@ -429,7 +451,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ tabs, onComplete }
 						tabs={tabs}
 						actions={
 							<WidgetHeaderButton
-								label="جدول برترین‌ها"
+								label={t('widgets.pomodoro.leaderboard.open')}
 								icon="crown"
 								onClick={() => setCurrentTab('top-users')}
 							/>

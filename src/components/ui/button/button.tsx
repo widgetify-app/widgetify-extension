@@ -35,12 +35,7 @@ export function Button({
 			{...rest}
 		>
 			{loading ? (
-				loadingText || (
-					<>
-						<Spinner size="sm" tone="current" aria-hidden="true" />
-						<span className="text-xs">یه لحظه…</span>
-					</>
-				)
+				loadingText || <Spinner size="sm" tone="current" aria-hidden="true" />
 			) : (
 				<>
 					{icon}

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { t } from '@/common/i18n'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { TabNavigation } from '@/components/ui'
 import { Icon } from '@/icons'
@@ -42,12 +43,12 @@ export function ComboSetting({ instanceId, size }: ComboSettingProps) {
 					tabs={[
 						{
 							id: 'currency',
-							label: 'تنظیمات ارزها',
+							label: t('widgets.combo.settings.currency'),
 							icon: <Icon name="currency" size={14} />,
 						},
 						{
 							id: 'news',
-							label: 'تنظیمات اخبار',
+							label: t('widgets.combo.settings.news'),
 							icon: <Icon name="outlineNewspaper" size={14} />,
 						},
 					]}

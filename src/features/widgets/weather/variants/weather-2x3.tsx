@@ -7,6 +7,7 @@ import type { TemperatureUnit } from '../types'
 import { cleanCityName } from '../utils/clean-city-name'
 import { getTemperatureRange } from '../utils/temperature-range'
 import { getWeatherMetrics } from '../utils/weather-metrics'
+import { t } from '@/common/i18n'
 
 const FORECAST_SLOTS = 5
 
@@ -31,12 +32,14 @@ export function Weather2x3({
 
 	return (
 		<section
-			aria-label="آب و هوا"
+			aria-label={t('widgets.weather.aria')}
 			aria-busy={!fetchedWeather}
 			className="flex flex-col w-full h-full min-h-0 gap-2 select-none"
 		>
 			<WidgetHeader
-				title={cleanCityName(fetchedWeather?.city?.fa) || 'آب و هوا'}
+				title={
+					cleanCityName(fetchedWeather?.city?.fa) || t('widgets.weather.title')
+				}
 				info={updatedLabel}
 			/>
 
@@ -52,7 +55,10 @@ export function Weather2x3({
 					</span>
 					{range && (
 						<span className="font-medium text-3xs text-fg-faint">
-							بیشینه {range.high} · کمینه {range.low}
+							{t('widgets.weather.highLow', {
+								high: range.high,
+								low: range.low,
+							})}
 						</span>
 					)}
 				</div>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
+import { t, type MessageKey } from '@/common/i18n'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
 import { Button, Modal } from '@/components/ui'
@@ -16,8 +17,8 @@ interface ReleaseHighlight {
 	id: string
 	icon: IconName
 	tileClass: string
-	title: string
-	description: string
+	titleKey: MessageKey
+	bodyKey: MessageKey
 }
 
 const RELEASE_HIGHLIGHTS: ReleaseHighlight[] = [
@@ -25,36 +26,36 @@ const RELEASE_HIGHLIGHTS: ReleaseHighlight[] = [
 		id: 'dot-calendar',
 		icon: 'calendarDays',
 		tileClass: 'bg-warning-fill text-warning',
-		title: 'ویجت تازه: تقویم نقطه‌ای',
-		description: 'روزهای سال یا روزشمار هدفت رو نقطه‌نقطه ببین',
+		titleKey: 'releaseNotes.item.dotCalendar.title',
+		bodyKey: 'releaseNotes.item.dotCalendar.body',
 	},
 	{
 		id: 'curated-news',
 		icon: 'outlineNewspaper',
 		tileClass: 'bg-danger-fill text-danger',
-		title: 'اخبار از منابع دست‌چین',
-		description: 'از ورزش تا اقتصاد، دسته‌ی دلخواهت رو انتخاب کن',
+		titleKey: 'releaseNotes.item.news.title',
+		bodyKey: 'releaseNotes.item.news.body',
 	},
 	{
 		id: 'theme-colors',
 		icon: 'theme',
 		tileClass: 'bg-brand-fill text-brand',
-		title: 'تم‌ها خوش‌رنگ‌تر شدن',
-		description: 'رنگ همه‌ی تم‌ها بهتر شده',
+		titleKey: 'releaseNotes.item.themes.title',
+		bodyKey: 'releaseNotes.item.themes.body',
 	},
 	{
 		id: 'sticky-note',
 		icon: 'notebook',
 		tileClass: 'bg-success-fill text-success',
-		title: 'یادداشت‌هات، هر شکلی که بخوای',
-		description: 'لیست یادداشت‌ها رو راحت به استیک نوت تبدیل کن',
+		titleKey: 'releaseNotes.item.notes.title',
+		bodyKey: 'releaseNotes.item.notes.body',
 	},
 	{
 		id: 'tidy-layout',
 		icon: 'layout',
 		tileClass: 'bg-info-fill text-info',
-		title: 'چیدن ویجت‌ها راحت‌تر شد',
-		description: 'موقع چیدن، کل صفحه جلوی چشمته',
+		titleKey: 'releaseNotes.item.layout.title',
+		bodyKey: 'releaseNotes.item.layout.body',
 	},
 ]
 
@@ -98,29 +99,30 @@ export const UpdateReleaseNotesModal = ({
 		<Modal
 			isOpen={isOpen}
 			onClose={handleClose}
-			title="پاییز اومد، با کلی چیز تازه"
+			title={t('releaseNotes.hero.title')}
 			size="xl"
 			className="max-w-3xl"
 			closeOnBackdropClick={false}
+			closeLabel={t('ui.common.close')}
 		>
 			<div className="flex flex-col gap-3 select-none text-right">
 				<section className="relative w-full overflow-hidden shadow-md aspect-2/1 rounded-2xl bg-fill">
 					<img
 						src={'https://cdn.widgetify.ir/extension/autumn.webp'}
-						alt="جغدو، میشا و تیغو کنار کاراکتر ویجتیفای تو جنگل پاییزی"
+						alt={t('releaseNotes.pets.alt')}
 						className="object-cover w-full h-full"
 						draggable={false}
 					/>
 					<div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 px-5 pt-16 pb-4 bg-linear-to-t from-scrim-strong to-transparent">
 						<div className="flex flex-col gap-1">
 							<span className="w-fit px-2.5 py-0.5 rounded-full bg-image-fill text-2xs font-bold text-image-fg">
-								دوستای تازه
+								{t('releaseNotes.pets.badge')}
 							</span>
 							<h3 className="text-xl font-bold text-image-fg">
-								جغدو، میشا و تیغو اومدن
+								{t('releaseNotes.pets.names')}
 							</h3>
 							<p className="text-xs text-image-fg-muted">
-								تو فروشگاه منتظرتن، محیط تهران هم براشون اومده
+								{t('releaseNotes.pets.storeHint')}
 							</p>
 						</div>
 						<Button
@@ -132,7 +134,7 @@ export const UpdateReleaseNotesModal = ({
 							rounded="xl"
 						>
 							<Icon name="paw" size={14} />
-							<span>بریم ببینیم</span>
+							<span>{t('releaseNotes.pets.cta')}</span>
 						</Button>
 					</div>
 				</section>
@@ -153,10 +155,10 @@ export const UpdateReleaseNotesModal = ({
 							</span>
 							<span className="flex flex-col gap-0.5">
 								<span className="text-sm font-bold text-fg">
-									{item.title}
+									{t(item.titleKey)}
 								</span>
 								<span className="text-xs leading-relaxed text-fg-muted">
-									{item.description}
+									{t(item.bodyKey)}
 								</span>
 							</span>
 						</li>
@@ -174,8 +176,10 @@ export const UpdateReleaseNotesModal = ({
 						rounded="xl"
 					>
 						{counter > 0
-							? `یه لحظه صبر کن (${counter.toLocaleString('fa-IR')})`
-							: 'بزن بریم'}
+							? t('releaseNotes.wait', {
+									seconds: counter.toLocaleString('fa-IR'),
+								})
+							: t('releaseNotes.go')}
 					</Button>
 				</div>
 			</div>

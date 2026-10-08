@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import moment from 'jalali-moment'
 
 export function formatVipRemaining(vipExpiresAt?: string | null): string {
@@ -8,17 +9,17 @@ export function formatVipRemaining(vipExpiresAt?: string | null): string {
 	const diffHours = target.diff(now, 'hours')
 
 	if (target.isBefore(now)) {
-		return 'منقضی‌شده'
+		return t('setting.vipExpiry.expired')
 	}
 
 	const fmt = new Intl.NumberFormat('fa-IR').format
 	if (diffDays > 0) {
-		return `${fmt(diffDays)} روز`
+		return t('setting.vipExpiry.daysLeft', { p0: fmt(diffDays) })
 	}
 	if (diffHours > 0) {
-		return `${fmt(diffHours)} ساعت`
+		return t('setting.vipExpiry.hoursLeft', { p0: fmt(diffHours) })
 	}
-	return 'کمتر از ۱ ساعت'
+	return t('setting.vipExpiry.underOneHour')
 }
 
 export function formatVipExpiryDate(vipExpiresAt?: string | null): string {

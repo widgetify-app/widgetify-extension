@@ -2,6 +2,7 @@ import type React from 'react'
 import type { ReactNode } from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { useFreeWidgets } from '@/features/widgets/widgets.context'
 import { useContainerSize } from '@/features/widgets/hooks/use-container-size'
@@ -170,14 +171,14 @@ export function FreeWidgetCanvas() {
 							<div className="flex items-center justify-between pb-1 mb-2 border-b border-line">
 								<div className="flex items-center gap-1.5 font-bold text-xs text-fg">
 									<span>{def.emoji}</span>
-									<span>{def.label}</span>
+									<span>{t(def.label)}</span>
 								</div>
 								<button
 									type="button"
 									onClick={() => removeWidget(widget.instanceId)}
 									className="text-danger text-xs hover:bg-danger-fill px-2 py-0.5 rounded-lg transition-colors"
 								>
-									حذف
+									{t('widgets.canvas.remove')}
 								</button>
 							</div>
 							<div className="w-full">
@@ -192,7 +193,7 @@ export function FreeWidgetCanvas() {
 
 	return (
 		<section
-			aria-label="ویجت‌ها"
+			aria-label={t('widgets.canvas.widgetsAria')}
 			ref={containerRef}
 			id="widgets-canvas"
 			className="relative w-full select-none"

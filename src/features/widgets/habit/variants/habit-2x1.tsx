@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { useState } from 'react'
 import Analytics from '@/analytics'
 import { cn } from '@/common/utils/cn'
@@ -51,7 +52,7 @@ function HabitCompactContent({ actions, today }: Habit2x1Props) {
 	if (isError) {
 		return (
 			<WidgetError
-				message="نتونستیم عادت‌ها رو بیاریم"
+				message={t('widgets.habit.variant2x1.loadError')}
 				compact
 				onRetry={onRefresh}
 			/>
@@ -62,9 +63,12 @@ function HabitCompactContent({ actions, today }: Habit2x1Props) {
 		return (
 			<WidgetCompactEmpty
 				icon="strike"
-				title="یه عادت خوب شروع کن"
-				description="مثلاً روزی ۸ لیوان آب"
-				action={{ label: 'عادت جدید', onClick: openAddHabit }}
+				title={t('widgets.habit.empty.title')}
+				description={t('widgets.habit.variant2x1.emptyHint')}
+				action={{
+					label: t('widgets.habit.empty.cta'),
+					onClick: openAddHabit,
+				}}
 			/>
 		)
 	}
@@ -95,21 +99,24 @@ function HabitCompactContent({ actions, today }: Habit2x1Props) {
 				<button
 					type="button"
 					onClick={() => openHabitDetail(habit.id)}
-					aria-label={`جزئیات ${habit.title}`}
+					aria-label={t('widgets.habit.item.detailsAria', {
+						p0: habit.title,
+					})}
 					className="flex flex-col flex-1 min-w-0 py-1 rounded-lg cursor-pointer text-start leading-control focus-visible:focus-ring"
 				>
 					<span className="text-xs font-semibold truncate text-fg">
 						{habit.title}
 					</span>
 					<span className="truncate text-3xs text-fg-faint">
-						{formatHabitToday(habit)} · {index + 1} از {habits.length}
+						{formatHabitToday(habit)} · {index + 1}{' '}
+						{t('widgets.habit.variant2x1.of')} {habits.length}
 					</span>
 				</button>
 			</div>
 
 			<CompactPager
-				previousLabel="عادت قبلی"
-				nextLabel="عادت بعدی"
+				previousLabel={t('widgets.habit.variant2x1.prev')}
+				nextLabel={t('widgets.habit.variant2x1.next')}
 				onPrevious={() => setCurrentId(habits[index - 1].id)}
 				onNext={() => setCurrentId(habits[index + 1].id)}
 				isPreviousDisabled={index === 0}

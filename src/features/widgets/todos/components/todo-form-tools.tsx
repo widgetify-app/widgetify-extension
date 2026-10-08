@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import jalaliMoment from 'jalali-moment'
 import { useState } from 'react'
 import Analytics from '@/analytics'
@@ -22,7 +23,11 @@ export function TodoDateDropdown({ date, onChange }: TodoDateDropdownProps) {
 	return (
 		<Dropdown
 			trigger={
-				<TodoComposerTool icon="calendarDays" label="تاریخ" isActive>
+				<TodoComposerTool
+					icon="calendarDays"
+					label={t('widgets.todos.form.date')}
+					isActive
+				>
 					{todoDueLabel(date, jalaliMoment().locale('fa'))}
 				</TodoComposerTool>
 			}
@@ -74,7 +79,10 @@ export function TodoCategoryDropdown({
 
 		if (category === tagToRemove) onChange('')
 		showToast(
-			`برچسب «${tagToRemove}» از ${(count ?? 0).toLocaleString('fa-IR')} تسک برداشته شد`,
+			t('widgets.todos.form.tagRemovedToast', {
+				p0: tagToRemove,
+				p1: (count ?? 0).toLocaleString('fa-IR'),
+			}),
 			'success'
 		)
 		setTagToRemove(null)
@@ -87,7 +95,11 @@ export function TodoCategoryDropdown({
 				setTagToRemove(null)
 			}}
 			trigger={
-				<TodoComposerTool icon="tags" label="برچسب" isActive={Boolean(category)}>
+				<TodoComposerTool
+					icon="tags"
+					label={t('widgets.todos.filter.tag')}
+					isActive={Boolean(category)}
+				>
 					{category || undefined}
 				</TodoComposerTool>
 			}
@@ -96,8 +108,9 @@ export function TodoCategoryDropdown({
 				{tagToRemove ? (
 					<div className="flex flex-col gap-2 p-2.5 rounded-xl bg-danger-fill">
 						<p className="leading-relaxed text-2xs text-fg">
-							برچسب «{tagToRemove}» از همه‌ی تسک‌هات برداشته بشه؟ خود تسک‌ها سر
-							جاشون می‌مونن.
+							{t('widgets.todos.form.tagRemoveConfirmPrefix')}
+							{tagToRemove}
+							{t('widgets.todos.form.tagRemoveConfirmSuffix')}
 						</p>
 						<div className="flex justify-end gap-1">
 							<Button
@@ -107,7 +120,7 @@ export function TodoCategoryDropdown({
 								onClick={() => setTagToRemove(null)}
 								disabled={isRemoving}
 							>
-								نه
+								{t('widgets.todos.form.deleteCancel')}
 							</Button>
 							<Button
 								size="xs"
@@ -116,7 +129,9 @@ export function TodoCategoryDropdown({
 								onClick={confirmRemove}
 								disabled={isRemoving}
 							>
-								{isRemoving ? 'در حال برداشتن…' : 'برداشتن برچسب'}
+								{isRemoving
+									? t('widgets.todos.form.tagRemoving')
+									: t('widgets.todos.form.tagRemove')}
 							</Button>
 						</div>
 					</div>
@@ -130,8 +145,8 @@ export function TodoCategoryDropdown({
 								if (newTag) choose(newTag)
 								else if (shown.length === 1) choose(shown[0])
 							}}
-							placeholder="جستجو یا یه برچسب تازه"
-							aria-label="جستجو یا ساختن برچسب"
+							placeholder={t('widgets.todos.form.tagSearchOrCreate')}
+							aria-label={t('widgets.todos.form.tagSearchOrBuild')}
 							size="sm"
 							debounce={false}
 						/>
@@ -143,14 +158,17 @@ export function TodoCategoryDropdown({
 								className="flex items-center gap-1.5 h-8 px-2.5 font-semibold rounded-lg cursor-pointer text-2xs text-brand bg-brand-fill transition-ui hover:bg-brand-fill-2 focus-visible:focus-ring"
 							>
 								<Icon name="plus" size={12} aria-hidden="true" />
-								<span className="truncate">ساختن «{newTag}»</span>
+								<span className="truncate">
+									{t('widgets.todos.form.tagCreatePrefix')}
+									{newTag}»
+								</span>
 							</button>
 						)}
 
 						<div className="flex flex-wrap gap-1 overflow-y-auto max-h-36 scrollbar-none">
 							{category && (
 								<Chip size="sm" onClick={() => choose('')}>
-									بدون برچسب
+									{t('widgets.todos.form.noTags')}
 								</Chip>
 							)}
 							{shown.map((tag) => (
@@ -164,7 +182,7 @@ export function TodoCategoryDropdown({
 							))}
 							{available.length === 0 && !newTag && (
 								<p className="px-1 text-2xs text-fg-faint">
-									هنوز برچسبی نداری؛ اسمش رو بالا بنویس
+									{t('widgets.todos.form.noTagsHint')}
 								</p>
 							)}
 						</div>
@@ -201,7 +219,7 @@ function TagChip({ tag, isSelected, onSelect, onRemove }: TagChipProps) {
 			<button
 				type="button"
 				onClick={onRemove}
-				aria-label={`برداشتن برچسب ${tag}`}
+				aria-label={t('widgets.todos.form.tagRemoveAria', { p0: tag })}
 				className="grid h-full rounded-e-full cursor-pointer place-items-center ps-0.5 pe-1.5 transition-ui hover:text-danger focus-visible:focus-ring"
 			>
 				<Icon name="close" size={10} aria-hidden="true" />

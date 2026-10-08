@@ -5,6 +5,7 @@ import { Modal, TextInput } from '@/components/ui'
 import { Icon } from '@/icons'
 import type { FetchedCurrency } from '@/services/currency/get-currency-by-code.hook'
 import { getPrice } from '../utils/get-price'
+import { t } from '@/common/i18n'
 
 interface CurrencyModalComponentProps {
 	code: string
@@ -62,7 +63,12 @@ export const CurrencyModalComponent = ({
 	const price = getPrice(code, currency)
 
 	return (
-		<Modal isOpen={isModalOpen} onClose={toggleCurrencyModal} size="sm">
+		<Modal
+			isOpen={isModalOpen}
+			onClose={toggleCurrencyModal}
+			size="sm"
+			closeLabel={t('ui.common.close')}
+		>
 			<section className="relative flex flex-col items-center justify-center p-8 space-y-2">
 				<img
 					src={currency?.icon}
@@ -79,7 +85,7 @@ export const CurrencyModalComponent = ({
 						<button
 							type="button"
 							onClick={onClickConverter}
-							aria-label="تبدیل ارز"
+							aria-label={t('widgets.wigiArz.convertAria')}
 							aria-expanded={showConverter}
 							className="cursor-pointer hover:text-brand focus-visible:focus-ring"
 						>
@@ -134,13 +140,13 @@ export const CurrencyModalComponent = ({
 								handleCurrencyAmountChange(parseFormattedNumber(e))
 							}
 							className="rounded-2xl! px-4! border-surface-3"
-							placeholder="مبلغ"
+							placeholder={t('widgets.wigiArz.amountPlaceholder')}
 						/>
 					</div>
 
 					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-surface-2 hover:bg-surface-2 hover:border-surface-3">
 						<span className="text-sm font-medium text-fg-strong min-w-fit">
-							تومان
+							{t('widgets.wigiArz.toman')}
 						</span>
 						<TextInput
 							type="text"
@@ -149,7 +155,7 @@ export const CurrencyModalComponent = ({
 								handleTomanAmountChange(parseFormattedNumber(value))
 							}
 							className="rounded-2xl! px-4! border-surface-3"
-							placeholder="مبلغ"
+							placeholder={t('widgets.wigiArz.amountPlaceholder')}
 						/>
 					</div>
 				</div>

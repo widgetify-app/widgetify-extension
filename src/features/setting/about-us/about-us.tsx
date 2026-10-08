@@ -1,5 +1,5 @@
 import { SectionPanel } from '@/components/ui'
-import { ConfigKey } from '@/common/constants/config-keys'
+import { t } from '@/common/i18n'
 import { Icon } from '@/icons'
 
 export function AboutUsTab() {
@@ -11,23 +11,26 @@ export function AboutUsTab() {
 						'mb-1 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand to-secondary'
 					}
 				>
-					ویجتیفای
+					{t('setting.about.brandName')}
 				</h1>
 				<div
 					className={
 						'inline-flex items-center px-3 py-1 mb-2 text-xs font-medium border rounded-full backdrop-blur-sm text-brand'
 					}
 				>
-					<span>نسخه "{ConfigKey.VERSION_NAME}"</span>
+					<span>
+						{t('setting.about.versionPrefix')}
+						{t('common.config.versionName')}
+						{t('setting.about.versionSuffix')}
+					</span>
 				</div>
 
 				<p className={'max-w-lg mb-2 text-sm leading-relaxed text-fg'}>
-					ویجتیفای یه افزونه برای مرورگرته که تب جدید رو با ابزارهای کاربردی و
-					ظاهری قشنگ، به یه فضای کارآمد و مال خودت تبدیل می‌کنه.
+					{t('setting.about.description')}
 				</p>
 			</div>
 
-			<SectionPanel title="راه‌های ارتباط با ما" size="sm">
+			<SectionPanel title={t('setting.about.contactTitle')} size="sm">
 				<div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
 					<a
 						href="https://widgetify.ir"
@@ -41,7 +44,7 @@ export function AboutUsTab() {
 							</div>
 							<div className="text-right">
 								<h3 className="text-xs font-bold text-fg-strong">
-									وب‌سایت رسمی
+									{t('setting.about.websiteLink')}
 								</h3>
 								<p className="text-3xs text-fg-faint mt-0.5">
 									widgetify.ir
@@ -67,7 +70,7 @@ export function AboutUsTab() {
 							</div>
 							<div className="text-right">
 								<h3 className="text-xs font-bold text-fg-strong">
-									وبلاگ رسمی
+									{t('setting.about.blogLink')}
 								</h3>
 								<p className="text-3xs text-fg-faint mt-0.5">
 									blog.widgetify.ir
@@ -93,7 +96,7 @@ export function AboutUsTab() {
 							</div>
 							<div className="text-right">
 								<h3 className="text-xs font-bold text-fg-strong">
-									کانال تلگرام
+									{t('setting.about.telegramLink')}
 								</h3>
 								<p className="text-3xs text-fg-faint mt-0.5">
 									t.me/widgetify
@@ -130,7 +133,7 @@ export function AboutUsTab() {
 							</div>
 							<div className="text-right">
 								<h3 className="text-xs font-bold text-fg-strong">
-									پیام‌رسان بله
+									{t('setting.about.baleLink')}
 								</h3>
 								<p className="text-3xs text-fg-faint mt-0.5">
 									ble.ir/widgetify
@@ -152,11 +155,12 @@ export function AboutUsTab() {
 					'flex items-center justify-center mt-4 space-x-1 space-x-reverse text-sm text-fg opacity-75'
 				}
 			>
-				<span>ساخته شده با</span>💙<span>در ایران</span>
+				<span>{t('setting.about.madeWithPrefix')}</span>💙
+				<span>{t('setting.about.madeInIran')}</span>
 			</div>
 
 			<div className={'-mt-2 text-xs text-center text-fg opacity-55'}>
-				© ویجتیفای - تمامی حقوق محفوظ است
+				{t('setting.about.copyright')}
 			</div>
 		</div>
 	)

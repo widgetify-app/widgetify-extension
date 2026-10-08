@@ -17,6 +17,7 @@ import hedgehogIcon from '@/assets/animals/hedgehog/hedgehog_idle_8fps.webp'
 import hedgehogPreview from '@/assets/animals/hedgehog/hedgehog_swipe_8fps.webp'
 import sheepIcon from '@/assets/animals/sheep/sheep_idle_8fps.webp'
 import sheepPreview from '@/assets/animals/sheep/sheep_swipe_8fps.webp'
+import { t } from '@/common/i18n'
 import {
 	type PetBackground,
 	type PetBackgroundId,
@@ -47,14 +48,14 @@ export const PET_PREVIEW: Record<PetTypes, string> = {
 }
 
 export const PET_SPECIES_LABEL: Record<PetTypes, string> = {
-	[PetTypes.DOG]: 'سگ',
-	[PetTypes.CHICKEN]: 'مرغ',
-	[PetTypes.CRAB]: 'خرچنگ',
-	[PetTypes.FROG]: 'قورباغه',
-	[PetTypes.CAT]: 'گربه',
-	[PetTypes.OWL]: 'جغد',
-	[PetTypes.SHEEP]: 'گوسفند',
-	[PetTypes.HEDGEHOG]: 'جوجه‌تیغی',
+	[PetTypes.DOG]: t('widgets.pet.species.dog'),
+	[PetTypes.CHICKEN]: t('widgets.pet.species.chicken'),
+	[PetTypes.CRAB]: t('widgets.pet.species.crab'),
+	[PetTypes.FROG]: t('widgets.pet.species.frog'),
+	[PetTypes.CAT]: t('widgets.pet.species.cat'),
+	[PetTypes.OWL]: t('widgets.pet.species.owl'),
+	[PetTypes.SHEEP]: t('widgets.pet.species.sheep'),
+	[PetTypes.HEDGEHOG]: t('widgets.pet.species.hedgehog'),
 }
 
 export const DEFAULT_PET_BACKGROUND: PetBackgroundId = 'none'
@@ -62,25 +63,25 @@ export const DEFAULT_PET_BACKGROUND: PetBackgroundId = 'none'
 export const PET_BACKGROUNDS: Record<PetBackgroundId, PetBackground> = {
 	none: {
 		id: 'none',
-		label: 'بدون محیط',
+		label: t('widgets.pet.background.none'),
 		image: null,
 		groundOffsetPx: 0,
 	},
 	forest: {
 		id: 'forest',
-		label: 'جنگل شب',
+		label: t('widgets.pet.background.forest'),
 		image: forestBackground,
 		groundOffsetPx: 7,
 	},
 	autumn: {
 		id: 'autumn',
-		label: 'پاییز',
+		label: t('widgets.pet.background.autumn'),
 		image: autumnBackground,
 		groundOffsetPx: 3,
 	},
 	beach: {
 		id: 'beach',
-		label: 'ساحل',
+		label: t('widgets.pet.background.beach'),
 		image: beachBackground,
 		groundOffsetPx: 10,
 	},
@@ -101,42 +102,42 @@ export const BASE_PET_OPTIONS: PetSettings = {
 	background: DEFAULT_PET_BACKGROUND,
 	petOptions: {
 		[PetTypes.DOG]: {
-			name: 'آکیتا',
+			name: t('widgets.pet.defaultName.dog'),
 			type: 'dog',
 			hungryState: { level: 100, lastHungerTick: null },
 		},
 		[PetTypes.CHICKEN]: {
-			name: 'قدقدپور',
+			name: t('widgets.pet.defaultName.chicken'),
 			type: 'chicken',
 			hungryState: { level: 100, lastHungerTick: null },
 		},
 		[PetTypes.CRAB]: {
-			name: 'چنگولی',
+			name: t('widgets.pet.defaultName.crab'),
 			type: 'crab',
 			hungryState: { level: 100, lastHungerTick: null },
 		},
 		[PetTypes.CAT]: {
-			name: 'زردآلو',
+			name: t('widgets.pet.defaultName.cat'),
 			type: 'cat',
 			hungryState: { level: 100, lastHungerTick: null },
 		},
 		[PetTypes.FROG]: {
-			name: 'قوری',
+			name: t('widgets.pet.defaultName.frog'),
 			type: 'frog',
 			hungryState: { level: 100, lastHungerTick: null },
 		},
 		[PetTypes.OWL]: {
-			name: 'جغدو',
+			name: t('widgets.pet.defaultName.owl'),
 			type: 'owl',
 			hungryState: { level: 100, lastHungerTick: null },
 		},
 		[PetTypes.SHEEP]: {
-			name: 'میشا',
+			name: t('widgets.pet.defaultName.sheep'),
 			type: 'sheep',
 			hungryState: { level: 100, lastHungerTick: null },
 		},
 		[PetTypes.HEDGEHOG]: {
-			name: 'تیغو',
+			name: t('widgets.pet.defaultName.hedgehog'),
 			type: 'hedgehog',
 			hungryState: { level: 100, lastHungerTick: null },
 		},

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { moodOptions } from '@/common/constants/moods'
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { ToggleSwitch } from '@/components/ui'
 import { WidgetSettingWrapper } from '@/features/widgets/components/widget-settings-wrapper'
@@ -25,7 +26,7 @@ export function CalendarSetting({ instanceId, size }: CalendarSettingProps = {})
 		return (
 			<WidgetSettingWrapper>
 				<p className="text-sm leading-relaxed text-fg-muted">
-					اول ویجت رو به صفحه اضافه کن، بعد از منوی خود ویجت تنظیمش کن.
+					{t('widgets.calendar.setting.addWidgetFirst')}
 				</p>
 			</WidgetSettingWrapper>
 		)
@@ -43,28 +44,26 @@ export function CalendarSetting({ instanceId, size }: CalendarSettingProps = {})
 		<WidgetSettingWrapper>
 			<div className="flex flex-col gap-3">
 				<p className="text-xs leading-relaxed text-fg-muted">
-					انتخاب کن روی روزهای تقویم چی دیده بشه. با کلیک روی هر روز، همه‌ی
-					رویدادها و حالش رو می‌بینی.
+					{t('widgets.calendar.setting.intro')}
 				</p>
 
 				{isTodayOnly && (
 					<p className="px-3 py-2 leading-relaxed rounded-xl bg-fill text-2xs text-fg-muted">
-						این‌ها روی اندازه‌های ۲×۱ و ۲×۳ دیده می‌شن؛ ۱×۱ فقط امروز رو نشون
-						می‌ده.
+						{t('widgets.calendar.setting.sizeNote')}
 					</p>
 				)}
 
 				<ul className="flex flex-col gap-2">
 					<DisplayOption
-						title="رویدادها"
-						description="یه نقطه زیر روزی که مناسبت داره؛ قرمز اگه تعطیل رسمیه."
+						title={t('widgets.calendar.setting.eventsTitle')}
+						description={t('widgets.calendar.setting.eventsDesc')}
 						preview={<DayPreview showDot={showEvents} />}
 						enabled={showEvents}
 						onToggle={() => save({ showEvents: !showEvents })}
 					/>
 					<DisplayOption
-						title="حال روز"
-						description="دور روزهایی که حالت رو ثبت کردی، به رنگ همون حال."
+						title={t('widgets.calendar.setting.moodsTitle')}
+						description={t('widgets.calendar.setting.moodsDesc')}
 						preview={<DayPreview showMood={showMoods} />}
 						enabled={showMoods}
 						onToggle={() => save({ showMoods: !showMoods })}
@@ -100,7 +99,7 @@ function DisplayOption({
 				</span>
 			</div>
 			<ToggleSwitch
-				label={`نشون دادن ${title} روی تقویم`}
+				label={t('widgets.calendar.setting.toggleLabel', { title })}
 				enabled={enabled}
 				onToggle={onToggle}
 			/>

@@ -1,4 +1,5 @@
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { getContrastingTextColor } from '@/common/utils/color'
 import { callEvent } from '@/common/utils/call-event'
 import { Button, Modal } from '@/components/ui'
@@ -65,6 +66,7 @@ export function DialogChecker() {
 			onClose={() => onClose()}
 			title={dialog.dialogTitle}
 			showCloseButton={true}
+			closeLabel={t('ui.common.close')}
 		>
 			<div className="flex flex-col gap-3 p-2">
 				{dialog.media ? (
@@ -87,12 +89,12 @@ export function DialogChecker() {
 									: undefined,
 							}}
 						>
-							{dialog.buttonLabel || 'مشاهده'}
+							{dialog.buttonLabel || t('home.dialog.view')}
 						</Button>
 					)}
 
 					<Button size="md" onClick={() => onClose()} rounded="xl">
-						بستن
+						{t('home.dialog.close')}
 					</Button>
 				</div>
 			</div>

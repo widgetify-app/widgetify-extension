@@ -3,6 +3,7 @@ import type { FetchedWeather } from '@/services/weather/weather.interface'
 import { Temperature, WeatherIcon } from '../components/weather-reading'
 import type { TemperatureUnit } from '../types'
 import { cleanCityName } from '../utils/clean-city-name'
+import { t } from '@/common/i18n'
 
 interface WeatherCompactSquareProps {
 	fetchedWeather: FetchedWeather | null
@@ -18,10 +19,12 @@ export function WeatherCompactSquare({
 	return (
 		<>
 			<WidgetCenteredHeader
-				title={cleanCityName(fetchedWeather?.city?.fa) || 'آب و هوا'}
+				title={
+					cleanCityName(fetchedWeather?.city?.fa) || t('widgets.weather.title')
+				}
 			/>
 			<section
-				aria-label="آب و هوا"
+				aria-label={t('widgets.weather.aria')}
 				aria-busy={!fetchedWeather}
 				className="flex flex-col items-center justify-center flex-1 min-h-0 gap-0.5 select-none"
 			>

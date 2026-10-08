@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Analytics from '@/analytics'
 import type { NotificationItem } from '@/services/extension/get-notifications.hook'
 import { Icon } from '@/icons'
+import { t } from '@/common/i18n'
 const CHARACTER_LIMIT = 85
 interface NotificationItemProps {
 	onClose(e: any, id: string): any
@@ -126,7 +127,9 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 								onClick={toggleExpand}
 								className="relative z-10 mt-1 flex items-center gap-1 border border-line rounded-xl px-1 hover:border-brand-muted text-3xs font-light text-fg-muted hover:underline cursor-pointer"
 							>
-								{isExpanded ? 'نمایش کمتر' : 'مشاهده بیشتر'}
+								{isExpanded
+									? t('navbar.notifications.showLess')
+									: t('navbar.notifications.showMore')}
 								<Icon
 									name="chevronDown"
 									className={`transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}
@@ -149,7 +152,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 			{closeable && id && (
 				<button
 					type="button"
-					aria-label="بستن"
+					aria-label={t('navbar.notifications.close')}
 					className="relative z-10 flex p-0.5 transition-opacity  self-start rounded-lg cursor-pointer top-2 left-2 bg-fill text-fg-faint hover:bg-danger-fill hover:text-danger"
 					onClick={(e) => {
 						e.preventDefault()

@@ -4,6 +4,7 @@ import { useAuth } from '@/context/auth.context'
 import { Icon } from '@/icons'
 import { AddFriendBottomSheet } from './add-friend-bottom-sheet'
 import { FriendRequestsButton } from './friend-requests-button'
+import { t } from '@/common/i18n'
 
 export function FriendsActions() {
 	const { user } = useAuth()
@@ -24,7 +25,7 @@ export function FriendsActions() {
 				size={'sm'}
 			>
 				<Icon name="usersPlus" className="w-4 h-4" />
-				<span className="text-sm font-medium">افزودن دوست</span>
+				<span className="text-sm font-medium">{t('friends.actions.add')}</span>
 			</Button>
 
 			{isAddFriendOpen && (

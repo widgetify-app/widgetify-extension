@@ -28,7 +28,7 @@ const OTHER_DOCS = [
 	'.github/Api-doc.fa.md',
 ]
 
-const UNCHECKED_DOCS = ['AGENTS.local.md', 'SOCIAL_ROADMAP.md']
+const UNCHECKED_DOCS = ['AGENTS.local.md', 'SOCIAL_ROADMAP.md', '.agents/TYPOGRAPHY.md']
 
 const WIDGET_README = /^src\/features\/widgets\/[a-z0-9-]+\/README\.md$/
 const LONG_READMES: Record<string, number> = {

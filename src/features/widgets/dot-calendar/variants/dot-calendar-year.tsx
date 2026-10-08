@@ -1,4 +1,5 @@
 import type jalaliMoment from 'jalali-moment'
+import { t } from '@/common/i18n'
 import { WidgetHeader } from '@/features/widgets/components/widget-header'
 import { DaysLeftCount } from '../components/days-left-count'
 import { DotGrid } from '../components/dot-grid'
@@ -18,8 +19,12 @@ export function DotCalendarYear({ today, isCompact }: DotCalendarYearProps) {
 	return (
 		<>
 			<WidgetHeader
-				title="روزهای سال"
-				info={isCompact ? yearLabel : `${daysLeft} روز مونده`}
+				title={t('widgets.dotCalendar.headerYear')}
+				info={
+					isCompact
+						? yearLabel
+						: t('widgets.dotCalendar.daysLeftInfo', { days: daysLeft })
+				}
 			/>
 			{isCompact ? (
 				<DaysLeftCount progress={progress} until={nextYearLabel} />
@@ -27,7 +32,11 @@ export function DotCalendarYear({ today, isCompact }: DotCalendarYearProps) {
 				<DotGrid
 					totalDays={totalDays}
 					passedDays={passedDays}
-					label={`${passedDays.toLocaleString('fa-IR')} روز از ${totalDays.toLocaleString('fa-IR')} روز سال ${yearLabel} گذشته`}
+					label={t('widgets.dotCalendar.yearProgressAria', {
+						passed: passedDays.toLocaleString('fa-IR'),
+						total: totalDays.toLocaleString('fa-IR'),
+						year: yearLabel,
+					})}
 				/>
 			)}
 		</>

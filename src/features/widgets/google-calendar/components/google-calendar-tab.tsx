@@ -1,5 +1,6 @@
 import type React from 'react'
 import type { ReactNode } from 'react'
+import { t } from '@/common/i18n'
 import { PopoverMenuItem } from '@/components/ui'
 import { WidgetHeader } from '@/features/widgets/components/widget-header'
 import { GoogleCalendarAuth } from '@/features/widgets/google-calendar/components/google-calendar-auth'
@@ -30,7 +31,7 @@ export const GoogleCalendarTab: React.FC<GoogleCalendarTabProps> = ({ tabs }) =>
 		isCalendarConnected && (
 			<PopoverMenuItem
 				icon={<Icon name="refresh" size={14} />}
-				label="به‌روز کن"
+				label={t('widgets.googleCalendar.refresh')}
 				onClick={() => refetch()}
 			/>
 		)
@@ -46,11 +47,15 @@ export const GoogleCalendarTab: React.FC<GoogleCalendarTabProps> = ({ tabs }) =>
 
 			<div className="flex items-baseline justify-between px-2 shrink-0">
 				<span className="text-xs font-bold text-fg-strong">
-					امروز، {today.format('dddd')}
+					{t('widgets.googleCalendar.todayWeekday', {
+						weekday: today.format('dddd'),
+					})}
 				</span>
 				{classifiedEvents.length > 0 && (
 					<span className="font-medium text-3xs text-fg-faint tabular-nums">
-						{classifiedEvents.length} برنامه
+						{t('widgets.googleCalendar.eventCount', {
+							count: classifiedEvents.length,
+						})}
 					</span>
 				)}
 			</div>
@@ -61,8 +66,8 @@ export const GoogleCalendarTab: React.FC<GoogleCalendarTabProps> = ({ tabs }) =>
 				isEmpty={classifiedEvents.length === 0}
 				empty={
 					<GoogleCalendarEmpty
-						title="امروز برنامه‌ای نداری"
-						description="فرصت خوبیه برای کارهای شخصی"
+						title={t('widgets.googleCalendar.emptyTodayTitle')}
+						description={t('widgets.googleCalendar.emptyDescription')}
 					/>
 				}
 				onRetry={refetch}

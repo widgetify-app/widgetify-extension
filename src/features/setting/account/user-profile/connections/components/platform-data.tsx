@@ -1,11 +1,12 @@
+import { t } from '@/common/i18n'
 import type { Platform } from './platform-config'
 import GoogleCalendar from '@/assets/images/google-calendar.png'
 
 export const PLATFORM_CONFIGS: Omit<Platform, 'connected' | 'isLoading'>[] = [
 	{
 		id: 'google',
-		name: 'تقویم گوگل',
-		description: 'اتصال به خدمات گوگل برای دسترسی به تقویم و جلسات گوگل میت',
+		name: t('setting.connections.googleCalendarName'),
+		description: t('setting.connections.googleCalendarDescription'),
 		bgColor: '',
 		isActive: true,
 		icon: (
@@ -16,10 +17,10 @@ export const PLATFORM_CONFIGS: Omit<Platform, 'connected' | 'isLoading'>[] = [
 			/>
 		),
 		features: [
-			'دسترسی مستقیم به تقویم گوگل',
-			'نمایش و یادآوری هوشمند رویدادها و جلسات آینده',
+			t('setting.connections.featureCalendarAccess'),
+			t('setting.connections.featureSmartReminders'),
 		],
-		permissions: ['مشاهده تقویم (سرویس تقویم گوگل)'],
+		permissions: [t('setting.connections.permissionCalendarRead')],
 		isOptionalPermissions: true,
 	},
 ]

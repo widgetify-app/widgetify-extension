@@ -1,5 +1,6 @@
 import { type ReactNode, useState } from 'react'
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
 import { ConfirmationModal, PopoverMenuItem } from '@/components/ui'
@@ -67,7 +68,7 @@ export function NoteList({ tabs }: NoteListProps) {
 	useWidgetMenuActions(
 		<PopoverMenuItem
 			icon={<Icon name="refresh" size={14} />}
-			label="به‌روز کن"
+			label={t('widgets.notes.refresh')}
 			onClick={onRefresh}
 		/>
 	)
@@ -76,21 +77,21 @@ export function NoteList({ tabs }: NoteListProps) {
 		<WidgetHeader
 			leading={
 				<WidgetBackButton
-					label="بازگشت به یادداشت‌ها"
+					label={t('widgets.notes.backToList')}
 					onClick={() => setActiveNoteId(null)}
 				/>
 			}
-			title="ویرایش یادداشت"
+			title={t('widgets.notes.editTitle')}
 			badge={
 				isSaving && (
 					<span className="font-medium text-3xs text-fg-faint">
-						در حال ذخیره…
+						{t('widgets.notes.saving')}
 					</span>
 				)
 			}
 			actions={
 				<WidgetHeaderButton
-					label="حذف این یادداشت"
+					label={t('widgets.notes.deleteThis')}
 					icon="trash"
 					onClick={() => setNoteToDelete(activeNote.id)}
 				/>
@@ -98,11 +99,15 @@ export function NoteList({ tabs }: NoteListProps) {
 		/>
 	) : (
 		<WidgetHeader
-			title={tabs ?? 'یادداشت‌ها'}
-			info={notes.length > 0 ? `${notes.length} یادداشت` : undefined}
+			title={tabs ?? t('widgets.notes.title')}
+			info={
+				notes.length > 0
+					? t('widgets.notes.count', { count: notes.length })
+					: undefined
+			}
 			actions={
 				<WidgetHeaderButton
-					label="یادداشت جدید"
+					label={t('widgets.notes.new')}
 					icon="plus"
 					onClick={onAdd}
 					disabled={isCreatingNote}
@@ -119,7 +124,7 @@ export function NoteList({ tabs }: NoteListProps) {
 				))}
 			</div>
 		) : isError && !notes.length ? (
-			<WidgetError message="نتونستیم یادداشت‌ها رو بیاریم" onRetry={refetch} />
+			<WidgetError message={t('widgets.notes.loadError')} onRetry={refetch} />
 		) : activeNote ? (
 			<div
 				key={activeNoteId}
@@ -131,7 +136,7 @@ export function NoteList({ tabs }: NoteListProps) {
 			<NoteEmpty onAdd={onAdd} />
 		) : (
 			<ul
-				aria-label="یادداشت‌ها"
+				aria-label={t('widgets.notes.listAria')}
 				className={cn(
 					'flex flex-col flex-1 min-h-0 gap-0.5 overflow-y-auto scrollbar-none',
 					blurClass
@@ -161,10 +166,10 @@ export function NoteList({ tabs }: NoteListProps) {
 					if (noteToDelete) deleteNote(noteToDelete)
 					setNoteToDelete(null)
 				}}
-				title="این یادداشت حذف بشه؟"
-				message="دیگه نمی‌تونی برش گردونی."
-				confirmText="حذف"
-				cancelText="نه"
+				title={t('widgets.notes.deleteConfirmTitle')}
+				message={t('widgets.notes.deleteConfirmMessage')}
+				confirmText={t('widgets.notes.deleteConfirm')}
+				cancelText={t('widgets.notes.deleteCancel')}
 			/>
 		</>
 	)

@@ -28,6 +28,7 @@ import { useBirthdayConfetti } from './hooks/use-birthday-confetti'
 import { Icon } from '@/icons'
 import { GetUserFirstName } from './utils/get-firstname'
 import { useGetNotifications } from '@/services/extension/get-notifications.hook'
+import { t } from '@/common/i18n'
 
 const WIDGETIFY_URLS = {
 	website: 'https://widgetify.ir',
@@ -46,20 +47,20 @@ const tabs = [
 		id: Page.Home,
 		icon: <Icon name="outlineHome" size={20} />,
 		activeIcon: <Icon name="home" size={20} />,
-		label: 'ویجتیفای',
+		label: t('navbar.brand'),
 	},
 
 	{
 		id: Page.Explorer,
 		icon: <Icon name="explorerOutline" size={20} />,
 		activeIcon: <Icon name="explorerFill" size={20} />,
-		label: 'کاوش',
+		label: t('navbar.explorer'),
 	},
 	{
 		id: Page.MiniApps,
 		icon: <Icon name="outlineSquares2X2" size={20} />,
 		activeIcon: <Icon name="squares2X2" size={20} />,
-		label: 'برنامک‌ها',
+		label: t('navbar.miniApps'),
 	},
 ]
 
@@ -165,7 +166,7 @@ export function NavbarLayout(): JSX.Element {
 			<button
 				type="button"
 				onClick={() => onToggleNavbar()}
-				aria-label="باز کردن نوار"
+				aria-label={t('navbar.openBar')}
 				inert={!showHandle}
 				className={`fixed z-float bottom-0 left-1/2 -translate-x-1/2 w-28 py-2.5 bg-glass-surface-2 border-t border-x border-line rounded-t-widget shadow-[0_0_30px_var(--elevation-xl-color)] transition-ui duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] hover:bg-glass-surface-3 cursor-pointer group ${
 					showHandle
@@ -201,7 +202,7 @@ export function NavbarLayout(): JSX.Element {
 						>
 							<img
 								src={LOGO_URL}
-								alt="ویجتیفای"
+								alt={t('navbar.brand')}
 								width={32}
 								height={32}
 								decoding="async"
@@ -219,7 +220,7 @@ export function NavbarLayout(): JSX.Element {
 					<div className="flex items-center justify-end flex-1 gap-1 sm:gap-2">
 						<NavIconButton
 							icon="chevronDown"
-							label="بستن نوار"
+							label={t('navbar.closeBar')}
 							onClick={() => onToggleNavbar()}
 						/>
 						<NotificationNavbar />
@@ -248,22 +249,22 @@ export function NavbarLayout(): JSX.Element {
 }
 
 function getUserLabel(user: UserProfile | null) {
-	if (!user) return 'ویجتیفای'
+	if (!user) return t('navbar.brand')
 	const firstName = GetUserFirstName(user.name)
 	if (user.isBirthdayToday) {
-		return `🎂  تولدت مبارک ${firstName}`
+		return t('navbar.birthday', { name: firstName })
 	}
 
 	const hour = getCurrentDate(user.timeZone).hours()
 
-	let greeting = 'سلام'
+	let greeting = t('navbar.greeting.hello')
 
 	if (hour >= 5 && hour < 12) {
-		greeting = 'صبح بخیر'
+		greeting = t('navbar.greeting.morning')
 	} else if (hour >= 12 && hour < 17) {
-		greeting = 'ظهر بخیر'
+		greeting = t('navbar.greeting.noon')
 	} else if (hour >= 17 && hour < 21) {
-		greeting = 'عصر بخیر'
+		greeting = t('navbar.greeting.evening')
 	}
 
 	return `${greeting} ${firstName}`

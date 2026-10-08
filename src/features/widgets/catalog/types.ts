@@ -1,3 +1,4 @@
+import type { MessageKey } from '@/common/i18n'
 import type { WidgetCategory } from '@/features/widgets/utils/layout-engine/types'
 
 export interface AddWidgetModalProps {
@@ -12,13 +13,13 @@ export interface AddWidgetModalProps {
 
 export interface CategoryItem {
 	id: WidgetCategory
-	label: string
+	labelKey: MessageKey
 }
 
 export const CATEGORIES: CategoryItem[] = [
-	{ id: 'all', label: 'همه' },
-	{ id: 'time', label: 'زمان و تاریخ' },
-	{ id: 'productivity', label: 'ابزار و تسک' },
-	{ id: 'info', label: 'اطلاعات و رسانه' },
-	{ id: 'lifestyle', label: 'سرگرمی' },
+	{ id: 'all', labelKey: 'widgets.catalog.category.all' },
+	{ id: 'time', labelKey: 'widgets.catalog.category.time' },
+	{ id: 'productivity', labelKey: 'widgets.catalog.category.productivity' },
+	{ id: 'info', labelKey: 'widgets.catalog.category.info' },
+	{ id: 'lifestyle', labelKey: 'widgets.catalog.category.lifestyle' },
 ]

@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { Alert, Button, SectionPanel, Spinner } from '@/components/ui'
 import { Icon } from '@/icons'
 
@@ -13,11 +14,11 @@ export const AccountVerificationStatus = ({
 	onSendVerificationEmail,
 }: AccountVerificationStatusProps) => {
 	return (
-		<SectionPanel title="وضعیت تایید حساب" size="xs" delay={0.1}>
+		<SectionPanel title={t('setting.verification.title')} size="xs" delay={0.1}>
 			<Alert
 				tone="warning"
 				icon="mail"
-				title="حسابت هنوز تایید نشده"
+				title={t('setting.verification.unverifiedHint')}
 				action={
 					<Button
 						onClick={onSendVerificationEmail}
@@ -29,18 +30,18 @@ export const AccountVerificationStatus = ({
 						{sendVerificationMutation.isPending ? (
 							<>
 								<Spinner size="sm" tone="image" />
-								در حال ارسال...
+								{t('setting.verification.sending')}
 							</>
 						) : (
 							<>
 								<Icon name="mail" size={16} />
-								ارسال ایمیل تایید
+								{t('setting.verification.sendEmail')}
 							</>
 						)}
 					</Button>
 				}
 			>
-				ایمیلت رو چک کن یا یه ایمیل تایید دیگه بگیر
+				{t('setting.verification.checkInboxHint')}
 			</Alert>
 		</SectionPanel>
 	)

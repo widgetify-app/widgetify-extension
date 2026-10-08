@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { Motion as motion } from '@/common/motion'
 import type { ReactNode } from 'react'
 import { callEvent } from '@/common/utils/call-event'
@@ -25,7 +26,7 @@ export const RequireVerification = ({
 			<div className="flex items-center justify-center h-full">
 				<div className="text-center">
 					<Spinner size="2xl" className="mx-auto" />
-					<p className="mt-2">یه لحظه…</p>
+					<p className="mt-2">{t('setting.interests.loading')}</p>
 				</div>
 			</div>
 		)
@@ -44,9 +45,11 @@ export const RequireVerification = ({
 						}
 					>
 						<Icon name="verifyUser" size={20} className="text-success" />
-						<h3 className="text-lg font-semibold">حسابت هنوز تایید نشده</h3>
+						<h3 className="text-lg font-semibold">
+							{t('setting.verification.unverifiedHint')}
+						</h3>
 						<p className={'text-xs text-fg text-center'}>
-							برای دیدن این بخش اول حسابت رو تایید کن
+							{t('setting.rewards.verifyRequiredHint')}
 						</p>
 					</div>
 				</div>
@@ -63,12 +66,14 @@ export const RequireVerification = ({
 					'flex h-full flex-col items-center justify-center p-4 text-center rounded-lg text-fg'
 				}
 			>
-				<h3 className="mb-2 text-xl font-semibold">حسابت هنوز تایید نشده</h3>
+				<h3 className="mb-2 text-xl font-semibold">
+					{t('setting.verification.unverifiedHint')}
+				</h3>
 				<p className={'text-xs mb-4 text-fg text-center'}>
-					برای دیدن این بخش اول حسابت رو تایید کن
+					{t('setting.rewards.verifyRequiredHint')}
 				</p>
 				<Button onClick={handleVerificationClick} size="sm">
-					تأیید حساب
+					{t('setting.rewards.verifyAccount')}
 				</Button>
 			</motion.div>
 		)

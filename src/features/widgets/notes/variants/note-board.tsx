@@ -1,5 +1,6 @@
 import { type ReactNode, useState } from 'react'
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
 import { ConfirmationModal, PopoverMenuItem } from '@/components/ui'
@@ -62,7 +63,7 @@ export function NoteBoard({ tabs }: NoteBoardProps) {
 	useWidgetMenuActions(
 		<PopoverMenuItem
 			icon={<Icon name="refresh" size={14} />}
-			label="به‌روز کن"
+			label={t('widgets.notes.refresh')}
 			onClick={() => {
 				refetch()
 				Analytics.event('note_refetch')
@@ -74,13 +75,13 @@ export function NoteBoard({ tabs }: NoteBoardProps) {
 		isLoading && !notes.length ? (
 			<NoteBoardSkeleton />
 		) : isError && !notes.length ? (
-			<WidgetError message="نتونستیم یادداشت‌ها رو بیاریم" onRetry={refetch} />
+			<WidgetError message={t('widgets.notes.loadError')} onRetry={refetch} />
 		) : !selectedNote ? (
 			<NoteEmpty onAdd={onAdd} />
 		) : (
 			<div className="flex flex-1 min-h-0 gap-3">
 				<ul
-					aria-label="یادداشت‌ها"
+					aria-label={t('widgets.notes.listAria')}
 					className={cn(
 						'flex flex-col gap-0.5 w-52 shrink-0 overflow-y-auto scrollbar-none',
 						blurClass
@@ -111,11 +112,15 @@ export function NoteBoard({ tabs }: NoteBoardProps) {
 	return (
 		<>
 			<WidgetHeader
-				title={tabs ?? 'یادداشت‌ها'}
-				info={notes.length > 0 ? `${notes.length} یادداشت` : undefined}
+				title={tabs ?? t('widgets.notes.title')}
+				info={
+					notes.length > 0
+						? t('widgets.notes.count', { count: notes.length })
+						: undefined
+				}
 				actions={
 					<WidgetHeaderButton
-						label="یادداشت جدید"
+						label={t('widgets.notes.new')}
 						icon="plus"
 						onClick={onAdd}
 						disabled={isCreatingNote}
@@ -130,10 +135,10 @@ export function NoteBoard({ tabs }: NoteBoardProps) {
 					if (noteToDelete) deleteNote(noteToDelete)
 					setNoteToDelete(null)
 				}}
-				title="این یادداشت حذف بشه؟"
-				message="دیگه نمی‌تونی برش گردونی."
-				confirmText="حذف"
-				cancelText="نه"
+				title={t('widgets.notes.deleteConfirmTitle')}
+				message={t('widgets.notes.deleteConfirmMessage')}
+				confirmText={t('widgets.notes.deleteConfirm')}
+				cancelText={t('widgets.notes.deleteCancel')}
 			/>
 		</>
 	)

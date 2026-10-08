@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import moment from 'jalali-moment'
 import { Alert, Button } from '@/components/ui'
 import { ProfileHeader } from './profile-header'
@@ -23,13 +24,13 @@ import { Icon } from '@/icons'
 import { useState } from 'react'
 
 const getGenderInfo = (gender: 'MALE' | 'FEMALE' | 'OTHER' | null | undefined) => {
-	if (gender === 'MALE') return { label: 'آقا هستم' }
-	if (gender === 'FEMALE') return { label: 'خانم هستم' }
-	return { label: 'بماند' }
+	if (gender === 'MALE') return { label: t('setting.modal.gender.male') }
+	if (gender === 'FEMALE') return { label: t('setting.modal.gender.female') }
+	return { label: t('setting.modal.gender.preferNot') }
 }
 
 const formatJalaliDate = (dateString: string | null | undefined): string => {
-	if (!dateString) return 'تنظیم نشده'
+	if (!dateString) return t('setting.profile.unset')
 	try {
 		const jalaliDate = moment(dateString, 'jYYYY-jMM-jDD')
 		return jalaliDate.isValid()
@@ -68,12 +69,12 @@ export const ProfileDisplay = () => {
 
 	const handleUploadFile = (file: File) => {
 		if (file.size > 2 * 1024 * 1024) {
-			showToast('عکس باید کمتر از ۲ مگابایت باشه', 'error')
+			showToast(t('setting.profile.photoSizeError'), 'error')
 			return
 		}
 		const validTypes = ['image/png', 'image/jpeg', 'image/webp']
 		if (!validTypes.includes(file.type)) {
-			showToast('این نوع فایل پشتیبانی نمی‌شه، یه عکس انتخاب کن', 'error')
+			showToast(t('setting.profile.photoTypeError'), 'error')
 			return
 		}
 		setCropImage(URL.createObjectURL(file))
@@ -92,7 +93,7 @@ export const ProfileDisplay = () => {
 				setCropImage(null)
 			}
 		} catch {
-			showToast('نتونستیم عکس رو آپلود کنیم، دوباره امتحان کن', 'error')
+			showToast(t('setting.profile.uploadError'), 'error')
 		}
 	}
 
@@ -112,7 +113,7 @@ export const ProfileDisplay = () => {
 			await refetchUser()
 			Analytics.event('avatar_updated_from_gallery')
 		} catch {
-			showToast('نتونستیم آواتارت رو عوض کنیم، دوباره امتحان کن', 'error')
+			showToast(t('setting.profile.avatarChangeError'), 'error')
 		}
 	}
 
@@ -130,7 +131,7 @@ export const ProfileDisplay = () => {
 			<div className="overflow-hidden border border-surface-3 rounded-2xl bg-surface-veil">
 				<DisplayRow
 					icon={<Icon name="user" className="text-brand" />}
-					label="نام و نام خانوادگی"
+					label={t('setting.profile.fullNameLabel')}
 					value={user?.name}
 					editable
 					EditModal={ChangeNameModal}
@@ -140,7 +141,7 @@ export const ProfileDisplay = () => {
 
 				<DisplayRow
 					icon={<Icon name="atSign" className="text-brand-muted" />}
-					label="نام کاربری (یوزرنیم)"
+					label={t('setting.modal.username.label')}
 					value={user?.username}
 					editable
 					showBadge={showEditBadge('username')}
@@ -151,7 +152,7 @@ export const ProfileDisplay = () => {
 
 				<DisplayRow
 					icon={<Icon name="mail" className="text-secondary" />}
-					label="ایمیل"
+					label={t('setting.modal.email.label')}
 					value={user?.email}
 					isLtr
 					showBadge={showEditBadge('email')}
@@ -162,7 +163,7 @@ export const ProfileDisplay = () => {
 
 				<DisplayRow
 					icon={<Icon name="phone" className="text-secondary" />}
-					label="شماره موبایل"
+					label={t('setting.modal.phone.label')}
 					value={
 						user?.phone ? (
 							user.phone
@@ -174,7 +175,7 @@ export const ProfileDisplay = () => {
 							>
 								<div className="flex items-center gap-1">
 									<Icon name="outlineAddCircle" />
-									افزودن شماره موبایل
+									{t('setting.profile.addPhone')}
 								</div>
 							</Button>
 						)
@@ -189,7 +190,7 @@ export const ProfileDisplay = () => {
 							<Icon name="gender" />
 						</div>
 					}
-					label="جنسیت"
+					label={t('setting.profile.genderLabel')}
 					value={genderInfo.label}
 					editable
 					EditModal={ChangeGenderModal}
@@ -200,7 +201,7 @@ export const ProfileDisplay = () => {
 
 				<DisplayRow
 					icon={<Icon name="calendar" className="text-warning" />}
-					label="تاریخ تولد"
+					label={t('setting.profile.birthdayLabel')}
 					value={formatJalaliDate(user?.birthDate)}
 					showBadge={showEditBadge('birthDate')}
 					modalValue={user?.birthDate}
@@ -211,7 +212,7 @@ export const ProfileDisplay = () => {
 
 				<DisplayRow
 					icon={<Icon name="briefcase" className="text-info" />}
-					label="شغل"
+					label={t('setting.profile.occupationLabel')}
 					value={user?.occupation?.label}
 					showBadge={showEditBadge('occupation')}
 					EditModal={ChangeOccupationModal}
@@ -222,7 +223,7 @@ export const ProfileDisplay = () => {
 
 				<DisplayRow
 					icon={<Icon name="outlineHeart" className="text-danger" />}
-					label="علایق"
+					label={t('setting.profile.interestsLabel')}
 					editable
 					value={
 						user?.interests && user.interests.length > 0 ? (
@@ -255,7 +256,7 @@ export const ProfileDisplay = () => {
 
 				<DisplayRow
 					icon={<Icon name="building" className="text-brand-muted" />}
-					label="شهر"
+					label={t('setting.profile.cityLabel')}
 					value={user?.city?.name || '-'}
 					showBadge={showEditBadge('city')}
 					editable
@@ -268,7 +269,7 @@ export const ProfileDisplay = () => {
 			{user?.inCache && (
 				<div className="pt-2">
 					<Alert tone="danger" icon="offline">
-						این اطلاعات مال آخرین باریه که آنلاین بودی. اینترنتت رو چک کن.
+						{t('setting.profile.offlineHint')}
 					</Alert>
 				</div>
 			)}
@@ -286,7 +287,7 @@ export const ProfileDisplay = () => {
 				isOpen={showGallery}
 				onClose={() => setShowGallery(false)}
 				type="AVATAR"
-				title="گالری آواتارها"
+				title={t('setting.profile.avatarGallery')}
 				onSelect={onSelectAvatarAsset}
 				selectedAssetUrl={user?.avatar}
 			/>
@@ -349,7 +350,9 @@ const DisplayRow = ({
 				{editable && (
 					<button
 						type="button"
-						aria-label={`ویرایش ${label}`}
+						aria-label={t('setting.profile.editField', {
+							p0: label,
+						})}
 						className="grid rounded-lg cursor-pointer size-7 shrink-0 place-items-center text-fg-muted hover:bg-fill-2 hover:text-fg transition-ui active:scale-95 focus-visible:focus-ring"
 						onClick={onClickEdit}
 					>

@@ -12,6 +12,7 @@ import { PRESET_LAYOUTS } from './constants'
 import { PresetCanvasPreview } from './components/preset-canvas-preview'
 import { resolvePresetWidgetsForViewport } from './utils/viewport'
 import type { PresetLayout } from './types'
+import { t } from '@/common/i18n'
 
 interface PresetLayoutModalProps {
 	isOpen: boolean
@@ -70,19 +71,19 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 				size="xl"
 				className="w-[calc(100vw-2rem)] max-w-4xl h-[min(650px,calc(100dvh-4rem))] flex flex-col p-4 md:p-5"
 				showCloseButton={true}
+				closeLabel={t('ui.common.close')}
 				title={
 					<span className="flex items-center gap-2">
 						<span className="flex items-center justify-center rounded-lg w-7 h-7 bg-brand-fill text-brand shrink-0">
 							<Icon name="viewGridAdd" size={16} />
 						</span>
-						<span>چیدمان‌های آماده</span>
+						<span>{t('widgets.presets.modalTitle')}</span>
 					</span>
 				}
 			>
 				<div className="flex flex-col flex-1 min-h-0 gap-3 text-right">
 					<p className="text-2xs leading-relaxed text-fg-muted shrink-0">
-						یکی از این قالب‌ها رو انتخاب کن تا ویجت‌های صفحه‌ی اصلی با همون
-						چیدمان جایگزین بشن.
+						{t('widgets.presets.modalHint')}
 					</p>
 
 					<ul className="grid flex-1 min-h-0 grid-cols-1 gap-3 p-1 overflow-y-auto sm:grid-cols-2">
@@ -113,7 +114,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 										<div className="flex flex-col gap-2">
 											<div className="flex items-start justify-between gap-2">
 												<h4 className="text-sm font-bold truncate text-fg">
-													{preset.title}
+													{t(preset.titleKey)}
 												</h4>
 
 												{preset.isVip ? (
@@ -121,16 +122,17 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 														size="xs"
 														variant="subtle"
 														className="mt-0.5"
+														text={t('ui.vip.pro')}
 													/>
 												) : (
 													<span className="mt-0.5 shrink-0 rounded-full border border-success-fill-2 bg-success-fill px-2 py-0.5 text-4xs font-bold text-success">
-														رایگان
+														{t('widgets.presets.free')}
 													</span>
 												)}
 											</div>
 
 											<p className="text-2xs leading-relaxed text-fg-muted line-clamp-2 min-h-8">
-												{preset.description}
+												{t(preset.descriptionKey)}
 											</p>
 
 											<ul className="flex flex-wrap items-center gap-1">
@@ -149,7 +151,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 																size={12}
 															/>
 															<span className="truncate max-w-20">
-																{definition.label}
+																{t(definition.label)}
 															</span>
 														</li>
 													)
@@ -179,9 +181,14 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 													icon={
 														<Icon name="diamond" size={12} />
 													}
-													aria-label={`ارتقا به پرو برای چیدمان ${preset.title}`}
+													aria-label={t(
+														'widgets.presets.upgradeAria',
+														{ title: t(preset.titleKey) }
+													)}
 												>
-													<span>ارتقا به پرو</span>
+													<span>
+														{t('widgets.presets.upgrade')}
+													</span>
 												</Button>
 											) : (
 												<Button
@@ -193,9 +200,14 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 													rounded="xl"
 													color="brand"
 													className="font-bold shadow-sm"
-													aria-label={`اعمال چیدمان ${preset.title}`}
+													aria-label={t(
+														'widgets.presets.applyAria',
+														{ title: t(preset.titleKey) }
+													)}
 												>
-													<span>اعمال چیدمان</span>
+													<span>
+														{t('widgets.presets.apply')}
+													</span>
 												</Button>
 											)}
 										</div>
@@ -215,10 +227,12 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 					}}
 					onConfirm={handleConfirmApply}
 					isLoading={isApplying}
-					title="اعمال چیدمان جدید"
-					message={`با اعمال چیدمان «${selectedPresetToApply.title}»، ویجت‌ها و چیدمان فعلی جایگزین می‌شن. مطمئنی؟`}
-					confirmText="آره، اعمال کن"
-					cancelText="انصراف"
+					title={t('widgets.presets.confirmTitle')}
+					message={t('widgets.presets.confirmMessage', {
+						title: t(selectedPresetToApply.titleKey),
+					})}
+					confirmText={t('widgets.presets.confirm')}
+					cancelText={t('ui.common.cancel')}
 					variant="warning"
 				/>
 			)}

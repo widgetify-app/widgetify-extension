@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { Button } from '@/components/ui'
 import { Icon } from '@/icons'
 
@@ -15,9 +16,11 @@ export function FeedErrorRow({ label, onRetry }: FeedErrorRowProps) {
 				className="flex-none text-fg-faint"
 				aria-hidden="true"
 			/>
-			<span className="flex-1 min-w-0 truncate">نتونستیم «{label}» رو بیاریم</span>
+			<span className="flex-1 min-w-0 truncate">
+				{t('widgets.news.feedError', { label })}
+			</span>
 			<Button size="xs" color="base" rounded="lg" onClick={onRetry}>
-				دوباره امتحان کن
+				{t('widgets.news.retry')}
 			</Button>
 		</li>
 	)

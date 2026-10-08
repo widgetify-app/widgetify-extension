@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { SectionPanel, SelectBox, Spinner } from '@/components/ui'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { useTimezones } from '@/services/timezone/get-timezones.hook'
@@ -12,9 +13,9 @@ export function TimezoneSettings() {
 	}
 
 	return (
-		<SectionPanel title="منطقه‌ی زمانی" delay={0.1} size="sm">
+		<SectionPanel title={t('setting.timezone.label')} delay={0.1} size="sm">
 			<div className="space-y-3">
-				<p className={'text-sm text-fg-muted'}>منطقه‌ی زمانی‌ت رو انتخاب کن.</p>
+				<p className={'text-sm text-fg-muted'}>{t('setting.timezone.hint')}</p>
 
 				<div className="relative">
 					<div className="flex items-center gap-2">
@@ -24,12 +25,12 @@ export function TimezoneSettings() {
 							</div>
 						) : error ? (
 							<div className="w-full p-3 text-center text-danger">
-								نتونستیم فهرست منطقه‌های زمانی رو بیاریم
+								{t('setting.timezone.loadError')}
 							</div>
 						) : (
 							<SelectBox
-								label="منطقه‌ی زمانی"
-								optionalText="انتخاب منطقه زمانی..."
+								label={t('setting.timezone.label')}
+								optionalText={t('setting.timezone.placeholder')}
 								options={(timezones ?? []).map((tz) => ({
 									value: tz.value,
 									label: `${tz.label} (${tz.offset})`,

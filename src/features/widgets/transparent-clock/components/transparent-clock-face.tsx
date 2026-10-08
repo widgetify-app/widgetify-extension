@@ -1,4 +1,5 @@
 import type React from 'react'
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { WidgetMenuButton } from '@/features/widgets/components/widget-menu-button'
 import { useWallpaperTheme } from '../../hooks/use-wallpaper-theme'
@@ -44,7 +45,9 @@ export const TransparentClockFace: React.FC<TransparentClockFaceProps> = ({
 			style={{ gap: STACK_GAP }}
 		>
 			<time dateTime={isoDateTime} className="contents">
-				<span className="sr-only">{`${readableTime}، ${weekday} ${date}`}</span>
+				<span className="sr-only">
+					{readableTime + t('ui.date.headingSep') + weekday + ' ' + date}
+				</span>
 
 				<span
 					dir="ltr"

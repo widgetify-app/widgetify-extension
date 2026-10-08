@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { useAuth } from '@/context/auth.context'
 import { Icon } from '@/icons'
@@ -23,14 +24,20 @@ export function WalletCard({ selected, onOpen }: WalletCardProps) {
 					: 'border-warning-fill-2 bg-warning-fill hover:border-warning'
 			)}
 		>
-			<span className="text-2xs text-fg-muted max-md:hidden">موجودی ویج‌کوین</span>
+			<span className="text-2xs text-fg-muted max-md:hidden">
+				{t('market.wallet.balanceTitle')}
+			</span>
 			{isAuthenticated ? (
 				<CoinAmount amount={user?.coins ?? 0} size="md" />
 			) : (
-				<span className="text-xs font-semibold text-fg">هنوز وارد نشدی</span>
+				<span className="text-xs font-semibold text-fg">
+					{t('market.wallet.loggedOutHint')}
+				</span>
 			)}
 			<span className="flex items-center gap-1 font-bold text-2xs text-brand">
-				{isAuthenticated ? 'افزایش موجودی' : 'ببین چطور کار می‌کنه'}
+				{isAuthenticated
+					? t('market.wallet.topUp')
+					: t('market.wallet.howItWorks')}
 				<Icon name="chevronLeft" size={12} />
 			</span>
 		</button>

@@ -5,6 +5,7 @@ import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
 import { RemoveFriendButton } from './components/remove-button'
 import { FriendsList } from './components/friends-list'
+import { t } from '@/common/i18n'
 import { ConfirmationModal } from '@/components/ui'
 
 export { FriendsActions } from './components/friends-actions'
@@ -45,7 +46,7 @@ export const FriendsLayout = () => {
 				status="ACCEPTED"
 				renderFriendActions={renderFriendActions}
 				itemsPerPage={8}
-				emptyMessage="هنوز دوستی اضافه نکردی"
+				emptyMessage={t('friends.page.empty')}
 				caching={true}
 				className="px-0 pb-0 mt-0"
 			/>
@@ -55,7 +56,12 @@ export const FriendsLayout = () => {
 				isLoading={isRemoving}
 				onClose={() => setSelectedUser(null)}
 				onConfirm={() => handleRemoveFriend(selectedUser?.id || null)}
-				message={`"${selectedUser?.user.name}" از لیست دوستات حذف بشه؟`}
+				title={t('ui.common.areYouSure')}
+				message={t('friends.direct.removeConfirm', {
+					name: selectedUser?.user.name ?? '',
+				})}
+				confirmText={t('ui.common.confirm')}
+				cancelText={t('ui.common.cancel')}
 			/>
 		</>
 	)

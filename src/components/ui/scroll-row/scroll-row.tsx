@@ -1,4 +1,5 @@
 import { type ReactNode, useCallback, useEffect, useRef, useState } from 'react'
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
 
@@ -65,7 +66,7 @@ export function ScrollRow({ children, gap = 'sm', className }: ScrollRowProps) {
 			{canScroll.back && (
 				<button
 					type="button"
-					aria-label="قبلی"
+					aria-label={t('ui.common.previous')}
 					onClick={() => scrollBy(false)}
 					className={cn(edgeButton, 'start-0')}
 				>
@@ -75,7 +76,7 @@ export function ScrollRow({ children, gap = 'sm', className }: ScrollRowProps) {
 			{canScroll.forward && (
 				<button
 					type="button"
-					aria-label="بعدی"
+					aria-label={t('ui.common.next')}
 					onClick={() => scrollBy(true)}
 					className={cn(edgeButton, 'end-0')}
 				>

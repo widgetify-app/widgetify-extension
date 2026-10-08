@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { SectionPanel, ToggleSwitch } from '@/components/ui'
 import { Icon } from '@/icons'
@@ -15,11 +16,11 @@ function extractHostname(rawUrl: string): string {
 }
 
 const CATEGORIES = [
-	{ id: 'all', name: 'همه' },
-	{ id: 'فناوری', name: 'فناوری' },
-	{ id: 'اقتصاد', name: 'اقتصاد' },
-	{ id: 'ورزش', name: 'ورزش' },
-	{ id: 'عمومی', name: 'عمومی' },
+	{ id: 'all', name: t('widgets.news.category.all') },
+	{ id: t('news.category.tech'), name: t('news.category.tech') },
+	{ id: t('news.category.economy'), name: t('news.category.economy') },
+	{ id: t('news.category.sport'), name: t('news.category.sport') },
+	{ id: t('news.category.general'), name: t('news.category.general') },
 ]
 
 export const RssFeedSetting = () => {
@@ -34,17 +35,19 @@ export const RssFeedSetting = () => {
 	return (
 		<WidgetSettingWrapper>
 			<div className="space-y-3">
-				<SectionPanel title="تنظیمات کلی" size="xs">
+				<SectionPanel title={t('widgets.news.setting.general')} size="xs">
 					<label className="flex items-center justify-between p-3 transition-ui rounded-2xl border border-surface-3 bg-surface-2 hover:bg-surface-3 cursor-pointer select-none">
 						<div className="space-y-0.5">
-							<h4 className="text-xs font-medium text-fg">اخبار پیش‌فرض</h4>
+							<h4 className="text-xs font-medium text-fg">
+								{t('widgets.news.setting.defaultTitle')}
+							</h4>
 							<p className="text-2xs text-fg-muted">
-								تیترهای روز از چند خبرگزاری معتبر
+								{t('widgets.news.setting.defaultDesc')}
 							</p>
 						</div>
 						<div className="shrink-0">
 							<ToggleSwitch
-								label="اخبار پیش‌فرض"
+								label={t('widgets.news.setting.defaultTitle')}
 								enabled={settings.useDefaultNews}
 								onToggle={toggleDefaultNews}
 							/>
@@ -52,7 +55,7 @@ export const RssFeedSetting = () => {
 					</label>
 				</SectionPanel>
 
-				<SectionPanel title="منابع خبری" size="xs">
+				<SectionPanel title={t('widgets.news.setting.sources')} size="xs">
 					<div className="flex items-center gap-1 mb-2 overflow-x-auto pb-0.5 scrollbar-none">
 						{CATEGORIES.map((cat) => (
 							<button

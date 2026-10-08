@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import React, { useCallback, useState } from 'react'
 import { HABIT_EMOJI_CATEGORIES } from './constants'
 import { HABIT_COLOR_PRESETS } from '@/features/widgets/habit/constants'
@@ -80,7 +81,9 @@ export const HabitIconColorPicker: React.FC<HabitIconColorPickerProps> = React.m
 			<div className="grid items-stretch grid-cols-12 gap-3">
 				<div className="flex flex-col col-span-8 p-3 overflow-hidden border rounded-2xl border-surface-3 bg-surface-2">
 					<div className="flex items-center justify-between mb-2">
-						<span className="text-xs font-bold text-fg">شکلک</span>
+						<span className="text-xs font-bold text-fg">
+							{t('widgets.habit.form.icon')}
+						</span>
 						<div className="flex items-center gap-1 overflow-x-auto scrollbar-none py-0.5">
 							{HABIT_EMOJI_CATEGORIES.map((cat) => (
 								<Chip
@@ -109,7 +112,9 @@ export const HabitIconColorPicker: React.FC<HabitIconColorPickerProps> = React.m
 
 				<div className="flex flex-col justify-between col-span-4 p-3 border rounded-2xl bg-surface-2 border-surface-3">
 					<div className="flex items-center justify-between mb-2">
-						<span className="text-xs font-bold text-fg">رنگ</span>
+						<span className="text-xs font-bold text-fg">
+							{t('widgets.habit.form.color')}
+						</span>
 						<div className="flex items-center">
 							<ColorPicker color={selectedColor} onChange={onSelectColor} />
 						</div>

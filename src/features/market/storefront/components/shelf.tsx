@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import type { ReactNode } from 'react'
 import { cn } from '@/common/utils/cn'
 import { Button, ScrollRow } from '@/components/ui'
@@ -18,7 +19,7 @@ export function Shelf({ title, onSeeAll, wide, children }: ShelfProps) {
 			<div className="flex items-center justify-between">
 				<h3 className="text-sm font-bold text-fg-strong">{title}</h3>
 				<Button size="xs" variant="ghost" onClick={onSeeAll}>
-					همه
+					{t('market.category.allFilter')}
 					<Icon name="chevronLeft" size={12} />
 				</Button>
 			</div>

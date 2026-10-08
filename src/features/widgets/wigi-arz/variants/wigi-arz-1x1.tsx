@@ -9,6 +9,7 @@ import { PriceChange } from '../components/price-change'
 import { useCurrencyPrice } from '../hooks/use-currency-price'
 import type { WigiArzMeta } from '../types'
 import { getPrice } from '../utils/get-price'
+import { t } from '@/common/i18n'
 
 const PRICE_MAX_FONT_SIZE = '1.375rem'
 
@@ -34,7 +35,7 @@ export function CurrencyCompactSquare({
 	if (!activeCode) {
 		return (
 			<>
-				<WidgetCenteredHeader title="ویجی ارز" />
+				<WidgetCenteredHeader title={t('widgets.wigiArz.title')} />
 				<div className="flex flex-col items-center justify-center flex-1 min-h-0 gap-1.5 select-none">
 					<Icon
 						name="coin"
@@ -54,7 +55,7 @@ export function CurrencyCompactSquare({
 							})
 						}}
 					>
-						انتخاب ارز
+						{t('widgets.wigiArz.pickCurrency')}
 					</Button>
 				</div>
 			</>
@@ -84,10 +85,10 @@ export function CurrencyCompactSquare({
 				{header}
 				<div className="flex flex-col items-center justify-center flex-1 min-h-0 gap-1.5 text-center select-none">
 					<p className="leading-tight text-2xs text-fg-muted">
-						نتونستیم قیمت رو بیاریم
+						{t('widgets.wigiArz.loadError')}
 					</p>
 					<Button size="xs" color="base" rounded="lg" onClick={() => refetch()}>
-						دوباره
+						{t('widgets.wigiArz.retry')}
 					</Button>
 				</div>
 			</>
@@ -117,7 +118,10 @@ export function CurrencyCompactSquare({
 			<button
 				type="button"
 				onClick={toggleModal}
-				aria-label={`${currency.name?.fa || activeCode}، ${price.formatted}`}
+				aria-label={t('widgets.wigiArz.priceAria', {
+					name: currency.name?.fa || activeCode,
+					price: price.formatted,
+				})}
 				className="flex flex-col items-center justify-center flex-1 w-full min-h-0 gap-1 text-center rounded-lg cursor-pointer select-none focus-visible:focus-ring"
 			>
 				<span
@@ -131,7 +135,9 @@ export function CurrencyCompactSquare({
 
 				<span className="flex items-center gap-1">
 					<span className="font-medium text-3xs text-fg-faint">
-						{price.isDollar ? 'دلار' : 'تومان'}
+						{price.isDollar
+							? t('widgets.wigiArz.dollar')
+							: t('widgets.wigiArz.toman')}
 					</span>
 					<PriceChange changePercentage={currency.changePercentage} />
 				</span>

@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { Modal } from '@/components/ui'
 import { useUpdateUserProfile } from '@/services/auth/auth-service.hook'
 import { useEffect, useState } from 'react'
@@ -48,7 +49,7 @@ export function ChangeBirthdayModal({ show, onClose, currentValue }: Prop) {
 	return (
 		<Modal isOpen={show} onClose={onCloseHandler} showCloseButton={false}>
 			<div className="flex flex-col justify-between h-40 gap-4">
-				<SectionPanel title="تاریخ تولدت؟" size="xs">
+				<SectionPanel title={t('setting.modal.birthday.title')} size="xs">
 					<JalaliDatePicker
 						value={value}
 						enable={!updateProfileMutation.isPending}

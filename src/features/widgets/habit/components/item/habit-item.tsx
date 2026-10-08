@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import type { ReactNode } from 'react'
 import Analytics from '@/analytics'
 import type { WidgetifyDate } from '@/common/utils/date-events'
@@ -43,7 +44,9 @@ export function HabitItem({
 			<button
 				type="button"
 				onClick={onViewDetails}
-				aria-label={`جزئیات ${habit.title}`}
+				aria-label={t('widgets.habit.item.detailsAria', {
+					p0: habit.title,
+				})}
 				className="flex flex-col flex-1 min-w-0 py-1 cursor-pointer text-start leading-control focus-visible:focus-ring"
 			>
 				<span className="text-xs font-semibold truncate text-fg">
@@ -57,7 +60,9 @@ export function HabitItem({
 			{trailing ?? (
 				<ul
 					dir="ltr"
-					aria-label={`${habit.history.length} روز گذشته`}
+					aria-label={t('widgets.habit.item.pastDays', {
+						p0: habit.history.length,
+					})}
 					className="flex gap-0.75 shrink-0"
 				>
 					{habit.history.map((day) => {

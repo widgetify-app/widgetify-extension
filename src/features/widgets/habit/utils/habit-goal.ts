@@ -1,24 +1,25 @@
+import { t } from '@/common/i18n'
 import { HabitFrequency, HabitUnit, type Habit } from '@/services/habit/habit.interface'
 
 const unitLabels: Record<HabitUnit, string> = {
-	[HabitUnit.TIMES]: 'دفعه',
-	[HabitUnit.MINUTES]: 'دقیقه',
-	[HabitUnit.HOURS]: 'ساعت',
-	[HabitUnit.PAGES]: 'صفحه',
-	[HabitUnit.GLASSES]: 'لیوان',
+	[HabitUnit.TIMES]: t('widgets.habit.unit.times'),
+	[HabitUnit.MINUTES]: t('widgets.habit.unit.minutes'),
+	[HabitUnit.HOURS]: t('widgets.habit.unit.hours'),
+	[HabitUnit.PAGES]: t('widgets.habit.unit.pages'),
+	[HabitUnit.GLASSES]: t('widgets.habit.unit.glasses'),
 	[HabitUnit.CUSTOM]: '',
 }
 
 const comparisonLabels: Record<Habit['comparison'], string> = {
-	AT_LEAST: 'حداقل',
-	AT_MOST: 'حداکثر',
-	EXACT: 'دقیقاً',
+	AT_LEAST: t('widgets.habit.form.goalAtLeast'),
+	AT_MOST: t('widgets.habit.unit.atMost'),
+	EXACT: t('widgets.habit.unit.exactly'),
 }
 
 const frequencyLabels: Record<HabitFrequency, string> = {
-	[HabitFrequency.DAILY]: 'روزانه',
-	[HabitFrequency.WEEKLY]: 'هفته',
-	[HabitFrequency.MONTHLY]: 'ماه',
+	[HabitFrequency.DAILY]: t('widgets.habit.unit.daily'),
+	[HabitFrequency.WEEKLY]: t('widgets.habit.goal.week'),
+	[HabitFrequency.MONTHLY]: t('widgets.habit.goal.month'),
 }
 
 export function getHabitUnitLabel(habit: Habit): string {
@@ -34,10 +35,15 @@ export function formatHabitGoal(habit: Habit): string {
 		`${comparisonLabels[habit.comparison]} ${habit.target} ${unitLabel}`.trim()
 
 	if (habit.frequency === HabitFrequency.DAILY) {
-		return `${base} در روز`
+		return t('widgets.habit.goal.perDay', { p0: base })
 	}
 
-	return `${base} · ${habit.progressThisPeriod.done} از ${habit.progressThisPeriod.required} بار در ${frequencyLabels[habit.frequency]}`
+	return t('widgets.habit.goal.progressInPeriod', {
+		p0: base,
+		p1: habit.progressThisPeriod.done,
+		p2: habit.progressThisPeriod.required,
+		p3: frequencyLabels[habit.frequency],
+	})
 }
 
 export function isHabitDoneToday(habit: Habit): boolean {
@@ -50,8 +56,14 @@ export function formatHabitToday(habit: Habit): string {
 
 	if (isHabitDoneToday(habit)) {
 		const amount = `${target} ${unitLabel}`.trim()
-		return target === 1 ? 'انجام شد' : `${amount} · انجام شد`
+		return target === 1
+			? t('widgets.habit.detail.chart.done')
+			: t('widgets.habit.goal.done', { p0: amount })
 	}
-	if (habit.today.value === 0) return 'امروز هنوز نه'
-	return `${habit.today.value} از ${target} ${unitLabel}`.trim()
+	if (habit.today.value === 0) return t('widgets.habit.goal.notToday')
+	return t('widgets.habit.item.progressOf', {
+		p0: habit.today.value,
+		p1: target,
+		p2: unitLabel,
+	}).trim()
 }

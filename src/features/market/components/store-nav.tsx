@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
 import { STORE_NAV } from '../constants'
@@ -13,7 +14,7 @@ interface StoreNavProps {
 export function StoreNav({ view, hasNew, onChange }: StoreNavProps) {
 	return (
 		<nav
-			aria-label="بخش‌های فروشگاه"
+			aria-label={t('market.nav.sectionsAria')}
 			className="flex flex-col justify-between gap-3 w-44 shrink-0 max-md:w-full max-md:flex-row max-md:items-center"
 		>
 			<ul className="flex flex-col gap-1 max-md:flex-row max-md:min-w-0 max-md:overflow-x-auto max-md:scrollbar-none">
@@ -39,7 +40,7 @@ export function StoreNav({ view, hasNew, onChange }: StoreNavProps) {
 								{hasNew.includes(item.view) && !isActive && (
 									<span
 										role="img"
-										aria-label="تازه"
+										aria-label={t('market.nav.newBadge')}
 										className="rounded-full size-1.5 bg-danger"
 									/>
 								)}
