@@ -110,7 +110,7 @@ export function BrowserBookmark() {
 							>
 								<img
 									src={item.icon || getFaviconFromUrl(item.url || '')}
-									className="object-cover size-4"
+									className="object-cover size-4 rounded-full"
 									alt=""
 									loading="lazy"
 								/>
