@@ -1,14 +1,16 @@
 import { getContrastingTextColor } from '@/common/utils/color'
 import { NewBadge } from '@/components/ui'
+import { Icon } from '@/icons'
 import type { MiniApp } from '@/services/mini-apps/mini-apps.interface'
 
 interface MiniAppCardProps {
 	app: MiniApp
 	onLaunch: (app: MiniApp) => void
 	isSelected: boolean
+	isInWindow: boolean
 }
 
-export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
+export function MiniAppCard({ app, onLaunch, isSelected, isInWindow }: MiniAppCardProps) {
 	return (
 		<button
 			type="button"
@@ -63,6 +65,12 @@ export function MiniAppCard({ app, onLaunch, isSelected }: MiniAppCardProps) {
 				{app.description && (
 					<p className="text-xs min-w-60 max-w-60 mt-0.5 text-fg-muted ">
 						{app.description}
+					</p>
+				)}
+				{isInWindow && (
+					<p className="flex items-center gap-1 mt-0.5 text-xs text-brand">
+						<Icon name="pictureInPicture" size={12} />
+						تو پنجره جدا بازه
 					</p>
 				)}
 			</div>

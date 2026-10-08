@@ -2,7 +2,7 @@ import { Button } from '@/components/ui'
 
 interface Prop {
 	handleReload: () => void
-	onClickToBack: () => void
+	onClickToBack?: () => void
 }
 
 export function MiniAppError({ handleReload, onClickToBack }: Prop) {
@@ -40,15 +40,16 @@ export function MiniAppError({ handleReload, onClickToBack }: Prop) {
 				>
 					دوباره امتحان کن
 				</Button>
-				<Button
-					type="button"
-					size="sm"
-					// className=""
-					rounded={'2xl'}
-					onClick={() => onClickToBack()}
-				>
-					بازگشت
-				</Button>
+				{onClickToBack && (
+					<Button
+						type="button"
+						size="sm"
+						rounded={'2xl'}
+						onClick={onClickToBack}
+					>
+						بازگشت
+					</Button>
+				)}
 			</div>
 		</div>
 	)

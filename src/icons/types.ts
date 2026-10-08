@@ -79,6 +79,7 @@ export type IconName =
 	| 'mic'
 	| 'gender'
 	| 'phone'
+	| 'pictureInPicture'
 	| 'atSign'
 	| 'outlineHeart'
 	| 'heart'

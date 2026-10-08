@@ -117,6 +117,7 @@ const ANALYTICS_EVENTS = [
 	'market_item_purchased',
 	'market_opened',
 	'mini_app_exist',
+	'mini_app_open_in_window',
 	'mini_apps_page',
 	'mini_apps_show_info_modal',
 	'mood_share_modal_opened',

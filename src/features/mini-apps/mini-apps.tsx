@@ -7,6 +7,8 @@ import { listenEvent } from '@/common/utils/call-event'
 import Analytics from '@/analytics'
 import { Button, Modal } from '@/components/ui'
 import { Icon } from '@/icons'
+import { useMiniAppWindows } from './hooks/use-mini-app-windows'
+import { focusMiniAppWindow, openMiniAppWindow } from './utils/mini-app-windows'
 const EmptyMiniAppImage = 'https://cdn.widgetify.ir/extension/empty-mini-app.png'
 export function MiniAppsLayout() {
 	const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage, isError } =
@@ -16,6 +18,8 @@ export function MiniAppsLayout() {
 	const isEmpty = !isLoading && !isError && miniApps.length === 0
 	const [isFullScreen, setIsFullScreen] = useState(false)
 	const [showInfo, setShowInfo] = useState(false)
+	const miniAppWindows = useMiniAppWindows()
+	const runningApps = miniApps.filter((app) => app.appId in miniAppWindows)
 
 	const onClickToExist = () => {
 		setSelectedAppId(null)
@@ -36,6 +40,21 @@ export function MiniAppsLayout() {
 			event()
 		}
 	}, [])
+
+	const onLaunchApp = (appId: string) => {
+		const windowId = miniAppWindows[appId]
+		if (windowId !== undefined) {
+			focusMiniAppWindow(windowId)
+			return
+		}
+		setSelectedAppId(appId)
+	}
+
+	const onOpenInWindow = async (appId: string) => {
+		Analytics.event('mini_app_open_in_window')
+		await openMiniAppWindow(appId)
+		setSelectedAppId(null)
+	}
 
 	const onClickToShowInfo = () => {
 		Analytics.event('mini_apps_show_info_modal')
@@ -102,8 +121,9 @@ export function MiniAppsLayout() {
 							<div key={app.appId}>
 								<MiniAppCard
 									app={app}
-									onLaunch={() => setSelectedAppId(app.appId)}
+									onLaunch={() => onLaunchApp(app.appId)}
 									isSelected={selectedAppId === app.appId}
+									isInWindow={app.appId in miniAppWindows}
 								/>
 							</div>
 						))}
@@ -128,6 +148,7 @@ export function MiniAppsLayout() {
 						<MiniAppRunner
 							appId={selectedAppId}
 							onClickToExist={() => onClickToExist()}
+							onOpenInWindow={() => onOpenInWindow(selectedAppId)}
 							isFullScreen={isFullScreen}
 						/>
 					) : (
@@ -141,8 +162,26 @@ export function MiniAppsLayout() {
 								}}
 							/>
 							<p className="text-lg font-bold text-fg">
-								یه برنامک انتخاب کن
+								{runningApps.length > 0
+									? 'برنامک تو پنجره جدا در حال اجراست'
+									: 'یه برنامک انتخاب کن'}
 							</p>
+							{runningApps.length > 0 && (
+								<div className="flex flex-col gap-2 mt-3">
+									{runningApps.map((app) => (
+										<Button
+											key={app.appId}
+											type="button"
+											size="sm"
+											color="brand"
+											rounded="2xl"
+											onClick={() => onLaunchApp(app.appId)}
+										>
+											بیارش جلو: {app.name}
+										</Button>
+									))}
+								</div>
+							)}
 						</div>
 					)}
 				</div>

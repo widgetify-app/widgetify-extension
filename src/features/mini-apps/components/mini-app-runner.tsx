@@ -7,14 +7,22 @@ import { MiniAppRunnerHeader } from './runner-header'
 import { MiniAppIframe } from './mini-app-iframe-runner'
 import { WebAppAuthGate } from './mini-app-auth'
 import { Spinner } from '@/components/ui'
+import { cn } from '@/common/utils/cn'
 const LOAD_TIMEOUT = 8000
 
 interface Prop {
 	appId: string
-	onClickToExist: () => void
+	onClickToExist?: () => void
+	onOpenInWindow?: () => void
 	isFullScreen: boolean
 }
-export function MiniAppRunner({ appId, onClickToExist, isFullScreen }: Prop) {
+export function MiniAppRunner({
+	appId,
+	onClickToExist,
+	onOpenInWindow,
+	isFullScreen,
+}: Prop) {
+	const isPopup = !onClickToExist
 	const timeoutRef = useRef<any>(null)
 	const iframeRef = useRef<HTMLIFrameElement>(null)
 
@@ -109,7 +117,7 @@ export function MiniAppRunner({ appId, onClickToExist, isFullScreen }: Prop) {
 
 	const onClickToBack = () => {
 		clearTimer()
-		onClickToExist()
+		onClickToExist?.()
 	}
 
 	const isLoading = isLoadingApp || isLaunching
@@ -122,18 +130,24 @@ export function MiniAppRunner({ appId, onClickToExist, isFullScreen }: Prop) {
 		!appData?.data.isLaunchedByUser
 
 	return (
-		<div className="flex flex-col w-full h-full  rounded-l-2xl!">
-			<MiniAppRunnerHeader
-				app={app}
-				handleReload={handleReload}
-				onClickToBack={() => onClickToBack()}
-				isConnecting={isConnecting}
-				isLoading={isLoading}
-				isLoadingApp={isLoadingApp}
-			/>
+		<div className={cn('flex flex-col w-full h-full', !isPopup && 'rounded-l-2xl!')}>
+			{!isPopup && (
+				<MiniAppRunnerHeader
+					app={app}
+					handleReload={handleReload}
+					onClickToBack={onClickToBack}
+					onOpenInWindow={onOpenInWindow}
+					isConnecting={isConnecting}
+					isLoading={isLoading}
+					isLoadingApp={isLoadingApp}
+				/>
+			)}
 
 			<div
-				className={`relative flex-1 overflow-hidden  ${isFullScreen ? 'rounded-b-2xl' : 'rounded-bl-2xl'}`}
+				className={cn(
+					'relative flex-1 overflow-hidden',
+					!isPopup && (isFullScreen ? 'rounded-b-2xl' : 'rounded-bl-2xl')
+				)}
 			>
 				{isLoading && (
 					<MiniAppLoadingState
@@ -165,7 +179,7 @@ export function MiniAppRunner({ appId, onClickToExist, isFullScreen }: Prop) {
 				{hasError && !shouldShowAuthGate && !isLoading && (
 					<MiniAppError
 						handleReload={handleReload}
-						onClickToBack={() => onClickToBack()}
+						onClickToBack={onClickToExist && onClickToBack}
 					/>
 				)}
 

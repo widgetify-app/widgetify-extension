@@ -1,10 +1,12 @@
 import { callEvent } from '@/common/utils/call-event'
 import type { MiniApp } from '@/services/mini-apps/mini-apps.interface'
 import { Icon } from '@/icons'
-import { Button } from '@/components/ui'
+import { Button, PopoverMenu, PopoverMenuItem, Tooltip, VipBadge } from '@/components/ui'
+import { useAuth } from '@/context/auth.context'
 
 interface Prop {
-	onClickToBack: any
+	onClickToBack: () => void
+	onOpenInWindow?: () => void
 	isLoadingApp: boolean
 	app?: MiniApp
 	handleReload: any
@@ -18,13 +20,18 @@ export function MiniAppRunnerHeader({
 	isConnecting,
 	isLoadingApp,
 	onClickToBack,
+	onOpenInWindow,
 }: Prop) {
 	const [isFullScreen, setIsFullScreen] = useState(false)
+	const [menuOpen, setMenuOpen] = useState(false)
+	const menuAnchorRef = useRef<HTMLButtonElement>(null)
+	const { isVip } = useAuth()
 	const onToggleFullScreen = () => {
 		const newState = !isFullScreen
 		setIsFullScreen(newState)
 		callEvent('toggle_miniApp_fullScreen', newState)
 	}
+	const fullScreenLabel = isFullScreen ? 'خروج از تمام‌صفحه' : 'تمام‌صفحه'
 	return (
 		<div className="sticky top-0 z-10 w-full border-b border-line">
 			<div className="relative flex items-center justify-between px-4 py-3">
@@ -32,10 +39,10 @@ export function MiniAppRunnerHeader({
 					<Button
 						type="button"
 						size={'md'}
-						className="bg-fill-2/80 px-3! py-0!"
+						className="bg-fill-2 px-3! py-0!"
 						color={'base'}
 						aria-label="بازگشت"
-						onClick={() => onClickToBack()}
+						onClick={onClickToBack}
 					>
 						<Icon
 							name="chevronRight"
@@ -74,43 +81,76 @@ export function MiniAppRunnerHeader({
 				</div>
 
 				<div className="flex gap-1">
-					<Button
-						type="button"
-						size={'md'}
-						color={'base'}
-						className="bg-fill-2/80"
-						onClick={() => onToggleFullScreen()}
-						disabled={isLoading || isConnecting}
-					>
-						{isFullScreen ? (
+					<Tooltip content="بارگذاری دوباره">
+						<Button
+							type="button"
+							size={'md'}
+							className="bg-fill-2"
+							color={'base'}
+							aria-label="بارگذاری دوباره"
+							onClick={handleReload}
+						>
 							<Icon
-								name="minimize"
+								name="refresh"
 								size={16}
-								className={`transition-colors duration-200 text-fg-muted group-hover:text-fg-strong`}
+								className="transition-colors duration-200 text-fg-muted group-hover:text-fg-strong"
+								spin={isLoading || isConnecting}
 							/>
-						) : (
-							<Icon
-								name="maximize"
-								size={16}
-								className={`transition-colors duration-200 text-fg-muted group-hover:text-fg-strong`}
-							/>
-						)}
-					</Button>
+						</Button>
+					</Tooltip>
 
 					<Button
+						ref={menuAnchorRef}
 						type="button"
 						size={'md'}
-						className="bg-fill-2/80"
 						color={'base'}
-						onClick={handleReload}
+						className="bg-fill-2"
+						aria-label="گزینه‌های بیشتر"
+						aria-expanded={menuOpen}
+						onClick={() => setMenuOpen((open) => !open)}
 					>
 						<Icon
-							name="refresh"
+							name="menuOption"
 							size={16}
 							className="transition-colors duration-200 text-fg-muted group-hover:text-fg-strong"
-							spin={isLoading || isConnecting}
 						/>
 					</Button>
+
+					<PopoverMenu
+						isOpen={menuOpen}
+						onClose={() => setMenuOpen(false)}
+						triggerRef={menuAnchorRef}
+						placement="bottom-end"
+						width={200}
+					>
+						<PopoverMenuItem
+							icon={
+								<Icon
+									name={isFullScreen ? 'minimize' : 'maximize'}
+									size={14}
+								/>
+							}
+							label={fullScreenLabel}
+							disabled={isLoading || isConnecting}
+							onClick={() => {
+								setMenuOpen(false)
+								onToggleFullScreen()
+							}}
+						/>
+						{onOpenInWindow && (
+							<PopoverMenuItem
+								icon={<Icon name="pictureInPicture" size={14} />}
+								label="باز کردن تو پنجره جدا"
+								badge={isVip ? undefined : <VipBadge size="xs" />}
+								disabled={isVip && (isLoading || isConnecting)}
+								onClick={() => {
+									setMenuOpen(false)
+									if (isVip) onOpenInWindow()
+									else callEvent('openSettings', 'vip')
+								}}
+							/>
+						)}
+					</PopoverMenu>
 				</div>
 			</div>
 		</div>
