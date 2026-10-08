@@ -1,6 +1,7 @@
 import { callEvent } from '@/common/utils/call-event'
 import type { MiniApp } from '@/services/mini-apps/mini-apps.interface'
 import { Icon } from '@/icons'
+import { Button } from '@/components/ui'
 
 interface Prop {
 	onClickToBack: any
@@ -28,18 +29,20 @@ export function MiniAppRunnerHeader({
 		<div className="sticky top-0 z-10 w-full border-b border-line">
 			<div className="relative flex items-center justify-between px-4 py-3">
 				<div className="flex items-center gap-2">
-					<button
+					<Button
 						type="button"
-						className="flex items-center justify-center w-8 h-8 transition-ui duration-200 border rounded-lg cursor-pointer bg-fill-2 active:scale-95 group border-line"
+						size={'md'}
+						className="bg-fill-2/80 px-3! py-0!"
+						color={'base'}
 						aria-label="بازگشت"
 						onClick={() => onClickToBack()}
 					>
 						<Icon
 							name="chevronRight"
-							size={20}
+							size={16}
 							className="transition-colors duration-200 text-fg-muted group-hover:text-fg-strong"
 						/>
-					</button>
+					</Button>
 
 					<div className="flex items-center gap-2.5">
 						{!isLoadingApp && app?.icon && (
@@ -71,11 +74,13 @@ export function MiniAppRunnerHeader({
 				</div>
 
 				<div className="flex gap-1">
-					<button
+					<Button
 						type="button"
+						size={'md'}
+						color={'base'}
+						className="bg-fill-2/80"
 						onClick={() => onToggleFullScreen()}
 						disabled={isLoading || isConnecting}
-						className="flex items-center justify-center w-8 h-8 transition-ui duration-200 border rounded-lg cursor-pointer bg-fill-2 active:scale-95 group border-line disabled:opacity-40"
 					>
 						{isFullScreen ? (
 							<Icon
@@ -90,12 +95,14 @@ export function MiniAppRunnerHeader({
 								className={`transition-colors duration-200 text-fg-muted group-hover:text-fg-strong`}
 							/>
 						)}
-					</button>
+					</Button>
 
-					<button
+					<Button
 						type="button"
+						size={'md'}
+						className="bg-fill-2/80"
+						color={'base'}
 						onClick={handleReload}
-						className="flex items-center justify-center w-8 h-8 transition-ui duration-200 border rounded-lg cursor-pointer bg-fill-2 active:scale-95 group border-line disabled:opacity-40"
 					>
 						<Icon
 							name="refresh"
@@ -103,7 +110,7 @@ export function MiniAppRunnerHeader({
 							className="transition-colors duration-200 text-fg-muted group-hover:text-fg-strong"
 							spin={isLoading || isConnecting}
 						/>
-					</button>
+					</Button>
 				</div>
 			</div>
 		</div>
