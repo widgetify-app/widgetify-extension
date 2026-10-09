@@ -35,3 +35,83 @@ jobs:
 
       - name: Build
         run: bun run build
+
+      - name: Send Telegram notification
+        if: always()
+        env:
+          BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          THREAD_ID: ${{ secrets.TELEGRAM_THREAD_ID }}
+          JOB_STATUS: ${{ job.status }}
+          EVENT_JSON: ${{ toJson(github.event) }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python3 -c '
+          import os, json, urllib.request, urllib.parse, html
+
+          bot_token = os.environ.get("BOT_TOKEN", "").strip()
+          chat_id = os.environ.get("CHAT_ID", "").strip()
+          thread_id = os.environ.get("THREAD_ID", "").strip()
+
+          if not bot_token or not chat_id:
+              print("Telegram credentials not configured. Skipping notification.")
+              exit(0)
+
+          event = json.loads(os.environ.get("EVENT_JSON", "{}"))
+          branch = event.get("ref", "").replace("refs/heads/", "")
+          actor = event.get("sender", {}).get("login", "unknown")
+          repo = event.get("repository", {}).get("name", "widgetify-extension")
+          compare_url = event.get("compare", "")
+          commits = event.get("commits", [])
+          job_status = os.environ.get("JOB_STATUS", "unknown").capitalize()
+          run_url = os.environ.get("RUN_URL", "")
+
+          status_emoji = "✅" if job_status.lower() == "success" else "❌"
+
+          commit_lines = []
+          for c in commits[:10]:
+              short_sha = c.get("id", "")[:7]
+              msg = c.get("message", "").split("\n")[0]
+              url = c.get("url", "")
+              commit_lines.append(f"• <a href=\"{url}\"><code>{short_sha}</code></a>: {html.escape(msg)}")
+
+          if len(commits) > 10:
+              commit_lines.append(f"• <i>...and {len(commits) - 10} more commits</i>")
+
+          commits_text = "\n".join(commit_lines) if commit_lines else "<i>No commit details</i>"
+
+          text = (
+              f"🚀 <b>Push to {html.escape(repo)}</b>\n\n"
+              f"🌿 <b>Branch:</b> <code>{html.escape(branch)}</code>\n"
+              f"👤 <b>Author:</b> @{html.escape(actor)}\n"
+              f"📊 <b>Build Status:</b> {status_emoji} {job_status}\n\n"
+              f"🔢 <b>Commits ({len(commits)}):</b>\n{commits_text}\n\n"
+              f"🔗 <a href=\"{compare_url}\">View Changes</a> | <a href=\"{run_url}\">CI Run</a>"
+          )
+
+          payload = {
+              "chat_id": chat_id,
+              "text": text,
+              "parse_mode": "HTML",
+              "disable_web_page_preview": True
+          }
+
+          if thread_id:
+              try:
+                  payload["message_thread_id"] = int(thread_id)
+              except ValueError:
+                  print("Invalid THREAD_ID; sending to default topic.")
+
+          data = json.dumps(payload).encode("utf-8")
+          req = urllib.request.Request(
+              f"https://api.telegram.org/bot{bot_token}/sendMessage",
+              data=data,
+              headers={"Content-Type": "application/json"}
+          )
+
+          try:
+              with urllib.request.urlopen(req) as resp:
+                  print(f"Notification sent successfully: {resp.status}")
+          except Exception as e:
+              print(f"Failed to send Telegram notification: {e}")
+          '
