@@ -9,9 +9,9 @@ export function GetContentFromReactions(
 	return reactions.find((f) => f.id === reactionId)
 }
 
-export function RenderReactionContent(content: string) {
+export function RenderReactionContent(content: string, imageSize = 'size-4') {
 	if (content.startsWith('https://'))
-		return <img src={content} alt="" className="object-center w-4 h-4" />
+		return <img src={content} alt="" className={`object-center ${imageSize}`} />
 
 	return content
 }

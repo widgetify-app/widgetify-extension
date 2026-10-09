@@ -1,11 +1,11 @@
 import { useState } from 'react'
+import { ScrollRow } from '@/components/ui'
 import { useGetActivities } from '@/services/friends/friend-service.hook'
 import { useAuth } from '@/context/auth.context'
 import { t } from '@/common/i18n'
 import { ActivityCard } from './activity-card/activity-card'
-import { ManageActivityBottomSheet } from './activity-card/manage-activity-bottom-sheet'
+import { ManageActivityModal } from './activity-card/manage-activity-modal'
 import { EmptyActivityCard } from './activity-card/empty-activity-card'
-import { Dropdown } from '@/components/ui'
 
 export const ActiveFriendsHorizontal = () => {
 	const { user } = useAuth()
@@ -25,7 +25,7 @@ export const ActiveFriendsHorizontal = () => {
 							className="flex flex-col items-center shrink-0"
 						>
 							<div className="z-10 w-24 h-12 bg-surface-3 rounded-xl skeleton" />
-							<div className="w-12 h-12 -mt-2 rounded-full bg-surface-3 skeleton" />
+							<div className="w-16 h-16 -mt-3 rounded-full bg-surface-3 skeleton" />
 							<div className="w-20 h-3 mt-2 rounded-sm bg-surface-3 skeleton" />
 						</div>
 					))}
@@ -36,61 +36,25 @@ export const ActiveFriendsHorizontal = () => {
 
 	return (
 		<div className="space-y-1">
-			<div className="flex h-34 gap-2.5 px-1 pb-1 overflow-x-auto scrollbar-none">
+			<ScrollRow gap="md">
 				{user &&
 					(currentUserActivity ? (
-						<Dropdown
-							trigger={
-								<ActivityCard
-									avatar={user.avatar || ''}
-									name={t('friends.you')}
-									activity={currentUserActivity?.content || ''}
-									onClick={() => setIsBottomSheetOpen(true)}
-									reactions={
-										activitiesData.attachments?.reactions || []
-									}
-									isSelf
-									id={currentUserActivity.activityId}
-									index={5}
-								/>
-							}
-							position="top-right"
-						>
-							<ManageActivityBottomSheet
-								isOpen={isBottomSheetOpen}
-								onClose={() => setIsBottomSheetOpen(false)}
-								currentActivity={
-									currentUserActivity
-										? {
-												content:
-													currentUserActivity?.content || '',
-												id: currentUserActivity?.activityId || '',
-											}
-										: null
-								}
-								reactions={activitiesData.attachments?.reactions || []}
-								templates={activitiesData?.attachments?.templates || []}
-							/>
-						</Dropdown>
+						<ActivityCard
+							avatar={user.avatar || ''}
+							name={t('friends.you')}
+							activity={currentUserActivity.content || ''}
+							onClick={() => setIsBottomSheetOpen(true)}
+							reactions={activitiesData.attachments?.reactions || []}
+							isSelf
+							id={currentUserActivity.activityId}
+							index={5}
+						/>
 					) : (
-						<Dropdown
-							trigger={
-								<EmptyActivityCard
-									avatar={user.avatar || ''}
-									name={t('friends.you')}
-									onClick={() => setIsBottomSheetOpen(true)}
-								/>
-							}
-							position="top-right"
-						>
-							<ManageActivityBottomSheet
-								isOpen={isBottomSheetOpen}
-								onClose={() => setIsBottomSheetOpen(false)}
-								currentActivity={null}
-								reactions={activitiesData?.attachments?.reactions || []}
-								templates={activitiesData?.attachments?.templates || []}
-							/>
-						</Dropdown>
+						<EmptyActivityCard
+							avatar={user.avatar || ''}
+							name={t('friends.you')}
+							onClick={() => setIsBottomSheetOpen(true)}
+						/>
 					))}
 
 				{activitiesData?.activities?.map((activity, index) => {
@@ -107,7 +71,25 @@ export const ActiveFriendsHorizontal = () => {
 						/>
 					)
 				})}
-			</div>
+			</ScrollRow>
+
+			{user && (
+				<ManageActivityModal
+					isOpen={isBottomSheetOpen}
+					onClose={() => setIsBottomSheetOpen(false)}
+					avatar={user.avatar || ''}
+					currentActivity={
+						currentUserActivity
+							? {
+									id: currentUserActivity.activityId,
+									content: currentUserActivity.content || '',
+								}
+							: null
+					}
+					reactions={activitiesData?.attachments?.reactions || []}
+					templates={activitiesData?.attachments?.templates || []}
+				/>
+			)}
 		</div>
 	)
 }

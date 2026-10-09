@@ -1,18 +1,7 @@
-import { t } from '@/common/i18n'
 import { AvatarComponent } from '@/components/ui'
-import { Dropdown } from '@/components/ui'
-import {
-	type AttachmentReaction,
-	type ReactionKey,
-	useGetActivityReactions,
-	useUpsertActivityReaction,
-} from '@/services/friends/friend-service.hook'
-import { useEffect, useState } from 'react'
-import { GetContentFromReactions, RenderReactionContent } from './activity-reaction'
-import { safeAwait } from '@/services/api'
-import { translateError } from '@/common/utils/translate-error'
-import { showToast } from '@/common/toast'
-import { playAlarm } from '@/common/utils/play-alarm'
+import type { AttachmentReaction } from '@/services/friends/friend-service.hook'
+import { ActivityBubble } from './activity-bubble'
+import { ActivityReactionSelector } from './activity-reaction-selector'
 
 interface ActivityCardProps {
 	id: string
@@ -38,36 +27,27 @@ export const ActivityCard = ({
 	const content = (
 		<>
 			<div className="relative flex flex-col items-center">
-				<div className="relative w-24 h-16">
-					<div
-						className={`
-							w-full h-full text-3xs px-2 py-1 rounded-2xl 
-							leading-tight text-center overflow-hidden transition-ui
-							bg-surface-2 border border-line shadow-sm text-fg-muted
-							${onClick ? 'group-hover:scale-95 cursor-pointer z-10' : ''}
-						`}
+				<ActivityBubble
+					isInteractive={Boolean(onClick)}
+					badge={
+						isSelf ? null : (
+							<ActivityReactionSelector
+								reactions={reactions}
+								activityId={id}
+								index={index}
+							/>
+						)
+					}
+				>
+					<p
+						className="line-clamp-3 wrap-break-word text-shadow-2xs"
+						dir="auto"
 					>
-						<div
-							className="flex items-center justify-center w-full h-full overflow-y-auto wrap-break-word scrollbar-none text-shadow-2xs"
-							dir="auto"
-						>
-							{activity}
-						</div>
-					</div>
+						{activity}
+					</p>
+				</ActivityBubble>
 
-					<div className="absolute w-2 h-2 -translate-x-3 rounded-full -bottom-0.5 left-7 bg-fill  z-10" />
-					<div className="absolute w-2 h-2 -translate-x-3 rounded-full  -bottom-3.5 left-8 bg-fill shadow-md  z-10" />
-					<div className="absolute z-10 w-2 h-2 -translate-x-3 rounded-full shadow-md bg-surface-3 -bottom-6 left-10" />
-					{isSelf ? null : (
-						<ActivityReactionSelector
-							reactions={reactions}
-							activityId={id}
-							index={index}
-						/>
-					)}
-				</div>
-
-				<div className="-mt-1">
+				<div className="-mt-3">
 					<div
 						className={`
 							rounded-full transition-ui ring-2 ring-surface-3
@@ -78,7 +58,7 @@ export const ActivityCard = ({
 							url={avatar}
 							placeholder={name}
 							size="sm"
-							className="object-cover w-12 h-12 rounded-full"
+							className="object-cover w-16 h-16 rounded-full"
 						/>
 					</div>
 				</div>
@@ -90,7 +70,7 @@ export const ActivityCard = ({
 		</>
 	)
 
-	const className = 'flex flex-col items-center shrink-0 group'
+	const className = 'flex flex-col items-center justify-end pt-4 shrink-0 group'
 
 	if (!onClick) return <div className={className}>{content}</div>
 
@@ -98,90 +78,5 @@ export const ActivityCard = ({
 		<button type="button" onClick={onClick} className={className}>
 			{content}
 		</button>
-	)
-}
-
-interface Prop {
-	reactions: AttachmentReaction[]
-	activityId: string
-	index: number
-}
-function ActivityReactionSelector({ reactions, activityId, index }: Prop) {
-	const [enable, setEnable] = useState(index < 3)
-	const { data, isPending } = useGetActivityReactions(activityId, enable)
-	const [selectedReaction, setSelectedReaction] = useState<ReactionKey | null>(null)
-	const { mutateAsync, isPending: isUpdating } = useUpsertActivityReaction()
-	useEffect(() => {
-		if (data?.currentUser?.reaction) {
-			setSelectedReaction(data.currentUser.reaction as ReactionKey)
-		}
-
-		return () => {
-			setEnable(false)
-		}
-	}, [data])
-
-	const handleReaction = async (reactionKey: ReactionKey) => {
-		if (reactionKey === selectedReaction) return
-
-		const [error, _] = await safeAwait(mutateAsync({ activityId, reactionKey }))
-		if (error) {
-			const content = translateError(error)
-			showToast(content as string, 'error')
-		} else {
-			setSelectedReaction(reactionKey)
-			playAlarm('reaction')
-		}
-	}
-
-	const reacted = !!selectedReaction
-	return (
-		<Dropdown
-			trigger={
-				<button
-					type="button"
-					aria-label={t('friends.activity.reactAria')}
-					className={`flex  items-center justify-center w-5 h-5 text-xs text-center transition-ui duration-200 rounded-full shadow-sm active:scale-95 bg-fill ${reacted ? 'opacity-85' : 'opacity-50'}`}
-					onClick={() => setEnable(true)}
-				>
-					{reacted
-						? RenderReactionContent(
-								GetContentFromReactions(
-									selectedReaction || undefined,
-									reactions
-								)?.content || ''
-							)
-						: reactions[0]?.content}
-				</button>
-			}
-			className="absolute! top-0! left-0!"
-		>
-			<div className="flex items-center justify-around w-full h-10 gap-1 px-2 py-1 overflow-x-auto shadow-lg bg-surface-3">
-				{isPending
-					? Array.from({ length: 5 }).map((_, i) => (
-							<div
-								key={`skeleton-reaction-${i}`}
-								className={`transition-transform duration-150 cursor-pointer active:scale-95 focus:outline-none `}
-							>
-								<div className="w-4 h-4 bg-surface-3 rounded-xl skeleton" />
-							</div>
-						))
-					: reactions.map((reaction, index) => (
-							<button
-								type="button"
-								key={index}
-								disabled={isUpdating}
-								onClick={() => handleReaction(reaction.id)}
-								className={`h-5.5 w-5.5 rounded-full ${isUpdating && 'opacity-45'}  ${selectedReaction === reaction.id ? 'bg-brand-fill-2' : 'opacity-85'} transition-transform   duration-150 cursor-pointer active:scale-95 focus:outline-none hover:bg-brand-fill`}
-							>
-								<p
-									className={` leading-6.5 ${selectedReaction === reaction.id && 'scale-85'}`}
-								>
-									{RenderReactionContent(reaction.content)}
-								</p>
-							</button>
-						))}
-			</div>
-		</Dropdown>
 	)
 }
