@@ -22,7 +22,7 @@ Daily, weekly and monthly habits with a one-click log. Sizes 2x1, 2x3 and a 4x3 
 | `utils/habit-goal.ts` | Goal text, today's text (`formatHabitToday`), `isHabitDoneToday`. Tested. |
 | `utils/habit-week.ts` | `weekOf` (this week's dates from Saturday), `habitWeek` (each of those days for a habit: today from `habit.today`, the rest from `history` by date, later days marked ahead), `dayKey` and `weekdayInitial`. Tested. |
 | `utils/habit-step.ts`, `utils/habit-stats.ts` | Log step size and the detail statistics (streak, best streak, successful days). Tested. |
-| `utils/render-habit-share-canvas.ts` | Draws the share image at 800×520. The modal sets its display size. |
+| `utils/render-habit-share-canvas.ts` | Draws the share image at 1080×1350 (4:5), the size of the mood tracker's. The modal scales it down. |
 
 ## Layout
 
@@ -48,7 +48,7 @@ Built like the task modal: `size="lg"`, the habit's name as the modal title, the
 3. "۶ ماه اخیر" with its legend, the day grid, and a line that names the hovered day or says how to log.
 4. Delete on the start side, then edit and "اشتراک‌گذاری تصویر" as the main button. Delete asks in place, like a task.
 
-The share modal is also `lg`: the image at full width, then "کپی تصویر" and "دانلود تصویر".
+The share modal is `md`, like the mood tracker's: the portrait image scaled to fit 60vh and centred, then "کپی تصویر" and "دانلود تصویر".
 
 Both modals stay mounted and only toggle `isOpen`; the detail keeps its last habit id after closing (`isDetailOpen` is separate), and closing the form keeps `editingHabit`. Mounting the detail only while a habit was chosen skipped daisyUI's open and close animation, and clearing the habit on close turned the edit form into «عادت جدید» while it faded out. The share modal mounts once the habit has loaded, for the same reason.
 
@@ -66,7 +66,7 @@ Signed out, loading, error and empty are separate screens. The 2x1 draws them wi
 - The detail modal lost its title dropdown; edit and delete sit in the footer where the task modal has them.
 - The success rate is gone. It divided the successful days by every day since the first log, which says little, least of all for a habit that is not daily.
 - The form's subtitle «از یه الگو شروع کن یا خودت بساز» shows only when adding, since editing has no templates.
-- The share modal was 4xl wide for an 800px image. It is now as wide as the other modals and the image scales down.
+- The share modal was 4xl wide for an 800px image. It is now `md`, and the image is a 1080×1350 portrait like the mood tracker's, so it fits a story or a post.
 - The board shows the calendar week, Saturday first, not the last seven days: a Persian reader expects the week to start on Saturday. Each day is found in `history` by its date, so the order the server sends does not matter; `dayKey` takes the first ten characters, which covers `2026-10-05` and a full timestamp alike. Days the history does not hold count as nothing logged. The 2x3 dots still show `history` as it comes.
 - The board's summary counts today only (done and not done). A rate over several days would repeat the success rate's problem.
 - The analytics names `habit_quick_log` and `habit_quick_log_wide` are sent by the callers, so `data-names.test.ts` can find them.

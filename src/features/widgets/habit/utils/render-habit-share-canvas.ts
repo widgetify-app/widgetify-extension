@@ -6,6 +6,21 @@ import { drawRoundedRect, fitText, rgba } from '@/features/widgets/utils/canvas'
 import { formatHabitGoal } from './habit-goal'
 import { DEFAULT_HABIT_COLOR } from '../constants'
 
+const W = 1080
+const H = 1350
+const BG_BASE = '#05050a'
+const TEXT_LIGHT = '#f8fafc'
+const TEXT_MUTED = 'rgba(255, 255, 255, 0.55)'
+const TEXT_FAINT = 'rgba(255, 255, 255, 0.35)'
+const EMPTY_CELL = 'rgba(255, 255, 255, 0.07)'
+const FONT_STACK = 'Vazir, Tahoma, Arial, sans-serif'
+const DIGIT_STACK = 'Arad, Vazir, Tahoma, sans-serif'
+const EMOJI_STACK =
+	'"Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif'
+const MARGIN = 80
+const CELL_SIZE = 28
+const CELL_GAP = 6
+
 interface RenderHabitShareCanvasOptions {
 	habit: Habit
 	color: string
@@ -21,39 +36,10 @@ export function renderHabitShareCanvas(
 	const ctx = canvas.getContext('2d')
 	if (!ctx) return
 
-	const dpr = 2
-	const width = 800
-	const height = 520
-
-	canvas.width = width * dpr
-	canvas.height = height * dpr
-
-	ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-	ctx.clearRect(0, 0, width, height)
+	canvas.width = W
+	canvas.height = H
 
 	const accent = color || DEFAULT_HABIT_COLOR
-	const background = '#0f1014'
-	const primary = '#f7f7f8'
-	const secondary = '#a7a7b0'
-	const muted = '#62636d'
-
-	ctx.fillStyle = background
-	ctx.fillRect(0, 0, width, height)
-
-	ctx.fillStyle = rgba(accent, 0.045)
-	ctx.beginPath()
-	ctx.arc(118, 86, 170, 0, Math.PI * 2)
-	ctx.fill()
-
-	ctx.fillStyle = rgba(accent, 0.025)
-	ctx.beginPath()
-	ctx.arc(700, 385, 210, 0, Math.PI * 2)
-	ctx.fill()
-
-	ctx.strokeStyle = '#24252b'
-	ctx.lineWidth = 1
-	drawRoundedRect(ctx, 0.5, 0.5, width - 1, height - 1, 30)
-	ctx.stroke()
 
 	const today = jalaliMoment().locale('fa').startOf('day')
 	const numWeeks = 26
@@ -191,92 +177,101 @@ export function renderHabitShareCanvas(
 		}
 	}
 
-	ctx.textAlign = 'left'
-	ctx.textBaseline = 'middle'
-	ctx.font = '600 11px Vazir, "Segoe UI", sans-serif'
-	ctx.fillStyle = muted
-	ctx.fillText(t('widgets.habit.share.canvas.brand'), 36, 35)
+	ctx.fillStyle = BG_BASE
+	ctx.fillRect(0, 0, W, H)
 
-	ctx.fillStyle = accent
-	ctx.beginPath()
-	ctx.arc(175, 35, 3, 0, Math.PI * 2)
-	ctx.fill()
-
-	ctx.textAlign = 'right'
-	ctx.textBaseline = 'alphabetic'
-	ctx.font = '800 96px Vazir, "Segoe UI", sans-serif'
-	ctx.fillStyle = primary
-	ctx.fillText(String(currentStreak), width - 36, 108)
-
-	const numberWidth = ctx.measureText(String(currentStreak)).width
-	ctx.fillStyle = accent
-	drawRoundedRect(ctx, width - 36 - numberWidth, 119, numberWidth, 4, 2)
-	ctx.fill()
-
-	ctx.font = '500 13px Vazir, "Segoe UI", sans-serif'
-	ctx.fillStyle = secondary
-	ctx.fillText(t('widgets.habit.share.canvas.streakDays'), width - 36, 145)
-
-	if (currentStreak > 0) {
-		ctx.font =
-			'28px "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif'
-		ctx.fillText('🔥', width - 110, 104)
-	}
-
-	const identityCenterX = 190
-	const identityTop = 87
+	const glow = ctx.createRadialGradient(W / 2, 360, 20, W / 2, 360, 640)
+	glow.addColorStop(0, rgba(accent, 0.18))
+	glow.addColorStop(1, rgba(accent, 0))
+	ctx.fillStyle = glow
+	ctx.fillRect(0, 0, W, H)
 
 	ctx.textAlign = 'center'
 	ctx.textBaseline = 'middle'
-	ctx.font =
-		'78px "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif'
-	ctx.fillText(habit.emoji || '🎯', identityCenterX, identityTop + 22)
-
+	ctx.font = `600 26px ${FONT_STACK}`
+	ctx.fillStyle = TEXT_FAINT
+	const brand = t('widgets.habit.share.canvas.brand')
+	ctx.fillText(brand, W / 2, 84)
 	ctx.fillStyle = accent
-	drawRoundedRect(ctx, identityCenterX - 20, identityTop + 72, 40, 4, 2)
+	ctx.beginPath()
+	ctx.arc(W / 2 + ctx.measureText(brand).width / 2 + 22, 84, 5, 0, Math.PI * 2)
 	ctx.fill()
 
-	ctx.textBaseline = 'top'
-	ctx.font = '700 25px Vazir, "Segoe UI", sans-serif'
-	ctx.fillStyle = primary
-	const title = fitText(
-		ctx,
-		habit.title || t('widgets.habit.share.canvas.myHabit'),
-		270
-	)
-	ctx.fillText(title, identityCenterX, identityTop + 88)
+	ctx.font = `190px ${EMOJI_STACK}`
+	ctx.fillStyle = TEXT_LIGHT
+	ctx.fillText(habit.emoji || '🎯', W / 2, 250)
 
-	ctx.font = '400 12px Vazir, "Segoe UI", sans-serif'
-	ctx.fillStyle = secondary
-	const goal = fitText(ctx, formatHabitGoal(habit), 270)
-	ctx.fillText(goal, identityCenterX, identityTop + 124)
+	ctx.fillStyle = accent
+	drawRoundedRect(ctx, W / 2 - 36, 366, 72, 8, 4)
+	ctx.fill()
 
-	const chartX = 36
-	const chartY = 225
-	const chartWidth = width - 72
-
-	ctx.textAlign = 'right'
-	ctx.textBaseline = 'top'
-	ctx.font = '600 12px Vazir, "Segoe UI", sans-serif'
-	ctx.fillStyle = secondary
+	ctx.font = `bold 64px ${FONT_STACK}`
+	ctx.fillStyle = TEXT_LIGHT
 	ctx.fillText(
-		t('widgets.habit.share.canvas.recentActivity'),
-		chartX + chartWidth,
-		chartY
+		fitText(
+			ctx,
+			habit.title || t('widgets.habit.share.canvas.myHabit'),
+			W - 2 * MARGIN
+		),
+		W / 2,
+		440
 	)
 
-	ctx.font = '400 10px Vazir, "Segoe UI", sans-serif'
-	ctx.fillStyle = muted
+	ctx.font = `32px ${FONT_STACK}`
+	ctx.fillStyle = TEXT_MUTED
+	ctx.fillText(fitText(ctx, formatHabitGoal(habit), W - 2 * MARGIN), W / 2, 500)
+
+	drawRoundedRect(ctx, MARGIN, 560, W - 2 * MARGIN, 220, 36)
+	ctx.fillStyle = 'rgba(255, 255, 255, 0.04)'
+	ctx.fill()
+	ctx.strokeStyle = rgba(accent, 0.28)
+	ctx.lineWidth = 2
+	ctx.stroke()
+
+	const streakText = String(currentStreak)
+	ctx.font = `bold 150px ${FONT_STACK}`
+	const numberWidth = ctx.measureText(streakText).width
+	const fireWidth = currentStreak > 0 ? 96 : 0
+	const fireGap = currentStreak > 0 ? 24 : 0
+	const rowStart = W / 2 - (fireWidth + fireGap + numberWidth) / 2
+	const numberCenter = rowStart + fireWidth + fireGap + numberWidth / 2
+
+	ctx.textBaseline = 'alphabetic'
+	ctx.fillStyle = TEXT_LIGHT
+	ctx.fillText(streakText, numberCenter, 694)
+
+	ctx.fillStyle = accent
+	drawRoundedRect(ctx, numberCenter - numberWidth / 2, 710, numberWidth, 6, 3)
+	ctx.fill()
+
+	if (currentStreak > 0) {
+		ctx.textBaseline = 'middle'
+		ctx.font = `84px ${EMOJI_STACK}`
+		ctx.fillText('🔥', rowStart + fireWidth / 2, 640)
+	}
+
+	ctx.textBaseline = 'middle'
+	ctx.font = `30px ${FONT_STACK}`
+	ctx.fillStyle = TEXT_MUTED
+	ctx.fillText(t('widgets.habit.share.canvas.streakDays'), W / 2, 748)
+
+	ctx.textBaseline = 'middle'
+	ctx.textAlign = 'right'
+	ctx.font = `bold 30px ${FONT_STACK}`
+	ctx.fillStyle = TEXT_LIGHT
+	ctx.fillText(t('widgets.habit.share.canvas.recentActivity'), W - MARGIN, 846)
+
+	ctx.textAlign = 'left'
+	ctx.font = `24px ${FONT_STACK}`
+	ctx.fillStyle = TEXT_MUTED
 	ctx.fillText(
 		t('widgets.habit.share.canvas.successDays', { p0: totalCompleted }),
-		chartX + chartWidth - 105,
-		chartY + 2
+		MARGIN,
+		848
 	)
 
-	const cellSize = 17
-	const gap = 4
-	const gridTop = chartY + 38
-	const gridRight = chartX + chartWidth - 27
+	const gridTop = 930
+	const gridRight = W - MARGIN - 36
 	const dayLabels = [
 		t('ui.date.weekday.sat'),
 		t('ui.date.weekday.sun'),
@@ -287,18 +282,23 @@ export function renderHabitShareCanvas(
 		t('ui.date.weekday.fri'),
 	]
 
-	ctx.font = '500 9px Arad, Vazir, sans-serif'
-	ctx.fillStyle = muted
+	ctx.font = `20px ${DIGIT_STACK}`
+	ctx.fillStyle = TEXT_FAINT
 	ctx.textBaseline = 'middle'
 
-	for (const marker of monthMarkers) {
-		const colX = gridRight - marker.weekIndex * (cellSize + gap) - cellSize
-		let textX = colX + cellSize / 2
+	const visibleMarkers = monthMarkers.filter(
+		(marker, index) =>
+			!(marker.weekIndex === 0 && (monthMarkers[index + 1]?.weekIndex ?? 99) < 3)
+	)
+
+	for (const marker of visibleMarkers) {
+		const colX = gridRight - marker.weekIndex * (CELL_SIZE + CELL_GAP) - CELL_SIZE
+		let textX = colX + CELL_SIZE / 2
 		let align: CanvasTextAlign = 'center'
 
 		if (marker.weekIndex === 0) {
 			align = 'right'
-			textX = colX + cellSize
+			textX = colX + CELL_SIZE
 		}
 
 		if (marker.weekIndex >= numWeeks - 2) {
@@ -307,74 +307,66 @@ export function renderHabitShareCanvas(
 		}
 
 		ctx.textAlign = align
-		ctx.fillText(marker.name, textX, chartY + 29)
+		ctx.fillText(marker.name, textX, gridTop - 24)
 	}
 
-	ctx.font = '500 9px Arad, Vazir, sans-serif'
 	ctx.textAlign = 'center'
-	ctx.fillStyle = muted
-
 	for (let d = 0; d < 7; d++) {
-		const y = gridTop + d * (cellSize + gap) + cellSize / 2
-		ctx.fillText(dayLabels[d], gridRight + 18, y)
+		const y = gridTop + d * (CELL_SIZE + CELL_GAP) + CELL_SIZE / 2
+		ctx.fillText(dayLabels[d], gridRight + 36, y)
 	}
 
-	weeksGrid.forEach((week, w) => {
-		const colX = gridRight - w * (cellSize + gap) - cellSize
-
-		week.days.forEach((day, d) => {
-			if (day.isFuture) {
-				return
-			}
-
-			const cellY = gridTop + d * (cellSize + gap)
-			let bg = '#24252a'
-
-			if (day.level === 1) {
-				bg = rgba(accent, 0.22)
-			} else if (day.level === 2) {
-				bg = rgba(accent, 0.43)
-			} else if (day.level === 3) {
-				bg = rgba(accent, 0.7)
-			} else if (day.level === 4) {
-				bg = accent
-			}
-
-			ctx.fillStyle = bg
-			drawRoundedRect(ctx, colX, cellY, cellSize, cellSize, 4)
-			ctx.fill()
-		})
-	})
-
-	const bottomY = 454
-
-	ctx.textAlign = 'left'
-	ctx.textBaseline = 'middle'
-	ctx.font = '400 10px Vazir, "Segoe UI", sans-serif'
-	ctx.fillStyle = muted
-	ctx.fillText(
-		t('widgets.habit.share.canvas.bestRecord', { p0: longestStreak }),
-		36,
-		bottomY
-	)
-
-	ctx.textAlign = 'right'
-	ctx.fillText(t('widgets.habit.share.canvas.tagline'), width - 36, bottomY)
-
-	const legendY = 454
-	let legendX = width / 2 - 38
-	const legendColors = [
-		'#24252a',
+	const levelColors = [
+		EMPTY_CELL,
 		rgba(accent, 0.22),
 		rgba(accent, 0.43),
 		rgba(accent, 0.7),
 		accent,
 	]
 
-	for (let i = 0; i < legendColors.length; i++) {
-		ctx.fillStyle = legendColors[i]
-		drawRoundedRect(ctx, legendX, legendY - 5, 11, 11, 3)
+	weeksGrid.forEach((week, w) => {
+		const colX = gridRight - w * (CELL_SIZE + CELL_GAP) - CELL_SIZE
+
+		week.days.forEach((day, d) => {
+			if (day.isFuture) return
+
+			ctx.fillStyle = levelColors[day.level]
+			drawRoundedRect(
+				ctx,
+				colX,
+				gridTop + d * (CELL_SIZE + CELL_GAP),
+				CELL_SIZE,
+				CELL_SIZE,
+				7
+			)
+			ctx.fill()
+		})
+	})
+
+	const bottomY = 1200
+
+	ctx.textAlign = 'left'
+	ctx.textBaseline = 'middle'
+	ctx.font = `24px ${FONT_STACK}`
+	ctx.fillStyle = TEXT_MUTED
+	ctx.fillText(
+		t('widgets.habit.share.canvas.bestRecord', { p0: longestStreak }),
+		MARGIN,
+		bottomY
+	)
+
+	const legendSize = 22
+	const legendGap = 8
+	let legendX = W - MARGIN - (legendSize * 5 + legendGap * 4)
+	for (const legendColor of levelColors) {
+		ctx.fillStyle = legendColor
+		drawRoundedRect(ctx, legendX, bottomY - legendSize / 2, legendSize, legendSize, 6)
 		ctx.fill()
-		legendX += 15
+		legendX += legendSize + legendGap
 	}
+
+	ctx.textAlign = 'center'
+	ctx.font = `22px ${FONT_STACK}`
+	ctx.fillStyle = TEXT_FAINT
+	ctx.fillText(t('widgets.habit.share.canvas.tagline'), W / 2, H - 45)
 }

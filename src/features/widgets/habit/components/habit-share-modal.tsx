@@ -42,7 +42,7 @@ export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareMod
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			size="lg"
+			size="md"
 			title={t('widgets.habit.share.title')}
 			closeLabel={t('ui.common.close')}
 		>
@@ -53,7 +53,7 @@ export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareMod
 					aria-label={t('widgets.habit.share.imageAria', {
 						p0: habit.title,
 					})}
-					className="w-full h-auto rounded-2xl"
+					className="self-center w-auto h-auto max-w-full max-h-[60vh] rounded-2xl"
 				/>
 				<div className="flex items-center gap-1.5 pt-1">
 					<Button
