@@ -162,6 +162,24 @@ const arts = {
 			/>
 		</>
 	),
+	allCaughtUp: (
+		<>
+			<path
+				className="fill-warning"
+				d="M32 6a3.5 3.5 0 0 1 3.5 3.5v1.3c8.3 1.5 13.5 8.3 13.5 16.7v8.5l4.8 7.9a2.2 2.2 0 0 1-1.9 3.3H12.1a2.2 2.2 0 0 1-1.9-3.3L15 36v-8.5c0-8.4 5.2-15.2 13.5-16.7V9.5A3.5 3.5 0 0 1 32 6Z"
+			/>
+			<path className="fill-brand" d="M25.5 51.5a6.5 6.5 0 0 0 13 0Z" />
+			<circle className="fill-success" cx="49" cy="17" r="10" />
+			<path
+				className="stroke-on-success"
+				d="m44.5 17 3.2 3.3 6-6.8"
+				fill="none"
+				strokeWidth="2.6"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			/>
+		</>
+	),
 	photo: (
 		<>
 			<path

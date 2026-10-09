@@ -136,7 +136,7 @@ export function NotificationCenter({ hasBorder }: Prop = { hasBorder: true }) {
 
 			{notifications.length === 0 && pushed.length === 0 && (
 				<EmptyState
-					icon="notification"
+					icon="allCaughtUp"
 					title={t('navbar.notifications.emptyTitle')}
 					description={t('navbar.notifications.emptyBody')}
 					className="py-10"
