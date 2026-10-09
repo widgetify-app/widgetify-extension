@@ -141,6 +141,27 @@ const arts = {
 			</g>
 		</>
 	),
+	account: (
+		<>
+			<path
+				className="fill-warning"
+				d="M52 4.5 53.8 8.5 57.8 10.3 53.8 12.1 52 16.1 50.2 12.1 46.2 10.3 50.2 8.5z"
+			/>
+			<circle className="fill-brand" cx="28" cy="20" r="11" />
+			<path
+				className="fill-brand"
+				d="M8 54c0-12 9-20 20-20s20 8 20 20a3 3 0 0 1-3 3H11a3 3 0 0 1-3-3Z"
+			/>
+			<circle className="fill-success" cx="50" cy="46" r="10" />
+			<path
+				className="stroke-on-success"
+				d="M50 41v10M45 46h10"
+				fill="none"
+				strokeWidth="2.6"
+				strokeLinecap="round"
+			/>
+		</>
+	),
 	photo: (
 		<>
 			<path

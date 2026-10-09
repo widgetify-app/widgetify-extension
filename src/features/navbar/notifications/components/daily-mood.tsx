@@ -10,10 +10,10 @@ import { useGeneralSetting } from '@/context/general-setting.context'
 import { getCurrentDate } from '@/common/utils/date-events'
 import { type ApiError, safeAwait } from '@/services/api'
 import { type MoodType, useUpsertMoodLog } from '@/services/mood-log/upsert-mood-log.hook'
-import { Icon } from '@/icons'
 import { useIsMutating, useQueryClient } from '@tanstack/react-query'
 import { moodLogKeys } from '@/services/mood-log/mood-log.keys'
 import { Spinner } from '@/components/ui'
+import { NotificationCard, NotificationCloseButton } from './notification-card'
 
 interface Prop {
 	className: string
@@ -72,28 +72,16 @@ export function DailyMoodNotification({ className }: Prop) {
 	}
 
 	return (
-		<div
-			className={`flex w-full h-20 gap-2 px-2 py-1 transition-ui duration-300 border rounded-xl border-surface-3 ${className}`}
-		>
-			<div className="flex-1 min-w-0 ">
-				<div className="flex items-center justify-between">
-					<h4 className="text-3xs font-medium truncate text-fg">
+		<NotificationCard className={className}>
+			<div className="flex-1 min-w-0 space-y-2">
+				<div className="flex items-center justify-between gap-2">
+					<h4 className="text-xs font-semibold truncate text-fg">
 						{GetUserFirstName(user?.name || '')}
 						{t('navbar.mood.askSuffix')}
 					</h4>
-					<button
-						type="button"
-						className="flex p-0.5 transition-opacity rounded-lg cursor-pointer top-2 left-2 bg-fill text-fg-faint hover:bg-danger-fill hover:text-danger"
-						onClick={(e) => {
-							e.preventDefault()
-							e.stopPropagation()
-							onRemoveNotif()
-						}}
-					>
-						<Icon name="close" size={14} />
-					</button>
+					<NotificationCloseButton onClick={onRemoveNotif} />
 				</div>
-				<div className="flex justify-around w-full h-10 gap-1 mt-2">
+				<div className="grid grid-cols-4 gap-1.5">
 					{moodOptions.map((option) => (
 						<button
 							type="button"
@@ -101,7 +89,7 @@ export function DailyMoodNotification({ className }: Prop) {
 							aria-pressed={mood === option.value}
 							key={option.value}
 							onClick={() => !isAdding && handleMoodChange(option.value)}
-							className={`p-1.5 w-full shadow-sm rounded-xl transition-ui cursor-pointer ${
+							className={`p-1.5 w-full shadow-sm rounded-xl transition-ui cursor-pointer focus-visible:focus-ring ${
 								mood === option.value
 									? `${option.activeClass} scale-105`
 									: `bg-surface-3 hover:bg-fill-2 opacity-80 hover:opacity-100 hover:scale-95`
@@ -110,7 +98,7 @@ export function DailyMoodNotification({ className }: Prop) {
 							{isAdding ? (
 								<Spinner tone="current" className="mx-auto" />
 							) : (
-								<div className="flex flex-col items-center gap-0.5 hover:scale-95">
+								<div className="flex flex-col items-center gap-0.5">
 									<div className="text-lg leading-none">
 										<MoodImage mood={option.value} />
 									</div>
@@ -123,6 +111,6 @@ export function DailyMoodNotification({ className }: Prop) {
 					))}
 				</div>
 			</div>
-		</div>
+		</NotificationCard>
 	)
 }

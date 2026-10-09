@@ -208,11 +208,10 @@ export function MiniAppsLayout() {
 				<Button
 					size="sm"
 					type="button"
-					color={'brand'}
-					rounded={'2xl'}
-					onClick={() => setShowInfo(false)}
 					fullWidth
-					className="h-12 mt-2 text-base font-bold shadow-sm"
+					rounded="2xl"
+					className="h-12 mt-5 text-base font-bold shadow-sm"
+					onClick={() => setShowInfo(false)}
 				>
 					{t('miniApps.about.ok')}
 				</Button>

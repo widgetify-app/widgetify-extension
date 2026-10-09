@@ -276,7 +276,7 @@ export const setting = {
 	'setting.vip.proLabel': 'پرو',
 	'setting.vip.selectPlanFirst': 'اول یه پلن انتخاب کن',
 	'setting.vip.loginRequired': 'برای خرید اشتراک {p0} اول وارد حسابت شو',
-	'setting.vip.redirectingToPayment': 'داریم می‌ریم درگاه پرداخت…',
+	'setting.vip.redirectingToPayment': 'داریم میریم درگاه پرداخت…',
 	'setting.vip.freeAlreadyClaimed': 'این اشتراک رایگان رو قبلا گرفتی',
 	'setting.vip.purchaseError': 'خرید اشتراک {p0} انجام نشد، دوباره امتحان کن',
 	'setting.vip.selectPlanTitle': 'پلن مناسب خودت رو انتخاب کن',

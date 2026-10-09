@@ -12,7 +12,7 @@ import { useAuth } from '@/context/auth.context'
 import { DailyMoodNotification } from './daily-mood'
 import { ProfileProgressNotification } from './profile-progress'
 import { safeAwait } from '@/services/api'
-import { Icon } from '@/icons'
+import { EmptyState } from '@/components/ui'
 import { t } from '@/common/i18n'
 
 const localIds = ['notificationMood', 'update_profile']
@@ -122,7 +122,7 @@ export function NotificationCenter({ hasBorder }: Prop = { hasBorder: true }) {
 	}
 
 	return (
-		<div className="flex flex-col gap-1">
+		<div className="flex flex-col gap-2">
 			{notifications.map((item, index) => (
 				<NotificationCardItem
 					notification={item}
@@ -135,17 +135,12 @@ export function NotificationCenter({ hasBorder }: Prop = { hasBorder: true }) {
 			{pushed.map((f) => f.node)}
 
 			{notifications.length === 0 && pushed.length === 0 && (
-				<div className="flex flex-col items-center justify-center py-8 text-center text-fg-muted">
-					<div className="flex items-center justify-center w-10 h-10 mb-2 text-fg-muted">
-						<Icon name="notification" size={16} />
-					</div>
-					<span className="text-xs font-bold text-fg">
-						{t('navbar.notifications.emptyTitle')}
-					</span>
-					<span className="text-3xs text-fg-muted mt-0.5">
-						{t('navbar.notifications.emptyBody')}
-					</span>
-				</div>
+				<EmptyState
+					icon="notification"
+					title={t('navbar.notifications.emptyTitle')}
+					description={t('navbar.notifications.emptyBody')}
+					className="py-10"
+				/>
 			)}
 		</div>
 	)

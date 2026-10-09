@@ -1,5 +1,11 @@
 import { callEvent } from '@/common/utils/call-event'
-import { AvatarComponent, DropdownDivider, DropdownItem, VipBadge } from '@/components/ui'
+import {
+	AvatarComponent,
+	DropdownDivider,
+	DropdownItem,
+	EmptyArt,
+	VipBadge,
+} from '@/components/ui'
 import { Icon } from '@/icons'
 import type { UserProfile } from '@/services/user/user-service.hook'
 import { t } from '@/common/i18n'
@@ -65,9 +71,7 @@ export function ProfileDropdownMenu({
 					onClick={handleProfileClick}
 					className="flex items-center w-full gap-3 px-3.5 py-2.5 text-start cursor-pointer border-b border-line transition-colors hover:bg-fill-2"
 				>
-					<div className="w-8 h-8 rounded-xl bg-brand-fill text-brand flex items-center justify-center shrink-0">
-						<Icon name="user" size={16} />
-					</div>
+					<EmptyArt name="account" className="size-10" />
 					<div className="flex flex-col flex-1">
 						<span className="text-xs font-bold text-fg">
 							{t('navbar.profile.login')}

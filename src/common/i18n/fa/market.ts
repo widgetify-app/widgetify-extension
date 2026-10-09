@@ -120,7 +120,7 @@ export const market = {
 	'market.product.fontPofak': 'پفـک',
 	'market.product.fontRoyin': 'رویین',
 	'market.buy.error': 'خرید انجام نشد، دوباره امتحان کن',
-	'market.checkout.redirecting': 'داریم می‌ریم درگاه پرداخت...',
+	'market.checkout.redirecting': 'داریم میریم درگاه پرداخت...',
 	'market.checkout.openError': 'درگاه پرداخت باز نشد، دوباره امتحان کن',
 	'market.coinPackage.bestValueBadge': 'به‌صرفه‌ترین',
 	'market.coinPackage.perHundredLabel': 'هر ۱۰۰ سکه',
@@ -135,7 +135,7 @@ export const market = {
 	'market.coins.selectPackage': 'یه بسته انتخاب کن',
 	'market.coins.priceSeparator': '،',
 	'market.coins.checkoutHint':
-		'به درگاه بانک می‌ری و سکه‌ها همون لحظه به حسابت اضافه می‌شن',
+		'به درگاه بانک میری و سکه‌ها همون لحظه به حسابت اضافه میشن',
 	'market.coins.pay': 'پرداخت',
 	'market.coins.login': 'ورود',
 	'market.coins.loginHint': 'برای خرید ویج‌کوین وارد حسابت شو',
