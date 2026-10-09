@@ -30,7 +30,7 @@ The same as tasks and notes. The frame is `p-3 gap-2` (`px-3 py-2.5 gap-1.5` at 
 
 - A 2x3 row is `px-2 gap-2.5 rounded-xl hover:bg-fill`, rows `gap-0.5` apart. The log ring is 32px where a task has its 16px check, because it carries the emoji and the step segments. The history ends at the row's `px-2`.
 - The board's body is the list, `gap-3`, then `BoardSummary` (`w-37.5 border-s ps-3.5`), the same as the tasks board. The weekday row sits outside the scrolling list and is laid out like a row (`px-2 gap-2.5`, a flex-1 spacer), so each letter lines up over its column.
-- The 2x1 row fills the body: ring, title, then "today · ۲ از ۴", then the pager.
+- The 2x1 row fills the body: ring, title, then "today · ۲ از ۴", then the pager. Which habit it shows is saved under `compactPager:habit` (`useCompactPagerState`) and survives a reload; if that habit is archived or deleted the row falls back to the first one and clears the saved id.
 - A row lights up for keyboard focus only (`useKeyboardFocusWithin`), so clicking the ring does not leave it highlighted.
 
 ## Header and menu

@@ -1,10 +1,10 @@
 import { t } from '@/common/i18n'
-import { useState } from 'react'
 import Analytics from '@/analytics'
 import { cn } from '@/common/utils/cn'
 import type { WidgetifyDate } from '@/common/utils/date-events'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { CompactPager } from '@/features/widgets/components/compact-pager'
+import { useCompactPagerState } from '@/features/widgets/hooks/use-compact-pager-state'
 import { WidgetCompactEmpty } from '@/features/widgets/components/widget-compact-empty'
 import { WidgetError } from '@/features/widgets/components/widget-error'
 import { HabitLogButton } from '../components/item/habit-log-button'
@@ -26,7 +26,6 @@ export function Habit2x1(props: Habit2x1Props) {
 
 function HabitCompactContent({ actions, today }: Habit2x1Props) {
 	const { blurMode } = useGeneralSetting()
-	const [currentId, setCurrentId] = useState<string | null>(null)
 	const {
 		habits,
 		isLoading,
@@ -37,7 +36,17 @@ function HabitCompactContent({ actions, today }: Habit2x1Props) {
 		openHabitDetail,
 	} = actions
 
-	if (isLoading) {
+	const {
+		currentId,
+		select: selectHabit,
+		isHydrated,
+	} = useCompactPagerState({
+		storageKey: 'habit',
+		ids: habits.map((habit) => habit.id),
+		isReady: !isLoading && !isError,
+	})
+
+	if (isLoading || !isHydrated) {
 		return (
 			<div aria-hidden="true" className="flex items-center h-full gap-2.5 px-2">
 				<div className="rounded-full size-8 skeleton shrink-0" />
@@ -117,8 +126,8 @@ function HabitCompactContent({ actions, today }: Habit2x1Props) {
 			<CompactPager
 				previousLabel={t('widgets.habit.variant2x1.prev')}
 				nextLabel={t('widgets.habit.variant2x1.next')}
-				onPrevious={() => setCurrentId(habits[index - 1].id)}
-				onNext={() => setCurrentId(habits[index + 1].id)}
+				onPrevious={() => selectHabit(habits[index - 1].id)}
+				onNext={() => selectHabit(habits[index + 1].id)}
 				isPreviousDisabled={index === 0}
 				isNextDisabled={isLast}
 			/>

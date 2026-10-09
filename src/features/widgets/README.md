@@ -34,7 +34,7 @@ Keyboard focus means `data-keyboard-focus` on the frame, set by `hooks/use-keybo
 - A header that shows when its data last arrived uses `formatUpdatedAt(dataUpdatedAt)` from `utils/updated-at.ts` as its info ("به‌روز ۱۴:۳۰").
 - A widget drawn inside another (wigi-arz and news inside combo-widget) takes the host's tabs as its header title and never calls `useWidgetSettingsSummary` or `useWidgetMenuActions`: those belong to the host.
 - A 4x3 board (tasks, notes, habits) splits its body in two with `gap-3` and a `border-s border-line ps-3.5` divider before the second pane. Tasks and habits put `BoardSummary` there (a percent ring and a few counts); notes put the open note.
-- A one-row list widget (tasks, habits 2x1) shows one item at a time and steps with `CompactPager`, the up and down pair at the row's end. The row's second line ends in "۲ از ۵".
+- A one-row list widget (tasks, habits 2x1) shows one item at a time and steps with `CompactPager`, the up and down pair at the row's end. The row's second line ends in "۲ از ۵". `CompactPager` only draws the buttons. Which item is showing is kept by `hooks/use-compact-pager-state.ts`: it holds the current id and, when the caller passes a `storageKey`, saves it under `compactPager:<storageKey>` and restores it on mount. Without a `storageKey` nothing is stored. A saved id that is no longer in the list (checked once the list is `isReady`) is dropped from state and from storage, and the caller's own fallback applies; a saved id is read through `normalizePagerId`.
 - `WidgetBackButton` leads a sub-view's header (an open note, the pomodoro leaderboard). `PopoverMenuItem` takes a `description` for a second line, such as a setting's current value.
 
 ## Rules

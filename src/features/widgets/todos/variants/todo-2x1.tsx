@@ -1,6 +1,6 @@
 import { t } from '@/common/i18n'
 import jalaliMoment from 'jalali-moment'
-import { type ReactNode, useState } from 'react'
+import type { ReactNode } from 'react'
 import Analytics from '@/analytics'
 import { showToast } from '@/common/toast'
 import { callEvent } from '@/common/utils/call-event'
@@ -12,6 +12,7 @@ import { safeAwait } from '@/services/api'
 import type { Todo } from '@/services/todo/todo.interface'
 import { useUpdateTodo } from '@/services/todo/update-todo.hook'
 import { CompactPager } from '@/features/widgets/components/compact-pager'
+import { useCompactPagerState } from '@/features/widgets/hooks/use-compact-pager-state'
 import { WidgetCompactEmpty } from '@/features/widgets/components/widget-compact-empty'
 import { WidgetError } from '@/features/widgets/components/widget-error'
 import { TodoCheck } from '../components/todo-check'
@@ -62,7 +63,15 @@ function TodoCompactContent({
 	onOpen,
 }: TodoCompactRowProps) {
 	const { blurMode } = useGeneralSetting()
-	const [currentId, setCurrentId] = useState<string | null>(null)
+	const {
+		currentId,
+		select: selectTodo,
+		isHydrated,
+	} = useCompactPagerState({
+		storageKey: 'todos',
+		ids: todos.map((todo) => todo.id),
+		isReady: isAuthenticated && !isLoading && !isError,
+	})
 
 	const tasks = todos.map((todo) => ({ id: todo.id, completed: resolveIsDone(todo) }))
 	const index = currentTaskIndex(tasks, currentId)
@@ -84,7 +93,7 @@ function TodoCompactContent({
 		)
 	}
 
-	if (isLoading) {
+	if (isLoading || !isHydrated) {
 		return (
 			<div aria-hidden="true" className="flex items-center h-full gap-2.5 px-2">
 				<div className="rounded-full size-4 skeleton shrink-0" />
@@ -139,7 +148,7 @@ function TodoCompactContent({
 		if (completed) {
 			playAlarm('success')
 			const nextId = nextOpenTaskId(tasks, index)
-			if (nextId) setCurrentId(nextId)
+			if (nextId) selectTodo(nextId)
 		}
 		Analytics.event('todo_toggle_complete')
 		onUpdated()
@@ -154,7 +163,7 @@ function TodoCompactContent({
 	}
 
 	const goNext = () => {
-		if (!isLast) setCurrentId(todos[index + 1].id)
+		if (!isLast) selectTodo(todos[index + 1].id)
 		else if (hasNextPage) onLoadMore()
 	}
 
@@ -209,7 +218,7 @@ function TodoCompactContent({
 			<CompactPager
 				previousLabel={t('widgets.todos.variant2x1.prev')}
 				nextLabel={t('widgets.todos.variant2x1.next')}
-				onPrevious={() => setCurrentId(todos[index - 1].id)}
+				onPrevious={() => selectTodo(todos[index - 1].id)}
 				onNext={goNext}
 				isPreviousDisabled={index === 0}
 				isNextDisabled={(isLast && !hasNextPage) || isFetchingNextPage}

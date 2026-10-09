@@ -69,3 +69,9 @@ declare module '@/common/utils/call-event' {
 		}
 	}
 }
+
+declare module '@/common/constants/store-keys' {
+	interface StorageKV {
+		[key: `compactPager:${string}`]: string
+	}
+}

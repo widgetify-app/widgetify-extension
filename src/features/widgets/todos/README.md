@@ -35,7 +35,7 @@ A label is only the `category` text of a task; the server lists the ones in use 
 ## Data and storage
 
 - Server: `useGetTodos` pages of 5 (10 on the board) with `totals` on every page. Writes go through the todo hooks in `src/services/todo`.
-- Storage: `todoFilter` and `todoSort`. Old filter values pass through `LEGACY_DATE_FILTERS`.
+- Storage: `todoFilter` and `todoSort`. Old filter values pass through `LEGACY_DATE_FILTERS`. The 2x1 also saves which task it shows under `compactPager:todos`, through `useCompactPagerState`; a saved task that is gone, or on a page that is not loaded, is dropped and the 2x1 starts on the first open task.
 
 ## Layout
 
