@@ -56,7 +56,7 @@ export const ITEM_TYPE_META: Record<StoreItemType, ItemTypeMeta> = {
 }
 
 export const STORE_NAV: { view: StoreView; label: string; icon: IconName }[] = [
-	{ view: 'home', label: t('market.product.showcaseTitle'), icon: 'compass' },
+	{ view: 'home', label: t('market.product.showcaseTitle'), icon: 'outlineCompass' },
 	{
 		view: 'WALLPAPER',
 		label: t('market.wallpaperBrowser.wallpaperLabel'),

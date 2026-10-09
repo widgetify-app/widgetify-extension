@@ -310,7 +310,7 @@ export const defaultIcons = {
 	sortDown: LuArrowDownWideNarrow,
 	outlineFilterListOff: LuFilterX,
 	outlineFilterList: LuListFilter,
-	crown: filled(LuCrown),
+	crown: LuCrown,
 	diamond: ProDiamondIcon,
 	upDown: LuArrowUpDown,
 	coffee: LuCoffee,
