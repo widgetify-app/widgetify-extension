@@ -1,0 +1,94 @@
+name: Issue Notification
+
+on:
+  issues:
+    types:
+      - opened
+      - closed
+      - reopened
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Telegram notification
+        env:
+          BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          THREAD_ID: ${{ secrets.TELEGRAM_THREAD_ID }}
+          EVENT_JSON: ${{ toJson(github.event) }}
+        run: |
+          python3 -c '
+          import os, json, urllib.request, urllib.parse, html
+
+          bot_token = os.environ.get("BOT_TOKEN", "").strip()
+          chat_id = os.environ.get("CHAT_ID", "").strip()
+          thread_id = os.environ.get("THREAD_ID", "").strip()
+
+          if not bot_token or not chat_id:
+              print("Telegram credentials not configured. Skipping notification.")
+              exit(0)
+
+          event = json.loads(os.environ.get("EVENT_JSON", "{}"))
+          action = event.get("action", "")
+          issue = event.get("issue", {})
+          repo = event.get("repository", {}).get("name", "widgetify-extension")
+          sender = event.get("sender", {}).get("login", "unknown")
+
+          number = issue.get("number", "")
+          title = issue.get("title", "")
+          url = issue.get("html_url", "")
+          body = issue.get("body") or ""
+          labels = [l.get("name") for l in issue.get("labels", []) if l.get("name")]
+
+          if action == "opened":
+              header = f"📌 <b>New Issue #{number} Opened</b>"
+          elif action == "closed":
+              header = f"✅ <b>Issue #{number} Closed</b>"
+          elif action == "reopened":
+              header = f"🔄 <b>Issue #{number} Reopened</b>"
+          else:
+              header = f"📋 <b>Issue #{number} ({action})</b>"
+
+          labels_text = f"🏷️ <b>Labels:</b> {html.escape(\", \".join(labels))}\n" if labels else ""
+
+          body_preview = body.strip().split("\n")[0] if body.strip() else ""
+          if len(body_preview) > 150:
+              body_preview = body_preview[:147] + "..."
+          body_text = f"💬 <i>\"{html.escape(body_preview)}\"</i>\n\n" if body_preview else "\n"
+
+          text = (
+              f"{header} in <b>{html.escape(repo)}</b>\n\n"
+              f"📝 <b>Title:</b> {html.escape(title)}\n"
+              f"👤 <b>By:</b> @{html.escape(sender)}\n"
+              f"{labels_text}"
+              f"{body_text}"
+              f"🔗 <a href=\"{url}\">Open Issue</a>"
+          )
+
+          payload = {
+              "chat_id": chat_id,
+              "text": text,
+              "parse_mode": "HTML",
+              "disable_web_page_preview": True
+          }
+
+          if thread_id:
+              try:
+                  payload["message_thread_id"] = int(thread_id)
+              except ValueError:
+                  print("Invalid THREAD_ID; sending to default topic.")
+
+          data = json.dumps(payload).encode("utf-8")
+          req = urllib.request.Request(
+              f"https://api.telegram.org/bot{bot_token}/sendMessage",
+              data=data,
+              headers={"Content-Type": "application/json"}
+          )
+
+          try:
+              with urllib.request.urlopen(req) as resp:
+                  print(f"Notification sent successfully: {resp.status}")
+          except Exception as e:
+              print(f"Failed to send Telegram notification: {e}")
+          '
