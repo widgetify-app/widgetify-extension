@@ -1,7 +1,7 @@
 import type React from 'react'
 import { memo, useRef } from 'react'
 import { cn } from '@/common/utils/cn'
-import { useContainerSize } from '@/features/widgets/hooks/use-container-size'
+import { useContainerSize } from '@/hooks/use-container-size'
 import { getDotGridLayout } from '../utils/get-dot-grid-layout'
 
 interface DotGridProps {

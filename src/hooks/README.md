@@ -6,6 +6,7 @@ React hooks used by two or more unrelated areas. Nothing else lives here.
 
 | File | Does |
 |---|---|
+| `use-container-size.ts` | The width and height of an element, kept current with a `ResizeObserver` |
 | `use-infinite-scroll.ts` | Loads the next page when the end of a list is visible |
 
 ## Rules
