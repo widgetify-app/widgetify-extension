@@ -225,7 +225,6 @@ export const widgets = {
 	'widgets.habit.share.copyImage': 'کپی تصویر',
 	'widgets.habit.share.downloadImage': 'دانلود تصویر',
 	'widgets.habit.item.detailsAria': 'جزئیات {p0}',
-	'widgets.habit.item.pastDays': '{p0} روز گذشته',
 	'widgets.habit.item.logProgressAria': 'ثبت پیشرفت {p0}',
 	'widgets.habit.item.thisWeek': 'این هفته',
 	'widgets.habit.item.notYet': 'هنوز نرسیده',

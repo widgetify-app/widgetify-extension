@@ -6,6 +6,7 @@ import { useKeyboardFocusWithin } from '@/features/widgets/hooks/use-keyboard-fo
 import type { Habit } from '@/services/habit/habit.interface'
 import { DEFAULT_HABIT_COLOR } from '../../constants'
 import { formatHabitToday } from '../../utils/habit-goal'
+import { habitWeek, weekOf } from '../../utils/habit-week'
 import { HabitLogButton } from './habit-log-button'
 
 interface HabitItemProps {
@@ -28,6 +29,7 @@ export function HabitItem({
 	const keyboardFocus = useKeyboardFocusWithin()
 	const color = habit.color || DEFAULT_HABIT_COLOR
 	const target = habit.target || 1
+	const todayKey = today.clone().doAsGregorian().format('YYYY-MM-DD')
 
 	const logButton = (
 		<HabitLogButton
@@ -81,17 +83,14 @@ export function HabitItem({
 
 			{trailing ?? (
 				<ul
-					dir="ltr"
-					aria-label={t('widgets.habit.item.pastDays', {
-						p0: habit.history.length,
-					})}
+					aria-label={t('widgets.habit.item.thisWeek')}
 					className="flex gap-0.75 shrink-0"
 				>
-					{habit.history.map((day) => {
+					{habitWeek(habit, weekOf(todayKey), todayKey).map((day) => {
 						const dayProgress = Math.min(day.value / target, 1)
 						return (
 							<li
-								key={day.date}
+								key={day.key}
 								className="overflow-hidden size-1.5 rounded-xs bg-fill-2"
 							>
 								{dayProgress > 0 && (
