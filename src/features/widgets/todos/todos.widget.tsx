@@ -53,6 +53,8 @@ export function TodosLayout({ size = { w: 2, h: 3 }, tabs }: TodosLayoutProps = 
 	const loadMoreRef = useRef<HTMLDivElement | null>(null)
 
 	const isBoard = size.w === 4 && size.h === 3
+	const isPanel = size.w === 2 && size.h === 6
+	const hasComposer = isBoard || isPanel
 
 	const {
 		data,
@@ -63,7 +65,7 @@ export function TodosLayout({ size = { w: 2, h: 3 }, tabs }: TodosLayoutProps = 
 		fetchNextPage,
 		refetch,
 	} = useGetTodos(isAuthenticated && isReady, {
-		limit: isBoard ? BOARD_PAGE_SIZE : LIST_PAGE_SIZE,
+		limit: hasComposer ? BOARD_PAGE_SIZE : LIST_PAGE_SIZE,
 		dateFilter:
 			dateFilter === 'today' || dateFilter === 'this_month'
 				? dateFilter
@@ -107,7 +109,7 @@ export function TodosLayout({ size = { w: 2, h: 3 }, tabs }: TodosLayoutProps = 
 	}
 
 	const openEditTodo = (todo: Todo) => {
-		if (isBoard) {
+		if (hasComposer) {
 			setEditingTodo(todo)
 		} else {
 			setFormTodo(todo)
@@ -199,7 +201,7 @@ export function TodosLayout({ size = { w: 2, h: 3 }, tabs }: TodosLayoutProps = 
 			actions={
 				isAuthenticated && (
 					<>
-						{!isBoard && (
+						{!hasComposer && (
 							<WidgetHeaderButton
 								label={t('widgets.todos.input.newTask')}
 								icon="plus"
@@ -221,7 +223,7 @@ export function TodosLayout({ size = { w: 2, h: 3 }, tabs }: TodosLayoutProps = 
 		/>
 	)
 
-	const todoForm = !isBoard && (
+	const todoForm = !hasComposer && (
 		<TodoFormModal
 			isOpen={isFormOpen}
 			todo={formTodo}
@@ -272,6 +274,10 @@ export function TodosLayout({ size = { w: 2, h: 3 }, tabs }: TodosLayoutProps = 
 
 	if (isBoard) {
 		return <TodoBoard {...listProps} />
+	}
+
+	if (isPanel) {
+		return <TodoBoard {...listProps} layout="panel" />
 	}
 
 	return (

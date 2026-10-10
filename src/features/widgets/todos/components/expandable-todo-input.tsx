@@ -237,7 +237,7 @@ export function ExpandableTodoInput({
 						rows={2}
 						className="w-full p-0 leading-relaxed bg-transparent outline-none resize-none text-2xs text-fg-muted placeholder:text-fg-faint"
 					/>
-					<div className="flex items-center gap-1">
+					<div className="flex flex-wrap items-center gap-1">
 						<TodoDateDropdown
 							date={selectedDate}
 							onChange={setSelectedDate}
@@ -259,32 +259,32 @@ export function ExpandableTodoInput({
 							/>
 						)}
 
-						<span className="flex-1" />
-
-						{isEdit && (
+						<div className="flex items-center gap-1 ms-auto">
+							{isEdit && (
+								<Button
+									onClick={() => onCloseEdit()}
+									disabled={isPending}
+									size="xs"
+									variant="ghost"
+									rounded="lg"
+								>
+									{t('ui.common.cancel')}
+								</Button>
+							)}
 							<Button
-								onClick={() => onCloseEdit()}
+								onClick={() => handleSave()}
 								disabled={isPending}
+								loading={isPending}
+								loadingText={<Spinner size="sm" tone="current" />}
 								size="xs"
-								variant="ghost"
+								color="brand"
 								rounded="lg"
 							>
-								{t('ui.common.cancel')}
+								{isEdit
+									? t('widgets.todos.input.save')
+									: t('widgets.todos.input.add')}
 							</Button>
-						)}
-						<Button
-							onClick={() => handleSave()}
-							disabled={isPending}
-							loading={isPending}
-							loadingText={<Spinner size="sm" tone="current" />}
-							size="xs"
-							color="brand"
-							rounded="lg"
-						>
-							{isEdit
-								? t('widgets.todos.input.save')
-								: t('widgets.todos.input.add')}
-						</Button>
+						</div>
 					</div>
 				</>
 			)}

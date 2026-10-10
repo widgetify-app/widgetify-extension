@@ -63,6 +63,8 @@ export function HabitsContent({ size = { w: 2, h: 3 }, tabs }: HabitsContentProp
 				<Habit2x1 actions={actions} today={today} />
 			) : size.w === 4 ? (
 				<Habit4x3 actions={actions} today={today} />
+			) : size.h === 6 ? (
+				<Habit4x3 actions={actions} today={today} layout="panel" />
 			) : (
 				<Habit2x3 actions={actions} today={today} />
 			)}

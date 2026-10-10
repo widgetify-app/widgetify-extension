@@ -15,6 +15,7 @@ interface BoardSummaryProps {
 	percentLabel: string
 	caption?: string
 	stats: BoardStat[]
+	placement?: 'side' | 'top'
 }
 
 export function BoardSummary({
@@ -23,16 +24,27 @@ export function BoardSummary({
 	percentLabel,
 	caption,
 	stats,
+	placement = 'side',
 }: BoardSummaryProps) {
+	const isTop = placement === 'top'
+
 	return (
 		<aside
 			aria-label={label}
-			className="flex flex-col flex-none gap-1 pt-1 border-s w-37.5 ps-3.5 border-line"
+			className={cn(
+				'flex flex-none border-line',
+				isTop
+					? 'items-center gap-4 px-2 pb-3 border-b'
+					: 'flex-col gap-1 pt-1 border-s w-37.5 ps-3.5'
+			)}
 		>
 			<div
 				role="img"
 				aria-label={percentLabel}
-				className="relative grid self-center mt-1 mb-2.5 place-items-center size-19"
+				className={cn(
+					'relative grid place-items-center',
+					isTop ? 'shrink-0 size-15' : 'self-center mt-1 mb-2.5 size-19'
+				)}
 			>
 				<svg
 					aria-hidden="true"
@@ -61,18 +73,26 @@ export function BoardSummary({
 					/>
 				</svg>
 				<span className="relative flex flex-col items-center leading-control">
-					<span className="text-base font-bold tabular-nums text-fg-strong">
+					<span
+						className={cn(
+							'font-bold tabular-nums text-fg-strong',
+							isTop ? 'text-sm' : 'text-base'
+						)}
+					>
 						{t('widgets.shell.percent', { percent })}
 					</span>
 					{caption && <span className="text-3xs text-fg-faint">{caption}</span>}
 				</span>
 			</div>
 
-			<dl className="flex flex-col">
+			<dl className={cn('flex flex-col', isTop && 'flex-1 min-w-0')}>
 				{stats.map((stat) => (
 					<div
 						key={stat.label}
-						className="flex items-center justify-between text-xs h-6.5 text-fg-muted"
+						className={cn(
+							'flex items-center justify-between text-xs text-fg-muted',
+							isTop ? 'h-6' : 'h-6.5'
+						)}
 					>
 						<dt>{stat.label}</dt>
 						<dd

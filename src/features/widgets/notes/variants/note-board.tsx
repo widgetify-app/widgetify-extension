@@ -23,9 +23,10 @@ const SKELETON_COUNT = 4
 
 interface NoteBoardProps {
 	tabs?: ReactNode
+	layout?: 'board' | 'panel'
 }
 
-export function NoteBoard({ tabs }: NoteBoardProps) {
+export function NoteBoard({ tabs, layout = 'board' }: NoteBoardProps) {
 	const { isAuthenticated } = useAuth()
 	const { blurMode } = useGeneralSetting()
 	const {
@@ -44,6 +45,7 @@ export function NoteBoard({ tabs }: NoteBoardProps) {
 
 	const selectedNote = notes.find((note) => note.id === activeNoteId) ?? notes[0]
 	const blurClass = blurMode ? 'blur-mode' : 'disabled-blur-mode'
+	const isPanel = layout === 'panel'
 
 	const onAdd = async () => {
 		if (!isAuthenticated) {
@@ -73,17 +75,18 @@ export function NoteBoard({ tabs }: NoteBoardProps) {
 
 	const body =
 		isLoading && !notes.length ? (
-			<NoteBoardSkeleton />
+			<NoteBoardSkeleton isPanel={isPanel} />
 		) : isError && !notes.length ? (
 			<WidgetError message={t('widgets.notes.loadError')} onRetry={refetch} />
 		) : !selectedNote ? (
 			<NoteEmpty onAdd={onAdd} />
 		) : (
-			<div className="flex flex-1 min-h-0 gap-3">
+			<div className={cn('flex flex-1 min-h-0 gap-3', isPanel && 'flex-col')}>
 				<ul
 					aria-label={t('widgets.notes.listAria')}
 					className={cn(
-						'flex flex-col gap-0.5 w-52 shrink-0 overflow-y-auto scrollbar-none',
+						'flex flex-col gap-0.5 shrink-0 overflow-y-auto scrollbar-none',
+						isPanel ? 'max-h-[40%]' : 'w-52',
 						blurClass
 					)}
 				>
@@ -104,6 +107,7 @@ export function NoteBoard({ tabs }: NoteBoardProps) {
 					note={selectedNote}
 					isNew={selectedNote.id === createdNoteId}
 					onDelete={() => setNoteToDelete(selectedNote.id)}
+					placement={isPanel ? 'bottom' : 'side'}
 					className={blurClass}
 				/>
 			</div>
@@ -144,15 +148,23 @@ export function NoteBoard({ tabs }: NoteBoardProps) {
 	)
 }
 
-function NoteBoardSkeleton() {
+function NoteBoardSkeleton({ isPanel }: { isPanel: boolean }) {
 	return (
-		<div aria-hidden="true" className="flex flex-1 min-h-0 gap-3">
-			<div className="flex flex-col gap-0.5 w-52 shrink-0">
+		<div
+			aria-hidden="true"
+			className={cn('flex flex-1 min-h-0 gap-3', isPanel && 'flex-col')}
+		>
+			<div className={cn('flex flex-col gap-0.5 shrink-0', !isPanel && 'w-52')}>
 				{Array.from({ length: SKELETON_COUNT }, (_, i) => (
 					<NoteSkeleton key={`note-board-skeleton-${i}`} />
 				))}
 			</div>
-			<div className="flex flex-col flex-1 gap-2.5 pt-1.5 border-s border-line ps-3.5">
+			<div
+				className={cn(
+					'flex flex-col flex-1 gap-2.5 border-line',
+					isPanel ? 'pt-3 px-2 border-t' : 'pt-1.5 border-s ps-3.5'
+				)}
+			>
 				<div className="w-1/3 h-3.5 rounded-sm skeleton" />
 				<div className="w-full h-2.5 rounded-sm skeleton" />
 				<div className="w-5/6 h-2.5 rounded-sm skeleton" />

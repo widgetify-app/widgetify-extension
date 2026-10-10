@@ -778,6 +778,7 @@ export const widgets = {
 	'widgets.registry.variant.notes.list': 'لیست یادداشت‌ها',
 	'widgets.registry.variant.notes.sticky': 'استیک نوت',
 	'widgets.registry.variant.notes.board': 'دفتر یادداشت',
+	'widgets.registry.variant.notes.panel': 'پنل یادداشت',
 	'widgets.registry.variant.transparentClock.persian': 'ساعت شفاف فارسی',
 	'widgets.registry.variant.transparentClock.english': 'ساعت شفاف انگلیسی',
 	'widgets.registry.variant.dotCalendar.year': 'روزهای سال',

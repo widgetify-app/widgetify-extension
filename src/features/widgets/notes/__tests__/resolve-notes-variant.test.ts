@@ -4,18 +4,22 @@ import { resolveNotesVariant } from '../utils/resolve-notes-variant'
 const LIST_SIZE = { w: 2, h: 3 }
 const STICKY_SIZE = { w: 2, h: 2 }
 const BOARD_SIZE = { w: 4, h: 3 }
+const PANEL_SIZE = { w: 2, h: 6 }
 
 describe('resolveNotesVariant', () => {
 	it('trusts an explicit variant over the size', () => {
 		expect(resolveNotesVariant(LIST_SIZE, { variant: 'sticky' })).toBe('sticky')
 		expect(resolveNotesVariant(STICKY_SIZE, { variant: 'list' })).toBe('list')
 		expect(resolveNotesVariant(LIST_SIZE, { variant: 'board' })).toBe('board')
+		expect(resolveNotesVariant(LIST_SIZE, { variant: 'panel' })).toBe('panel')
+		expect(resolveNotesVariant(PANEL_SIZE, { variant: 'list' })).toBe('list')
 	})
 
 	it('falls back to the size when no variant is stored', () => {
 		expect(resolveNotesVariant(STICKY_SIZE)).toBe('sticky')
 		expect(resolveNotesVariant(STICKY_SIZE, {})).toBe('sticky')
 		expect(resolveNotesVariant(BOARD_SIZE)).toBe('board')
+		expect(resolveNotesVariant(PANEL_SIZE)).toBe('panel')
 		expect(resolveNotesVariant(LIST_SIZE)).toBe('list')
 	})
 
@@ -27,6 +31,7 @@ describe('resolveNotesVariant', () => {
 	it('falls back to the size for a stored variant it does not know', () => {
 		const stored = { variant: 'grid' } as unknown as { variant: 'list' }
 		expect(resolveNotesVariant(BOARD_SIZE, stored)).toBe('board')
+		expect(resolveNotesVariant(PANEL_SIZE, stored)).toBe('panel')
 		expect(resolveNotesVariant(LIST_SIZE, stored)).toBe('list')
 	})
 

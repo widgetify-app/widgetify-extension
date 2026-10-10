@@ -271,6 +271,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		canToggle: true,
 		allowedSizes: [
 			{ w: 2, h: 3 },
+			{ w: 2, h: 6, isVipOnly: true },
 			{ w: 4, h: 3, isVipOnly: true },
 		],
 		defaultSize: { w: 2, h: 3 },
@@ -382,6 +383,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [
 			{ w: 2, h: 1 },
 			{ w: 2, h: 3 },
+			{ w: 2, h: 6, isVipOnly: true },
 			{ w: 4, h: 3, isVipOnly: true },
 		],
 		defaultSize: { w: 2, h: 3 },
@@ -398,6 +400,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		allowedSizes: [
 			{ w: 2, h: 1 },
 			{ w: 2, h: 3 },
+			{ w: 2, h: 6, isVipOnly: true },
 			{ w: 4, h: 3, isVipOnly: true },
 		],
 		defaultSize: { w: 2, h: 3 },
@@ -421,6 +424,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			{ w: 2, h: 3 },
 			{ w: 2, h: 2, isVipOnly: true },
 			{ w: 4, h: 3, isVipOnly: true },
+			{ w: 2, h: 6, isVipOnly: true },
 		],
 		defaultSize: { w: 2, h: 3 },
 		variants: [
@@ -446,6 +450,14 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 				size: { w: 4, h: 3 },
 				isVipOnly: true,
 				meta: { variant: 'board' },
+			},
+			{
+				id: 'panel',
+				label: 'widgets.registry.variant.notes.panel',
+
+				size: { w: 2, h: 6 },
+				isVipOnly: true,
+				meta: { variant: 'panel' },
 			},
 		],
 		canDuplicate: true,

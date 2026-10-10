@@ -15,6 +15,7 @@ interface NoteBoardEditorProps {
 	note: FetchedNote
 	isNew: boolean
 	onDelete: () => void
+	placement?: 'side' | 'bottom'
 	className?: string
 }
 
@@ -22,6 +23,7 @@ export function NoteBoardEditor({
 	note,
 	isNew,
 	onDelete,
+	placement = 'side',
 	className,
 }: NoteBoardEditorProps) {
 	const { updateNote, isSaving } = useNotes()
@@ -42,11 +44,15 @@ export function NoteBoardEditor({
 	const editedAt = moment(note.updatedAt || note.createdAt)
 		.locale('fa')
 		.format('jD jMMMM')
+	const isBottom = placement === 'bottom'
 
 	return (
 		<section
 			aria-label={note.title || t('widgets.notes.untitled')}
-			className="flex flex-col flex-1 min-w-0 min-h-0 gap-2 border-s border-line ps-3.5"
+			className={cn(
+				'flex flex-col flex-1 min-w-0 min-h-0 gap-2 border-line',
+				isBottom ? 'pt-3 border-t' : 'border-s ps-3.5'
+			)}
 		>
 			<NoteFields
 				title={title}
@@ -60,10 +66,15 @@ export function NoteBoardEditor({
 					save({ body: value })
 				}}
 				titleRef={titleRef}
-				className={cn('px-0 pt-0.5', className)}
+				className={cn(!isBottom && 'px-0 pt-0.5', className)}
 			/>
 
-			<footer className="flex items-center flex-none gap-2 h-7">
+			<footer
+				className={cn(
+					'flex items-center flex-none gap-2 h-7',
+					isBottom && 'ps-2'
+				)}
+			>
 				<NoteColorPicker
 					value={priority}
 					onChange={(value) => {

@@ -30,6 +30,8 @@ export function NotesLayout({
 				<NoteSticky meta={meta} instanceId={instanceId} />
 			) : variant === 'board' ? (
 				<NoteBoard tabs={tabs} />
+			) : variant === 'panel' ? (
+				<NoteBoard tabs={tabs} layout="panel" />
 			) : (
 				<NoteList tabs={tabs} />
 			)}

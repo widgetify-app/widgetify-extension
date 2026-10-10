@@ -1,6 +1,6 @@
 # Yadkar widget
 
-Tasks, notes and habits in one widget: 2x3, and 4x3 for PRO.
+Tasks, notes and habits in one widget: 2x3, and two PRO sizes, the 4x3 board and the 2x6 panel.
 
 ## Files
 
@@ -17,9 +17,9 @@ The tabs sit inside each view's own header, through the `tabs` prop of `TodosLay
 
 Opening a note replaces the tabs with the editor's back button until you return to the list.
 
-At 4x3 each view picks its own board from the size it is given: the tasks board with its composer and summary, the notebook, and the habits week with its summary. Yadkar adds nothing of its own, so a board looks the same here as in its own widget, only with the tabs as its title. The 4x3 size is PRO in `allowedSizes`, like the three boards.
+At 4x3 each view picks its own board from the size it is given: the tasks board with its composer and summary, the notebook, and the habits week with its summary. At 2x6 each picks its panel, the same board stacked: the summary or the list on top, then the rest. Yadkar adds nothing of its own, so a board or a panel looks the same here as in its own widget, only with the tabs as its title. Both sizes are PRO in `allowedSizes`, like the boards and panels of the three widgets.
 
-The labels are singular to fit. The header keeps room for the widest set of hover buttons, and the tasks tab has three (+, filter, ⋯). With «تسک‌ها» and «عادت‌ها» at a usual 2x3 width, that cut the end off «عادت‌ها»; the singular labels free about 22px.
+The labels are singular to fit. The header keeps room for the widest set of hover buttons, and the tasks tab has three (+, filter, ⋯). With «تسک‌ها» and «عادت‌ها» at a usual 2x3 width, that cut the end off «عادت‌ها»; the singular labels free about 22px. The 2x6 is as wide as the 2x3, and its tasks tab has one button fewer, since the panel adds through its composer.
 
 ## Storage
 
@@ -27,4 +27,4 @@ The labels are singular to fit. The header keeps room for the widest set of hove
 
 ## Not checked on screen
 
-The three tabs at 2x3 on the tasks tab at the narrowest canvas (a window under 900px wide), the shorter summaries, switching tabs with a menu open, each board at 4x3 under the tabs, resizing between 2x3 and 4x3, the 4x3 lock for a free account.
+The three tabs at 2x3 on the tasks tab at the narrowest canvas (a window under 900px wide), the shorter summaries, switching tabs with a menu open, each board at 4x3 and each panel at 2x6 under the tabs, resizing between 2x3, 2x6 and 4x3, the 4x3 and 2x6 lock for a free account.
