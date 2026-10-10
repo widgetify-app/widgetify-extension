@@ -15,12 +15,10 @@ import { parseTodoDate } from '../utils/parse-date'
 import { useUpdateTodo } from '@/services/todo/update-todo.hook'
 import { playAlarm } from '@/common/utils/play-alarm'
 import jalaliMoment from 'jalali-moment'
-import { TodoFriends } from './friends'
 import { TodoCheck } from './todo-check'
 import { Icon, type IconName } from '@/icons'
 import { PRIORITY_LABELS } from '../constants'
 import { todoDueLabel } from '../utils/todo-due-label'
-import { resolveIsDone } from '../utils/resolve-is-done'
 import { useKeyboardFocusWithin } from '@/features/widgets/hooks/use-keyboard-focus-within'
 
 interface Prop {
@@ -41,7 +39,7 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 		currentTodo?.id
 	)
 	const isTemp = currentTodo.id.startsWith('temp-')
-	const [isDone, setIsDone] = useState<boolean>(() => resolveIsDone(todo))
+	const [isDone, setIsDone] = useState<boolean>(todo.completed)
 
 	const isPending = isUpdating || isRemoving
 	const handleDelete = (e: React.MouseEvent) => {
@@ -101,14 +99,12 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 	}, [todo])
 
 	useEffect(() => {
-		setIsDone(resolveIsDone(currentTodo))
+		setIsDone(currentTodo.completed)
 	}, [currentTodo])
 
 	const dueDate = parseTodoDate(currentTodo.date)
 	const isoDate = dueDate.format('YYYY-MM-DD')
 	const dueLabel = todoDueLabel(dueDate, jalaliMoment())
-	const isOwner = currentTodo?.owner?.isSelf
-	const hasFriends = currentTodo?.friends && currentTodo?.friends?.length > 0
 	return (
 		<div
 			{...keyboardFocus}
@@ -143,14 +139,6 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 
 				<span className="flex items-center gap-1 shrink-0">
 					{isPending && <Spinner size="xs" />}
-					{hasFriends && (
-						<Icon
-							name="users"
-							size={12}
-							className="text-fg-faint"
-							aria-label={t('widgets.todos.item.shared')}
-						/>
-					)}
 					{!isDone && dueLabel && (
 						<time
 							dateTime={isoDate}
@@ -160,16 +148,14 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 						</time>
 					)}
 					<span className="items-center hidden group-hover/row:flex group-data-[keyboard-focus]/row:flex">
-						{isOwner && (
-							<button
-								type="button"
-								onClick={handleEdit}
-								aria-label={t('widgets.todos.form.editTitle')}
-								className="grid rounded-lg cursor-pointer place-items-center size-6 text-fg-muted transition-ui hover:bg-fill-2 hover:text-fg-strong focus-visible:focus-ring"
-							>
-								<Icon name="edit" size={14} aria-hidden="true" />
-							</button>
-						)}
+						<button
+							type="button"
+							onClick={handleEdit}
+							aria-label={t('widgets.todos.form.editTitle')}
+							className="grid rounded-lg cursor-pointer place-items-center size-6 text-fg-muted transition-ui hover:bg-fill-2 hover:text-fg-strong focus-visible:focus-ring"
+						>
+							<Icon name="edit" size={14} aria-hidden="true" />
+						</button>
 						<button
 							type="button"
 							onClick={handleDelete}
@@ -202,13 +188,6 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 							</TodoDetail>
 						)}
 					</span>
-					{hasFriends && (
-						<TodoFriends
-							currentTodoCompleted={currentTodo.completed}
-							friends={currentTodo.friends}
-							owner={currentTodo.owner}
-						/>
-					)}
 				</div>
 			)}
 

@@ -11,7 +11,6 @@ export interface TodoCreationPayload {
 	priority?: TodoPriority
 	completed?: boolean
 	order?: number
-	friendIds: string[]
 }
 
 export const useAddTodo = () => {

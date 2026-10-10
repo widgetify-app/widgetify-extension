@@ -271,8 +271,8 @@
 | `POST /notes` | بله | `{ title?, body?, id?, priority? }`. هم می‌سازد هم به‌روز می‌کند: برای ویرایش `id` بدهید. `priority` یکی از `low`، `medium` یا `high` است | یادداشت |
 | `DELETE /notes/{id}` | بله | | |
 | `GET /todos/v2/@me` | بله | `page`، `limit`، `isCompleted`، `dateFilter` (`today` یا `this_month`، یعنی روز و ماه شمسی به وقت تهران)، `category` | `{ todos, totalPages, totals }` |
-| `GET /todos/@me/tags` | بله | | `string[]`، تگ‌هایی که کاربر استفاده کرده. مسیری برای حذف تگ نیست: اپ روی هر تسکِ خود کاربر که این تگ را دارد `PATCH /todos/{id}` با `category: ''` می‌فرستد (`src/services/todo/remove-tag.hook.ts`) |
-| `POST /todos` | بله | `{ text*, date*, friendIds*: string[], category?, description?, priority?, completed?, order? }` | |
+| `GET /todos/@me/tags` | بله | | `string[]`، تگ‌هایی که کاربر استفاده کرده. مسیری برای حذف تگ نیست: اپ روی هر تسکی که این تگ را دارد `PATCH /todos/{id}` با `category: ''` می‌فرستد (`src/services/todo/remove-tag.hook.ts`) |
+| `POST /todos` | بله | `{ text*, date*, category?, description?, priority?, completed?, order? }` | |
 | `PATCH /todos/{id}` | بله | هرکدام از `text`، `category`، `date`، `description`، `priority`، `completed`، `order` | `{ data: { todo } }` |
 | `DELETE /todos/{id}` | بله | | |
 | `GET /widgets/habits` | بله | `archived`، `limit`، `page` | `{ data: { items, page, limit, total, icons, colors } }` |
@@ -282,7 +282,7 @@
 | `DELETE /widgets/habits/{id}` | بله | عادت را بایگانی می‌کند، پاک نمی‌شود | |
 | `PUT /widgets/habits/{id}/progress` | بله | `{ date*, amount* }` | |
 
-هر todo این است: `{ id, text, completed, date, priority, category, description, order, friends, owner, createdAt?, updatedAt? }`. برای عادت‌ها، `comparison` یکی از `AT_LEAST`، `AT_MOST` یا `EXACT` است، `unit` یکی از `TIMES`، `MINUTES`، `HOURS`، `PAGES`، `GLASSES` یا `CUSTOM`، و `frequency` یکی از `DAILY`، `WEEKLY` یا `MONTHLY`. شکل کامل در `src/services/todo/todo.interface.ts` و `src/services/habit/habit.interface.ts` است.
+هر todo این است: `{ id, text, completed, date, priority, category, description, order, createdAt?, updatedAt? }`. برای عادت‌ها، `comparison` یکی از `AT_LEAST`، `AT_MOST` یا `EXACT` است، `unit` یکی از `TIMES`، `MINUTES`، `HOURS`، `PAGES`، `GLASSES` یا `CUSTOM`، و `frequency` یکی از `DAILY`، `WEEKLY` یا `MONTHLY`. شکل کامل در `src/services/todo/todo.interface.ts` و `src/services/habit/habit.interface.ts` است.
 
 ## پومودورو و حال‌وهوا
 

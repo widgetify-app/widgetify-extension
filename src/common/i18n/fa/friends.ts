@@ -57,6 +57,5 @@ export const friends = {
 	'friends.direct.remove': 'حذف دوست',
 	'friends.direct.removeConfirm': '"{name}" از لیست دوستات حذف بشه؟',
 	'friends.remove': 'حذف',
-	'friends.select.empty': 'هنوز دوستی نداری',
 	'friends.page.empty': 'هنوز دوستی اضافه نکردی',
 } as const

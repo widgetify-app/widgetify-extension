@@ -11,8 +11,6 @@ import { type TodoCreationPayload, useAddTodo } from '@/services/todo/add-todo.h
 import { useUpdateTodo } from '@/services/todo/update-todo.hook'
 import { translateError } from '@/common/utils/translate-error'
 import { showToast } from '@/common/toast'
-import type { Friend } from '@/services/friends/friend-service.hook'
-import { TodoSelectFriends } from './select-friends'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
@@ -48,7 +46,6 @@ export function ExpandableTodoInput({
 	const notesRef = useRef<HTMLTextAreaElement>(null)
 	const containerRef = useRef<HTMLDivElement>(null)
 	const notesInputRef = useRef<HTMLInputElement | null>(null)
-	const [selectedFriends, setSelectedFriends] = useState<Friend[]>([])
 
 	const isPending = isCreatingTodo || isUpdatingTodo
 
@@ -136,7 +133,6 @@ export function ExpandableTodoInput({
 		setPriority(undefined)
 		setSelectedDate(getTodayJalaliMoment())
 		setIsExpanded(false)
-		setSelectedFriends([])
 	}, [])
 
 	const handleSave = async () => {
@@ -165,7 +161,6 @@ export function ExpandableTodoInput({
 						category: category.trim() || undefined,
 						completed: false,
 						order: 0,
-						friendIds: selectedFriends.map((f) => f.id),
 					}
 					await addTodoAsync(payload)
 				}
@@ -249,15 +244,6 @@ export function ExpandableTodoInput({
 						/>
 
 						<PriorityDropdown priority={priority} setPriority={setPriority} />
-
-						{!isEdit && isAuthenticated && (
-							<TodoSelectFriends
-								selectedFriends={selectedFriends}
-								setSelectedFriends={(fList: Friend[]) => {
-									setSelectedFriends(fList)
-								}}
-							/>
-						)}
 
 						<div className="flex items-center gap-1 ms-auto">
 							{isEdit && (

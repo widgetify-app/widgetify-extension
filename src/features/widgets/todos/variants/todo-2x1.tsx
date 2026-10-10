@@ -18,7 +18,6 @@ import { WidgetError } from '@/features/widgets/components/widget-error'
 import { TodoCheck } from '../components/todo-check'
 import { currentTaskIndex, nextOpenTaskId } from '../utils/current-task-index'
 import { parseTodoDate } from '../utils/parse-date'
-import { resolveIsDone } from '../utils/resolve-is-done'
 import { todoDueLabel } from '../utils/todo-due-label'
 
 interface TodoCompactRowProps {
@@ -73,8 +72,7 @@ function TodoCompactContent({
 		isReady: isAuthenticated && !isLoading && !isError,
 	})
 
-	const tasks = todos.map((todo) => ({ id: todo.id, completed: resolveIsDone(todo) }))
-	const index = currentTaskIndex(tasks, currentId)
+	const index = currentTaskIndex(todos, currentId)
 	const current = todos[index] as Todo | undefined
 
 	const { mutateAsync: updateTodo, isPending } = useUpdateTodo(current?.id || null)
@@ -129,7 +127,7 @@ function TodoCompactContent({
 		)
 	}
 
-	const isDone = tasks[index].completed
+	const isDone = current.completed
 	const isTemp = current.id.startsWith('temp-')
 	const isLast = index === todos.length - 1
 
@@ -147,7 +145,7 @@ function TodoCompactContent({
 
 		if (completed) {
 			playAlarm('success')
-			const nextId = nextOpenTaskId(tasks, index)
+			const nextId = nextOpenTaskId(todos, index)
 			if (nextId) selectTodo(nextId)
 		}
 		Analytics.event('todo_toggle_complete')

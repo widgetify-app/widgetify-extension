@@ -9,7 +9,7 @@ One folder per product feature. Widgets are features too and live in `widgets/` 
 ## Rules
 
 - The shape of a feature folder and its names are in `src/README.md`. The architecture test names the rule a misplaced file breaks.
-- **A feature reaches another only through its public files:** the entry (and what it re-exports), the settings panel and `*.context.tsx`. Example: `friends.tsx` exports `SelectFriendLayout` for the todos widget.
+- **A feature reaches another only through its public files:** the entry (and what it re-exports), the settings panel and `*.context.tsx`. Example: `friends.tsx` exports `FriendsDirectView` for the navbar.
 - **Settings panels** are `<feature>-setting.tsx` at the feature root and are public.
 - **Contexts** are `<name>.context.tsx` at the feature root and are public.
 - Server calls go through `src/services`. A feature never calls the API client.

@@ -15,17 +15,6 @@ export interface Todo {
 	order: number
 	createdAt?: string
 	updatedAt?: string
-	friends: {
-		avatar: string
-		completed: boolean
-		name: string
-		isSelf: boolean
-	}[]
-	owner: {
-		name: string
-		avatar: string
-		isSelf: boolean
-	}
 }
 
 export interface FetchedTodo extends Todo {}

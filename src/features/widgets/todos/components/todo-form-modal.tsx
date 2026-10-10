@@ -7,7 +7,6 @@ import { Button, Modal, TextArea, TextInput } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { Icon } from '@/icons'
 import { safeAwait } from '@/services/api'
-import type { Friend } from '@/services/friends/friend-service.hook'
 import { useAddTodo } from '@/services/todo/add-todo.hook'
 import { useGetTags } from '@/services/todo/get-tags.hook'
 import { useRemoveTodo } from '@/services/todo/remove-todo.hook'
@@ -16,7 +15,6 @@ import { useUpdateTodo } from '@/services/todo/update-todo.hook'
 import { parseTodoDate } from '../utils/parse-date'
 import { toTodoDueDate } from '../utils/todo-due-date'
 import { PriorityDropdown } from './priority-dropdown'
-import { TodoSelectFriends } from './select-friends'
 import { TodoCategoryDropdown, TodoDateDropdown } from './todo-form-tools'
 import { t } from '@/common/i18n'
 
@@ -37,7 +35,6 @@ interface TodoFormModalProps {
 
 export function TodoFormModal({ isOpen, todo, onClose, onChanged }: TodoFormModalProps) {
 	const isEdit = Boolean(todo)
-	const canEdit = !todo || Boolean(todo.owner?.isSelf)
 	const { isAuthenticated } = useAuth()
 	const { data: tags } = useGetTags(isAuthenticated && isOpen)
 	const { mutateAsync: addTodo, isPending: isAdding } = useAddTodo()
@@ -54,7 +51,6 @@ export function TodoFormModal({ isOpen, todo, onClose, onChanged }: TodoFormModa
 	const [category, setCategory] = useState('')
 	const [priority, setPriority] = useState<TodoPriority | undefined>(undefined)
 	const [date, setDate] = useState(today)
-	const [friends, setFriends] = useState<Friend[]>([])
 	const [isConfirmingDelete, setIsConfirmingDelete] = useState(false)
 
 	useEffect(() => {
@@ -64,12 +60,11 @@ export function TodoFormModal({ isOpen, todo, onClose, onChanged }: TodoFormModa
 		setCategory(todo?.category ?? '')
 		setPriority(todo?.priority)
 		setDate(initialDate(todo))
-		setFriends([])
 		setIsConfirmingDelete(false)
 	}, [isOpen, todo])
 
 	const handleSubmit = async () => {
-		if (isPending || !canEdit) return
+		if (isPending) return
 		const title = text.trim()
 		if (!title) {
 			showToast(t('widgets.todos.form.titleRequired'), 'error')
@@ -94,7 +89,6 @@ export function TodoFormModal({ isOpen, todo, onClose, onChanged }: TodoFormModa
 						category: category.trim() || undefined,
 						completed: false,
 						order: 0,
-						friendIds: friends.map((friend) => friend.id),
 					})
 		)
 
@@ -133,13 +127,7 @@ export function TodoFormModal({ isOpen, todo, onClose, onChanged }: TodoFormModa
 			closeLabel={t('ui.common.close')}
 		>
 			<div className="flex flex-col gap-3.5">
-				{!canEdit && (
-					<p className="px-3 py-2 rounded-xl bg-fill text-2xs text-fg-muted">
-						{t('widgets.todos.form.friendOwnedHint')}
-					</p>
-				)}
-
-				<fieldset disabled={!canEdit} className="flex flex-col min-w-0 gap-3.5">
+				<div className="flex flex-col gap-3.5">
 					<div className="flex flex-col gap-1.5">
 						<label
 							htmlFor="todo-form-title"
@@ -183,14 +171,8 @@ export function TodoFormModal({ isOpen, todo, onClose, onChanged }: TodoFormModa
 							onChange={setCategory}
 						/>
 						<PriorityDropdown priority={priority} setPriority={setPriority} />
-						{!isEdit && (
-							<TodoSelectFriends
-								selectedFriends={friends}
-								setSelectedFriends={setFriends}
-							/>
-						)}
 					</div>
-				</fieldset>
+				</div>
 
 				{isConfirmingDelete ? (
 					<div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-danger-fill">
@@ -242,22 +224,20 @@ export function TodoFormModal({ isOpen, todo, onClose, onChanged }: TodoFormModa
 						>
 							{t('ui.common.cancel')}
 						</Button>
-						{canEdit && (
-							<Button
-								color="brand"
-								size="md"
-								rounded="xl"
-								onClick={handleSubmit}
-								disabled={isPending}
-								className="flex-1"
-							>
-								{isPending
-									? t('widgets.todos.form.saving')
-									: isEdit
-										? t('widgets.todos.form.saveChanges')
-										: t('widgets.todos.form.add')}
-							</Button>
-						)}
+						<Button
+							color="brand"
+							size="md"
+							rounded="xl"
+							onClick={handleSubmit}
+							disabled={isPending}
+							className="flex-1"
+						>
+							{isPending
+								? t('widgets.todos.form.saving')
+								: isEdit
+									? t('widgets.todos.form.saveChanges')
+									: t('widgets.todos.form.add')}
+						</Button>
 					</div>
 				)}
 			</div>

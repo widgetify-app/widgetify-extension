@@ -10,7 +10,6 @@ import { ConfirmationModal } from '@/components/ui'
 
 export { FriendsActions } from './components/friends-actions'
 export { FriendsDirectView } from './components/friends-direct-view'
-export { SelectFriendLayout } from './components/select-friend'
 
 export const FriendsLayout = () => {
 	const [selectedUser, setSelectedUser] = useState<Friend | null>()

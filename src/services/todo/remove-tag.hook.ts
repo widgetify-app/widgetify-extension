@@ -30,10 +30,9 @@ async function removeTagFromTodos(tag: string): Promise<number> {
 		if (page >= data.totalPages) break
 	}
 
-	const own = tagged.filter((todo) => todo.owner?.isSelf)
-	for (const todo of own) {
+	for (const todo of tagged) {
 		await client.patch(`/todos/${todo.id}`, { category: '' })
 	}
 
-	return own.length
+	return tagged.length
 }

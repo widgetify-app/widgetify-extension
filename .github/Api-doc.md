@@ -271,8 +271,8 @@ Source: `src/services/note`, `src/services/todo`, `src/services/habit`
 | `POST /notes` | yes | `{ title?, body?, id?, priority? }`. It is an upsert: pass `id` to update a note. `priority` is `low`, `medium` or `high` | the note |
 | `DELETE /notes/{id}` | yes | | |
 | `GET /todos/v2/@me` | yes | `page`, `limit`, `isCompleted`, `dateFilter` (`today` or `this_month`, meaning the day and the solar Hijri month in Tehran time), `category` | `{ todos, totalPages, totals }` |
-| `GET /todos/@me/tags` | yes | | `string[]`, the tags the user has used. There is no route to delete one: the app clears `category` with `PATCH /todos/{id}` and `category: ''` on each of the user's own tasks that carry it (`src/services/todo/remove-tag.hook.ts`) |
-| `POST /todos` | yes | `{ text*, date*, friendIds*: string[], category?, description?, priority?, completed?, order? }` | |
+| `GET /todos/@me/tags` | yes | | `string[]`, the tags the user has used. There is no route to delete one: the app clears `category` with `PATCH /todos/{id}` and `category: ''` on each task that carries it (`src/services/todo/remove-tag.hook.ts`) |
+| `POST /todos` | yes | `{ text*, date*, category?, description?, priority?, completed?, order? }` | |
 | `PATCH /todos/{id}` | yes | any of `text`, `category`, `date`, `description`, `priority`, `completed`, `order` | `{ data: { todo } }` |
 | `DELETE /todos/{id}` | yes | | |
 | `GET /widgets/habits` | yes | `archived`, `limit`, `page` | `{ data: { items, page, limit, total, icons, colors } }` |
@@ -282,7 +282,7 @@ Source: `src/services/note`, `src/services/todo`, `src/services/habit`
 | `DELETE /widgets/habits/{id}` | yes | Archives the habit. It is not deleted | |
 | `PUT /widgets/habits/{id}/progress` | yes | `{ date*, amount* }` | |
 
-A todo is `{ id, text, completed, date, priority, category, description, order, friends, owner, createdAt?, updatedAt? }`. For a habit, `comparison` is `AT_LEAST`, `AT_MOST` or `EXACT`, `unit` is `TIMES`, `MINUTES`, `HOURS`, `PAGES`, `GLASSES` or `CUSTOM`, and `frequency` is `DAILY`, `WEEKLY` or `MONTHLY`. The full shapes are in `src/services/todo/todo.interface.ts` and `src/services/habit/habit.interface.ts`.
+A todo is `{ id, text, completed, date, priority, category, description, order, createdAt?, updatedAt? }`. For a habit, `comparison` is `AT_LEAST`, `AT_MOST` or `EXACT`, `unit` is `TIMES`, `MINUTES`, `HOURS`, `PAGES`, `GLASSES` or `CUSTOM`, and `frequency` is `DAILY`, `WEEKLY` or `MONTHLY`. The full shapes are in `src/services/todo/todo.interface.ts` and `src/services/habit/habit.interface.ts`.
 
 ## Pomodoro and mood
 
