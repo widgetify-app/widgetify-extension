@@ -14,9 +14,9 @@ import { useGetTags } from '@/services/todo/get-tags.hook'
 import { useGetTodos } from '@/services/todo/get-todos.hook'
 import type { Todo } from '@/services/todo/todo.interface'
 import type { WidgetSize } from '../utils/layout-engine/types'
-import { TodoFilterChip, TodoFilterMenu } from './components/todo-filter-menu'
+import { TodoFilterChips, TodoFilterMenu } from './components/todo-filter-menu'
 import { TodoFormModal } from './components/todo-form-modal'
-import { DATE_FILTER_OPTIONS, UNFILTERED_TAGS } from './constants'
+import { UNFILTERED_TAGS } from './constants'
 import { useTodoFilters } from './hooks/use-todo-filters'
 import { sortTodos } from './utils/sort-todos'
 import { todoSummary } from './utils/todo-summary'
@@ -175,26 +175,21 @@ export function TodosLayout({ size = { w: 2, h: 3 }, tabs }: TodosLayoutProps = 
 				})
 			: undefined
 
-	const dateFilterLabel = DATE_FILTER_OPTIONS.find(
-		(option) => option.value === dateFilter
-	)?.label
-	const filterChip =
-		dateFilter !== 'all' && dateFilterLabel ? (
-			<TodoFilterChip
-				label={dateFilterLabel}
-				onClear={() => onDateFilterChange('all')}
-			/>
-		) : hasTagFilter ? (
-			<TodoFilterChip
-				label={tagFilter}
-				onClear={() => onTagFilterChange('-all-')}
-			/>
-		) : undefined
-
 	const header = (
 		<WidgetHeader
 			title={tabs ?? t('widgets.todos.widget.title')}
-			badge={isBoard ? filterChip : undefined}
+			badge={
+				isBoard && (
+					<TodoFilterChips
+						dateFilter={dateFilter}
+						sort={sort}
+						tagFilter={tagFilter}
+						onDateFilterChange={onDateFilterChange}
+						onSortChange={onSortChange}
+						onTagFilterChange={onTagFilterChange}
+					/>
+				)
+			}
 			info={info}
 			actions={
 				isAuthenticated && (

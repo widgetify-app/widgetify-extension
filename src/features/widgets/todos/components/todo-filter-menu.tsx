@@ -3,12 +3,8 @@ import { useCallback, useRef, useState } from 'react'
 import { Chip, PopoverMenu, PopoverMenuDivider } from '@/components/ui'
 import { WidgetHeaderButton } from '@/features/widgets/components/widget-header'
 import { Icon } from '@/icons'
-import {
-	DATE_FILTER_OPTIONS,
-	SORT_OPTIONS,
-	type TodoFilterOption,
-	UNFILTERED_TAGS,
-} from '../constants'
+import { DATE_FILTER_OPTIONS, SORT_OPTIONS, type TodoFilterOption } from '../constants'
+import { activeTodoFilters, type TodoFilterKind } from '../utils/active-filters'
 
 interface TodoFilterMenuProps {
 	dateFilter: string
@@ -33,8 +29,7 @@ export function TodoFilterMenu({
 	const triggerRef = useRef<HTMLButtonElement>(null)
 	const close = useCallback(() => setIsOpen(false), [])
 
-	const isFiltered =
-		dateFilter !== 'all' || !UNFILTERED_TAGS.includes(tagFilter) || sort !== 'def'
+	const isFiltered = activeTodoFilters(dateFilter, tagFilter, sort).length > 0
 
 	const sections = [
 		{
@@ -100,12 +95,44 @@ export function TodoFilterMenu({
 	)
 }
 
+type TodoFilterChipsProps = Omit<TodoFilterMenuProps, 'tagOptions'>
+
+export function TodoFilterChips({
+	dateFilter,
+	sort,
+	tagFilter,
+	onDateFilterChange,
+	onSortChange,
+	onTagFilterChange,
+}: TodoFilterChipsProps) {
+	const filters = activeTodoFilters(dateFilter, tagFilter, sort)
+	if (filters.length === 0) return null
+
+	const clear: Record<TodoFilterKind, () => void> = {
+		date: () => onDateFilterChange('all'),
+		tag: () => onTagFilterChange('-all-'),
+		sort: () => onSortChange('def'),
+	}
+
+	return (
+		<div className="flex items-center min-w-0 gap-1 overflow-x-auto scrollbar-none">
+			{filters.map((filter) => (
+				<TodoFilterChip
+					key={filter.kind}
+					label={filter.label}
+					onClear={clear[filter.kind]}
+				/>
+			))}
+		</div>
+	)
+}
+
 interface TodoFilterChipProps {
 	label: string
 	onClear: () => void
 }
 
-export function TodoFilterChip({ label, onClear }: TodoFilterChipProps) {
+function TodoFilterChip({ label, onClear }: TodoFilterChipProps) {
 	return (
 		<button
 			type="button"
