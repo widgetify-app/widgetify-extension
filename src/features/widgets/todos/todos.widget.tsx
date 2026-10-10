@@ -52,9 +52,9 @@ export function TodosLayout({ size = { w: 2, h: 3 }, tabs }: TodosLayoutProps = 
 	const observerRef = useRef<IntersectionObserver | null>(null)
 	const loadMoreRef = useRef<HTMLDivElement | null>(null)
 
+	const isCompact = size.w === 2 && size.h === 1
 	const isBoard = size.w === 4 && size.h === 3
 	const isPanel = size.w === 2 && size.h === 6
-	const hasComposer = isBoard || isPanel
 
 	const {
 		data,
@@ -65,7 +65,7 @@ export function TodosLayout({ size = { w: 2, h: 3 }, tabs }: TodosLayoutProps = 
 		fetchNextPage,
 		refetch,
 	} = useGetTodos(isAuthenticated && isReady, {
-		limit: hasComposer ? BOARD_PAGE_SIZE : LIST_PAGE_SIZE,
+		limit: isBoard || isPanel ? BOARD_PAGE_SIZE : LIST_PAGE_SIZE,
 		dateFilter:
 			dateFilter === 'today' || dateFilter === 'this_month'
 				? dateFilter
@@ -109,11 +109,11 @@ export function TodosLayout({ size = { w: 2, h: 3 }, tabs }: TodosLayoutProps = 
 	}
 
 	const openEditTodo = (todo: Todo) => {
-		if (hasComposer) {
-			setEditingTodo(todo)
-		} else {
+		if (isCompact) {
 			setFormTodo(todo)
 			setIsFormOpen(true)
+		} else {
+			setEditingTodo(todo)
 		}
 		Analytics.event('todo_edit_open')
 	}
@@ -191,8 +191,6 @@ export function TodosLayout({ size = { w: 2, h: 3 }, tabs }: TodosLayoutProps = 
 			/>
 		) : undefined
 
-	const isCompact = size.w === 2 && size.h === 1
-
 	const header = (
 		<WidgetHeader
 			title={tabs ?? t('widgets.todos.widget.title')}
@@ -201,7 +199,7 @@ export function TodosLayout({ size = { w: 2, h: 3 }, tabs }: TodosLayoutProps = 
 			actions={
 				isAuthenticated && (
 					<>
-						{!hasComposer && (
+						{isCompact && (
 							<WidgetHeaderButton
 								label={t('widgets.todos.input.newTask')}
 								icon="plus"
@@ -223,15 +221,6 @@ export function TodosLayout({ size = { w: 2, h: 3 }, tabs }: TodosLayoutProps = 
 		/>
 	)
 
-	const todoForm = !hasComposer && (
-		<TodoFormModal
-			isOpen={isFormOpen}
-			todo={formTodo}
-			onClose={closeTodoForm}
-			onChanged={onTodoChanged}
-		/>
-	)
-
 	if (isCompact) {
 		return (
 			<>
@@ -250,7 +239,12 @@ export function TodosLayout({ size = { w: 2, h: 3 }, tabs }: TodosLayoutProps = 
 					onAdd={openCreateTodo}
 					onOpen={openEditTodo}
 				/>
-				{todoForm}
+				<TodoFormModal
+					isOpen={isFormOpen}
+					todo={formTodo}
+					onClose={closeTodoForm}
+					onChanged={onTodoChanged}
+				/>
 			</>
 		)
 	}
@@ -280,10 +274,5 @@ export function TodosLayout({ size = { w: 2, h: 3 }, tabs }: TodosLayoutProps = 
 		return <TodoBoard {...listProps} layout="panel" />
 	}
 
-	return (
-		<>
-			<Todo2x3 {...listProps} onAdd={openCreateTodo} />
-			{todoForm}
-		</>
-	)
+	return <Todo2x3 {...listProps} />
 }

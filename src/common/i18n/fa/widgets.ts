@@ -365,7 +365,6 @@ export const widgets = {
 	'widgets.todos.item.markUndoneAria': '{p0} رو برگردون به انجام‌نشده',
 	'widgets.todos.item.markDoneAria': '{p0} رو انجام‌شده کن',
 	'widgets.todos.empty.title': 'هنوز تسکی نداری',
-	'widgets.todos.empty.hint': 'اولین کاری که باید انجام بدی رو بنویس',
 	'widgets.todos.empty.hintBelow': 'اولین کاری که باید انجام بدی رو همین پایین بنویس',
 	'widgets.todos.filter.time': 'زمان',
 	'widgets.todos.filter.tag': 'برچسب',

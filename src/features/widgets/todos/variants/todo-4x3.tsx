@@ -1,7 +1,6 @@
 import { t } from '@/common/i18n'
 import { BoardSummary } from '@/features/widgets/components/board-summary'
-import { ExpandableTodoInput } from '../components/expandable-todo-input'
-import { type TodoListProps, TodoListBody } from './todo-2x3'
+import { type TodoListProps, TodoListColumn } from './todo-2x3'
 
 interface TodoBoardProps extends TodoListProps {
 	layout?: 'board' | 'panel'
@@ -18,19 +17,7 @@ export function TodoBoard({ layout = 'board', ...props }: TodoBoardProps) {
 	const showStats = isAuthenticated && !isLoading && !isError && total > 0
 	const isPanel = layout === 'panel'
 
-	const list = (
-		<div className="flex flex-col flex-1 min-w-0 min-h-0 gap-1.5">
-			<TodoListBody {...props} />
-			{isAuthenticated && (
-				<ExpandableTodoInput
-					editTodo={props.editingTodo}
-					isEdit={!!props.editingTodo}
-					onClose={props.onCloseEditor}
-					onUpdated={props.onUpdated}
-				/>
-			)}
-		</div>
-	)
+	const list = <TodoListColumn {...props} />
 
 	const summary = showStats && (
 		<BoardSummary

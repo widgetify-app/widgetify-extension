@@ -19,7 +19,7 @@ Opening a note replaces the tabs with the editor's back button until you return 
 
 At 4x3 each view picks its own board from the size it is given: the tasks board with its composer and summary, the notebook, and the habits week with its summary. At 2x6 each picks its panel, the same board stacked: the summary or the list on top, then the rest. Yadkar adds nothing of its own, so a board or a panel looks the same here as in its own widget, only with the tabs as its title. Both sizes are PRO in `allowedSizes`, like the boards and panels of the three widgets.
 
-The labels are singular to fit. The header keeps room for the widest set of hover buttons, and the tasks tab has three (+, filter, ⋯). With «تسک‌ها» and «عادت‌ها» at a usual 2x3 width, that cut the end off «عادت‌ها»; the singular labels free about 22px. The 2x6 is as wide as the 2x3, and its tasks tab has one button fewer, since the panel adds through its composer.
+The labels are singular to fit. The header keeps room for the widest set of hover buttons. When the tasks tab had three (+, filter, ⋯), «تسک‌ها» and «عادت‌ها» at a usual 2x3 width cut the end off «عادت‌ها»; the singular labels free about 22px. Each tab now has two: the tasks tab adds through its composer (filter, ⋯), notes and habits keep their + (+, ⋯). The 2x6 is as wide as the 2x3.
 
 ## Storage
 

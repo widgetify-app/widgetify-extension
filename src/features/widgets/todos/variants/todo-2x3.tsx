@@ -2,6 +2,7 @@ import { t } from '@/common/i18n'
 import type React from 'react'
 import type { ReactNode } from 'react'
 import type { Todo } from '@/services/todo/todo.interface'
+import { ExpandableTodoInput } from '../components/expandable-todo-input'
 import { TodosEmpty } from '../components/todo-empty'
 import { TodoItem } from '../components/todo-item'
 import { TodoSkeleton } from '../components/todo-skeleton'
@@ -22,19 +23,32 @@ export interface TodoListProps {
 	onEdit: (todo: Todo) => void
 	onUpdated: () => void
 	onCloseEditor: () => void
-	onAdd?: () => void
 }
 
 export const Todo2x3: React.FC<TodoListProps> = (props) => {
 	return (
 		<>
 			{props.header}
-			<TodoListBody {...props} />
+			<TodoListColumn {...props} />
 		</>
 	)
 }
 
-export function TodoListBody({
+export function TodoListColumn(props: TodoListProps) {
+	return (
+		<div className="flex flex-col flex-1 min-w-0 min-h-0 gap-1.5">
+			<TodoListBody {...props} />
+			<ExpandableTodoInput
+				editTodo={props.editingTodo}
+				isEdit={!!props.editingTodo}
+				onClose={props.onCloseEditor}
+				onUpdated={props.onUpdated}
+			/>
+		</div>
+	)
+}
+
+function TodoListBody({
 	todos,
 	isLoading,
 	isError,
@@ -45,7 +59,6 @@ export function TodoListBody({
 	onRefresh,
 	onEdit,
 	onUpdated,
-	onAdd,
 }: TodoListProps) {
 	return (
 		<div
@@ -64,7 +77,7 @@ export function TodoListBody({
 					onRetry={onRefresh}
 				/>
 			) : todos.length === 0 ? (
-				<TodosEmpty onAdd={onAdd} />
+				<TodosEmpty />
 			) : (
 				<>
 					<ul className="flex flex-col gap-0.5">
