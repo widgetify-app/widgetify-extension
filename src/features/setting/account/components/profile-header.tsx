@@ -69,7 +69,14 @@ export const ProfileHeader = ({
 			/>
 
 			<div className="absolute z-10 top-4 left-4">
-				<UserCoin coins={user?.coins || 0} />
+				<button
+					type="button"
+					aria-label={t('setting.profileHeader.buyCoins')}
+					onClick={() => callEvent('openMarketModal', { tab: 'coins' })}
+					className="block cursor-pointer rounded-2xl focus-visible:focus-ring"
+				>
+					<UserCoin coins={user?.coins || 0} />
+				</button>
 			</div>
 
 			{user?.vipExpiresAt ? (

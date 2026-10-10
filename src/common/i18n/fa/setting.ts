@@ -121,6 +121,7 @@ export const setting = {
 	'setting.profileHeader.validUntil': 'اعتبار تا {p0}',
 	'setting.profileHeader.proSubscription': 'اشتراک پرو',
 	'setting.profileHeader.proCreditLabel': 'اعتبار پرو:',
+	'setting.profileHeader.buyCoins': 'خرید ویج‌کوین',
 	'setting.profileHeader.joinedPrefix': 'شروعِ ماجرا از',
 	'setting.profileHeader.changeAvatar': 'تغییر تصویر پروفایل',
 	'setting.profileHeader.userFallback': 'کاربر',
