@@ -16,7 +16,7 @@ import { AccountTab } from './account/account'
 import { AllFriendsTab } from './components/friends-tab'
 import { RewardsTab } from './account/rewards/rewards'
 import { ConnectionPlatformsTab } from './components/connections-tab'
-import { VipTab } from './vip/vip'
+import { VipPlanStatus, VipTab } from './vip/vip'
 import { Icon } from '@/icons'
 
 interface SettingModalProps {
@@ -42,6 +42,7 @@ const tabs: TabItem[] = [
 				description: t('setting.tab.vipHint'),
 				icon: <Icon name="diamond" size={20} />,
 				element: <VipTab />,
+				actions: <VipPlanStatus />,
 			},
 			{
 				label: t('setting.tab.platforms'),

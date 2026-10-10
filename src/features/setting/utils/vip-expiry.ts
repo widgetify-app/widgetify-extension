@@ -22,6 +22,12 @@ export function formatVipRemaining(vipExpiresAt?: string | null): string {
 	return t('setting.vipExpiry.underOneHour')
 }
 
+export function hasVipTimeLeft(vipExpiresAt?: string | null): boolean {
+	if (!vipExpiresAt) return false
+	const target = moment(vipExpiresAt)
+	return target.isValid() && target.isAfter(moment())
+}
+
 export function formatVipExpiryDate(vipExpiresAt?: string | null): string {
 	if (!vipExpiresAt) return ''
 	try {

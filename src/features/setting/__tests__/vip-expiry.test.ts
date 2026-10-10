@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'bun:test'
-import { formatVipExpiryDate, formatVipRemaining } from '../utils/vip-expiry'
+import {
+	formatVipExpiryDate,
+	formatVipRemaining,
+	hasVipTimeLeft,
+} from '../utils/vip-expiry'
 
 const MINUTE = 60 * 1000
 const HOUR = 60 * MINUTE
@@ -34,6 +38,14 @@ describe('formatVipRemaining', () => {
 
 	it('says less than an hour at the very end', () => {
 		expect(formatVipRemaining(fromNow(30 * MINUTE))).toBe('کمتر از ۱ ساعت')
+	})
+})
+
+describe('hasVipTimeLeft', () => {
+	it('is true only while the expiry is still ahead', () => {
+		expect(hasVipTimeLeft(fromNow(HOUR))).toBe(true)
+		expect(hasVipTimeLeft(fromNow(-HOUR))).toBe(false)
+		expect(hasVipTimeLeft(null)).toBe(false)
 	})
 })
 

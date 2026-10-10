@@ -7,6 +7,45 @@
 	--animate-pet-tooltip-in: pet-tooltip-in 0.3s ease-out;
 	--animate-pet-tooltip-pulse: pet-tooltip-pulse 2s ease-in-out infinite;
 	--animate-pet-tooltip-wiggle: pet-tooltip-wiggle 1.5s ease-in-out infinite;
+	--animate-mascot-wave: mascot-wave 1.5s ease-in-out infinite;
+	--animate-mascot-cheer-left: mascot-cheer-left 0.9s ease-in-out infinite;
+	--animate-mascot-cheer-right: mascot-cheer-right 0.9s ease-in-out infinite;
+	--animate-mascot-float: mascot-float 3.2s ease-in-out infinite;
+	--animate-mascot-hop: mascot-hop 0.9s cubic-bezier(0.33, 0, 0.3, 1) infinite;
+	--animate-mascot-shadow: mascot-shadow 3.2s ease-in-out infinite;
+	--animate-mascot-shadow-hop: mascot-shadow-hop 0.9s cubic-bezier(0.33, 0, 0.3, 1)
+		infinite;
+	--animate-mascot-blink: mascot-blink 4.6s infinite;
+	--animate-mascot-twinkle: mascot-twinkle 1.8s ease-in-out infinite;
+	--animate-pro-draw: pro-draw 4.8s cubic-bezier(0.6, 0, 0.2, 1) infinite;
+	--animate-pro-pop: pro-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+	--animate-pro-ping: pro-ping 1.6s ease-out infinite;
+	--animate-pro-drift-slow: pro-drift 18s linear infinite;
+	--animate-pro-drift: pro-drift 12s linear infinite;
+	--animate-pro-drift-fast: pro-drift 8s linear infinite;
+	--animate-pro-clouds: pro-drift 70s linear infinite;
+	--animate-pro-glow: pro-glow 4s ease-in-out infinite;
+	--animate-pro-star: pro-star 2.6s ease-in-out infinite;
+	--animate-pro-shimmer: pro-shimmer 2.2s ease-in-out infinite;
+	--animate-pro-sun-rays: pro-turn 14s linear infinite;
+	--animate-pro-rec: pro-rec 1.2s ease-in-out infinite;
+	--animate-pro-timeline: pro-timeline 9s linear infinite;
+	--animate-pro-swap-a: pro-swap-a 7s cubic-bezier(0.6, 0, 0.3, 1) infinite;
+	--animate-pro-swap-b: pro-swap-b 7s cubic-bezier(0.6, 0, 0.3, 1) infinite;
+	--animate-pro-duplicate: pro-duplicate 7s ease infinite;
+	--animate-pro-size-cycle: pro-size-cycle 6s ease infinite both;
+	--animate-pro-size-chip: pro-size-chip 6s cubic-bezier(0.6, 0, 0.3, 1) infinite;
+	--animate-pro-marquee: pro-marquee 28s linear infinite;
+	--animate-pro-marquee-reverse: pro-marquee-reverse 34s linear infinite;
+	--animate-pro-peek: pro-peek 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+	--animate-pro-slide-in: pro-slide-in 0.35s ease both;
+	--animate-pro-sheen: pro-sheen 3.8s ease-in-out infinite;
+	--animate-pro-pass-sheen: pro-pass-sheen 5s ease-in-out infinite;
+	--animate-pro-pass-float: pro-pass-float 5s ease-in-out infinite;
+	--animate-pro-confetti-left: pro-confetti-left linear infinite both;
+	--animate-pro-confetti-right: pro-confetti-right linear infinite both;
+	--animate-pro-rise: pro-rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+	--animate-pro-burst: pro-burst 2.8s ease-out infinite;
 
 	@keyframes widget-wiggle {
 		0% {
@@ -80,6 +119,463 @@
 
 		75% {
 			transform: rotate(-10deg);
+		}
+	}
+
+	@keyframes mascot-wave {
+		0%,
+		100% {
+			transform: rotate(-96deg);
+		}
+
+		50% {
+			transform: rotate(-128deg);
+		}
+	}
+
+	@keyframes mascot-cheer-left {
+		0%,
+		100% {
+			transform: rotate(98deg);
+		}
+
+		50% {
+			transform: rotate(122deg);
+		}
+	}
+
+	@keyframes mascot-cheer-right {
+		0%,
+		100% {
+			transform: rotate(-98deg);
+		}
+
+		50% {
+			transform: rotate(-122deg);
+		}
+	}
+
+	@keyframes mascot-float {
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+
+		50% {
+			transform: translateY(-6px);
+		}
+	}
+
+	@keyframes mascot-hop {
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+
+		45% {
+			transform: translateY(-16px);
+		}
+	}
+
+	@keyframes mascot-shadow {
+		0%,
+		100% {
+			transform: scaleX(1);
+			opacity: 1;
+		}
+
+		50% {
+			transform: scaleX(0.88);
+			opacity: 0.7;
+		}
+	}
+
+	@keyframes mascot-shadow-hop {
+		0%,
+		100% {
+			transform: scaleX(1);
+			opacity: 1;
+		}
+
+		45% {
+			transform: scaleX(0.72);
+			opacity: 0.45;
+		}
+	}
+
+	@keyframes mascot-blink {
+		0%,
+		93%,
+		100% {
+			transform: scaleY(1);
+		}
+
+		96% {
+			transform: scaleY(0.12);
+		}
+	}
+
+	@keyframes mascot-twinkle {
+		0%,
+		100% {
+			transform: scale(0.3) rotate(0deg);
+			opacity: 0;
+		}
+
+		50% {
+			transform: scale(1) rotate(20deg);
+			opacity: 1;
+		}
+	}
+
+	@keyframes pro-draw {
+		0% {
+			stroke-dashoffset: 220;
+		}
+
+		30%,
+		82% {
+			stroke-dashoffset: 0;
+		}
+
+		100% {
+			stroke-dashoffset: -220;
+		}
+	}
+
+	@keyframes pro-pop {
+		0% {
+			opacity: 0;
+			transform: translateY(8px) scale(0.85);
+		}
+
+		100% {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
+	}
+
+	@keyframes pro-ping {
+		0% {
+			transform: scale(1);
+			opacity: 0.7;
+		}
+
+		100% {
+			transform: scale(1.35, 1.7);
+			opacity: 0;
+		}
+	}
+
+	@keyframes pro-drift {
+		from {
+			transform: translateX(0);
+		}
+
+		to {
+			transform: translateX(-870px);
+		}
+	}
+
+	@keyframes pro-glow {
+		0%,
+		100% {
+			opacity: 0.35;
+			transform: scale(1);
+		}
+
+		50% {
+			opacity: 0.6;
+			transform: scale(1.1);
+		}
+	}
+
+	@keyframes pro-star {
+		0%,
+		100% {
+			opacity: 0.15;
+		}
+
+		50% {
+			opacity: 1;
+		}
+	}
+
+	@keyframes pro-shimmer {
+		0%,
+		100% {
+			opacity: 0.25;
+			transform: scaleX(0.6);
+		}
+
+		50% {
+			opacity: 0.95;
+			transform: scaleX(1);
+		}
+	}
+
+	@keyframes pro-turn {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	@keyframes pro-rec {
+		0%,
+		100% {
+			opacity: 1;
+		}
+
+		50% {
+			opacity: 0.2;
+		}
+	}
+
+	@keyframes pro-timeline {
+		from {
+			transform: scaleX(0);
+		}
+
+		to {
+			transform: scaleX(1);
+		}
+	}
+
+	@keyframes pro-swap-a {
+		0%,
+		12% {
+			transform: translate(0, 0) scale(1);
+		}
+
+		22% {
+			transform: translate(72px, 30px) scale(1.1);
+		}
+
+		32%,
+		62% {
+			transform: translate(144px, 60px) scale(1);
+		}
+
+		72% {
+			transform: translate(72px, 30px) scale(1.1);
+		}
+
+		82%,
+		100% {
+			transform: translate(0, 0) scale(1);
+		}
+	}
+
+	@keyframes pro-swap-b {
+		0%,
+		12% {
+			transform: translate(0, 0);
+		}
+
+		32%,
+		62% {
+			transform: translate(-144px, -60px);
+		}
+
+		82%,
+		100% {
+			transform: translate(0, 0);
+		}
+	}
+
+	@keyframes pro-duplicate {
+		0%,
+		36% {
+			transform: scale(0);
+			opacity: 0;
+		}
+
+		44% {
+			transform: scale(1.12);
+			opacity: 1;
+		}
+
+		50%,
+		88% {
+			transform: scale(1);
+			opacity: 1;
+		}
+
+		95%,
+		100% {
+			transform: scale(0);
+			opacity: 0;
+		}
+	}
+
+	@keyframes pro-size-cycle {
+		0% {
+			opacity: 0;
+			transform: scale(0.88);
+		}
+
+		6%,
+		30% {
+			opacity: 1;
+			transform: scale(1);
+		}
+
+		36%,
+		100% {
+			opacity: 0;
+			transform: scale(0.94);
+		}
+	}
+
+	@keyframes pro-size-chip {
+		0%,
+		30% {
+			transform: translateX(0);
+		}
+
+		36%,
+		63% {
+			transform: translateX(-80px);
+		}
+
+		69%,
+		96% {
+			transform: translateX(-160px);
+		}
+
+		100% {
+			transform: translateX(0);
+		}
+	}
+
+	@keyframes pro-marquee {
+		from {
+			transform: translateX(0);
+		}
+
+		to {
+			transform: translateX(-50%);
+		}
+	}
+
+	@keyframes pro-marquee-reverse {
+		from {
+			transform: translateX(-50%);
+		}
+
+		to {
+			transform: translateX(0);
+		}
+	}
+
+	@keyframes pro-peek {
+		0% {
+			transform: translateY(40px);
+		}
+
+		100% {
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes pro-slide-in {
+		0% {
+			opacity: 0;
+			transform: translateY(8px);
+		}
+
+		100% {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes pro-sheen {
+		0%,
+		55% {
+			transform: translateX(0);
+		}
+
+		100% {
+			transform: translateX(-440px);
+		}
+	}
+
+	@keyframes pro-pass-sheen {
+		0%,
+		60% {
+			transform: translateX(0) rotate(20deg);
+		}
+
+		100% {
+			transform: translateX(-520px) rotate(20deg);
+		}
+	}
+
+	@keyframes pro-pass-float {
+		0%,
+		100% {
+			transform: rotate(-4deg) translateY(0);
+		}
+
+		50% {
+			transform: rotate(-2.5deg) translateY(-6px);
+		}
+	}
+
+	@keyframes pro-confetti-left {
+		0% {
+			transform: translateY(-30px) rotate(0deg);
+			opacity: 1;
+		}
+
+		85% {
+			opacity: 1;
+		}
+
+		100% {
+			transform: translateY(270px) rotate(420deg);
+			opacity: 0;
+		}
+	}
+
+	@keyframes pro-confetti-right {
+		0% {
+			transform: translateY(-30px) rotate(0deg);
+			opacity: 1;
+		}
+
+		85% {
+			opacity: 1;
+		}
+
+		100% {
+			transform: translateY(270px) rotate(-380deg);
+			opacity: 0;
+		}
+	}
+
+	@keyframes pro-rise {
+		0% {
+			opacity: 0;
+			transform: translateY(16px);
+		}
+
+		100% {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes pro-burst {
+		0% {
+			transform: scale(0.6);
+			opacity: 0.55;
+		}
+
+		100% {
+			transform: scale(1.6);
+			opacity: 0;
 		}
 	}
 }
