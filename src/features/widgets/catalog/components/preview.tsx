@@ -28,13 +28,10 @@ export function AddWidgetPreview({
 		const maxPreviewH = 260
 		const scale = Math.min(1, maxPreviewW / width, maxPreviewH / height)
 
-		return {
-			width: `${width}px`,
-			height: `${height}px`,
-			transform: scale < 1 ? `scale(${scale})` : undefined,
-			transformOrigin: 'center center',
-		}
+		return { width, height, scale }
 	}
+
+	const { width, height, scale } = getPreviewDimensions(previewSize)
 
 	return (
 		<div
@@ -53,15 +50,25 @@ export function AddWidgetPreview({
 			</div>
 
 			<div
-				style={getPreviewDimensions(previewSize)}
-				className="flex items-center justify-center overflow-hidden pointer-events-none select-none"
+				style={{ width: width * scale, height: height * scale }}
+				className="relative shrink-0 pointer-events-none select-none"
 			>
-				<div className="w-full h-full flex items-center justify-center">
-					{definition.node(
-						'preview-sample',
-						previewSize,
-						selectedVariant?.meta
-					)}
+				<div
+					style={{
+						width,
+						height,
+						transform: scale < 1 ? `scale(${scale})` : undefined,
+						transformOrigin: 'top left',
+					}}
+					className="absolute top-0 left-0 flex items-center justify-center overflow-hidden"
+				>
+					<div className="w-full h-full flex items-center justify-center">
+						{definition.node(
+							'preview-sample',
+							previewSize,
+							selectedVariant?.meta
+						)}
+					</div>
 				</div>
 			</div>
 		</div>
