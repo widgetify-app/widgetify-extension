@@ -153,7 +153,7 @@ export function pickTopUpPackage<T extends { coin: number; price: number }>(
 	return [...enough].sort((a, b) => a.price - b.price)[0]
 }
 
-export function pricePerHundredCoins(pkg: { coin: number; price: number }): number {
+function pricePerHundredCoins(pkg: { coin: number; price: number }): number {
 	return Math.round((pkg.price / pkg.coin) * 100)
 }
 

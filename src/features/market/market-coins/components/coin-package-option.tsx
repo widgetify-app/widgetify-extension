@@ -2,7 +2,7 @@ import { t } from '@/common/i18n'
 import { ConfigKey } from '@/common/constants/config-keys'
 import { cn } from '@/common/utils/cn'
 import type { CoinPackage } from '@/services/market/market-coins.interface'
-import { faNumber, pricePerHundredCoins } from '../../utils/store-item'
+import { faNumber } from '../../utils/store-item'
 
 interface CoinPackageOptionProps {
 	pkg: CoinPackage
@@ -45,11 +45,6 @@ export function CoinPackageOption({
 					<span className="font-normal text-2xs text-fg-muted">
 						{t('market.topUp.currencyLabel')}
 					</span>
-				</span>
-				<span className="block text-3xs text-fg-faint tabular-nums">
-					{t('market.coinPackage.perHundredLabel')}{' '}
-					{faNumber(pricePerHundredCoins(pkg))}{' '}
-					{t('market.topUp.currencyLabel')}
 				</span>
 			</span>
 		</button>

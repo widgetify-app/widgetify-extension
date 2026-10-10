@@ -123,7 +123,6 @@ export const market = {
 	'market.checkout.redirecting': 'داریم میریم درگاه پرداخت...',
 	'market.checkout.openError': 'درگاه پرداخت باز نشد، دوباره امتحان کن',
 	'market.coinPackage.bestValueBadge': 'به‌صرفه‌ترین',
-	'market.coinPackage.perHundredLabel': 'هر ۱۰۰ سکه',
 	'market.coins.introBody':
 		'با ویج‌کوین هر آیتمی رو یه بار می‌خری و برای همیشه مال تو می‌مونه',
 	'market.coins.balanceLabel': 'موجودی فعلی',
