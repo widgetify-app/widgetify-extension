@@ -15,7 +15,7 @@ import { useAuth } from '@/context/auth.context'
 import {
 	formatVipExpiryDate,
 	formatVipRemaining,
-} from '@/features/setting/account/utils/vip-expiry'
+} from '@/features/setting/utils/vip-expiry'
 import { callEvent } from '@/common/utils/call-event'
 
 interface ProfileHeaderProps {
