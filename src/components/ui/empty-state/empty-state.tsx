@@ -1,7 +1,11 @@
 import type { ReactNode } from 'react'
 import { cn } from '@/common/utils/cn'
 import { Icon, type IconName } from '@/icons'
-import { EmptyArt, type EmptyArtName, isEmptyArtName } from '../empty-art/empty-art'
+import {
+	EmptyArt,
+	type EmptyArtName,
+	isEmptyArtName,
+} from '../illustrations/illustrations'
 
 interface EmptyStateProps {
 	icon: IconName | EmptyArtName
