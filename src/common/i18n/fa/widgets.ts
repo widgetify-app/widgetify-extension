@@ -345,7 +345,7 @@ export const widgets = {
 	'widgets.pomodoro.leaderboard.empty': 'هنوز کسی توی این فهرست نیست',
 	'widgets.tools.widget.title': 'ابزارها',
 	'widgets.tools.religious.nextInMinutes': '{p0} دقیقه دیگه',
-	'widgets.tools.religious.nextInClock': '{p0}:{p1} دیگه',
+	'widgets.tools.religious.nextInClock': '{p0}:{p1} مانده',
 	'widgets.todos.input.dateFormat': 'dddd، jD jMMMM jYYYY',
 	'widgets.todos.input.newTask': 'تسک جدید',
 	'widgets.todos.input.titleAria': 'عنوان تسک جدید',

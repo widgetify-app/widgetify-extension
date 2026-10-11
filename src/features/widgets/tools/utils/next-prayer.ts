@@ -24,7 +24,7 @@ export function formatTimeLeft(minutes: number): string {
 	const rest = minutes % 60
 	if (hours === 0) return t('widgets.tools.religious.nextInMinutes', { p0: rest })
 	return t('widgets.tools.religious.nextInClock', {
-		p0: hours,
+		p0: hours.toString().padStart(2, '0'),
 		p1: String(rest).padStart(2, '0'),
 	})
 }
