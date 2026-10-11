@@ -558,6 +558,34 @@ const arts = {
 			/>
 		</>
 	),
+	consent: (
+		<>
+			<path
+				className="fill-brand-muted"
+				d="M53 6.5 54.8 10.5 58.8 12.3 54.8 14.1 53 18.1 51.2 14.1 47.2 12.3 51.2 10.5z"
+			/>
+			<path
+				className="fill-brand"
+				d="M28 6 47 12.5V28c0 12.5-8 21.5-19 27C17 49.5 9 40.5 9 28V12.5Z"
+			/>
+			<path className="fill-brand-muted" d="M28 6v49C17 49.5 9 40.5 9 28V12.5Z" />
+			<circle
+				className="fill-brand-hover stroke-surface"
+				strokeWidth="3"
+				cx="47"
+				cy="46"
+				r="11"
+			/>
+			<path
+				className="stroke-on-brand"
+				d="m42 46 3.6 3.7 6.6-7.4"
+				fill="none"
+				strokeWidth="2.6"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			/>
+		</>
+	),
 } satisfies Record<string, ReactElement>
 
 export type EmptyArtName = keyof typeof arts

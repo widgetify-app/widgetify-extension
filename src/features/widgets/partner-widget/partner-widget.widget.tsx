@@ -247,7 +247,7 @@ function PartnerFrame({ item, instanceId, size, variant }: FrameProp) {
 		if (state.phase === 'needsConsent') {
 			return (
 				<WidgetEmpty
-					art="verifyUser"
+					art="consent"
 					title={t('widgets.partner.consent.title')}
 					action={{
 						label: t('widgets.partner.consent.action'),

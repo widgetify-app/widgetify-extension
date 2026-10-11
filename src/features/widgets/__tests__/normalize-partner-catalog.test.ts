@@ -9,6 +9,7 @@ function serverItem(overrides: Record<string, unknown> = {}) {
 		widgetKey: 'widget:pomodoro',
 		label: 'پومودورو',
 		emoji: '🍅',
+		icon: 'https://cdn.example.test/partner-widgets/pomodoro.png',
 		category: 'productivity',
 		isVipOnly: false,
 		isNew: true,
@@ -43,6 +44,39 @@ function withPartner(patch: Record<string, unknown>) {
 	})
 }
 
+describe('normalizePartnerCatalog icon', () => {
+	it('keeps an https icon address', () => {
+		const [item] = normalizePartnerCatalog([serverItem()])
+
+		expect(item.iconUrl).toBe('https://cdn.example.test/partner-widgets/pomodoro.png')
+	})
+
+	it('drops an icon that is not a safe address', () => {
+		for (const icon of [
+			'http://cdn.example.test/a.png',
+			'javascript:alert(1)',
+			'data:image/png;base64,AAAA',
+			'https://user:pass@cdn.example.test/a.png',
+			'/relative.png',
+			42,
+			'',
+			null,
+		]) {
+			const [item] = normalizePartnerCatalog([serverItem({ icon })])
+
+			expect(item.iconUrl).toBeNull()
+		}
+	})
+
+	it('allows an http icon on loopback for local work', () => {
+		const [item] = normalizePartnerCatalog([
+			serverItem({ icon: 'http://localhost:9000/bucket/a.png' }),
+		])
+
+		expect(item.iconUrl).toBe('http://localhost:9000/bucket/a.png')
+	})
+})
+
 describe('normalizePartnerCatalog', () => {
 	it('reads a complete server item', () => {
 		const [item] = normalizePartnerCatalog([serverItem()])
@@ -52,6 +86,7 @@ describe('normalizePartnerCatalog', () => {
 			slug: 'pomodoro',
 			title: 'پومودورو',
 			emoji: '🍅',
+			iconUrl: 'https://cdn.example.test/partner-widgets/pomodoro.png',
 			category: 'productivity',
 			isVipOnly: false,
 			isNew: true,

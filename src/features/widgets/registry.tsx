@@ -175,7 +175,7 @@ const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 
 		emoji: '📆',
 		icon: 'googleG',
-		category: 'productivity',
+		category: 'time',
 		order: 1,
 		canToggle: true,
 		popular: true,
@@ -372,7 +372,7 @@ const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 
 		emoji: '🌐',
 		icon: 'wifi',
-		category: 'info',
+		category: 'productivity',
 		order: 7,
 		canToggle: true,
 		allowedSizes: [
@@ -626,11 +626,7 @@ const partnerNodes: PartnerNodes = {
 			meta={meta}
 		/>
 	),
-	preview: (item) => () => (
-		<WidgetContainer>
-			<PartnerPreview item={item} />
-		</WidgetContainer>
-	),
+	preview: (item) => () => <PartnerPreview item={item} />,
 }
 
 const unavailableNode: WidgetDefinition['node'] = (instanceId) => (

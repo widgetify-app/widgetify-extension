@@ -152,6 +152,7 @@ function normalizeItem(raw: unknown): PartnerCatalogItem | null {
 		) ?? allowedSizes[0]
 
 	const emoji = readText(raw.emoji, 16) ?? FALLBACK_EMOJI
+	const iconUrl = readUrl(raw.icon)?.toString() ?? null
 	const category = CATEGORIES.includes(raw.category as PartnerCategory)
 		? (raw.category as PartnerCategory)
 		: 'info'
@@ -166,6 +167,7 @@ function normalizeItem(raw: unknown): PartnerCatalogItem | null {
 		slug,
 		title,
 		emoji,
+		iconUrl,
 		category,
 		isVipOnly: raw.isVipOnly === true,
 		isNew: raw.isNew === true,

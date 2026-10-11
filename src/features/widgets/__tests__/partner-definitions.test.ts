@@ -35,6 +35,7 @@ const ITEM: PartnerCatalogItem = {
 	slug: 'pomodoro',
 	title: 'پومودورو',
 	emoji: '🍅',
+	iconUrl: 'https://cdn.example.test/pomodoro.png',
 	category: 'productivity',
 	isVipOnly: true,
 	isNew: true,
@@ -61,6 +62,7 @@ describe('partnerDefinition', () => {
 		expect(definition.id).toBe('widget:pomodoro')
 		expect(definition.title).toBe('پومودورو')
 		expect(definition.emoji).toBe('🍅')
+		expect(definition.iconUrl).toBe('https://cdn.example.test/pomodoro.png')
 		expect(definition.category).toBe('productivity')
 		expect(definition.isVipOnly).toBe(true)
 		expect(definition.isBeta).toBe(true)

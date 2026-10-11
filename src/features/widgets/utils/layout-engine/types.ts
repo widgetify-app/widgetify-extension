@@ -90,6 +90,7 @@ export interface WidgetDefinition {
 	menuLabel?: MessageKey
 	emoji: string
 	icon: IconName
+	iconUrl?: string | null
 	category?: WidgetCategory
 	isVipOnly?: boolean
 	allowedSizes: WidgetSize[]

@@ -102,6 +102,7 @@ export interface PartnerCatalogItem {
 	slug: string
 	title: string
 	emoji: string
+	iconUrl: string | null
 	category: PartnerCategory
 	isVipOnly: boolean
 	isNew: boolean

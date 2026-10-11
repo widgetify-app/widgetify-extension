@@ -47,7 +47,12 @@ A widget from the server catalog (key `widget:<slug>`, kind `partner`) is drawn 
 - A widget the catalog does not have (turned off, deleted, or the catalog not loaded yet) is drawn as the unavailable tile (`components/widget-unavailable.tsx`): a spinner until the catalog is ready, then «این ویجت در دسترس نیست» with a remove button. It has **no registry entry**, so the layout engine never validates or changes its size, and every older extension keeps and re-sends the row unchanged. Do not give it one.
 - Names: a partner definition carries a literal `title` (and its variants a `title`); render a name with `widgetTitle(definition, t)`, never `t(definition.label)` alone.
 - The catalog modal lists partner widgets from `useWidgetRegistry()`. Its preview is a static card (`previewNode`), never a live frame. Adding one goes through `ensureAccess(widgetKey)` from `partner-access.context.tsx`: sign in, then the contact step (`utils/partner-catalog/partner-access.ts`, the add-phone or add-email modal from the account feature), then the consent screen, then `POST /user-widgets/partner-consent`. If the user stops at any step, nothing is added. The server enforces the same rules at launch.
+- Icons: a partner definition carries `iconUrl` (the image uploaded in the panel; the normaliser keeps it only as an https address, or http on loopback) and an `emoji`. Draw a definition's icon with `components/widget-icon.tsx`: the image, then the emoji for a partner key, then the registry `icon`. A broken image falls back by itself.
 - The variant a user picked is stored as `meta.variant` (the catalog puts the variant id in the variant's `meta`), which the host reads.
+
+## The add and manage modal
+
+`catalog/catalog.tsx` holds the state; `catalog/components/grid.tsx` is the list side: a search box, category chips with counts (a category with no widget is hidden), a «تازه‌ها» strip above the rest, and a card grid. `catalog/utils/catalog-filter.ts` is the pure part and is tested: search normalises Arabic letters, digits, harakat and the half space and needs every word; a search looks in every category and overrides the chosen one; the strip shows only on the all view without a search; featured keys from the server config order both groups. The native category of a widget is the `category` in `registry.tsx`; keep it by what the widget does (the dot calendar and Google Calendar are time, the network widget is a tool). A partner widget's category comes from the server and uses the same four.
 
 ## Rules
 

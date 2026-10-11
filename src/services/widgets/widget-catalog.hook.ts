@@ -21,6 +21,7 @@ interface ServerWidgetCatalogItem {
 	widgetKey: string
 	label: string
 	emoji: string
+	icon?: string | null
 	category: string
 	isVipOnly?: boolean
 	isNew?: boolean

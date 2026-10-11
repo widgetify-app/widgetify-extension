@@ -8,6 +8,7 @@ function item(key: string): PartnerCatalogItem {
 		slug: key,
 		title: key,
 		emoji: '🧩',
+		iconUrl: null,
 		category: 'info',
 		isVipOnly: false,
 		isNew: false,
