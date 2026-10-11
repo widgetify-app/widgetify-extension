@@ -25,7 +25,7 @@ export function WidgetUnavailable({ instanceId }: { instanceId: string }) {
 
 	return (
 		<WidgetEmpty
-			art="alert"
+			art="unavailable"
 			title={t('widgets.partner.unavailable.title')}
 			description={t('widgets.partner.unavailable.body')}
 			action={{

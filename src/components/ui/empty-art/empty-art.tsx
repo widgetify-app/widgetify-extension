@@ -586,6 +586,46 @@ const arts = {
 			/>
 		</>
 	),
+	unavailable: (
+		<>
+			<path
+				className="fill-brand-muted"
+				d="M54 5.5 55.8 9.5 59.8 11.3 55.8 13.1 54 17.1 52.2 13.1 48.2 11.3 52.2 9.5z"
+			/>
+			<rect className="fill-brand" x="6" y="14" width="46" height="40" rx="7" />
+			<rect className="fill-on-brand" x="10" y="18" width="38" height="32" rx="4" />
+			<rect
+				className="fill-brand-muted"
+				x="16"
+				y="25"
+				width="26"
+				height="4"
+				rx="2"
+			/>
+			<rect
+				className="fill-brand-muted"
+				x="16"
+				y="34"
+				width="18"
+				height="4"
+				rx="2"
+			/>
+			<circle
+				className="fill-brand-hover stroke-surface"
+				strokeWidth="3"
+				cx="49"
+				cy="47"
+				r="10"
+			/>
+			<path
+				className="stroke-on-brand"
+				d="M44.5 47h9"
+				fill="none"
+				strokeWidth="2.6"
+				strokeLinecap="round"
+			/>
+		</>
+	),
 } satisfies Record<string, ReactElement>
 
 export type EmptyArtName = keyof typeof arts
