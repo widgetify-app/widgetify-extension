@@ -4,5 +4,5 @@ export const context = {
 	'context.wallpaper.customGradient': 'گرادیان سفارشی',
 	'context.wallpaper.gradient': 'گرادیان',
 	'context.wallpaper.loginRequired': 'برای انتخاب این تصویر زمینه اول وارد حسابت شو',
-	'context.wallpaper.activated': 'هووورا! تصویر زمینه فعال شد 🎉',
+	'context.wallpaper.activated': 'تصویر زمینه فعال شد 🎉',
 } as const
