@@ -4,7 +4,7 @@ import { blockBrowserContextMenu } from '@/pages/utils/block-browser-context-men
 class RecordingTarget extends EventTarget {
 	registrations: Array<boolean | AddEventListenerOptions | undefined> = []
 
-	addEventListener(
+	override addEventListener(
 		type: string,
 		listener: EventListenerOrEventListenerObject | null,
 		options?: boolean | AddEventListenerOptions

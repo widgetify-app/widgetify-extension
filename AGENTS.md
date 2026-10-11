@@ -2,7 +2,7 @@
 
 How an AI agent works on this repo. This file is the **workflow**. What each part of the code requires is in the README of that folder, so read those too.
 
-Stack: React 19, TypeScript 6, WXT 0.20 (Chrome and Firefox), Tailwind 4, daisyUI 5, framer-motion 12, TanStack Query 5, Biome 2, bun for tests. The UI is **Persian and right to left**.
+Stack: React 19, TypeScript 6, WXT 0.21 (Chrome and Firefox), Tailwind 4, daisyUI 5, framer-motion 14, TanStack Query 5, Biome 2, bun for tests. The UI is **Persian and right to left**.
 
 ## 1. Read first
 

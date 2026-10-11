@@ -1,7 +1,8 @@
 {
 	"compilerOptions": {
 		"jsx": "react-jsx",
-		"noEmit": true
+		"noEmit": true,
+		"noUncheckedIndexedAccess": false
 	},
 	"extends": "./.wxt/tsconfig.json"
 }
