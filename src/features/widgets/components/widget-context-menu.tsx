@@ -16,6 +16,7 @@ import { useWidgetVipResolver } from '@/features/widgets/hooks/use-widget-vip-re
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
 import { t } from '@/common/i18n'
+import { widgetTitle } from '../utils/partner-catalog/partner-definitions'
 
 export type WidgetMenuAnchor =
 	| { point: { x: number; y: number } }
@@ -55,8 +56,9 @@ export function WidgetContextMenu({
 	const { isVip } = useAuth()
 	const { isSizeVipOnly } = useWidgetVipResolver()
 
-	const menuLabelKey = definition.menuLabel ?? definition.label
-	const menuLabel = t(menuLabelKey)
+	const menuLabel = definition.menuLabel
+		? t(definition.menuLabel)
+		: widgetTitle(definition, t)
 	const hasVariants = Boolean(definition.variants && definition.variants.length > 0)
 	const fittingSizes = definition.allowedSizes.filter((s) => s.w <= cols)
 	const showResize =

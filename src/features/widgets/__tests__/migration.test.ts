@@ -109,7 +109,9 @@ describe('migrateWidgetLayoutIfNeeded', () => {
 			expect(result.some((w) => w.id === key)).toBe(true)
 		}
 
-		const bottomWidgets = result.filter((w) => !topWidgetKeys.includes(w.id))
+		const bottomWidgets = result.filter(
+			(w) => !(topWidgetKeys as string[]).includes(w.id)
+		)
 		expect(bottomWidgets.map((w) => w.id)).toEqual([
 			WidgetKeys.calendar,
 			WidgetKeys.todos,

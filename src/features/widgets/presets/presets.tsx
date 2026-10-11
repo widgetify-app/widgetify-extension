@@ -7,7 +7,7 @@ import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
 import { useAuth } from '@/context/auth.context'
 import { useFreeWidgetActions } from '@/features/widgets/widgets.context'
-import { WIDGET_DEFINITIONS } from '../registry'
+import { getWidgetRegistry } from '../registry'
 import { PRESET_LAYOUTS } from './constants'
 import { PresetCanvasPreview } from './components/preset-canvas-preview'
 import { resolvePresetWidgetsForViewport } from './utils/viewport'
@@ -138,7 +138,7 @@ const PresetLayoutModalComponent: React.FC<PresetLayoutModalProps> = ({
 											<ul className="flex flex-wrap items-center gap-1">
 												{visibleWidgetIds.map((widgetId) => {
 													const definition =
-														WIDGET_DEFINITIONS[widgetId]
+														getWidgetRegistry()[widgetId]
 													if (!definition) return null
 
 													return (

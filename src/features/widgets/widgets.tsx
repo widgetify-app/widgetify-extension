@@ -10,7 +10,8 @@ import { getCanvasHeight } from './utils/grid-geometry'
 import { useKeyboardFocusWithin } from './hooks/use-keyboard-focus-within'
 import { MIN_CANVAS_ROWS } from './utils/layout-engine/constants'
 import { rowCapFor } from './utils/layout-engine/row-cap'
-import { WIDGET_DEFINITIONS } from './registry'
+import { resolveWidgetDefinition, useWidgetRegistry } from './registry'
+import { widgetTitle } from './utils/partner-catalog/partner-definitions'
 import { WidgetHelpModal } from '@/features/widgets/components/widget-help-modal'
 import { PresetLayoutModal } from './presets/presets'
 import { CanvasContextMenu } from './components/canvas-context-menu'
@@ -19,6 +20,7 @@ import { CanvasEditToolbar } from './components/canvas-edit-toolbar'
 import { GridOverlay } from './components/grid-overlay'
 
 export function FreeWidgetCanvas() {
+	useWidgetRegistry()
 	const containerRef = useRef<HTMLDivElement>(null)
 	const backgroundRef = useRef<HTMLDivElement>(null)
 	const containerSize = useContainerSize(containerRef)
@@ -163,15 +165,14 @@ export function FreeWidgetCanvas() {
 		return (
 			<div ref={containerRef} className="flex flex-col w-full gap-3 px-1 py-2">
 				{sortedList.map((widget) => {
-					const def = WIDGET_DEFINITIONS[widget.id]
-					if (!def) return null
+					const def = resolveWidgetDefinition(widget)
 
 					return (
 						<ListWidgetFrame key={widget.instanceId}>
 							<div className="flex items-center justify-between pb-1 mb-2 border-b border-line">
 								<div className="flex items-center gap-1.5 font-bold text-xs text-fg">
 									<span>{def.emoji}</span>
-									<span>{t(def.label)}</span>
+									<span>{widgetTitle(def, t)}</span>
 								</div>
 								<button
 									type="button"
@@ -233,8 +234,7 @@ export function FreeWidgetCanvas() {
 				)}
 
 				{runtimeLayout.map((widget) => {
-					const def = WIDGET_DEFINITIONS[widget.id]
-					if (!def) return null
+					const def = resolveWidgetDefinition(widget)
 
 					return (
 						<CanvasWidgetOuter

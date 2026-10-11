@@ -56,7 +56,7 @@ export function AddWidgetOptions({
 										: 'bg-fill-2 hover:bg-surface-3 text-fg border border-line'
 								)}
 							>
-								<span>{t(variant.label)}</span>
+								<span>{variant.title ?? t(variant.label)}</span>
 								{isVipBadge && (
 									<VipBadge
 										size="xs"

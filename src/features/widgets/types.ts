@@ -1,4 +1,5 @@
 import type {
+	PartnerWidgetKey,
 	StoredWidget,
 	WidgetPosition,
 	WidgetSize,
@@ -73,5 +74,53 @@ declare module '@/common/utils/call-event' {
 declare module '@/common/constants/store-keys' {
 	interface StorageKV {
 		[key: `compactPager:${string}`]: string
+	}
+}
+
+export type PartnerScope = 'PROFILE' | 'ACCOUNT'
+
+export type ContactRequirement = 'EMAIL_OR_PHONE' | 'PHONE' | 'EMAIL'
+
+export type PartnerCategory = 'time' | 'productivity' | 'info' | 'lifestyle'
+
+export interface PartnerSize {
+	w: number
+	h: number
+	isVipOnly?: boolean
+}
+
+export interface PartnerVariant {
+	id: string
+	title: string
+	size: { w: number; h: number }
+	isVipOnly?: boolean
+	meta?: Record<string, unknown>
+}
+
+export interface PartnerCatalogItem {
+	widgetKey: PartnerWidgetKey
+	slug: string
+	title: string
+	emoji: string
+	iconUrl: string | null
+	category: PartnerCategory
+	isVipOnly: boolean
+	isNew: boolean
+	allowedSizes: PartnerSize[]
+	defaultSize: { w: number; h: number }
+	variants: PartnerVariant[]
+	canDuplicate: boolean
+	widgetUrl: string
+	origin: string
+	scopes: PartnerScope[]
+	contactRequirement: ContactRequirement
+	allow: string[]
+	sandbox: string[]
+	timeoutMs: number | null
+}
+
+declare module '@/common/constants/store-keys' {
+	interface StorageKV {
+		partnerWidgetCatalog: Record<string, unknown>[]
 	}
 }

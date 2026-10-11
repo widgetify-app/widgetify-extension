@@ -25,6 +25,7 @@ import { reflowForColumns } from './utils/widget-layout-helpers'
 import { useWidgetSync } from './hooks/use-widget-sync'
 import { useWidgetOperations } from './hooks/use-widget-operations'
 import { useWidgetDrag } from './hooks/use-widget-drag'
+import { usePartnerCatalogSync } from './hooks/use-partner-catalog-sync'
 import type {
 	FreeWidgetActions,
 	FreeWidgetContextType,
@@ -45,6 +46,7 @@ const FreeWidgetDerivedContext = createContext<FreeWidgetDerivedState | null>(nu
 
 export function FreeWidgetProvider({ children }: { children: React.ReactNode }) {
 	const { isAuthenticated, isVip, token } = useAuth()
+	usePartnerCatalogSync()
 	const { canvasMode, setCanvasMode, selectedInstanceId, setSelectedInstanceId } =
 		useAppearance()
 

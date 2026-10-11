@@ -5,6 +5,7 @@ import '@/styles/index.css'
 import { AppearanceProvider } from '@/context/appearance.context'
 import { AuthProvider } from '@/context/auth.context'
 import { ThemeProvider } from '@/context/theme.context'
+import { AccountContactProvider } from '@/features/setting/account/account-contact.context'
 import { MiniAppPopup } from '@/features/mini-apps/components/mini-app-popup'
 
 const queryClient = new QueryClient({
@@ -20,7 +21,9 @@ createRoot(container).render(
 			<AuthProvider>
 				<ThemeProvider>
 					<AppearanceProvider>
-						<MiniAppPopup />
+						<AccountContactProvider>
+							<MiniAppPopup />
+						</AccountContactProvider>
 					</AppearanceProvider>
 				</ThemeProvider>
 			</AuthProvider>

@@ -4,6 +4,8 @@ import { purgeDeprecatedStorageKeys } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import { StackedToaster } from '@/components/ui'
 import { GeneralSettingProvider } from '@/context/general-setting.context'
+import { AccountContactProvider } from '@/features/setting/account/account-contact.context'
+import { PartnerAccessProvider } from '@/features/widgets/partner-access.context'
 import { FreeWidgetProvider } from '@/features/widgets/widgets.context'
 import { NavbarLayout } from '@/features/navbar/navbar'
 import { WidgetSettings } from '@/features/widgets/widget-settings/widget-settings'
@@ -78,41 +80,45 @@ function Main() {
 
 	return (
 		<MotionPreferences>
-			<FreeWidgetProvider>
-				<NavbarLayout />
+			<AccountContactProvider>
+				<PartnerAccessProvider>
+					<FreeWidgetProvider>
+						<NavbarLayout />
 
-				<Presence mode="wait">
-					<motion.div
-						key={page}
-						initial={{ y: 10 }}
-						animate={{ y: 0 }}
-						exit={{ y: 10 }}
-						transition={{
-							duration: 0.2,
-							ease: [0.22, 1, 0.36, 1],
-						}}
-						className="flex w-full h-full"
-					>
-						{page === Page.Home ? (
-							<HomePage />
-						) : page === Page.Explorer ? (
-							<ExplorerPage />
-						) : (
-							<MiniAppPage />
-						)}
-					</motion.div>
-				</Presence>
-				<WidgetSettings />
-				<AddWidgetModal
-					isOpen={isAddWidgetModalOpen}
-					editTarget={addWidgetEditTarget}
-					onClose={() => {
-						setIsAddWidgetModalOpen(false)
-						setAddWidgetEditTarget(null)
-					}}
-					returnsToSettings={addWidgetReturnsToSettings}
-				/>
-			</FreeWidgetProvider>
+						<Presence mode="wait">
+							<motion.div
+								key={page}
+								initial={{ y: 10 }}
+								animate={{ y: 0 }}
+								exit={{ y: 10 }}
+								transition={{
+									duration: 0.2,
+									ease: [0.22, 1, 0.36, 1],
+								}}
+								className="flex w-full h-full"
+							>
+								{page === Page.Home ? (
+									<HomePage />
+								) : page === Page.Explorer ? (
+									<ExplorerPage />
+								) : (
+									<MiniAppPage />
+								)}
+							</motion.div>
+						</Presence>
+						<WidgetSettings />
+						<AddWidgetModal
+							isOpen={isAddWidgetModalOpen}
+							editTarget={addWidgetEditTarget}
+							onClose={() => {
+								setIsAddWidgetModalOpen(false)
+								setAddWidgetEditTarget(null)
+							}}
+							returnsToSettings={addWidgetReturnsToSettings}
+						/>
+					</FreeWidgetProvider>
+				</PartnerAccessProvider>
+			</AccountContactProvider>
 
 			<AuthRequiredModal
 				isOpen={showAuthRequired}

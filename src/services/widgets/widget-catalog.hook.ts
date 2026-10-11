@@ -21,6 +21,7 @@ interface ServerWidgetCatalogItem {
 	widgetKey: string
 	label: string
 	emoji: string
+	icon?: string | null
 	category: string
 	isVipOnly?: boolean
 	isNew?: boolean
@@ -28,6 +29,19 @@ interface ServerWidgetCatalogItem {
 	defaultSize: { w: number; h: number }
 	variants?: ServerWidgetVariant[]
 	canDuplicate: boolean
+	kind?: 'partner'
+	partner?: ServerPartnerInfo
+}
+
+interface ServerPartnerInfo {
+	slug: string
+	widgetUrl: string
+	origin: string
+	scopes: string[]
+	contactRequirement: string
+	allow: string[]
+	sandbox: string[]
+	timeoutMs: number | null
 }
 
 interface ServerCatalogConfig {

@@ -26,9 +26,23 @@ import { TodosLayout } from './todos/todos.widget'
 import { NotesLayout, resolveNotesVariant } from './notes/notes.widget'
 import { WidgetContainer } from './components/widget-container'
 import { WidgetTabKeys } from '@/features/widgets/types'
-import { type WidgetDefinition, WidgetKeys } from './utils/layout-engine/types'
+import { useSyncExternalStore } from 'react'
+import { PartnerWidget } from './partner-widget/partner-widget.widget'
+import { PartnerPreview } from './components/partner-preview'
+import { WidgetUnavailableTile } from './components/widget-unavailable'
+import { partnerCatalogStore } from './utils/partner-catalog/partner-catalog-store'
+import {
+	type PartnerNodes,
+	buildWidgetRegistry,
+	unavailableDefinition,
+} from './utils/partner-catalog/partner-definitions'
+import {
+	type StoredWidget,
+	type WidgetDefinition,
+	WidgetKeys,
+} from './utils/layout-engine/types'
 
-export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
+const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	[WidgetKeys.search]: {
 		id: WidgetKeys.search,
 		label: 'widgets.registry.search.label',
@@ -161,7 +175,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 
 		emoji: '📆',
 		icon: 'googleG',
-		category: 'productivity',
+		category: 'time',
 		order: 1,
 		canToggle: true,
 		popular: true,
@@ -358,7 +372,7 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 
 		emoji: '🌐',
 		icon: 'wifi',
-		category: 'info',
+		category: 'productivity',
 		order: 7,
 		canToggle: true,
 		allowedSizes: [
@@ -601,4 +615,50 @@ export const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			<DotCalendarWidget instanceId={instanceId} size={size} meta={meta} />
 		),
 	},
+}
+
+const partnerNodes: PartnerNodes = {
+	widget: (widgetKey) => (instanceId, size, meta) => (
+		<PartnerWidget
+			widgetKey={widgetKey}
+			instanceId={instanceId}
+			size={size}
+			meta={meta}
+		/>
+	),
+	preview: (item) => () => <PartnerPreview item={item} />,
+}
+
+const unavailableNode: WidgetDefinition['node'] = (instanceId) => (
+	<WidgetUnavailableTile instanceId={instanceId} />
+)
+
+let cachedRegistry: {
+	items: ReturnType<typeof partnerCatalogStore.get>['items']
+	registry: Record<string, WidgetDefinition>
+} | null = null
+
+export function getWidgetRegistry(): Record<string, WidgetDefinition> {
+	const { items } = partnerCatalogStore.get()
+
+	if (cachedRegistry?.items !== items) {
+		cachedRegistry = {
+			items,
+			registry: buildWidgetRegistry(WIDGET_DEFINITIONS, items, partnerNodes),
+		}
+	}
+
+	return cachedRegistry.registry
+}
+
+export function resolveWidgetDefinition(
+	widget: Pick<StoredWidget, 'id' | 'size'>
+): WidgetDefinition {
+	return (
+		getWidgetRegistry()[widget.id] ?? unavailableDefinition(widget, unavailableNode)
+	)
+}
+
+export function useWidgetRegistry(): Record<string, WidgetDefinition> {
+	return useSyncExternalStore(partnerCatalogStore.subscribe, getWidgetRegistry)
 }
