@@ -15,7 +15,7 @@ import { t } from '@/common/i18n'
 
 interface AddPhoneProp {
 	isOpen: boolean
-	onClose: () => void
+	onClose: (type: 'success' | 'cancel') => void
 }
 export function AddPhoneModal(prop: AddPhoneProp) {
 	const [step, setStep] = useState('enter-phone')
@@ -77,7 +77,7 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 				})
 			} else {
 				showToast(t('setting.modal.phone.successToast'), 'success')
-				prop.onClose()
+				prop.onClose('success')
 			}
 		}
 	}
@@ -86,7 +86,7 @@ export function AddPhoneModal(prop: AddPhoneProp) {
 		<Modal
 			title={t('setting.modal.phone.title')}
 			isOpen={prop.isOpen}
-			onClose={() => prop.onClose()}
+			onClose={() => prop.onClose('cancel')}
 			closeLabel={t('ui.common.close')}
 		>
 			<section>

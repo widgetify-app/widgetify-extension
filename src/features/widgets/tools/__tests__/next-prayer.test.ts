@@ -29,7 +29,7 @@ describe('minutesUntil and formatTimeLeft', () => {
 	})
 
 	it('writes hours and minutes, or only minutes when under an hour', () => {
-		expect(formatTimeLeft(169)).toBe('2:49 دیگه')
+		expect(formatTimeLeft(169)).toBe('02:49 مانده')
 		expect(formatTimeLeft(20)).toBe('20 دقیقه دیگه')
 	})
 })

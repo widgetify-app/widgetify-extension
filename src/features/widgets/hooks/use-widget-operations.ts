@@ -15,7 +15,7 @@ import {
 	type WidgetSize,
 } from '@/features/widgets/utils/layout-engine/types'
 import { isServerInstanceId } from '@/features/widgets/utils/instance-id'
-import { WIDGET_DEFINITIONS } from '@/features/widgets/registry'
+import { getWidgetRegistry } from '@/features/widgets/registry'
 import {
 	createUserWidgetApi,
 	deleteUserWidgetApi,
@@ -63,7 +63,7 @@ export function useWidgetOperations({
 	const commitMutation = useCallback(
 		(operation: string, nextRuntime: StoredWidget[], targetInstanceId?: string) => {
 			const currentCols = colsRef.current
-			if (!validateLayout(nextRuntime, currentCols, WIDGET_DEFINITIONS)) {
+			if (!validateLayout(nextRuntime, currentCols, getWidgetRegistry())) {
 				return false
 			}
 
@@ -124,7 +124,7 @@ export function useWidgetOperations({
 				instanceId,
 				targetSize: newSize,
 				cols: colsRef.current,
-				registry: WIDGET_DEFINITIONS,
+				registry: getWidgetRegistry(),
 			})
 
 			if (!result) {
@@ -145,7 +145,7 @@ export function useWidgetOperations({
 				instanceId,
 				targetPosition,
 				cols: colsRef.current,
-				registry: WIDGET_DEFINITIONS,
+				registry: getWidgetRegistry(),
 			})
 
 			if (!result) return false
@@ -191,7 +191,7 @@ export function useWidgetOperations({
 				instanceId,
 				targetSize: newSize,
 				cols: colsRef.current,
-				registry: WIDGET_DEFINITIONS,
+				registry: getWidgetRegistry(),
 			})
 
 			if (!result) {
@@ -224,7 +224,7 @@ export function useWidgetOperations({
 			initialSize?: WidgetSize,
 			meta?: Record<string, any>
 		): Promise<boolean> => {
-			const def = WIDGET_DEFINITIONS[id as keyof typeof WIDGET_DEFINITIONS]
+			const def = getWidgetRegistry()[id]
 			if (!def) return false
 
 			const isAlreadyActive = runtimeLayoutRef.current.some((w) => w.id === id)
@@ -274,7 +274,7 @@ export function useWidgetOperations({
 				newWidget,
 				targetPosition,
 				cols: colsRef.current,
-				registry: WIDGET_DEFINITIONS,
+				registry: getWidgetRegistry(),
 			})
 
 			if (!result) {
@@ -298,7 +298,7 @@ export function useWidgetOperations({
 			)
 			if (!original) return false
 
-			const def = WIDGET_DEFINITIONS[original.id]
+			const def = getWidgetRegistry()[original.id]
 			if (!def?.canDuplicate) {
 				showToast(t('widgets.ops.cannotDuplicate'), 'error')
 				return false
@@ -355,7 +355,7 @@ export function useWidgetOperations({
 				instanceId,
 				newWidget,
 				cols: colsRef.current,
-				registry: WIDGET_DEFINITIONS,
+				registry: getWidgetRegistry(),
 			})
 
 			if (!result) {
@@ -379,7 +379,7 @@ export function useWidgetOperations({
 				operation: 'remove',
 				instanceId,
 				cols: colsRef.current,
-				registry: WIDGET_DEFINITIONS,
+				registry: getWidgetRegistry(),
 			})
 
 			if (!result) return false

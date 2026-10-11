@@ -1,9 +1,12 @@
+import { useEffect, useRef, useState } from 'react'
 import { t } from '@/common/i18n'
 import type {
 	WidgetDefinition,
 	WidgetSize,
 	WidgetVariantOption,
 } from '@/features/widgets/utils/layout-engine/types'
+
+const PREVIEW_PADDING_PX = 24
 
 interface AddWidgetPreviewProps {
 	definition: WidgetDefinition
@@ -16,6 +19,23 @@ export function AddWidgetPreview({
 	previewSize,
 	selectedVariant,
 }: AddWidgetPreviewProps) {
+	const boxRef = useRef<HTMLDivElement>(null)
+	const [boxWidth, setBoxWidth] = useState<number | null>(null)
+
+	useEffect(() => {
+		const box = boxRef.current
+		if (!box) return
+
+		const measure = () => setBoxWidth(box.clientWidth)
+
+		measure()
+
+		const observer = new ResizeObserver(measure)
+		observer.observe(box)
+
+		return () => observer.disconnect()
+	}, [])
+
 	const getPreviewDimensions = (size: WidgetSize) => {
 		const cellW = 125
 		const cellH = 96
@@ -24,7 +44,7 @@ export function AddWidgetPreview({
 		const width = size.w * cellW + (size.w - 1) * gap
 		const height = size.h * cellH + (size.h - 1) * gap
 
-		const maxPreviewW = 540
+		const maxPreviewW = Math.min(540, (boxWidth ?? 540) - PREVIEW_PADDING_PX)
 		const maxPreviewH = 260
 		const scale = Math.min(1, maxPreviewW / width, maxPreviewH / height)
 
@@ -35,6 +55,7 @@ export function AddWidgetPreview({
 
 	return (
 		<div
+			ref={boxRef}
 			style={{
 				backgroundImage:
 					'radial-gradient(circle, currentColor 1px, transparent 1px)',
@@ -63,7 +84,7 @@ export function AddWidgetPreview({
 					className="absolute top-0 left-0 flex items-center justify-center overflow-hidden"
 				>
 					<div className="w-full h-full flex items-center justify-center">
-						{definition.node(
+						{(definition.previewNode ?? definition.node)(
 							'preview-sample',
 							previewSize,
 							selectedVariant?.meta

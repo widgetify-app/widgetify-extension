@@ -33,7 +33,7 @@ export const navbar = {
 	'navbar.notifications.showLess': 'نمایش کمتر',
 	'navbar.notifications.showMore': 'مشاهده بیشتر',
 	'navbar.notifications.close': 'بستن',
-	'navbar.notifications.completeProfile': 'پروفایلت رو کامل کن و پاداش بگیر!',
+	'navbar.notifications.completeProfile': 'پروفایلت رو کامل کن و پاداش بگیر',
 	'navbar.notifications.new': 'اعلان‌ها، اعلان جدید داری',
 	'navbar.notifications.label': 'اعلان‌ها',
 	'navbar.profile.defaultName': 'کاربر ویجتیفای',
@@ -69,10 +69,10 @@ export const navbar = {
 	'navbar.wizard.invitePlaceholder': 'کد دعوت رو بنویس',
 	'navbar.wizard.readyTitle': 'همه چیز آماده‌ست! 🚀',
 	'navbar.wizard.readyBody':
-		'پروفایلت آماده‌ست حالا می‌تونی از همه‌ی امکانات استفاده\n									کنی',
+		'پروفایلت آماده‌ست حالا میتونی از همه‌ی امکانات استفاده\n									کنی',
 	'navbar.wizard.start': 'شروع کنیم',
 	'navbar.logout.title': 'خروج از حساب',
-	'navbar.logout.message': 'مطمئنی می‌خوای از حسابت خارج بشی؟',
+	'navbar.logout.message': 'مطمئنی میخوای از حسابت خارج بشی؟',
 	'navbar.logout.confirm': 'خروج',
 	'navbar.logout.cancel': 'بی‌خیال',
 } as const

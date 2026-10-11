@@ -12,7 +12,7 @@ export const ui = {
 	'ui.common.previous': 'قبلی',
 	'ui.common.next': 'بعدی',
 	'ui.common.confirm': 'تایید',
-	'ui.common.cancel': 'انصراف',
+	'ui.common.cancel': 'فعلا نه',
 	'ui.common.areYouSure': 'مطمئنی؟',
 	'ui.common.confirmAction': 'این کار انجام بشه؟',
 	'ui.common.loading': 'در حال بارگذاری',

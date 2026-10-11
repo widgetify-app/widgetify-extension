@@ -4,6 +4,8 @@ import { purgeDeprecatedStorageKeys } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import { StackedToaster } from '@/components/ui'
 import { GeneralSettingProvider } from '@/context/general-setting.context'
+import { AccountContactProvider } from '@/features/setting/account/account-contact.context'
+import { PartnerAccessProvider } from '@/features/widgets/partner-access.context'
 import { FreeWidgetProvider } from '@/features/widgets/widgets.context'
 import { NavbarLayout } from '@/features/navbar/navbar'
 import { WidgetSettings } from '@/features/widgets/widget-settings/widget-settings'
@@ -45,6 +47,7 @@ function Main() {
 	const [isAddWidgetModalOpen, setIsAddWidgetModalOpen] = useState(false)
 	const [addWidgetEditTarget, setAddWidgetEditTarget] = useState<any>(null)
 	const [addWidgetReturnsToSettings, setAddWidgetReturnsToSettings] = useState(false)
+	const [addWidgetFocusId, setAddWidgetFocusId] = useState<string | null>(null)
 	const [showAuthRequired, setAuthRequired] = useState(false)
 	const { page, setPage } = usePage()
 
@@ -58,11 +61,21 @@ function Main() {
 				} else {
 					setAddWidgetEditTarget(null)
 				}
+				setAddWidgetFocusId(null)
 				setAddWidgetReturnsToSettings(Boolean(payload?.returnToSettings))
 				setIsAddWidgetModalOpen(true)
 				Analytics.event('widget_catalog_opened')
 			}
 		)
+
+		const openCatalogEvent = listenEvent('openWidgetCatalog', (widgetKey) => {
+			setPage(Page.Home)
+			setAddWidgetEditTarget(null)
+			setAddWidgetReturnsToSettings(false)
+			setAddWidgetFocusId(typeof widgetKey === 'string' ? widgetKey : null)
+			setIsAddWidgetModalOpen(true)
+			Analytics.event('widget_catalog_opened')
+		})
 
 		const openAuthRequireModal = listenEvent('open_require_auth_modal', () => {
 			setAuthRequired(true)
@@ -72,47 +85,54 @@ function Main() {
 
 		return () => {
 			openAddModalEvent()
+			openCatalogEvent()
 			openAuthRequireModal()
 		}
 	}, [setPage])
 
 	return (
 		<MotionPreferences>
-			<FreeWidgetProvider>
-				<NavbarLayout />
+			<AccountContactProvider>
+				<PartnerAccessProvider>
+					<FreeWidgetProvider>
+						<NavbarLayout />
 
-				<Presence mode="wait">
-					<motion.div
-						key={page}
-						initial={{ y: 10 }}
-						animate={{ y: 0 }}
-						exit={{ y: 10 }}
-						transition={{
-							duration: 0.2,
-							ease: [0.22, 1, 0.36, 1],
-						}}
-						className="flex w-full h-full"
-					>
-						{page === Page.Home ? (
-							<HomePage />
-						) : page === Page.Explorer ? (
-							<ExplorerPage />
-						) : (
-							<MiniAppPage />
-						)}
-					</motion.div>
-				</Presence>
-				<WidgetSettings />
-				<AddWidgetModal
-					isOpen={isAddWidgetModalOpen}
-					editTarget={addWidgetEditTarget}
-					onClose={() => {
-						setIsAddWidgetModalOpen(false)
-						setAddWidgetEditTarget(null)
-					}}
-					returnsToSettings={addWidgetReturnsToSettings}
-				/>
-			</FreeWidgetProvider>
+						<Presence mode="wait">
+							<motion.div
+								key={page}
+								initial={{ y: 10 }}
+								animate={{ y: 0 }}
+								exit={{ y: 10 }}
+								transition={{
+									duration: 0.2,
+									ease: [0.22, 1, 0.36, 1],
+								}}
+								className="flex w-full h-full"
+							>
+								{page === Page.Home ? (
+									<HomePage />
+								) : page === Page.Explorer ? (
+									<ExplorerPage />
+								) : (
+									<MiniAppPage />
+								)}
+							</motion.div>
+						</Presence>
+						<WidgetSettings />
+						<AddWidgetModal
+							isOpen={isAddWidgetModalOpen}
+							editTarget={addWidgetEditTarget}
+							focusWidgetId={addWidgetFocusId}
+							onClose={() => {
+								setIsAddWidgetModalOpen(false)
+								setAddWidgetEditTarget(null)
+								setAddWidgetFocusId(null)
+							}}
+							returnsToSettings={addWidgetReturnsToSettings}
+						/>
+					</FreeWidgetProvider>
+				</PartnerAccessProvider>
+			</AccountContactProvider>
 
 			<AuthRequiredModal
 				isOpen={showAuthRequired}

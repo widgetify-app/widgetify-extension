@@ -1,5 +1,4 @@
-import type React from 'react'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Analytics from '@/analytics'
 import { Badge, Button, Modal } from '@/components/ui'
 import { callEvent } from '@/common/utils/call-event'
@@ -10,16 +9,20 @@ import type {
 	WidgetSize,
 	WidgetVariantOption,
 } from '@/features/widgets/utils/layout-engine/types'
-import { WIDGET_DEFINITIONS } from '@/features/widgets/registry'
+import { useWidgetRegistry } from '@/features/widgets/registry'
+import { usePartnerAccess } from '@/features/widgets/partner-access.context'
+import { widgetTitle } from '../utils/partner-catalog/partner-definitions'
 import { Icon } from '@/icons'
-import type { WidgetTabKeys } from '@/features/widgets/types'
 import { WidgetHelpModal } from '../components/widget-help-modal'
+import { WidgetIcon } from '../components/widget-icon'
 import { useWidgetVipResolver } from '@/features/widgets/hooks/use-widget-vip-resolver'
 import { CATEGORIES, type AddWidgetModalProps } from './types'
-import { AddWidgetSidebar } from './components/sidebar'
+import { AddWidgetGrid } from './components/grid'
 import { AddWidgetOptions } from './components/options'
 import { AddWidgetPreview } from './components/preview'
 import { AddWidgetActions } from './components/actions'
+import { buildCatalogView, countByCategory } from './utils/catalog-filter'
+import { focusTarget } from './utils/focus-target'
 import { t } from '@/common/i18n'
 
 export function AddWidgetModal({
@@ -27,6 +30,7 @@ export function AddWidgetModal({
 	editTarget,
 	onClose,
 	returnsToSettings,
+	focusWidgetId,
 }: AddWidgetModalProps) {
 	const { isVip } = useAuth()
 	const {
@@ -38,21 +42,19 @@ export function AddWidgetModal({
 		maxFreeWidgets,
 	} = useWidgetVipResolver(isOpen)
 	const freeWidgets = useOptionalFreeWidgets()
+	const registry = useWidgetRegistry()
+	const { ensureAccess } = usePartnerAccess()
 
 	const runtimeLayout = freeWidgets?.runtimeLayout || []
 	const addWidget = freeWidgets?.addWidget
 	const updateWidgetVariant = freeWidgets?.updateWidgetVariant
 	const removeWidget = freeWidgets?.removeWidget
 
-	const allDefinitions = useMemo(() => {
-		return Object.values(WIDGET_DEFINITIONS)
-	}, [])
+	const allDefinitions = useMemo(() => Object.values(registry), [registry])
 
 	const [selectedId, setSelectedId] = useState<string>(allDefinitions[0]?.id || '')
 
-	const selectedDef =
-		WIDGET_DEFINITIONS[selectedId as keyof typeof WIDGET_DEFINITIONS] ||
-		allDefinitions[0]
+	const selectedDef = registry[selectedId] || allDefinitions[0]
 
 	const [selectedSize, setSelectedSize] = useState<WidgetSize>(
 		selectedDef?.defaultSize || { w: 2, h: 2 }
@@ -61,6 +63,7 @@ export function AddWidgetModal({
 		selectedDef?.variants?.[0] || null
 	)
 	const [activeCategory, setActiveCategory] = useState<WidgetCategory>('all')
+	const [query, setQuery] = useState('')
 	const [isHelpOpen, setIsHelpOpen] = useState(false)
 	const [isLoading, setIsLoading] = useState(false)
 
@@ -72,8 +75,7 @@ export function AddWidgetModal({
 
 	useEffect(() => {
 		if (editTarget) {
-			const def =
-				WIDGET_DEFINITIONS[editTarget.widgetId as keyof typeof WIDGET_DEFINITIONS]
+			const def = registry[editTarget.widgetId]
 			if (def) {
 				setSelectedId(def.id)
 				const currentWidget = runtimeLayout.find(
@@ -102,27 +104,27 @@ export function AddWidgetModal({
 
 	const isEditMode = Boolean(editTarget)
 
-	const handleCategoryChange = (categoryId: WidgetCategory) => {
-		setActiveCategory(categoryId)
-		if (!isEditMode) {
-			const nextList =
-				categoryId === 'new'
-					? allDefinitions.filter((def) => isWidgetNew(def.id))
-					: categoryId === 'all'
-						? allDefinitions
-						: allDefinitions.filter((def) => def.category === categoryId)
+	const appliedFocusRef = useRef<string | null>(null)
 
-			if (nextList.length > 0 && !nextList.some((def) => def.id === selectedId)) {
-				handleSelectWidget(nextList[0].id)
-			}
+	useEffect(() => {
+		if (!isOpen || isEditMode) {
+			appliedFocusRef.current = null
+			return
 		}
-	}
 
-	const handleSelectWidget = (id: string) => {
-		if (isEditMode) return
+		const target = focusTarget(focusWidgetId, registry)
+
+		if (!target || appliedFocusRef.current === target) return
+
+		appliedFocusRef.current = target
+		setActiveCategory('all')
+		setQuery('')
+		selectWidget(target)
+	}, [isOpen, isEditMode, focusWidgetId, registry])
+
+	const selectWidget = (id: string) => {
 		setSelectedId(id)
-		Analytics.event('widget_catalog_selected')
-		const def = WIDGET_DEFINITIONS[id as keyof typeof WIDGET_DEFINITIONS]
+		const def = registry[id]
 		if (def) {
 			if (def.variants && def.variants.length > 0) {
 				setSelectedVariant(def.variants[0])
@@ -134,14 +136,10 @@ export function AddWidgetModal({
 		}
 	}
 
-	const handleOpenWidgetSettings = (
-		e: React.MouseEvent,
-		settingsTab?: WidgetTabKeys
-	) => {
-		e.stopPropagation()
-		if (settingsTab) {
-			callEvent('openWidgetsSettings', { tab: settingsTab })
-		}
+	const handleSelectWidget = (id: string) => {
+		if (isEditMode) return
+		Analytics.event('widget_catalog_selected')
+		selectWidget(id)
 	}
 
 	const handleOpenSelectedSettings = () => {
@@ -223,6 +221,13 @@ export function AddWidgetModal({
 
 		setIsLoading(true)
 		try {
+			if (
+				selectedDef.id.startsWith('widget:') &&
+				!(await ensureAccess(selectedDef.id))
+			) {
+				return
+			}
+
 			const success = await addWidget(
 				selectedDef.id,
 				undefined,
@@ -237,50 +242,47 @@ export function AddWidgetModal({
 		}
 	}
 
-	const hasNewWidgets = useMemo(() => {
-		return allDefinitions.some((def) => isWidgetNew(def.id))
-	}, [allDefinitions, isWidgetNew])
+	const categoryCounts = useMemo(
+		() => countByCategory(allDefinitions),
+		[allDefinitions]
+	)
 
-	const categories = useMemo(() => {
-		if (!hasNewWidgets) return CATEGORIES
-		return [
-			CATEGORIES[0],
-			{
-				id: 'new' as WidgetCategory,
-				labelKey: 'widgets.catalog.category.new' as const,
-			},
-			...CATEGORIES.slice(1),
-		]
-	}, [hasNewWidgets])
+	const categories = useMemo(
+		() =>
+			CATEGORIES.filter((item) => item.id === 'all' || categoryCounts[item.id] > 0),
+		[categoryCounts]
+	)
 
-	const filteredDefinitions = useMemo(() => {
-		let list = allDefinitions
-		if (activeCategory === 'new') {
-			list = allDefinitions.filter((def) => isWidgetNew(def.id))
-		} else if (activeCategory !== 'all') {
-			list = allDefinitions.filter((def) => def.category === activeCategory)
+	const buildView = (category: WidgetCategory, text: string) =>
+		buildCatalogView({
+			items: allDefinitions,
+			category,
+			query: text,
+			featuredKeys: featuredWidgetKeys,
+			titleOf: (def) => widgetTitle(def, t),
+			isNew: isWidgetNew,
+		})
+
+	const view = buildView(activeCategory, query)
+
+	const keepSelectionIn = (next: ReturnType<typeof buildView>) => {
+		if (isEditMode) return
+		const visible = [...next.fresh, ...next.rest]
+		if (visible.length > 0 && !visible.some((def) => def.id === selectedId)) {
+			handleSelectWidget(visible[0].id)
 		}
+	}
 
-		if (
-			activeCategory === 'all' &&
-			featuredWidgetKeys &&
-			featuredWidgetKeys.length > 0
-		) {
-			const featuredIndexMap = new Map(
-				featuredWidgetKeys.map((key, idx) => [key, idx])
-			)
-			return [...list].sort((a, b) => {
-				const aIndex = featuredIndexMap.get(a.id)
-				const bIndex = featuredIndexMap.get(b.id)
-				if (aIndex !== undefined && bIndex !== undefined) return aIndex - bIndex
-				if (aIndex !== undefined) return -1
-				if (bIndex !== undefined) return 1
-				return 0
-			})
-		}
+	const handleCategoryChange = (category: WidgetCategory) => {
+		setActiveCategory(category)
+		setQuery('')
+		keepSelectionIn(buildView(category, ''))
+	}
 
-		return list
-	}, [allDefinitions, activeCategory, isWidgetNew, featuredWidgetKeys])
+	const handleQueryChange = (text: string) => {
+		setQuery(text)
+		keepSelectionIn(buildView(activeCategory, text))
+	}
 
 	const previewSize = selectedSize
 
@@ -312,36 +314,41 @@ export function AddWidgetModal({
 				}
 				size="xl"
 				closeOnBackdropClick
-				className="max-w-4xl md:max-w-5xl"
+				className="max-w-4xl md:max-w-6xl"
 			>
 				<div className="flex flex-col md:flex-row gap-4 select-none w-full h-[calc(100dvh-11rem)] overflow-y-auto scrollbar-none md:h-[min(34.375rem,calc(100dvh-14rem))] md:overflow-visible">
-					<AddWidgetSidebar
+					<AddWidgetGrid
 						activeCategory={activeCategory}
 						onSelectCategory={handleCategoryChange}
 						categories={categories}
-						definitions={filteredDefinitions}
+						categoryCounts={categoryCounts}
+						query={query}
+						onQueryChange={handleQueryChange}
+						view={view}
 						selectedId={selectedId}
 						onSelectWidget={handleSelectWidget}
 						runtimeLayout={runtimeLayout}
 						isVip={isVip}
 						isWidgetVipOnly={isWidgetVipOnly}
 						isWidgetNew={isWidgetNew}
-						onOpenWidgetSettings={handleOpenWidgetSettings}
 					/>
 
-					<div className="flex flex-col w-full pr-0 md:min-h-0 md:w-7/12 md:pr-1">
+					<div className="flex flex-col w-full pr-0 md:min-h-0 md:w-6/12 md:pr-1">
 						{selectedDef ? (
 							<div className="flex flex-col gap-3 md:flex-1 md:min-h-0">
 								<div className="flex flex-col gap-3 pr-0.5 scrollbar-none md:flex-1 md:min-h-0 md:overflow-y-auto">
 									<div className="flex items-center justify-between pb-2 border-b border-line">
 										<div className="flex items-center gap-2">
 											<span className="flex items-center justify-center rounded-xl w-9 h-9 shrink-0 bg-brand-fill text-brand">
-												<Icon name={selectedDef.icon} size={20} />
+												<WidgetIcon
+													definition={selectedDef}
+													size={24}
+												/>
 											</span>
 											<div>
 												<div className="flex items-center gap-1.5">
 													<h3 className="text-sm font-bold text-fg">
-														{t(selectedDef.label)}
+														{widgetTitle(selectedDef, t)}
 													</h3>
 													{isWidgetNew?.(selectedDef.id) && (
 														<Badge>

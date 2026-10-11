@@ -22,7 +22,7 @@ describe('t', () => {
 		expect(t('ui.common.confirmAction')).toBe('این کار انجام بشه؟')
 		expect(t('ui.common.areYouSure')).toBe('مطمئنی؟')
 		expect(t('ui.common.confirm')).toBe('تایید')
-		expect(t('ui.common.cancel')).toBe('انصراف')
+		expect(t('ui.common.cancel')).toBe('فعلا نه')
 		expect(t('ui.common.close')).toBe('بستن')
 		expect(t('ui.common.moment')).toBe('یه لحظه…')
 		expect(t('ui.common.loading')).toBe('در حال بارگذاری')

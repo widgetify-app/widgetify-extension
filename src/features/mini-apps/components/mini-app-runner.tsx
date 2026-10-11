@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { t } from '@/common/i18n'
+import { contactStepOfError } from '@/common/utils/contact-step'
+import { useAccountContact } from '@/features/setting/account/account-contact.context'
 import { useLaunchMiniApp } from '@/services/mini-apps/launch-mini-app.hook'
 import { useGetMiniApp } from '@/services/mini-apps/get-mini-app.hook'
 import { MiniAppError } from './mini-app-error'
@@ -40,10 +42,11 @@ export function MiniAppRunner({
 
 	const { data: appData, isLoading: isLoadingApp } = useGetMiniApp(appId)
 	const { mutateAsync: launchApp, isPending: isLaunching } = useLaunchMiniApp()
+	const { requestContact } = useAccountContact()
 
 	const app = appData?.data
 
-	const doLaunch = async () => {
+	const doLaunch = async (afterContact = false) => {
 		setHasError(false)
 		setIsAppReady(false)
 		setLaunchData(null)
@@ -51,6 +54,10 @@ export function MiniAppRunner({
 			const response = await launchApp({ appId })
 			setLaunchData(response.data)
 		} catch (error) {
+			const step = afterContact ? null : contactStepOfError(error)
+
+			if (step && (await requestContact(step))) return doLaunch(true)
+
 			console.error('Error launching app:', error)
 			Analytics.error('launch_failed', 'mini_app_launch')
 			setHasError(true)

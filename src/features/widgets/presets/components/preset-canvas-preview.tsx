@@ -2,7 +2,7 @@ import type React from 'react'
 import { useMemo } from 'react'
 import { cn } from '@/common/utils/cn'
 import { Icon, type IconSize } from '@/icons'
-import { WIDGET_DEFINITIONS } from '../../registry'
+import { getWidgetRegistry } from '../../registry'
 import type { PresetLayout } from '../types'
 import { resolvePresetWidgetsForViewport } from '../utils/viewport'
 
@@ -56,7 +56,7 @@ export const PresetCanvasPreview: React.FC<PresetCanvasPreviewProps> = ({
 				}}
 			>
 				{resolvedWidgets.map((widget) => {
-					const definition = WIDGET_DEFINITIONS[widget.id]
+					const definition = getWidgetRegistry()[widget.id]
 					if (!definition) return null
 
 					return (

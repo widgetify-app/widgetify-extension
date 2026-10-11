@@ -11,7 +11,7 @@ export const friends = {
 	'friends.activity.textLabel': 'متن نوشته',
 	'friends.activity.emptyPrompt': 'حس حال امروز...',
 	'friends.activity.newTitle': 'نوشته‌ی جدید',
-	'friends.activity.audience': 'فقط دوستات می‌بینن',
+	'friends.activity.audience': 'فقط دوستات میبینن',
 	'friends.activity.durationLabel': 'تا کی نمایش داده بشه',
 	'friends.activity.duration1Day': '1 روز',
 	'friends.activity.duration4Hours': '4 ساعت',
@@ -26,7 +26,7 @@ export const friends = {
 	'friends.activity.rule3':
 		'اگه نوشته‌ای ازت گزارش بشه و نامناسب باشه، ممکنه حسابت محدود بشه',
 	'friends.activity.rule4': 'کمکمون کن اینجا جای امن و دوستانه‌ای بمونه',
-	'friends.activity.rule5': 'هر روز فقط یه نوشته‌ی جدید می‌تونی بذاری',
+	'friends.activity.rule5': 'هر روز فقط یه نوشته‌ی جدید میتونی بذاری',
 	'friends.activity.gotIt': 'متوجه شدم',
 	'friends.add.setUsernameFirst':
 		'برای فرستادن درخواست دوستی، اول توی پروفایلت یه نام کاربری انتخاب کن',

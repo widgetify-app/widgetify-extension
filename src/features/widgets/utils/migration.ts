@@ -129,7 +129,7 @@ export async function migrateWidgetLayoutIfNeeded(): Promise<StoredWidget[]> {
 		if (Array.isArray(activeWidgets) && activeWidgets.length > 0) {
 			const validKeys = Object.values(WidgetKeys)
 			const extracted = [...activeWidgets]
-				.filter((w) => validKeys.includes(w?.id))
+				.filter((w) => (validKeys as string[]).includes(w?.id))
 				.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
 				.map((w) => w.id as WidgetKeys)
 

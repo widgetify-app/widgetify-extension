@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 import { useGetWidgetCatalog } from '@/services/widgets/widget-catalog.hook'
-import { WIDGET_DEFINITIONS } from '../registry'
+import { getWidgetRegistry } from '../registry'
 
 const DEFAULT_MAX_FREE_WIDGETS = 5
 
@@ -19,8 +19,7 @@ export function useWidgetVipResolver(enabled = true) {
 			if (serverItem) {
 				return Boolean(serverItem.isVipOnly)
 			}
-			const localDef =
-				WIDGET_DEFINITIONS[widgetKey as keyof typeof WIDGET_DEFINITIONS]
+			const localDef = getWidgetRegistry()[widgetKey]
 			return Boolean(localDef?.isVipOnly)
 		},
 		[serverCatalog]
@@ -40,8 +39,7 @@ export function useWidgetVipResolver(enabled = true) {
 					return Boolean(v.isVipOnly)
 				}
 			}
-			const localDef =
-				WIDGET_DEFINITIONS[widgetKey as keyof typeof WIDGET_DEFINITIONS]
+			const localDef = getWidgetRegistry()[widgetKey]
 			const localVariant = localDef?.variants?.find(
 				(item) => item.id === variantId || item.meta?.variant === variantId
 			)
@@ -64,8 +62,7 @@ export function useWidgetVipResolver(enabled = true) {
 					return Boolean(match.isVipOnly)
 				}
 			}
-			const localDef =
-				WIDGET_DEFINITIONS[widgetKey as keyof typeof WIDGET_DEFINITIONS]
+			const localDef = getWidgetRegistry()[widgetKey]
 			const localSize = localDef?.allowedSizes?.find(
 				(s) => s.w === size.w && s.h === size.h
 			)
