@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { Badge, Button, Chip, TextInput, VipBadge } from '@/components/ui'
@@ -49,6 +50,7 @@ function WidgetCard({
 			type="button"
 			onClick={onSelect}
 			aria-pressed={isSelected}
+			data-widget-id={definition.id}
 			className={cn(
 				'flex items-center min-w-0 gap-2 p-2 rounded-2xl border text-start cursor-pointer transition-ui duration-150 focus-visible:focus-ring',
 				isSelected
@@ -106,8 +108,18 @@ export function AddWidgetGrid({
 	isWidgetVipOnly,
 	isWidgetNew,
 }: AddWidgetGridProps) {
+	const listRef = useRef<HTMLDivElement>(null)
 	const isSearching = query.trim().length > 0
 	const isEmpty = view.fresh.length === 0 && view.rest.length === 0
+
+	useEffect(() => {
+		const cards = listRef.current?.querySelectorAll<HTMLElement>('[data-widget-id]')
+		const card = Array.from(cards ?? []).find(
+			(element) => element.dataset.widgetId === selectedId
+		)
+
+		card?.scrollIntoView({ block: 'nearest' })
+	}, [selectedId])
 
 	const renderCards = (list: WidgetDefinition[]) => (
 		<div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -187,7 +199,10 @@ export function AddWidgetGrid({
 				))}
 			</nav>
 
-			<div className="flex flex-col gap-3 pr-0.5 scrollbar-none md:flex-1 md:overflow-y-auto">
+			<div
+				ref={listRef}
+				className="flex flex-col gap-3 pr-0.5 scrollbar-none md:flex-1 md:overflow-y-auto"
+			>
 				{isEmpty ? (
 					<div className="flex flex-col items-center justify-center h-32 gap-2 text-xs text-fg-muted">
 						<span>{t('widgets.catalog.emptySearch')}</span>

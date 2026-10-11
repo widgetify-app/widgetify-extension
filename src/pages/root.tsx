@@ -47,6 +47,7 @@ function Main() {
 	const [isAddWidgetModalOpen, setIsAddWidgetModalOpen] = useState(false)
 	const [addWidgetEditTarget, setAddWidgetEditTarget] = useState<any>(null)
 	const [addWidgetReturnsToSettings, setAddWidgetReturnsToSettings] = useState(false)
+	const [addWidgetFocusId, setAddWidgetFocusId] = useState<string | null>(null)
 	const [showAuthRequired, setAuthRequired] = useState(false)
 	const { page, setPage } = usePage()
 
@@ -60,11 +61,21 @@ function Main() {
 				} else {
 					setAddWidgetEditTarget(null)
 				}
+				setAddWidgetFocusId(null)
 				setAddWidgetReturnsToSettings(Boolean(payload?.returnToSettings))
 				setIsAddWidgetModalOpen(true)
 				Analytics.event('widget_catalog_opened')
 			}
 		)
+
+		const openCatalogEvent = listenEvent('openWidgetCatalog', (widgetKey) => {
+			setPage(Page.Home)
+			setAddWidgetEditTarget(null)
+			setAddWidgetReturnsToSettings(false)
+			setAddWidgetFocusId(typeof widgetKey === 'string' ? widgetKey : null)
+			setIsAddWidgetModalOpen(true)
+			Analytics.event('widget_catalog_opened')
+		})
 
 		const openAuthRequireModal = listenEvent('open_require_auth_modal', () => {
 			setAuthRequired(true)
@@ -74,6 +85,7 @@ function Main() {
 
 		return () => {
 			openAddModalEvent()
+			openCatalogEvent()
 			openAuthRequireModal()
 		}
 	}, [setPage])
@@ -110,9 +122,11 @@ function Main() {
 						<AddWidgetModal
 							isOpen={isAddWidgetModalOpen}
 							editTarget={addWidgetEditTarget}
+							focusWidgetId={addWidgetFocusId}
 							onClose={() => {
 								setIsAddWidgetModalOpen(false)
 								setAddWidgetEditTarget(null)
+								setAddWidgetFocusId(null)
 							}}
 							returnsToSettings={addWidgetReturnsToSettings}
 						/>

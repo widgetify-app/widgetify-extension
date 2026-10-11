@@ -9,6 +9,7 @@ enum NotificationGoTo {
 	Explorer = 'explorer',
 	Profile = 'openProfile',
 	Settings = 'openSettings',
+	WidgetCatalog = 'openWidgetCatalog',
 }
 
 export interface NotificationItem {
