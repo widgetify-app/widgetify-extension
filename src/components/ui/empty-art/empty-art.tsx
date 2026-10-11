@@ -517,6 +517,47 @@ const arts = {
 			/>
 		</>
 	),
+	users: (
+		<>
+			<path
+				className="fill-brand-muted"
+				d="M53 7.5 54.8 11.5 58.8 13.3 54.8 15.1 53 19.1 51.2 15.1 47.2 13.3 51.2 11.5z"
+			/>
+			<path
+				className="fill-brand-muted"
+				d="M11 13.5 12.2 16 14.7 17.2 12.2 18.4 11 20.9 9.8 18.4 7.3 17.2 9.8 16z"
+			/>
+			<circle className="fill-brand-muted" cx="19" cy="24" r="7.5" />
+			<path
+				className="fill-brand-muted"
+				d="M6 53c0-9 6-15 14-15 3.5 0 6.5 1.2 8.8 3.5-2.2 3.2-3.8 7.3-3.8 12.5v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2Z"
+			/>
+			<circle className="fill-brand-muted" cx="45" cy="24" r="7.5" />
+			<path
+				className="fill-brand-muted"
+				d="M58 53c0-9-6-15-14-15-3.5 0-6.5 1.2-8.8 3.5 2.2 3.2 3.8 7.3 3.8 12.5v1a2 2 0 0 0 2 2h15a2 2 0 0 0 2-2Z"
+			/>
+			<circle
+				className="fill-brand stroke-surface"
+				strokeWidth="3"
+				cx="32"
+				cy="19"
+				r="10"
+			/>
+			<path
+				className="fill-brand stroke-surface"
+				strokeWidth="3"
+				d="M14 55c0-10.5 8-18 18-18s18 7.5 18 18a3 3 0 0 1-3 3H17a3 3 0 0 1-3-3Z"
+			/>
+			<path
+				className="stroke-on-brand"
+				d="M28 42c1.5 2 2.5 3 4 3s2.5-1 4-3"
+				fill="none"
+				strokeWidth="2.2"
+				strokeLinecap="round"
+			/>
+		</>
+	),
 } satisfies Record<string, ReactElement>
 
 export type EmptyArtName = keyof typeof arts
