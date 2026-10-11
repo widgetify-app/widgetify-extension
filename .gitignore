@@ -38,3 +38,5 @@ docs/*
 graphify-out
 SOCIAL_ROADMAP.md
 AGENTS.local.md
+
+web-ext.config.ts
