@@ -37,10 +37,11 @@ export default defineConfig({
 				},
 				format: { comments: false },
 			},
-			rollupOptions: {
+			rolldownOptions: {
 				treeshake: { propertyReadSideEffects: false },
+				checks: { bundlerTimings: false },
 			},
-			chunkSizeWarningLimit: 1000,
+			chunkSizeWarningLimit: 2000,
 			sourcemap: false,
 			cssCodeSplit: true,
 			assetsInlineLimit: 4096,
@@ -61,11 +62,7 @@ export default defineConfig({
 		'@/assets': './src/assets',
 	},
 
-	modules: [
-		'@wxt-dev/webextension-polyfill',
-		'@wxt-dev/auto-icons',
-		'@wxt-dev/module-react',
-	],
+	modules: ['@wxt-dev/webextension-polyfill', '@wxt-dev/module-react'],
 
 	manifest: ({ browser }) => {
 		const isFirefox = browser === 'firefox'

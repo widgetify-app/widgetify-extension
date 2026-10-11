@@ -127,7 +127,7 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 	}, [user])
 
 	async function browserHasPermission(
-		permissions: Browser.runtime.ManifestPermissions[]
+		permissions: Browser.runtime.ManifestPermission[]
 	) {
 		try {
 			return await browser.permissions.contains({ permissions })
@@ -170,7 +170,7 @@ export function GeneralSettingProvider({ children }: { children: React.ReactNode
 	//#endregion
 	const togglePermission =
 		(
-			permissions: Browser.runtime.ManifestPermissions[],
+			permissions: Browser.runtime.ManifestPermission[],
 			settingKey: keyof GeneralData,
 			enableEvent: string,
 			disableEvent: string

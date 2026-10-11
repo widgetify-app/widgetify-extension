@@ -45,6 +45,7 @@ On 2026-10-01 it reported no errors, two warnings (`data_collection_permissions`
 - Terser drops `console.log`, `console.info` and `console.debug` from the bundle, and strips comments.
 - For Firefox, a plugin rewrites `.innerHTML =` in React DOM so the AMO validator accepts it.
 - `sourcemap` is off. Grepping the built output for a source file name finds nothing.
+- `chunkSizeWarningLimit` is 2000. The extension loads from disk, so size only costs parse time, and `newtab.js` (about 1.5 MB) is mostly the widgets, which the first paint needs. A chunk past 2000 kB is a real change worth a look.
 
 ## What can break a published build
 
