@@ -9,6 +9,7 @@ export interface AddWidgetModalProps {
 	} | null
 	onClose: () => void
 	returnsToSettings?: boolean
+	focusWidgetId?: string | null
 }
 
 export interface CategoryItem {

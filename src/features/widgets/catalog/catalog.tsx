@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Analytics from '@/analytics'
 import { Badge, Button, Modal } from '@/components/ui'
 import { callEvent } from '@/common/utils/call-event'
@@ -22,6 +22,7 @@ import { AddWidgetOptions } from './components/options'
 import { AddWidgetPreview } from './components/preview'
 import { AddWidgetActions } from './components/actions'
 import { buildCatalogView, countByCategory } from './utils/catalog-filter'
+import { focusTarget } from './utils/focus-target'
 import { t } from '@/common/i18n'
 
 export function AddWidgetModal({
@@ -29,6 +30,7 @@ export function AddWidgetModal({
 	editTarget,
 	onClose,
 	returnsToSettings,
+	focusWidgetId,
 }: AddWidgetModalProps) {
 	const { isVip } = useAuth()
 	const {
@@ -102,10 +104,26 @@ export function AddWidgetModal({
 
 	const isEditMode = Boolean(editTarget)
 
-	const handleSelectWidget = (id: string) => {
-		if (isEditMode) return
+	const appliedFocusRef = useRef<string | null>(null)
+
+	useEffect(() => {
+		if (!isOpen || isEditMode) {
+			appliedFocusRef.current = null
+			return
+		}
+
+		const target = focusTarget(focusWidgetId, registry)
+
+		if (!target || appliedFocusRef.current === target) return
+
+		appliedFocusRef.current = target
+		setActiveCategory('all')
+		setQuery('')
+		selectWidget(target)
+	}, [isOpen, isEditMode, focusWidgetId, registry])
+
+	const selectWidget = (id: string) => {
 		setSelectedId(id)
-		Analytics.event('widget_catalog_selected')
 		const def = registry[id]
 		if (def) {
 			if (def.variants && def.variants.length > 0) {
@@ -116,6 +134,12 @@ export function AddWidgetModal({
 				setSelectedSize(def.defaultSize)
 			}
 		}
+	}
+
+	const handleSelectWidget = (id: string) => {
+		if (isEditMode) return
+		Analytics.event('widget_catalog_selected')
+		selectWidget(id)
 	}
 
 	const handleOpenSelectedSettings = () => {
