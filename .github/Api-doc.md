@@ -330,6 +330,8 @@ Source: `src/services/widgets`
 | `DELETE /user-widgets/{instanceId}` | yes | | `{ success, message? }` |
 | `POST /user-widgets/sync` | yes | `{ workspace?, widgets*: [{ widgetKey*, instanceId?, col?, row?, width?, height?, order?, meta?, disabled? }] }` | `{ widgets }` |
 | `POST /user-widgets/{instanceId}/media` | yes | multipart form with `file`. VIP only | `{ url }` |
+| `POST /user-widgets/partner-consent` | yes | `{ widgetKey* }` | `{ consented: true }`. `widgetKey` is `widget:<slug>`. 404 `WIDGET_NOT_FOUND`, 400 `PHONE_REQUIRED`, `EMAIL_REQUIRED` or `EMAIL_OR_PHONE_REQUIRED` |
+| `POST /user-widgets/{instanceId}/launch` | yes | | `{ widgetUrl, origin, data, signature, timeoutMs }`. A partner widget only. 403 `CONSENT_REQUIRED`, 400 `PHONE_REQUIRED`, `EMAIL_REQUIRED` or `EMAIL_OR_PHONE_REQUIRED` |
 | `GET /user-widgets/catalog` | no | | `{ config?: { maxFreeWidgets, featuredWidgetKeys }, widgets }` |
 
 A widget is `{ instanceId, widgetKey, ui, workspace, col, row, width, height, order, meta?, disabled, createdAt, updatedAt }`. A catalog item is `{ widgetKey, label, emoji, category, isVipOnly?, isNew?, allowedSizes, defaultSize, variants?, canDuplicate }`. See `src/services/widgets/widget-sync.hook.ts` and `src/services/widgets/widget-catalog.hook.ts`. A `widgetKey` is data: never rename one.

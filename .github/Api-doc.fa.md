@@ -330,6 +330,8 @@
 | `DELETE /user-widgets/{instanceId}` | بله | | `{ success, message? }` |
 | `POST /user-widgets/sync` | بله | `{ workspace?, widgets*: [{ widgetKey*, instanceId?, col?, row?, width?, height?, order?, meta?, disabled? }] }` | `{ widgets }` |
 | `POST /user-widgets/{instanceId}/media` | بله | فرم multipart با `file`. فقط VIP | `{ url }` |
+| `POST /user-widgets/partner-consent` | بله | `{ widgetKey* }` | `{ consented: true }`. مقدار `widgetKey` به شکل `widget:<slug>` است. خطاها: `WIDGET_NOT_FOUND` (۴۰۴) و `PHONE_REQUIRED`، `EMAIL_REQUIRED`، `EMAIL_OR_PHONE_REQUIRED` (۴۰۰) |
+| `POST /user-widgets/{instanceId}/launch` | بله | | `{ widgetUrl, origin, data, signature, timeoutMs }`. فقط برای ویجت همکار. خطاها: `CONSENT_REQUIRED` (۴۰۳) و `PHONE_REQUIRED`، `EMAIL_REQUIRED`، `EMAIL_OR_PHONE_REQUIRED` (۴۰۰) |
 | `GET /user-widgets/catalog` | خیر | | `{ config?: { maxFreeWidgets, featuredWidgetKeys }, widgets }` |
 
 هر ویجت این است: `{ instanceId, widgetKey, ui, workspace, col, row, width, height, order, meta?, disabled, createdAt, updatedAt }`. هر آیتم کاتالوگ این است: `{ widgetKey, label, emoji, category, isVipOnly?, isNew?, allowedSizes, defaultSize, variants?, canDuplicate }`. `src/services/widgets/widget-sync.hook.ts` و `src/services/widgets/widget-catalog.hook.ts` را ببینید. `widgetKey` یک داده است: اسمش را هیچ‌وقت عوض نکنید.

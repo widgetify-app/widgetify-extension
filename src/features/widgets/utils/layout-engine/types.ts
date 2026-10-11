@@ -21,6 +21,10 @@ export enum WidgetKeys {
 	dotCalendar = 'dotCalendar',
 }
 
+export type PartnerWidgetKey = `widget:${string}`
+
+type WidgetId = WidgetKeys | PartnerWidgetKey
+
 export interface WidgetPosition {
 	col: number
 	row: number
@@ -33,7 +37,7 @@ export interface WidgetSize {
 }
 
 export interface StoredWidget {
-	id: WidgetKeys
+	id: WidgetId
 	instanceId: string
 	position: WidgetPosition
 	size: WidgetSize
@@ -73,14 +77,16 @@ export type WidgetCategory =
 export interface WidgetVariantOption {
 	id: string
 	label: MessageKey
+	title?: string
 	size: WidgetSize
 	isVipOnly?: boolean
 	meta?: Record<string, any>
 }
 
 export interface WidgetDefinition {
-	id: WidgetKeys
+	id: WidgetId
 	label: MessageKey
+	title?: string
 	menuLabel?: MessageKey
 	emoji: string
 	icon: IconName
@@ -100,6 +106,7 @@ export interface WidgetDefinition {
 	popular?: boolean
 	isBeta?: boolean
 	node: (instanceId: string, size: WidgetSize, meta?: any) => React.ReactNode
+	previewNode?: (instanceId: string, size: WidgetSize, meta?: any) => React.ReactNode
 }
 
 export interface WidgetItem

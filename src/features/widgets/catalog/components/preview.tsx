@@ -63,7 +63,7 @@ export function AddWidgetPreview({
 					className="absolute top-0 left-0 flex items-center justify-center overflow-hidden"
 				>
 					<div className="w-full h-full flex items-center justify-center">
-						{definition.node(
+						{(definition.previewNode ?? definition.node)(
 							'preview-sample',
 							previewSize,
 							selectedVariant?.meta

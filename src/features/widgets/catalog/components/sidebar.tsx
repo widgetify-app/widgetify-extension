@@ -8,6 +8,7 @@ import type {
 import type { WidgetTabKeys } from '@/features/widgets/types'
 import { Icon } from '@/icons'
 import { CATEGORIES, type CategoryItem } from '../types'
+import { widgetTitle } from '../../utils/partner-catalog/partner-definitions'
 import { t } from '@/common/i18n'
 
 interface AddWidgetSidebarProps {
@@ -100,7 +101,7 @@ export function AddWidgetSidebar({
 												: 'font-medium text-fg'
 										)}
 									>
-										{t(def.label)}
+										{widgetTitle(def, t)}
 									</span>
 									{isWidgetNew?.(def.id) && (
 										<Badge>{t('widgets.catalog.badge.new')}</Badge>

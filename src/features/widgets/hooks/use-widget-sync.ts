@@ -12,6 +12,7 @@ import {
 	buildInstanceIdMap,
 } from '@/features/widgets/utils/instance-id'
 import { migrateWidgetLayoutIfNeeded } from '@/features/widgets/utils/migration'
+import { hydratePartnerCatalog } from './use-partner-catalog-sync'
 import {
 	getUserWidgetsApi,
 	syncUserWidgetsApi,
@@ -58,6 +59,7 @@ export function useWidgetSync({
 
 	const loadFromLocalStorage = useCallback(async () => {
 		try {
+			await hydratePartnerCatalog()
 			const localLayout = await migrateWidgetLayoutIfNeeded()
 			const finalLayout = Array.isArray(localLayout)
 				? sanitizeLayout(localLayout, DEFAULT_COLS)

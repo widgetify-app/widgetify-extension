@@ -31,6 +31,7 @@ import { BookmarkDeleteModal } from './bookmark-delete-modal'
 import { WidgetMenuButton } from './widget-menu-button'
 import { WidgetSlot } from './widget-slot'
 import { t } from '@/common/i18n'
+import { widgetTitle } from '../utils/partner-catalog/partner-definitions'
 
 interface CanvasWidgetOuterProps {
 	widget: StoredWidget
@@ -367,7 +368,7 @@ function CanvasWidgetOuterImpl({
 	return (
 		<>
 			<article
-				aria-label={t(definition.label)}
+				aria-label={widgetTitle(definition, t)}
 				ref={outerRef}
 				data-widget
 				{...keyboardFocus}

@@ -6,7 +6,7 @@ import type {
 	StoredWidget,
 	WidgetPosition,
 } from '@/features/widgets/utils/layout-engine/types'
-import { WIDGET_DEFINITIONS } from '@/features/widgets/registry'
+import { getWidgetRegistry } from '@/features/widgets/registry'
 
 type ApplyRuntimeLayout = (
 	next: StoredWidget[] | ((prev: StoredWidget[]) => StoredWidget[])
@@ -51,7 +51,7 @@ export function useWidgetDrag({
 				instanceId,
 				targetPosition,
 				cols: colsRef.current,
-				registry: WIDGET_DEFINITIONS,
+				registry: getWidgetRegistry(),
 			})
 
 			if (!result) return
@@ -100,7 +100,7 @@ export function useWidgetDrag({
 				instanceId,
 				targetPosition,
 				cols: colsRef.current,
-				registry: WIDGET_DEFINITIONS,
+				registry: getWidgetRegistry(),
 			})
 
 			if (!result || !commitMutation('move', result, instanceId)) {

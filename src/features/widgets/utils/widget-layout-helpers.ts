@@ -7,13 +7,14 @@ import {
 	dedupeInstanceIds,
 	isServerInstanceId,
 } from '@/features/widgets/utils/instance-id'
-import { WIDGET_DEFINITIONS } from '@/features/widgets/registry'
+import { getWidgetRegistry } from '@/features/widgets/registry'
 
 function normalizeWidgetSizes(layout: StoredWidget[], cols: number): StoredWidget[] {
+	const registry = getWidgetRegistry()
 	let changed = false
 
 	const normalized = layout.map((widget) => {
-		const definition = WIDGET_DEFINITIONS[widget.id]
+		const definition = registry[widget.id]
 		if (!definition) return widget
 
 		const isAllowed = definition.allowedSizes.some(
@@ -77,7 +78,7 @@ export function reflowForColumns(
 		layout: safeLayout,
 		operation: 'responsive-reflow',
 		cols: targetCols,
-		registry: WIDGET_DEFINITIONS,
+		registry: getWidgetRegistry(),
 	})
 
 	return reflowed || safeLayout

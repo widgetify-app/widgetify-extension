@@ -10,7 +10,9 @@ import type {
 	WidgetSize,
 	WidgetVariantOption,
 } from '@/features/widgets/utils/layout-engine/types'
-import { WIDGET_DEFINITIONS } from '@/features/widgets/registry'
+import { useWidgetRegistry } from '@/features/widgets/registry'
+import { usePartnerAccess } from '@/features/widgets/partner-access.context'
+import { widgetTitle } from '../utils/partner-catalog/partner-definitions'
 import { Icon } from '@/icons'
 import type { WidgetTabKeys } from '@/features/widgets/types'
 import { WidgetHelpModal } from '../components/widget-help-modal'
@@ -38,21 +40,19 @@ export function AddWidgetModal({
 		maxFreeWidgets,
 	} = useWidgetVipResolver(isOpen)
 	const freeWidgets = useOptionalFreeWidgets()
+	const registry = useWidgetRegistry()
+	const { ensureAccess } = usePartnerAccess()
 
 	const runtimeLayout = freeWidgets?.runtimeLayout || []
 	const addWidget = freeWidgets?.addWidget
 	const updateWidgetVariant = freeWidgets?.updateWidgetVariant
 	const removeWidget = freeWidgets?.removeWidget
 
-	const allDefinitions = useMemo(() => {
-		return Object.values(WIDGET_DEFINITIONS)
-	}, [])
+	const allDefinitions = useMemo(() => Object.values(registry), [registry])
 
 	const [selectedId, setSelectedId] = useState<string>(allDefinitions[0]?.id || '')
 
-	const selectedDef =
-		WIDGET_DEFINITIONS[selectedId as keyof typeof WIDGET_DEFINITIONS] ||
-		allDefinitions[0]
+	const selectedDef = registry[selectedId] || allDefinitions[0]
 
 	const [selectedSize, setSelectedSize] = useState<WidgetSize>(
 		selectedDef?.defaultSize || { w: 2, h: 2 }
@@ -72,8 +72,7 @@ export function AddWidgetModal({
 
 	useEffect(() => {
 		if (editTarget) {
-			const def =
-				WIDGET_DEFINITIONS[editTarget.widgetId as keyof typeof WIDGET_DEFINITIONS]
+			const def = registry[editTarget.widgetId]
 			if (def) {
 				setSelectedId(def.id)
 				const currentWidget = runtimeLayout.find(
@@ -122,7 +121,7 @@ export function AddWidgetModal({
 		if (isEditMode) return
 		setSelectedId(id)
 		Analytics.event('widget_catalog_selected')
-		const def = WIDGET_DEFINITIONS[id as keyof typeof WIDGET_DEFINITIONS]
+		const def = registry[id]
 		if (def) {
 			if (def.variants && def.variants.length > 0) {
 				setSelectedVariant(def.variants[0])
@@ -223,6 +222,13 @@ export function AddWidgetModal({
 
 		setIsLoading(true)
 		try {
+			if (
+				selectedDef.id.startsWith('widget:') &&
+				!(await ensureAccess(selectedDef.id))
+			) {
+				return
+			}
+
 			const success = await addWidget(
 				selectedDef.id,
 				undefined,
@@ -341,7 +347,7 @@ export function AddWidgetModal({
 											<div>
 												<div className="flex items-center gap-1.5">
 													<h3 className="text-sm font-bold text-fg">
-														{t(selectedDef.label)}
+														{widgetTitle(selectedDef, t)}
 													</h3>
 													{isWidgetNew?.(selectedDef.id) && (
 														<Badge>
