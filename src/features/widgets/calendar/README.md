@@ -28,7 +28,7 @@ Per widget, in `meta`: `showEvents` and `showMoods`, both on by default, so a ca
 
 - 2x3: `p-3 gap-2`, then `WidgetHeader` with the tabs and the month arrows, then the month title and the grid.
 - 2x1: `px-3 py-2.5 gap-1.5`, then `WidgetHeader`, the frame of the tasks 2x1. The tiles get 42px of height at 96px cells and 34px at 88px; with the weekday letter at `leading-none` a tile needs 36. Every tile carries a 2px border, transparent without a mood, so a mood does not move its contents.
-- 1x1: `px-3 py-2.5`, then `WidgetCenteredHeader` with the month. The day is `42cqh`, about 32px at 96px cells.
+- 1x1: `px-3 py-2.5`, then `WidgetCenteredHeader` with the month. The day is `62cqh`, about 40px at 96px cells.
 
 ## Design decisions
 
