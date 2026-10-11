@@ -93,22 +93,22 @@ export function PhotoEmptyState({
 				<div className="flex flex-wrap justify-center gap-1.5 mt-1">
 					<Button
 						size="xs"
-						color="brand"
-						rounded="lg"
-						onClick={onPickFromDevice}
-						icon={<Icon name="uploadImage" size={12} />}
-					>
-						{t('widgets.photo.fromDeviceShort')}
-						{!isVip && <VipBadge size="xs" text={t('ui.vip.pro')} />}
-					</Button>
-					<Button
-						size="xs"
 						color="base"
 						rounded="lg"
 						onClick={onOpenGallery}
 						icon={<Icon name="image" size={12} />}
 					>
 						{t('widgets.photo.galleryShort')}
+					</Button>
+					<Button
+						size="xs"
+						color="base"
+						rounded="lg"
+						onClick={onPickFromDevice}
+						icon={<Icon name="uploadImage" size={12} />}
+					>
+						{t('widgets.photo.fromDeviceShort')}
+						{!isVip && <VipBadge size="xs" text={t('ui.vip.pro')} />}
 					</Button>
 				</div>
 			</div>
