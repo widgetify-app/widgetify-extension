@@ -82,6 +82,24 @@ export const PRESET_LAYOUTS: PresetLayout[] = [
 		],
 	},
 	{
+		id: 'persian-big-clock',
+		titleKey: 'widgets.presets.persian-big-clock.title',
+		descriptionKey: 'widgets.presets.persian-big-clock.description',
+		isVip: false,
+		isFeatured: true,
+		category: 'minimal',
+		verticalAlign: 'center',
+		widgets: [
+			{
+				id: WidgetKeys.transparentClock,
+				instanceId: 'transparent-clock-big',
+				position: { col: 2, row: 0 },
+				size: { w: 4, h: 2 },
+				meta: { variant: 'persian' },
+			},
+		],
+	},
+	{
 		id: 'simple-appearance',
 		titleKey: 'widgets.presets.simple-appearance.title',
 

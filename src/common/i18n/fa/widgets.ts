@@ -813,6 +813,9 @@ export const widgets = {
 	'widgets.presets.default.title': 'چیدمان پیش‌فرض',
 	'widgets.presets.default.description':
 		'چیدمان استاندارد و کامل ویجتیفای با دسترسی به تمام ابزارها',
+	'widgets.presets.persian-big-clock.title': 'ساعت فارسی بزرگ',
+	'widgets.presets.persian-big-clock.description':
+		'فقط یه ساعت بزرگ و فارسی روی والپیپر، بدون هیچ شلوغی',
 	'widgets.presets.simple-appearance.title': 'ظاهری ساده',
 	'widgets.presets.simple-appearance.description':
 		'جستجوی بالا و ابزارهای متمرکز در پایین صفحه',
