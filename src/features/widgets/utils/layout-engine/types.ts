@@ -91,6 +91,7 @@ export interface WidgetDefinition {
 	emoji: string
 	icon: IconName
 	iconUrl?: string | null
+	description?: string | null
 	category?: WidgetCategory
 	isVipOnly?: boolean
 	allowedSizes: WidgetSize[]
