@@ -10,6 +10,7 @@ enum NotificationGoTo {
 	Profile = 'openProfile',
 	Settings = 'openSettings',
 	WidgetCatalog = 'openWidgetCatalog',
+	MiniApp = 'openMiniApp',
 }
 
 export interface NotificationItem {

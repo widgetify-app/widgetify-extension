@@ -48,6 +48,7 @@ function Main() {
 	const [addWidgetEditTarget, setAddWidgetEditTarget] = useState<any>(null)
 	const [addWidgetReturnsToSettings, setAddWidgetReturnsToSettings] = useState(false)
 	const [addWidgetFocusId, setAddWidgetFocusId] = useState<string | null>(null)
+	const [miniAppFocusId, setMiniAppFocusId] = useState<string | null>(null)
 	const [showAuthRequired, setAuthRequired] = useState(false)
 	const { page, setPage } = usePage()
 
@@ -77,6 +78,11 @@ function Main() {
 			Analytics.event('widget_catalog_opened')
 		})
 
+		const openMiniAppEvent = listenEvent('openMiniApp', (appId) => {
+			setMiniAppFocusId(typeof appId === 'string' ? appId : null)
+			setPage(Page.MiniApps)
+		})
+
 		const openAuthRequireModal = listenEvent('open_require_auth_modal', () => {
 			setAuthRequired(true)
 		})
@@ -86,6 +92,7 @@ function Main() {
 		return () => {
 			openAddModalEvent()
 			openCatalogEvent()
+			openMiniAppEvent()
 			openAuthRequireModal()
 		}
 	}, [setPage])
@@ -114,7 +121,10 @@ function Main() {
 								) : page === Page.Explorer ? (
 									<ExplorerPage />
 								) : (
-									<MiniAppPage />
+									<MiniAppPage
+										focusAppId={miniAppFocusId}
+										onFocusHandled={() => setMiniAppFocusId(null)}
+									/>
 								)}
 							</motion.div>
 						</Presence>
