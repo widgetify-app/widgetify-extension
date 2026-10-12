@@ -1,5 +1,45 @@
 import { describe, expect, it } from 'bun:test'
-import { consentLines, contactStepOf } from '../utils/partner-catalog/partner-access'
+import {
+	consentLines,
+	contactStepOf,
+	needsConsentScreen,
+} from '../utils/partner-catalog/partner-access'
+
+describe('needsConsentScreen', () => {
+	it('never asks for a widget that reads nothing', () => {
+		expect(needsConsentScreen([], 'widget:clock', [])).toBe(false)
+		expect(needsConsentScreen([], 'widget:clock', null)).toBe(false)
+	})
+
+	it('asks for a widget that reads the account or the profile when the user has not consented', () => {
+		expect(needsConsentScreen(['PROFILE'], 'widget:clock', [])).toBe(true)
+		expect(needsConsentScreen(['ACCOUNT'], 'widget:clock', ['widget:other'])).toBe(
+			true
+		)
+	})
+
+	it('does not ask again for a widget the user already consented to', () => {
+		expect(
+			needsConsentScreen(['PROFILE', 'ACCOUNT'], 'widget:clock', [
+				'widget:other',
+				'widget:clock',
+			])
+		).toBe(false)
+	})
+
+	it('asks when it could not find out, so a failure never skips the screen', () => {
+		expect(needsConsentScreen(['PROFILE'], 'widget:clock', null)).toBe(true)
+	})
+
+	it('matches the whole key, not a part of it', () => {
+		expect(needsConsentScreen(['PROFILE'], 'widget:clock', ['widget:clock-2'])).toBe(
+			true
+		)
+		expect(needsConsentScreen(['PROFILE'], 'widget:clock-2', ['widget:clock'])).toBe(
+			true
+		)
+	})
+})
 
 describe('contactStepOf', () => {
 	it('asks for nothing when the widget does not read the account', () => {

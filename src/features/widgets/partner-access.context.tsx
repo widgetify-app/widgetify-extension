@@ -7,6 +7,7 @@ import {
 	useRef,
 	useState,
 } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import { t } from '@/common/i18n'
 import { showToast } from '@/common/toast'
 import { callEvent } from '@/common/utils/call-event'
@@ -14,9 +15,13 @@ import { contactStepOfError } from '@/common/utils/contact-step'
 import { useAuth } from '@/context/auth.context'
 import { useAccountContact } from '@/features/setting/account/account-contact.context'
 import { usePartnerConsent } from '@/services/widgets/partner-consent.hook'
+import {
+	fetchPartnerConsentKeys,
+	partnerConsentsKey,
+} from '@/services/widgets/partner-consents.hook'
 import { PartnerConsentModal } from './components/partner-consent-modal'
 import type { PartnerCatalogItem } from './types'
-import { contactStepOf } from './utils/partner-catalog/partner-access'
+import { contactStepOf, needsConsentScreen } from './utils/partner-catalog/partner-access'
 import { partnerCatalogStore } from './utils/partner-catalog/partner-catalog-store'
 
 interface PartnerAccessContextType {
@@ -34,6 +39,7 @@ export function PartnerAccessProvider({ children }: { children: ReactNode }) {
 	const { isAuthenticated, user } = useAuth()
 	const { requestContact } = useAccountContact()
 	const { mutateAsync: sendConsent } = usePartnerConsent()
+	const queryClient = useQueryClient()
 	const [request, setRequest] = useState<ConsentRequest | null>(null)
 
 	const session = useRef({ isAuthenticated, user })
@@ -77,11 +83,24 @@ export function PartnerAccessProvider({ children }: { children: ReactNode }) {
 
 			if (item.scopes.length === 0) return true
 
+			const consentedKeys = await queryClient
+				.fetchQuery({
+					queryKey: partnerConsentsKey,
+					queryFn: fetchPartnerConsentKeys,
+					staleTime: 0,
+				})
+				.catch(() => null)
+
+			if (!needsConsentScreen(item.scopes, widgetKey, consentedKeys)) return true
+
 			if (!(await askConsent(item))) return false
 
 			for (let attempt = 0; attempt < 2; attempt++) {
 				try {
 					await sendConsent({ widgetKey })
+					queryClient.setQueryData<string[]>(partnerConsentsKey, (keys) => [
+						...new Set([...(keys ?? []), widgetKey]),
+					])
 
 					return true
 				} catch (error) {
@@ -97,7 +116,7 @@ export function PartnerAccessProvider({ children }: { children: ReactNode }) {
 
 			return false
 		},
-		[askConsent, requestContact, sendConsent]
+		[askConsent, queryClient, requestContact, sendConsent]
 	)
 
 	const value = useMemo(() => ({ ensureAccess }), [ensureAccess])

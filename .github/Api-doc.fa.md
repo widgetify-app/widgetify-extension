@@ -330,6 +330,7 @@
 | `DELETE /user-widgets/{instanceId}` | بله | | `{ success, message? }` |
 | `POST /user-widgets/sync` | بله | `{ workspace?, widgets*: [{ widgetKey*, instanceId?, col?, row?, width?, height?, order?, meta?, disabled? }] }` | `{ widgets }` |
 | `POST /user-widgets/{instanceId}/media` | بله | فرم multipart با `file`. فقط VIP | `{ url }` |
+| `GET /user-widgets/partner-consent` | بله | ندارد | `{ widgetKeys }`: کلیدهای `widget:<slug>` ویجت‌هایی که کاربر قبلا اجازه‌شون رو داده. قبل از صفحه‌ی اجازه پرسیده می‌شه تا ویجتی که دوباره اضافه شده دوباره اجازه نخواد. خطا: `PARTNER_WIDGETS_UNAVAILABLE` (۵۰۳) |
 | `POST /user-widgets/partner-consent` | بله | `{ widgetKey* }` | `{ consented: true }`. مقدار `widgetKey` به شکل `widget:<slug>` است. خطاها: `WIDGET_NOT_FOUND` (۴۰۴) و `PHONE_REQUIRED`، `EMAIL_REQUIRED`، `EMAIL_OR_PHONE_REQUIRED` (۴۰۰) |
 | `POST /user-widgets/{instanceId}/launch` | بله | | `{ widgetUrl, origin, data, signature, timeoutMs }`. فقط برای ویجت همکار. خطاها: `CONSENT_REQUIRED` (۴۰۳) و `PHONE_REQUIRED`، `EMAIL_REQUIRED`، `EMAIL_OR_PHONE_REQUIRED` (۴۰۰) |
 | `GET /user-widgets/catalog` | خیر | | `{ config?: { maxFreeWidgets, featuredWidgetKeys }, widgets }` |

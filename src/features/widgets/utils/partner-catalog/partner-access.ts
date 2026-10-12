@@ -8,6 +8,16 @@ interface ContactUser {
 	verified?: boolean
 }
 
+export function needsConsentScreen(
+	scopes: PartnerScope[],
+	widgetKey: string,
+	consentedKeys: string[] | null
+): boolean {
+	if (scopes.length === 0) return false
+
+	return consentedKeys === null || !consentedKeys.includes(widgetKey)
+}
+
 export function contactStepOf(
 	scopes: PartnerScope[],
 	requirement: ContactRequirement,
