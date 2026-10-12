@@ -150,8 +150,8 @@ export function ActivityComposer({
 						aria-label={t('friends.activity.colorNone')}
 						onClick={() => setColor(null)}
 						className={cn(
-							'shrink-0 size-5 m-1 rounded-full cursor-pointer ring-2 transition-ui hover:scale-110 focus-visible:focus-ring grid place-items-center bg-surface-3 text-fg-muted',
-							color === null ? 'ring-fg-strong' : 'ring-transparent'
+							'shrink-0 size-5 m-1 rounded-lg cursor-pointer ring-2 transition-ui hover:scale-110 focus-visible:focus-ring grid place-items-center bg-surface-3 text-fg-muted',
+							color === null ? 'ring-fg-muted' : 'ring-transparent'
 						)}
 					>
 						<Icon name="close" size={12} aria-hidden="true" />
@@ -164,8 +164,8 @@ export function ActivityComposer({
 							onClick={() => setColor(hex)}
 							style={{ backgroundColor: hex }}
 							className={cn(
-								'shrink-0 size-5 my-1 rounded-full cursor-pointer ring-2 transition-ui hover:scale-110 focus-visible:focus-ring',
-								color === hex ? 'ring-fg-strong' : 'ring-transparent'
+								'shrink-0 size-5 my-1 rounded-lg cursor-pointer ring-2 transition-ui hover:scale-110 focus-visible:focus-ring',
+								color === hex ? 'ring-fg-muted' : 'ring-transparent'
 							)}
 						/>
 					))}
