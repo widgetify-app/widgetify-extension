@@ -6,7 +6,6 @@ import { FaGlobe } from 'react-icons/fa'
 import { TbLayout2 } from 'react-icons/tb'
 import {
 	LuArrowDownWideNarrow,
-	LuArrowLeft,
 	LuArrowRightLeft,
 	LuArrowUpDown,
 	LuAtSign,
@@ -107,7 +106,6 @@ import {
 	LuSignalLow,
 	LuSignalMedium,
 	LuSmile,
-	LuSparkle,
 	LuSquarePen,
 	LuSun,
 	LuSunMoon,
@@ -133,7 +131,6 @@ import {
 	LuWifiOff,
 	LuWind,
 	LuX,
-	LuZap,
 } from 'react-icons/lu'
 import type { IconMap } from '../types'
 import {
@@ -351,7 +348,4 @@ export const defaultIcons = {
 	explorerFill: FaGlobe,
 	explorerOutline: HiOutlineGlobeAlt,
 	layout: TbLayout2,
-	arrowLeft: LuArrowLeft,
-	sparkle: LuSparkle,
-	zap: LuZap,
 } satisfies IconMap

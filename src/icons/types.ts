@@ -143,9 +143,6 @@ export type IconName =
 	| 'explorerFill'
 	| 'explorerOutline'
 	| 'layout'
-	| 'arrowLeft'
-	| 'sparkle'
-	| 'zap'
 export type IconMap = Record<IconName, IconType>
 
 export type IconSize = 8 | 10 | 12 | 14 | 16 | 20 | 24 | 32
