@@ -3,14 +3,14 @@ import { getFromStorage, setToStorage } from '@/common/storage'
 import { isClockSyncFresh, setClockOffset } from '@/common/utils/trusted-time'
 import { getServerClockOffset } from '@/services/date/get-server-clock-offset'
 
-let loading: Promise<void> | null = null
+let started = false
 
 async function loadClockOffset() {
 	const saved = await getFromStorage('clockSync')
 
 	if (saved && isClockSyncFresh(saved, Date.now())) {
 		setClockOffset(saved.offset)
-		return
+		return true
 	}
 
 	try {
@@ -18,15 +18,21 @@ async function loadClockOffset() {
 
 		setClockOffset(offset)
 		await setToStorage('clockSync', { offset, syncedAt: Date.now() })
+
+		return true
 	} catch {
-		return
+		return false
 	}
 }
 
 export function useSyncClock() {
 	useEffect(() => {
-		loading ??= loadClockOffset().finally(() => {
-			loading = null
+		if (started) return
+
+		started = true
+
+		loadClockOffset().then((done) => {
+			if (!done) started = false
 		})
 	}, [])
 }
