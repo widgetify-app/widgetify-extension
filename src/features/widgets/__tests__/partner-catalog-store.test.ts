@@ -9,6 +9,7 @@ function item(key: string): PartnerCatalogItem {
 		title: key,
 		emoji: '🧩',
 		iconUrl: null,
+		description: null,
 		category: 'info',
 		isVipOnly: false,
 		isNew: false,

@@ -20,6 +20,7 @@ import { CATEGORIES, type AddWidgetModalProps } from './types'
 import { AddWidgetGrid } from './components/grid'
 import { AddWidgetOptions } from './components/options'
 import { AddWidgetPreview } from './components/preview'
+import { WidgetIntroduction } from './components/introduction'
 import { AddWidgetActions } from './components/actions'
 import { buildCatalogView, countByCategory } from './utils/catalog-filter'
 import { focusTarget } from './utils/focus-target'
@@ -383,6 +384,12 @@ export function AddWidgetModal({
 											</Button>
 										)}
 									</div>
+
+									{selectedDef.description && (
+										<WidgetIntroduction
+											description={selectedDef.description}
+										/>
+									)}
 
 									<AddWidgetOptions
 										definition={selectedDef}

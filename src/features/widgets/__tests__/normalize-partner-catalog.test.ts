@@ -10,6 +10,7 @@ function serverItem(overrides: Record<string, unknown> = {}) {
 		label: 'پومودورو',
 		emoji: '🍅',
 		icon: 'https://cdn.example.test/partner-widgets/pomodoro.png',
+		description: 'یک تایمر ساده برای تمرکز',
 		category: 'productivity',
 		isVipOnly: false,
 		isNew: true,
@@ -43,6 +44,50 @@ function withPartner(patch: Record<string, unknown>) {
 		partner: { ...serverItem().partner, ...patch },
 	})
 }
+
+describe('normalizePartnerCatalog description', () => {
+	it('keeps the introduction, trimmed', () => {
+		const [item] = normalizePartnerCatalog([
+			serverItem({ description: '  معرفی ویجت\nخط دوم  ' }),
+		])
+
+		expect(item.description).toBe('معرفی ویجت\nخط دوم')
+	})
+
+	it('keeps a description of exactly 2000 characters and drops a longer one', () => {
+		const [exact] = normalizePartnerCatalog([
+			serverItem({ description: 'a'.repeat(2000) }),
+		])
+		const [longer] = normalizePartnerCatalog([
+			serverItem({ description: 'a'.repeat(2001) }),
+		])
+
+		expect(exact.description).toHaveLength(2000)
+		expect(longer.description).toBeNull()
+	})
+
+	it('reads a missing, empty or non-text description as none', () => {
+		for (const description of [undefined, null, '', '   ', 42, {}, []]) {
+			const [item] = normalizePartnerCatalog([serverItem({ description })])
+
+			expect(item.description).toBeNull()
+		}
+	})
+
+	it('reads isNew only from a real true', () => {
+		for (const [isNew, expected] of [
+			[true, true],
+			[false, false],
+			['true', false],
+			[1, false],
+			[undefined, false],
+		] as const) {
+			const [item] = normalizePartnerCatalog([serverItem({ isNew })])
+
+			expect(item.isNew).toBe(expected)
+		}
+	})
+})
 
 describe('normalizePartnerCatalog icon', () => {
 	it('keeps an https icon address', () => {
@@ -87,6 +132,7 @@ describe('normalizePartnerCatalog', () => {
 			title: 'پومودورو',
 			emoji: '🍅',
 			iconUrl: 'https://cdn.example.test/partner-widgets/pomodoro.png',
+			description: 'یک تایمر ساده برای تمرکز',
 			category: 'productivity',
 			isVipOnly: false,
 			isNew: true,

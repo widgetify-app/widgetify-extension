@@ -36,6 +36,7 @@ const ITEM: PartnerCatalogItem = {
 	title: 'پومودورو',
 	emoji: '🍅',
 	iconUrl: 'https://cdn.example.test/pomodoro.png',
+	description: 'یک تایمر ساده برای تمرکز',
 	category: 'productivity',
 	isVipOnly: true,
 	isNew: true,
@@ -62,6 +63,7 @@ describe('partnerDefinition', () => {
 		expect(definition.id).toBe('widget:pomodoro')
 		expect(definition.title).toBe('پومودورو')
 		expect(definition.emoji).toBe('🍅')
+		expect(definition.description).toBe('یک تایمر ساده برای تمرکز')
 		expect(definition.iconUrl).toBe('https://cdn.example.test/pomodoro.png')
 		expect(definition.category).toBe('productivity')
 		expect(definition.isVipOnly).toBe(true)

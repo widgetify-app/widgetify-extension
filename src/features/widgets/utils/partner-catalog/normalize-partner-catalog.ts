@@ -12,6 +12,7 @@ const MAX_ITEMS = 100
 const MAX_SIZES = 12
 const MAX_VARIANTS = 8
 const MAX_TOKENS = 40
+const MAX_DESCRIPTION = 2000
 const MAX_WIDTH = 8
 const MAX_HEIGHT = 12
 const FALLBACK_EMOJI = '🧩'
@@ -153,6 +154,7 @@ function normalizeItem(raw: unknown): PartnerCatalogItem | null {
 
 	const emoji = readText(raw.emoji, 16) ?? FALLBACK_EMOJI
 	const iconUrl = readUrl(raw.icon)?.toString() ?? null
+	const description = readText(raw.description, MAX_DESCRIPTION)
 	const category = CATEGORIES.includes(raw.category as PartnerCategory)
 		? (raw.category as PartnerCategory)
 		: 'info'
@@ -168,6 +170,7 @@ function normalizeItem(raw: unknown): PartnerCatalogItem | null {
 		title,
 		emoji,
 		iconUrl,
+		description,
 		category,
 		isVipOnly: raw.isVipOnly === true,
 		isNew: raw.isNew === true,

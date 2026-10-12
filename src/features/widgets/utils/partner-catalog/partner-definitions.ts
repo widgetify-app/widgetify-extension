@@ -37,6 +37,7 @@ export function partnerDefinition(
 		emoji: item.emoji,
 		icon: 'globe',
 		iconUrl: item.iconUrl,
+		description: item.description,
 		category: item.category,
 		isVipOnly: item.isVipOnly,
 		isBeta: item.isNew,

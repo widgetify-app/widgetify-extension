@@ -785,6 +785,7 @@ export const widgets = {
 	'widgets.catalog.title.add': 'مدیریت و افزودن ویجت‌ها',
 	'widgets.catalog.help': 'راهنما',
 	'widgets.catalog.badge.new': 'جدید',
+	'widgets.catalog.introduction': 'معرفی',
 	'widgets.catalog.duplicateHint': 'امکان افزودن چندین نمونه از این ویجت وجود دارد',
 	'widgets.catalog.singleHint': 'ویجت تکی صفحه اصلی',
 	'widgets.catalog.widgetSettings': 'تنظیمات ویجت',
