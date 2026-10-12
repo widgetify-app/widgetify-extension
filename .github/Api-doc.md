@@ -93,7 +93,7 @@ Source: `src/services/user`, `src/services/extension`, `src/services/profile`, `
 | `GET /extension/@me/ip` | yes | | `{ ip, country, countryIcon, city, isp }` |
 | `GET /` | no | | anything. The network widget times it to show the ping |
 | `POST /users/@me/upload/search` | yes | multipart form with `image` (a file) | `{ url }` |
-| `GET /extension/notifications` | yes | | `{ data: { widgetifyCard: [], dialog } }`, see `src/services/extension/get-notifications.hook.ts` |
+| `GET /extension/notifications` | yes | | `{ data: { widgetifyCard: [], dialog, island } }`, see `src/services/extension/get-notifications.hook.ts` |
 | `PUT /notifications/{id}/seen` | yes | | |
 
 **The profile.** `GET /extension/@me` answers a `UserProfile` (`src/services/user/user-service.hook.ts`). The main fields: `name`, `avatar`, `username?`, `email?`, `phone?`, `verified`, `isVip?`, `vipExpiresAt?`, `coins`, `gender`, `birthDate`, `timeZone`, `font`, `theme?`, `wallpaper`, `city?` (`{ id, name }`), `occupation`, `interests`, `connections` (platform ids), `friendshipStats` (`{ accepted, pending }`), `badges`, `isProfileCompleted`, `hasTodayMood`, `searchAutocompleteEnabled` and `isBirthdayToday`.

@@ -7,6 +7,8 @@ import Analytics from '@/analytics'
 import { NavIconButton } from '../components/nav-icon-button'
 import { t } from '@/common/i18n'
 
+export { IslandNotification } from './components/island-notification'
+
 export function NotificationNavbar() {
 	const { data: notificationsData } = useGetNotifications()
 

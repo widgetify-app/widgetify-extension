@@ -93,7 +93,7 @@
 | `GET /extension/@me/ip` | بله | | `{ ip, country, countryIcon, city, isp }` |
 | `GET /` | خیر | | هرچیزی. ویجت شبکه زمانش را می‌سنجد تا پینگ را نشان بدهد |
 | `POST /users/@me/upload/search` | بله | فرم multipart با `image` (فایل) | `{ url }` |
-| `GET /extension/notifications` | بله | | `{ data: { widgetifyCard: [], dialog } }`، ببینید `src/services/extension/get-notifications.hook.ts` |
+| `GET /extension/notifications` | بله | | `{ data: { widgetifyCard: [], dialog, island } }`، ببینید `src/services/extension/get-notifications.hook.ts` |
 | `PUT /notifications/{id}/seen` | بله | | |
 
 **پروفایل.** `GET /extension/@me` یک `UserProfile` برمی‌گرداند (`src/services/user/user-service.hook.ts`). فیلدهای اصلی: `name`، `avatar`، `username?`، `email?`، `phone?`، `verified`، `isVip?`، `vipExpiresAt?`، `coins`، `gender`، `birthDate`، `timeZone`، `font`، `theme?`، `wallpaper`، `city?` (`{ id, name }`)، `occupation`، `interests`، `connections` (شناسه‌ی پلتفرم‌ها)، `friendshipStats` (`{ accepted, pending }`)، `badges`، `isProfileCompleted`، `hasTodayMood`، `searchAutocompleteEnabled` و `isBirthdayToday`.

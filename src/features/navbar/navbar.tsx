@@ -12,7 +12,7 @@ import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { FriendsListNavbar } from './components/friends-navbar'
 import { LayoutDropdown } from './components/layout-dropdown'
 import { ProfileNav } from './profile/profile'
-import { NotificationNavbar } from './notifications/notifications'
+import { IslandNotification, NotificationNavbar } from './notifications/notifications'
 import { MarketModalListener } from './components/market-modal-listener'
 import { NavIconButton } from './components/nav-icon-button'
 import Analytics from '@/analytics'
@@ -163,6 +163,7 @@ export function NavbarLayout(): JSX.Element {
 	useBirthdayConfetti(user?.isBirthdayToday || false)
 	return (
 		<>
+			<IslandNotification />
 			<button
 				type="button"
 				onClick={() => onToggleNavbar()}
