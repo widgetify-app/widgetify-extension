@@ -17,7 +17,7 @@ interface PortalProps {
 }
 
 const TOP_LAYER_HOST_CSS =
-	'position:fixed;inset:0;width:auto;height:auto;max-width:none;max-height:none;margin:0;padding:0;border:none;background:transparent;overflow:visible;color:inherit;pointer-events:none;'
+	'position:fixed;inset:0;width:auto;height:auto;max-width:none;max-height:none;margin:0;padding:0;border:none;background:transparent;overflow:visible;color:inherit;pointer-events:none;z-index:var(--z-dropdown);'
 
 function topmostModalDialog(): HTMLElement | null {
 	let topmost: HTMLElement | null = null
