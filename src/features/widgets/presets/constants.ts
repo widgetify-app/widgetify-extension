@@ -91,9 +91,15 @@ export const PRESET_LAYOUTS: PresetLayout[] = [
 		verticalAlign: 'center',
 		widgets: [
 			{
+				id: WidgetKeys.search,
+				instanceId: 'search-big-clock',
+				position: { col: 2, row: 0 },
+				size: { w: 4, h: 1 },
+			},
+			{
 				id: WidgetKeys.transparentClock,
 				instanceId: 'transparent-clock-big',
-				position: { col: 2, row: 0 },
+				position: { col: 2, row: 1 },
 				size: { w: 4, h: 2 },
 				meta: { variant: 'persian' },
 			},
