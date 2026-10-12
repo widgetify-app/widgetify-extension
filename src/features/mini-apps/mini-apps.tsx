@@ -9,9 +9,15 @@ import Analytics from '@/analytics'
 import { Button, Modal } from '@/components/ui'
 import { Icon } from '@/icons'
 import { useMiniAppWindows } from './hooks/use-mini-app-windows'
+import { focusableAppId } from './utils/focus-app'
 import { focusMiniAppWindow, openMiniAppWindow } from './utils/mini-app-windows'
 const EmptyMiniAppImage = 'https://cdn.widgetify.ir/extension/empty-mini-app.png'
-export function MiniAppsLayout() {
+interface MiniAppsLayoutProp {
+	focusAppId?: string | null
+	onFocusHandled?: () => void
+}
+
+export function MiniAppsLayout({ focusAppId, onFocusHandled }: MiniAppsLayoutProp) {
 	const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage, isError } =
 		useGetMiniApps({ limit: 10 })
 	const [selectedAppId, setSelectedAppId] = useState<string | null>(null)
@@ -28,6 +34,7 @@ export function MiniAppsLayout() {
 		Analytics.event('mini_app_exist')
 	}
 	const observerRef = useRef<IntersectionObserver | null>(null)
+	const listRef = useRef<HTMLDivElement | null>(null)
 	const loadMoreRef = useRef<HTMLDivElement | null>(null)
 
 	useEffect(() => {
@@ -52,6 +59,16 @@ export function MiniAppsLayout() {
 		setSelectedAppId(appId)
 	}
 
+	useEffect(() => {
+		if (focusAppId === null || focusAppId === undefined) return
+
+		const appId = focusableAppId(focusAppId)
+
+		if (appId) onLaunchApp(appId)
+
+		onFocusHandled?.()
+	}, [focusAppId])
+
 	const onOpenInWindow = async (appId: string) => {
 		Analytics.event('mini_app_open_in_window')
 		await openMiniAppWindow(appId)
@@ -62,6 +79,17 @@ export function MiniAppsLayout() {
 		Analytics.event('mini_apps_show_info_modal')
 		setShowInfo(true)
 	}
+
+	useEffect(() => {
+		if (!selectedAppId) return
+
+		const cards = listRef.current?.querySelectorAll<HTMLElement>('[data-app-id]')
+		const card = Array.from(cards ?? []).find(
+			(element) => element.dataset.appId === selectedAppId
+		)
+
+		card?.scrollIntoView({ block: 'nearest' })
+	}, [selectedAppId, miniApps.length])
 
 	useEffect(() => {
 		if (observerRef.current) {
@@ -105,7 +133,10 @@ export function MiniAppsLayout() {
 							<Icon name="info" className="m-auto text-center" />
 						</button>
 					</div>
-					<div className="flex flex-col gap-1 mt-4 overflow-y-auto  h-[calc(100vh-10rem)]">
+					<div
+						ref={listRef}
+						className="flex flex-col gap-1 mt-4 overflow-y-auto  h-[calc(100vh-10rem)]"
+					>
 						{isEmpty && (
 							<div className="flex flex-col items-center justify-center gap-3 py-16 text-center rounded-2xl bg-surface-2">
 								<div className="text-5xl">📭</div>
@@ -122,7 +153,7 @@ export function MiniAppsLayout() {
 							: null}
 
 						{miniApps.map((app) => (
-							<div key={app.appId}>
+							<div key={app.appId} data-app-id={app.appId}>
 								<MiniAppCard
 									app={app}
 									onLaunch={() => onLaunchApp(app.appId)}
