@@ -47,9 +47,21 @@ interface DialogNotificationItem {
 	buttonLabel: string
 }
 
+interface IslandNotificationItem {
+	id: string
+	title: string
+	description?: string | null
+	icon?: string | null
+	link?: string | null
+	type?: NotificationType
+	goTo?: string | null
+	target?: string | null
+}
+
 interface NotificationItemResponse {
 	widgetifyCard: Array<NotificationItem>
 	dialog: DialogNotificationItem | null
+	island?: IslandNotificationItem | null
 }
 
 async function fetchNotifications(): Promise<NotificationItemResponse> {
@@ -102,6 +114,7 @@ export function useNotifyAsSeen() {
 					...previous,
 					widgetifyCard:
 						previous.widgetifyCard?.filter((item) => item.id !== id) || [],
+					island: previous.island?.id === id ? null : previous.island,
 				}
 				queryClient.setQueryData(extensionKeys.notifications, updated)
 				await setToStorage('notifications', updated)

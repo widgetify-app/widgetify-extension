@@ -123,6 +123,8 @@ const ANALYTICS_EVENTS = [
 	'habit_quick_log_wide',
 	'habit_refetch',
 	'import_browser_bookmarks',
+	'island_close',
+	'island_open',
 	'market_item_previewed',
 	'market_item_purchase_failed',
 	'market_item_purchase_started',
