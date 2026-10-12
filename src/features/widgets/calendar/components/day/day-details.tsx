@@ -138,7 +138,7 @@ export const CalendarDayDetails: React.FC<CalendarDayDetailsProps> = ({
 								{t('widgets.calendar.gregorianDate')}
 							</span>
 						</dt>
-						<dd dir="ltr">{gregorian}</dd>
+						<dd dir="rtl">{gregorian}</dd>
 					</div>
 				</dl>
 			</header>
