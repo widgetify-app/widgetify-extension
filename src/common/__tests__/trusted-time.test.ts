@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'bun:test'
 import {
+	CLOCK_SYNC_TTL_MS,
 	computeClockOffset,
+	isClockSyncFresh,
 	MIN_CORRECTED_SKEW_MS,
 	nowDate,
 	nowMs,
@@ -133,5 +135,30 @@ describe('onClockCorrected', () => {
 		expect(calls).toBe(2)
 
 		setClockOffset(0)
+	})
+})
+
+describe('isClockSyncFresh', () => {
+	const saved = { offset: 600_000, syncedAt: 1_000_000 }
+
+	it('trusts a correction for a few days, so the server is asked once', () => {
+		expect(isClockSyncFresh(saved, 1_000_000)).toBe(true)
+		expect(isClockSyncFresh(saved, 1_000_000 + CLOCK_SYNC_TTL_MS - 1)).toBe(true)
+	})
+
+	it('asks again after that', () => {
+		expect(isClockSyncFresh(saved, 1_000_000 + CLOCK_SYNC_TTL_MS)).toBe(false)
+	})
+
+	it('asks again when the system clock went back past the sync, since it was changed', () => {
+		expect(isClockSyncFresh(saved, 999_999)).toBe(false)
+	})
+
+	it('asks when nothing usable was saved', () => {
+		expect(isClockSyncFresh(null, 1_000_000)).toBe(false)
+		expect(isClockSyncFresh(undefined, 1_000_000)).toBe(false)
+		expect(
+			isClockSyncFresh({ offset: Number.NaN, syncedAt: 1_000_000 }, 1_000_000)
+		).toBe(false)
 	})
 })

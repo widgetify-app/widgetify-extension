@@ -167,7 +167,7 @@
 | `GET /weather/current` | بله | `addForecast=true`. افزونه مختصات نمی‌فرستد و بعد از `PUT /users/@me/city` این cache را پاک می‌کند، پس شهر از حساب کاربر می‌آید | `{ city, weather, forecast }`، پایین‌تر ببینید |
 | `GET /cities/list` | بله | | `[{ city, cityId }]` |
 | `GET /date/events` | خیر | | `{ shamsiEvents, gregorianEvents, hijriEvents }` |
-| `GET /date/now` | خیر | | `{ now }`، ساعت سرور به میلی‌ثانیه. افزونه موقع شروع، هر ۳۰ دقیقه و وقتی بعد از ۵ دقیقه به تب برمی‌گردی می‌خواند تا ساعت اشتباه سیستم را (فاصله‌ی ۱۰ ثانیه یا بیشتر) درست کند |
+| `GET /date/now` | خیر | | `{ now }`، ساعت سرور به میلی‌ثانیه. افزونه فقط یک‌بار می‌خواند و نتیجه را ۳ روز نگه می‌دارد (`clockSync`) تا ساعت اشتباه سیستم را (فاصله‌ی ۱۰ ثانیه یا بیشتر) درست کند. بعد از ۳ روز، یا وقتی ساعت سیستم از زمان ذخیره‌شده عقب‌تر رفته باشد، دوباره می‌پرسد |
 | `GET /date/timezones` | خیر | | `[{ label, value, offset }]` |
 | `GET /date/owghat` | بله | `day*`، `month*`، `lat`، `lan` (طول جغرافیایی؛ Swagger اسمش را `long` گذاشته) | `{ azan_sobh, tolu_aftab, azan_zohr, ghorub_aftab, azan_maghreb, nimeshab, month, day }`. زمان‌ها متن هستند، مثل `04:34` |
 | `GET /currencies/supported-list` | خیر | | `[{ key, type, country?, label: { fa, en }, changePercentage }]`. `type` یکی از `coin`، `crypto` یا `currency` است |
