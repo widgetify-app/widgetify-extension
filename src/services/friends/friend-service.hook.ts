@@ -49,6 +49,7 @@ interface UserActivity {
 	avatar: string
 	activityId: string
 	content: string
+	color: string | null
 	isSelf: boolean
 	reactionCount: number
 }

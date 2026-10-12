@@ -27,6 +27,8 @@ export const friends = {
 		'اگه نوشته‌ای ازت گزارش بشه و نامناسب باشه، ممکنه حسابت محدود بشه',
 	'friends.activity.rule4': 'کمکمون کن اینجا جای امن و دوستانه‌ای بمونه',
 	'friends.activity.rule5': 'هر روز فقط یه نوشته‌ی جدید میتونی بذاری',
+	'friends.activity.colorLabel': 'نوشته‌ت چه رنگی باشه',
+	'friends.activity.colorNone': 'بدون رنگ',
 	'friends.activity.gotIt': 'متوجه شدم',
 	'friends.add.setUsernameFirst':
 		'برای فرستادن درخواست دوستی، اول توی پروفایلت یه نام کاربری انتخاب کن',

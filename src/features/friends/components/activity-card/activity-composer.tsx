@@ -6,8 +6,10 @@ import { callEvent } from '@/common/utils/call-event'
 import { playAlarm } from '@/common/utils/play-alarm'
 import { translateError } from '@/common/utils/translate-error'
 import { AvatarComponent, Button, Chip, ScrollRow } from '@/components/ui'
+import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
 import { useSetActivity } from '@/services/user/user-service.hook'
+import { ACTIVITY_COLORS } from '../../utils/activity-color'
 import { ActivityBubble } from './activity-bubble'
 
 const MAX_ACTIVITY_LENGTH = 40
@@ -35,6 +37,7 @@ export function ActivityComposer({
 }: ActivityComposerProps) {
 	const [activity, setActivity] = useState('')
 	const [hours, setHours] = useState<ActivityHours>(24)
+	const [color, setColor] = useState<string | null>(null)
 	const inputRef = useRef<HTMLTextAreaElement>(null)
 	const { mutateAsync, isPending } = useSetActivity()
 
@@ -57,7 +60,11 @@ export function ActivityComposer({
 		}
 
 		try {
-			await mutateAsync({ content: activity, time: hours })
+			await mutateAsync({
+				content: activity,
+				time: hours,
+				...(color && { color }),
+			})
 			Analytics.event('friends_activity_posted')
 			playAlarm('done_todo')
 			callEvent('closeAllDropdowns')
@@ -83,7 +90,7 @@ export function ActivityComposer({
 	return (
 		<div className="flex flex-col items-center gap-5">
 			<div className="flex flex-col items-center w-full pb-1">
-				<ActivityBubble size="lg">
+				<ActivityBubble size="lg" color={color}>
 					<textarea
 						ref={inputRef}
 						value={activity}
@@ -96,7 +103,7 @@ export function ActivityComposer({
 						maxLength={MAX_ACTIVITY_LENGTH}
 						rows={1}
 						dir={activity ? 'auto' : 'rtl'}
-						className="block w-full text-base leading-control text-center bg-transparent outline-none resize-none text-fg placeholder:text-fg-ghost"
+						className="block w-full text-base leading-control text-center bg-transparent outline-none resize-none text-inherit placeholder:text-inherit placeholder:opacity-60"
 					/>
 				</ActivityBubble>
 				<div className="mt-3 rounded-full ring-2 ring-surface-3">
@@ -131,6 +138,39 @@ export function ActivityComposer({
 					</ScrollRow>
 				</div>
 			)}
+
+			<div className="flex flex-col w-full gap-1.5">
+				<p className="text-2xs font-semibold text-fg-muted">
+					{t('friends.activity.colorLabel')}
+				</p>
+				<ScrollRow>
+					<button
+						type="button"
+						aria-pressed={color === null}
+						aria-label={t('friends.activity.colorNone')}
+						onClick={() => setColor(null)}
+						className={cn(
+							'shrink-0 size-5 m-1 rounded-full cursor-pointer ring-2 transition-ui hover:scale-110 focus-visible:focus-ring grid place-items-center bg-surface-3 text-fg-muted',
+							color === null ? 'ring-fg-strong' : 'ring-transparent'
+						)}
+					>
+						<Icon name="close" size={12} aria-hidden="true" />
+					</button>
+					{ACTIVITY_COLORS.map((hex) => (
+						<button
+							key={hex}
+							type="button"
+							aria-pressed={color === hex}
+							onClick={() => setColor(hex)}
+							style={{ backgroundColor: hex }}
+							className={cn(
+								'shrink-0 size-5 my-1 rounded-full cursor-pointer ring-2 transition-ui hover:scale-110 focus-visible:focus-ring',
+								color === hex ? 'ring-fg-strong' : 'ring-transparent'
+							)}
+						/>
+					))}
+				</ScrollRow>
+			</div>
 
 			<div className="flex flex-col w-full gap-1.5">
 				<p className="text-2xs font-semibold text-fg-muted">

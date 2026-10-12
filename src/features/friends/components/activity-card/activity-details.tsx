@@ -13,7 +13,7 @@ import { GetContentFromReactions, RenderReactionContent } from './activity-react
 
 interface ActivityDetailsProps {
 	avatar: string
-	activity: { id: string; content: string }
+	activity: { id: string; content: string; color?: string | null }
 	reactions: AttachmentReaction[]
 	onDeleted: () => void
 }
@@ -44,8 +44,8 @@ export function ActivityDetails({
 	return (
 		<div className="flex flex-col items-center gap-5">
 			<div className="flex flex-col items-center w-full pb-1">
-				<ActivityBubble size="lg">
-					<p className="text-fg wrap-break-word" dir="auto">
+				<ActivityBubble size="lg" color={activity.color}>
+					<p className="wrap-break-word" dir="auto">
 						{activity.content}
 					</p>
 				</ActivityBubble>

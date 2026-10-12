@@ -43,6 +43,7 @@ export const ActiveFriendsHorizontal = () => {
 							avatar={user.avatar || ''}
 							name={t('friends.you')}
 							activity={currentUserActivity.content || ''}
+							color={currentUserActivity.color}
 							onClick={() => setIsBottomSheetOpen(true)}
 							reactions={activitiesData.attachments?.reactions || []}
 							isSelf
@@ -67,6 +68,7 @@ export const ActiveFriendsHorizontal = () => {
 							avatar={activity.avatar || ''}
 							name={activity.name}
 							activity={activity.content.trim()}
+							color={activity.color}
 							reactions={activitiesData.attachments?.reactions || []}
 						/>
 					)
@@ -83,6 +85,7 @@ export const ActiveFriendsHorizontal = () => {
 							? {
 									id: currentUserActivity.activityId,
 									content: currentUserActivity.content || '',
+									color: currentUserActivity.color,
 								}
 							: null
 					}

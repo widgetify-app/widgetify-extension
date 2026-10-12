@@ -9,7 +9,7 @@ interface ManageActivityModalProps {
 	isOpen: boolean
 	onClose: () => void
 	avatar: string
-	currentActivity: { id: string; content: string } | null
+	currentActivity: { id: string; content: string; color?: string | null } | null
 	reactions: AttachmentReaction[]
 	templates: string[]
 }

@@ -8,6 +8,7 @@ interface ActivityCardProps {
 	avatar: string
 	name: string
 	activity: string
+	color?: string | null
 	onClick?: () => void
 	isSelf: boolean
 	reactions: AttachmentReaction[]
@@ -20,6 +21,7 @@ export const ActivityCard = ({
 	avatar,
 	name,
 	activity,
+	color,
 	onClick,
 	isSelf,
 	reactions,
@@ -28,6 +30,7 @@ export const ActivityCard = ({
 		<>
 			<div className="relative flex flex-col items-center">
 				<ActivityBubble
+					color={color}
 					isInteractive={Boolean(onClick)}
 					badge={
 						isSelf ? null : (
