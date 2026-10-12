@@ -9,6 +9,6 @@ export const NETWORK_FIRST_API_PATHS = [
 // Stale-while-revalidate: return the cached response instantly, refresh in the background.
 export const SWR_API_PATHS = ['/searchbox', '/currencies', '/weather', '/contents']
 
-export const NEVER_CACHE_API_PATHS = ['/searchbox/suggest-search']
+export const NEVER_CACHE_API_PATHS = ['/searchbox/suggest-search', '/date/now']
 
 export const CDN_NO_CACHE_PREFIXES = ['/wallpapers/', '/avatars/']

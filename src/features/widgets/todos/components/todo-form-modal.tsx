@@ -1,3 +1,4 @@
+import { nowDate } from '@/common/utils/trusted-time'
 import jalaliMoment from 'jalali-moment'
 import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
@@ -18,7 +19,7 @@ import { PriorityDropdown } from './priority-dropdown'
 import { TodoCategoryDropdown, TodoDateDropdown } from './todo-form-tools'
 import { t } from '@/common/i18n'
 
-const today = () => jalaliMoment().locale('fa')
+const today = () => jalaliMoment(nowDate()).locale('fa')
 
 function initialDate(todo: Todo | null) {
 	if (!todo?.date) return today()

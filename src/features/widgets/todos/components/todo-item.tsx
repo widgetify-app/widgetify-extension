@@ -1,3 +1,4 @@
+import { nowDate } from '@/common/utils/trusted-time'
 import { t } from '@/common/i18n'
 import type React from 'react'
 import { useEffect, useState } from 'react'
@@ -104,7 +105,7 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 
 	const dueDate = parseTodoDate(currentTodo.date)
 	const isoDate = dueDate.format('YYYY-MM-DD')
-	const dueLabel = todoDueLabel(dueDate, jalaliMoment())
+	const dueLabel = todoDueLabel(dueDate, jalaliMoment(nowDate()))
 	return (
 		<div
 			{...keyboardFocus}

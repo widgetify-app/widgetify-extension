@@ -1,3 +1,4 @@
+import { nowDate } from '@/common/utils/trusted-time'
 import { t } from '@/common/i18n'
 import jalaliMoment from 'jalali-moment'
 import { useState } from 'react'
@@ -28,7 +29,7 @@ export function TodoDateDropdown({ date, onChange }: TodoDateDropdownProps) {
 					label={t('widgets.todos.form.date')}
 					isActive
 				>
-					{todoDueLabel(date, jalaliMoment().locale('fa'))}
+					{todoDueLabel(date, jalaliMoment(nowDate()).locale('fa'))}
 				</TodoComposerTool>
 			}
 		>

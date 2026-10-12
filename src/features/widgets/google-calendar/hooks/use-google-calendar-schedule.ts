@@ -1,3 +1,4 @@
+import { nowDate } from '@/common/utils/trusted-time'
 import { useEffect, useMemo, useState } from 'react'
 import Analytics from '@/analytics'
 import { useAuth } from '@/context/auth.context'
@@ -18,13 +19,13 @@ export function useGoogleCalendarSchedule() {
 	const { user, isAuthenticated } = useAuth()
 	const { currentDate, today } = useDate()
 	const { selected_timezone: timezone } = useGeneralSetting()
-	const [currentTime, setCurrentTime] = useState(new Date())
+	const [currentTime, setCurrentTime] = useState(nowDate())
 	const [selectedDay, setSelectedDay] = useState<WidgetifyDate>(currentDate)
 
 	const isCalendarConnected = user?.connections?.includes('google') || false
 
 	useEffect(() => {
-		const timer = setInterval(() => setCurrentTime(new Date()), REFRESH_INTERVAL_MS)
+		const timer = setInterval(() => setCurrentTime(nowDate()), REFRESH_INTERVAL_MS)
 		return () => clearInterval(timer)
 	}, [])
 

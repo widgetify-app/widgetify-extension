@@ -1,3 +1,4 @@
+import { nowDate } from '@/common/utils/trusted-time'
 import { t } from '@/common/i18n'
 import jalaliMoment from 'jalali-moment'
 import type { ReactNode } from 'react'
@@ -167,7 +168,7 @@ function TodoCompactContent({
 
 	const dueLabel = isDone
 		? null
-		: todoDueLabel(parseTodoDate(current.date), jalaliMoment())
+		: todoDueLabel(parseTodoDate(current.date), jalaliMoment(nowDate()))
 	const subtitle = [
 		dueLabel,
 		t('widgets.todos.variant2x1.progressOf', {

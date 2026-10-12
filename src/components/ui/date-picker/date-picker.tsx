@@ -1,3 +1,4 @@
+import { nowDate } from '@/common/utils/trusted-time'
 import { twMerge } from 'tailwind-merge'
 import { t } from '@/common/i18n'
 import { Icon } from '@/icons'
@@ -31,7 +32,7 @@ export function DatePicker({
 	isDateDisabled,
 }: DatePickerProps) {
 	const [currentDate, setCurrentDate] = useState<jalaliMoment.Moment>(
-		selectedDate?.locale('fa') || jalaliMoment().locale('fa')
+		selectedDate?.locale('fa') || jalaliMoment(nowDate()).locale('fa')
 	)
 
 	const firstDayOfMonth = currentDate.clone().startOf('jMonth').day()
@@ -45,7 +46,7 @@ export function DatePicker({
 	const totalCells = 42
 
 	const isToday = (date: jalaliMoment.Moment) => {
-		const today = jalaliMoment()
+		const today = jalaliMoment(nowDate())
 		return (
 			date.jDate() === today.jDate() &&
 			date.jMonth() === today.jMonth() &&
@@ -63,7 +64,7 @@ export function DatePicker({
 	}
 
 	const isCurrentMonthToday = () => {
-		const today = jalaliMoment()
+		const today = jalaliMoment(nowDate())
 		return (
 			currentDate.jMonth() === today.jMonth() &&
 			currentDate.jYear() === today.jYear()
@@ -72,7 +73,7 @@ export function DatePicker({
 
 	const isTodaySelected = () => {
 		if (!selectedDate) return false
-		const today = jalaliMoment()
+		const today = jalaliMoment(nowDate())
 		return (
 			selectedDate.jDate() === today.jDate() &&
 			selectedDate.jMonth() === today.jMonth() &&
@@ -85,7 +86,7 @@ export function DatePicker({
 	}
 
 	const goToToday = () => {
-		const today = jalaliMoment().locale('fa')
+		const today = jalaliMoment(nowDate()).locale('fa')
 		setCurrentDate(today)
 		if (isDateDisabled?.(today)) return
 		onDateSelect(today)
