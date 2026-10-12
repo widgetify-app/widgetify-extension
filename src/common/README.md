@@ -11,7 +11,7 @@ Shared code with no UI of its own, except `motion.tsx` and `toast.tsx`, which ar
 | `utils/call-event.ts` | `callEvent` and `listenEvent`, typed messages between components |
 | `motion.tsx` | `Motion`, `Presence`, `MotionPreferences`: the only door to framer-motion |
 | `toast.tsx` | `showToast`: the only door to react-hot-toast |
-| `utils/trusted-time.ts` | `nowMs()` and `nowDate()`: the system clock plus the gap to the server clock. Any widget that shows the date or time reads these instead of `Date.now()` and `new Date()`, so a wrong system clock does not show. `onClockCorrected` tells a component to redraw. The gap is set by `useSyncClock` (`services/date/sync-clock.hook.ts`) from `GET /date/now`, and only when it is 10 seconds or more |
+| `utils/trusted-time.ts` | `nowMs()` and `nowDate()`: the system clock plus the gap to the server clock. Any widget that shows the date or time reads these instead of `Date.now()` and `new Date()`, so a wrong system clock does not show. `onClockCorrected` tells a component to redraw. The gap is set by `useSyncClock` (`services/date/sync-clock.hook.ts`): one `GET /date/now`, kept in storage as `clockSync` for 3 days, applied only when it is 10 seconds or more |
 | `utils/cn.ts` | `cn()`, class merging (clsx and tailwind-merge) |
 | `utils/` | Small helpers: colour, dates, error translation, timeouts |
 	| `i18n/` | Persian message catalog and `t()`; the only place UI copy lives |
