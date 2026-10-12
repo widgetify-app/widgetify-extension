@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { nowMs, onClockCorrected } from '@/common/utils/trusted-time'
 import { getZonedNow, msUntilNextMinute } from '@/features/widgets/utils/zoned-now'
 
 const SECOND_MS = 1000
@@ -11,9 +12,14 @@ export function useZonedClock(timeZone?: string, withSeconds = false): Date {
 
 		update()
 
+		const stopListening = onClockCorrected(update)
+
 		if (withSeconds) {
 			const timer = setInterval(update, SECOND_MS)
-			return () => clearInterval(timer)
+			return () => {
+				clearInterval(timer)
+				stopListening()
+			}
 		}
 
 		let timer: ReturnType<typeof setTimeout>
@@ -21,11 +27,14 @@ export function useZonedClock(timeZone?: string, withSeconds = false): Date {
 			timer = setTimeout(() => {
 				update()
 				scheduleNextMinute()
-			}, msUntilNextMinute(Date.now()))
+			}, msUntilNextMinute(nowMs()))
 		}
 		scheduleNextMinute()
 
-		return () => clearTimeout(timer)
+		return () => {
+			clearTimeout(timer)
+			stopListening()
+		}
 	}, [timeZone, withSeconds])
 
 	return now

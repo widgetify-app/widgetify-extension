@@ -1,3 +1,4 @@
+import { nowDate } from '@/common/utils/trusted-time'
 import { t } from '@/common/i18n'
 import type { ReactNode } from 'react'
 import type { WidgetifyDate } from '@/common/utils/date-events'
@@ -21,7 +22,7 @@ export function ToolsCompactRow({ currentDate, onSelectTab }: ToolsCompactRowPro
 
 	const nextIndex = nextPrayerIndex(
 		times.map((time) => time.value),
-		new Date()
+		nowDate()
 	)
 	const prayer = times[nextIndex < 0 ? 0 : nextIndex]
 

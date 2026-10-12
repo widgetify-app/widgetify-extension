@@ -37,7 +37,7 @@
 - هرکدوم از API ها دارای Cache و Rate Limit هستند.
 - تعداد Rate Limit درحال حاضر private هست.
 - Cache هر API به صورت رندوم بین 1 تا 10 دقیقه و 1 ساعت هست.
-- افزونه برای درخواست‌های `GET` توی service worker هم cache خودش را دارد (`background/cache-config.ts`): stale-while-revalidate برای `/searchbox`، `/currencies`، `/weather` و `/contents`؛ اول شبکه، با ۳ ثانیه صبر، برای `/date/events`، `/news/rss` و `/extension/notifications`؛ و `/searchbox/suggest-search` هیچ‌وقت. فقط پاسخ‌های `200` نگه داشته می‌شوند، تا ۵۰ مورد برای ۲ روز. درخواستی که با `cache: 'no-cache'` فرستاده شود (به‌روزرسانی دستی، `FRESH_REQUEST` در `src/services/api.ts`) از هر دو روش می‌گذرد: بدون صبر به شبکه می‌رود و پاسخ را در همان cache می‌نویسد، تا درخواست عادی بعدی نسخه‌ی قدیمی‌تر را برنگرداند.
+- افزونه برای درخواست‌های `GET` توی service worker هم cache خودش را دارد (`background/cache-config.ts`): stale-while-revalidate برای `/searchbox`، `/currencies`، `/weather` و `/contents`؛ اول شبکه، با ۳ ثانیه صبر، برای `/date/events`، `/news/rss` و `/extension/notifications`؛ و `/searchbox/suggest-search` و `/date/now` هیچ‌وقت. فقط پاسخ‌های `200` نگه داشته می‌شوند، تا ۵۰ مورد برای ۲ روز. درخواستی که با `cache: 'no-cache'` فرستاده شود (به‌روزرسانی دستی، `FRESH_REQUEST` در `src/services/api.ts`) از هر دو روش می‌گذرد: بدون صبر به شبکه می‌رود و پاسخ را در همان cache می‌نویسد، تا درخواست عادی بعدی نسخه‌ی قدیمی‌تر را برنگرداند.
 
 ## ورود
 
@@ -167,6 +167,7 @@
 | `GET /weather/current` | بله | `addForecast=true`. افزونه مختصات نمی‌فرستد و بعد از `PUT /users/@me/city` این cache را پاک می‌کند، پس شهر از حساب کاربر می‌آید | `{ city, weather, forecast }`، پایین‌تر ببینید |
 | `GET /cities/list` | بله | | `[{ city, cityId }]` |
 | `GET /date/events` | خیر | | `{ shamsiEvents, gregorianEvents, hijriEvents }` |
+| `GET /date/now` | خیر | | `{ now }`، ساعت سرور به میلی‌ثانیه. افزونه موقع شروع، هر ۳۰ دقیقه و وقتی بعد از ۵ دقیقه به تب برمی‌گردی می‌خواند تا ساعت اشتباه سیستم را (فاصله‌ی ۱۰ ثانیه یا بیشتر) درست کند |
 | `GET /date/timezones` | خیر | | `[{ label, value, offset }]` |
 | `GET /date/owghat` | بله | `day*`، `month*`، `lat`، `lan` (طول جغرافیایی؛ Swagger اسمش را `long` گذاشته) | `{ azan_sobh, tolu_aftab, azan_zohr, ghorub_aftab, azan_maghreb, nimeshab, month, day }`. زمان‌ها متن هستند، مثل `04:34` |
 | `GET /currencies/supported-list` | خیر | | `[{ key, type, country?, label: { fa, en }, changePercentage }]`. `type` یکی از `coin`، `crypto` یا `currency` است |

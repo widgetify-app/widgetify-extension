@@ -1,3 +1,4 @@
+import { nowDate } from '@/common/utils/trusted-time'
 import { t } from '@/common/i18n'
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { TextInput } from '@/components/ui'
@@ -22,7 +23,7 @@ interface ExpandableTodoInputProps {
 	isEdit: boolean
 	onUpdated?: () => void
 }
-const getTodayJalaliMoment = () => jalaliMoment().locale('fa')
+const getTodayJalaliMoment = () => jalaliMoment(nowDate()).locale('fa')
 export function ExpandableTodoInput({
 	editTodo,
 	onClose,

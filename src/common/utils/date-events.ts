@@ -1,3 +1,4 @@
+import { nowDate } from '@/common/utils/trusted-time'
 import jalaliMoment from 'jalali-moment'
 import hijriMoment from 'moment-hijri'
 import momentTz from 'moment-timezone'
@@ -169,6 +170,6 @@ export function getGregorianEvents(
 }
 
 export function getCurrentDate(timeZone: string) {
-	const tzMoment = momentTz.tz(new Date(), timeZone)
+	const tzMoment = momentTz.tz(nowDate(), timeZone)
 	return jalaliMoment(tzMoment.toDate()).locale('fa')
 }

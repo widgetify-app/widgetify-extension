@@ -1,3 +1,4 @@
+import { nowDate } from '@/common/utils/trusted-time'
 import { t } from '@/common/i18n'
 import type { ReactNode } from 'react'
 import { cn } from '@/common/utils/cn'
@@ -28,7 +29,7 @@ export function ReligiousTime({ currentDate, tabs }: ReligiousTimeProps) {
 		useReligiousTimes(currentDate)
 	const weekDay = currentDate.format('dddd')
 	const zikr = DAILY_ZIKR[weekDay]
-	const now = new Date()
+	const now = nowDate()
 	const nextIndex = nextPrayerIndex(
 		times.map((time) => time.value),
 		now

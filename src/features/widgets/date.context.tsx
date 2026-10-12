@@ -1,3 +1,4 @@
+import { onClockCorrected } from '@/common/utils/trusted-time'
 import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
 import {
@@ -42,10 +43,16 @@ export const DateProvider: React.FC<{ children: React.ReactNode }> = ({ children
 	}, [timezone])
 
 	useEffect(() => {
-		const newToday = getCurrentDate(timezone.value)
-		setToday(newToday)
-		setCurrentDate(newToday.clone())
-		setSelectedDate(newToday.clone())
+		const resetToToday = () => {
+			const newToday = getCurrentDate(timezone.value)
+			setToday(newToday)
+			setCurrentDate(newToday.clone())
+			setSelectedDate(newToday.clone())
+		}
+
+		resetToToday()
+
+		return onClockCorrected(resetToToday)
 	}, [timezone])
 
 	const goToToday = () => {
