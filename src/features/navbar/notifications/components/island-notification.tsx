@@ -84,17 +84,17 @@ export function IslandNotification() {
 						<button
 							type="button"
 							onClick={open}
-							className="flex items-center min-w-0 gap-3 py-2 ps-2 pe-6 rounded-full cursor-pointer text-start transition-ui hover:bg-fill focus-visible:focus-ring"
+							className={`flex items-center min-w-0 gap-3 py-2 pe-6 rounded-full cursor-pointer text-start transition-ui hover:bg-fill focus-visible:focus-ring ${island.icon ? 'ps-2' : 'ps-6'}`}
 						>
-							<span className="grid overflow-hidden rounded-full size-11 shrink-0 place-items-center bg-surface">
-								{island.icon && (
+							{island.icon && (
+								<span className="grid overflow-hidden rounded-full size-11 shrink-0 place-items-center bg-surface">
 									<img
 										src={island.icon}
 										alt=""
 										className="object-contain size-7"
 									/>
-								)}
-							</span>
+								</span>
+							)}
 							<span className="flex flex-col min-w-0">
 								<span
 									className="text-sm font-bold truncate text-fg-strong"
