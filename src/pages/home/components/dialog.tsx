@@ -60,6 +60,10 @@ export function DialogChecker() {
 
 	if (!data?.dialog) return null
 	const dialog = data.dialog
+	const hasButton =
+		Boolean(dialog.link) ||
+		((dialog.type === 'page' || dialog.type === 'action') && Boolean(dialog.goTo))
+
 	return (
 		<Modal
 			isOpen={show}
@@ -76,7 +80,7 @@ export function DialogChecker() {
 				<p className="text-start">{dialog.description}</p>
 
 				<div className="flex flex-col gap-2">
-					{dialog.link && (
+					{hasButton && (
 						<Button
 							size="md"
 							onClick={() => onButtonClick()}
