@@ -19,3 +19,10 @@ export function getPrice(code: string, currency: FetchedCurrency): CurrencyPrice
 		formatted: typeof value === 'number' ? value.toLocaleString() : '-',
 	}
 }
+
+export function calculatePriceChange(code: string, currency: FetchedCurrency): number {
+	if (!currency.changePercentage) return 0
+	const { value } = getPrice(code, currency)
+	if (!value || !Number.isFinite(value)) return 0
+	return (currency.changePercentage / 100) * value
+}
