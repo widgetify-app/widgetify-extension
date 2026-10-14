@@ -11,6 +11,7 @@ import type { StoredWallpaper, Wallpaper } from '../types/wallpaper.interface'
 
 export interface StorageKV {
 	currencies: string[]
+	currencyColorMode: 'normal' | 'reverse'
 	clockSync: { offset: number; syncedAt: number }
 	hasShownPwaModal: boolean
 	currentWeather: FetchedWeather

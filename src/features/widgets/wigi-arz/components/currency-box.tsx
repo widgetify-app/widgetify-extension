@@ -111,7 +111,10 @@ export const CurrencyBox = ({ code, dragHandle }: CurrencyBoxProps) => {
 							)}
 						</span>
 						{currency && (
-							<PriceChange changePercentage={currency.changePercentage} />
+							<PriceChange
+								changePercentage={currency.changePercentage}
+								amount={priceChange}
+							/>
 						)}
 					</span>
 				</button>
