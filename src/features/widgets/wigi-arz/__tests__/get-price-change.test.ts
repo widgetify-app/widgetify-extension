@@ -26,4 +26,11 @@ describe('formatChangeAmount', () => {
 		expect(formatChangeAmount(-2619.6)).toBe((2620).toLocaleString())
 		expect(formatChangeAmount(0)).toBe('0')
 	})
+
+	it('keeps two decimals under 10, so a small change in dollars is not shown as zero', () => {
+		expect(formatChangeAmount(0.17)).toBe((0.17).toLocaleString())
+		expect(formatChangeAmount(-1.234)).toBe((1.23).toLocaleString())
+		expect(formatChangeAmount(9.996)).toBe((10).toLocaleString())
+		expect(formatChangeAmount(10.4)).toBe('10')
+	})
 })
