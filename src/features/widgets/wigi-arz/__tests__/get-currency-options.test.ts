@@ -7,17 +7,24 @@ const SUPPORTED = [
 	{ key: 'ETH', type: 'crypto', label: { fa: 'اتریوم', en: 'Ethereum' } },
 	{ key: 'USD', type: 'currency', label: { fa: 'دلار', en: 'Dollar' } },
 	{ key: 'SEKE', type: 'coin', label: { fa: 'سکه امامی', en: 'Coin' } },
+	{
+		key: 'VPS-1',
+		type: 'service',
+		label: { fa: 'سرور ۱', en: 'VPS 1' },
+		period: 'ماهانه',
+	},
 ] as unknown as SupportedCurrencies
 
 describe('getCurrencyOptions', () => {
-	it('keeps the three groups in a stable order', () => {
+	it('keeps the four groups in a stable order', () => {
 		const groups = getCurrencyOptions(SUPPORTED)
 
-		expect(groups).toHaveLength(3)
+		expect(groups).toHaveLength(4)
 		expect(groups.map((g) => g.options.map((o) => o.value))).toEqual([
 			['BTC', 'ETH'],
 			['USD'],
 			['SEKE'],
+			['VPS-1'],
 		])
 	})
 
@@ -30,7 +37,7 @@ describe('getCurrencyOptions', () => {
 	it('returns empty groups rather than throwing on an empty list', () => {
 		const groups = getCurrencyOptions([] as unknown as SupportedCurrencies)
 
-		expect(groups).toHaveLength(3)
+		expect(groups).toHaveLength(4)
 		expect(groups.every((g) => g.options.length === 0)).toBe(true)
 	})
 
@@ -47,7 +54,7 @@ describe('filterCurrencyGroups', () => {
 	const groups = getCurrencyOptions(SUPPORTED)
 
 	it('returns everything for an empty query', () => {
-		expect(filterCurrencyGroups(groups, '')).toHaveLength(3)
+		expect(filterCurrencyGroups(groups, '')).toHaveLength(4)
 	})
 
 	it('drops groups that no longer have options', () => {

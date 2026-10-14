@@ -87,15 +87,18 @@ export const CurrencyModalComponent = ({
 					</h2>
 					<div className="flex items-center justify-center gap-1 text-sm font-medium text-fg-muted">
 						<span>{code.toUpperCase()}</span>
-						<button
-							type="button"
-							onClick={onClickConverter}
-							aria-label={t('widgets.wigiArz.convertAria')}
-							aria-expanded={showConverter}
-							className="cursor-pointer hover:text-brand focus-visible:focus-ring"
-						>
-							<Icon name="arrowRightLeft" aria-hidden="true" />
-						</button>
+						{currency.period && <span>{currency.period}</span>}
+						{currency.type !== 'service' && (
+							<button
+								type="button"
+								onClick={onClickConverter}
+								aria-label={t('widgets.wigiArz.convertAria')}
+								aria-expanded={showConverter}
+								className="cursor-pointer hover:text-brand focus-visible:focus-ring"
+							>
+								<Icon name="arrowRightLeft" aria-hidden="true" />
+							</button>
+						)}
 					</div>
 				</header>
 

@@ -4,8 +4,9 @@ import { currencyKeys } from '@/services/currency/currency.keys'
 
 export type SupportedCurrencies = {
 	key: string
-	type: 'coin' | 'crypto' | 'currency'
+	type: 'coin' | 'crypto' | 'currency' | 'service'
 	country?: string
+	period?: string
 	label: {
 		fa: string
 		en: string

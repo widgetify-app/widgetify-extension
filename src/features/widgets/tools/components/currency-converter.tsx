@@ -37,10 +37,12 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = ({ tabs }) =>
 			? (amount * fromCurrencyData.rialPrice) / toCurrencyData.rialPrice
 			: 0
 
-	const currencyOptions = supportedCurrencies?.map((c) => ({
-		label: c.key,
-		value: c.key,
-	}))
+	const currencyOptions = supportedCurrencies
+		?.filter((c) => c.type !== 'service')
+		.map((c) => ({
+			label: c.key,
+			value: c.key,
+		}))
 
 	const handleSwap = () => {
 		setFromCurrency(toCurrency)

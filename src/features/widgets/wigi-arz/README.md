@@ -1,6 +1,6 @@
 # Wigi-arz widget
 
-Live prices of currencies, gold, coins and crypto. Two models: a list at 2x3 and one currency at 1x1 (PRO). The list rows are also drawn inside the combo widget.
+Live prices of currencies, gold, coins, crypto and services (subscriptions and cloud plans). Two models: a list at 2x3 and one currency at 1x1 (PRO). The list rows are also drawn inside the combo widget.
 
 ## Files
 
@@ -30,6 +30,15 @@ Live prices of currencies, gold, coins and crypto. Two models: a list at 2x3 and
 - The 1x1 model keeps its code in `meta.currencyCode`.
 - The header time is the latest reply among the listed currencies, from `useCurrenciesUpdatedAt` in `src/services/currency`.
 - «به‌روز کن» calls `useRefreshCurrencies`, which asks for every price on the page again with `FRESH_REQUEST`. The service worker answers `/currencies` stale-while-revalidate, so a plain `refetch()` got the cached price back and the new one only on the request after.
+
+## Services
+
+The server adds entries of `type: 'service'` to `/currencies/supported-list` for every pegged item in price-track (a base price in dollars times the live rate; see the API's currency README). They are a fourth group in the picker, «☁️ اشتراک و سرویس‌ها», and a fourth filter.
+
+- A service row, the 1x1 and the modal work like a currency: price in toman, the change, the chart. The row's second line ends with the plan's period (` · ماهانه`), and the modal shows it beside the code.
+- The converter button is hidden for a service: converting a plan to toman is not a conversion.
+- The converter tool (`src/features/widgets/tools/components/currency-converter.tsx`) leaves services out of its list.
+- An old extension ignores a type it does not know, so it never offers a service.
 
 ## History chart
 

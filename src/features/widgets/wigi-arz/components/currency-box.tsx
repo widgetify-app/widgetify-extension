@@ -97,6 +97,10 @@ export const CurrencyBox = ({ code, dragHandle }: CurrencyBoxProps) => {
 						<span className="truncate text-3xs text-fg-faint">
 							{currency?.name?.fa}
 							{price?.isDollar && t('widgets.wigiArz.dollarSuffix')}
+							{currency?.period &&
+								t('widgets.wigiArz.periodSuffix', {
+									period: currency.period,
+								})}
 						</span>
 					</span>
 

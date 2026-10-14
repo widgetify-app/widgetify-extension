@@ -170,6 +170,10 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 									value: CurrenciesType.COIN,
 									label: t('widgets.wigiArz.filter.coin'),
 								},
+								{
+									value: CurrenciesType.SERVICE,
+									label: t('widgets.wigiArz.filter.service'),
+								},
 							]}
 							value={currencyType}
 							onChange={(value) => setCurrencyType(value)}
