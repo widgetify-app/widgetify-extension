@@ -2,6 +2,7 @@ export enum CurrenciesType {
 	COIN = 'coin',
 	CRYPTO = 'crypto',
 	CURRENCY = 'currency',
+	SERVICE = 'service',
 }
 
 export interface WigiArzMeta {

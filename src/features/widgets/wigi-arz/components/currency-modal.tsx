@@ -4,7 +4,11 @@ import { cn } from '@/common/utils/cn'
 import { Modal, TextInput } from '@/components/ui'
 import { Icon } from '@/icons'
 import type { FetchedCurrency } from '@/services/currency/get-currency-by-code.hook'
+import { useCurrencyColorMode } from '../hooks/use-currency-color-mode'
+import { getChangeColorClass } from '../utils/currency-color-mode'
+import { formatChangeAmount } from '../utils/get-price-change'
 import { getPrice } from '../utils/get-price'
+import { CurrencyHistory } from './currency-history'
 import { t } from '@/common/i18n'
 
 interface CurrencyModalComponentProps {
@@ -57,8 +61,9 @@ export const CurrencyModalComponent = ({
 		Analytics.event('toggle_currency_converter_on_modal')
 	}
 
+	const colorMode = useCurrencyColorMode()
 	const isPositive = priceChange > 0
-	const priceChangeColor = isPositive ? 'text-danger' : 'text-success'
+	const priceChangeColor = getChangeColorClass(isPositive ? 'up' : 'down', colorMode)
 
 	const price = getPrice(code, currency)
 
@@ -82,15 +87,18 @@ export const CurrencyModalComponent = ({
 					</h2>
 					<div className="flex items-center justify-center gap-1 text-sm font-medium text-fg-muted">
 						<span>{code.toUpperCase()}</span>
-						<button
-							type="button"
-							onClick={onClickConverter}
-							aria-label={t('widgets.wigiArz.convertAria')}
-							aria-expanded={showConverter}
-							className="cursor-pointer hover:text-brand focus-visible:focus-ring"
-						>
-							<Icon name="arrowRightLeft" aria-hidden="true" />
-						</button>
+						{currency.period && <span>{currency.period}</span>}
+						{currency.type !== 'service' && (
+							<button
+								type="button"
+								onClick={onClickConverter}
+								aria-label={t('widgets.wigiArz.convertAria')}
+								aria-expanded={showConverter}
+								className="cursor-pointer hover:text-brand focus-visible:focus-ring"
+							>
+								<Icon name="arrowRightLeft" aria-hidden="true" />
+							</button>
+						)}
 					</div>
 				</header>
 
@@ -114,12 +122,17 @@ export const CurrencyModalComponent = ({
 								className="mr-1"
 								aria-hidden="true"
 							/>
-							<span>
-								{Math.abs(Number(priceChange.toFixed())).toLocaleString()}
-							</span>
+							<span>{formatChangeAmount(priceChange)}</span>
 						</div>
 					)}
 				</div>
+
+				<CurrencyHistory
+					code={code}
+					currency={currency}
+					enabled={isModalOpen}
+					onLeave={toggleCurrencyModal}
+				/>
 
 				<div
 					className={cn(

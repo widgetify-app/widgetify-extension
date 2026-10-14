@@ -11,6 +11,11 @@ import { WidgetSettingWrapper } from '@/features/widgets/components/widget-setti
 import { useGetSupportCurrencies } from '@/services/currency/get-support-currencies.hook'
 import type { WidgetSize } from '../utils/layout-engine/types'
 import { CurrenciesType, type WigiArzMeta } from './types'
+import {
+	saveCurrencyColorMode,
+	useCurrencyColorMode,
+} from './hooks/use-currency-color-mode'
+import { normalizeCurrencyColorMode } from './utils/currency-color-mode'
 import { filterCurrencyGroups, getCurrencyOptions } from './utils/get-currency-options'
 import { ownsCurrencyList } from './utils/owns-currency-list'
 import { t } from '@/common/i18n'
@@ -28,6 +33,7 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 	const [currencyType, setCurrencyType] = useState<string>('all')
 	const [searchQuery, setSearchQuery] = useState('')
 	const { isAuthenticated } = useAuth()
+	const colorMode = useCurrencyColorMode()
 
 	const targetWidget = instanceId
 		? runtimeLayout.find((w) => w.instanceId === instanceId)
@@ -115,6 +121,25 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 	return (
 		<WidgetSettingWrapper>
 			<div className="flex flex-col gap-3 transition-ui duration-300 ease-out">
+				<SectionPanel title={t('widgets.wigiArz.colorMode.title')} size="xs">
+					<SelectBox
+						options={[
+							{
+								value: 'normal',
+								label: t('widgets.wigiArz.colorMode.normal'),
+							},
+							{
+								value: 'reverse',
+								label: t('widgets.wigiArz.colorMode.reverse'),
+							},
+						]}
+						value={colorMode}
+						onChange={(value) =>
+							saveCurrencyColorMode(normalizeCurrencyColorMode(value))
+						}
+					/>
+				</SectionPanel>
+
 				<SectionPanel
 					title={
 						isCompact
@@ -144,6 +169,10 @@ export function WigiArzSetting({ instanceId, size }: WigiArzSettingProps) {
 								{
 									value: CurrenciesType.COIN,
 									label: t('widgets.wigiArz.filter.coin'),
+								},
+								{
+									value: CurrenciesType.SERVICE,
+									label: t('widgets.wigiArz.filter.service'),
 								},
 							]}
 							value={currencyType}

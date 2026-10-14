@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import { getPriceChange } from '../utils/get-price-change'
+import { formatChangeAmount, getPriceChange } from '../utils/get-price-change'
 
 describe('getPriceChange', () => {
 	it('gives the direction and the size of the change to one decimal', () => {
@@ -17,5 +17,13 @@ describe('getPriceChange', () => {
 		expect(getPriceChange(undefined).direction).toBe('flat')
 		expect(getPriceChange(null).direction).toBe('flat')
 		expect(getPriceChange(Number.NaN).direction).toBe('flat')
+	})
+})
+
+describe('formatChangeAmount', () => {
+	it('rounds to a whole number, drops the sign and groups digits', () => {
+		expect(formatChangeAmount(1234567.4)).toBe((1234567).toLocaleString())
+		expect(formatChangeAmount(-2619.6)).toBe((2620).toLocaleString())
+		expect(formatChangeAmount(0)).toBe('0')
 	})
 })

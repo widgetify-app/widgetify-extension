@@ -6,6 +6,7 @@ const GROUP_LABELS: { type: CurrenciesType; labelKey: MessageKey }[] = [
 	{ type: CurrenciesType.CRYPTO, labelKey: 'widgets.wigiArz.group.crypto' },
 	{ type: CurrenciesType.CURRENCY, labelKey: 'widgets.wigiArz.group.currency' },
 	{ type: CurrenciesType.COIN, labelKey: 'widgets.wigiArz.group.coin' },
+	{ type: CurrenciesType.SERVICE, labelKey: 'widgets.wigiArz.group.service' },
 ]
 
 export function getCurrencyOptions(supported: SupportedCurrencies): CurrencyGroup[] {

@@ -19,14 +19,15 @@ export interface FetchedCurrency {
 	rialPrice: number
 	changePercentage: number
 	priceHistory: PriceHistory[]
-	type: 'coin' | 'crypto' | 'currency'
+	type: 'coin' | 'crypto' | 'currency' | 'service'
 	url: string | null
 	useDollar: boolean
 	isPartnerShip: boolean
 	partnershipLogo: string
+	period?: string
 }
 
-interface PriceHistory {
+export interface PriceHistory {
 	price: number
 	createdAt: string
 }

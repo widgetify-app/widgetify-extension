@@ -14,6 +14,7 @@ const STORAGE_KEYS = [
 	'comboTabs',
 	'configData',
 	'currencies',
+	'currencyColorMode',
 	'currentWeather',
 	'customWallpaper',
 	'deletedBookmarkIds',

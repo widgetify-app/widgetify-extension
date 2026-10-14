@@ -14,3 +14,7 @@ export function getPriceChange(changePercentage: number | null | undefined): Pri
 		percent: `${rounded.toLocaleString('fa-IR')}٪`,
 	}
 }
+
+export function formatChangeAmount(amount: number): string {
+	return Math.abs(Number(amount.toFixed())).toLocaleString()
+}
