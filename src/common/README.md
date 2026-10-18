@@ -6,7 +6,7 @@ Shared code with no UI of its own, except `motion.tsx` and `toast.tsx`, which ar
 
 | File or folder | Holds |
 |---|---|
-| `storage.ts` | The only door to browser storage |
+| `storage.ts` | The only door to browser storage, including the Cache Storage reads behind the settings storage panel (`measureCaches`, `deleteCaches`, `estimateOriginUsage`, `measureSavedData`) |
 | `constants/store-keys.ts` | `StorageKV`, the typed list of app wide storage keys |
 | `utils/call-event.ts` | `callEvent` and `listenEvent`, typed messages between components |
 | `motion.tsx` | `Motion`, `Presence`, `MotionPreferences`: the only door to framer-motion |
@@ -15,7 +15,7 @@ Shared code with no UI of its own, except `motion.tsx` and `toast.tsx`, which ar
 | `utils/cn.ts` | `cn()`, class merging (clsx and tailwind-merge) |
 | `utils/` | Small helpers: colour, dates, error translation, timeouts |
 	| `i18n/` | Persian message catalog and `t()`; the only place UI copy lives |
-	| `types/` | Shapes shared by many features (`*.interface.ts`) |
+	| `types/` | Shapes shared by many features (`*.interface.ts`). `sw-events.interface.ts` is the contract with the background worker: its messages and the cache names (`CACHE_PREFIX`, `CACHE_BASE`) that the worker builds and the settings storage panel groups |
 
 ## Storage
 

@@ -15,6 +15,7 @@ export const buttonVariants = cva(
 				solid: 'border-transparent',
 				outline: 'bg-transparent hover:bg-fill-2',
 				ghost: 'bg-transparent! border-transparent hover:bg-fill-2!',
+				soft: 'border-transparent',
 			},
 			color: {
 				base: 'text-fg',
@@ -77,6 +78,11 @@ export const buttonVariants = cva(
 				variant: 'ghost',
 				color: 'base',
 				class: 'text-fg-muted hover:text-fg',
+			},
+			{
+				variant: 'soft',
+				color: 'danger',
+				class: 'bg-danger-fill hover:bg-danger-fill-2',
 			},
 			{ variant: 'outline', color: 'base', class: 'border-surface-3' },
 			{ variant: 'outline', color: 'brand', class: 'border-brand' },
