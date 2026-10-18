@@ -1,4 +1,5 @@
 import { CacheNames, EXPECTED_CACHES, LEGACY_CACHES } from './cache-names'
+import { trimCatalogMedia } from './catalog-media-cache'
 
 const MAX_CACHE_BYTES = 100 * 1024 * 1024
 
@@ -22,6 +23,8 @@ export async function purgeStaleCaches(): Promise<void> {
 
 export async function enforceCacheBudget(): Promise<void> {
 	try {
+		await trimCatalogMedia()
+
 		if (typeof navigator === 'undefined' || !navigator.storage?.estimate) return
 
 		const overBudget = async () => {
@@ -32,6 +35,7 @@ export async function enforceCacheBudget(): Promise<void> {
 		if (!(await overBudget())) return
 
 		const trimOrder = [
+			CacheNames.catalogMedia,
 			CacheNames.cdnCss,
 			CacheNames.cdn,
 			CacheNames.api,
