@@ -196,7 +196,7 @@ const ClickableTooltip = ({
 				{isOpen && (
 					<motion.div
 						ref={tooltipRef}
-						className={`fixed text-xs pointer-events-auto max-w-xs shadow-md backdrop-glass rounded-2xl ${contentClassName}`}
+						className={`fixed text-xs pointer-events-auto max-w-xs bg-glass-surface-2 shadow-lg rounded-2xl ${contentClassName}`}
 						style={{
 							left: placement?.x ?? 0,
 							top: placement?.y ?? 0,

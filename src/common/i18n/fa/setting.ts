@@ -200,6 +200,45 @@ export const setting = {
 	'setting.general.newBadge': 'جدید',
 	'setting.general.liteModeHint':
 		'برای اینکه ویجتیفای سبک‌تر اجرا بشه، انیمیشن‌ها، حیوان خانگی، ثانیه‌شمار ساعت و بعضی افکت‌ها خاموش میشن',
+	'setting.storage.title': 'فضای ذخیره‌سازی',
+	'setting.storage.loading': 'داریم فضای اشغال‌شده رو حساب میکنیم...',
+	'setting.storage.loadError': 'نتونستیم فضای اشغال‌شده رو حساب کنیم',
+	'setting.storage.clearableNote': '{size} رو میتونی آزاد کنی',
+	'setting.storage.barHint': 'روی هر رنگ بزن تا ببینی چیه',
+	'setting.storage.size': '{amount} {unit}',
+	'setting.storage.unitKb': 'کیلوبایت',
+	'setting.storage.unitMb': 'مگابایت',
+	'setting.storage.unitGb': 'گیگابایت',
+	'setting.storage.wallpaperLabel': 'تصویر زمینه',
+	'setting.storage.wallpaperHint':
+		'تصویر یا ویدیوی زمینه‌ای که الان انتخاب کردی، تا بدون اینترنت هم دیده بشه',
+	'setting.storage.explorerImagesLabel': 'تصویرهای کاوش',
+	'setting.storage.explorerImagesHint':
+		'آیکون‌ها و بنرهای صفحه‌ی کاوش، تا دفعه‌ی بعد سریع‌تر باز بشن',
+	'setting.storage.onlineDataLabel': 'اطلاعات آنلاین',
+	'setting.storage.onlineDataHint':
+		'آخرین قیمت‌ها، آب‌وهوا، مناسبت‌ها و خبرها، تا بدون اینترنت هم چیزی ببینی',
+	'setting.storage.fontsAndIconsLabel': 'فونت‌ها و آیکون‌ها',
+	'setting.storage.fontsAndIconsHint': 'فونت‌ها، آیکون ارزها و ظاهر تم‌ها',
+	'setting.storage.appFilesLabel': 'فایل‌های افزونه',
+	'setting.storage.appFilesHint': 'خود برنامه‌ی ویجتیفای، که پاک نمیشه',
+	'setting.storage.leftoversLabel': 'باقی‌مونده‌ی نسخه‌های قبلی',
+	'setting.storage.leftoversHint':
+		'فایل‌هایی که نسخه‌های قدیمی‌تر ذخیره کرده بودن و دیگه لازم نیستن',
+	'setting.storage.browserExtraLabel': 'فضای حساب‌شده توسط مرورگر',
+	'setting.storage.browserExtraHint':
+		'مرورگر برای بعضی فایل‌ها جای بیشتری از اندازه‌ی واقعی‌شون حساب میکنه و با پاک کردن حافظه‌ی موقت آزاد میشه',
+	'setting.storage.yourDataLabel': 'اطلاعات خودت',
+	'setting.storage.yourDataHint':
+		'تنظیمات، ویجت‌ها، یادداشت‌ها و بوکمارک‌هات، که با این دکمه پاک نمیشن',
+	'setting.storage.clear': 'پاک کردن حافظه‌ی موقت',
+	'setting.storage.confirmTitle': 'حافظه‌ی موقت پاک بشه؟',
+	'setting.storage.confirmBody':
+		'تصویر زمینه، تصویرهای کاوش و اطلاعات آنلاین دوباره از اینترنت گرفته میشن، ولی تنظیمات و یادداشت‌هات سر جاشون میمونن',
+	'setting.storage.confirm': 'پاک کن',
+	'setting.storage.cancel': 'فعلا نه',
+	'setting.storage.cleared': '{size} فضا آزاد شد',
+	'setting.storage.clearFailed': 'پاک کردن انجام نشد، دوباره امتحان کن',
 	'setting.privacy.autocompleteLoginRequired': 'برای این کار اول وارد حسابت شو',
 	'setting.privacy.autocompleteLabel': 'پیشنهادهای جستجو',
 	'setting.privacy.autocompleteHint':

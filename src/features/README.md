@@ -37,3 +37,21 @@ Feature logic is tested where it is pure, in `<feature>/__tests__/`. Rules about
 ## Notifications that open a mini-app
 
 A notification (the navbar card or the home dialog) can open one mini-app. In the panel the item is `type` action, `goTo` `openMiniApp` and `target` the mini-app's `appId`. The click calls `callEvent('openMiniApp', appId)`; `pages/root.tsx` moves to the mini-apps page and hands the id to `MiniAppsLayout` (`focusAppId`), which runs the app in the page, brings its window forward when it already runs in one, and scrolls its card into view. An id that is not shaped like an app id (`mini-apps/utils/focus-app.ts`, letters, digits, `_`, `.` and `-`, at most 100) is ignored, and an id with no app shows the runner's own error. An extension from before this event shows a card that does nothing, so publish such a notification after the release has rolled out.
+
+## Settings: storage
+
+`setting/general/components/storage-usage.tsx` is a `SectionPanel` like the other General sections, kept small: the total, a bar split by what the space holds, how much can be freed, and a soft danger button that clears the cache after a confirmation. Each colour in the bar is a button: clicking it opens a `ClickableTooltip` with that part's name, size and reason, the way a phone's storage screen does. A segment is at least `min-w-1.5` wide so a small one can still be clicked. It replaced a panel that listed every row at once and took too much of the tab. The segments use status colours and ink fills only (app files `fill-3`, the browser's extra `danger-fill-2`, your data `secondary`), never a text token as a background.
+
+| Row | Comes from | Cleared by the button |
+|---|---|---|
+| Wallpaper, explorer images, online data, fonts and icons | Each `wgf-` cache, grouped by its base name | Yes |
+| Leftovers from older versions | Any cache name the app no longer uses, such as `images-cache-v1` | Yes |
+| Counted by the browser | `navigator.storage.estimate()` minus the measured cache files. Mostly the padding Chrome adds for opaque responses | Yes, it goes with the caches |
+| App files | The Workbox precache | No |
+| Your data | The size of `browser.storage.local` as JSON: settings, widgets, notes | No |
+
+- `setting/general/utils/storage-usage.ts` is pure: it groups cache names, adds the rows up, sorts them and picks a unit. `setting/general/__tests__/storage-usage.test.ts` covers it.
+- `setting/general/hooks/use-storage-usage.ts` measures on mount, deletes the clearable caches and measures again; the toast reports the difference.
+- A cache file is counted by its `content-length`, or by reading its body when the header is missing. An opaque response reads as 0 bytes, which is why the browser row exists.
+- On Firefox the browser row is skipped: the background there has no service worker, and `browser.storage.local` lives inside the same origin quota, so the estimate would count your data twice.
+- The cache names come from `src/common/types/sw-events.interface.ts`, shared with `background/cache-names.ts`. A new cache needs a category here, or it shows as leftovers.

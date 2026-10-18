@@ -4,16 +4,19 @@ import { RangeRequestsPlugin } from 'workbox-range-requests'
 import { registerRoute } from 'workbox-routing'
 import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies'
 import { CacheNames } from './cache-names'
+import { catalogMediaPlugin } from './catalog-media-cache'
 import {
 	CDN_NO_CACHE_PREFIXES,
 	NETWORK_FIRST_API_PATHS,
 	NEVER_CACHE_API_PATHS,
 	SWR_API_PATHS,
 } from './cache-config'
+import { CATALOG_MEDIA_ORIGIN, isCatalogMediaUrl } from './media-cache-budget'
 import { activeWallpaperUrls } from './wallpaper-cache'
 
 const API_ORIGIN = 'https://api.widgetify.ir'
 const CDN_ORIGIN = 'https://cdn.widgetify.ir'
+const CORS_UPGRADE_ORIGINS = [CDN_ORIGIN, CATALOG_MEDIA_ORIGIN]
 
 function matchesApiPaths(url: URL, request: Request, paths: string[]): boolean {
 	if (request.method !== 'GET') return false
@@ -31,9 +34,12 @@ function asksForFreshCopy(request: Request): boolean {
 // and get a large, misleading padding added to storage estimates. Since the CDN
 // sends `Access-Control-Allow-Origin: *`, upgrade the fetch to CORS so we store
 // a real, unpadded response instead.
-const upgradeCdnToCorsPlugin = {
+const upgradeToCorsPlugin = {
 	requestWillFetch: async ({ request }: { request: Request }) => {
-		if (request.mode === 'no-cors' && new URL(request.url).origin === CDN_ORIGIN) {
+		if (
+			request.mode === 'no-cors' &&
+			CORS_UPGRADE_ORIGINS.includes(new URL(request.url).origin)
+		) {
 			return new Request(request.url, { mode: 'cors', credentials: 'omit' })
 		}
 		return request
@@ -109,7 +115,7 @@ export function setupCaching() {
 				// sharing one cache name fight over ownership and thrash IndexedDB.
 				cacheName: CacheNames.cdnCss,
 				plugins: [
-					upgradeCdnToCorsPlugin,
+					upgradeToCorsPlugin,
 					new CacheableResponsePlugin({ statuses: [200] }),
 					new ExpirationPlugin({
 						maxEntries: 20,
@@ -117,6 +123,14 @@ export function setupCaching() {
 						purgeOnQuotaError: true,
 					}),
 				],
+			})
+		)
+
+		registerRoute(
+			({ url, request }) => request.method === 'GET' && isCatalogMediaUrl(url),
+			new CacheFirst({
+				cacheName: CacheNames.catalogMedia,
+				plugins: [upgradeToCorsPlugin, catalogMediaPlugin],
 			})
 		)
 
@@ -143,7 +157,7 @@ export function setupCaching() {
 			new CacheFirst({
 				cacheName: CacheNames.cdn,
 				plugins: [
-					upgradeCdnToCorsPlugin,
+					upgradeToCorsPlugin,
 					new CacheableResponsePlugin({ statuses: [200] }),
 					new ExpirationPlugin({
 						maxEntries: 150,

@@ -7,6 +7,19 @@ export enum SwEventType {
 export enum CacheName {
 	API = 'widgetify-public-api',
 }
+
+export const CACHE_PREFIX = 'wgf-'
+
+export const CACHE_BASE = {
+	api: 'api',
+	wallpaper: 'wallpaper',
+	fonts: 'fonts',
+	cdn: 'cdn',
+	cdnCss: 'cdn-css',
+	catalogMedia: 'catalog-media',
+} as const
+
+export const PRECACHE_PREFIX = 'workbox-precache'
 type DeleteCacheEvent = {
 	type: SwEventType.DeleteCache
 	cacheName: CacheName
