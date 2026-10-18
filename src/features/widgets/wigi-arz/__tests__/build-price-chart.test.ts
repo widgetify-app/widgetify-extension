@@ -78,6 +78,46 @@ describe('buildPriceChart', () => {
 		)
 	})
 
+	it('marks the price axis with round ticks that enclose every price', () => {
+		const chart = buildPriceChart(
+			[at(1, 2611000), at(2, 2646000), at(3, 2628000)],
+			false
+		)
+
+		expect(chart?.ticks.map((tick) => tick.value)).toEqual([
+			260000, 262000, 264000, 266000,
+		])
+		expect(chart?.ticks[0].y).toBeGreaterThan(chart?.ticks[3].y ?? 0)
+		for (const point of chart?.points ?? []) {
+			expect(point.y).toBeLessThanOrEqual(chart?.ticks[0].y ?? 0)
+			expect(point.y).toBeGreaterThanOrEqual(chart?.ticks[3].y ?? 0)
+		}
+	})
+
+	it('scales by the ticks, so a small move stays small next to the axis', () => {
+		const chart = buildPriceChart([at(1, 256900), at(2, 267900)], true)
+		const [low, high] = [chart?.ticks[0], chart?.ticks.at(-1)]
+		const tickSpan = (low?.y ?? 0) - (high?.y ?? 0)
+		const pointSpan = (chart?.points[0].y ?? 0) - (chart?.points[1].y ?? 0)
+
+		expect(chart?.ticks.map((tick) => tick.value)).toEqual([
+			255000, 260000, 265000, 270000,
+		])
+		expect(pointSpan / tickSpan).toBeCloseTo(11000 / 15000, 5)
+	})
+
+	it('keeps small dollar ticks free of float noise', () => {
+		const chart = buildPriceChart([at(1, 0.11), at(2, 0.39)], true)
+
+		expect(chart?.ticks.map((tick) => tick.value)).toEqual([0.1, 0.2, 0.3, 0.4])
+	})
+
+	it('gives a flat price one tick through the middle', () => {
+		const chart = buildPriceChart([at(1, 100), at(2, 100)], true)
+
+		expect(chart?.ticks).toEqual([{ value: 100, y: CHART_HEIGHT / 2 }])
+	})
+
 	it('converts rial history to toman', () => {
 		const chart = buildPriceChart([at(1, 1000), at(2, 2000)], false)
 

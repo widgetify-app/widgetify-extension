@@ -31,7 +31,6 @@ export function PriceChart({ chart, name, showTime }: PriceChartProps) {
 	const [activeIndex, setActiveIndex] = useState<number | null>(null)
 	const active = activeIndex === null ? null : chart.points[activeIndex]
 	const last = chart.points[chart.points.length - 1]
-	const first = chart.points[0]
 
 	const colorMode = useCurrencyColorMode()
 	const trendClass =
@@ -71,6 +70,15 @@ export function PriceChart({ chart, name, showTime }: PriceChartProps) {
 				onPointerMove={onPointerMove}
 				onPointerLeave={() => setActiveIndex(null)}
 			>
+				{chart.ticks.map((tick) => (
+					<span
+						key={tick.value}
+						aria-hidden="true"
+						className="absolute inset-x-0 block h-px bg-line"
+						style={{ top: `${(tick.y / CHART_HEIGHT) * 100}%` }}
+					/>
+				))}
+
 				<svg
 					viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
 					preserveAspectRatio="none"
@@ -136,11 +144,6 @@ export function PriceChart({ chart, name, showTime }: PriceChartProps) {
 						</output>
 					</>
 				)}
-			</div>
-
-			<div className="flex items-center justify-between text-3xs text-fg-faint">
-				<span>{formatMoment(first.time, showTime)}</span>
-				<span>{formatMoment(last.time, showTime)}</span>
 			</div>
 		</div>
 	)
