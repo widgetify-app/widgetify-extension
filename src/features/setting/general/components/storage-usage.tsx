@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Analytics from '@/analytics'
 import { type MessageKey, t } from '@/common/i18n'
 import { showToast } from '@/common/toast'
 import { cn } from '@/common/utils/cn'
@@ -137,14 +138,22 @@ export function StorageUsage() {
 	const showDetails = (category: UsageCategory, anchor: HTMLButtonElement) => {
 		setSelected({ category, anchor })
 		setTooltipOpen(true)
+		Analytics.event('storage_category_opened', { category: category.id })
+	}
+
+	const openClearConfirm = () => {
+		setConfirmOpen(true)
+		Analytics.event('storage_clear_opened')
 	}
 
 	const handleClear = async () => {
 		try {
 			const freed = await clear()
 			showToast(t('setting.storage.cleared', { size: sizeText(freed) }), 'success')
+			Analytics.event('storage_cleared', { freed_mb: Math.round(freed / 1048576) })
 		} catch {
 			showToast(t('setting.storage.clearFailed'), 'error')
+			Analytics.event('storage_clear_failed')
 		} finally {
 			setConfirmOpen(false)
 			setSelected(null)
@@ -184,7 +193,7 @@ export function StorageUsage() {
 							size="sm"
 							icon={<Icon name="trash" size={14} />}
 							disabled={summary.clearableBytes === 0 || isClearing}
-							onClick={() => setConfirmOpen(true)}
+							onClick={openClearConfirm}
 						>
 							{t('setting.storage.clear')}
 						</Button>
