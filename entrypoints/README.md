@@ -16,6 +16,7 @@ What follows from that:
 - No API or CSS feature that starts after those versions. `src/__tests__/browser-baseline.test.ts` rejects the known ones in `src` (`toSorted`, `Object.groupBy`, `Promise.withResolvers`, `:has(`, the `popover` attribute and others). A property that only changes looks and is ignored where missing, like `text-balance`, may stay. The stylesheet tests reject `oklch()` and `color-mix()` in our own CSS.
 - `src/styles/legacy.css` holds the Chrome 109 fallbacks for what daisyUI writes. The built stylesheet still carries daisyUI's own `oklch()`, `color-mix()` and `:has()`, which an old browser drops, so `legacy.css` restores the one that mattered: the modal scrim. Tailwind's own `@property` fallback covers Firefox below 128.
 - On every Firefox the extension asks for data consent itself, in `src/pages/home/components/step-firefox-consent.tsx`. Firefox 140 and later has a built-in prompt too (`data_collection_permissions`); older versions ignore that key.
+- Firefox opens its home page (`about:home`), not the new tab page, when it starts and on the Home button, so `chrome_url_overrides.newtab` alone left the first tab on Firefox Home. The Firefox manifest also sets `chrome_settings_overrides.homepage` to `newtab.html` (only for Firefox, in `wxt.config.ts`); Firefox asks the user to keep or undo that change. Chrome opens the new tab page on start by default and does not get the key.
 - Firefox below 139 has no `tabGroups` permission. The code guards the missing API, and `general-setting.context.tsx` treats a permission check that throws as "not granted".
 - `strict_min_version` in `wxt.config.ts` must match the table above. The baseline test reads it.
 
@@ -84,6 +85,7 @@ Old cache names are listed in `LEGACY_CACHES` and deleted on start and on activa
 ## Mistakes that happened
 
 - `strict_min_version` was `142.0`, which excluded Firefox on Windows 7 while the documented baseline said it was supported.
+- Users on Firefox reported that Widgetify was missing until they opened another tab. The first tab after a start was Firefox Home: the extension overrode the new tab page but not the home page. Checked in Firefox 115.43 ESR: without the homepage key the start tab is `about:home`, with it `newtab.html`.
 - `images-cache-v1` and `cross-origin-cache-v1` stored opaque responses and passed 600 MB. Removing their routes did not delete them; they stayed on disk until they were added to `LEGACY_CACHES`.
 
 ## Tests
