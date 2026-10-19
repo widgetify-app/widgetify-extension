@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
 import type { FetchedTodo, TodoPriority } from '@/services/todo/todo.interface'
 import { todoKeys } from '@/services/todo/todo.keys'
+import { replaceTodoInPages } from './replace-todo-in-pages'
 
 interface TodoUpdatePayload {
 	text?: string
@@ -21,7 +22,12 @@ export const useUpdateTodo = (todoId: string | null) => {
 		mutationFn: async ({ id, input }: { id: string; input: TodoUpdatePayload }) => {
 			return await UpdateTodoApi(id, input)
 		},
-		onSuccess: (_, { input }) => {
+		onSuccess: (updated, { input }) => {
+			queryClient.setQueriesData(
+				{ queryKey: todoKeys.lists },
+				(data: Parameters<typeof replaceTodoInPages>[0]) =>
+					replaceTodoInPages(data, updated)
+			)
 			if (input.category !== undefined) {
 				queryClient.invalidateQueries({ queryKey: todoKeys.tags })
 			}

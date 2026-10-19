@@ -53,6 +53,7 @@ Every size is the same frame: `WidgetContainer` padding from the registry (`px-3
 - Always: the title (or the yadkar tabs) and the summary. The board also shows a chip for each filter that is on: time, label and order. The other sizes only fill the filter icon.
 - On hover or keyboard focus: «تسک جدید» (2x1 only; the other sizes add through the composer), the filter button and ⋯. The summary fades out so they take its place.
 - Menu actions: «به‌روز کن».
+- Ticking a task updates the summary, the board's ring and counts at once: `useUpdateTodo` writes the saved task back into every cached todo list (`replaceTodoInPages`, `src/services/todo/`). It used to change only the row's own state, so the header and `BoardSummary` kept the old numbers until a reload. A task ticked under the «انجام‌نشده» filter stays in that list until the next fetch, as before.
 - The summary reads "2 از 5 انجام شده" only when every task is loaded and no filter is on. Otherwise it gives the server total, "12 تسک", because the done count of an unloaded page is unknown.
 
 ## States
