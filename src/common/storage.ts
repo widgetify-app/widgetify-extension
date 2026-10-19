@@ -188,3 +188,57 @@ export async function getWithExpiry<K extends keyof StorageKV>(
 
 	return value as StorageKV[K]
 }
+
+export interface CacheMeasurement {
+	name: string
+	bytes: number
+	files: number
+}
+
+async function responseBytes(response: Response | undefined): Promise<number> {
+	if (!response) return 0
+	const declared = Number(response.headers.get('content-length'))
+	if (declared > 0) return declared
+	try {
+		return (await response.blob()).size
+	} catch {
+		return 0
+	}
+}
+
+export async function measureCaches(): Promise<CacheMeasurement[]> {
+	if (typeof caches === 'undefined') return []
+	const names = await caches.keys()
+	return Promise.all(
+		names.map(async (name) => {
+			const cache = await caches.open(name)
+			const requests = await cache.keys()
+			const sizes = await Promise.all(
+				requests.map(async (request) => responseBytes(await cache.match(request)))
+			)
+			return {
+				name,
+				files: requests.length,
+				bytes: sizes.reduce((total, size) => total + size, 0),
+			}
+		})
+	)
+}
+
+export async function deleteCaches(names: string[]) {
+	await Promise.all(names.map((name) => caches.delete(name)))
+}
+
+export async function estimateOriginUsage(): Promise<number> {
+	try {
+		const { usage = 0 } = await navigator.storage.estimate()
+		return usage
+	} catch {
+		return 0
+	}
+}
+
+export async function measureSavedData(): Promise<number> {
+	const snapshot = await storage.snapshot('local')
+	return new Blob([JSON.stringify(snapshot)]).size
+}

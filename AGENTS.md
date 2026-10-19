@@ -25,6 +25,7 @@ Breaking one means the work is rejected.
 | **Never commit, push or merge unprompted** | Only when the owner says so in this conversation. If you think one is due, ask and wait for an explicit yes. Never touch `main`. |
 | **Friendly Persian UI text** | Buttons and messages sound like a helpful person, not a form. Text lives in the catalog under `src/common/i18n/` and is read with `t()`; never write Persian inline. No tanween (`ً`) and no single full stop that ends a sentence (keep `...` / `…`). Full rules in `.agents/TYPOGRAPHY.md`; tone examples in `src/components/ui/README.md`. |
 | **Root cause, not symptom** | Trace a bug to where it starts. A patch that hides the symptom is rejected even if it looks fixed. |
+| **Every feature sends analytics events** | A new feature or a new user action ships with `Analytics.event` calls: opening it, the main action, and its failure. Name them `<feature>_<what_happened>` and add each to `ANALYTICS_EVENTS` in `data-names.test.ts`. Full rules in `src/common/README.md`. |
 | **No opportunistic changes** | Touch only what the task needs. Mention anything else you saw; do not fix it unless asked. |
 
 ## 3. The workflow

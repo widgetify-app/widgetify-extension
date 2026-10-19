@@ -15,6 +15,11 @@ export function getPriceChange(changePercentage: number | null | undefined): Pri
 	}
 }
 
+const WHOLE_NUMBER_FROM = 10
+
 export function formatChangeAmount(amount: number): string {
-	return Math.abs(Number(amount.toFixed())).toLocaleString()
+	const size = Math.abs(amount)
+	const rounded = size >= WHOLE_NUMBER_FROM ? Math.round(size) : Number(size.toFixed(2))
+
+	return rounded.toLocaleString()
 }

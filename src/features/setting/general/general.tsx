@@ -1,7 +1,8 @@
 import { t } from '@/common/i18n'
-import { Badge, SectionPanel, ToggleSwitch } from '@/components/ui'
+import { SectionPanel, ToggleSwitch } from '@/components/ui'
 import { SelectCity } from '@/components/select-city'
 import { TimezoneSettings } from './components/timezone-settings'
+import { StorageUsage } from './components/storage-usage'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import Analytics from '@/analytics'
 
@@ -21,7 +22,6 @@ export function GeneralSettingTab() {
 				title={
 					<div className="flex items-center">
 						<p>{t('setting.general.liteModeLabel')}</p>
-						<Badge className="mr-2">{t('setting.general.newBadge')}</Badge>
 					</div>
 				}
 				size="sm"
@@ -37,6 +37,7 @@ export function GeneralSettingTab() {
 					/>
 				</div>
 			</SectionPanel>
+			<StorageUsage />
 		</div>
 	)
 }

@@ -11,7 +11,7 @@ Presentational primitives. They know nothing about the app, the server or a feat
 | Notice box | `Alert` (`tone`: danger, warning, info) |
 | Loading | `Spinner` (`xs` to `2xl`, `tone`) |
 | Dialog | `Modal`, `ConfirmationModal`. `stepAside` hides an open modal without closing it. Its content keeps its state while you look at the page behind it, as the store's try-on does |
-| Hint on hover | `Tooltip`; `ClickableTooltip` when a click opens it and you hold `isOpen` |
+| Hint on hover | `Tooltip`; `ClickableTooltip` when a click opens it and you hold `isOpen`. Both paint `bg-glass-surface-2` with `shadow-lg`, so the content needs no background of its own |
 | Form | `TextInput` (`variant="bare"` drops the field chrome for an input set inside a card of its own), `TextArea` (the same field, several lines), `SelectBox`, `ToggleSwitch`, `Slider`, `DatePicker`, `ColorPicker` (`className` and `style` restyle its trigger, such as a round swatch) |
 | Menu | `Dropdown` with `DropdownItem` and `DropdownDivider`; `PopoverMenu` with `PopoverMenuItem` (an optional `description` adds a second line), `PopoverMenuHeader` and `PopoverMenuDivider`. `PopoverMenu` measures itself and opens above its anchor when there is no room below (`utils/menu-position.ts`); arrow keys move between its buttons and Escape returns focus to the trigger. A `Dropdown` closes on a click outside it, including a click elsewhere in the modal it sits in; it stays open only for a click in a layer opened above it (`use-dropdown.ts`). |
 | Overlays | `BottomSheet`, `Portal`, `StackedToaster` |

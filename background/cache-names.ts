@@ -1,6 +1,8 @@
-import { CacheName } from '../src/common/types/sw-events.interface'
-
-const CACHE_PREFIX = 'wgf-'
+import {
+	CACHE_BASE,
+	CACHE_PREFIX,
+	CacheName,
+} from '../src/common/types/sw-events.interface'
 
 const APP_VERSION: string = (() => {
 	try {
@@ -13,11 +15,12 @@ const APP_VERSION: string = (() => {
 const ns = (base: string) => `${CACHE_PREFIX}${base}-v${APP_VERSION}`
 
 export const CacheNames = {
-	api: ns('api'),
-	wallpaper: ns('wallpaper'),
-	fonts: ns('fonts'),
-	cdn: ns('cdn'),
-	cdnCss: ns('cdn-css'),
+	api: ns(CACHE_BASE.api),
+	wallpaper: ns(CACHE_BASE.wallpaper),
+	fonts: ns(CACHE_BASE.fonts),
+	cdn: ns(CACHE_BASE.cdn),
+	cdnCss: ns(CACHE_BASE.cdnCss),
+	catalogMedia: ns(CACHE_BASE.catalogMedia),
 } as const
 
 export const EXPECTED_CACHES = new Set<string>(Object.values(CacheNames))
@@ -32,6 +35,9 @@ export const LEGACY_CACHES: string[] = [
 	'remote-fonts-css-cache',
 	'widgetify-public-api',
 	'critical-resources-v1',
+	'images-cache-v1',
+	'cross-origin-cache-v1',
+	'widgetify-api-cache-v1',
 ]
 
 export function resolveCacheName(logical: CacheName): string {

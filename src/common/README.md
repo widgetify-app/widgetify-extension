@@ -6,7 +6,7 @@ Shared code with no UI of its own, except `motion.tsx` and `toast.tsx`, which ar
 
 | File or folder | Holds |
 |---|---|
-| `storage.ts` | The only door to browser storage |
+| `storage.ts` | The only door to browser storage, including the Cache Storage reads behind the settings storage panel (`measureCaches`, `deleteCaches`, `estimateOriginUsage`, `measureSavedData`) |
 | `constants/store-keys.ts` | `StorageKV`, the typed list of app wide storage keys |
 | `utils/call-event.ts` | `callEvent` and `listenEvent`, typed messages between components |
 | `motion.tsx` | `Motion`, `Presence`, `MotionPreferences`: the only door to framer-motion |
@@ -15,7 +15,7 @@ Shared code with no UI of its own, except `motion.tsx` and `toast.tsx`, which ar
 | `utils/cn.ts` | `cn()`, class merging (clsx and tailwind-merge) |
 | `utils/` | Small helpers: colour, dates, error translation, timeouts |
 	| `i18n/` | Persian message catalog and `t()`; the only place UI copy lives |
-	| `types/` | Shapes shared by many features (`*.interface.ts`) |
+	| `types/` | Shapes shared by many features (`*.interface.ts`). `sw-events.interface.ts` is the contract with the background worker: its messages and the cache names (`CACHE_PREFIX`, `CACHE_BASE`) that the worker builds and the settings storage panel groups |
 
 ## Storage
 
@@ -46,6 +46,8 @@ Storage keys, analytics event names and widget ids live in places you do not con
 ## Analytics
 
 Events go through `Analytics` from `@/analytics`. The user can turn it off in settings, and the function checks that before it sends. Event names are data, like storage keys. The first argument must be a string literal, and parameters must not carry personal or free-text data.
+
+Every feature sends events. A new feature, or a new action in an existing one, ships with at least one event for each thing the user does in it: opening it, the main action, and its failure when it can fail. Name them `<feature>_<what_happened>` in snake case (`storage_cleared`, `storage_clear_failed`). A parameter is a short id or a rounded number, never text the user typed. Add every new name to `ANALYTICS_EVENTS` in `src/__tests__/data-names.test.ts` in the same change, so it can never be renamed or dropped without the test failing.
 
 ## i18n
 

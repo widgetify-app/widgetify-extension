@@ -4,6 +4,7 @@ import {
 	type FetchedCurrency,
 	useGetCurrencyByCode,
 } from '@/services/currency/get-currency-by-code.hook'
+import { calculatePriceChange } from '../utils/get-price'
 
 export function useCurrencyPrice(code: string) {
 	const [currency, setCurrency] = useState<FetchedCurrency | null>(null)
@@ -28,10 +29,7 @@ export function useCurrencyPrice(code: string) {
 		setToStorage(`currency:${code}`, data)
 	}, [dataUpdatedAt, code, data])
 
-	const priceChange =
-		currency?.changePercentage && currency?.rialPrice
-			? (currency.changePercentage / 100) * currency.rialPrice
-			: 0
+	const priceChange = currency ? calculatePriceChange(code, currency) : 0
 
 	return { currency, priceChange, hasFailed: isError && !currency, refetch }
 }

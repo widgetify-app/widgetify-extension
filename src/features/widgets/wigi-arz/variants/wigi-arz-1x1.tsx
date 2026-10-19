@@ -139,7 +139,10 @@ export function CurrencyCompactSquare({
 							? t('widgets.wigiArz.dollar')
 							: t('widgets.wigiArz.toman')}
 					</span>
-					<PriceChange changePercentage={currency.changePercentage} />
+					<PriceChange
+						changePercentage={currency.changePercentage}
+						amount={priceChange}
+					/>
 				</span>
 			</button>
 

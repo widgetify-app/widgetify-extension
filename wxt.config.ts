@@ -80,6 +80,10 @@ export default defineConfig({
 
 			permissions: ['storage', 'search', ...(isFirefox ? ['identity'] : [])],
 
+			...(isFirefox
+				? { chrome_settings_overrides: { homepage: 'newtab.html' } }
+				: {}),
+
 			optional_permissions: [
 				'tabGroups',
 				'bookmarks',

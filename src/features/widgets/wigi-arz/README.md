@@ -11,16 +11,16 @@ Live prices of currencies, gold, coins, crypto and services (subscriptions and c
 | `variants/wigi-arz-1x1.tsx` | One currency, centred like the other 1x1 widgets: `WidgetCenteredHeader` with the flag and the code, then the price, sized to fit, over the unit and the change. «انتخاب ارز» when none is set, «نتونستیم قیمت رو بیاریم» with «دوباره» when the price fails. |
 | `components/currency-list.tsx`, `components/sortable-currency-box.tsx` | Drag to reorder. |
 | `components/currency-box.tsx` | One row, padded like a task row: icon, code, name, price and change. The drag handle sits outside the row, in the card's margin beside it, and fades in on hover; the list reaches into that margin (`-ms-2.5 ps-2.5`) so its `overflow-x-hidden` does not clip the handle. |
-| `components/price-change.tsx` | The change with its arrow and colour: in percent by default, or as an amount when `amount` is given (the list rows and the modal show the amount; the 1x1 and the chart header show the percent). Draws nothing when the percent rounds to zero, so a row never says «۰٪». |
+| `components/price-change.tsx` | The change with its arrow and colour: in percent by default, or as an amount when `amount` is given (the list rows, the 1x1 and the modal show the amount; the chart header shows the percent). Draws nothing when the percent rounds to zero, so a row never says «۰٪». |
 | `components/currency-modal.tsx` | Details, the price chart and the converter. Each row keeps its own modal mounted and only toggles it, so it opens and closes with the animation. |
 | `components/currency-history.tsx` | The chart section of the modal: range tabs (یک روز، یک هفته، یک ماه), then the chart, a skeleton while loading, a retry on failure, or «هنوز داده‌ی کافی برای نمودار جمع نشده» when the server has fewer than two points. Only fetches while the modal is open. |
-| `components/price-chart.tsx` | The SVG area chart: highest and lowest price and the change over the range above it, the first and last time below. Moving the pointer over it shows the nearest point with its price and time. Always `dir="ltr"`, time runs left to right. |
+| `components/price-chart.tsx` | The SVG area chart: highest and lowest price and the change over the range above it, faint gridlines at round prices behind the line, no axis labels. Moving the pointer over it shows the nearest point with its price and time. Always `dir="ltr"`, time runs left to right. |
 | `components/currency-empty.tsx` | The empty list: the coin icon, a line and «افزودن ارز». |
 | `wigi-arz-setting.tsx` | Settings: the colour of a price change (top), then choose the currencies. |
 | `hooks/use-currency-color-mode.ts` | The colour mode, read from storage key `currencyColorMode` into a small shared store, so every row, the modal and the chart agree and a change shows at once (`saveCurrencyColorMode` writes it; `watchStorage` carries it across tabs). |
 | `utils/currency-color-mode.ts` | `normalizeCurrencyColorMode` (anything but `reverse` reads as `normal`) and `getChangeColorClass`. Tested. |
 | `hooks/use-currency-price.ts` | One price, cached in storage under `currency:<code>`. |
-| `utils/build-price-chart.ts` | Turns `priceHistory` into the chart: sorted points, line and area paths, min, max and the change from the first price to the last. Tested. |
+| `utils/build-price-chart.ts` | Turns `priceHistory` into the chart: sorted points, round price ticks, line and area paths, min, max and the change from the first price to the last. Tested. |
 | `utils/` | Price, change, the settings options and who owns a list. Tested. |
 
 ## Data
@@ -46,6 +46,7 @@ The server adds entries of `type: 'service'` to `/currencies/supported-list` for
 - Data: `useGetCurrencyHistory` in `src/services/currency` asks `/currencies/<code>?history=24h|7d|30d` and keeps `priceHistory`. The API sends `[]` without `history`, so the list rows never ask for it. The service worker caches each range apart (the key is the full URL).
 - Units: history `price` is in the same unit as the API's `price`: rial for currencies and coins, dollars for crypto. The chart shows what the modal shows, so `toDisplayValue` divides rial by 10 and leaves dollars (`getPrice(...).isDollar` decides).
 - Colour: follows the colour mode, like `PriceChange`; a range that rounds to 0.0 is neutral.
+- Scale: the price axis runs between round ticks (steps of 1, 2, 2.5 or 5 times a power of ten, about three intervals) that enclose every price, with a faint gridline at each. The chart still zooms into the range; the round domain leaves some air above and below, and the high and low in the header give the size of the move. Price and time labels on the axes were tried and dropped: the header and the tooltip already say both.
 - The server only started recording history on 2026-10-13, so a short range can have one point. One point or none draws nothing and shows the empty line.
 
 ## Menu
@@ -63,6 +64,6 @@ Settings comes first, with "۶ ارز انتخاب شده" or "ارز: USD" unde
 
 ## Not checked on screen
 
-The chart in the modal: the locked card signed out and signed in without pro, its two buttons, the three ranges, the skeleton, the failed and the empty states, the tooltip near both edges, touch, the line colour in a light and a dark theme, and the gradient under the line.
+The chart in the modal: the locked card signed out and signed in without pro, its two buttons, the three ranges, the skeleton, the failed and the empty states, the tooltip near both edges, touch, the line colour in a light and a dark theme, the gradient under the line, and the gridlines.
 
-The rows in the list and in the combo widget, the drag handle fading in and while dragging, the header time and «به‌روز می‌شه…», the 1x1 with a long price at the narrowest 1x1, the 1x1 empty and failed states, the empty list.
+The rows in the list and in the combo widget, the drag handle fading in and while dragging, the header time and «به‌روز می‌شه…», the 1x1 with a long price at the narrowest 1x1, the 1x1 change amount beside «تومان» for a large one such as a coin, the 1x1 empty and failed states, the empty list.
