@@ -2,15 +2,23 @@ import type React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { HexColorPicker } from 'react-colorful'
 import { t } from '@/common/i18n'
+import { cn } from '@/common/utils/cn'
 import { Portal } from '../portal/portal'
 import { isAnchorInViewport } from '../utils/anchored-position'
 
 interface ColorPickerProps {
 	color: string
 	onChange: (color: string) => void
+	className?: string
+	style?: React.CSSProperties
 }
 
-export const ColorPicker: React.FC<ColorPickerProps> = ({ color, onChange }) => {
+export const ColorPicker: React.FC<ColorPickerProps> = ({
+	color,
+	onChange,
+	className,
+	style,
+}) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const triggerRef = useRef<HTMLButtonElement>(null)
 	const popupRef = useRef<HTMLDivElement>(null)
@@ -105,8 +113,11 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ color, onChange }) => 
 				aria-label={t('ui.common.pickColor')}
 				aria-expanded={isOpen}
 				onClick={() => setIsOpen((prev) => !prev)}
-				className="w-8 h-8 p-1 transition-transform border-0 shadow-sm cursor-pointer rounded-lg hover:scale-105 active:scale-95 focus-visible:focus-ring"
-				style={{ backgroundColor: displayColor }}
+				className={cn(
+					'w-8 h-8 p-1 transition-transform border-0 shadow-sm cursor-pointer rounded-lg hover:scale-105 active:scale-95 focus-visible:focus-ring',
+					className
+				)}
+				style={{ backgroundColor: displayColor, ...style }}
 			/>
 
 			{isOpen && coords && (

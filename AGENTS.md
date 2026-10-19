@@ -8,7 +8,7 @@ Stack: React 19, TypeScript 6, WXT 0.21 (Chrome and Firefox), Tailwind 4, daisyU
 
 1. This file, `README.md` and `src/README.md`.
 2. The README of every folder you will touch, and of its parents. A widget has its own `README.md`; rewrite it when you finish work on that widget.
-3. The skills in `.claude/skills`. Use `stop-slop` for any prose you write: docs, PR text, drafts of UI copy.
+3. The skills in `.claude/skills`. Use `stop-slop` for any prose you write: docs, PR text, drafts of UI copy. Use `widget-spotlight-editor` when a widget gets appearance settings the user should see change live.
 4. `AGENTS.local.md`, if it exists. It is one person's git-ignored machine notes (section 9).
 
 If a README and the code disagree, the code is right. Fix the README in the same change.

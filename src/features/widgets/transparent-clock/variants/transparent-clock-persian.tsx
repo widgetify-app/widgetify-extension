@@ -1,12 +1,14 @@
 import type React from 'react'
 import { t } from '@/common/i18n'
 import { TransparentClockFace } from '../components/transparent-clock-face'
+import type { TransparentClockStyle } from '../types'
 
 interface TransparentClockPersianProps {
 	time: Date
 	hours: string
 	minutes: string
 	isoDateTime: string
+	clockStyle: TransparentClockStyle
 }
 
 export const TransparentClockPersian: React.FC<TransparentClockPersianProps> = ({
@@ -14,6 +16,7 @@ export const TransparentClockPersian: React.FC<TransparentClockPersianProps> = (
 	hours,
 	minutes,
 	isoDateTime,
+	clockStyle,
 }) => {
 	return (
 		<TransparentClockFace
@@ -26,6 +29,7 @@ export const TransparentClockPersian: React.FC<TransparentClockPersianProps> = (
 				minutes,
 			})}
 			isoDateTime={isoDateTime}
+			clockStyle={clockStyle}
 			dateColor="primary"
 			className="pr-3"
 		/>
