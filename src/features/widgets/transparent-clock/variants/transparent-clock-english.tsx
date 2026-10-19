@@ -1,12 +1,14 @@
 import type React from 'react'
 import { t } from '@/common/i18n'
 import { TransparentClockFace } from '../components/transparent-clock-face'
+import type { TransparentClockStyle } from '../types'
 
 interface TransparentClockEnglishProps {
 	time: Date
 	hours: string
 	minutes: string
 	isoDateTime: string
+	clockStyle: TransparentClockStyle
 }
 
 export const TransparentClockEnglish: React.FC<TransparentClockEnglishProps> = ({
@@ -14,6 +16,7 @@ export const TransparentClockEnglish: React.FC<TransparentClockEnglishProps> = (
 	hours,
 	minutes,
 	isoDateTime,
+	clockStyle,
 }) => {
 	return (
 		<TransparentClockFace
@@ -26,9 +29,11 @@ export const TransparentClockEnglish: React.FC<TransparentClockEnglishProps> = (
 				minutes,
 			})}
 			isoDateTime={isoDateTime}
+			clockStyle={clockStyle}
 			dateColor="secondary"
 			className="pr-2 font-latin"
 			metaStyle={{ letterSpacing: '0.02em' }}
+			metaDir="ltr"
 		/>
 	)
 }

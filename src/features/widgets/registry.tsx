@@ -521,7 +521,9 @@ const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		canDuplicate: false,
 		isVipOnly: false,
 		canResize: true,
-		node: (_instanceId, _size, meta) => <TransparentClockWidget meta={meta} />,
+		node: (instanceId, size, meta) => (
+			<TransparentClockWidget instanceId={instanceId} size={size} meta={meta} />
+		),
 	},
 	[WidgetKeys.moodTracker]: {
 		id: WidgetKeys.moodTracker,
