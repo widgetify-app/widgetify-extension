@@ -49,9 +49,10 @@ export const habitKeys = {
 - The profile was invalidated as `['getUser']` after a purchase while it was cached as `['userProfile']`. The coin balance never refreshed.
 - A failed request drew the empty state, so a network problem read as "you have no tasks". Read `isError` and draw the error. See `src/features/widgets/README.md`.
 - A disabled query left a widget on its skeleton forever for a signed out user.
+- Ticking a task saved it but left the cached todo lists as they were, so every count read from the query (the task summary, the 4x3 ring) went stale until a reload. A mutation that changes something a query lists must write the result into that cache (`setQueriesData`, as `useUpdateTodo` does with `replaceTodoInPages`) or invalidate it.
 
 ## Tests
 
-Hooks need React, so they are not tested. Anything pure that a hook uses (parsing, sorting, mapping) goes in a function and gets a test. A test must never import `api.ts`.
+Hooks need React, so they are not tested. Anything pure that a hook uses (parsing, sorting, mapping) goes in a function and gets a test. A test must never import `api.ts`. The function sits flat in its domain folder (`todo/replace-todo-in-pages.ts`); its test goes in `src/__tests__/`, because this folder takes no `__tests__` of its own.
 
 `docs.test.ts` reads every request made in this folder and fails when `.github/Api-doc.md` or `.github/Api-doc.fa.md` does not list it, or lists one the app never calls.
