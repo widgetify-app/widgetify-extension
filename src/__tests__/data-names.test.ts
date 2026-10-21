@@ -50,6 +50,7 @@ const STORAGE_KEYS = [
 	'wallpaper',
 	'weatherSettings',
 	'widgetLayoutMigrationVersion',
+	'widgetLayoutUnsynced',
 	'widget_tab',
 	'yadkar_tab',
 ]
@@ -239,6 +240,9 @@ const ANALYTICS_EVENTS = [
 	'widget_catalog_selected',
 	'widget_catalog_size_picked',
 	'widget_catalog_variant_picked',
+	'widget_layout_sync_failed',
+	'widget_layout_sync_retried',
+	'widget_layout_sync_saved',
 	'widget_presets_applied',
 	'widget_presets_opened',
 	'widget_presets_pro_locked',

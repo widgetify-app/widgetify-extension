@@ -21,7 +21,9 @@ import {
 } from '@/features/widgets/utils/layout-engine/types'
 import { useAppearance } from '@/context/appearance.context'
 import { useAuth } from '@/context/auth.context'
+import Analytics from '@/analytics'
 import { reflowForColumns } from './utils/widget-layout-helpers'
+import type { LayoutSyncStatus } from './utils/layout-sync'
 import { useWidgetSync } from './hooks/use-widget-sync'
 import { useWidgetOperations } from './hooks/use-widget-operations'
 import { useWidgetDrag } from './hooks/use-widget-drag'
@@ -44,6 +46,13 @@ const FreeWidgetLayoutContext = createContext<FreeWidgetLayoutState | null>(null
 const FreeWidgetActionsContext = createContext<FreeWidgetActions | null>(null)
 const FreeWidgetDerivedContext = createContext<FreeWidgetDerivedState | null>(null)
 
+interface LayoutSyncState {
+	status: LayoutSyncStatus
+	retry: () => void
+}
+
+const LayoutSyncContext = createContext<LayoutSyncState | null>(null)
+
 export function FreeWidgetProvider({ children }: { children: React.ReactNode }) {
 	const { isAuthenticated, isVip, token } = useAuth()
 	usePartnerCatalogSync()
@@ -64,6 +73,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 	const runtimeLayoutRef = useRef<StoredWidget[]>([])
 	const isVipRef = useRef<boolean>(isVip)
 	const selectedInstanceIdRef = useRef<string | null>(selectedInstanceId)
+	const isEditingRef = useRef<boolean>(canvasMode === 'edit')
 
 	useEffect(() => {
 		isVipRef.current = isVip
@@ -86,15 +96,38 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 		[]
 	)
 
-	const { persistLayout, triggerServerSync, markLocalEdit } = useWidgetSync({
+	const {
+		persistLayout,
+		triggerServerSync,
+		markLocalEdit,
+		flushHeldLayout,
+		syncStatus,
+	} = useWidgetSync({
 		isAuthenticated,
 		token,
+		isEditingRef,
 		setSavedLayout,
 		savedLayoutRef,
 		colsRef,
 		applyRuntimeLayout,
 		setIsLoaded,
 	})
+
+	useEffect(() => {
+		const wasEditing = isEditingRef.current
+		isEditingRef.current = canvasMode === 'edit'
+		if (wasEditing && canvasMode === 'normal') flushHeldLayout()
+	}, [canvasMode, flushHeldLayout])
+
+	const retryLayoutSync = useCallback(() => {
+		Analytics.event('widget_layout_sync_retried')
+		flushHeldLayout()
+	}, [flushHeldLayout])
+
+	const layoutSyncValue = useMemo<LayoutSyncState>(
+		() => ({ status: syncStatus, retry: retryLayoutSync }),
+		[syncStatus, retryLayoutSync]
+	)
 
 	const {
 		commitMutation,
@@ -113,6 +146,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 		isVipRef,
 		selectedInstanceIdRef,
 		isAuthenticated,
+		isEditingRef,
 		persistLayout,
 		triggerServerSync,
 		applyRuntimeLayout,
@@ -244,11 +278,17 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 		<FreeWidgetActionsContext.Provider value={actionsValue}>
 			<FreeWidgetDerivedContext.Provider value={derivedValue}>
 				<FreeWidgetLayoutContext.Provider value={layoutValue}>
-					{children}
+					<LayoutSyncContext.Provider value={layoutSyncValue}>
+						{children}
+					</LayoutSyncContext.Provider>
 				</FreeWidgetLayoutContext.Provider>
 			</FreeWidgetDerivedContext.Provider>
 		</FreeWidgetActionsContext.Provider>
 	)
+}
+
+export function useLayoutSync(): LayoutSyncState | null {
+	return useContext(LayoutSyncContext)
 }
 
 export function usePrimaryBookmarkInstanceId(): string | null | undefined {

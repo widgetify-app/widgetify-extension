@@ -136,5 +136,6 @@ declare module '@/common/constants/store-keys' {
 	interface StorageKV {
 		activeWidgets: WidgetItem[]
 		storedWidgets: StoredWidget[]
+		widgetLayoutUnsynced: boolean
 	}
 }
