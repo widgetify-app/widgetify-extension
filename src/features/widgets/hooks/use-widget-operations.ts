@@ -36,6 +36,7 @@ interface UseWidgetOperationsParams {
 	isVipRef: React.MutableRefObject<boolean>
 	selectedInstanceIdRef: React.MutableRefObject<string | null>
 	isAuthenticated: boolean
+	isEditingRef: React.MutableRefObject<boolean>
 	persistLayout: (layout: StoredWidget[]) => void
 	triggerServerSync: (layout: StoredWidget[]) => void
 	applyRuntimeLayout: ApplyRuntimeLayout
@@ -52,6 +53,7 @@ export function useWidgetOperations({
 	isVipRef,
 	selectedInstanceIdRef,
 	isAuthenticated,
+	isEditingRef,
 	persistLayout,
 	triggerServerSync,
 	applyRuntimeLayout,
@@ -388,7 +390,11 @@ export function useWidgetOperations({
 				setSelectedInstanceId(null)
 			}
 
-			if (isAuthenticated && isServerInstanceId(instanceId)) {
+			if (
+				isAuthenticated &&
+				isServerInstanceId(instanceId) &&
+				!isEditingRef.current
+			) {
 				deleteUserWidgetApi(instanceId).catch(() => {})
 			}
 
@@ -400,6 +406,7 @@ export function useWidgetOperations({
 			colsRef,
 			selectedInstanceIdRef,
 			isAuthenticated,
+			isEditingRef,
 			setSelectedInstanceId,
 			commitMutation,
 		]
@@ -407,18 +414,29 @@ export function useWidgetOperations({
 
 	const updateWidgetSettings = useCallback(
 		(instanceId: string, meta: any) => {
+			const isEditing = isEditingRef.current
 			setSavedLayout((prev) => {
 				const updated = withWidgetMeta(prev, instanceId, meta)
-				if (updated !== prev) persistLayout(updated)
+				if (updated !== prev) {
+					persistLayout(updated)
+					if (isEditing) triggerServerSync(updated)
+				}
 				return updated
 			})
 			applyRuntimeLayout((prev) => withWidgetMeta(prev, instanceId, meta))
 
-			if (isAuthenticated && isServerInstanceId(instanceId)) {
+			if (isAuthenticated && isServerInstanceId(instanceId) && !isEditing) {
 				updateUserWidgetApi(instanceId, { meta }).catch(() => {})
 			}
 		},
-		[isAuthenticated, persistLayout, applyRuntimeLayout, setSavedLayout]
+		[
+			isAuthenticated,
+			isEditingRef,
+			persistLayout,
+			triggerServerSync,
+			applyRuntimeLayout,
+			setSavedLayout,
+		]
 	)
 
 	const applyPresetLayout = useCallback(

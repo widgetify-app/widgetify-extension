@@ -301,7 +301,6 @@ function CanvasWidgetOuterImpl({
 	const handleContextMenu = (e: React.MouseEvent) => {
 		e.preventDefault()
 		e.stopPropagation()
-		if (canvasMode === 'edit') return
 		const isFromKeyboard = e.clientX === 0 && e.clientY === 0
 		const frame = outerRef.current?.getBoundingClientRect()
 		setMenuAnchor({

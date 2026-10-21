@@ -17,6 +17,7 @@ import { PresetLayoutModal } from './presets/presets'
 import { CanvasContextMenu } from './components/canvas-context-menu'
 import { CanvasWidgetOuter } from './components/canvas-widget-outer'
 import { CanvasEditToolbar } from './components/canvas-edit-toolbar'
+import { LayoutSyncIndicator } from './components/layout-sync-indicator'
 import { GridOverlay } from './components/grid-overlay'
 
 export function FreeWidgetCanvas() {
@@ -208,6 +209,8 @@ export function FreeWidgetCanvas() {
 					height: `${canvasPixelHeight}px`,
 				}}
 			>
+				<LayoutSyncIndicator />
+
 				{canvasMode === 'edit' && (
 					<CanvasEditToolbar
 						onAddWidget={() => callEvent('openAddCustomWidgetModal')}
