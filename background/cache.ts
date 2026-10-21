@@ -6,6 +6,7 @@ import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategi
 import { CacheNames } from './cache-names'
 import { catalogMediaPlugin } from './catalog-media-cache'
 import {
+	asksForFreshCopy,
 	CDN_NO_CACHE_PREFIXES,
 	NETWORK_FIRST_API_PATHS,
 	NEVER_CACHE_API_PATHS,
@@ -23,10 +24,6 @@ function matchesApiPaths(url: URL, request: Request, paths: string[]): boolean {
 	if (url.origin !== API_ORIGIN) return false
 	if (NEVER_CACHE_API_PATHS.some((path) => url.pathname.includes(path))) return false
 	return paths.some((path) => url.pathname.startsWith(path))
-}
-
-function asksForFreshCopy(request: Request): boolean {
-	return request.cache === 'no-cache' || request.cache === 'reload'
 }
 
 // Browser-initiated requests for CDN assets (<img>, <link>, ...) default to

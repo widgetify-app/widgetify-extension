@@ -26,8 +26,7 @@ let instance: AxiosInstance | null = null
 let refreshPromise: Promise<string | null> | null = null
 
 export const FRESH_REQUEST: AxiosRequestConfig = {
-	adapter: 'fetch',
-	fetchOptions: { cache: 'no-cache' },
+	fetchOptions: { cache: 'reload' },
 }
 
 export function getMainClient(): AxiosInstance {
@@ -41,6 +40,8 @@ export function getMainClient(): AxiosInstance {
 
 	instance = axios.create({
 		baseURL: API_URL,
+		adapter: 'fetch',
+		fetchOptions: { cache: 'no-cache' },
 		headers: {
 			client: 'widgetify-extension',
 			version: VERSION,

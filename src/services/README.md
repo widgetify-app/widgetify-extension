@@ -49,6 +49,7 @@ export const habitKeys = {
 - The profile was invalidated as `['getUser']` after a purchase while it was cached as `['userProfile']`. The coin balance never refreshed.
 - A failed request drew the empty state, so a network problem read as "you have no tasks". Read `isError` and draw the error. See `src/features/widgets/README.md`.
 - A disabled query left a widget on its skeleton forever for a signed out user.
+- The main client used XHR with the browser's default cache. A 301 that `api.widgetify.ir` once sent without `Cache-Control` stayed in some users' HTTP cache, and every request replayed it as a redirect loop (`ERR_TOO_MANY_REDIRECTS`) without reaching the server. The client now sends every request with `fetch` and `cache: 'no-cache'`, which asks the server each time and replaces such an entry. The search image upload stays on `adapter: 'xhr'` for its progress events.
 - Ticking a task saved it but left the cached todo lists as they were, so every count read from the query (the task summary, the 4x3 ring) went stale until a reload. A mutation that changes something a query lists must write the result into that cache (`setQueriesData`, as `useUpdateTodo` does with `replaceTodoInPages`) or invalidate it.
 
 ## Tests
