@@ -8,6 +8,7 @@ export async function uploadSearchImage(
 	formData.append('image', file)
 
 	const response = await getMainClient().post('/users/@me/upload/search', formData, {
+		adapter: 'xhr',
 		headers: {
 			'Content-Type': 'multipart/form-data',
 		},

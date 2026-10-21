@@ -12,3 +12,7 @@ export const SWR_API_PATHS = ['/searchbox', '/currencies', '/weather', '/content
 export const NEVER_CACHE_API_PATHS = ['/searchbox/suggest-search', '/date/now']
 
 export const CDN_NO_CACHE_PREFIXES = ['/wallpapers/', '/avatars/']
+
+export function asksForFreshCopy(request: Pick<Request, 'cache'>): boolean {
+	return request.cache === 'reload'
+}
