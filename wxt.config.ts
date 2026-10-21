@@ -78,7 +78,7 @@ export default defineConfig({
 			description:
 				'Transform your new tab into a smart dashboard with Widgetify! Get currency rates, crypto prices, weather & more.',
 
-			permissions: ['storage', 'search', ...(isFirefox ? ['identity'] : [])],
+			permissions: ['storage', 'search'],
 
 			...(isFirefox
 				? { chrome_settings_overrides: { homepage: 'newtab.html' } }
