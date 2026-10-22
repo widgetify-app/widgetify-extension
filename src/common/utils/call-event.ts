@@ -66,7 +66,6 @@ export interface EventName {
 		| undefined
 	openWidgetCatalog: string
 	openMiniApp: string
-	openPresetLayoutsModal: null
 	cancelWidgetDrag: null
 }
 

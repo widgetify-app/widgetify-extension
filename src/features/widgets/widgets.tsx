@@ -3,17 +3,17 @@ import type { ReactNode } from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Analytics from '@/analytics'
 import { t } from '@/common/i18n'
-import { callEvent, listenEvent } from '@/common/utils/call-event'
+import { callEvent } from '@/common/utils/call-event'
 import { useFreeWidgets } from '@/features/widgets/widgets.context'
 import { useContainerSize } from '@/features/widgets/hooks/use-container-size'
 import { getCanvasHeight } from './utils/grid-geometry'
 import { useKeyboardFocusWithin } from './hooks/use-keyboard-focus-within'
+import { useSlotShortcuts } from './hooks/use-slot-shortcuts'
 import { MIN_CANVAS_ROWS } from './utils/layout-engine/constants'
 import { rowCapFor } from './utils/layout-engine/row-cap'
 import { resolveWidgetDefinition, useWidgetRegistry } from './registry'
 import { widgetTitle } from './utils/partner-catalog/partner-definitions'
 import { WidgetHelpModal } from '@/features/widgets/components/widget-help-modal'
-import { PresetLayoutModal } from './presets/presets'
 import { CanvasContextMenu } from './components/canvas-context-menu'
 import { CanvasWidgetOuter } from './components/canvas-widget-outer'
 import { CanvasEditToolbar } from './components/canvas-edit-toolbar'
@@ -21,6 +21,7 @@ import { GridOverlay } from './components/grid-overlay'
 
 export function FreeWidgetCanvas() {
 	useWidgetRegistry()
+	useSlotShortcuts()
 	const containerRef = useRef<HTMLDivElement>(null)
 	const backgroundRef = useRef<HTMLDivElement>(null)
 	const containerSize = useContainerSize(containerRef)
@@ -41,12 +42,7 @@ export function FreeWidgetCanvas() {
 		removeWidget,
 	} = useFreeWidgets()
 
-	const [isPresetModalOpen, setIsPresetModalOpen] = useState(false)
 	const [isHelpModalOpen, setIsHelpModalOpen] = useState(false)
-
-	const handleClosePresetModal = useCallback(() => {
-		setIsPresetModalOpen(false)
-	}, [])
 
 	const handleCloseHelpModal = useCallback(() => {
 		setIsHelpModalOpen(false)
@@ -61,16 +57,6 @@ export function FreeWidgetCanvas() {
 			updateContainerWidth(containerSize.width)
 		}
 	}, [containerSize.width, updateContainerWidth])
-
-	useEffect(() => {
-		const removePresetListener = listenEvent('openPresetLayoutsModal', () => {
-			setIsPresetModalOpen(true)
-			Analytics.event('widget_presets_opened')
-		})
-		return () => {
-			removePresetListener()
-		}
-	}, [])
 
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
@@ -211,10 +197,6 @@ export function FreeWidgetCanvas() {
 				{canvasMode === 'edit' && (
 					<CanvasEditToolbar
 						onAddWidget={() => callEvent('openAddCustomWidgetModal')}
-						onOpenPresets={() => {
-							setIsPresetModalOpen(true)
-							Analytics.event('widget_presets_opened')
-						}}
 						onExitEditMode={() => {
 							setCanvasMode('normal')
 							setSelectedInstanceId(null)
@@ -265,10 +247,7 @@ export function FreeWidgetCanvas() {
 						Analytics.event('canvas_edit_mode_toggled')
 					}}
 					onOpenAddWidget={() => callEvent('openAddCustomWidgetModal')}
-					onOpenPresets={() => {
-						setIsPresetModalOpen(true)
-						Analytics.event('widget_presets_opened')
-					}}
+					onOpenSlots={() => callEvent('openWidgetSlotsModal', 'slots')}
 					onOpenAppearanceSettings={() =>
 						callEvent('openSettings', 'appearance')
 					}
@@ -278,11 +257,6 @@ export function FreeWidgetCanvas() {
 					onOpenHelp={() => setIsHelpModalOpen(true)}
 				/>
 			)}
-
-			<PresetLayoutModal
-				isOpen={isPresetModalOpen}
-				onClose={handleClosePresetModal}
-			/>
 
 			<WidgetHelpModal isOpen={isHelpModalOpen} onClose={handleCloseHelpModal} />
 		</section>

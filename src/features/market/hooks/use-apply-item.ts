@@ -1,5 +1,6 @@
 import Analytics from '@/analytics'
 import { showToast } from '@/common/toast'
+import { isLookSyncedWithAccount } from '@/common/utils/account-look'
 import { callEvent } from '@/common/utils/call-event'
 import { translateError } from '@/common/utils/translate-error'
 import { useAppearanceSetting } from '@/context/appearance.context'
@@ -44,7 +45,7 @@ export function useApplyItem(): (item: StoreItem) => Promise<boolean> {
 			case 'BROWSER_TITLE': {
 				Analytics.event('browser_title_selected')
 				const id = isAuthenticated ? await browserTitleId(item) : item.id
-				if (isAuthenticated) {
+				if (isAuthenticated && isLookSyncedWithAccount()) {
 					const [error] = await safeAwait(
 						changeBrowserTitle({ browserTitleId: id })
 					)

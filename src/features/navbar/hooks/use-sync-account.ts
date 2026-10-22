@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { getMultipleFromStorage, setToStorage } from '@/common/storage'
+import { isLookSyncedWithAccount } from '@/common/utils/account-look'
 import { callEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper, Wallpaper } from '@/common/types/wallpaper.interface'
 import { useAuth } from '@/context/auth.context'
@@ -29,6 +30,7 @@ export function useSyncAccount() {
 }
 
 async function getAll() {
+	if (!isLookSyncedWithAccount()) return
 	try {
 		const { wallpaper, theme, browserTitle, font, ui } = await getAccountSync()
 		const store = await getMultipleFromStorage(['wallpaper', 'theme', 'appearance'])

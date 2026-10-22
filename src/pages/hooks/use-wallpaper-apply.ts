@@ -6,6 +6,7 @@ import { DEFAULT_WALLPAPER } from '@/common/constants/default-wallpaper'
 import { getRandomWallpaper } from '@/services/wallpapers/get-wallpaper-categories.hook'
 import { safeAwait } from '@/services/api'
 import { SwEventType } from '@/common/types/sw-events.interface'
+import { gradientBackground } from '@/common/utils/wallpaper-background'
 
 function pinWallpaperForOffline(wallpaper: StoredWallpaper) {
 	if (wallpaper.type !== 'IMAGE' && wallpaper.type !== 'VIDEO') return
@@ -18,17 +19,6 @@ function pinWallpaperForOffline(wallpaper: StoredWallpaper) {
 			wallpaperType: wallpaper.type,
 		})
 		.catch(() => {})
-}
-
-const GRADIENT_DIRECTION_MAP: Record<string, string> = {
-	'to-r': 'to right',
-	'to-l': 'to left',
-	'to-t': 'to top',
-	'to-b': 'to bottom',
-	'to-tr': 'to top right',
-	'to-tl': 'to top left',
-	'to-br': 'to bottom right',
-	'to-bl': 'to bottom left',
 }
 
 let currentlyAppliedWallpaper: StoredWallpaper | null = null
@@ -73,10 +63,7 @@ function applyWallpaper(wallpaper: StoredWallpaper) {
 		document.body.style.backgroundSize = 'cover'
 		document.body.style.backgroundColor = ''
 	} else if (wallpaper.type === 'GRADIENT' && wallpaper.gradient) {
-		const { from, to, direction } = wallpaper.gradient
-		const cssDirection = GRADIENT_DIRECTION_MAP[direction] ?? direction
-
-		document.body.style.backgroundImage = `linear-gradient(${cssDirection}, ${from}, ${to})`
+		document.body.style.backgroundImage = gradientBackground(wallpaper.gradient)
 		document.body.style.backgroundColor = ''
 		document.body.style.backdropFilter = ''
 	} else if (wallpaper.type === 'VIDEO') {

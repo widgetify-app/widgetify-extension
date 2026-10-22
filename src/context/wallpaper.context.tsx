@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { getFromStorage, removeFromStorage, setToStorage } from '@/common/storage'
+import { isLookSyncedWithAccount } from '@/common/utils/account-look'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import type { StoredWallpaper, Wallpaper } from '@/common/types/wallpaper.interface'
 import { DEFAULT_WALLPAPER } from '@/common/constants/default-wallpaper'
@@ -24,6 +25,7 @@ interface WallpaperContextValue {
 	handleSelectBackground: (wallpaper: Wallpaper) => Promise<boolean>
 	handleCustomWallpaperChange: (wallpaper: Wallpaper) => void
 	handleRemoveCustomWallpaper: () => Promise<void>
+	applyStoredWallpaper: (wallpaper: StoredWallpaper) => void
 	syncWithFetchedWallpapers: (wallpapers: Wallpaper[]) => void
 }
 
@@ -159,7 +161,9 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 			isSet = true
 		}
 
-		if (isAuthenticated) {
+		const needsServer =
+			isLookSyncedWithAccount() || Boolean(wallpaper.coin && !wallpaper.isOwned)
+		if (isAuthenticated && needsServer) {
 			const wallpaperId =
 				wallpaper.type === 'GRADIENT' ? 'custom-wallpaper' : wallpaper.id
 			const [error, responseWallpaper] = await safeAwait<ApiError, Wallpaper>(
@@ -188,6 +192,22 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 
 		Analytics.event('wallpaper_changed')
 		return true
+	}
+
+	const applyStoredWallpaper = (wallpaper: StoredWallpaper) => {
+		const isCustom = wallpaper.id === 'custom-wallpaper'
+		const next: Wallpaper = {
+			id: wallpaper.id,
+			name: isCustom ? t('setting.wallpaperUpload.customPhotoLabel') : '',
+			type: wallpaper.type,
+			src: wallpaper.src,
+			previewSrc: '',
+			gradient: wallpaper.gradient,
+			isCustom: isCustom || undefined,
+		}
+		setCurrentStoredWallpaper(wallpaper)
+		setCustomWallpaper(isCustom ? next : null)
+		setSelectedBackground(next)
 	}
 
 	const handleCustomWallpaperChange = (newWallpaper: Wallpaper) => {
@@ -225,6 +245,7 @@ export function WallpaperProvider({ children }: { children: React.ReactNode }) {
 				handleSelectBackground,
 				handleCustomWallpaperChange,
 				handleRemoveCustomWallpaper,
+				applyStoredWallpaper,
 				syncWithFetchedWallpapers,
 			}}
 		>

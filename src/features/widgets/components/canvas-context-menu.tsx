@@ -9,7 +9,7 @@ interface CanvasContextMenuProps {
 	onClose: () => void
 	onToggleEditMode: () => void
 	onOpenAddWidget: () => void
-	onOpenPresets?: () => void
+	onOpenSlots: () => void
 	onOpenAppearanceSettings: () => void
 	onOpenWallpaperSettings: () => void
 	onOpenHelp?: () => void
@@ -22,7 +22,7 @@ export function CanvasContextMenu({
 	onClose,
 	onToggleEditMode,
 	onOpenAddWidget,
-	onOpenPresets,
+	onOpenSlots,
 	onOpenAppearanceSettings,
 	onOpenWallpaperSettings,
 	onOpenHelp,
@@ -51,16 +51,15 @@ export function CanvasContextMenu({
 				}}
 			/>
 
-			{onOpenPresets && (
-				<PopoverMenuItem
-					icon={<Icon name="layout" size={14} />}
-					label={t('widgets.canvas.presets')}
-					onClick={() => {
-						onOpenPresets()
-						onClose()
-					}}
-				/>
-			)}
+			<PopoverMenuItem
+				icon={<Icon name="squares2X2" size={14} />}
+				label={t('widgets.slots.title')}
+				onClick={() => {
+					onOpenSlots()
+					onClose()
+				}}
+			/>
+
 			<PopoverMenuDivider />
 			<PopoverMenuItem
 				icon={<Icon name="brush" size={14} />}

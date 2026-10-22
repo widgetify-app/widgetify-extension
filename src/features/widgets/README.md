@@ -9,7 +9,9 @@ The canvas that hosts every widget, and the widgets themselves. Each widget is a
 - `types.ts`, `constants.ts`, `date.context.tsx`, `currency.context.tsx` hold what several widgets share.
 - `components/`, `hooks/` and `utils/` hold the platform: the container, the layout engine, migration, the VIP resolver, `WidgetError`, `WidgetEmpty`, `WidgetCompactEmpty`, `CompactPager` and `BoardSummary`.
 - Each widget is a sub feature with a `<name>.widget.tsx` entry: `bookmark`, `calendar`, `clock`, `combo-widget`, `dot-calendar`, `google-calendar`, `habit`, `mood-tracker`, `network`, `news`, `notes`, `partner-widget`, `pet`, `photo`, `search`, `todos`, `tools`, `transparent-clock`, `weather`, `wigi-arz`, `yadkar`.
-- The canvas's own sub features take the plain `<name>.tsx`: `catalog/` (adding a widget), `widget-settings/`, `presets/`.
+- The canvas's own sub features take the plain `<name>.tsx`: `catalog/` (adding a widget), `widget-settings/`, `presets/`, `slots/` (saved layouts; see `slots/README.md`). A slot's state lives in the platform (`hooks/use-slot-switcher.ts`, `utils/slots/`) because the sync needs it, and `useWidgetSlots()` from `widgets.context.tsx` exposes it.
+- `components/layout-preview.tsx` draws a layout as a small map of icons, for the presets and the slots, over the slot's wallpaper when it has one.
+- The presets have no modal of their own: `presets/presets.tsx` exports `PresetLayoutList`, which the layouts modal shows as its «چیدمان‌های آماده» tab. A preset replaces the widgets of the active slot and leaves its look alone.
 
 ## Hover controls and the widget menu
 

@@ -4,6 +4,7 @@ import { join } from 'node:path'
 import ts from 'typescript'
 
 const STORAGE_KEYS = [
+	'activeWidgetSlot',
 	'activeWidgets',
 	'analyticsSession',
 	'appearance',
@@ -50,6 +51,7 @@ const STORAGE_KEYS = [
 	'wallpaper',
 	'weatherSettings',
 	'widgetLayoutMigrationVersion',
+	'widgetSlots',
 	'widget_tab',
 	'yadkar_tab',
 ]
@@ -236,6 +238,11 @@ const ANALYTICS_EVENTS = [
 	'widget_presets_opened',
 	'widget_presets_pro_locked',
 	'widget_settings_opened',
+	'widget_slot_cleared',
+	'widget_slot_created',
+	'widget_slot_pro_locked',
+	'widget_slot_renamed',
+	'widget_slot_switched',
 	'widget_style_changed',
 	'yadkar_change_tab',
 ]

@@ -251,6 +251,8 @@ export const setting = {
 		'باز کردن بوکمارک در تب جدید با دکمه اسکرول',
 	'setting.shortcuts.openFolderBookmarks': 'باز کردن همه بوکمارک‌های یک پوشه',
 	'setting.shortcuts.toggleTheme': 'تغییر تم',
+	'setting.shortcuts.layoutsCategory': 'چیدمان‌ها',
+	'setting.shortcuts.switchLayout': 'رفتن به چیدمان ۱ تا ۶',
 	'setting.vipSuccess.title': 'مبارکه! دسترسی پرو باز شد',
 	'setting.vipSuccess.freePlanLabel': 'پلن رایگان',
 	'setting.vipSuccess.body':

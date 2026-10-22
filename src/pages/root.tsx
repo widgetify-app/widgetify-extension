@@ -6,10 +6,14 @@ import { StackedToaster } from '@/components/ui'
 import { GeneralSettingProvider } from '@/context/general-setting.context'
 import { AccountContactProvider } from '@/features/setting/account/account-contact.context'
 import { PartnerAccessProvider } from '@/features/widgets/partner-access.context'
-import { FreeWidgetProvider } from '@/features/widgets/widgets.context'
+import {
+	FreeWidgetProvider,
+	type WidgetSlotsTab,
+} from '@/features/widgets/widgets.context'
 import { NavbarLayout } from '@/features/navbar/navbar'
 import { WidgetSettings } from '@/features/widgets/widget-settings/widget-settings'
 import { AddWidgetModal } from '@/features/widgets/catalog/catalog'
+import { WidgetSlotsModal } from '@/features/widgets/slots/slots'
 import { Page, usePage } from '@/context/page.context'
 import { Motion as motion, MotionPreferences, Presence } from '@/common/motion'
 import { AuthRequiredModal } from '@/components/auth/auth-required-modal'
@@ -52,6 +56,8 @@ function Main() {
 	const [addWidgetFocusId, setAddWidgetFocusId] = useState<string | null>(null)
 	const [miniAppFocusId, setMiniAppFocusId] = useState<string | null>(null)
 	const [showAuthRequired, setAuthRequired] = useState(false)
+	const [isSlotsModalOpen, setIsSlotsModalOpen] = useState(false)
+	const [slotsModalTab, setSlotsModalTab] = useState<WidgetSlotsTab>('slots')
 	const { page, setPage } = usePage()
 
 	useEffect(() => {
@@ -89,6 +95,12 @@ function Main() {
 			setAuthRequired(true)
 		})
 
+		const openSlotsModalEvent = listenEvent('openWidgetSlotsModal', (tab) => {
+			setPage(Page.Home)
+			setSlotsModalTab(tab === 'presets' ? 'presets' : 'slots')
+			setIsSlotsModalOpen(true)
+		})
+
 		Analytics.pageView('Home', '/')
 
 		return () => {
@@ -96,6 +108,7 @@ function Main() {
 			openCatalogEvent()
 			openMiniAppEvent()
 			openAuthRequireModal()
+			openSlotsModalEvent()
 		}
 	}, [setPage])
 
@@ -141,6 +154,12 @@ function Main() {
 								setAddWidgetFocusId(null)
 							}}
 							returnsToSettings={addWidgetReturnsToSettings}
+						/>
+						<WidgetSlotsModal
+							isOpen={isSlotsModalOpen}
+							tab={slotsModalTab}
+							onTabChange={setSlotsModalTab}
+							onClose={() => setIsSlotsModalOpen(false)}
 						/>
 					</FreeWidgetProvider>
 				</PartnerAccessProvider>

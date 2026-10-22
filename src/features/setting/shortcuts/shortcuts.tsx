@@ -57,6 +57,13 @@ export function ShortcutsTab() {
 			description: t('setting.shortcuts.toggleTheme'),
 			category: t('setting.tab.appearance'),
 		},
+		{
+			id: 'switch_layout',
+			windowsKey: 'CTRL + ALT + 1…6',
+			macKey: '⌘ + ALT + 1…6',
+			description: t('setting.shortcuts.switchLayout'),
+			category: t('setting.shortcuts.layoutsCategory'),
+		},
 	]
 
 	const categories = shortcuts.reduce(

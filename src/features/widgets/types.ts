@@ -4,6 +4,8 @@ import type {
 	WidgetPosition,
 	WidgetSize,
 } from '@/features/widgets/utils/layout-engine/types'
+import type { WidgetWorkspace } from '@/services/widgets/widget-sync.hook'
+import type { StoredWallpaper } from '@/common/types/wallpaper.interface'
 
 export interface FreeWidgetLayoutState {
 	savedLayout: StoredWidget[]
@@ -48,6 +50,67 @@ export type FreeWidgetContextType = FreeWidgetLayoutState & FreeWidgetActions
 
 export interface FreeWidgetDerivedState {
 	primaryBookmarkInstanceId: string | null
+}
+
+export interface SlotBrowserTitle {
+	id: string
+	name: string
+	template: string
+}
+
+export interface SlotLook {
+	theme: string | null
+	fontFamily: string | null
+	browserTitle: SlotBrowserTitle | null
+	wallpaper: StoredWallpaper | null
+}
+
+export interface WidgetSlot {
+	workspace: WidgetWorkspace
+	name: string | null
+	updatedAt: number
+	widgets: StoredWidget[]
+	look: SlotLook | null
+}
+
+export interface WidgetSlotView {
+	workspace: WidgetWorkspace
+	label: string
+	customName: string | null
+	widgets: StoredWidget[]
+	wallpaper: StoredWallpaper | null
+	isActive: boolean
+	isLocked: boolean
+	isEmpty: boolean
+}
+
+export type WidgetSlotsTab = 'slots' | 'presets'
+
+export interface FreeWidgetSlots {
+	canUseSlots: boolean
+	activeSlot: WidgetSlotView
+	slots: WidgetSlotView[]
+	isSwitching: boolean
+	openSlot: (workspace: WidgetWorkspace) => Promise<boolean>
+	switchSlot: (
+		workspace: WidgetWorkspace,
+		startWith?: StoredWidget[]
+	) => Promise<boolean>
+	renameSlot: (workspace: WidgetWorkspace, name: string) => void
+	clearSlot: (workspace: WidgetWorkspace) => void
+}
+
+declare module '@/common/constants/store-keys' {
+	interface StorageKV {
+		activeWidgetSlot: WidgetWorkspace
+		widgetSlots: WidgetSlot[]
+	}
+}
+
+declare module '@/common/utils/call-event' {
+	interface EventName {
+		openWidgetSlotsModal: WidgetSlotsTab
+	}
 }
 
 export enum WidgetTabKeys {

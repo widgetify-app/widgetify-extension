@@ -3,6 +3,7 @@ import { callEvent } from '@/common/utils/call-event'
 import { Dropdown, DropdownItem } from '@/components/ui'
 import { useAppearance } from '@/context/appearance.context'
 import { Page, usePage } from '@/context/page.context'
+import { useWidgetSlots } from '@/features/widgets/widgets.context'
 import { Icon } from '@/icons'
 import { NavIconButton } from './nav-icon-button'
 import { t } from '@/common/i18n'
@@ -10,6 +11,7 @@ import { t } from '@/common/i18n'
 export function LayoutDropdown() {
 	const { canvasMode, setCanvasMode } = useAppearance()
 	const { page, setPage } = usePage()
+	const { canUseSlots, activeSlot } = useWidgetSlots()
 
 	const handleAction = (action: () => void) => {
 		callEvent('closeAllDropdowns')
@@ -48,6 +50,21 @@ export function LayoutDropdown() {
 			}
 		>
 			<div className="bg-glass-surface-2 py-2 min-w-48 px-1" dir="rtl">
+				<DropdownItem
+					icon={<Icon name="squares2X2" size={14} />}
+					label={t('widgets.slots.manage')}
+					badge={
+						canUseSlots ? (
+							<span className="block truncate max-w-20 text-3xs text-fg-faint">
+								{activeSlot.label}
+							</span>
+						) : undefined
+					}
+					onClick={() =>
+						handleAction(() => callEvent('openWidgetSlotsModal', 'slots'))
+					}
+				/>
+
 				<DropdownItem
 					icon={<Icon name="outlineSquares2X2" size={14} />}
 					label={t('navbar.layout.manage')}

@@ -19,6 +19,7 @@ App wide React providers. One file per provider at the root: `<name>.context.tsx
 - Only providers sit at the root. A context only one feature uses lives in that feature (`pet.context.tsx`, `bookmark.context.tsx`).
 - A theme is chosen by the `data-theme` attribute, never by the OS. The set of themes is open ended, so no code may assume what a token contains.
 - A provider reaches the server only through hooks and functions from `src/services`, never the API client itself.
+- Theme, font, tab title and wallpaper belong to the active layout slot. Before a provider sends one of them to the account, it checks `isLookSyncedWithAccount()` from `@/common/utils/account-look`, which is false while slot 2 to 6 is active. A wallpaper that still has to be bought goes to the server either way, because buying it is that call. See `src/features/widgets/slots/README.md`.
 
 ## Tests
 

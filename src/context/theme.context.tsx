@@ -2,6 +2,7 @@ import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { getFromStorage, setToStorage } from '@/common/storage'
+import { isLookSyncedWithAccount } from '@/common/utils/account-look'
 import { listenEvent } from '@/common/utils/call-event'
 import { useChangeTheme } from '@/services/extension/update-setting.hook'
 import { useAuth } from './auth.context'
@@ -81,7 +82,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
 	const setThemeCallback = async (theme: string) => {
 		themeChangeHandler(theme, true)
-		if (isAuthenticated) {
+		if (isAuthenticated && isLookSyncedWithAccount()) {
 			await mutateAsync({ theme: theme })
 		}
 	}

@@ -21,16 +21,23 @@ import {
 } from '@/features/widgets/utils/layout-engine/types'
 import { useAppearance } from '@/context/appearance.context'
 import { useAuth } from '@/context/auth.context'
+import { useWallpaperContext } from '@/context/wallpaper.context'
+import { setLookSyncedWithAccount } from '@/common/utils/account-look'
 import { reflowForColumns } from './utils/widget-layout-helpers'
 import { useWidgetSync } from './hooks/use-widget-sync'
 import { useWidgetOperations } from './hooks/use-widget-operations'
 import { useWidgetDrag } from './hooks/use-widget-drag'
 import { usePartnerCatalogSync } from './hooks/use-partner-catalog-sync'
+import { useSlotSwitcher } from './hooks/use-slot-switcher'
+import { isServerWorkspace } from './utils/slots/slot-access'
+import type { WidgetWorkspace } from '@/services/widgets/widget-sync.hook'
 import type {
 	FreeWidgetActions,
 	FreeWidgetContextType,
 	FreeWidgetDerivedState,
 	FreeWidgetLayoutState,
+	FreeWidgetSlots,
+	WidgetSlotsTab,
 } from './types'
 
 export type {
@@ -38,17 +45,38 @@ export type {
 	FreeWidgetContextType,
 	FreeWidgetDerivedState,
 	FreeWidgetLayoutState,
+	WidgetSlotsTab,
 }
 
 const FreeWidgetLayoutContext = createContext<FreeWidgetLayoutState | null>(null)
 const FreeWidgetActionsContext = createContext<FreeWidgetActions | null>(null)
 const FreeWidgetDerivedContext = createContext<FreeWidgetDerivedState | null>(null)
+const FreeWidgetSlotsContext = createContext<FreeWidgetSlots | null>(null)
 
 export function FreeWidgetProvider({ children }: { children: React.ReactNode }) {
-	const { isAuthenticated, isVip, token } = useAuth()
+	const { isAuthenticated, isVip, token, isSuccessFetchingUser } = useAuth()
 	usePartnerCatalogSync()
-	const { canvasMode, setCanvasMode, selectedInstanceId, setSelectedInstanceId } =
-		useAppearance()
+	const {
+		canvasMode,
+		setCanvasMode,
+		selectedInstanceId,
+		setSelectedInstanceId,
+		fontFamily,
+	} = useAppearance()
+	const { selectedBackground, currentStoredWallpaper, applyStoredWallpaper } =
+		useWallpaperContext()
+	const activeWallpaper = useMemo(
+		() =>
+			selectedBackground
+				? {
+						id: selectedBackground.id,
+						type: selectedBackground.type,
+						src: selectedBackground.src,
+						gradient: selectedBackground.gradient,
+					}
+				: currentStoredWallpaper,
+		[selectedBackground, currentStoredWallpaper]
+	)
 
 	const [isLoaded, setIsLoaded] = useState<boolean>(false)
 	const [savedLayout, setSavedLayout] = useState<StoredWidget[]>([])
@@ -64,6 +92,17 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 	const runtimeLayoutRef = useRef<StoredWidget[]>([])
 	const isVipRef = useRef<boolean>(isVip)
 	const selectedInstanceIdRef = useRef<string | null>(selectedInstanceId)
+	const activeWorkspaceRef = useRef<WidgetWorkspace | null>(null)
+	const [activeWorkspace, setActiveWorkspaceState] = useState<WidgetWorkspace | null>(
+		null
+	)
+	const serverSyncEnabled = isAuthenticated && isServerWorkspace(activeWorkspace)
+
+	const setActiveWorkspace = useCallback((workspace: WidgetWorkspace) => {
+		activeWorkspaceRef.current = workspace
+		setLookSyncedWithAccount(isServerWorkspace(workspace))
+		setActiveWorkspaceState(workspace)
+	}, [])
 
 	useEffect(() => {
 		isVipRef.current = isVip
@@ -74,6 +113,9 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 	useEffect(() => {
 		runtimeLayoutRef.current = runtimeLayout
 	}, [runtimeLayout])
+	useEffect(() => {
+		savedLayoutRef.current = savedLayout
+	}, [savedLayout])
 
 	const applyRuntimeLayout = useCallback(
 		(next: StoredWidget[] | ((prev: StoredWidget[]) => StoredWidget[])) => {
@@ -86,15 +128,18 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 		[]
 	)
 
-	const { persistLayout, triggerServerSync, markLocalEdit } = useWidgetSync({
-		isAuthenticated,
-		token,
-		setSavedLayout,
-		savedLayoutRef,
-		colsRef,
-		applyRuntimeLayout,
-		setIsLoaded,
-	})
+	const { persistLayout, triggerServerSync, flushServerSync, markLocalEdit } =
+		useWidgetSync({
+			serverSyncEnabled,
+			activeWorkspace,
+			activeWorkspaceRef,
+			token,
+			setSavedLayout,
+			savedLayoutRef,
+			colsRef,
+			applyRuntimeLayout,
+			setIsLoaded,
+		})
 
 	const {
 		commitMutation,
@@ -105,6 +150,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 		duplicateWidget,
 		removeWidget,
 		updateWidgetSettings,
+		replaceLayout,
 		applyPresetLayout,
 	} = useWidgetOperations({
 		runtimeLayoutRef,
@@ -113,6 +159,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 		isVipRef,
 		selectedInstanceIdRef,
 		isAuthenticated,
+		serverSyncEnabled,
 		persistLayout,
 		triggerServerSync,
 		applyRuntimeLayout,
@@ -120,6 +167,23 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 		setRuntimeLayout,
 		setSelectedInstanceId,
 		markLocalEdit,
+	})
+
+	const slotsValue = useSlotSwitcher({
+		isAuthenticated,
+		isVip,
+		isProfileFresh: isSuccessFetchingUser,
+		activeWorkspace,
+		activeWorkspaceRef,
+		setActiveWorkspace,
+		savedLayout,
+		savedLayoutRef,
+		flushServerSync,
+		replaceLayout,
+		setSelectedInstanceId,
+		fontFamily,
+		activeWallpaper,
+		applyStoredWallpaper,
 	})
 
 	const { startDragPreview, updateDragPreview, endDragPreview } = useWidgetDrag({
@@ -243,9 +307,11 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 	return (
 		<FreeWidgetActionsContext.Provider value={actionsValue}>
 			<FreeWidgetDerivedContext.Provider value={derivedValue}>
-				<FreeWidgetLayoutContext.Provider value={layoutValue}>
-					{children}
-				</FreeWidgetLayoutContext.Provider>
+				<FreeWidgetSlotsContext.Provider value={slotsValue}>
+					<FreeWidgetLayoutContext.Provider value={layoutValue}>
+						{children}
+					</FreeWidgetLayoutContext.Provider>
+				</FreeWidgetSlotsContext.Provider>
 			</FreeWidgetDerivedContext.Provider>
 		</FreeWidgetActionsContext.Provider>
 	)
@@ -255,6 +321,14 @@ export function usePrimaryBookmarkInstanceId(): string | null | undefined {
 	const context = useContext(FreeWidgetDerivedContext)
 	if (!context) return undefined
 	return context.primaryBookmarkInstanceId
+}
+
+export function useWidgetSlots(): FreeWidgetSlots {
+	const context = useContext(FreeWidgetSlotsContext)
+	if (!context) {
+		throw new Error('useWidgetSlots must be used within a FreeWidgetProvider')
+	}
+	return context
 }
 
 export function useFreeWidgetActions(): FreeWidgetActions {

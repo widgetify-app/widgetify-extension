@@ -16,6 +16,7 @@ import { hydratePartnerCatalog } from './use-partner-catalog-sync'
 import {
 	getUserWidgetsApi,
 	syncUserWidgetsApi,
+	type WidgetWorkspace,
 } from '@/services/widgets/widget-sync.hook'
 import {
 	reflowForColumns,
@@ -23,9 +24,12 @@ import {
 	storedWidgetToApiPayload,
 } from '../utils/widget-layout-helpers'
 import { widgetsKeys } from '@/services/widgets/widgets.keys'
+import { isServerWorkspace } from '../utils/slots/slot-access'
 
 interface UseWidgetSyncParams {
-	isAuthenticated: boolean
+	serverSyncEnabled: boolean
+	activeWorkspace: WidgetWorkspace | null
+	activeWorkspaceRef: React.MutableRefObject<WidgetWorkspace | null>
 	token: string | null | undefined
 	setSavedLayout: React.Dispatch<React.SetStateAction<StoredWidget[]>>
 	savedLayoutRef: React.MutableRefObject<StoredWidget[]>
@@ -36,8 +40,15 @@ interface UseWidgetSyncParams {
 	setIsLoaded: (loaded: boolean) => void
 }
 
+interface PendingSync {
+	workspace: WidgetWorkspace
+	layout: StoredWidget[]
+}
+
 export function useWidgetSync({
-	isAuthenticated,
+	serverSyncEnabled,
+	activeWorkspace,
+	activeWorkspaceRef,
 	token,
 	setSavedLayout,
 	savedLayoutRef,
@@ -47,6 +58,8 @@ export function useWidgetSync({
 }: UseWidgetSyncParams) {
 	const queryClient = useQueryClient()
 	const syncTimerRef = useRef<NodeJS.Timeout | null>(null)
+	const pendingSyncRef = useRef<PendingSync | null>(null)
+	const inFlightSyncRef = useRef<Promise<void> | null>(null)
 	const hasFetchedServerRef = useRef<boolean>(false)
 	const hasLocalEditRef = useRef<boolean>(false)
 	const lastPersistedSignatureRef = useRef<string | null>(null)
@@ -77,42 +90,65 @@ export function useWidgetSync({
 		}
 	}, [applyRuntimeLayout, setSavedLayout, savedLayoutRef, colsRef, setIsLoaded])
 
+	const sendLayoutToServer = useCallback(
+		({ workspace, layout: currentLayout }: PendingSync) => {
+			const request: Promise<void> = syncUserWidgetsApi({
+				workspace,
+				widgets: currentLayout.map(storedWidgetToApiPayload),
+			})
+				.then((synced) => {
+					if (!synced || synced.length === 0) return
+					const idMap = buildInstanceIdMap(currentLayout, synced)
+					if (idMap.size === 0) return
+					setSavedLayout((prev) => {
+						const updated = applyInstanceIdMap(prev, idMap)
+						savedLayoutRef.current = updated
+						persistLayout(updated)
+						return updated
+					})
+					applyRuntimeLayout((prev) => applyInstanceIdMap(prev, idMap))
+				})
+				.catch(() => {})
+				.finally(() => {
+					if (inFlightSyncRef.current === request)
+						inFlightSyncRef.current = null
+				})
+			inFlightSyncRef.current = request
+			return request
+		},
+		[persistLayout, applyRuntimeLayout, setSavedLayout, savedLayoutRef]
+	)
+
 	const triggerServerSync = useCallback(
 		(currentLayout: StoredWidget[]) => {
-			if (!isAuthenticated) return
+			const workspace = activeWorkspaceRef.current
+			if (!serverSyncEnabled || !workspace || !isServerWorkspace(workspace)) return
 
 			if (syncTimerRef.current) {
 				clearTimeout(syncTimerRef.current)
 			}
 
+			pendingSyncRef.current = { workspace, layout: currentLayout }
 			syncTimerRef.current = setTimeout(() => {
-				syncUserWidgetsApi({
-					workspace: 'HOME',
-					widgets: currentLayout.map(storedWidgetToApiPayload),
-				})
-					.then((synced) => {
-						if (!synced || synced.length === 0) return
-						const idMap = buildInstanceIdMap(currentLayout, synced)
-						if (idMap.size === 0) return
-						setSavedLayout((prev) => {
-							const updated = applyInstanceIdMap(prev, idMap)
-							savedLayoutRef.current = updated
-							persistLayout(updated)
-							return updated
-						})
-						applyRuntimeLayout((prev) => applyInstanceIdMap(prev, idMap))
-					})
-					.catch(() => {})
+				syncTimerRef.current = null
+				const pending = pendingSyncRef.current
+				pendingSyncRef.current = null
+				if (pending) sendLayoutToServer(pending)
 			}, 1000)
 		},
-		[
-			isAuthenticated,
-			persistLayout,
-			applyRuntimeLayout,
-			setSavedLayout,
-			savedLayoutRef,
-		]
+		[serverSyncEnabled, activeWorkspaceRef, sendLayoutToServer]
 	)
+
+	const flushServerSync = useCallback(async () => {
+		if (syncTimerRef.current) {
+			clearTimeout(syncTimerRef.current)
+			syncTimerRef.current = null
+		}
+		const pending = pendingSyncRef.current
+		pendingSyncRef.current = null
+		const inFlight = inFlightSyncRef.current
+		await Promise.all([inFlight, pending ? sendLayoutToServer(pending) : null])
+	}, [sendLayoutToServer])
 
 	const markLocalEdit = useCallback(() => {
 		hasLocalEditRef.current = true
@@ -145,14 +181,24 @@ export function useWidgetSync({
 			clearTimeout(syncTimerRef.current)
 			syncTimerRef.current = null
 		}
+		pendingSyncRef.current = null
 		hasFetchedServerRef.current = false
 		hasLocalEditRef.current = false
 		loadFromLocalStorage()
 	}, [token, loadFromLocalStorage])
 
 	useEffect(() => {
-		if (!isAuthenticated || hasFetchedServerRef.current) return
+		hasLocalEditRef.current = false
+	}, [activeWorkspace])
+
+	useEffect(() => {
+		if (!serverSyncEnabled || hasFetchedServerRef.current) return
 		hasFetchedServerRef.current = true
+		const isStillOnServerWorkspace = () => {
+			if (isServerWorkspace(activeWorkspaceRef.current)) return true
+			hasFetchedServerRef.current = false
+			return false
+		}
 
 		async function fetchAndReconcileWithServer() {
 			try {
@@ -164,6 +210,7 @@ export function useWidgetSync({
 				}
 
 				const serverWidgets = res.widgets || []
+				if (!isStillOnServerWorkspace()) return
 				if (serverWidgets.length > 0) {
 					if (hasLocalEditRef.current) return
 
@@ -188,13 +235,14 @@ export function useWidgetSync({
 					persistLayout(fromSrv)
 				} else {
 					const localLayout = await migrateWidgetLayoutIfNeeded()
+					if (!isStillOnServerWorkspace()) return
 					if (localLayout && localLayout.length > 0) {
 						const synced = await syncUserWidgetsApi({
 							workspace: 'HOME',
 							widgets: localLayout.map(storedWidgetToApiPayload),
 						})
 
-						if (synced && synced.length > 0) {
+						if (synced && synced.length > 0 && isStillOnServerWorkspace()) {
 							setSavedLayout((prev) => {
 								const idMap = buildInstanceIdMap(prev, synced)
 								if (idMap.size === 0) return prev
@@ -213,7 +261,8 @@ export function useWidgetSync({
 
 		fetchAndReconcileWithServer()
 	}, [
-		isAuthenticated,
+		serverSyncEnabled,
+		activeWorkspaceRef,
 		persistLayout,
 		applyRuntimeLayout,
 		setSavedLayout,
@@ -221,5 +270,5 @@ export function useWidgetSync({
 		colsRef,
 	])
 
-	return { persistLayout, triggerServerSync, markLocalEdit }
+	return { persistLayout, triggerServerSync, flushServerSync, markLocalEdit }
 }

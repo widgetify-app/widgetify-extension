@@ -36,6 +36,7 @@ interface UseWidgetOperationsParams {
 	isVipRef: React.MutableRefObject<boolean>
 	selectedInstanceIdRef: React.MutableRefObject<string | null>
 	isAuthenticated: boolean
+	serverSyncEnabled: boolean
 	persistLayout: (layout: StoredWidget[]) => void
 	triggerServerSync: (layout: StoredWidget[]) => void
 	applyRuntimeLayout: ApplyRuntimeLayout
@@ -52,6 +53,7 @@ export function useWidgetOperations({
 	isVipRef,
 	selectedInstanceIdRef,
 	isAuthenticated,
+	serverSyncEnabled,
 	persistLayout,
 	triggerServerSync,
 	applyRuntimeLayout,
@@ -244,7 +246,7 @@ export function useWidgetOperations({
 
 			let finalInstanceId = `${id}-${Date.now().toString(36)}`
 
-			if (isAuthenticated) {
+			if (serverSyncEnabled) {
 				const serverWidget = await createUserWidgetApi({
 					widgetKey: def.id,
 					ui: 'CUSTOM',
@@ -278,7 +280,7 @@ export function useWidgetOperations({
 			})
 
 			if (!result) {
-				if (isAuthenticated && isServerInstanceId(finalInstanceId)) {
+				if (serverSyncEnabled && isServerInstanceId(finalInstanceId)) {
 					deleteUserWidgetApi(finalInstanceId).catch(() => {})
 				}
 				showToast(translateError('NO_SPACE_FOR_WIDGET') as string, 'error')
@@ -288,7 +290,7 @@ export function useWidgetOperations({
 			playNativeToastSound('success')
 			return commitMutation('add', result, finalInstanceId)
 		},
-		[runtimeLayoutRef, colsRef, isVipRef, isAuthenticated, commitMutation]
+		[runtimeLayoutRef, colsRef, isVipRef, serverSyncEnabled, commitMutation]
 	)
 
 	const duplicateWidget = useCallback(
@@ -324,7 +326,7 @@ export function useWidgetOperations({
 
 			let newInstanceId = `${original.id}-${Date.now().toString(36)}`
 
-			if (isAuthenticated) {
+			if (serverSyncEnabled) {
 				const serverWidget = await createUserWidgetApi({
 					widgetKey: def.id,
 					ui: 'CUSTOM',
@@ -359,7 +361,7 @@ export function useWidgetOperations({
 			})
 
 			if (!result) {
-				if (isAuthenticated && isServerInstanceId(newInstanceId)) {
+				if (serverSyncEnabled && isServerInstanceId(newInstanceId)) {
 					deleteUserWidgetApi(newInstanceId).catch(() => {})
 				}
 				showToast(translateError('NO_SPACE_FOR_DUPLICATE') as string, 'error')
@@ -369,7 +371,14 @@ export function useWidgetOperations({
 			playNativeToastSound('success')
 			return commitMutation('duplicate', result, newInstanceId)
 		},
-		[runtimeLayoutRef, colsRef, isVipRef, isAuthenticated, commitMutation]
+		[
+			runtimeLayoutRef,
+			colsRef,
+			isVipRef,
+			isAuthenticated,
+			serverSyncEnabled,
+			commitMutation,
+		]
 	)
 
 	const removeWidget = useCallback(
@@ -388,7 +397,7 @@ export function useWidgetOperations({
 				setSelectedInstanceId(null)
 			}
 
-			if (isAuthenticated && isServerInstanceId(instanceId)) {
+			if (serverSyncEnabled && isServerInstanceId(instanceId)) {
 				deleteUserWidgetApi(instanceId).catch(() => {})
 			}
 
@@ -399,7 +408,7 @@ export function useWidgetOperations({
 			runtimeLayoutRef,
 			colsRef,
 			selectedInstanceIdRef,
-			isAuthenticated,
+			serverSyncEnabled,
 			setSelectedInstanceId,
 			commitMutation,
 		]
@@ -414,43 +423,48 @@ export function useWidgetOperations({
 			})
 			applyRuntimeLayout((prev) => withWidgetMeta(prev, instanceId, meta))
 
-			if (isAuthenticated && isServerInstanceId(instanceId)) {
+			if (serverSyncEnabled && isServerInstanceId(instanceId)) {
 				updateUserWidgetApi(instanceId, { meta }).catch(() => {})
 			}
 		},
-		[isAuthenticated, persistLayout, applyRuntimeLayout, setSavedLayout]
+		[serverSyncEnabled, persistLayout, applyRuntimeLayout, setSavedLayout]
 	)
 
-	const applyPresetLayout = useCallback(
-		async (presetWidgets: StoredWidget[]): Promise<boolean> => {
-			if (!Array.isArray(presetWidgets) || presetWidgets.length === 0) return false
-
-			const sanitized = sanitizeLayout(presetWidgets, DEFAULT_COLS)
+	const replaceLayout = useCallback(
+		(widgets: StoredWidget[], { syncToServer }: { syncToServer: boolean }) => {
+			const sanitized = sanitizeLayout(widgets, DEFAULT_COLS)
 			const reflowed = reflowForColumns(sanitized, colsRef.current)
 
-			markLocalEdit()
 			setSavedLayout(sanitized)
 			savedLayoutRef.current = sanitized
 			setRuntimeLayout(reflowed)
 			persistLayout(sanitized)
 
-			if (isAuthenticated) {
+			if (syncToServer) {
 				triggerServerSync(sanitized)
 			}
-
-			playNativeToastSound('success')
-			return true
 		},
 		[
-			isAuthenticated,
 			persistLayout,
 			triggerServerSync,
 			colsRef,
 			savedLayoutRef,
 			setSavedLayout,
 			setRuntimeLayout,
-			markLocalEdit,
 		]
+	)
+
+	const applyPresetLayout = useCallback(
+		async (presetWidgets: StoredWidget[]): Promise<boolean> => {
+			if (!Array.isArray(presetWidgets) || presetWidgets.length === 0) return false
+
+			markLocalEdit()
+			replaceLayout(presetWidgets, { syncToServer: serverSyncEnabled })
+
+			playNativeToastSound('success')
+			return true
+		},
+		[serverSyncEnabled, replaceLayout, markLocalEdit]
 	)
 
 	return {
@@ -462,6 +476,7 @@ export function useWidgetOperations({
 		duplicateWidget,
 		removeWidget,
 		updateWidgetSettings,
+		replaceLayout,
 		applyPresetLayout,
 	}
 }

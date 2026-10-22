@@ -2,11 +2,19 @@ import { getMainClient, safeAwait } from '@/services/api'
 import type { AxiosError, AxiosResponse } from 'axios'
 import type { ServerWidgetCatalogResponse } from './widget-catalog.hook'
 
+export type WidgetWorkspace =
+	| 'HOME'
+	| 'SLOT_2'
+	| 'SLOT_3'
+	| 'SLOT_4'
+	| 'SLOT_5'
+	| 'SLOT_6'
+
 interface ServerUserWidget {
 	instanceId: string
 	widgetKey: string
 	ui: 'ADVANCED' | 'SIMPLE' | 'CUSTOM'
-	workspace: 'HOME'
+	workspace: WidgetWorkspace
 	col: number
 	row: number
 	width: number
@@ -21,7 +29,7 @@ interface ServerUserWidget {
 interface CreateUserWidgetPayload {
 	widgetKey: string
 	ui?: 'ADVANCED' | 'SIMPLE' | 'CUSTOM'
-	workspace?: 'HOME'
+	workspace?: WidgetWorkspace
 	col?: number
 	row?: number
 	width?: number
@@ -54,7 +62,7 @@ interface SyncWidgetItemPayload {
 }
 
 interface SyncUserWidgetsPayload {
-	workspace?: 'HOME'
+	workspace?: WidgetWorkspace
 	widgets: SyncWidgetItemPayload[]
 }
 
@@ -64,7 +72,7 @@ interface GetUserWidgetsApiResponse {
 }
 
 export async function getUserWidgetsApi(
-	workspace: string = 'HOME'
+	workspace: WidgetWorkspace = 'HOME'
 ): Promise<GetUserWidgetsApiResponse | null> {
 	const client = getMainClient()
 	const [err, response] = await safeAwait<

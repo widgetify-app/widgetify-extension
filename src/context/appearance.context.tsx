@@ -16,6 +16,7 @@ import { showToast } from '@/common/toast'
 import { t } from '@/common/i18n'
 import { translateError } from '@/common/utils/translate-error'
 import { listenEvent } from '@/common/utils/call-event'
+import { isLookSyncedWithAccount } from '@/common/utils/account-look'
 
 enum UI {
 	ADVANCED = 'ADVANCED',
@@ -137,7 +138,7 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 		const currentFont = settings.fontFamily
 		updateSetting('fontFamily', value)
 		Analytics.event(`set_font_${value}`)
-		if (isAuthenticated) {
+		if (isAuthenticated && isLookSyncedWithAccount()) {
 			const [err] = await safeAwait(changeFontAsync({ font: value }))
 			if (err) {
 				updateSetting('fontFamily', currentFont)
