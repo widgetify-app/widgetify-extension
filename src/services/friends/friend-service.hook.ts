@@ -254,3 +254,45 @@ export function useRemoveFriend(
 		...options,
 	})
 }
+
+type FriendRelation = 'self' | 'none' | 'pending-sent' | 'pending-received' | 'friends'
+
+export interface FriendCard {
+	user: { id: string; username: string; name: string; avatar: string }
+	relation: FriendRelation
+	requestId: string | null
+	about: {
+		occupation: string | null
+		interests: { title: string; shared: boolean }[]
+	}
+	mutual: {
+		count: number
+		preview: { username: string; name: string; avatar: string }[]
+	}
+	friend: null | {
+		isPro: boolean
+		status: { activityId: string; content: string; color: string | null } | null
+		city: string | null
+		birthday: { month: number; day: number } | null
+		memberSince: string
+		friendsSince: string | null
+		wallpaper: { id: string; previewUrl: string } | null
+		collectionCount: number
+	}
+}
+
+export function useGetFriendCard(username: string, enabled: boolean) {
+	return useQuery({
+		queryKey: friendsKeys.card(username),
+		enabled,
+		queryFn: async (): Promise<FriendCard> => {
+			const client = getMainClient()
+			const response = await client.get<{ data: FriendCard }>(
+				`/friends/users/${encodeURIComponent(username)}/card`
+			)
+			return response.data.data
+		},
+		retry: 1,
+		staleTime: 60 * 1000,
+	})
+}

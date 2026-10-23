@@ -34,6 +34,10 @@ One folder per product feature. Widgets are features too and live in `widgets/` 
 
 Feature logic is tested where it is pure, in `<feature>/__tests__/`. Rules about where files go are in `architecture.test.ts`.
 
+## Friends: the profile card
+
+Any user shown in the friends sheet (a friend or a request in the list, a friend's status bubble, a person under the reactions) opens a profile card, and so does a row of the pomodoro leaderboard, through `ProfileCardTrigger`, which `friends.tsx` re-exports. It is a `PopoverMenu`, so it rises above the sheet and above a modal. The data is `GET /friends/users/{username}/card` (`useGetFriendCard`, keyed under `['friends']`, so every friend mutation refreshes an open card); the contract and the chosen design are in the workspace's `docs/friends/`. A stranger sees only what introduces the person; a friend, and you on your own card, also see the status, Pro badge, wallpaper banner, friendship length, city, Jalali birthday, member since and collection. Removing a friend is confirmed inside the card, because a modal would count as a click outside the popover. Labels are in `friends/utils/profile-card.ts` (tested).
+
 ## Notifications that open a mini-app
 
 A notification (the navbar card or the home dialog) can open one mini-app. In the panel the item is `type` action, `goTo` `openMiniApp` and `target` the mini-app's `appId`. The click calls `callEvent('openMiniApp', appId)`; `pages/root.tsx` moves to the mini-apps page and hands the id to `MiniAppsLayout` (`focusAppId`), which runs the app in the page, brings its window forward when it already runs in one, and scrolls its card into view. An id that is not shaped like an app id (`mini-apps/utils/focus-app.ts`, letters, digits, `_`, `.` and `-`, at most 100) is ignored, and an id with no app shows the runner's own error. An extension from before this event shows a card that does nothing, so publish such a notification after the release has rolled out.

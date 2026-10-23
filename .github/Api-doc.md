@@ -121,6 +121,7 @@ Source: `src/services/friends`, `src/services/user`
 | `PUT /friends/requests/{id}` | yes | `{ state* }`: `accepted` or `rejected` | `{ data: null, message }` |
 | `DELETE /friends/{id}` | yes | | `{ data: null, message }` |
 | `GET /friends/activities/beta` | yes | | `{ data: { activities, currentUser, attachments: { reactions, templates } } }` |
+| `GET /friends/users/{username}/card` | yes | | `{ data: FriendCard }`: `user`, `relation` (`self`, `none`, `pending-sent`, `pending-received`, `friends`), `requestId`, `about`, `mutual`, and `friend` (null for strangers). See `FriendCard` in `src/services/friends/friend-service.hook.ts` |
 | `GET /friends/activities/beta/{id}/reactions` | yes | | `{ data: { reactions, currentUser, isOwnedActivity } }` |
 | `PUT /friends/activities/beta/{id}/reactions` | yes | `{ reaction* }`: `CRYING`, `HEART_BLUE`, `LIKE`, `DIS_LIKE`, `LAUGH` or `FIRE` | |
 | `PUT /users/@me/activities/beta` | yes | `{ content*, time*: number }` | |

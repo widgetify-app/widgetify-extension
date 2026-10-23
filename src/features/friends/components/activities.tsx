@@ -6,6 +6,7 @@ import { t } from '@/common/i18n'
 import { ActivityCard } from './activity-card/activity-card'
 import { ManageActivityModal } from './activity-card/manage-activity-modal'
 import { EmptyActivityCard } from './activity-card/empty-activity-card'
+import { ProfileCardTrigger } from './profile-card/profile-card-trigger'
 
 export const ActiveFriendsHorizontal = () => {
 	const { user } = useAuth()
@@ -59,18 +60,30 @@ export const ActiveFriendsHorizontal = () => {
 					))}
 
 				{activitiesData?.activities?.map((activity, index) => {
-					return (
+					const card = (
 						<ActivityCard
+							key={activity.activityId}
 							index={index}
 							id={activity.activityId}
 							isSelf={false}
-							key={`activity-avatar-${index}`}
 							avatar={activity.avatar || ''}
 							name={activity.name}
 							activity={activity.content.trim()}
 							color={activity.color}
 							reactions={activitiesData.attachments?.reactions || []}
 						/>
+					)
+
+					return activity.username ? (
+						<ProfileCardTrigger
+							key={`activity-avatar-${index}`}
+							username={activity.username}
+							name={activity.name}
+						>
+							{card}
+						</ProfileCardTrigger>
+					) : (
+						<div key={`activity-avatar-${index}`}>{card}</div>
 					)
 				})}
 			</ScrollRow>

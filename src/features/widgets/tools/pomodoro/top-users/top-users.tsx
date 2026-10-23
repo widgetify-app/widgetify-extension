@@ -10,7 +10,6 @@ interface TopUsersTabProps {
 }
 export const TopUsersTab: React.FC<TopUsersTabProps> = ({ type }) => {
 	const { data, isLoading, error, refetch } = useGetTopUsers(type)
-	const [activeProfileId, setActiveProfileId] = useState<string | null>(null)
 
 	if (isLoading) {
 		return (
@@ -49,8 +48,6 @@ export const TopUsersTab: React.FC<TopUsersTabProps> = ({ type }) => {
 					user={user}
 					rank={user.rank || index + 1}
 					key={user.avatar}
-					activeProfileId={activeProfileId}
-					setActiveProfileId={setActiveProfileId}
 				/>
 			))}
 		</div>
