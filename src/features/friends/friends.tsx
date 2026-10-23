@@ -7,6 +7,7 @@ import { RemoveFriendButton } from './components/remove-button'
 import { FriendsList } from './components/friends-list'
 import { t } from '@/common/i18n'
 import { ConfirmationModal } from '@/components/ui'
+import { HiddenModeSetting } from './components/hidden-mode-setting'
 
 export { FriendsActions } from './components/friends-actions'
 export { FriendsDirectView } from './components/friends-direct-view'
@@ -42,6 +43,7 @@ export const FriendsLayout = () => {
 
 	return (
 		<>
+			<HiddenModeSetting />
 			<FriendsList
 				status="ACCEPTED"
 				renderFriendActions={renderFriendActions}

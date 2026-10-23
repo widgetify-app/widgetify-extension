@@ -21,6 +21,7 @@ export interface StorageKV {
 	appearance: Record<string, any>
 	bookmarks: Bookmark[]
 	deletedBookmarkIds: string[]
+	friendSuggestionsDismissed: string[]
 	showWelcomeModal: boolean
 	hasSeenTour: boolean
 	[key: `currency:${string}`]: FetchedCurrency

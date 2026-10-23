@@ -15,13 +15,10 @@ import { useAuth } from '@/context/auth.context'
 import { ActiveFriendsHorizontal } from './activities'
 import { AddFriendBottomSheet } from './add-friend-bottom-sheet'
 import { FriendRequestsButton } from './friend-requests-button'
+import { FriendSuggestions } from './friend-suggestions'
+import { ProfileCardTrigger } from './profile-card/profile-card-trigger'
 
-interface FriendsDirectViewProps {
-	onSelectFriend?: (friend: Friend) => void
-	onOpenAddFriend?: () => void
-}
-
-export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
+export function FriendsDirectView() {
 	const { user } = useAuth()
 	const [selectedUserToDelete, setSelectedUserToDelete] = useState<Friend | null>(null)
 	const [isAddFriendOpen, setIsAddFriendOpen] = useState(false)
@@ -73,6 +70,8 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 			>
 				<ActiveFriendsHorizontal />
 			</section>
+
+			<FriendSuggestions />
 
 			<div className="flex items-center justify-between px-2 pt-2.5 pb-1.5 shrink-0">
 				<div className="flex items-center gap-1.5">
@@ -141,10 +140,10 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 								key={`friend-direct-${friend.id}`}
 								className="group flex items-center justify-between p-2 transition-colors duration-150 rounded-xl hover:bg-fill-2 border border-transparent hover:border-line"
 							>
-								<button
-									type="button"
-									onClick={() => onSelectFriend?.(friend)}
-									className="flex items-center gap-2.5 min-w-0 flex-1 text-start cursor-pointer rounded-lg focus-visible:focus-ring"
+								<ProfileCardTrigger
+									username={friend.user.username}
+									name={friend.user.name}
+									className="flex items-center gap-2.5 min-w-0 flex-1 rounded-lg"
 								>
 									<div className="relative shrink-0">
 										<div className="w-8 h-8 overflow-hidden rounded-full ring-1 ring-line">
@@ -165,7 +164,7 @@ export function FriendsDirectView({ onSelectFriend }: FriendsDirectViewProps) {
 											<span dir="ltr">@{friend.user.username}</span>
 										</div>
 									</div>
-								</button>
+								</ProfileCardTrigger>
 
 								<div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity">
 									<button

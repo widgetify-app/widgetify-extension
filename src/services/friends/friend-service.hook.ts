@@ -296,3 +296,58 @@ export function useGetFriendCard(username: string, enabled: boolean) {
 		staleTime: 60 * 1000,
 	})
 }
+
+export interface FriendSuggestion {
+	user: { id: string; username: string; name: string; avatar: string }
+	reasons: { mutualCount: number; sharedInterests: string[]; city: string | null }
+}
+
+export function useGetFriendSuggestions(enabled: boolean) {
+	return useQuery({
+		queryKey: friendsKeys.suggestions,
+		enabled,
+		queryFn: async (): Promise<FriendSuggestion[]> => {
+			const client = getMainClient()
+			const response = await client.get<{
+				data: { suggestions: FriendSuggestion[] }
+			}>('/friends/suggestions')
+			return response.data.data.suggestions
+		},
+		retry: 1,
+		staleTime: 5 * 60 * 1000,
+	})
+}
+
+interface FriendPrivacy {
+	hiddenFromSuggestions: boolean
+}
+
+export function useGetFriendPrivacy() {
+	return useQuery({
+		queryKey: friendsKeys.privacy,
+		queryFn: async (): Promise<FriendPrivacy> => {
+			const client = getMainClient()
+			const response = await client.get<{ data: FriendPrivacy }>('/friends/privacy')
+			return response.data.data
+		},
+		retry: 1,
+	})
+}
+
+export function useUpdateFriendPrivacy() {
+	const queryClient = useQueryClient()
+
+	return useMutation({
+		mutationFn: async (input: FriendPrivacy): Promise<FriendPrivacy> => {
+			const client = getMainClient()
+			const response = await client.put<{ data: FriendPrivacy }>(
+				'/friends/privacy',
+				input
+			)
+			return response.data.data
+		},
+		onSuccess: (data) => {
+			queryClient.setQueryData(friendsKeys.privacy, data)
+		},
+	})
+}

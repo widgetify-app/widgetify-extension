@@ -84,4 +84,17 @@ export const friends = {
 	'friends.card.editProfile': 'ویرایش پروفایل',
 	'friends.card.loadFailed': 'نتونستیم کارت رو بیاریم',
 	'friends.card.retry': 'دوباره امتحان کن',
+	'friends.suggestions.title': 'شاید بشناسیشون',
+	'friends.suggestions.firstReward': 'اولین درخواستت سکه داره 🪙',
+	'friends.suggestions.mutual': '{count} دوست مشترک',
+	'friends.suggestions.interest': 'علاقه‌ی مشترک: {title}',
+	'friends.suggestions.city': 'هم‌شهری: {city}',
+	'friends.suggestions.add': 'افزودن',
+	'friends.suggestions.dismiss': 'نه',
+	'friends.suggestions.dismissAria': '{name} دیگه پیشنهاد نشه',
+	'friends.suggestions.sent': 'درخواستت برای {name} رفت',
+	'friends.privacy.hiddenTitle': 'حالت مخفی',
+	'friends.privacy.hiddenHint':
+		'توی پیشنهادهای دوستی نشون داده نمیشی؛ فقط کسی که نام کاربریت رو داره می‌تونه بهت درخواست بده',
+	'friends.privacy.saveFailed': 'نتونستیم تنظیم رو ذخیره کنیم، دوباره امتحان کن',
 } as const
