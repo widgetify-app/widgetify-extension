@@ -143,3 +143,7 @@ export const BUNDLED_OPTIONS: Record<AppearanceItemType, StoreItem[]> = {
 	],
 	BROWSER_TITLE: [DEFAULT_BROWSER_TITLE],
 }
+
+export function bundledItemName(type: 'THEME' | 'FONT', value: string): string | null {
+	return BUNDLED_OPTIONS[type].find((item) => item.value === value)?.name ?? null
+}

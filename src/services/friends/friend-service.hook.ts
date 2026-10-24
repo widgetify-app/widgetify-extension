@@ -5,6 +5,7 @@ import {
 	useQuery,
 	useQueryClient,
 } from '@tanstack/react-query'
+import type { MoodType } from '@/services/mood-log/upsert-mood-log.hook'
 import { getMainClient } from '../api'
 import { friendsKeys } from '@/services/friends/friends.keys'
 import { userKeys } from '@/services/user/user.keys'
@@ -23,6 +24,9 @@ interface FriendUser {
 	avatar: string
 	username: string
 	userId: string
+	isBirthdayToday?: boolean
+	isPro?: boolean
+	mood?: MoodType | null
 	extras?: {
 		activity?: string // a short text (like discord, instagram), example: "Hello World" | "good day!"..
 		selectedWallpaper?: string
@@ -252,5 +256,139 @@ export function useRemoveFriend(
 			queryClient.invalidateQueries({ queryKey: friendsKeys.all })
 		},
 		...options,
+	})
+}
+
+type FriendRelation = 'self' | 'none' | 'pending-sent' | 'pending-received' | 'friends'
+
+export interface FriendLookItem {
+	value: string
+	name: string | null
+	itemId: string | null
+	price: number
+	owned: boolean
+}
+
+export interface FriendCard {
+	user: { id: string; username: string; name: string; avatar: string }
+	relation: FriendRelation
+	requestId: string | null
+	about: {
+		occupation: string | null
+		interests: { title: string; shared: boolean }[]
+	}
+	mutual: {
+		count: number
+		preview: { username: string; name: string; avatar: string }[]
+	}
+	friend: null | {
+		isPro: boolean
+		status: { activityId: string; content: string; color: string | null } | null
+		mood: MoodType | null
+		city: string | null
+		birthday: { month: number; day: number } | null
+		memberSince: string
+		friendsSince: string | null
+		wallpaper: {
+			id: string
+			name: string
+			previewUrl: string
+			type: 'IMAGE' | 'VIDEO'
+			price: number
+			owned: boolean
+		} | null
+		theme: FriendLookItem | null
+		font: FriendLookItem | null
+	}
+}
+
+function friendCardQuery(username: string) {
+	return {
+		queryKey: friendsKeys.card(username),
+		queryFn: async (): Promise<FriendCard> => {
+			const client = getMainClient()
+			const response = await client.get<{ data: FriendCard }>(
+				`/friends/users/${encodeURIComponent(username)}/card`
+			)
+			return response.data.data
+		},
+		retry: 1,
+		staleTime: 60 * 1000,
+	}
+}
+
+export function useGetFriendCard(username: string, enabled: boolean) {
+	return useQuery({ ...friendCardQuery(username), enabled })
+}
+
+export function usePrefetchFriendCard() {
+	const queryClient = useQueryClient()
+	return (username: string) => queryClient.prefetchQuery(friendCardQuery(username))
+}
+
+export interface FriendSuggestion {
+	user: { id: string; username: string; name: string; avatar: string }
+	reasons: { mutualCount: number; sharedInterests: string[]; city: string | null }
+}
+
+export function useGetFriendSuggestions(enabled: boolean) {
+	return useQuery({
+		queryKey: friendsKeys.suggestions,
+		enabled,
+		queryFn: async (): Promise<FriendSuggestion[]> => {
+			const client = getMainClient()
+			const response = await client.get<{
+				data: { suggestions: FriendSuggestion[] }
+			}>('/friends/suggestions')
+			return response.data.data.suggestions
+		},
+		retry: 1,
+		staleTime: 5 * 60 * 1000,
+	})
+}
+
+interface FriendPrivacy {
+	hiddenFromSuggestions: boolean
+}
+
+export function useGetFriendPrivacy(enabled: boolean) {
+	return useQuery({
+		queryKey: friendsKeys.privacy,
+		enabled,
+		queryFn: async (): Promise<FriendPrivacy> => {
+			const client = getMainClient()
+			const response = await client.get<{ data: FriendPrivacy }>('/friends/privacy')
+			return response.data.data
+		},
+		retry: 1,
+	})
+}
+
+export function useUpdateFriendPrivacy() {
+	const queryClient = useQueryClient()
+
+	return useMutation({
+		mutationFn: async (input: FriendPrivacy): Promise<FriendPrivacy> => {
+			const client = getMainClient()
+			const response = await client.put<{ data: FriendPrivacy }>(
+				'/friends/privacy',
+				input
+			)
+			return response.data.data
+		},
+		onSuccess: (data) => {
+			queryClient.setQueryData(friendsKeys.privacy, data)
+		},
+	})
+}
+
+export function useCongratulateFriend() {
+	return useMutation({
+		mutationFn: async (username: string) => {
+			const client = getMainClient()
+			await client.post(
+				`/friends/users/${encodeURIComponent(username)}/congratulate`
+			)
+		},
 	})
 }

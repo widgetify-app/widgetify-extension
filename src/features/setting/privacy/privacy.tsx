@@ -4,6 +4,7 @@ import Analytics from '@/analytics'
 import { ToggleSwitch } from '@/components/ui'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { SearchAutocompleteSwitch } from './components/search-autocomplete-switch'
+import { HiddenModeSwitch } from './components/hidden-mode-switch'
 import { getFaviconConsent, setFaviconConsent } from '@/common/storage'
 
 export function PrivacySettings() {
@@ -107,6 +108,7 @@ export function PrivacySettings() {
 				</div>
 			</div>
 			<SearchAutocompleteSwitch />
+			<HiddenModeSwitch />
 		</div>
 	)
 }

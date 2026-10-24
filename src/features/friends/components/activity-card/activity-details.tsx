@@ -1,4 +1,5 @@
 import { t } from '@/common/i18n'
+import { ProfileCardTrigger } from '../profile-card/profile-card-trigger'
 import { showToast } from '@/common/toast'
 import { AvatarComponent, Button } from '@/components/ui'
 import { Icon } from '@/icons'
@@ -69,22 +70,19 @@ export function ActivityDetails({
 								key={`${reactor.username}-${index}`}
 								className="flex items-center gap-2 px-2 py-1.5 rounded-xl bg-fill"
 							>
-								<AvatarComponent
-									url={reactor.avatar}
-									placeholder={reactor.name}
-									size="xs"
-								/>
-								<div className="flex-1 min-w-0">
-									<p className="text-xs font-medium truncate text-fg">
-										{reactor.name}
-									</p>
-									<p
-										className="truncate text-3xs text-fg-faint"
-										dir="ltr"
+								{reactor.username ? (
+									<ProfileCardTrigger
+										username={reactor.username}
+										name={reactor.name}
+										className="flex items-center flex-1 min-w-0 gap-2"
 									>
-										@{reactor.username}
-									</p>
-								</div>
+										<ReactorIdentity reactor={reactor} />
+									</ProfileCardTrigger>
+								) : (
+									<div className="flex items-center flex-1 min-w-0 gap-2">
+										<ReactorIdentity reactor={reactor} />
+									</div>
+								)}
 								<span className="grid text-sm rounded-full size-6 place-items-center bg-brand-fill">
 									{RenderReactionContent(
 										GetContentFromReactions(
@@ -117,5 +115,23 @@ export function ActivityDetails({
 				{t('friends.activity.delete')}
 			</Button>
 		</div>
+	)
+}
+
+function ReactorIdentity({
+	reactor,
+}: {
+	reactor: { avatar: string | null; name: string; username: string | null }
+}) {
+	return (
+		<>
+			<AvatarComponent url={reactor.avatar} placeholder={reactor.name} size="xs" />
+			<div className="flex-1 min-w-0">
+				<p className="text-xs font-medium truncate text-fg">{reactor.name}</p>
+				<p className="truncate text-3xs text-fg-faint" dir="ltr">
+					@{reactor.username}
+				</p>
+			</div>
+		</>
 	)
 }

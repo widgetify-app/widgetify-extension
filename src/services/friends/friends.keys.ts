@@ -5,4 +5,7 @@ export const friendsKeys = {
 		['friends', status, limit, 'no-cache'] as const,
 	activities: ['friends-activities'] as const,
 	activityReactions: (id: string) => ['activity-reactions', id] as const,
+	card: (username: string) => ['friends', 'card', username] as const,
+	suggestions: ['friends', 'suggestions'] as const,
+	privacy: ['friends', 'privacy'] as const,
 }

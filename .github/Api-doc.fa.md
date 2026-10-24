@@ -121,6 +121,11 @@
 | `PUT /friends/requests/{id}` | بله | `{ state* }`: `accepted` یا `rejected` | `{ data: null, message }` |
 | `DELETE /friends/{id}` | بله | | `{ data: null, message }` |
 | `GET /friends/activities/beta` | بله | | `{ data: { activities, currentUser, attachments: { reactions, templates } } }` |
+| `GET /friends/users/{username}/card` | بله | | `{ data: FriendCard }`: `user`، `relation` (`self`، `none`، `pending-sent`، `pending-received`، `friends`)، `requestId`، `about`، `mutual` و `friend` (برای غریبه null). نوع `FriendCard` در `src/services/friends/friend-service.hook.ts` |
+| `POST /friends/users/{username}/congratulate` | بله | | `{ data: null, message }`؛ 403 `NOT_FRIENDS`، 409 `NOT_BIRTHDAY_TODAY` یا `ALREADY_CONGRATULATED` |
+| `GET /friends/suggestions` | بله | | `{ data: { suggestions } }`، حداکثر ۱۰ تا؛ هر کدوم `{ user, reasons: { mutualCount, sharedInterests, city } }` |
+| `GET /friends/privacy` | بله | | `{ data: { hiddenFromSuggestions } }` |
+| `PUT /friends/privacy` | بله | `{ hiddenFromSuggestions* }` | `{ data: { hiddenFromSuggestions } }` |
 | `GET /friends/activities/beta/{id}/reactions` | بله | | `{ data: { reactions, currentUser, isOwnedActivity } }` |
 | `PUT /friends/activities/beta/{id}/reactions` | بله | `{ reaction* }`: `CRYING`، `HEART_BLUE`، `LIKE`، `DIS_LIKE`، `LAUGH` یا `FIRE` | |
 | `PUT /users/@me/activities/beta` | بله | `{ content*, time*: number }` | |

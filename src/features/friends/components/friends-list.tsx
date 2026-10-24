@@ -1,4 +1,7 @@
 import { cn } from '@/common/utils/cn'
+import { ProfileCardTrigger } from './profile-card/profile-card-trigger'
+import { BirthdayBadge } from './congratulate-button'
+import { MoodBadge } from './mood-badge'
 import { AvatarComponent } from '@/components/ui'
 import { type Friend, useGetFriends } from '@/services/friends/friend-service.hook'
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll'
@@ -84,7 +87,11 @@ export const FriendsList = ({
 					key={`f-${friend.id}`}
 					className="flex items-center justify-between p-3 transition-ui duration-200 border rounded-2xl border-surface-3 hover:shadow-sm"
 				>
-					<div className="flex items-center flex-1 min-w-0 gap-1.5">
+					<ProfileCardTrigger
+						username={friend.user.username}
+						name={friend.user.name}
+						className="flex items-center flex-1 min-w-0 gap-1.5"
+					>
 						<div className="relative shrink-0">
 							<div className="w-8 h-8 overflow-hidden rounded-full ring-2 ring-surface-3">
 								<AvatarComponent
@@ -94,6 +101,10 @@ export const FriendsList = ({
 									className="object-cover w-full h-full"
 								/>
 							</div>
+							{friend.user.mood && (
+								<MoodBadge mood={friend.user.mood} size="sm" />
+							)}
+							{friend.user.isBirthdayToday && <BirthdayBadge />}
 						</div>
 
 						<div className="flex-1 min-w-0">
@@ -104,7 +115,7 @@ export const FriendsList = ({
 								<span dir="ltr">@{friend.user.username}</span>
 							</div>
 						</div>
-					</div>
+					</ProfileCardTrigger>
 
 					<div className="flex items-center gap-2 shrink-0">
 						{renderFriendActions(friend)}

@@ -1,5 +1,7 @@
+import { t } from '@/common/i18n'
 import { AvatarComponent } from '@/components/ui'
 import type { AttachmentReaction } from '@/services/friends/friend-service.hook'
+import { ProfileCardTrigger } from '../profile-card/profile-card-trigger'
 import { ActivityBubble } from './activity-bubble'
 import { ActivityReactionSelector } from './activity-reaction-selector'
 
@@ -13,6 +15,9 @@ interface ActivityCardProps {
 	isSelf: boolean
 	reactions: AttachmentReaction[]
 	index: number
+	caption?: string
+	isNew?: boolean
+	username?: string
 }
 
 export const ActivityCard = ({
@@ -25,51 +30,70 @@ export const ActivityCard = ({
 	onClick,
 	isSelf,
 	reactions,
+	caption,
+	isNew = false,
+	username,
 }: ActivityCardProps) => {
+	const identity = (
+		<>
+			<div className="rounded-full ring-2 ring-surface-3">
+				<AvatarComponent
+					url={avatar}
+					placeholder={name}
+					size="sm"
+					className="object-cover w-16 h-16 rounded-full"
+				/>
+			</div>
+			<p className="flex items-center justify-center w-full gap-1 px-1 mt-2 text-xs font-medium text-center text-fg">
+				{isNew && (
+					<span
+						role="img"
+						aria-label={t('friends.activity.new')}
+						className="rounded-full size-1.5 shrink-0 bg-brand"
+					/>
+				)}
+				<span className="truncate">{name}</span>
+			</p>
+		</>
+	)
+
 	const content = (
 		<>
-			<div className="relative flex flex-col items-center">
-				<ActivityBubble
-					color={color}
-					isInteractive={Boolean(onClick)}
-					badge={
-						isSelf ? null : (
-							<ActivityReactionSelector
-								reactions={reactions}
-								activityId={id}
-								index={index}
-							/>
-						)
-					}
-				>
-					<p
-						className="line-clamp-3 wrap-break-word text-shadow-2xs"
-						dir="auto"
-					>
-						{activity}
-					</p>
-				</ActivityBubble>
-
-				<div className="-mt-3">
-					<div
-						className={`
-							rounded-full transition-ui ring-2 ring-surface-3
-							${onClick ? '' : ''}
-						`}
-					>
-						<AvatarComponent
-							url={avatar}
-							placeholder={name}
-							size="sm"
-							className="object-cover w-16 h-16 rounded-full"
+			<ActivityBubble
+				color={color}
+				isInteractive={Boolean(onClick)}
+				badge={
+					isSelf ? null : (
+						<ActivityReactionSelector
+							reactions={reactions}
+							activityId={id}
+							index={index}
 						/>
-					</div>
-				</div>
-			</div>
+					)
+				}
+			>
+				<p className="line-clamp-3 wrap-break-word text-shadow-2xs" dir="auto">
+					{activity}
+				</p>
+			</ActivityBubble>
 
-			<p className="w-full px-1 mt-2 text-xs font-medium text-center truncate text-fg">
-				{name}
-			</p>
+			{username ? (
+				<ProfileCardTrigger
+					username={username}
+					name={name}
+					className="flex flex-col items-center w-full -mt-3"
+				>
+					{identity}
+				</ProfileCardTrigger>
+			) : (
+				<div className="flex flex-col items-center w-full -mt-3">{identity}</div>
+			)}
+
+			{caption && (
+				<p className="w-full px-1 text-center truncate text-3xs text-fg-faint">
+					{caption}
+				</p>
+			)}
 		</>
 	)
 

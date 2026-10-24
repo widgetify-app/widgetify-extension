@@ -19,7 +19,6 @@ const COMMENT_BASELINE: Record<string, number> = {
 	'src/features/explorer/components/explorer-popover-menu.tsx': 2,
 	'src/features/explorer/components/promo-modal.tsx': 1,
 	'src/features/friends/components/activity-card/empty-activity-card.tsx': 2,
-	'src/features/friends/components/add-friend-bottom-sheet.tsx': 1,
 	'src/features/mini-apps/components/mini-app-runner.tsx': 2,
 	'src/features/setting/about-us/about-us.tsx': 1,
 	'src/features/setting/shortcuts/shortcuts.tsx': 1,

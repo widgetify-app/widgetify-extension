@@ -1,19 +1,46 @@
-import { useState } from 'react'
+import { type ReactNode, useEffect, useState } from 'react'
+import { getFromStorage, setToStorage } from '@/common/storage'
 import { ScrollRow } from '@/components/ui'
-import { useGetActivities } from '@/services/friends/friend-service.hook'
+import {
+	useGetActivities,
+	useGetActivityReactions,
+} from '@/services/friends/friend-service.hook'
 import { useAuth } from '@/context/auth.context'
 import { t } from '@/common/i18n'
 import { ActivityCard } from './activity-card/activity-card'
 import { ManageActivityModal } from './activity-card/manage-activity-modal'
 import { EmptyActivityCard } from './activity-card/empty-activity-card'
+import { reactionCaption, rememberSeen, unseenIds } from '../utils/activity-seen'
 
-export const ActiveFriendsHorizontal = () => {
+export const ActiveFriendsHorizontal = ({ trailing }: { trailing?: ReactNode }) => {
 	const { user } = useAuth()
 	const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
 
 	const { data: activitiesData, isLoading } = useGetActivities()
 
 	const currentUserActivity = activitiesData?.currentUser
+	const ownReactionCount = currentUserActivity?.reactionCount ?? 0
+	const newIds = useNewActivityIds(
+		activitiesData?.activities?.map((activity) => activity.activityId)
+	)
+
+	const { data: ownReactions } = useGetActivityReactions(
+		currentUserActivity?.activityId ?? '',
+		ownReactionCount > 0
+	)
+
+	const caption = reactionCaption(ownReactionCount, ownReactions?.reactions[0]?.name)
+	const ownCaption =
+		caption?.kind === 'count'
+			? t('friends.activity.reactionCount', { count: caption.count })
+			: caption?.kind === 'one'
+				? t('friends.activity.reactedOne', { name: caption.name })
+				: caption?.kind === 'many'
+					? t('friends.activity.reactedMany', {
+							name: caption.name,
+							others: caption.others,
+						})
+					: undefined
 
 	if (isLoading) {
 		return (
@@ -49,6 +76,7 @@ export const ActiveFriendsHorizontal = () => {
 							isSelf
 							id={currentUserActivity.activityId}
 							index={5}
+							caption={ownCaption}
 						/>
 					) : (
 						<EmptyActivityCard
@@ -58,21 +86,23 @@ export const ActiveFriendsHorizontal = () => {
 						/>
 					))}
 
-				{activitiesData?.activities?.map((activity, index) => {
-					return (
-						<ActivityCard
-							index={index}
-							id={activity.activityId}
-							isSelf={false}
-							key={`activity-avatar-${index}`}
-							avatar={activity.avatar || ''}
-							name={activity.name}
-							activity={activity.content.trim()}
-							color={activity.color}
-							reactions={activitiesData.attachments?.reactions || []}
-						/>
-					)
-				})}
+				{activitiesData?.activities?.map((activity, index) => (
+					<ActivityCard
+						key={activity.activityId}
+						index={index}
+						id={activity.activityId}
+						isSelf={false}
+						avatar={activity.avatar || ''}
+						name={activity.name}
+						activity={activity.content.trim()}
+						color={activity.color}
+						reactions={activitiesData.attachments?.reactions || []}
+						isNew={newIds.includes(activity.activityId)}
+						username={activity.username ?? undefined}
+					/>
+				))}
+
+				{trailing}
 			</ScrollRow>
 
 			{user && (
@@ -95,4 +125,20 @@ export const ActiveFriendsHorizontal = () => {
 			)}
 		</div>
 	)
+}
+
+function useNewActivityIds(currentIds: string[] | undefined) {
+	const [newIds, setNewIds] = useState<string[]>([])
+	const key = currentIds?.join(',')
+
+	useEffect(() => {
+		if (!currentIds?.length) return
+
+		getFromStorage('seenFriendActivities').then((seen) => {
+			setNewIds(unseenIds(currentIds, seen ?? []))
+			setToStorage('seenFriendActivities', rememberSeen(seen ?? [], currentIds))
+		})
+	}, [key])
+
+	return newIds
 }

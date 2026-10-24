@@ -10,12 +10,13 @@ import { scopeThemeCss } from '../../utils/theme-css'
 
 const BUNDLED_THEMES: string[] = Object.values(Theme)
 
-export function ThemePreview({ theme }: { theme: string }) {
+export function ThemePreview({ theme, backdrop }: { theme: string; backdrop?: string }) {
 	const { selectedBackground, currentStoredWallpaper } = useWallpaperContext()
 	const isRemote = !BUNDLED_THEMES.includes(theme)
 	const { data: css } = useGetThemeStylesheet(theme, isRemote)
 	const scopedCss = useMemo(() => (css ? scopeThemeCss(css, theme) : ''), [css, theme])
-	const backdrop = wallpaperBackdrop(selectedBackground, currentStoredWallpaper)
+	const image =
+		backdrop ?? wallpaperBackdrop(selectedBackground, currentStoredWallpaper)
 
 	if (isRemote && !scopedCss) {
 		return (
@@ -33,7 +34,7 @@ export function ThemePreview({ theme }: { theme: string }) {
 			data-theme={theme}
 			aria-hidden="true"
 			className="absolute inset-0 block overflow-hidden bg-center bg-cover theme-scope @container bg-surface-2"
-			style={backdrop ? { backgroundImage: `url("${backdrop}")` } : undefined}
+			style={image ? { backgroundImage: `url("${image}")` } : undefined}
 		>
 			{scopedCss && <style>{scopedCss}</style>}
 			<span className="absolute flex items-center justify-between top-[7%] inset-x-[5%] h-[11%] px-[3%] rounded-full bg-surface backdrop-glass shadow-sm">
