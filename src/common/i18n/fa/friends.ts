@@ -119,9 +119,6 @@ export const friends = {
 	'friends.privacy.hiddenTitle': 'حالت مخفی',
 	'friends.privacy.hiddenHint':
 		'توی پیشنهادهای دوستی نشون داده نمیشی؛ فقط کسی که نام کاربریت رو داره می‌تونه بهت درخواست بده',
-	'friends.activity.reactedOne': '{name} واکنش داد',
-	'friends.activity.reactedMany': '{name} و {others} نفر دیگه واکنش دادن',
-	'friends.activity.reactionCount': '{count} واکنش',
 	'friends.activity.new': 'تازه',
 	'friends.birthday.badge': 'امروز تولدشه',
 	'friends.birthday.congratulate': 'تبریک',

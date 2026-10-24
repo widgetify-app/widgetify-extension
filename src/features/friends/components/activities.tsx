@@ -55,7 +55,6 @@ export const ActiveFriendsHorizontal = ({ trailing }: { trailing?: ReactNode }) 
 							isSelf
 							id={currentUserActivity.activityId}
 							index={5}
-							caption={''}
 						/>
 					) : (
 						<EmptyActivityCard

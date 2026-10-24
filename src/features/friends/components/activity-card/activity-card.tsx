@@ -15,7 +15,6 @@ interface ActivityCardProps {
 	isSelf: boolean
 	reactions: AttachmentReaction[]
 	index: number
-	caption?: string
 	isNew?: boolean
 	username?: string
 }
@@ -30,7 +29,6 @@ export const ActivityCard = ({
 	onClick,
 	isSelf,
 	reactions,
-	caption,
 	isNew = false,
 	username,
 }: ActivityCardProps) => {
@@ -87,12 +85,6 @@ export const ActivityCard = ({
 				</ProfileCardTrigger>
 			) : (
 				<div className="flex flex-col items-center w-full -mt-3">{identity}</div>
-			)}
-
-			{caption && (
-				<p className="w-full px-1 text-center truncate text-3xs text-fg-faint">
-					{caption}
-				</p>
 			)}
 		</>
 	)
