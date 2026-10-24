@@ -1,3 +1,4 @@
+import { t } from '@/common/i18n'
 import { AvatarComponent } from '@/components/ui'
 import type { AttachmentReaction } from '@/services/friends/friend-service.hook'
 import { ActivityBubble } from './activity-bubble'
@@ -13,6 +14,8 @@ interface ActivityCardProps {
 	isSelf: boolean
 	reactions: AttachmentReaction[]
 	index: number
+	caption?: string
+	isNew?: boolean
 }
 
 export const ActivityCard = ({
@@ -25,6 +28,8 @@ export const ActivityCard = ({
 	onClick,
 	isSelf,
 	reactions,
+	caption,
+	isNew = false,
 }: ActivityCardProps) => {
 	const content = (
 		<>
@@ -67,9 +72,21 @@ export const ActivityCard = ({
 				</div>
 			</div>
 
-			<p className="w-full px-1 mt-2 text-xs font-medium text-center truncate text-fg">
-				{name}
+			<p className="flex items-center justify-center w-full gap-1 px-1 mt-2 text-xs font-medium text-center text-fg">
+				{isNew && (
+					<span
+						role="img"
+						aria-label={t('friends.activity.new')}
+						className="rounded-full size-1.5 shrink-0 bg-brand"
+					/>
+				)}
+				<span className="truncate">{name}</span>
 			</p>
+			{caption && (
+				<p className="w-full px-1 text-center truncate text-3xs text-fg-faint">
+					{caption}
+				</p>
+			)}
 		</>
 	)
 

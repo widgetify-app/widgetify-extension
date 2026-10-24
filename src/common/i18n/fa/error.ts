@@ -36,6 +36,8 @@ export const error = {
 	'error.failedToRemoveFriend': 'نتونستیم این دوست رو حذف کنیم',
 	'error.friendRequestSent': 'درخواست دوستی فرستاده شد',
 	'error.friendRequestNotFound': 'این درخواست دوستی رو پیدا نکردیم',
+	'error.alreadyCongratulated': 'امروز بهش تبریک گفتی',
+	'error.notBirthdayToday': 'امروز تولدش نیست',
 	'error.setUsernameFirst': 'اول نام کاربریت رو تنظیم کن',
 	'error.sourceAndTargetLangMustBeDifferent': 'زبان مبدأ و مقصد نمیتونن یکسان باشن',
 	'error.targetLangCannotBeAuto': 'زبان مقصد نمیتونه تشخیص خودکار باشه',

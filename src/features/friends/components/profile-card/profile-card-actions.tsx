@@ -13,6 +13,8 @@ import {
 	useSendFriendRequest,
 } from '@/services/friends/friend-service.hook'
 import { friendsKeys } from '@/services/friends/friends.keys'
+import { birthdayParts } from '../../utils/profile-card'
+import { CongratulateButton } from '../congratulate-button'
 
 function showError(error: unknown) {
 	const message = translateError(error)
@@ -132,11 +134,19 @@ export function ProfileCardActions({ card }: { card: FriendCard }) {
 		)
 	}
 
+	const isBirthday = card.friend?.birthday
+		? birthdayParts(card.friend.birthday, new Date()).isToday
+		: false
+
 	return (
 		<div className="flex items-center justify-between gap-2">
-			<span className="text-xs font-semibold text-brand">
-				✓ {t('friends.card.friends')}
-			</span>
+			{isBirthday ? (
+				<CongratulateButton username={user.username} name={user.name} />
+			) : (
+				<span className="text-xs font-semibold text-brand">
+					✓ {t('friends.card.friends')}
+				</span>
+			)}
 			<Button
 				size="xs"
 				rounded="lg"

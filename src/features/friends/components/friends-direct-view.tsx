@@ -15,6 +15,7 @@ import { useAuth } from '@/context/auth.context'
 import { ActiveFriendsHorizontal } from './activities'
 import { AddFriendBottomSheet } from './add-friend-bottom-sheet'
 import { FriendRequestsButton } from './friend-requests-button'
+import { BirthdayBadge, CongratulateButton } from './congratulate-button'
 import { FriendSuggestions } from './friend-suggestions'
 import { ProfileCardTrigger } from './profile-card/profile-card-trigger'
 
@@ -154,6 +155,7 @@ export function FriendsDirectView() {
 												className="object-cover w-full h-full"
 											/>
 										</div>
+										{friend.user.isBirthdayToday && <BirthdayBadge />}
 									</div>
 
 									<div className="min-w-0 flex-1">
@@ -165,6 +167,14 @@ export function FriendsDirectView() {
 										</div>
 									</div>
 								</ProfileCardTrigger>
+
+								{friend.user.isBirthdayToday && (
+									<CongratulateButton
+										username={friend.user.username}
+										name={friend.user.name}
+										className="shrink-0 me-1"
+									/>
+								)}
 
 								<div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity">
 									<button

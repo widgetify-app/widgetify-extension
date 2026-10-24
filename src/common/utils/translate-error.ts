@@ -46,6 +46,8 @@ const ERROR_KEYS: Record<string, ErrorKey> = {
 	FAILED_TO_REMOVE_FRIEND: 'error.failedToRemoveFriend',
 	FRIEND_REQUEST_SENT: 'error.friendRequestSent',
 	FRIEND_REQUEST_NOT_FOUND: 'error.friendRequestNotFound',
+	ALREADY_CONGRATULATED: 'error.alreadyCongratulated',
+	NOT_BIRTHDAY_TODAY: 'error.notBirthdayToday',
 	SET_USERNAME_FIRST: 'error.setUsernameFirst',
 
 	// Translate-related errors

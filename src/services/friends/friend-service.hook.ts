@@ -23,6 +23,7 @@ interface FriendUser {
 	avatar: string
 	username: string
 	userId: string
+	isBirthdayToday?: boolean
 	extras?: {
 		activity?: string // a short text (like discord, instagram), example: "Hello World" | "good day!"..
 		selectedWallpaper?: string
@@ -348,6 +349,17 @@ export function useUpdateFriendPrivacy() {
 		},
 		onSuccess: (data) => {
 			queryClient.setQueryData(friendsKeys.privacy, data)
+		},
+	})
+}
+
+export function useCongratulateFriend() {
+	return useMutation({
+		mutationFn: async (username: string) => {
+			const client = getMainClient()
+			await client.post(
+				`/friends/users/${encodeURIComponent(username)}/congratulate`
+			)
 		},
 	})
 }

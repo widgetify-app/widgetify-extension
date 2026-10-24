@@ -1,5 +1,6 @@
 import { cn } from '@/common/utils/cn'
 import { ProfileCardTrigger } from './profile-card/profile-card-trigger'
+import { BirthdayBadge } from './congratulate-button'
 import { AvatarComponent } from '@/components/ui'
 import { type Friend, useGetFriends } from '@/services/friends/friend-service.hook'
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll'
@@ -99,6 +100,7 @@ export const FriendsList = ({
 									className="object-cover w-full h-full"
 								/>
 							</div>
+							{friend.user.isBirthdayToday && <BirthdayBadge />}
 						</div>
 
 						<div className="flex-1 min-w-0">
