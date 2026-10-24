@@ -71,6 +71,7 @@ export const friends = {
 	'friends.card.birthday': '{day} {month}',
 	'friends.card.birthdayToday': 'امروز تولدشه',
 	'friends.card.memberSince': 'عضو از {year}',
+	'friends.card.mood': 'حس امروزش: {mood}',
 	'friends.card.look': 'ظاهر افزونه‌ش',
 	'friends.card.lookWallpaper': 'والپیپر',
 	'friends.card.lookWallpaperOnly': 'فقط والپیپر',

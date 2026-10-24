@@ -5,6 +5,7 @@ import {
 	useQuery,
 	useQueryClient,
 } from '@tanstack/react-query'
+import type { MoodType } from '@/services/mood-log/upsert-mood-log.hook'
 import { getMainClient } from '../api'
 import { friendsKeys } from '@/services/friends/friends.keys'
 import { userKeys } from '@/services/user/user.keys'
@@ -281,6 +282,7 @@ export interface FriendCard {
 	friend: null | {
 		isPro: boolean
 		status: { activityId: string; content: string; color: string | null } | null
+		mood: MoodType | null
 		city: string | null
 		birthday: { month: number; day: number } | null
 		memberSince: string

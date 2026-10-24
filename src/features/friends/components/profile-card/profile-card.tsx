@@ -1,5 +1,7 @@
+import { moodOptions } from '@/common/constants/moods'
 import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
+import { MoodImage } from '@/components/mood-image'
 import { AvatarComponent, Button, VipBadge } from '@/components/ui'
 import { Icon, type IconName } from '@/icons'
 import { type FriendCard, useGetFriendCard } from '@/services/friends/friend-service.hook'
@@ -85,12 +87,16 @@ function ProfileCardView({
 			</div>
 
 			<div className="relative flex items-end gap-2.5 px-4 -mt-9">
-				<AvatarComponent
-					url={user.avatar}
-					placeholder={user.name}
-					size="xl"
-					className="border-4 rounded-full border-surface-2"
-				/>
+				<span className="relative shrink-0">
+					<AvatarComponent
+						url={user.avatar}
+						placeholder={user.name}
+						size="xl"
+						isPro={Boolean(friend?.isPro)}
+						className="border-4 rounded-full border-surface-2"
+					/>
+					{friend?.mood && <MoodBadge mood={friend.mood} />}
+				</span>
 				{status && (
 					<span
 						className={cn(
@@ -235,5 +241,20 @@ function FriendDetails({ friend }: { friend: NonNullable<FriendCard['friend']> }
 				</li>
 			))}
 		</ul>
+	)
+}
+
+function MoodBadge({ mood }: { mood: string }) {
+	const option = moodOptions.find((item) => item.value === mood)
+	if (!option) return null
+
+	return (
+		<span
+			role="img"
+			aria-label={t('friends.card.mood', { mood: t(option.labelKey) })}
+			className="absolute grid rounded-full -bottom-0.5 -end-0.5 size-7 place-items-center bg-surface-2"
+		>
+			<MoodImage mood={mood} className="size-5" />
+		</span>
 	)
 }
