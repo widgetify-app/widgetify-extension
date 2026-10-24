@@ -25,6 +25,8 @@ interface FriendUser {
 	username: string
 	userId: string
 	isBirthdayToday?: boolean
+	isPro?: boolean
+	mood?: MoodType | null
 	extras?: {
 		activity?: string // a short text (like discord, instagram), example: "Hello World" | "good day!"..
 		selectedWallpaper?: string

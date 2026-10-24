@@ -64,6 +64,7 @@ export const friends = {
 	'friends.direct.friends': 'دوستان',
 	'friends.direct.add': 'افزودن دوست',
 	'friends.direct.empty': 'هنوز دوستی نداری',
+	'friends.direct.more': 'گزینه‌های {name}',
 	'friends.direct.emptyHint':
 		'دوستات رو اضافه کن تا حس‌وحال، تولد و ظاهر افزونه‌شون رو ببینی',
 	'friends.direct.addFirst': 'اولین دوستت رو اضافه کن',

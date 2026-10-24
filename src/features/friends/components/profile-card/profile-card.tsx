@@ -1,8 +1,6 @@
-import { moodOptions } from '@/common/constants/moods'
 import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
-import { MoodImage } from '@/components/mood-image'
-import { AvatarComponent, Button, VipBadge } from '@/components/ui'
+import { AvatarComponent, Button, Tooltip, VipBadge } from '@/components/ui'
 import { Icon, type IconName } from '@/icons'
 import { type FriendCard, useGetFriendCard } from '@/services/friends/friend-service.hook'
 import {
@@ -11,6 +9,7 @@ import {
 	memberSinceYear,
 	mutualSummary,
 } from '../../utils/profile-card'
+import { MoodBadge } from '../mood-badge'
 import { ProfileCardActions, ProfileCardMenu } from './profile-card-actions'
 
 export interface FriendLookTarget {
@@ -73,14 +72,16 @@ function ProfileCardView({
 			<div className="relative h-21 bg-brand-fill">
 				<div className="absolute flex gap-1.5 top-2 end-2">
 					{friend && hasLook && (
-						<button
-							type="button"
-							aria-label={t('friends.card.look')}
-							onClick={() => onOpenLook({ friend, name: user.name })}
-							className="grid rounded-full cursor-pointer size-8 place-items-center bg-scrim-soft text-image-fg transition-ui hover:bg-scrim focus-visible:focus-ring"
-						>
-							<Icon name="brush" size={16} />
-						</button>
+						<Tooltip content={t('friends.card.look')}>
+							<button
+								type="button"
+								aria-label={t('friends.card.look')}
+								onClick={() => onOpenLook({ friend, name: user.name })}
+								className="grid rounded-full cursor-pointer size-8 place-items-center bg-scrim-soft text-image-fg transition-ui hover:bg-scrim focus-visible:focus-ring"
+							>
+								<Icon name="brush" size={16} />
+							</button>
+						</Tooltip>
 					)}
 					<ProfileCardMenu card={card} />
 				</div>
@@ -241,20 +242,5 @@ function FriendDetails({ friend }: { friend: NonNullable<FriendCard['friend']> }
 				</li>
 			))}
 		</ul>
-	)
-}
-
-function MoodBadge({ mood }: { mood: string }) {
-	const option = moodOptions.find((item) => item.value === mood)
-	if (!option) return null
-
-	return (
-		<span
-			role="img"
-			aria-label={t('friends.card.mood', { mood: t(option.labelKey) })}
-			className="absolute grid rounded-full -bottom-0.5 -end-0.5 size-7 place-items-center bg-surface-2"
-		>
-			<MoodImage mood={mood} className="size-5" />
-		</span>
 	)
 }

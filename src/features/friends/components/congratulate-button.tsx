@@ -2,7 +2,7 @@ import Analytics from '@/analytics'
 import { t } from '@/common/i18n'
 import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
-import { Button } from '@/components/ui'
+import { Button, Tooltip } from '@/components/ui'
 import { Icon } from '@/icons'
 import { useCongratulateFriend } from '@/services/friends/friend-service.hook'
 
@@ -53,12 +53,14 @@ export function CongratulateButton({
 
 export function BirthdayBadge() {
 	return (
-		<span
-			role="img"
-			aria-label={t('friends.birthday.badge')}
-			className="absolute grid rounded-full -bottom-1 -end-1 size-4 place-items-center bg-brand text-on-brand ring-2 ring-surface"
-		>
-			<Icon name="gift" size={10} />
-		</span>
+		<Tooltip content={t('friends.birthday.badge')} className="absolute -top-1 -end-1">
+			<span
+				role="img"
+				aria-label={t('friends.birthday.badge')}
+				className="grid rounded-full size-4 place-items-center bg-brand text-on-brand ring-2 ring-surface"
+			>
+				<Icon name="gift" size={10} />
+			</span>
+		</Tooltip>
 	)
 }

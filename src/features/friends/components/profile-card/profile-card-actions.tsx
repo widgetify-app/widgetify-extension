@@ -6,7 +6,7 @@ import { showToast } from '@/common/toast'
 import { callEvent } from '@/common/utils/call-event'
 import { translateError } from '@/common/utils/translate-error'
 import { cn } from '@/common/utils/cn'
-import { Button, PopoverMenuItem, popoverMenuVariants } from '@/components/ui'
+import { Button, PopoverMenuItem, popoverMenuVariants, Tooltip } from '@/components/ui'
 import { Icon } from '@/icons'
 import {
 	type FriendCard,
@@ -57,19 +57,21 @@ export function ProfileCardMenu({ card }: { card: FriendCard }) {
 
 	return (
 		<div ref={menuRef} className="relative">
-			<button
-				type="button"
-				aria-haspopup="menu"
-				aria-expanded={isOpen}
-				aria-label={t('friends.card.menu')}
-				onClick={() => {
-					setIsOpen(!isOpen)
-					setIsConfirmingRemove(false)
-				}}
-				className="grid rounded-full cursor-pointer size-8 place-items-center bg-scrim-soft text-image-fg transition-ui hover:bg-scrim focus-visible:focus-ring"
-			>
-				<Icon name="menuOption" size={16} />
-			</button>
+			<Tooltip content={isOpen ? null : t('friends.card.menu')}>
+				<button
+					type="button"
+					aria-haspopup="menu"
+					aria-expanded={isOpen}
+					aria-label={t('friends.card.menu')}
+					onClick={() => {
+						setIsOpen(!isOpen)
+						setIsConfirmingRemove(false)
+					}}
+					className="grid rounded-full cursor-pointer size-8 place-items-center bg-scrim-soft text-image-fg transition-ui hover:bg-scrim focus-visible:focus-ring"
+				>
+					<Icon name="menuOption" size={16} />
+				</button>
+			</Tooltip>
 
 			{isOpen && (
 				<div

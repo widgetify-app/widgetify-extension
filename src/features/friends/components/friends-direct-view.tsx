@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Analytics from '@/analytics'
 import {
 	type Friend,
@@ -10,6 +10,8 @@ import {
 	Button,
 	ConfirmationModal,
 	EmptyState,
+	PopoverMenu,
+	PopoverMenuItem,
 	Spinner,
 } from '@/components/ui'
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll'
@@ -23,6 +25,7 @@ import { ActiveFriendsHorizontal } from './activities'
 import { AddFriendBottomSheet } from './add-friend-bottom-sheet'
 import { FriendRequestsButton } from './friend-requests-button'
 import { BirthdayBadge, CongratulateButton } from './congratulate-button'
+import { MoodBadge } from './mood-badge'
 import {
 	FriendSuggestionsBubble,
 	FriendSuggestionsView,
@@ -188,63 +191,11 @@ export function FriendsDirectView() {
 					) : (
 						<>
 							{allFriends.map((friend) => (
-								<div
+								<FriendRow
 									key={`friend-direct-${friend.id}`}
-									className="group flex items-center justify-between p-2 transition-colors duration-150 rounded-xl hover:bg-fill-2 border border-transparent hover:border-line"
-								>
-									<ProfileCardTrigger
-										username={friend.user.username}
-										name={friend.user.name}
-										className="flex items-center gap-2.5 min-w-0 flex-1 rounded-lg"
-									>
-										<div className="relative shrink-0">
-											<div className="w-8 h-8 overflow-hidden rounded-full ring-1 ring-line">
-												<AvatarComponent
-													url={friend.user.avatar}
-													placeholder={friend.user.name}
-													size="sm"
-													className="object-cover w-full h-full"
-												/>
-											</div>
-											{friend.user.isBirthdayToday && (
-												<BirthdayBadge />
-											)}
-										</div>
-
-										<div className="min-w-0 flex-1">
-											<div className="text-xs font-medium truncate text-fg-strong">
-												{friend.user.name}
-											</div>
-											<div className="text-3xs truncate text-fg-faint">
-												<span dir="ltr">
-													@{friend.user.username}
-												</span>
-											</div>
-										</div>
-									</ProfileCardTrigger>
-
-									{friend.user.isBirthdayToday && (
-										<CongratulateButton
-											username={friend.user.username}
-											name={friend.user.name}
-											className="shrink-0 me-1"
-										/>
-									)}
-
-									<div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity">
-										<button
-											type="button"
-											onClick={(e) => {
-												e.stopPropagation()
-												setSelectedUserToDelete(friend)
-											}}
-											className="p-1 text-fg-faint hover:text-danger hover:bg-danger-fill rounded-lg transition-colors cursor-pointer"
-											aria-label={t('friends.direct.remove')}
-										>
-											<Icon name="trash" size={12} />
-										</button>
-									</div>
-								</div>
+									friend={friend}
+									onRemove={() => setSelectedUserToDelete(friend)}
+								/>
 							))}
 
 							<div ref={loadMoreRef} className="h-1" />
@@ -278,6 +229,87 @@ export function FriendsDirectView() {
 				confirmText={t('ui.common.confirm')}
 				cancelText={t('ui.common.cancel')}
 			/>
+		</div>
+	)
+}
+
+function FriendRow({ friend, onRemove }: { friend: Friend; onRemove: () => void }) {
+	const menuRef = useRef<HTMLButtonElement>(null)
+	const [isMenuOpen, setIsMenuOpen] = useState(false)
+	const { user } = friend
+
+	return (
+		<div className="flex items-center gap-1.5 p-2 group rounded-xl transition-ui hover:bg-fill-2">
+			<ProfileCardTrigger
+				username={user.username}
+				name={user.name}
+				className="flex items-center flex-1 min-w-0 gap-2.5 rounded-lg"
+			>
+				<span className="relative shrink-0">
+					<AvatarComponent
+						url={user.avatar}
+						placeholder={user.name}
+						size="md"
+						isPro={Boolean(user.isPro)}
+					/>
+					{user.mood && <MoodBadge mood={user.mood} size="sm" />}
+					{user.isBirthdayToday && <BirthdayBadge />}
+				</span>
+
+				<span className="flex-1 min-w-0">
+					<span className="block text-sm font-medium truncate text-fg-strong">
+						{user.name}
+					</span>
+					<span
+						dir="ltr"
+						className="block text-xs truncate text-fg-faint text-end"
+					>
+						@{user.username}
+					</span>
+				</span>
+			</ProfileCardTrigger>
+
+			{user.isBirthdayToday && (
+				<CongratulateButton
+					username={user.username}
+					name={user.name}
+					className="shrink-0"
+				/>
+			)}
+
+			<button
+				ref={menuRef}
+				type="button"
+				aria-haspopup="menu"
+				aria-expanded={isMenuOpen}
+				aria-label={t('friends.direct.more', { name: user.name })}
+				onClick={() => setIsMenuOpen(!isMenuOpen)}
+				className={cn(
+					'grid rounded-lg cursor-pointer size-7 shrink-0 place-items-center text-fg-faint transition-ui hover:bg-fill-3 hover:text-fg-strong focus-visible:focus-ring',
+					!isMenuOpen &&
+						'opacity-0 group-hover:opacity-100 focus-visible:opacity-100'
+				)}
+			>
+				<Icon name="menuOption" size={14} />
+			</button>
+
+			<PopoverMenu
+				isOpen={isMenuOpen}
+				onClose={() => setIsMenuOpen(false)}
+				triggerRef={menuRef}
+				placement="bottom-start"
+				width={176}
+			>
+				<PopoverMenuItem
+					variant="danger"
+					icon={<Icon name="userX" size={14} />}
+					label={t('friends.direct.remove')}
+					onClick={() => {
+						setIsMenuOpen(false)
+						onRemove()
+					}}
+				/>
+			</PopoverMenu>
 		</div>
 	)
 }

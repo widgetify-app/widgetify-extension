@@ -1,6 +1,7 @@
 import { cn } from '@/common/utils/cn'
 import { ProfileCardTrigger } from './profile-card/profile-card-trigger'
 import { BirthdayBadge } from './congratulate-button'
+import { MoodBadge } from './mood-badge'
 import { AvatarComponent } from '@/components/ui'
 import { type Friend, useGetFriends } from '@/services/friends/friend-service.hook'
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll'
@@ -100,6 +101,9 @@ export const FriendsList = ({
 									className="object-cover w-full h-full"
 								/>
 							</div>
+							{friend.user.mood && (
+								<MoodBadge mood={friend.user.mood} size="sm" />
+							)}
 							{friend.user.isBirthdayToday && <BirthdayBadge />}
 						</div>
 
