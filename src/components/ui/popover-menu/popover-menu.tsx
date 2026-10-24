@@ -26,7 +26,7 @@ interface PopoverMenuProps {
 		| 'top-end'
 		| 'top-center'
 	offset?: number
-	ready?: boolean
+	reserveHeight?: number
 	bottomGap?: number
 }
 
@@ -48,7 +48,7 @@ export function PopoverMenu({
 	width = 208,
 	placement = 'bottom-center',
 	offset = 8,
-	ready = true,
+	reserveHeight = 0,
 	bottomGap = 0,
 }: PopoverMenuProps) {
 	const menuRef = useRef<HTMLDivElement>(null)
@@ -160,16 +160,16 @@ export function PopoverMenu({
 	}, [isOpen, position, triggerRef, width, placement, offset, onClose])
 
 	useLayoutEffect(() => {
-		if (!ready || !coords || coords.side || !menuRef.current) return
+		if (!coords || coords.side || !menuRef.current) return
 		const height = menuRef.current.offsetHeight
 		const fit = {
 			top: coords.anchorTop,
 			flipBottom: coords.flipBottom,
 			viewportHeight: window.innerHeight - bottomGap,
 		}
-		const side = pickMenuSide({ ...fit, height })
+		const side = pickMenuSide({ ...fit, height: Math.max(height, reserveHeight) })
 		setCoords({ ...coords, side, top: placeMenuOnSide(side, { ...fit, height }) })
-	}, [coords, ready, bottomGap])
+	}, [coords, reserveHeight, bottomGap])
 
 	const isFitted = Boolean(coords?.side)
 

@@ -2,12 +2,16 @@ import { useEffect, useState } from 'react'
 import { t } from '@/common/i18n'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
-import { Button, Modal } from '@/components/ui'
+import { Button, EmptyState, Modal } from '@/components/ui'
 import { Theme } from '@/context/theme.context'
 import { bundledItemName, type StoreItem, ThemePreview } from '@/features/market/market'
 import { StoreTryOnProvider, useStoreTryOn } from '@/features/market/store-try-on.context'
 import { Icon } from '@/icons'
-import type { FriendLookItem } from '@/services/friends/friend-service.hook'
+import {
+	type FriendLook,
+	type FriendLookItem,
+	useGetFriendLook,
+} from '@/services/friends/friend-service.hook'
 import type { FriendLookTarget } from './profile-card'
 
 export function FriendLookModalListener() {
@@ -35,16 +39,58 @@ export function FriendLookModalListener() {
 			title={target ? t('friends.card.lookTitle', { name: target.name }) : ''}
 		>
 			<StoreTryOnProvider onStepAside={stepAside} onClose={close}>
-				{target && <FriendLook target={target} />}
+				{target && <FriendLookContent target={target} />}
 			</StoreTryOnProvider>
 		</Modal>
 	)
 }
 
-function FriendLook({ target }: { target: FriendLookTarget }) {
+function FriendLookContent({ target }: { target: FriendLookTarget }) {
+	const { data, isLoading, isError, refetch } = useGetFriendLook(target.username)
+
+	if (isLoading) return <FriendLookSkeleton />
+
+	if (isError || !data) {
+		return (
+			<div className="flex flex-col items-center gap-2 py-8 text-sm text-fg-muted">
+				<p>{t('friends.card.lookLoadFailed')}</p>
+				<Button size="xs" rounded="lg" onClick={() => refetch()}>
+					{t('friends.card.retry')}
+				</Button>
+			</div>
+		)
+	}
+
+	if (!data.wallpaper && !data.theme && !data.font) {
+		return (
+			<EmptyState
+				icon="photo"
+				title={t('friends.card.lookEmpty', { name: target.name })}
+				className="py-8"
+			/>
+		)
+	}
+
+	return <FriendLookView look={data} />
+}
+
+function FriendLookSkeleton() {
+	return (
+		<div className="flex flex-col gap-3" aria-busy="true">
+			<div className="rounded-2xl aspect-video skeleton" />
+			<div className="flex flex-col gap-1">
+				{Array.from({ length: 3 }).map((_, index) => (
+					<div key={index} className="h-14 rounded-xl skeleton" />
+				))}
+			</div>
+		</div>
+	)
+}
+
+function FriendLookView({ look }: { look: FriendLook }) {
 	const { tryOn } = useStoreTryOn()
 	const [isWallpaperOnly, setIsWallpaperOnly] = useState(false)
-	const { wallpaper, theme, font } = target.friend
+	const { wallpaper, theme, font } = look
 	const themeName = theme ? lookName('THEME', theme) : null
 	const fontName = font ? lookName('FONT', font) : null
 

@@ -13,7 +13,7 @@ import { MoodBadge } from '../mood-badge'
 import { ProfileCardActions, ProfileCardMenu } from './profile-card-actions'
 
 export interface FriendLookTarget {
-	friend: NonNullable<FriendCard['friend']>
+	username: string
 	name: string
 }
 
@@ -25,18 +25,7 @@ interface ProfileCardProps {
 export function ProfileCard({ username, onOpenLook }: ProfileCardProps) {
 	const { data, isLoading, isError, refetch } = useGetFriendCard(username, true)
 
-	if (isLoading) {
-		return (
-			<div className="flex flex-col" aria-busy="true">
-				<div className="h-21 skeleton" />
-				<div className="flex flex-col gap-2 px-4 pt-3 pb-4">
-					<div className="w-1/2 h-4 rounded-sm skeleton" />
-					<div className="w-1/3 h-3 rounded-sm skeleton" />
-					<div className="w-full h-8 mt-2 rounded-xl skeleton" />
-				</div>
-			</div>
-		)
-	}
+	if (isLoading) return <ProfileCardSkeleton />
 
 	if (isError || !data) {
 		return (
@@ -52,6 +41,32 @@ export function ProfileCard({ username, onOpenLook }: ProfileCardProps) {
 	return <ProfileCardView card={data} onOpenLook={onOpenLook} />
 }
 
+function ProfileCardSkeleton() {
+	return (
+		<div className="flex flex-col" aria-busy="true">
+			<div className="h-21 bg-brand-fill" />
+			<div className="px-4 -mt-9">
+				<div className="border-4 rounded-full size-16 border-surface-2 skeleton" />
+			</div>
+			<div className="flex flex-col gap-3 px-4 pt-2.5 pb-4">
+				<div className="space-y-1.5">
+					<div className="w-32 h-4 rounded-sm skeleton" />
+					<div className="w-20 h-3 rounded-sm skeleton" />
+				</div>
+				<div className="flex gap-1.5">
+					<div className="w-20 h-5 rounded-full skeleton" />
+					<div className="w-16 h-5 rounded-full skeleton" />
+				</div>
+				<div className="flex items-center gap-2">
+					<div className="rounded-full size-6 skeleton" />
+					<div className="w-40 h-3 rounded-sm skeleton" />
+				</div>
+				<div className="h-16 rounded-xl skeleton" />
+			</div>
+		</div>
+	)
+}
+
 function ProfileCardView({
 	card,
 	onOpenLook,
@@ -61,7 +76,6 @@ function ProfileCardView({
 }) {
 	const { user, about, mutual, friend } = card
 	const status = friend?.status ?? null
-	const hasLook = Boolean(friend && (friend.wallpaper || friend.theme || friend.font))
 	const sharedInterests = about.interests.filter((interest) => interest.shared)
 
 	return (
@@ -71,12 +85,17 @@ function ProfileCardView({
 		>
 			<div className="relative h-21 bg-brand-fill">
 				<div className="absolute flex gap-1.5 top-2 end-2">
-					{friend && hasLook && (
+					{friend && (
 						<Tooltip content={t('friends.card.look')}>
 							<button
 								type="button"
 								aria-label={t('friends.card.look')}
-								onClick={() => onOpenLook({ friend, name: user.name })}
+								onClick={() =>
+									onOpenLook({
+										username: user.username,
+										name: user.name,
+									})
+								}
 								className="grid rounded-full cursor-pointer size-8 place-items-center bg-scrim-soft text-image-fg transition-ui hover:bg-scrim focus-visible:focus-ring"
 							>
 								<Icon name="brush" size={16} />
