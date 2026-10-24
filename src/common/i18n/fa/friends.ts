@@ -90,6 +90,8 @@ export const friends = {
 	'friends.card.lookWallpaperOnly': 'فقط والپیپر',
 	'friends.card.lookTheme': 'تم',
 	'friends.card.lookFont': 'فونت',
+	'friends.card.lookLoadFailed': 'نتونستیم ظاهر افزونه‌ش رو بیاریم',
+	'friends.card.lookEmpty': '{name} هنوز ظاهر افزونه‌ش رو عوض نکرده',
 	'friends.card.lookTitle': 'ظاهر افزونه‌ی {name}',
 	'friends.card.request': 'درخواست دوستی',
 	'friends.card.requestSent': 'درخواستت رفت',

@@ -269,6 +269,19 @@ export interface FriendLookItem {
 	owned: boolean
 }
 
+export interface FriendLook {
+	wallpaper: {
+		id: string
+		name: string
+		previewUrl: string
+		type: 'IMAGE' | 'VIDEO'
+		price: number
+		owned: boolean
+	} | null
+	theme: FriendLookItem | null
+	font: FriendLookItem | null
+}
+
 export interface FriendCard {
 	user: { id: string; username: string; name: string; avatar: string }
 	relation: FriendRelation
@@ -289,22 +302,13 @@ export interface FriendCard {
 		birthday: { month: number; day: number } | null
 		memberSince: string
 		friendsSince: string | null
-		wallpaper: {
-			id: string
-			name: string
-			previewUrl: string
-			type: 'IMAGE' | 'VIDEO'
-			price: number
-			owned: boolean
-		} | null
-		theme: FriendLookItem | null
-		font: FriendLookItem | null
 	}
 }
 
-function friendCardQuery(username: string) {
-	return {
+export function useGetFriendCard(username: string, enabled: boolean) {
+	return useQuery({
 		queryKey: friendsKeys.card(username),
+		enabled,
 		queryFn: async (): Promise<FriendCard> => {
 			const client = getMainClient()
 			const response = await client.get<{ data: FriendCard }>(
@@ -314,16 +318,22 @@ function friendCardQuery(username: string) {
 		},
 		retry: 1,
 		staleTime: 60 * 1000,
-	}
+	})
 }
 
-export function useGetFriendCard(username: string, enabled: boolean) {
-	return useQuery({ ...friendCardQuery(username), enabled })
-}
-
-export function usePrefetchFriendCard() {
-	const queryClient = useQueryClient()
-	return (username: string) => queryClient.prefetchQuery(friendCardQuery(username))
+export function useGetFriendLook(username: string) {
+	return useQuery({
+		queryKey: friendsKeys.look(username),
+		queryFn: async (): Promise<FriendLook> => {
+			const client = getMainClient()
+			const response = await client.get<{ data: FriendLook }>(
+				`/friends/users/${encodeURIComponent(username)}/look`
+			)
+			return response.data.data
+		},
+		retry: 1,
+		staleTime: 60 * 1000,
+	})
 }
 
 export interface FriendSuggestion {

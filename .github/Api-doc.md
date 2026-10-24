@@ -122,6 +122,7 @@ Source: `src/services/friends`, `src/services/user`
 | `DELETE /friends/{id}` | yes | | `{ data: null, message }` |
 | `GET /friends/activities/beta` | yes | | `{ data: { activities, currentUser, attachments: { reactions, templates } } }` |
 | `GET /friends/users/{username}/card` | yes | | `{ data: FriendCard }`: `user`, `relation` (`self`, `none`, `pending-sent`, `pending-received`, `friends`), `requestId`, `about`, `mutual`, and `friend` (null for strangers). See `FriendCard` in `src/services/friends/friend-service.hook.ts` |
+| `GET /friends/users/{username}/look` | yes | | `{ data: FriendLook }`: `wallpaper`, `theme`, `font` with price and ownership for try-on; 403 `NOT_FRIENDS` for a non-friend. See `FriendLook` in `src/services/friends/friend-service.hook.ts` |
 | `POST /friends/users/{username}/congratulate` | yes | | `{ data: null, message }`; 403 `NOT_FRIENDS`, 409 `NOT_BIRTHDAY_TODAY` or `ALREADY_CONGRATULATED` |
 | `GET /friends/suggestions` | yes | | `{ data: { suggestions } }`, at most 10; each `{ user, reasons: { mutualCount, sharedInterests, city } }` |
 | `GET /friends/privacy` | yes | | `{ data: { hiddenFromSuggestions } }` |
