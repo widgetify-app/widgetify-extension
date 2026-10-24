@@ -91,8 +91,9 @@ export function FriendsDirectView() {
 			)}
 
 			<div
+				ref={containerRef}
 				className={cn(
-					'flex flex-col flex-1 min-h-0',
+					'flex flex-col flex-1 min-h-0 overflow-y-auto scrollbar-none',
 					showSuggestions && 'hidden'
 				)}
 			>
@@ -136,10 +137,7 @@ export function FriendsDirectView() {
 					</div>
 				</div>
 
-				<div
-					ref={containerRef}
-					className="flex-1 px-1 pb-2 overflow-y-auto space-y-1 scrollbar-none"
-				>
+				<div className="px-1 pb-2 space-y-1 shrink-0">
 					{isLoading ? (
 						<div className="space-y-1.5 pt-1">
 							{Array.from({ length: 4 }).map((_, i) => (
