@@ -153,6 +153,7 @@ const ANALYTICS_EVENTS = [
 	'mini_apps_page',
 	'mini_apps_show_info_modal',
 	'mood_share_modal_opened',
+	'mood_share_month_changed',
 	'mood_widget_clicked',
 	'navbar_logout',
 	'navbar_profile_opened',

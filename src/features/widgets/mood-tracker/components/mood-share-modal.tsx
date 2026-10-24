@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import Analytics from '@/analytics'
 import { Button, Modal, Spinner } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { WidgetError } from '@/features/widgets/components/widget-error'
@@ -9,6 +10,12 @@ import {
 import { Icon } from '@/icons'
 import { useGetMoodStats } from '@/services/mood-log/get-mood-stats.hook'
 import { renderMoodShareCanvas } from '../utils/render-mood-share-canvas'
+import {
+	currentJalaliMonth,
+	JALALI_MONTH_KEYS,
+	SHARE_MONTHS_BACK,
+	shiftJalaliMonth,
+} from '../utils/share-month'
 import { t } from '@/common/i18n'
 
 interface MoodShareModalProps {
@@ -20,13 +27,21 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 	const { user, isAuthenticated } = useAuth()
 	const canvasRef = useRef<HTMLCanvasElement | null>(null)
 	const [isCopying, setIsCopying] = useState(false)
+	const [monthsBack, setMonthsBack] = useState(0)
+	const [thisMonth] = useState(() => currentJalaliMonth(new Date()))
+	const period = shiftJalaliMonth(thisMonth, -monthsBack)
 
 	const {
 		data: statsData,
 		isLoading,
 		isError,
 		refetch,
-	} = useGetMoodStats(isOpen && Boolean(isAuthenticated))
+	} = useGetMoodStats(isOpen && Boolean(isAuthenticated), period.year, period.month)
+
+	const changeMonth = (step: number) => {
+		Analytics.event('mood_share_month_changed')
+		setMonthsBack(monthsBack + step)
+	}
 
 	useEffect(() => {
 		if (!isOpen || !statsData) return
@@ -59,6 +74,42 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 			closeLabel={t('ui.common.close')}
 		>
 			<div className="flex flex-col gap-3.5">
+				{isAuthenticated && (
+					<div className="flex items-center justify-between gap-2">
+						<Button
+							size="sm"
+							rounded="xl"
+							variant="ghost"
+							color="base"
+							aria-label={t('widgets.moodTracker.shareOlderMonth')}
+							disabled={monthsBack >= SHARE_MONTHS_BACK}
+							onClick={() => changeMonth(1)}
+						>
+							<Icon name="chevronRight" size={16} />
+						</Button>
+						<span
+							aria-live="polite"
+							className="text-sm font-semibold text-fg-strong"
+						>
+							{t('widgets.moodTracker.shareMonthLabel', {
+								month: t(JALALI_MONTH_KEYS[period.month - 1]),
+								year: period.year,
+							})}
+						</span>
+						<Button
+							size="sm"
+							rounded="xl"
+							variant="ghost"
+							color="base"
+							aria-label={t('widgets.moodTracker.shareNewerMonth')}
+							disabled={monthsBack === 0}
+							onClick={() => changeMonth(-1)}
+						>
+							<Icon name="chevronLeft" size={16} />
+						</Button>
+					</div>
+				)}
+
 				{!isAuthenticated ? (
 					<div className="flex flex-col items-center justify-center h-64 gap-2 text-center text-fg-muted">
 						<Icon name="alert" size={20} aria-hidden="true" />

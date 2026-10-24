@@ -25,19 +25,21 @@ export interface MoodStatsResponse {
 	}
 }
 
-export const useGetMoodStats = (enabled: boolean) => {
+export const useGetMoodStats = (enabled: boolean, year: number, month: number) => {
 	return useQuery<MoodStatsResponse>({
-		queryKey: moodLogKeys.stats,
-		queryFn: async () => getMoodStats(),
+		queryKey: moodLogKeys.stats(year, month),
+		queryFn: async () => getMoodStats(year, month),
 		retry: 0,
 		enabled,
 		refetchOnWindowFocus: false,
 	})
 }
 
-async function getMoodStats(): Promise<MoodStatsResponse> {
+async function getMoodStats(year: number, month: number): Promise<MoodStatsResponse> {
 	const client = getMainClient()
-	const { data } = await client.get<any>('/users/@me/moods/stats')
+	const { data } = await client.get<any>('/users/@me/moods/stats', {
+		params: { year, month },
+	})
 
 	if (!data) return { logs: [] }
 	if (data.data) {
