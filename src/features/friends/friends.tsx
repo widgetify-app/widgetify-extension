@@ -7,10 +7,10 @@ import { RemoveFriendButton } from './components/remove-button'
 import { FriendsList } from './components/friends-list'
 import { t } from '@/common/i18n'
 import { ConfirmationModal } from '@/components/ui'
-import { HiddenModeSetting } from './components/hidden-mode-setting'
 
 export { FriendsActions } from './components/friends-actions'
 export { FriendsDirectView } from './components/friends-direct-view'
+export { FriendLookModalListener } from './components/profile-card/friend-look-modal'
 export { ProfileCardTrigger } from './components/profile-card/profile-card-trigger'
 
 export const FriendsLayout = () => {
@@ -43,7 +43,6 @@ export const FriendsLayout = () => {
 
 	return (
 		<>
-			<HiddenModeSetting />
 			<FriendsList
 				status="ACCEPTED"
 				renderFriendActions={renderFriendActions}

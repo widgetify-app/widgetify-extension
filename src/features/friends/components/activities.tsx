@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { type ReactNode, useEffect, useState } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { ScrollRow } from '@/components/ui'
 import {
@@ -10,10 +10,9 @@ import { t } from '@/common/i18n'
 import { ActivityCard } from './activity-card/activity-card'
 import { ManageActivityModal } from './activity-card/manage-activity-modal'
 import { EmptyActivityCard } from './activity-card/empty-activity-card'
-import { ProfileCardTrigger } from './profile-card/profile-card-trigger'
 import { reactionCaption, rememberSeen, unseenIds } from '../utils/activity-seen'
 
-export const ActiveFriendsHorizontal = () => {
+export const ActiveFriendsHorizontal = ({ trailing }: { trailing?: ReactNode }) => {
 	const { user } = useAuth()
 	const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
 
@@ -87,34 +86,23 @@ export const ActiveFriendsHorizontal = () => {
 						/>
 					))}
 
-				{activitiesData?.activities?.map((activity, index) => {
-					const card = (
-						<ActivityCard
-							key={activity.activityId}
-							index={index}
-							id={activity.activityId}
-							isSelf={false}
-							avatar={activity.avatar || ''}
-							name={activity.name}
-							activity={activity.content.trim()}
-							color={activity.color}
-							reactions={activitiesData.attachments?.reactions || []}
-							isNew={newIds.includes(activity.activityId)}
-						/>
-					)
+				{activitiesData?.activities?.map((activity, index) => (
+					<ActivityCard
+						key={activity.activityId}
+						index={index}
+						id={activity.activityId}
+						isSelf={false}
+						avatar={activity.avatar || ''}
+						name={activity.name}
+						activity={activity.content.trim()}
+						color={activity.color}
+						reactions={activitiesData.attachments?.reactions || []}
+						isNew={newIds.includes(activity.activityId)}
+						username={activity.username ?? undefined}
+					/>
+				))}
 
-					return activity.username ? (
-						<ProfileCardTrigger
-							key={`activity-avatar-${index}`}
-							username={activity.username}
-							name={activity.name}
-						>
-							{card}
-						</ProfileCardTrigger>
-					) : (
-						<div key={`activity-avatar-${index}`}>{card}</div>
-					)
-				})}
+				{trailing}
 			</ScrollRow>
 
 			{user && (

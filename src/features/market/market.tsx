@@ -16,6 +16,9 @@ import type { StoreItem, StoreView } from './types'
 import { toStoreTarget } from './utils/store-item'
 
 export { StoreItemPicker } from './components/store-item-picker'
+export { bundledItemName } from './constants'
+export { ThemePreview } from './components/previews/theme-preview'
+export type { StoreItem } from './types'
 export { WallpaperPicker } from './components/wallpaper-picker'
 
 interface MarketContainerProps {

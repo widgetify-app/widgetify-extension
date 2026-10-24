@@ -3,6 +3,7 @@ import { t } from '@/common/i18n'
 import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
 import { Button } from '@/components/ui'
+import { Icon } from '@/icons'
 import { useCongratulateFriend } from '@/services/friends/friend-service.hook'
 
 interface CongratulateButtonProps {
@@ -44,6 +45,7 @@ export function CongratulateButton({
 				})
 			}
 		>
+			<Icon name="gift" size={12} />
 			{t('friends.birthday.congratulate')}
 		</Button>
 	)
@@ -54,9 +56,9 @@ export function BirthdayBadge() {
 		<span
 			role="img"
 			aria-label={t('friends.birthday.badge')}
-			className="absolute -bottom-1 -end-1 text-xs leading-none"
+			className="absolute grid rounded-full -bottom-1 -end-1 size-4 place-items-center bg-brand text-on-brand ring-2 ring-surface"
 		>
-			🎂
+			<Icon name="gift" size={10} />
 		</span>
 	)
 }

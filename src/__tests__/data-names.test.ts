@@ -119,6 +119,7 @@ const ANALYTICS_EVENTS = [
 	'friends_request_sent',
 	'friends_suggestion_added',
 	'friends_suggestion_dismissed',
+	'friends_suggestions_opened',
 	'friends_visibility_changed',
 	'gallery_avatar_opened',
 	'google_calendar_event_click',

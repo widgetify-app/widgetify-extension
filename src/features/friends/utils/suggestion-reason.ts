@@ -11,10 +11,10 @@ type SuggestionReason =
 
 export function suggestionReason(reasons: SuggestionReasons): SuggestionReason | null {
 	if (reasons.mutualCount > 0) return { kind: 'mutual', value: reasons.mutualCount }
+	if (reasons.city) return { kind: 'city', value: reasons.city }
 	if (reasons.sharedInterests[0]) {
 		return { kind: 'interest', value: reasons.sharedInterests[0] }
 	}
-	if (reasons.city) return { kind: 'city', value: reasons.city }
 
 	return null
 }

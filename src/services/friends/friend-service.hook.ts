@@ -258,6 +258,14 @@ export function useRemoveFriend(
 
 type FriendRelation = 'self' | 'none' | 'pending-sent' | 'pending-received' | 'friends'
 
+export interface FriendLookItem {
+	value: string
+	name: string | null
+	itemId: string | null
+	price: number
+	owned: boolean
+}
+
 export interface FriendCard {
 	user: { id: string; username: string; name: string; avatar: string }
 	relation: FriendRelation
@@ -277,15 +285,22 @@ export interface FriendCard {
 		birthday: { month: number; day: number } | null
 		memberSince: string
 		friendsSince: string | null
-		wallpaper: { id: string; previewUrl: string } | null
-		collectionCount: number
+		wallpaper: {
+			id: string
+			name: string
+			previewUrl: string
+			type: 'IMAGE' | 'VIDEO'
+			price: number
+			owned: boolean
+		} | null
+		theme: FriendLookItem | null
+		font: FriendLookItem | null
 	}
 }
 
-export function useGetFriendCard(username: string, enabled: boolean) {
-	return useQuery({
+function friendCardQuery(username: string) {
+	return {
 		queryKey: friendsKeys.card(username),
-		enabled,
 		queryFn: async (): Promise<FriendCard> => {
 			const client = getMainClient()
 			const response = await client.get<{ data: FriendCard }>(
@@ -295,7 +310,16 @@ export function useGetFriendCard(username: string, enabled: boolean) {
 		},
 		retry: 1,
 		staleTime: 60 * 1000,
-	})
+	}
+}
+
+export function useGetFriendCard(username: string, enabled: boolean) {
+	return useQuery({ ...friendCardQuery(username), enabled })
+}
+
+export function usePrefetchFriendCard() {
+	const queryClient = useQueryClient()
+	return (username: string) => queryClient.prefetchQuery(friendCardQuery(username))
 }
 
 export interface FriendSuggestion {
@@ -323,9 +347,10 @@ interface FriendPrivacy {
 	hiddenFromSuggestions: boolean
 }
 
-export function useGetFriendPrivacy() {
+export function useGetFriendPrivacy(enabled: boolean) {
 	return useQuery({
 		queryKey: friendsKeys.privacy,
+		enabled,
 		queryFn: async (): Promise<FriendPrivacy> => {
 			const client = getMainClient()
 			const response = await client.get<{ data: FriendPrivacy }>('/friends/privacy')

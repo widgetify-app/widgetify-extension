@@ -4,9 +4,11 @@ import Analytics from '@/analytics'
 import { t } from '@/common/i18n'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { showToast } from '@/common/toast'
+import { cn } from '@/common/utils/cn'
 import { translateError } from '@/common/utils/translate-error'
-import { AvatarComponent, Button, ScrollRow } from '@/components/ui'
+import { AvatarComponent, Button } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
+import { Icon } from '@/icons'
 import {
 	type FriendSuggestion,
 	useGetFriendSuggestions,
@@ -16,8 +18,7 @@ import { friendsKeys } from '@/services/friends/friends.keys'
 import { suggestionReason } from '../utils/suggestion-reason'
 import { ProfileCardTrigger } from './profile-card/profile-card-trigger'
 
-export function FriendSuggestions() {
-	const { user } = useAuth()
+export function useFriendSuggestionList() {
 	const [dismissed, setDismissed] = useState<string[] | null>(null)
 	const { data } = useGetFriendSuggestions(dismissed !== null)
 
@@ -27,8 +28,7 @@ export function FriendSuggestions() {
 		)
 	}, [])
 
-	const visible = (data ?? []).filter((item) => !dismissed?.includes(item.user.id))
-	if (!visible.length) return null
+	const items = (data ?? []).filter((item) => !dismissed?.includes(item.user.id))
 
 	const dismiss = (id: string) => {
 		const next = [...(dismissed ?? []), id]
@@ -37,36 +37,112 @@ export function FriendSuggestions() {
 		Analytics.event('friends_suggestion_dismissed')
 	}
 
-	return (
-		<section
-			aria-label={t('friends.suggestions.title')}
-			className="pt-2.5 pb-2 border-b shrink-0 border-line"
-		>
-			<div className="flex items-baseline justify-between gap-2 px-2 pb-1.5">
-				<span className="text-xs font-medium text-fg-muted">
-					{t('friends.suggestions.title')}
-				</span>
-				{user?.friendshipStats?.accepted === 0 && (
-					<span className="text-3xs text-fg-faint">
-						{t('friends.suggestions.firstReward')}
-					</span>
-				)}
-			</div>
+	return { items, dismiss }
+}
 
-			<ScrollRow gap="sm">
-				{visible.map((item) => (
-					<SuggestionCard
-						key={item.user.id}
-						item={item}
-						onDismiss={() => dismiss(item.user.id)}
-					/>
-				))}
-			</ScrollRow>
-		</section>
+function FirstReward() {
+	const { user } = useAuth()
+	if (user?.friendshipStats?.accepted !== 0) return null
+
+	return (
+		<span className="shrink-0 text-3xs text-fg-faint">
+			{t('friends.suggestions.firstReward')}
+		</span>
 	)
 }
 
-function SuggestionCard({
+const BUBBLE_FACES = [
+	['top-3 left-3 w-10 h-10'],
+	['top-2.5 left-1.5 w-9 h-9', 'bottom-2.5 right-1.5 w-9 h-9'],
+	['top-1.5 left-4.5 w-7 h-7', 'bottom-2 left-2 w-7 h-7', 'bottom-2 right-2 w-7 h-7'],
+]
+
+export function FriendSuggestionsBubble({
+	items,
+	onOpen,
+}: {
+	items: FriendSuggestion[]
+	onOpen: () => void
+}) {
+	if (!items.length) return null
+
+	const faces = items.slice(0, BUBBLE_FACES.length)
+	const layout = BUBBLE_FACES[faces.length - 1]
+	const others = items.length - faces.length
+
+	return (
+		<button
+			type="button"
+			onClick={onOpen}
+			aria-label={t('friends.suggestions.open')}
+			className="flex flex-col items-center justify-end pt-4 cursor-pointer shrink-0 group rounded-xl focus-visible:focus-ring"
+		>
+			<span className="relative w-16 h-16 rounded-full bg-brand-fill ring-2 ring-surface-3 transition-ui group-hover:bg-brand-fill-2 group-hover:ring-brand-muted group-active:scale-95">
+				{faces.map((item, index) => (
+					<AvatarComponent
+						key={item.user.id}
+						url={item.user.avatar}
+						placeholder={item.user.name}
+						size="xs"
+						className={cn(
+							'absolute rounded-full ring-2 ring-surface-2',
+							layout[index]
+						)}
+					/>
+				))}
+				{others > 0 && (
+					<span className="absolute px-1.5 font-bold -translate-x-1/2 rounded-full -bottom-1 left-1/2 text-3xs leading-4 bg-brand text-on-brand ring-2 ring-surface">
+						{t('friends.suggestions.count', { count: others })}
+					</span>
+				)}
+			</span>
+			<span className="w-full px-1 mt-2 text-xs font-medium text-center truncate max-w-20 text-fg">
+				{t('friends.suggestions.bubble')}
+			</span>
+		</button>
+	)
+}
+
+export function FriendSuggestionsView({
+	items,
+	onDismiss,
+	onBack,
+}: {
+	items: FriendSuggestion[]
+	onDismiss: (id: string) => void
+	onBack: () => void
+}) {
+	return (
+		<div className="flex flex-col flex-1 min-h-0">
+			<div className="flex items-center gap-1.5 px-1 pt-2 pb-1 shrink-0">
+				<button
+					type="button"
+					onClick={onBack}
+					aria-label={t('friends.suggestions.back')}
+					className="flex items-center justify-center cursor-pointer size-8 rounded-xl text-fg-muted transition-ui hover:bg-fill-2 hover:text-fg-strong focus-visible:focus-ring"
+				>
+					<Icon name="chevronRight" size={16} />
+				</button>
+				<h3 className="flex-1 min-w-0 text-sm font-medium truncate text-fg-strong">
+					{t('friends.suggestions.title')}
+				</h3>
+				<FirstReward />
+			</div>
+
+			<ul className="flex-1 px-1 py-1.5 space-y-1 overflow-y-auto scrollbar-none">
+				{items.map((item) => (
+					<SuggestionRow
+						key={item.user.id}
+						item={item}
+						onDismiss={() => onDismiss(item.user.id)}
+					/>
+				))}
+			</ul>
+		</div>
+	)
+}
+
+function SuggestionRow({
 	item,
 	onDismiss,
 }: {
@@ -83,7 +159,7 @@ function SuggestionCard({
 			: reason?.kind === 'interest'
 				? t('friends.suggestions.interest', { title: reason.value })
 				: reason?.kind === 'city'
-					? t('friends.suggestions.city', { city: reason.value })
+					? t('friends.suggestions.city')
 					: ''
 
 	const add = () =>
@@ -111,48 +187,48 @@ function SuggestionCard({
 		)
 
 	return (
-		<div className="flex flex-col items-center gap-1.5 p-2 border w-28 shrink-0 rounded-2xl border-line bg-fill">
+		<li className="flex items-center gap-1.5 p-2 rounded-xl transition-ui hover:bg-fill-2">
 			<ProfileCardTrigger
 				username={item.user.username}
 				name={item.user.name}
-				className="flex flex-col items-center w-full min-w-0 gap-1"
+				className="flex items-center flex-1 min-w-0 gap-2.5 rounded-lg"
 			>
 				<AvatarComponent
 					url={item.user.avatar}
 					placeholder={item.user.name}
-					size="md"
+					size="sm"
+					className="rounded-full shrink-0"
 				/>
-				<span className="w-full text-xs font-medium text-center truncate text-fg-strong">
-					{item.user.name}
-				</span>
-				<span className="w-full text-center truncate text-3xs text-fg-faint">
-					{reasonText}
+				<span className="flex-1 min-w-0">
+					<span className="block text-xs font-medium truncate text-fg-strong">
+						{item.user.name}
+					</span>
+					<span className="block truncate text-3xs text-fg-faint">
+						{reasonText}
+					</span>
 				</span>
 			</ProfileCardTrigger>
 
-			<div className="flex w-full gap-1">
-				<Button
-					size="xs"
-					rounded="lg"
-					color="brand"
-					className="flex-1"
-					loading={sendRequest.isPending}
-					onClick={add}
-				>
-					{t('friends.suggestions.add')}
-				</Button>
-				<Button
-					size="xs"
-					rounded="lg"
-					variant="ghost"
-					aria-label={t('friends.suggestions.dismissAria', {
-						name: item.user.name,
-					})}
-					onClick={onDismiss}
-				>
-					{t('friends.suggestions.dismiss')}
-				</Button>
-			</div>
-		</div>
+			<Button
+				size="xs"
+				rounded="lg"
+				variant="soft"
+				color="brand"
+				loading={sendRequest.isPending}
+				onClick={add}
+			>
+				{t('friends.suggestions.add')}
+			</Button>
+			<button
+				type="button"
+				onClick={onDismiss}
+				aria-label={t('friends.suggestions.dismissAria', {
+					name: item.user.name,
+				})}
+				className="flex items-center justify-center rounded-lg cursor-pointer size-6 shrink-0 text-fg-faint transition-ui hover:bg-fill-3 hover:text-fg-strong focus-visible:focus-ring"
+			>
+				<Icon name="close" size={12} />
+			</button>
+		</li>
 	)
 }

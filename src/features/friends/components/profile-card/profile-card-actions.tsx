@@ -1,11 +1,13 @@
 import { useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Analytics from '@/analytics'
 import { t } from '@/common/i18n'
 import { showToast } from '@/common/toast'
 import { callEvent } from '@/common/utils/call-event'
 import { translateError } from '@/common/utils/translate-error'
-import { Button } from '@/components/ui'
+import { cn } from '@/common/utils/cn'
+import { Button, PopoverMenuItem, popoverMenuVariants } from '@/components/ui'
+import { Icon } from '@/icons'
 import {
 	type FriendCard,
 	useHandleFriendRequest,
@@ -24,9 +26,101 @@ function showError(error: unknown) {
 	)
 }
 
+export function ProfileCardMenu({ card }: { card: FriendCard }) {
+	const menuRef = useRef<HTMLDivElement>(null)
+	const [isOpen, setIsOpen] = useState(false)
+	const [isConfirmingRemove, setIsConfirmingRemove] = useState(false)
+	const removeFriend = useRemoveFriend()
+	const { relation, requestId } = card
+
+	useEffect(() => {
+		if (!isOpen) return
+
+		const closeOutside = (event: MouseEvent) => {
+			if (!menuRef.current?.contains(event.target as Node)) setIsOpen(false)
+		}
+		const closeOnEscape = (event: KeyboardEvent) => {
+			if (event.key !== 'Escape') return
+			event.stopPropagation()
+			setIsOpen(false)
+		}
+
+		document.addEventListener('mousedown', closeOutside)
+		document.addEventListener('keydown', closeOnEscape, true)
+		return () => {
+			document.removeEventListener('mousedown', closeOutside)
+			document.removeEventListener('keydown', closeOnEscape, true)
+		}
+	}, [isOpen])
+
+	if (relation !== 'self' && !(relation === 'friends' && requestId)) return null
+
+	return (
+		<div ref={menuRef} className="relative">
+			<button
+				type="button"
+				aria-haspopup="menu"
+				aria-expanded={isOpen}
+				aria-label={t('friends.card.menu')}
+				onClick={() => {
+					setIsOpen(!isOpen)
+					setIsConfirmingRemove(false)
+				}}
+				className="grid rounded-full cursor-pointer size-8 place-items-center bg-scrim-soft text-image-fg transition-ui hover:bg-scrim focus-visible:focus-ring"
+			>
+				<Icon name="menuOption" size={16} />
+			</button>
+
+			{isOpen && (
+				<div
+					role="menu"
+					className={cn(
+						popoverMenuVariants(),
+						'absolute end-0 top-10 z-10 w-44'
+					)}
+				>
+					{relation === 'self' ? (
+						<PopoverMenuItem
+							icon={<Icon name="pen" size={14} />}
+							label={t('friends.card.editProfile')}
+							onClick={() => {
+								setIsOpen(false)
+								callEvent('openSettings', 'profile')
+							}}
+						/>
+					) : (
+						<PopoverMenuItem
+							variant="danger"
+							icon={<Icon name="userX" size={14} />}
+							label={
+								isConfirmingRemove
+									? t('friends.card.removeConfirm')
+									: t('friends.card.remove')
+							}
+							disabled={removeFriend.isPending}
+							onClick={() => {
+								if (!isConfirmingRemove)
+									return setIsConfirmingRemove(true)
+								if (!requestId) return
+
+								removeFriend.mutate(requestId, {
+									onSuccess: () => {
+										Analytics.event('friends_removed')
+										setIsOpen(false)
+									},
+									onError: showError,
+								})
+							}}
+						/>
+					)}
+				</div>
+			)}
+		</div>
+	)
+}
+
 export function ProfileCardActions({ card }: { card: FriendCard }) {
 	const queryClient = useQueryClient()
-	const [isConfirmingRemove, setIsConfirmingRemove] = useState(false)
 	const sendRequest = useSendFriendRequest()
 	const answerRequest = useHandleFriendRequest()
 	const removeFriend = useRemoveFriend()
@@ -35,17 +129,7 @@ export function ProfileCardActions({ card }: { card: FriendCard }) {
 	const refreshCard = () =>
 		queryClient.invalidateQueries({ queryKey: friendsKeys.card(user.username) })
 
-	if (relation === 'self') {
-		return (
-			<Button
-				size="sm"
-				rounded="xl"
-				onClick={() => callEvent('openSettings', 'profile')}
-			>
-				{t('friends.card.editProfile')}
-			</Button>
-		)
-	}
+	if (relation === 'self') return null
 
 	if (relation === 'none') {
 		return (
@@ -138,34 +222,13 @@ export function ProfileCardActions({ card }: { card: FriendCard }) {
 		? birthdayParts(card.friend.birthday, new Date()).isToday
 		: false
 
-	return (
-		<div className="flex items-center justify-between gap-2">
-			{isBirthday ? (
-				<CongratulateButton username={user.username} name={user.name} />
-			) : (
-				<span className="text-xs font-semibold text-brand">
-					✓ {t('friends.card.friends')}
-				</span>
-			)}
-			<Button
-				size="xs"
-				rounded="lg"
-				variant="ghost"
-				color={isConfirmingRemove ? 'danger' : 'base'}
-				loading={removeFriend.isPending}
-				onClick={() => {
-					if (!isConfirmingRemove) return setIsConfirmingRemove(true)
+	if (!isBirthday) return null
 
-					removeFriend.mutate(requestId, {
-						onSuccess: () => Analytics.event('friends_removed'),
-						onError: showError,
-					})
-				}}
-			>
-				{isConfirmingRemove
-					? t('friends.card.removeConfirm')
-					: t('friends.card.remove')}
-			</Button>
-		</div>
+	return (
+		<CongratulateButton
+			username={user.username}
+			name={user.name}
+			className="w-full h-8"
+		/>
 	)
 }

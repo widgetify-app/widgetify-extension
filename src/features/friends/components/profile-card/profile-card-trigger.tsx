@@ -3,9 +3,16 @@ import Analytics from '@/analytics'
 import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { PopoverMenu } from '@/components/ui'
+import {
+	useGetFriendCard,
+	usePrefetchFriendCard,
+} from '@/services/friends/friend-service.hook'
+import { callEvent } from '@/common/utils/call-event'
 import { ProfileCard } from './profile-card'
 
 const CARD_WIDTH = 300
+
+const CARD_BOTTOM_GAP = 12
 
 interface ProfileCardTriggerProps {
 	username: string
@@ -23,6 +30,8 @@ export function ProfileCardTrigger({
 	const triggerRef = useRef<HTMLButtonElement>(null)
 	const [isOpen, setIsOpen] = useState(false)
 	const close = useCallback(() => setIsOpen(false), [])
+	const card = useGetFriendCard(username, isOpen)
+	const prefetch = usePrefetchFriendCard()
 
 	const toggle = () => {
 		if (!isOpen) Analytics.event('friends_card_opened')
@@ -38,8 +47,11 @@ export function ProfileCardTrigger({
 				aria-expanded={isOpen}
 				aria-label={t('friends.card.open', { name })}
 				onClick={toggle}
+				onPointerEnter={() => prefetch(username)}
+				onFocus={() => prefetch(username)}
+				aria-busy={isOpen && card.isLoading}
 				className={cn(
-					'cursor-pointer text-start rounded-xl focus-visible:focus-ring',
+					'cursor-pointer text-start rounded-xl focus-visible:focus-ring aria-busy:cursor-progress',
 					className
 				)}
 			>
@@ -51,9 +63,19 @@ export function ProfileCardTrigger({
 				onClose={close}
 				triggerRef={triggerRef}
 				width={CARD_WIDTH}
+				ready={!card.isLoading}
+				bottomGap={CARD_BOTTOM_GAP}
 				className="p-0 overflow-hidden"
 			>
-				{isOpen && <ProfileCard username={username} />}
+				{isOpen && (
+					<ProfileCard
+						username={username}
+						onOpenLook={(target) => {
+							setIsOpen(false)
+							callEvent('openFriendLook', target)
+						}}
+					/>
+				)}
 			</PopoverMenu>
 		</>
 	)

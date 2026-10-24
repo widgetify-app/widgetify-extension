@@ -12,23 +12,24 @@ describe('suggestionReason', () => {
 		).toEqual({ kind: 'mutual', value: 2 })
 	})
 
+	it('then the same city, ahead of shared interests', () => {
+		expect(
+			suggestionReason({
+				mutualCount: 0,
+				sharedInterests: ['Reading'],
+				city: 'Tehran',
+			})
+		).toEqual({ kind: 'city', value: 'Tehran' })
+	})
+
 	it('then the first shared interest', () => {
 		expect(
 			suggestionReason({
 				mutualCount: 0,
 				sharedInterests: ['Reading', 'Music'],
-				city: 'Tehran',
+				city: null,
 			})
 		).toEqual({ kind: 'interest', value: 'Reading' })
-	})
-
-	it('then the city', () => {
-		expect(
-			suggestionReason({ mutualCount: 0, sharedInterests: [], city: 'Tehran' })
-		).toEqual({
-			kind: 'city',
-			value: 'Tehran',
-		})
 	})
 
 	it('gives nothing when there is no reason', () => {

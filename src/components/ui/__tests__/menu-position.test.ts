@@ -1,10 +1,34 @@
 import { describe, expect, it } from 'bun:test'
-import { fitMenuHorizontally, fitMenuVertically } from '../utils/menu-position'
+import {
+	fitMenuHorizontally,
+	pickMenuSide,
+	placeMenuOnSide,
+} from '../utils/menu-position'
 
-describe('fitMenuVertically', () => {
-	it('keeps the menu below its anchor when it fits', () => {
+describe('pickMenuSide', () => {
+	it('opens below the anchor when it fits', () => {
 		expect(
-			fitMenuVertically({
+			pickMenuSide({ top: 100, flipBottom: 90, height: 300, viewportHeight: 800 })
+		).toBe('below')
+	})
+
+	it('opens above the anchor when there is no room below', () => {
+		expect(
+			pickMenuSide({ top: 620, flipBottom: 600, height: 360, viewportHeight: 800 })
+		).toBe('above')
+	})
+
+	it('takes the roomier side when neither fits', () => {
+		expect(
+			pickMenuSide({ top: 300, flipBottom: 280, height: 500, viewportHeight: 600 })
+		).toBe('below')
+	})
+})
+
+describe('placeMenuOnSide', () => {
+	it('keeps a menu below its anchor where it fits', () => {
+		expect(
+			placeMenuOnSide('below', {
 				top: 100,
 				flipBottom: 90,
 				height: 300,
@@ -13,9 +37,9 @@ describe('fitMenuVertically', () => {
 		).toBe(100)
 	})
 
-	it('opens above the anchor when there is no room below', () => {
+	it('puts a menu above its anchor with its bottom on the anchor', () => {
 		expect(
-			fitMenuVertically({
+			placeMenuOnSide('above', {
 				top: 620,
 				flipBottom: 600,
 				height: 360,
@@ -24,9 +48,9 @@ describe('fitMenuVertically', () => {
 		).toBe(240)
 	})
 
-	it('pins to the bottom edge when neither side has room', () => {
+	it('lifts a menu that grew past the bottom edge without flipping it', () => {
 		expect(
-			fitMenuVertically({
+			placeMenuOnSide('below', {
 				top: 300,
 				flipBottom: 280,
 				height: 500,
@@ -37,7 +61,7 @@ describe('fitMenuVertically', () => {
 
 	it('never goes above the top edge', () => {
 		expect(
-			fitMenuVertically({
+			placeMenuOnSide('above', {
 				top: 200,
 				flipBottom: 180,
 				height: 900,

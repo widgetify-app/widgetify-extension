@@ -1,7 +1,13 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Portal } from '@/components/ui/portal/portal'
 import { cn } from '@/common/utils/cn'
-import { fitMenuHorizontally, fitMenuVertically } from '../utils/menu-position'
+import {
+	fitMenuHorizontally,
+	MENU_EDGE,
+	type MenuSide,
+	pickMenuSide,
+	placeMenuOnSide,
+} from '../utils/menu-position'
 import { popoverMenuVariants } from './popover-menu.variants'
 
 interface PopoverMenuProps {
@@ -20,13 +26,16 @@ interface PopoverMenuProps {
 		| 'top-end'
 		| 'top-center'
 	offset?: number
+	ready?: boolean
+	bottomGap?: number
 }
 
 interface MenuCoords {
+	anchorTop: number
 	top: number
 	left: number
 	flipBottom: number
-	isFitted: boolean
+	side: MenuSide | null
 }
 
 export function PopoverMenu({
@@ -39,6 +48,8 @@ export function PopoverMenu({
 	width = 208,
 	placement = 'bottom-center',
 	offset = 8,
+	ready = true,
+	bottomGap = 0,
 }: PopoverMenuProps) {
 	const menuRef = useRef<HTMLDivElement>(null)
 	const [coords, setCoords] = useState<MenuCoords | null>(null)
@@ -54,6 +65,7 @@ export function PopoverMenu({
 
 			if (position) {
 				setCoords({
+					anchorTop: position.y,
 					top: position.y,
 					left: fitMenuHorizontally(
 						position.x,
@@ -61,7 +73,7 @@ export function PopoverMenu({
 						window.innerWidth
 					),
 					flipBottom: position.y,
-					isFitted: false,
+					side: null,
 				})
 				return
 			}
@@ -82,10 +94,11 @@ export function PopoverMenu({
 				}
 
 				setCoords({
+					anchorTop: top,
 					top,
 					left: fitMenuHorizontally(left, numericWidth, window.innerWidth),
 					flipBottom: rect.top - offset,
-					isFitted: false,
+					side: null,
 				})
 			}
 		}
@@ -147,18 +160,41 @@ export function PopoverMenu({
 	}, [isOpen, position, triggerRef, width, placement, offset, onClose])
 
 	useLayoutEffect(() => {
-		if (!coords || coords.isFitted || !menuRef.current) return
-		setCoords({
-			...coords,
-			top: fitMenuVertically({
-				top: coords.top,
-				flipBottom: coords.flipBottom,
-				height: menuRef.current.offsetHeight,
-				viewportHeight: window.innerHeight,
-			}),
-			isFitted: true,
-		})
-	}, [coords])
+		if (!ready || !coords || coords.side || !menuRef.current) return
+		const height = menuRef.current.offsetHeight
+		const fit = {
+			top: coords.anchorTop,
+			flipBottom: coords.flipBottom,
+			viewportHeight: window.innerHeight - bottomGap,
+		}
+		const side = pickMenuSide({ ...fit, height })
+		setCoords({ ...coords, side, top: placeMenuOnSide(side, { ...fit, height }) })
+	}, [coords, ready, bottomGap])
+
+	const isFitted = Boolean(coords?.side)
+
+	useEffect(() => {
+		const menu = menuRef.current
+		if (!isFitted || !menu) return
+
+		const observer = new ResizeObserver(() =>
+			setCoords((current) =>
+				current?.side
+					? {
+							...current,
+							top: placeMenuOnSide(current.side, {
+								top: current.anchorTop,
+								flipBottom: current.flipBottom,
+								height: menu.offsetHeight,
+								viewportHeight: window.innerHeight - bottomGap,
+							}),
+						}
+					: current
+			)
+		)
+		observer.observe(menu)
+		return () => observer.disconnect()
+	}, [isFitted, bottomGap])
 
 	if (!isOpen || !coords) return null
 
@@ -171,9 +207,11 @@ export function PopoverMenu({
 					top: coords.top,
 					left: coords.left,
 					width: typeof width === 'number' ? `${width}px` : width,
+					maxHeight: `calc(100vh - ${MENU_EDGE * 2 + bottomGap}px)`,
+					overflowY: 'auto',
 					zIndex: 'var(--z-dropdown)',
 					pointerEvents: 'auto',
-					visibility: coords.isFitted ? 'visible' : 'hidden',
+					visibility: isFitted ? 'visible' : 'hidden',
 				}}
 				className={cn(popoverMenuVariants(), className)}
 				onClick={(e) => e.stopPropagation()}

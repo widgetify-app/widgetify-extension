@@ -14,6 +14,7 @@ import { LayoutDropdown } from './components/layout-dropdown'
 import { ProfileNav } from './profile/profile'
 import { IslandNotification, NotificationNavbar } from './notifications/notifications'
 import { MarketModalListener } from './components/market-modal-listener'
+import { FriendLookModalListener } from '@/features/friends/friends'
 import { NavIconButton } from './components/nav-icon-button'
 import Analytics from '@/analytics'
 import { Page, usePage } from '@/context/page.context'
@@ -234,6 +235,7 @@ export function NavbarLayout(): JSX.Element {
 			</div>
 
 			<MarketModalListener />
+			<FriendLookModalListener />
 
 			{hasOpenedSettings && (
 				<Suspense fallback={null}>

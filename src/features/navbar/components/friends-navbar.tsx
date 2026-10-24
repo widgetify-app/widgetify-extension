@@ -53,7 +53,7 @@ export function FriendsListNavbar() {
 			</NavIconButton>
 
 			<BottomSheet isOpen={isOpen} onClose={() => setIsOpen(false)}>
-				<div className="pt-2 h-[calc(50vh-2rem)]">
+				<div className="h-full">
 					<FriendsDirectView />
 				</div>
 			</BottomSheet>

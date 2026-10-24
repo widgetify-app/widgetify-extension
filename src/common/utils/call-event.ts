@@ -2,6 +2,7 @@ import type { Bookmark } from '@/services/bookmark/bookmark.interface'
 import type { StoredWallpaper, Wallpaper } from '../types/wallpaper.interface'
 import type { Todo } from '@/services/todo/todo.interface'
 import type { Page } from '@/context/page.context'
+import type { FriendCard } from '@/services/friends/friend-service.hook'
 
 export interface EventName {
 	openSettings:
@@ -59,6 +60,7 @@ export interface EventName {
 	open_require_auth_modal: null
 	toggle_miniApp_fullScreen: boolean
 	close_friends_bottomSheet: null
+	openFriendLook: { friend: NonNullable<FriendCard['friend']>; name: string }
 	resetWallpaper: null
 	openAddCustomWidgetModal:
 		| { instanceId?: string; widgetId?: string; returnToSettings?: boolean }
