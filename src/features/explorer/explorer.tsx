@@ -1,5 +1,4 @@
 import Analytics from '@/analytics'
-import { t } from '@/common/i18n'
 import { useGetContents } from '@/services/content/get-content.hook'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ExplorerCategory } from './components/category'
@@ -34,7 +33,6 @@ function ExplorerSkeleton() {
 export function ExplorerContent() {
 	const { data: catalogData, isLoading } = useGetContents()
 	const [activeCategory, setActiveCategory] = useState<string | null>(null)
-	const [searchQuery, setSearchQuery] = useState('')
 	const [selectedPromoItem, setSelectedPromoItem] = useState<CatalogItem | null>(null)
 	const [activePopover, setActivePopover] = useState<{
 		item: CatalogItem
@@ -75,23 +73,6 @@ export function ExplorerContent() {
 		return contents.filter((f) => f.links?.length)
 	}, [contents])
 
-	const filteredContents = useMemo(() => {
-		if (!searchQuery.trim()) return contents
-		const q = searchQuery.trim().toLowerCase()
-
-		return contents
-			.map((cat) => ({
-				...cat,
-				links: cat.links.filter(
-					(link) =>
-						link.name?.toLowerCase().includes(q) ||
-						cat.category?.toLowerCase().includes(q) ||
-						link.badge?.toLowerCase().includes(q)
-				),
-			}))
-			.filter((cat) => cat.links.length > 0)
-	}, [contents, searchQuery])
-
 	useEffect(() => {
 		if (categories.length > 0 && !activeCategory) {
 			setActiveCategory(categories[0].id)
@@ -103,13 +84,10 @@ export function ExplorerContent() {
 		const container = scrollContainerRef.current
 		if (!container) return
 
-		const visibleCategories = categories.filter((c) =>
-			filteredContents.some((fc) => fc.id === c.id)
-		)
-		if (visibleCategories.length === 0) return
+		if (categories.length === 0) return
 
 		if (container.scrollTop < 40) {
-			const firstCat = visibleCategories[0]
+			const firstCat = categories[0]
 			if (activeCategory !== firstCat.id) {
 				setActiveCategory(firstCat.id)
 				tabRefs.current[firstCat.id]?.scrollIntoView({
@@ -124,8 +102,8 @@ export function ExplorerContent() {
 		const isAtBottom =
 			container.scrollHeight - container.scrollTop - container.clientHeight < 50
 
-		if (isAtBottom && visibleCategories.length > 0) {
-			const lastCat = visibleCategories[visibleCategories.length - 1]
+		if (isAtBottom && categories.length > 0) {
+			const lastCat = categories[categories.length - 1]
 			if (activeCategory !== lastCat.id) {
 				setActiveCategory(lastCat.id)
 				tabRefs.current[lastCat.id]?.scrollIntoView({
@@ -139,7 +117,7 @@ export function ExplorerContent() {
 
 		const containerTop = container.getBoundingClientRect().top
 
-		for (const cat of visibleCategories) {
+		for (const cat of categories) {
 			const el = categoryRefs.current[cat.id]
 			if (!el) continue
 
@@ -159,7 +137,7 @@ export function ExplorerContent() {
 				break
 			}
 		}
-	}, [activeCategory, categories, filteredContents])
+	}, [activeCategory, categories])
 
 	const handleScroll = () => {
 		if (rafIdRef.current) {
@@ -212,7 +190,7 @@ export function ExplorerContent() {
 		<div className="relative z-10 w-full h-[calc(100vh-4.75rem)] max-w-270 mx-auto pt-2 px-3 sm:px-4 flex flex-col overflow-hidden">
 			<div className="w-full h-full rounded-widget bg-glass-surface-2 border border-surface-3 overflow-hidden flex flex-col">
 				<header className="shrink-0 w-full px-4 py-3 border-b border-surface-3 bg-surface backdrop-blur-xl flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 z-30">
-					<div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-0.5 flex-1">
+					<div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none px-1 py-1 flex-1">
 						{categories.map((cat: CategoryItem) => {
 							const active = activeCategory === cat.id
 
@@ -242,40 +220,6 @@ export function ExplorerContent() {
 							)
 						})}
 					</div>
-
-					<div className="relative w-full sm:w-64 shrink-0">
-						<input
-							type="text"
-							value={searchQuery}
-							onChange={(e) => setSearchQuery(e.target.value)}
-							placeholder={t('explorer.search.placeholder')}
-							className="w-full bg-surface-2 text-xs text-fg-strong placeholder-fg-faint px-3 py-2 rounded-xl border border-line focus:outline-none focus:border-brand-muted transition-ui pr-8 focus:placeholder:text-fg-ghost"
-						/>
-						<svg
-							aria-hidden="true"
-							className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 text-fg-faint pointer-events-none"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								strokeWidth="2"
-								d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-							/>
-						</svg>
-
-						{searchQuery && (
-							<button
-								type="button"
-								onClick={() => setSearchQuery('')}
-								className="absolute left-2.5 top-1/2 -translate-y-1/2 text-fg-faint hover:text-fg-strong text-xs p-0.5"
-							>
-								✕
-							</button>
-						)}
-					</div>
 				</header>
 
 				<main
@@ -285,26 +229,9 @@ export function ExplorerContent() {
 				>
 					{isLoading ? (
 						<ExplorerSkeleton />
-					) : filteredContents.length === 0 ? (
-						<div className="flex flex-col items-center justify-center gap-3 py-24 text-center">
-							<div className="text-4xl opacity-40">🔍</div>
-							<p className="text-sm font-bold text-fg-strong">
-								{t('explorer.search.noResults', { query: searchQuery })}
-							</p>
-							<p className="text-xs text-fg-faint">
-								{t('explorer.search.tryAgain')}
-							</p>
-							<button
-								type="button"
-								onClick={() => setSearchQuery('')}
-								className="px-3 py-1.5 text-xs font-semibold rounded-xl bg-surface-2 hover:bg-surface-3 text-fg-strong transition-colors mt-2"
-							>
-								{t('explorer.search.clear')}
-							</button>
-						</div>
 					) : (
 						<div className="flex flex-col gap-6 max-w-5xl mx-auto">
-							{filteredContents.map((category: CategoryItem) => (
+							{contents.map((category: CategoryItem) => (
 								<ExplorerCategory
 									category={category}
 									categoryRefs={categoryRefs}
