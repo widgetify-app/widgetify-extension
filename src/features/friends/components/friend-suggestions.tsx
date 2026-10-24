@@ -77,7 +77,7 @@ export function FriendSuggestionsBubble({
 			aria-label={t('friends.suggestions.open')}
 			className="flex flex-col items-center justify-end pt-4 cursor-pointer shrink-0 group rounded-xl focus-visible:focus-ring"
 		>
-			<span className="relative w-16 h-16 rounded-full bg-brand-fill ring-2 ring-surface-3 transition-ui group-hover:bg-brand-fill-2 group-hover:ring-brand-muted group-active:scale-95">
+			<span className="relative w-16 h-16 rounded-full bg-fill-2 ring-2 ring-surface-3 transition-ui group-hover:bg-fill-3 group-hover:ring-brand-muted group-active:scale-95">
 				{faces.map((item, index) => (
 					<AvatarComponent
 						key={item.user.id}

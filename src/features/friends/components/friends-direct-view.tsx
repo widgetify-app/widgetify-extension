@@ -5,7 +5,13 @@ import {
 	useGetFriends,
 	useRemoveFriend,
 } from '@/services/friends/friend-service.hook'
-import { AvatarComponent, ConfirmationModal, Spinner } from '@/components/ui'
+import {
+	AvatarComponent,
+	Button,
+	ConfirmationModal,
+	EmptyState,
+	Spinner,
+} from '@/components/ui'
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll'
 import { Icon } from '@/icons'
 import { t } from '@/common/i18n'
@@ -149,21 +155,36 @@ export function FriendsDirectView() {
 							))}
 						</div>
 					) : allFriends.length === 0 ? (
-						<div className="flex flex-col items-center justify-center py-6 text-center text-fg-faint">
-							<div className="flex items-center justify-center w-10 h-10 mb-1.5 rounded-xl bg-surface-2 text-fg-faint">
-								<Icon name="users" size={16} />
-							</div>
-							<p className="text-xs font-normal text-fg-muted">
-								{t('friends.direct.empty')}
-							</p>
-							<button
-								type="button"
-								onClick={() => setIsAddFriendOpen(true)}
-								className="mt-1.5 text-2xs font-medium text-brand hover:underline cursor-pointer"
-							>
-								{t('friends.direct.addFirst')}
-							</button>
-						</div>
+						<EmptyState
+							icon="users"
+							title={t('friends.direct.empty')}
+							description={t('friends.direct.emptyHint')}
+							className="py-6"
+							action={
+								<div className="flex flex-wrap justify-center gap-2">
+									<Button
+										size="sm"
+										rounded="xl"
+										color="brand"
+										icon={<Icon name="usersPlus" size={14} />}
+										onClick={() => setIsAddFriendOpen(true)}
+									>
+										{t('friends.direct.addFirst')}
+									</Button>
+									{suggestions.items.length > 0 && (
+										<Button
+											size="sm"
+											rounded="xl"
+											variant="soft"
+											color="brand"
+											onClick={() => setIsSuggestionsOpen(true)}
+										>
+											{t('friends.direct.seeSuggestions')}
+										</Button>
+									)}
+								</div>
+							}
+						/>
 					) : (
 						<>
 							{allFriends.map((friend) => (
