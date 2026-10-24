@@ -1,16 +1,13 @@
 import { type ReactNode, useEffect, useState } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { ScrollRow } from '@/components/ui'
-import {
-	useGetActivities,
-	useGetActivityReactions,
-} from '@/services/friends/friend-service.hook'
+import { useGetActivities } from '@/services/friends/friend-service.hook'
 import { useAuth } from '@/context/auth.context'
 import { t } from '@/common/i18n'
 import { ActivityCard } from './activity-card/activity-card'
 import { ManageActivityModal } from './activity-card/manage-activity-modal'
 import { EmptyActivityCard } from './activity-card/empty-activity-card'
-import { reactionCaption, rememberSeen, unseenIds } from '../utils/activity-seen'
+import { rememberSeen, unseenIds } from '../utils/activity-seen'
 
 export const ActiveFriendsHorizontal = ({ trailing }: { trailing?: ReactNode }) => {
 	const { user } = useAuth()
@@ -19,28 +16,10 @@ export const ActiveFriendsHorizontal = ({ trailing }: { trailing?: ReactNode }) 
 	const { data: activitiesData, isLoading } = useGetActivities()
 
 	const currentUserActivity = activitiesData?.currentUser
-	const ownReactionCount = currentUserActivity?.reactionCount ?? 0
+
 	const newIds = useNewActivityIds(
 		activitiesData?.activities?.map((activity) => activity.activityId)
 	)
-
-	const { data: ownReactions } = useGetActivityReactions(
-		currentUserActivity?.activityId ?? '',
-		ownReactionCount > 0
-	)
-
-	const caption = reactionCaption(ownReactionCount, ownReactions?.reactions[0]?.name)
-	const ownCaption =
-		caption?.kind === 'count'
-			? t('friends.activity.reactionCount', { count: caption.count })
-			: caption?.kind === 'one'
-				? t('friends.activity.reactedOne', { name: caption.name })
-				: caption?.kind === 'many'
-					? t('friends.activity.reactedMany', {
-							name: caption.name,
-							others: caption.others,
-						})
-					: undefined
 
 	if (isLoading) {
 		return (
@@ -76,7 +55,7 @@ export const ActiveFriendsHorizontal = ({ trailing }: { trailing?: ReactNode }) 
 							isSelf
 							id={currentUserActivity.activityId}
 							index={5}
-							caption={ownCaption}
+							caption={''}
 						/>
 					) : (
 						<EmptyActivityCard
