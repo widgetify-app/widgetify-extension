@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge'
 import { Motion as motion, Presence } from '@/common/motion'
-import { type ReactNode, useEffect, useRef, useState } from 'react'
+import { type FocusEvent, type ReactNode, useEffect, useRef, useState } from 'react'
 import { Portal } from '../portal/portal'
 import {
 	type AnchoredPlacement,
@@ -118,6 +118,30 @@ export const Tooltip = ({
 		}
 	}, [delayTimeout])
 
+	useEffect(() => {
+		if (!isVisible) return
+
+		const hideWhenAway = () => {
+			if (document.visibilityState === 'hidden' || !document.hasFocus()) {
+				setIsVisible(false)
+			}
+		}
+
+		window.addEventListener('blur', hideWhenAway)
+		document.addEventListener('visibilitychange', hideWhenAway)
+
+		return () => {
+			window.removeEventListener('blur', hideWhenAway)
+			document.removeEventListener('visibilitychange', hideWhenAway)
+		}
+	}, [isVisible])
+
+	const showOnKeyboardFocus = (event: FocusEvent<HTMLDivElement>) => {
+		if (event.target instanceof Element && event.target.matches(':focus-visible')) {
+			showTooltip()
+		}
+	}
+
 	// Refined animations
 	const variants = {
 		top: {
@@ -173,7 +197,8 @@ export const Tooltip = ({
 				className={twMerge('inline-block', className)}
 				onMouseEnter={showTooltip}
 				onMouseLeave={hideTooltip}
-				onFocus={showTooltip}
+				onPointerDown={hideTooltip}
+				onFocus={showOnKeyboardFocus}
 				onBlur={hideTooltip}
 			>
 				{children}
