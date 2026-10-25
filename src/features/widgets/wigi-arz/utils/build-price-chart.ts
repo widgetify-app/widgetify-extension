@@ -6,6 +6,7 @@ const CHART_PADDING_Y = 10
 const RIAL_PER_TOMAN = 10
 const TICK_INTERVALS = 3
 const NICE_STEPS = [1, 2, 2.5, 5, 10]
+const MIN_SPAN_RATIO = 0.02
 
 interface ChartPoint {
 	x: number
@@ -51,9 +52,11 @@ function niceStep(span: number): number {
 
 function tickValues(min: number, max: number): number[] {
 	if (max === min) return [min]
-	const step = niceStep(max - min)
-	const first = Math.floor(min / step)
-	const last = Math.ceil(max / step)
+	const middle = (min + max) / 2
+	const half = Math.max(max - min, Math.abs(middle) * MIN_SPAN_RATIO) / 2
+	const step = niceStep(half * 2)
+	const first = Math.floor((middle - half) / step)
+	const last = Math.ceil((middle + half) / step)
 	return Array.from({ length: last - first + 1 }, (_, index) =>
 		Number(((first + index) * step).toPrecision(12))
 	)

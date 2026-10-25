@@ -106,6 +106,14 @@ describe('buildPriceChart', () => {
 		expect(pointSpan / tickSpan).toBeCloseTo(11000 / 15000, 5)
 	})
 
+	it('draws a tiny move as a small step, not a fall to the bottom', () => {
+		const chart = buildPriceChart([at(1, 53780000), at(2, 53700000)], false)
+		const drop = (chart?.points[1].y ?? 0) - (chart?.points[0].y ?? 0)
+
+		expect(drop).toBeGreaterThan(0)
+		expect(drop).toBeLessThan(CHART_HEIGHT / 10)
+	})
+
 	it('keeps small dollar ticks free of float noise', () => {
 		const chart = buildPriceChart([at(1, 0.11), at(2, 0.39)], true)
 
