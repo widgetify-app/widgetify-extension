@@ -217,12 +217,19 @@ export function useGetActivityReactions(id: string, enabled: boolean) {
 }
 
 export function useUpsertActivityReaction() {
+	const queryClient = useQueryClient()
+
 	return useMutation({
 		mutationFn: async (input: { reactionKey: string; activityId: string }) => {
 			const client = getMainClient()
 
 			await client.put(`/friends/activities/beta/${input.activityId}/reactions`, {
 				reaction: input.reactionKey,
+			})
+		},
+		onSuccess: (_, input) => {
+			queryClient.invalidateQueries({
+				queryKey: friendsKeys.activityReactions(input.activityId),
 			})
 		},
 	})
