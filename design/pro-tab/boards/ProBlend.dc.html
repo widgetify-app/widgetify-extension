@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Pro tab, A and D combined</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>@font-face{font-family:"Vazir";src:url(../../../src/assets/fonts/vazir/Vazirmatn-FD-Regular.woff2) format("woff2");font-weight:400;font-display:swap}@font-face{font-family:"Vazir";src:url(../../../src/assets/fonts/vazir/Vazirmatn-FD-Medium.woff2) format("woff2");font-weight:500;font-display:swap}@font-face{font-family:"Vazir";src:url(../../../src/assets/fonts/vazir/Vazirmatn-FD-Bold.woff2) format("woff2");font-weight:700;font-display:swap}@font-face{font-family:"Vazir";src:url(../../../src/assets/fonts/vazir/Vazirmatn-FD-Black.woff2) format("woff2");font-weight:900;font-display:swap}
+body{margin:0}
+.m{--fg-strong:#464647;--fg:rgba(70,70,71,.9);--fg-muted:rgba(70,70,71,.7);--fg-faint:rgba(70,70,71,.5);--surface:#fff;--surface-2:#f8fafc;--surface-3:#f1f5f9;--fill:rgba(70,70,71,.05);--line:rgba(70,70,71,.15);--brand:#536dfe;--on-brand:#fff;--brand-fill:rgba(83,109,254,.1);--brand-fill-2:rgba(83,109,254,.2);--brand-muted:rgba(83,109,254,.5);--success:#00d390;--sh-sm:0 1px 2px 0 rgba(23,23,23,.06);--sh-md:0 4px 6px -1px rgba(23,23,23,.09),0 2px 4px -2px rgba(23,23,23,.09);
+width:1080px;height:900px;box-sizing:border-box;padding:20px;display:flex;gap:16px;background:var(--surface);color:var(--fg);font-family:Vazir,Tahoma,sans-serif;line-height:1.5625;border-radius:24px}
+.m *{box-sizing:border-box}
+.side{width:192px;flex-shrink:0;display:flex;flex-direction:column;gap:16px}
+.grp{display:flex;align-items:center;gap:8px;padding:0 14px 6px;font-size:12px;font-weight:500;color:var(--fg-faint)}
+.grp i{flex:1;height:1px;background:var(--surface-3)}
+.tab{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:999px;font-size:14px;color:var(--fg-muted);text-decoration:none}
+.tab[aria-current]{background:var(--brand-fill);color:var(--brand);font-weight:700}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.head{padding-bottom:12px;margin-bottom:16px;border-bottom:1px solid var(--surface-3)}
+.head h1{margin:0;font-size:18px;line-height:1.4;font-weight:700;color:var(--fg-strong)}
+.head p{margin:2px 0 0;font-size:12px;color:var(--fg-muted)}
+.ic{width:20px;height:20px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.btn{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 24px;border-radius:12px;background:var(--brand);color:var(--on-brand);font-family:inherit;font-size:14px;font-weight:700;box-shadow:var(--sh-sm)}
+.num{font-variant-numeric:tabular-nums}
+.badge{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:999px;font-size:11px;font-weight:700;background:var(--brand);color:var(--on-brand)}
+.radio{width:16px;height:16px;border-radius:999px;flex-shrink:0;border:1px solid var(--line);background:var(--surface)}
+.radio.on{border:5px solid var(--brand)}
+
+.m{--vip:#6366f1;--vip-fill:rgba(99,102,241,.1);--vip-fill-2:rgba(99,102,241,.2);--fill-2:rgba(70,70,71,.1)}
+.vb{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;background:var(--vip);color:#fff;box-shadow:0 1px 2px 0 var(--vip-fill-2)}
+.vb.sub{background:var(--vip-fill);color:var(--vip);border:1px solid var(--vip-fill-2);box-shadow:none}
+.w{border-radius:24px;background:var(--surface);border:1px solid var(--surface-3);box-shadow:var(--sh-sm)}
+.seg{display:flex;padding:4px;gap:4px;border-radius:12px;background:var(--fill)}
+.seg button{all:unset;cursor:pointer;flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 10px;border-radius:8px;font-family:inherit;font-size:14px;font-weight:700;color:var(--fg-muted)}
+.seg button[aria-checked=true]{background:var(--surface);color:var(--fg-strong);box-shadow:var(--sh-sm)}
+.link{all:unset;cursor:pointer;font-family:inherit;font-size:12px;font-weight:700;color:var(--brand)}
+
+.bento{all:unset;box-sizing:border-box;cursor:pointer;font-family:inherit;text-align:right;display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:16px;background:var(--surface);border:1px solid var(--surface-3);box-shadow:var(--sh-md)}
+.bento.hot{border-color:var(--brand-muted)}
+.bento .more{display:inline-flex;align-items:center;gap:2px;margin-top:auto;font-size:12px;font-weight:700;color:var(--brand)}
+.chip{all:unset;cursor:pointer;font-family:inherit;padding:6px 14px;border-radius:999px;font-size:12px;font-weight:700;color:var(--fg-muted);background:var(--fill)}
+.chip[aria-selected=true]{background:var(--brand-fill);color:var(--brand)}
+.feat{display:flex;flex-direction:column;gap:2px;padding:12px 0;border-top:1px solid var(--surface-3)}
+.feat:first-child{border-top:0}
+.feat b{font-size:14px;font-weight:700;color:var(--fg-strong)}
+.feat span{font-size:12px;line-height:1.75;color:var(--fg-muted)}
+.tag{display:inline-flex;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:500;color:var(--fg);background:var(--fill)}
+.bento b{font-size:14px;font-weight:700;color:var(--fg-strong)}
+.bento small{font-size:12px;line-height:1.5;color:var(--fg-muted);min-height:3em}
+.art{height:58px;border-radius:12px;background:var(--surface-2);border:1px solid var(--surface-3);display:flex;align-items:center;justify-content:center;gap:6px;overflow:hidden;position:relative}
+</style>
+</helmet>
+<div class="m" dir="rtl">
+<nav class="side" aria-label="تنظیمات">
+<div><div class="grp">حساب کاربری<i></i></div><div style="display:flex;flex-direction:column;gap:4px"><a href="#" class="tab"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:20px;height:20px;"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>پروفایل من</span></a><a href="#" class="tab" aria-current=page><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:20px;height:20px;"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M2 9h20"/></svg><span>ویجتیفای پرو</span></a><a href="#" class="tab"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:20px;height:20px;"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg><span>پلتفرم‌ها</span></a><a href="#" class="tab"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:20px;height:20px;"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M19 12v9H5v-9M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg><span>ماموریت‌ها و پاداش</span></a><a href="#" class="tab"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:20px;height:20px;"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M16 3.1a4 4 0 0 1 0 7.8M22 21a7 7 0 0 0-4-6.3"/></svg><span>دوستان</span></a></div></div>
+<div><div class="grp">تنظیمات<i></i></div><div style="display:flex;flex-direction:column;gap:4px"><a href="#" class="tab"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:20px;height:20px;"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg><span>عمومی</span></a><a href="#" class="tab"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:20px;height:20px;"><circle cx="12" cy="12" r="9"/><circle cx="8" cy="10" r="1"/><circle cx="12" cy="7.5" r="1"/><circle cx="16" cy="10" r="1"/></svg><span>ظاهری</span></a><a href="#" class="tab"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:20px;height:20px;"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg><span>میانبرها</span></a></div></div>
+<div style="margin-top:auto;padding-top:12px;border-top:1px solid var(--surface-3)"><a href="#" class="tab"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:20px;height:20px;"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg><span>درباره ما</span></a></div>
+</nav>
+<main class="main">
+<header class="head"><h1>ویجتیفای پرو</h1><p>تجربه‌ای سریع‌تر، زیباتر و بدون هیچ مرزی در چیدمان ابزارها</p></header>
+<div style="flex:1;min-height:0;display:flex;flex-direction:column;gap:20px">
+<div>
+<section aria-label="معرفی پرو" style="position:relative;height:250px;border-radius:24px;overflow:hidden;background:#3d55f0">
+<img src="../assets/hero-pro.webp" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+<div style="position:absolute;top:0;right:0;bottom:64px;width:55%;padding:28px 32px;display:flex;flex-direction:column;justify-content:center;gap:8px">
+<span style="align-self:flex-start"><span class="vb"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linejoin:round"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M2 9h20"/></svg>ویجتیفای پرو</span></span>
+<h2 style="margin:0;font-size:30px;line-height:1.25;font-weight:900;color:#fff">تب جدیدت، هرجور که بخوای</h2>
+<p style="margin:0;font-size:14px;color:#fff">چیدمان آزاد، همه‌ی ویجت‌ها، والپیپر متحرک و گالری رایگان با یه اشتراک</p>
+</div></section>
+<section aria-label="امکانات پرو" style="position:relative;margin:-64px 16px 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px"><button type="button" class="bento" aria-haspopup="dialog"><span class="art" aria-hidden="true"><span style="padding:4px 8px;border-radius:8px;background:var(--surface);border:1px solid var(--surface-3);font-size:14px;font-weight:900;color:var(--fg-strong)" class="num">۱۲:۴۵</span><span style="padding:4px 8px;border-radius:8px;background:var(--surface);border:1px solid var(--surface-3);font-size:14px;font-weight:900;color:var(--fg-strong)" class="num">۰۹:۱۵</span></span><span style="display:flex;flex-direction:column;gap:2px"><b>چیدمان آزاد</b><small>چندتا از یک ویجت، مثلا دوتا ساعت</small></span><span class="more">جزئیات <svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round"><path d="m15 18-6-6 6-6"/></svg></span></button><button type="button" class="bento hot" aria-haspopup="dialog"><span class="art" aria-hidden="true"><span style="width:20px;height:20px;border-radius:8px;background:var(--brand-fill-2)"></span><span style="width:30px;height:30px;border-radius:8px;background:var(--brand-muted)"></span><span style="width:46px;height:30px;border-radius:8px;background:var(--brand)"></span></span><span style="display:flex;flex-direction:column;gap:2px"><b>همه‌ی طرح‌ها و اندازه‌ها</b><small>هر ویجت رو کوچیک یا بزرگ بذار</small></span><span class="more">جزئیات <svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round"><path d="m15 18-6-6 6-6"/></svg></span></button><button type="button" class="bento" aria-haspopup="dialog"><span class="art" aria-hidden="true"><span style="position:absolute;top:10px;left:50%;width:62px;height:38px;margin-left:-31px;border-radius:8px;background:url(../assets/stage.webp) 10% center/cover;border:1px solid rgba(255,255,255,.6);box-shadow:0 1px 2px 0 rgba(23,23,23,.06);transform:translateX(-26px) rotate(-8deg);opacity:0.55"></span><span style="position:absolute;top:10px;left:50%;width:62px;height:38px;margin-left:-31px;border-radius:8px;background:url(../assets/stage.webp) 90% center/cover;border:1px solid rgba(255,255,255,.6);box-shadow:0 1px 2px 0 rgba(23,23,23,.06);transform:translateX(26px) rotate(8deg);opacity:0.55"></span><span style="position:absolute;top:10px;left:50%;width:62px;height:38px;margin-left:-31px;border-radius:8px;background:url(../assets/stage.webp) 50% center/cover;border:1px solid rgba(255,255,255,.6);box-shadow:0 1px 2px 0 rgba(23,23,23,.06);transform:translateX(0px) rotate(0deg);opacity:1"></span></span><span style="display:flex;flex-direction:column;gap:2px"><b>والپیپر متحرک</b><small>ویدیو و گیف خودت پس‌زمینه میشه</small></span><span class="more">جزئیات <svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round"><path d="m15 18-6-6 6-6"/></svg></span></button><button type="button" class="bento" aria-haspopup="dialog"><span class="art" aria-hidden="true"><span style="width:26px;height:26px;border-radius:999px;background:#ffd7a8;border:2px solid #fff;box-shadow:0 1px 2px 0 rgba(23,23,23,.06);display:grid;place-items:end center;overflow:hidden"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:80%;height:80%;fill:#c2410c"><circle cx="12" cy="9" r="4.5"/><path d="M3 24a9 8 0 0 1 18 0z"/></svg></span><span style="width:26px;height:26px;border-radius:999px;background:#c7d2fe;border:2px solid #fff;box-shadow:0 1px 2px 0 rgba(23,23,23,.06);display:grid;place-items:end center;overflow:hidden"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:80%;height:80%;fill:#4338ca"><circle cx="12" cy="9" r="4.5"/><path d="M3 24a9 8 0 0 1 18 0z"/></svg></span><span style="width:26px;height:26px;border-radius:8px;background:#fff;border:1px solid #f1f5f9;box-shadow:0 1px 2px 0 rgba(23,23,23,.06);display:grid;place-items:center"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:60%;height:60%;fill:#fcb700"><path d="m12 2 3 6.5 7 .8-5.2 4.8 1.4 7L12 17.6 5.8 21l1.4-7L2 9.3l7-.8z"/></svg></span><span style="width:26px;height:26px;border-radius:999px;background:#bbf7d0;border:2px solid #fff;box-shadow:0 1px 2px 0 rgba(23,23,23,.06);display:grid;place-items:end center;overflow:hidden"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:80%;height:80%;fill:#047857"><circle cx="12" cy="9" r="4.5"/><path d="M3 24a9 8 0 0 1 18 0z"/></svg></span></span><span style="display:flex;flex-direction:column;gap:2px"><b>گالری رایگان</b><small>آواتار، آیکون و عکس‌های پرو بدون ویج‌کوین</small></span><span class="more">جزئیات <svg viewBox="0 0 24 24" aria-hidden="true" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round"><path d="m15 18-6-6 6-6"/></svg></span></button></section>
+</div>
+<section style="display:flex;flex-direction:column;gap:12px"><h3 style="margin:0;font-size:14px;font-weight:700;color:var(--fg-strong)">پلن مناسب خودت رو انتخاب کن</h3>
+<div role="radiogroup" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding-top:4px"><button type="button" role="radio" aria-checked="false" style="all:unset;cursor:pointer;position:relative;display:flex;flex-direction:column;gap:8px;padding:14px 16px;border-radius:16px;font-family:inherit;background:var(--surface);border:1px solid var(--surface-3)">
+<span style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:14px;font-weight:700;color:var(--fg-strong)">آزمایشی</span><span class="radio"></span></span>
+<span style="font-size:24px;font-weight:900;color:var(--fg-strong)">رایگان</span><span style="font-size:12px;color:var(--fg-muted)">۵ روز اعتبار، یک بار</span></button><button type="button" role="radio" aria-checked="false" style="all:unset;cursor:pointer;position:relative;display:flex;flex-direction:column;gap:8px;padding:14px 16px;border-radius:16px;font-family:inherit;background:var(--surface);border:1px solid var(--surface-3)">
+<span style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:14px;font-weight:700;color:var(--fg-strong)">یک ماهه</span><span class="radio"></span></span>
+<span style="display:flex;align-items:baseline;gap:4px"><span class="num" style="font-size:24px;font-weight:900;color:var(--fg-strong)">۹۹٬۰۰۰</span><span style="font-size:12px;color:var(--fg-muted)">تومان</span></span><span style="font-size:12px;color:var(--fg-muted)">ماهی ۹۹٬۰۰۰ تومان</span></button><button type="button" role="radio" aria-checked="true" style="all:unset;cursor:pointer;position:relative;display:flex;flex-direction:column;gap:8px;padding:14px 16px;border-radius:16px;font-family:inherit;background:var(--brand-fill);border:1px solid var(--brand);box-shadow:0 0 0 1px var(--brand)"><span class="badge" style="position:absolute;top:-10px;left:16px">محبوب</span>
+<span style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:14px;font-weight:700;color:var(--fg-strong)">سه ماهه</span><span class="radio on"></span></span>
+<span style="display:flex;align-items:baseline;gap:4px"><span class="num" style="font-size:24px;font-weight:900;color:var(--fg-strong)">۲۴۹٬۰۰۰</span><span style="font-size:12px;color:var(--fg-muted)">تومان</span></span><span style="font-size:12px;font-weight:700;color:var(--brand)">۱۶٪ کمتر از ماهانه</span></button><button type="button" role="radio" aria-checked="false" style="all:unset;cursor:pointer;position:relative;display:flex;flex-direction:column;gap:8px;padding:14px 16px;border-radius:16px;font-family:inherit;background:var(--surface);border:1px solid var(--surface-3)">
+<span style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:14px;font-weight:700;color:var(--fg-strong)">سالانه</span><span class="radio"></span></span>
+<span style="display:flex;align-items:baseline;gap:4px"><span class="num" style="font-size:24px;font-weight:900;color:var(--fg-strong)">۸۹۹٬۰۰۰</span><span style="font-size:12px;color:var(--fg-muted)">تومان</span></span><span style="font-size:12px;font-weight:700;color:var(--brand)">۲۴٪ کمتر از ماهانه</span></button></div></section>
+<section aria-label="پرداخت" style="margin-top:auto;padding:12px 12px 12px 20px;border-radius:16px;background:var(--surface-2);border:1px solid var(--surface-3);display:flex;align-items:center;gap:16px">
+<span style="display:flex;flex-direction:column"><span style="font-size:12px;color:var(--fg-muted)">مبلغ قابل پرداخت</span><span style="display:flex;align-items:baseline;gap:4px"><span class="num" style="font-size:20px;font-weight:900;color:var(--fg-strong)">۲۴۹٬۰۰۰</span><span style="font-size:12px;color:var(--fg-muted)">تومان</span></span></span>
+<span style="flex:1"></span><p style="margin:0;font-size:12px;color:var(--fg-faint)">یک بار پرداخت می‌کنی و خودکار تمدید نمیشه</p>
+<button type="button" class="btn"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:16px;height:16px;"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M2 9h20"/></svg>فعال‌سازی پرو</button></section>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1080,"height":900}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>
