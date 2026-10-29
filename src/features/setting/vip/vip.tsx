@@ -136,7 +136,7 @@ export function VipTab() {
 		<div className="flex flex-col w-full gap-4 text-right select-none">
 			<VipHeroBanner onOpenFeature={openFeature} />
 
-			<div ref={plansRef} className="space-y-3 pt-1">
+			<div ref={plansRef} className="px-3 pt-1 space-y-3">
 				<h4 className="text-sm font-bold text-fg-strong">
 					{t('setting.vip.selectPlanTitle')}
 				</h4>
@@ -157,7 +157,7 @@ export function VipTab() {
 				) : plans?.length ? (
 					<div
 						className={cn(
-							'grid gap-3',
+							'grid gap-3 pt-2',
 							VIP_GRID_LAYOUTS[plans.length] || 'grid-cols-2 md:grid-cols-4'
 						)}
 					>
