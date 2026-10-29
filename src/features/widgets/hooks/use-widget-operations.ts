@@ -39,6 +39,7 @@ interface UseWidgetOperationsParams {
 	isEditingRef: React.MutableRefObject<boolean>
 	persistLayout: (layout: StoredWidget[]) => void
 	triggerServerSync: (layout: StoredWidget[]) => void
+	syncLayoutNow: (layout: StoredWidget[]) => Promise<void>
 	applyRuntimeLayout: ApplyRuntimeLayout
 	setSavedLayout: React.Dispatch<React.SetStateAction<StoredWidget[]>>
 	setRuntimeLayout: React.Dispatch<React.SetStateAction<StoredWidget[]>>
@@ -56,6 +57,7 @@ export function useWidgetOperations({
 	isEditingRef,
 	persistLayout,
 	triggerServerSync,
+	syncLayoutNow,
 	applyRuntimeLayout,
 	setSavedLayout,
 	setRuntimeLayout,
@@ -453,7 +455,7 @@ export function useWidgetOperations({
 			persistLayout(sanitized)
 
 			if (isAuthenticated) {
-				triggerServerSync(sanitized)
+				syncLayoutNow(sanitized).catch(() => {})
 			}
 
 			playNativeToastSound('success')
@@ -462,7 +464,7 @@ export function useWidgetOperations({
 		[
 			isAuthenticated,
 			persistLayout,
-			triggerServerSync,
+			syncLayoutNow,
 			colsRef,
 			savedLayoutRef,
 			setSavedLayout,
