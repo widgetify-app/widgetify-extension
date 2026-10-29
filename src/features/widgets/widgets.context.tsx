@@ -99,6 +99,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 	const {
 		persistLayout,
 		triggerServerSync,
+		syncLayoutNow,
 		markLocalEdit,
 		flushHeldLayout,
 		syncStatus,
@@ -149,6 +150,7 @@ export function FreeWidgetProvider({ children }: { children: React.ReactNode }) 
 		isEditingRef,
 		persistLayout,
 		triggerServerSync,
+		syncLayoutNow,
 		applyRuntimeLayout,
 		setSavedLayout,
 		setRuntimeLayout,

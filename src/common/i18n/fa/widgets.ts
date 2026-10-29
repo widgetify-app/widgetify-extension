@@ -905,7 +905,7 @@ export const widgets = {
 	'widgets.canvas.widgetsHelp': 'راهنمای ویجت‌ها',
 	'widgets.canvas.editLayout': 'ویرایش چیدمان',
 	'widgets.canvas.sync.aria': 'ذخیره‌ی چیدمان ویجت‌ها',
-	'widgets.canvas.sync.saving': 'داریم چیدمان ویجت‌ها رو ذخیره می‌کنیم...',
+	'widgets.canvas.sync.saving': 'در حال همگام‌سازی چیدمان...',
 	'widgets.canvas.sync.saved': 'چیدمانت ذخیره شد',
 	'widgets.canvas.sync.failed': 'چیدمان ذخیره نشد',
 	'widgets.canvas.sync.retry': 'دوباره امتحان کن',
