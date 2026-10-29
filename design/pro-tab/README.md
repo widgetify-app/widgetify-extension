@@ -2,7 +2,7 @@
 
 The redesign of the settings tab «ویجتیفای پرو» (`src/features/setting/vip/vip.tsx`).
 
-**Status:** in review. The owner picked direction A + D (a showcase hero with benefit cards) and is still refining it. Nothing has been built yet.
+**Status:** approved and built. The owner picked direction A + D (a showcase hero with benefit cards) and asked for it to be implemented. The code is in `src/features/setting/vip/`.
 
 ## Boards
 
@@ -66,7 +66,7 @@ The upload limit is 40MB for Pro and 2MB for free by default, and the server con
 ## Still open
 
 - New copy needs the owner's approval: the headline, the card texts, the window titles and lines.
-- The renewal line «یک بار پرداخت می‌کنی و خودکار تمدید نمیشه» assumes a one-time bank payment with no renewal. Confirm with the backend.
+- The renewal line «یک بار پرداخت می‌کنی و خودکار تمدید نمیشه» assumes a one-time bank payment with no renewal, so the build leaves it out until the backend confirms it.
 - The button uses `brand`. Today's code uses `vip` for it.
 - The Pro badge stays `vip`, as `VipBadge` draws it.
 - Only the light theme is drawn. Check that the dark and glass themes hold up, with every colour taken from a token.
