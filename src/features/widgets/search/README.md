@@ -11,6 +11,8 @@ The search box. 4x1, and a 2x1 for PRO. No header. The 4x1 is a card with the bo
 | `components/search-box-parts.tsx` | The box and input classes (each size adds the box's background) and `SearchBoxButton`. |
 | `components/engine-selector.tsx` | Engine dropdown. |
 | `components/bookmark/browser-bookmark.tsx` | "کاوش", "بوکمارک‌های مرورگر" and the recommended sites. |
+| `components/bookmark/bookmark-popover.tsx`, `components/bookmark/bookmark-panel.tsx` | The card under "بوکمارک‌های مرورگر": a first-run card that asks for the bookmarks permission, then a 620px panel with search, the folder tree, the path and the open folder as tiles. The approved design is `design/browser-bookmarks/`. |
+| `utils/bookmark-tree.ts` | Pure helpers for that panel: top folders, the path to a folder, the folder to open, search with each result's path. Tested. |
 | `components/search-history-portal.tsx`, `components/suggestions.tsx` | History and suggestions under the box. |
 | `components/image/`, `components/voice/` | Image and voice search buttons and portals. |
 | `hooks/use-search-history.ts`, `utils/normalize-search-history.ts` | History, normalised on read. Tested. |

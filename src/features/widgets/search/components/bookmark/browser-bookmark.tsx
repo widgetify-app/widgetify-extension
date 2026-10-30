@@ -3,13 +3,15 @@ import Analytics from '@/analytics'
 import { t } from '@/common/i18n'
 import { getFaviconFromUrl } from '@/features/widgets/utils/icon'
 import { NewBadge, Tooltip } from '@/components/ui'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import { Page, usePage } from '@/context/page.context'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
 import { useGetSearchboxData } from '@/services/trends/get-trends.hook'
 import { BookmarkPopover } from './bookmark-popover'
 
-const POPOVER_WIDTH = 288
+const PANEL_WIDTH = 620
+const FIRST_RUN_WIDTH = 360
 
 const SEARCH_CHIP_CLASS =
 	'inline-flex items-center gap-1.25 h-6.5 px-2.5 rounded-lg text-2xs font-semibold whitespace-nowrap shrink-0 cursor-pointer transition-ui focus-visible:focus-ring'
@@ -17,8 +19,10 @@ const SEARCH_CHIP_CLASS =
 export function BrowserBookmark() {
 	const { data: searchboxData } = useGetSearchboxData({ enabled: true })
 	const { setPage } = usePage()
+	const { browserBookmarksEnabled } = useGeneralSetting()
 
 	const [isOpen, setIsOpen] = useState(false)
+	const [folderId, setFolderId] = useState<string | null>(null)
 	const [popoverCoords, setPopoverCoords] = useState({ top: 0, left: 0 })
 	const iconRef = useRef<HTMLDivElement>(null)
 
@@ -27,13 +31,17 @@ export function BrowserBookmark() {
 
 		const rect = iconRef.current.getBoundingClientRect()
 		const padding = 10
+		const width = Math.min(
+			browserBookmarksEnabled ? PANEL_WIDTH : FIRST_RUN_WIDTH,
+			window.innerWidth - padding * 2
+		)
 		const left = Math.max(
 			padding,
-			Math.min(rect.left, window.innerWidth - POPOVER_WIDTH - padding)
+			Math.min(rect.right - width, window.innerWidth - width - padding)
 		)
 
 		setPopoverCoords({ top: rect.bottom + 8, left })
-	}, [])
+	}, [browserBookmarksEnabled])
 
 	useEffect(() => {
 		if (!isOpen) return
@@ -125,6 +133,8 @@ export function BrowserBookmark() {
 				isOpen={isOpen}
 				onClose={() => setIsOpen(false)}
 				coords={popoverCoords}
+				folderId={folderId}
+				onFolderChange={setFolderId}
 			/>
 		</div>
 	)

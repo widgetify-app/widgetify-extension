@@ -1,85 +1,58 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import Analytics from '@/analytics'
 import { t } from '@/common/i18n'
 import { Motion, Presence } from '@/common/motion'
-import { getFaviconFromUrl } from '@/features/widgets/utils/icon'
+import { cn } from '@/common/utils/cn'
 import { Button, Portal } from '@/components/ui'
 import { useGeneralSetting } from '@/context/general-setting.context'
-import { Icon } from '@/icons'
-import {
-	type FetchedBrowserBookmark,
-	getBrowserBookmarks,
-} from '@/features/widgets/utils/browser-bookmarks'
+import { BookmarkPanel } from './bookmark-panel'
 
 interface BookmarkPopoverProps {
 	isOpen: boolean
 	onClose: () => void
 	coords: { top: number; left: number }
+	folderId: string | null
+	onFolderChange: (id: string) => void
 }
 
-const ROOT_PARENT_IDS = ['0', 'root']
+const PREVIEW_ROWS = ['w-3/4', 'w-1/2', 'w-2/3']
 
-export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProps) {
+export function BookmarkPopover({
+	isOpen,
+	onClose,
+	coords,
+	folderId,
+	onFolderChange,
+}: BookmarkPopoverProps) {
 	const { browserBookmarksEnabled, setBrowserBookmarksEnabled } = useGeneralSetting()
-	const [fetchedBookmarks, setFetchedBookmarks] = useState<FetchedBrowserBookmark[]>([])
-	const [currentFolderId, setCurrentFolderId] = useState<string | null>(null)
 	const popoverRef = useRef<HTMLDivElement>(null)
-
-	useEffect(() => {
-		async function fetchBookmarks() {
-			const bookmarks = await getBrowserBookmarks({ includeFolders: true })
-			setFetchedBookmarks(bookmarks)
-		}
-		if (browserBookmarksEnabled && isOpen) {
-			fetchBookmarks()
-		}
-	}, [browserBookmarksEnabled, isOpen])
 
 	useEffect(() => {
 		if (!isOpen) return
 
 		const handleClickOutside = (e: MouseEvent) => {
-			if (!popoverRef.current?.contains(e.target as Node)) {
-				onClose()
-				setCurrentFolderId(null)
-			}
+			if (!popoverRef.current?.contains(e.target as Node)) onClose()
+		}
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (e.key === 'Escape') onClose()
 		}
 		document.addEventListener('mousedown', handleClickOutside)
-		return () => document.removeEventListener('mousedown', handleClickOutside)
+		document.addEventListener('keydown', handleKeyDown)
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside)
+			document.removeEventListener('keydown', handleKeyDown)
+		}
 	}, [isOpen, onClose])
-
-	const displayItems = fetchedBookmarks.filter((bookmark) => {
-		if (currentFolderId) return bookmark.parentId === currentFolderId
-		return !bookmark.parentId || ROOT_PARENT_IDS.includes(bookmark.parentId)
-	})
-
-	const handleGoBack = () => {
-		Analytics.event('browser_bookmark_back_clicked')
-		const current = fetchedBookmarks.find((b) => b.id === currentFolderId)
-		setCurrentFolderId(current?.parentId ?? null)
-	}
 
 	const handlePermission = () => {
 		Analytics.event('browser_bookmark_permission_clicked')
 		setBrowserBookmarksEnabled(true)
 	}
 
-	const handleClickItem = (item: FetchedBrowserBookmark) => {
-		if (item.type === 'FOLDER') {
-			Analytics.event('browser_bookmark_folder_opened')
-			setCurrentFolderId(item.id)
-			return
-		}
-
-		if (item.url) {
-			window.open(item.url, '_blank')
-			Analytics.event('browser_bookmark_clicked')
-		}
+	const handleDismiss = () => {
+		Analytics.event('browser_bookmark_permission_dismissed')
+		onClose()
 	}
-
-	const currentFolderTitle =
-		fetchedBookmarks.find((b) => b.id === currentFolderId)?.title ||
-		t('widgets.search.bookmark.mine')
 
 	return (
 		<Portal>
@@ -88,109 +61,70 @@ export function BookmarkPopover({ isOpen, onClose, coords }: BookmarkPopoverProp
 					<Motion.div
 						key="bookmark-popover"
 						ref={popoverRef}
-						className="fixed overflow-hidden border shadow-xl z-popover w-72 border-line rounded-2xl origin-top-left bg-glass-surface-2"
+						className={cn(
+							'fixed overflow-hidden border shadow-xl z-popover border-line rounded-2xl origin-top bg-glass-surface-2',
+							browserBookmarksEnabled
+								? 'w-155 max-w-[calc(100vw-1.25rem)]'
+								: 'w-90 max-w-[calc(100vw-1.25rem)]'
+						)}
 						initial={{ opacity: 0, scale: 0.95 }}
 						animate={{ opacity: 1, scale: 1 }}
 						exit={{ opacity: 0, scale: 0.95 }}
 						transition={{ duration: 0.15, ease: 'easeOut' }}
 						style={{ top: coords.top, left: coords.left, direction: 'rtl' }}
 					>
-						{!browserBookmarksEnabled ? (
-							<div className="p-5 text-center">
-								<div className="flex items-center justify-center w-8 h-8 mx-auto mb-3 rounded-full bg-brand-fill">
-									<Icon
-										name="lock"
-										className="text-brand"
-										size={16}
-										aria-hidden="true"
-									/>
-								</div>
-								<p className="mb-1 text-sm font-bold">
-									{t('widgets.search.bookmark.permissionTitle')}
-								</p>
-								<p className="mb-4 text-xs leading-relaxed text-fg-muted">
-									{t('widgets.search.bookmark.permissionBody')}
-								</p>
-								<Button
-									size="sm"
-									onClick={handlePermission}
-									className="w-full"
-									color="brand"
-									rounded="2xl"
-								>
-									{t('widgets.search.bookmark.allow')}
-								</Button>
-							</div>
+						{browserBookmarksEnabled ? (
+							<BookmarkPanel
+								folderId={folderId}
+								onFolderChange={onFolderChange}
+							/>
 						) : (
-							<div className="flex flex-col max-h-105">
-								<div className="flex items-center justify-between p-3 border-b border-line">
-									<span className="text-xs font-bold text-fg">
-										{currentFolderTitle}
-									</span>
-									{currentFolderId && (
-										<Button
-											size="sm"
-											onClick={handleGoBack}
-											rounded="xl"
-											className="text-3xs flex items-center gap-1!"
+							<div className="flex flex-col gap-3.5 p-4">
+								<div
+									aria-hidden="true"
+									className="flex flex-col gap-2.5 p-3.5 border rounded-xl border-surface-3 bg-surface-2"
+								>
+									{PREVIEW_ROWS.map((width) => (
+										<span
+											key={width}
+											className="flex items-center gap-2"
 										>
-											<Icon
-												name="chevronRight"
-												aria-hidden="true"
+											<span className="w-4 h-4 rounded-sm bg-fill-2" />
+											<span
+												className={cn(
+													'h-2 rounded-sm bg-fill-2',
+													width
+												)}
 											/>
-											{t('widgets.search.bookmark.back')}
-										</Button>
-									)}
+										</span>
+									))}
 								</div>
-
-								<ul className="overflow-y-auto p-1.5">
-									{displayItems.length > 0 ? (
-										displayItems.map((item) => (
-											<li key={item.id}>
-												<button
-													type="button"
-													onClick={() => handleClickItem(item)}
-													className="flex items-center gap-2.5 p-2 w-full text-right bg-transparent border-none rounded-xl cursor-pointer group transition-ui hover:bg-brand-fill hover:text-brand focus-visible:focus-ring"
-												>
-													{item.type === 'FOLDER' ? (
-														<Icon
-															name="folder"
-															className="text-brand shrink-0"
-															size={16}
-															aria-hidden="true"
-														/>
-													) : (
-														<img
-															src={getFaviconFromUrl(
-																item.url || ''
-															)}
-															className="w-4 h-4 rounded-sm shrink-0"
-															alt=""
-															loading="lazy"
-														/>
-													)}
-													<span className="flex-1 min-w-0 text-xs font-medium truncate">
-														{item.title}
-													</span>
-													<Icon
-														name={
-															item.type === 'FOLDER'
-																? 'chevronLeft'
-																: 'externalLink'
-														}
-														size={12}
-														aria-hidden="true"
-														className="opacity-20 group-hover:opacity-50"
-													/>
-												</button>
-											</li>
-										))
-									) : (
-										<li className="py-8 text-xs text-center text-fg-muted">
-											{t('widgets.search.bookmark.empty')}
-										</li>
-									)}
-								</ul>
+								<div>
+									<p className="text-sm font-bold text-fg-strong">
+										{t('widgets.search.bookmark.permissionTitle')}
+									</p>
+									<p className="mt-0.5 text-xs text-fg-muted">
+										{t('widgets.search.bookmark.permissionBody')}
+									</p>
+								</div>
+								<div className="flex gap-2">
+									<Button
+										size="md"
+										color="brand"
+										rounded="xl"
+										onClick={handlePermission}
+										className="flex-1"
+									>
+										{t('widgets.search.bookmark.allow')}
+									</Button>
+									<Button
+										size="md"
+										rounded="xl"
+										onClick={handleDismiss}
+									>
+										{t('widgets.search.bookmark.notNow')}
+									</Button>
+								</div>
 							</div>
 						)}
 					</Motion.div>

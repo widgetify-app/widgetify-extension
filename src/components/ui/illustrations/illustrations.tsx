@@ -626,6 +626,75 @@ const arts = {
 			/>
 		</>
 	),
+	folder: (
+		<>
+			<path
+				className="fill-brand-muted"
+				d="M54 5.5 55.8 9.5 59.8 11.3 55.8 13.1 54 17.1 52.2 13.1 48.2 11.3 52.2 9.5z"
+			/>
+			<path
+				className="fill-brand"
+				d="M6 19a5 5 0 0 1 5-5h12l5 5h21a5 5 0 0 1 5 5v23a5 5 0 0 1-5 5H11a5 5 0 0 1-5-5Z"
+			/>
+			<rect className="fill-on-brand" x="10" y="25" width="40" height="23" rx="3" />
+			<rect
+				className="fill-brand-muted"
+				x="16"
+				y="31"
+				width="20"
+				height="3"
+				rx="1.5"
+			/>
+			<rect
+				className="fill-brand-muted"
+				x="16"
+				y="38"
+				width="13"
+				height="3"
+				rx="1.5"
+			/>
+		</>
+	),
+	search: (
+		<>
+			<path
+				className="fill-brand-muted"
+				d="M13 5.5 14.8 9.5 18.8 11.3 14.8 13.1 13 17.1 11.2 13.1 7.2 11.3 11.2 9.5z"
+			/>
+			<rect className="fill-brand" x="12" y="14" width="34" height="42" rx="6" />
+			<rect className="fill-on-brand" x="16" y="18" width="26" height="34" rx="3" />
+			<rect
+				className="fill-brand-muted"
+				x="21"
+				y="24"
+				width="16"
+				height="3"
+				rx="1.5"
+			/>
+			<rect
+				className="fill-brand-muted"
+				x="21"
+				y="31"
+				width="10"
+				height="3"
+				rx="1.5"
+			/>
+			<circle
+				className="fill-on-brand stroke-brand"
+				cx="42"
+				cy="40"
+				r="9"
+				strokeWidth="4"
+			/>
+			<path
+				className="stroke-brand"
+				d="m48.5 46.5 7 7"
+				fill="none"
+				strokeWidth="5"
+				strokeLinecap="round"
+			/>
+		</>
+	),
 } satisfies Record<string, ReactElement>
 
 export type EmptyArtName = keyof typeof arts

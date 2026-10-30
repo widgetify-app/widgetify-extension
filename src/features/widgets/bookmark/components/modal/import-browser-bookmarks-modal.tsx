@@ -11,7 +11,7 @@ import type { BrowserImportNode } from '../../types'
 import { t } from '@/common/i18n'
 import {
 	type FetchedBrowserBookmark,
-	getBrowserBookmarks,
+	getBrowserBookmarkTree,
 } from '../../../utils/browser-bookmarks'
 
 interface ImportBrowserBookmarksModalProps {
@@ -214,7 +214,7 @@ export function ImportBrowserBookmarksModal({
 		let cancelled = false
 		async function fetchTree() {
 			setIsLoadingTree(true)
-			const tree = await getBrowserBookmarks({ asTree: true })
+			const tree = await getBrowserBookmarkTree({ newestFirst: true })
 			if (cancelled) return
 
 			const initialNodes = tree[0]?.children?.length ? tree[0].children : tree

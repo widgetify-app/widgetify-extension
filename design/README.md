@@ -27,3 +27,4 @@ Image and font links in a board point at `assets/` and at `src/assets/fonts/vazi
 ## Folders
 
 - [pro-tab](pro-tab/README.md): the Pro tab in settings
+- [browser-bookmarks](browser-bookmarks/README.md): the browser bookmarks panel under the search box

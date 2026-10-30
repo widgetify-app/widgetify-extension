@@ -27,7 +27,6 @@ const COMMENT_BASELINE: Record<string, number> = {
 	'src/features/widgets/clock/variants/clock-analog.tsx': 9,
 	'src/features/widgets/clock/variants/clock-flip.tsx': 1,
 	'src/features/widgets/google-calendar/hooks/use-google-calendar-schedule.ts': 1,
-	'src/features/widgets/utils/browser-bookmarks.ts': 7,
 	'src/features/widgets/utils/icon.ts': 1,
 	'src/features/widgets/utils/migration.ts': 3,
 	'src/services/auth/auth-service.hook.ts': 1,
