@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Group open guide in folder modal, step 2</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>@font-face{font-family:"Vazir";src:url(../../../src/assets/fonts/vazir/Vazirmatn-FD-Regular.woff2) format("woff2");font-weight:400;font-display:swap}@font-face{font-family:"Vazir";src:url(../../../src/assets/fonts/vazir/Vazirmatn-FD-Medium.woff2) format("woff2");font-weight:500;font-display:swap}@font-face{font-family:"Vazir";src:url(../../../src/assets/fonts/vazir/Vazirmatn-FD-Bold.woff2) format("woff2");font-weight:700;font-display:swap}@font-face{font-family:"Vazir";src:url(../../../src/assets/fonts/vazir/Vazirmatn-FD-Black.woff2) format("woff2");font-weight:900;font-display:swap}
+body{margin:0}
+.s{--fg-strong:#464647;--fg:rgba(70,70,71,.9);--fg-muted:rgba(70,70,71,.7);--fg-faint:rgba(70,70,71,.5);--surface:#fff;--surface-2:#f8fafc;--surface-3:#f1f5f9;--fill:rgba(70,70,71,.05);--fill-2:rgba(70,70,71,.1);--line:rgba(70,70,71,.15);--brand:#536dfe;--brand-fill:rgba(83,109,254,.1);--brand-fill-2:rgba(83,109,254,.2);--sh-sm:0 1px 2px 0 rgba(23,23,23,.06);--sh-xl:0 20px 25px -5px rgba(23,23,23,.17),0 8px 10px -6px rgba(23,23,23,.17);
+position:relative;width:1080px;box-sizing:border-box;overflow:hidden;background:#3b2a7a url(../../pro-tab/assets/wallpaper.webp) center/cover;font-family:Vazir,Tahoma,sans-serif;color:var(--fg);line-height:1.5625}
+.s *{box-sizing:border-box}
+.ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.pop{position:absolute;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh-xl);overflow:hidden}
+.row{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;border-radius:12px;font-family:inherit;font-size:13px;color:var(--fg-strong)}
+.row.on{background:var(--brand-fill);color:var(--brand)}
+.fav{width:18px;height:18px;border-radius:5px;display:grid;place-items:center;font-size:10px;font-weight:900;color:#fff;flex-shrink:0;font-family:Segoe UI,sans-serif}
+.dom{font-size:11px;color:var(--fg-faint);font-family:Segoe UI,sans-serif;direction:ltr}
+.chip{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:5px;height:26px;padding:0 10px;border-radius:8px;font-family:inherit;font-size:11px;font-weight:700;background:var(--fill);color:var(--fg-muted);white-space:nowrap}
+.chip.on{background:var(--brand-fill);color:var(--brand)}
+.pin{position:absolute;width:24px;height:24px;border-radius:999px;background:#ff627d;color:#fff;font-size:12px;font-weight:900;display:grid;place-items:center;box-shadow:0 0 0 3px #fff}
+.seg{display:flex;gap:4px;padding:3px;border-radius:12px;background:var(--fill)}
+.seg button{all:unset;cursor:pointer;flex:1;text-align:center;padding:5px 8px;border-radius:9px;font-family:inherit;font-size:12px;font-weight:700;color:var(--fg-muted)}
+.seg button[aria-selected=true]{background:var(--surface);color:var(--fg-strong);box-shadow:var(--sh-sm)}
+</style>
+</helmet>
+<div class="s" dir="rtl" style="height:600px">
+<div style="position:absolute;inset:0;background:rgba(0,0,0,.35)"></div>
+<div role="dialog" aria-label="کار" style="position:absolute;left:252px;top:90px;width:576px;height:400px;padding:16px;border-radius:24px;background:var(--surface);box-shadow:var(--sh-xl);display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;align-items:center;justify-content:space-between"><span style="display:flex;align-items:center;gap:8px"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:20px;height:20px;color:#536dfe"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><b style="font-size:14px;color:var(--fg)">کار</b></span>
+<button type="button" aria-label="بستن" style="all:unset;cursor:pointer;width:32px;height:32px;border-radius:8px;display:grid;place-items:center;background:var(--surface-3);color:var(--fg-muted)"><svg class="ic" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+<div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px"><a href="#" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;height:94px;border-radius:24px;background:var(--surface-2);border:1px solid var(--surface-3);text-decoration:none;color:var(--fg-strong);font-size:12px"><span class="fav" style="width:30px;height:30px;background:#ea4335;font-size:16px">G</span><span>Gmail</span></a><a href="#" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;height:94px;border-radius:24px;background:var(--surface-2);border:1px solid var(--surface-3);text-decoration:none;color:var(--fg-strong);font-size:12px"><span class="fav" style="width:30px;height:30px;background:#111111;font-size:16px">N</span><span>Notion</span></a><a href="#" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;height:94px;border-radius:24px;background:var(--surface-2);border:1px solid var(--surface-3);text-decoration:none;color:var(--fg-strong);font-size:12px"><span class="fav" style="width:30px;height:30px;background:#a259ff;font-size:16px">F</span><span>Figma</span></a><a href="#" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;height:94px;border-radius:24px;background:var(--surface-2);border:1px solid var(--surface-3);text-decoration:none;color:var(--fg-strong);font-size:12px"><span class="fav" style="width:30px;height:30px;background:#24292f;font-size:16px">G</span><span>GitHub</span></a><a href="#" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;height:94px;border-radius:24px;background:var(--surface-2);border:1px solid var(--surface-3);text-decoration:none;color:var(--fg-strong);font-size:12px"><span class="fav" style="width:30px;height:30px;background:#0079bf;font-size:16px">T</span><span>Trello</span></a><span style="height:94px;border-radius:24px;border:1px dashed var(--line)"></span><span style="height:94px;border-radius:24px;border:1px dashed var(--line)"></span><span style="height:94px;border-radius:24px;border:1px dashed var(--line)"></span><span style="height:94px;border-radius:24px;border:1px dashed var(--line)"></span><span style="height:94px;border-radius:24px;border:1px dashed var(--line)"></span></div></div><div role="dialog" aria-label="همه‌ی بوکمارک‌های یه پوشه رو یه‌جا باز کن" style="position:absolute;left:470px;top:158px;width:328px;padding:12px;border-radius:16px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--sh-xl);display:flex;flex-direction:column;gap:10px">
+<span aria-hidden="true" style="position:absolute;top:-7px;right:44px;width:12px;height:12px;background:var(--surface);border-top:1px solid var(--line);border-left:1px solid var(--line);transform:rotate(45deg)"></span>
+<img src="../assets/group-open.webp" alt="" style="width:100%;aspect-ratio:5/2;border-radius:12px;object-fit:cover">
+<div><h2 style="margin:0;font-size:14px;line-height:1.4;font-weight:700;color:var(--fg-strong)">همه‌ی بوکمارک‌های یه پوشه رو یه‌جا باز کن</h2>
+<p style="margin:2px 0 0;font-size:12px;line-height:1.75;color:var(--fg-muted)">روی پوشه کلیک وسط بزن یا Ctrl رو نگه دار و کلیک کن، همه‌شون با هم توی تب‌های جدید باز میشن</p></div>
+<div style="display:flex;align-items:center;gap:6px"><span aria-hidden="true" style="display:flex;gap:4px"><span style="height:6px;width:6px;border-radius:999px;background:var(--fill-2)"></span><span style="height:6px;width:16px;border-radius:999px;background:var(--brand)"></span></span><span style="display:flex;gap:4px"><span style="display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 8px;border-radius:8px;border:1px solid var(--surface-3);background:var(--surface-2);font-size:11px;font-weight:700;color:var(--fg)">کلیک وسط</span><span style="display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 8px;border-radius:8px;border:1px solid var(--surface-3);background:var(--surface-2);font-size:11px;font-weight:700;color:var(--fg)"><span style="font-family:Segoe UI,sans-serif">Ctrl</span> + کلیک</span></span><span style="flex:1"></span><button type="button" style="all:unset;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;height:36px;padding:0 18px;border-radius:12px;background:var(--brand);color:#fff;font-family:inherit;font-size:13px;font-weight:700;height:32px;padding:0 14px;font-size:12px">فهمیدم</button></div></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1080,"height":600}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>
