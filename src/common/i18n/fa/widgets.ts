@@ -478,6 +478,17 @@ export const widgets = {
 	'widgets.bookmark.item.optionsAria': 'گزینه‌های بوکمارک',
 	'widgets.bookmark.suggestions.title': 'پیشنهاد ویجتیفای',
 	'widgets.bookmark.folder.back': 'بازگشت',
+	'widgets.bookmark.intro.permissionTitle': 'پوشه‌هات رو یه‌جا، توی یه گروه تب باز کن',
+	'widgets.bookmark.intro.permissionBody':
+		'برای اینکه بوکمارک‌های یه پوشه کنار هم توی یه گروه تب باز بشن، به گروه‌بندی تب‌ها دسترسی لازم داریم',
+	'widgets.bookmark.intro.allow': 'اجازه بده',
+	'widgets.bookmark.intro.notNow': 'فعلا نه',
+	'widgets.bookmark.intro.title': 'همه‌ی بوکمارک‌های یه پوشه رو یه‌جا باز کن',
+	'widgets.bookmark.intro.body':
+		'روی پوشه کلیک وسط بزن یا Ctrl رو نگه دار و کلیک کن، همه‌شون با هم توی تب‌های جدید باز میشن',
+	'widgets.bookmark.intro.middleClick': 'کلیک وسط',
+	'widgets.bookmark.intro.ctrlClick': 'Ctrl + کلیک',
+	'widgets.bookmark.intro.gotIt': 'فهمیدم',
 	'widgets.bookmark.modal.add.folderTitle': 'پوشه جدید',
 	'widgets.bookmark.modal.add.bookmarkTitle': 'بوکمارک جدید',
 	'widgets.bookmark.modal.add.folderName': 'نام پوشه',

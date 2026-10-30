@@ -18,6 +18,7 @@ import { useUpdateBookmarkOrder } from '@/services/bookmark/update-bookmark-orde
 import type { Bookmark } from '@/services/bookmark/bookmark.interface'
 import type { FolderPathItem } from '../../types'
 import { BookmarkGrid } from '../bookmark-grid'
+import { GroupOpenIntro } from '../group-open-intro'
 import { FolderPath } from '../folder-path'
 import { AddBookmarkModal } from './add-bookmark-modal'
 import { ImportBrowserBookmarksModal } from './import-browser-bookmarks-modal'
@@ -188,7 +189,8 @@ export function BookmarkFolderModal({
 			className="max-w-xl min-h-95 md:min-h-100 h-95 md:h-100 flex flex-col [&>div:last-child]:flex-1 [&>div:last-child]:min-h-0 [&>div:last-child]:flex [&>div:last-child]:flex-col"
 			closeOnBackdropClick={true}
 		>
-			<div className="flex flex-col flex-1 h-full min-h-0 gap-3 p-1 select-none">
+			<div className="relative flex flex-col flex-1 h-full min-h-0 gap-3 p-1 select-none">
+				{isOpen && <GroupOpenIntro className="absolute z-20 top-3 start-1" />}
 				{folderPath.length > 1 && (
 					<div className="pb-2 border-b border-line shrink-0">
 						<FolderPath folderPath={folderPath} onNavigate={handleNavigate} />

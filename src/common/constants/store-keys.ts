@@ -23,6 +23,7 @@ export interface StorageKV {
 	deletedBookmarkIds: string[]
 	friendSuggestionsDismissed: string[]
 	seenFriendActivities: string[]
+	seenFeatureIntros: string[]
 	showWelcomeModal: boolean
 	hasSeenTour: boolean
 	[key: `currency:${string}`]: FetchedCurrency

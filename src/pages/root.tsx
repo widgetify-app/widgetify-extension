@@ -4,6 +4,7 @@ import { purgeDeprecatedStorageKeys } from '@/common/storage'
 import { listenEvent } from '@/common/utils/call-event'
 import { StackedToaster } from '@/components/ui'
 import { GeneralSettingProvider } from '@/context/general-setting.context'
+import { FeatureIntroProvider } from '@/context/feature-intro.context'
 import { AccountContactProvider } from '@/features/setting/account/account-contact.context'
 import { PartnerAccessProvider } from '@/features/widgets/partner-access.context'
 import { FreeWidgetProvider } from '@/features/widgets/widgets.context'
@@ -35,9 +36,11 @@ export function RootLayout() {
 		<>
 			<div className="w-full min-h-screen mx-auto md:px-4 lg:px-0 max-w-[1080px] flex flex-col h-screen overflow-y-auto scrollbar-none">
 				<GeneralSettingProvider>
-					<WallpaperProvider>
-						<Main></Main>
-					</WallpaperProvider>
+					<FeatureIntroProvider>
+						<WallpaperProvider>
+							<Main></Main>
+						</WallpaperProvider>
+					</FeatureIntroProvider>
 				</GeneralSettingProvider>
 			</div>
 			<StackedToaster />
