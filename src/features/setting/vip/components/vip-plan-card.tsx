@@ -31,12 +31,12 @@ export function VipPlanCard({
 			aria-pressed={isSelected}
 			onClick={() => !isClaimed && onSelect(plan)}
 			className={cn(
-				'relative flex flex-col gap-2 w-full p-4 rounded-2xl border text-start transition-ui focus-visible:focus-ring',
+				'relative flex flex-col gap-2 w-full px-5 py-3 rounded-2xl border text-start transition-ui focus-visible:focus-ring',
 				isClaimed
 					? 'border-surface-3 bg-fill opacity-65 cursor-not-allowed'
 					: isSelected
 						? 'border-brand bg-brand-fill ring-1 ring-brand cursor-pointer'
-						: 'border-surface-3 bg-surface hover:border-brand-muted cursor-pointer'
+						: 'border-surface-3 bg-surface-2 hover:border-brand-muted cursor-pointer'
 			)}
 		>
 			{badge && !isClaimed && (
@@ -75,14 +75,14 @@ export function VipPlanCard({
 			</span>
 
 			{plan.price === 0 ? (
-				<span className="text-2xl font-black text-fg-strong">
+				<span className="text-xl font-black text-fg-strong">
 					{isClaimed
 						? t('setting.vipPlan.alreadyClaimed')
 						: t('setting.vipPlan.free')}
 				</span>
 			) : (
 				<span className="flex items-baseline gap-1">
-					<span className="text-2xl font-black text-fg-strong tabular-nums">
+					<span className="text-xl font-black text-fg-strong tabular-nums">
 						{fmt(plan.price)}
 					</span>
 					<span className="text-xs text-fg-muted">

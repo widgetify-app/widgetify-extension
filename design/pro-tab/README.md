@@ -14,7 +14,7 @@ The redesign of the settings tab «ویجتیفای پرو» (`src/features/sett
 
 ## The tab
 
-1. **Hero.** `assets/hero-pro.webp` with the Pro icon, the Pro badge, a headline and one line of text. No dark overlay.
+1. **Hero.** `assets/hero-pro.webp` (option H4, approved): a brand-blue gradient with a large faint copy of the Pro icon bleeding off the edge and the icon on top. Over it sit the Pro badge, a headline and one line of text, with no dark overlay. The card radius is 16px, like any card.
 2. **Benefit cards.** Four cards that overlap the bottom of the hero by 64px, all the same height. Each card has a small picture, a title, two reserved lines of text and a «جزئیات» link pinned to the bottom. A click opens the details window on that card's page.
 3. **Plans.** Every plan in one row: the free trial first, then monthly, three months and a year. The selected plan has a brand ring, and the plan the server marks gets the «محبوب» badge. Each paid plan shows its monthly cost or its saving against monthly.
 4. **Payment bar.** The amount, the renewal line and «فعال‌سازی پرو». The amount follows the selected plan.
@@ -70,7 +70,7 @@ The upload limit is 40MB for Pro and 2MB for free by default, and the server con
 - The button uses `brand`. Today's code uses `vip` for it.
 - The Pro badge stays `vip`, as `VipBadge` draws it.
 - Only the light theme is drawn. Check that the dark and glass themes hold up, with every colour taken from a token.
-- The art still needs a final pass; the files in `assets/` are drafts.
+- The hero art is approved. `stage.webp` and `wallpaper.webp` are still drafts.
 
 ## Art
 

@@ -104,7 +104,7 @@ export function VipFeaturesModal({
 						type="button"
 						onClick={onClose}
 						aria-label={t('ui.common.close')}
-						className="absolute z-10 grid w-8 h-8 border rounded-full cursor-pointer top-3.5 left-3.5 place-items-center bg-image-fill border-image-line text-image-fg transition-ui hover:bg-scrim-soft focus-visible:focus-ring"
+						className="absolute z-10 grid w-8 h-8 border rounded-lg cursor-pointer top-3.5 left-3.5 place-items-center bg-image-fill border-image-line text-image-fg transition-ui hover:bg-scrim-soft focus-visible:focus-ring"
 					>
 						<Icon name="close" size={16} />
 					</button>
@@ -118,7 +118,7 @@ export function VipFeaturesModal({
 				</div>
 				<div className="flex flex-col items-center gap-4 px-6 pt-5 pb-6 text-center">
 					<div>
-						<h2 className="text-xl font-black text-fg-strong">{t(title)}</h2>
+						<h2 className="text-lg font-bold text-fg-strong">{t(title)}</h2>
 						<p className="mt-1 text-sm text-fg-muted">{t(body)}</p>
 					</div>
 					<div className="flex items-center gap-4">
@@ -126,7 +126,7 @@ export function VipFeaturesModal({
 							type="button"
 							onClick={() => goTo(page - 1)}
 							aria-label={t('ui.common.previous')}
-							className="grid rounded-full cursor-pointer w-9 h-9 place-items-center bg-fill text-fg-muted transition-ui hover:bg-fill-2 focus-visible:focus-ring"
+							className="grid rounded-xl cursor-pointer w-9 h-9 place-items-center bg-fill text-fg-muted transition-ui hover:bg-fill-2 focus-visible:focus-ring"
 						>
 							<Icon name="chevronRight" size={20} />
 						</button>
@@ -153,7 +153,7 @@ export function VipFeaturesModal({
 							type="button"
 							onClick={() => goTo(page + 1)}
 							aria-label={t('ui.common.next')}
-							className="grid rounded-full cursor-pointer w-9 h-9 place-items-center bg-fill text-fg-muted transition-ui hover:bg-fill-2 focus-visible:focus-ring"
+							className="grid rounded-xl cursor-pointer w-9 h-9 place-items-center bg-fill text-fg-muted transition-ui hover:bg-fill-2 focus-visible:focus-ring"
 						>
 							<Icon name="chevronLeft" size={20} />
 						</button>

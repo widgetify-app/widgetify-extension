@@ -133,16 +133,16 @@ export function VipTab() {
 	}
 
 	return (
-		<div className="flex flex-col w-full gap-4 text-right select-none">
+		<div className="flex flex-col w-full gap-8 text-right select-none">
 			<VipHeroBanner onOpenFeature={openFeature} />
 
-			<div ref={plansRef} className="px-3 pt-1 space-y-3">
+			<div ref={plansRef} className="px-3 space-y-4">
 				<h4 className="text-sm font-bold text-fg-strong">
 					{t('setting.vip.selectPlanTitle')}
 				</h4>
 
 				{isLoading ? (
-					<div className="grid grid-cols-2 gap-3">
+					<div className="grid grid-cols-2 gap-4">
 						{Array.from({ length: 2 }).map((_, i) => (
 							<div
 								key={i}
@@ -157,7 +157,7 @@ export function VipTab() {
 				) : plans?.length ? (
 					<div
 						className={cn(
-							'grid gap-3 pt-2',
+							'grid gap-4 pt-2',
 							VIP_GRID_LAYOUTS[plans.length] || 'grid-cols-2 md:grid-cols-4'
 						)}
 					>
@@ -184,7 +184,7 @@ export function VipTab() {
 				)}
 			</div>
 
-			<section className="flex flex-wrap items-center justify-between gap-4 p-3 border ps-5 rounded-2xl border-surface-3 bg-surface-2">
+			<section className="flex flex-wrap items-center justify-between gap-4 p-4 border ps-6 rounded-2xl border-surface-3 bg-surface-2">
 				<div className="flex flex-col">
 					<span className="text-xs text-fg-muted">
 						{t('setting.vip.payableAmount')}

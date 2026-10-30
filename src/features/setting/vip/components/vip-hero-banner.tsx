@@ -52,14 +52,14 @@ interface VipHeroBannerProps {
 export function VipHeroBanner({ onOpenFeature }: VipHeroBannerProps) {
 	return (
 		<div>
-			<section className="relative overflow-hidden h-62 rounded-widget bg-brand">
+			<section className="relative overflow-hidden h-62 rounded-2xl bg-brand">
 				<img
 					src={heroArt}
 					alt=""
 					className="absolute inset-0 object-cover object-left w-full h-full"
 				/>
-				<div className="absolute top-0 bottom-16 start-0 flex w-full flex-col justify-center gap-2 px-8 sm:w-3/5">
-					<VipBadge text={t('setting.tab.vip')} className="self-start" />
+				<div className="absolute top-0 bottom-16 start-0 flex w-full flex-col justify-center gap-3 px-8 sm:w-3/5">
+					<VipBadge text={t('setting.vip.proLabel')} className="self-start" />
 					<h2 className="text-3xl font-black text-image-fg">
 						{t('setting.vipHero.title')}
 					</h2>
@@ -68,18 +68,18 @@ export function VipHeroBanner({ onOpenFeature }: VipHeroBannerProps) {
 					</p>
 				</div>
 			</section>
-			<div className="relative grid grid-cols-2 gap-3 mx-4 -mt-16 md:grid-cols-4">
+			<div className="relative grid grid-cols-2 gap-4 mx-6 -mt-16 md:grid-cols-4">
 				{BENEFITS.map(({ id, title, body, Art }) => (
 					<button
 						key={id}
 						type="button"
 						aria-haspopup="dialog"
 						onClick={() => onOpenFeature(id)}
-						className="flex flex-col gap-2.5 p-3.5 text-start border cursor-pointer rounded-2xl border-surface-3 bg-surface shadow-md transition-ui hover:border-brand-muted focus-visible:focus-ring"
+						className="flex flex-col gap-3 p-4 text-start border cursor-pointer rounded-2xl border-surface-3 bg-surface-2 shadow-md transition-ui hover:border-brand-muted focus-visible:focus-ring"
 					>
 						<span
 							aria-hidden="true"
-							className="relative flex items-center justify-center gap-1.5 overflow-hidden border h-14 rounded-xl border-surface-3 bg-surface-2"
+							className="relative flex items-center justify-center gap-1.5 overflow-hidden border h-14 rounded-xl border-surface-3 bg-surface"
 						>
 							<Art />
 						</span>

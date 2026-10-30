@@ -6,7 +6,7 @@ import { Icon } from '@/icons'
 import wallpaperArt from '@/assets/images/pro/wallpaper.webp'
 
 const WIDGET_CARD =
-	'rounded-2xl border border-surface-3 bg-surface shadow-sm text-fg-strong'
+	'rounded-2xl border border-surface-3 bg-glass-surface shadow-sm text-fg-strong'
 
 const faDigits = (value: number, minimumIntegerDigits = 1) =>
 	new Intl.NumberFormat('fa-IR', { minimumIntegerDigits, useGrouping: false }).format(
@@ -20,7 +20,7 @@ const faDegrees = (value: number) => `${faDigits(value)}°`
 
 function MiniClock({ hours, minutes }: { hours: number; minutes: number }) {
 	return (
-		<span className="px-2 py-1 text-sm font-black rounded-lg border border-surface-3 bg-surface text-fg-strong tabular-nums">
+		<span className="px-2 py-1 text-sm font-black rounded-lg border border-surface-3 bg-surface-2 text-fg-strong tabular-nums">
 			{faTime(hours, minutes)}
 		</span>
 	)
@@ -100,7 +100,7 @@ export function GalleryCardArt() {
 		<>
 			<Avatar className="w-6.5 h-6.5 bg-warning-fill-2 text-warning" size={16} />
 			<Avatar className="w-6.5 h-6.5 bg-brand-fill-2 text-brand" size={16} />
-			<span className="grid rounded-lg w-6.5 h-6.5 place-items-center border border-surface-3 bg-surface text-danger shadow-sm">
+			<span className="grid rounded-lg w-6.5 h-6.5 place-items-center border border-surface-3 bg-surface-2 text-danger shadow-sm">
 				<Icon name="heart" size={14} />
 			</span>
 			<Avatar className="w-6.5 h-6.5 bg-success-fill-2 text-success" size={16} />
@@ -311,7 +311,7 @@ export function WallpaperStage({ maxUploadSize }: { maxUploadSize: number }) {
 				/>
 				<NewTab className="inset-0" position="center 65%" front />
 			</div>
-			<span className="relative z-10 flex items-center gap-3 px-4 mt-5 h-13 rounded-2xl bg-surface shadow-lg">
+			<span className="relative z-10 flex items-center gap-3 px-4 mt-5 border h-13 rounded-2xl border-surface-3 bg-glass-surface-2 shadow-lg">
 				<span className="text-brand">
 					<Icon name="uploadImage" size={20} />
 				</span>
