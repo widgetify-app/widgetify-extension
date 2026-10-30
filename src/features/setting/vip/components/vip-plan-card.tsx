@@ -1,18 +1,25 @@
 import { t } from '@/common/i18n'
 import { getContrastingTextColor } from '@/common/utils/color'
 import { cn } from '@/common/utils/cn'
-import { Icon } from '@/icons'
 import type { VipPlan } from '@/services/market/market-vip.interface'
 
 interface VipPlanCardProps {
 	plan: VipPlan
+	note: string
+	highlightNote: boolean
 	isSelected: boolean
 	onSelect: (plan: VipPlan) => void
 }
 
 const fmt = (n: number) => new Intl.NumberFormat('fa-IR').format(n)
 
-export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
+export function VipPlanCard({
+	plan,
+	note,
+	highlightNote,
+	isSelected,
+	onSelect,
+}: VipPlanCardProps) {
 	const badge = plan.meta?.badge
 	const badgeColor = plan.meta?.badgeColor
 	const isClaimed = Boolean(plan.isClaimed)
@@ -24,16 +31,16 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 			aria-pressed={isSelected}
 			onClick={() => !isClaimed && onSelect(plan)}
 			className={cn(
-				'relative flex flex-col justify-between w-full p-3.5 rounded-2xl border transition-ui text-right min-h-24 group',
+				'relative flex flex-col gap-2 w-full px-5 py-3 rounded-2xl border text-start transition-ui focus-visible:focus-ring',
 				isClaimed
-					? 'opacity-65  border-line bg-fill cursor-not-allowed saturate-50'
+					? 'border-surface-3 bg-fill opacity-65 cursor-not-allowed'
 					: isSelected
-						? 'border-brand bg-brand-fill ring-1 ring-brand shadow-sm cursor-pointer'
-						: 'border-surface-3 bg-surface-2 hover:border-brand-muted hover:bg-fill-2 cursor-pointer'
+						? 'border-brand bg-brand-fill ring-1 ring-brand cursor-pointer'
+						: 'border-surface-3 bg-surface-2 hover:border-brand-muted cursor-pointer'
 			)}
 		>
 			{badge && !isClaimed && (
-				<div
+				<span
 					style={
 						badgeColor
 							? {
@@ -43,78 +50,55 @@ export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 							: undefined
 					}
 					className={cn(
-						'absolute -top-2.5 left-1/2 -translate-x-1/2 text-3xs font-bold px-2.5 py-0.5 rounded-full shadow-sm',
+						'absolute -top-2.5 end-4 px-2 py-0.5 text-2xs font-bold rounded-full shadow-sm',
 						!badgeColor && 'bg-brand text-on-brand'
 					)}
 				>
 					{badge}
-				</div>
+				</span>
 			)}
 
 			{isClaimed && (
-				<div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-surface text-fg-muted text-3xs font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-					<span>{t('setting.vipPlan.used')}</span>
-				</div>
+				<span className="absolute -top-2.5 end-4 px-2 py-0.5 text-2xs font-bold rounded-full bg-surface text-fg-muted">
+					{t('setting.vipPlan.used')}
+				</span>
 			)}
 
-			<div className="flex items-start justify-between gap-2">
-				<div className="flex items-center gap-2">
-					<h5
-						className={cn(
-							'text-xs font-bold',
-							isClaimed ? 'text-fg-muted' : 'text-fg'
-						)}
-					>
-						{plan.title}
-					</h5>
-					<span className="text-3xs text-fg-muted">
-						{fmt(plan.days)} {t('setting.vipPlan.daysCredit')}
-					</span>
-				</div>
-
-				<div
+			<span className="flex items-center justify-between gap-2">
+				<span className="text-sm font-bold text-fg-strong">{plan.title}</span>
+				<span
 					className={cn(
-						'w-4 h-4 rounded-full border flex items-center justify-center shrink-0 transition-colors',
-						isClaimed
-							? 'border-line bg-fill text-fg-muted'
-							: isSelected
-								? 'border-brand bg-brand text-on-brand'
-								: 'border-line bg-fill-2 group-hover:border-brand-muted'
+						'w-4 h-4 rounded-full shrink-0 bg-surface transition-ui',
+						isSelected ? 'border-4 border-brand' : 'border border-line'
 					)}
-				>
-					{isClaimed ? (
-						<Icon name="check" size={10} />
-					) : (
-						isSelected && <Icon name="check" size={10} />
-					)}
-				</div>
-			</div>
+				/>
+			</span>
 
-			<div className="mt-2.5 space-y-1">
-				<div className="flex items-baseline gap-1">
-					{plan.price === 0 ? (
-						<span
-							className={cn(
-								'text-base font-black',
-								isClaimed ? 'text-fg-muted' : 'text-success'
-							)}
-						>
-							{isClaimed
-								? t('setting.vipPlan.alreadyClaimed')
-								: t('setting.vipPlan.free')}
-						</span>
-					) : (
-						<>
-							<span className="text-base font-black text-fg tabular-nums">
-								{fmt(plan.price)}
-							</span>
-							<span className="text-2xs text-fg-muted">
-								{t('setting.vipPlan.currencyToman')}
-							</span>
-						</>
-					)}
-				</div>
-			</div>
+			{plan.price === 0 ? (
+				<span className="text-xl font-black text-fg-strong">
+					{isClaimed
+						? t('setting.vipPlan.alreadyClaimed')
+						: t('setting.vipPlan.free')}
+				</span>
+			) : (
+				<span className="flex items-baseline gap-1">
+					<span className="text-xl font-black text-fg-strong tabular-nums">
+						{fmt(plan.price)}
+					</span>
+					<span className="text-xs text-fg-muted">
+						{t('setting.vipPlan.currencyToman')}
+					</span>
+				</span>
+			)}
+
+			<span
+				className={cn(
+					'text-xs',
+					highlightNote ? 'font-bold text-brand' : 'text-fg-muted'
+				)}
+			>
+				{note}
+			</span>
 		</button>
 	)
 }

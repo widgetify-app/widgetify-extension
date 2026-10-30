@@ -4,13 +4,15 @@ import Analytics from '@/analytics'
 import { showToast } from '@/common/toast'
 import { useAuth } from '@/context/auth.context'
 import { useUploadCustomWallpaper } from '@/services/wallpapers/upload-custom-wallpaper.hook'
-import { useGetWallpaperConfig } from '@/services/wallpapers/get-wallpaper-config.hook'
+import {
+	DEFAULT_VIP_MAX_UPLOAD_SIZE,
+	useGetWallpaperConfig,
+} from '@/services/wallpapers/get-wallpaper-config.hook'
 import { type ApiError, safeAwait } from '@/services/api'
 import { translateError } from '@/common/utils/translate-error'
 import { callEvent } from '@/common/utils/call-event'
 
 const DEFAULT_FREE_MAX_SIZE = 2
-const DEFAULT_VIP_MAX_SIZE = 40
 
 interface UseWallpaperUploadProps {
 	onWallpaperChange: (wallpaper: Wallpaper) => void
@@ -24,7 +26,9 @@ export function useWallpaperUpload({ onWallpaperChange }: UseWallpaperUploadProp
 
 	const freeMaxSize = config?.maxUploadSizeFree ?? DEFAULT_FREE_MAX_SIZE
 	const vipMaxSize =
-		config?.maxUploadSizeVip ?? config?.maxUploadSizeVip ?? DEFAULT_VIP_MAX_SIZE
+		config?.maxUploadSizeVip ??
+		config?.maxUploadSizeVip ??
+		DEFAULT_VIP_MAX_UPLOAD_SIZE
 
 	const processFile = async (file: File) => {
 		const isImage = file.type.startsWith('image/')

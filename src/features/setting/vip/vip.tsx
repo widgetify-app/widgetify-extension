@@ -1,5 +1,5 @@
 import { t } from '@/common/i18n'
-import { useState, useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Analytics from '@/analytics'
 import { cn } from '@/common/utils/cn'
 import { Button } from '@/components/ui'
@@ -13,16 +13,39 @@ import type { VipPlan } from '@/services/market/market-vip.interface'
 import { FreeVipSuccessModal } from './components/free-vip-success-modal'
 import { VipPlanCard } from './components/vip-plan-card'
 import { VipHeroBanner } from './components/vip-hero-banner'
+import {
+	VIP_FEATURE_IDS,
+	type VipFeatureId,
+	VipFeaturesModal,
+} from './components/vip-features-modal'
+import { findMonthlyPlan, monthlyPrice, savingPercent } from './utils/plan-pricing'
 
 const VIP_LABEL = t('setting.vip.proLabel')
 
 const fmt = (n: number) => new Intl.NumberFormat('fa-IR').format(n)
 
 const VIP_GRID_LAYOUTS: Record<number, string> = {
-	1: 'grid-cols-1 max-w-sm mx-auto',
-	2: 'grid-cols-1 sm:grid-cols-2',
-	3: 'grid-cols-1 sm:grid-cols-3',
-	4: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
+	1: 'grid-cols-1 max-w-sm',
+	2: 'grid-cols-2',
+	3: 'grid-cols-2 md:grid-cols-3',
+	4: 'grid-cols-2 md:grid-cols-4',
+}
+
+function planNote(plan: VipPlan, monthly: VipPlan | undefined) {
+	if (plan.price === 0) {
+		return {
+			text: t('setting.vipPlan.freeOnce', { p0: fmt(plan.days) }),
+			highlight: false,
+		}
+	}
+	const saving = savingPercent(plan, monthly)
+	if (saving > 0) {
+		return { text: t('setting.vipPlan.saving', { p0: fmt(saving) }), highlight: true }
+	}
+	return {
+		text: t('setting.vipPlan.monthlyPrice', { p0: fmt(monthlyPrice(plan)) }),
+		highlight: false,
+	}
 }
 
 export function VipTab() {
@@ -30,6 +53,8 @@ export function VipTab() {
 	const [selectedPlan, setSelectedPlan] = useState<VipPlan | null>(null)
 	const [showSuccessModal, setShowSuccessModal] = useState(false)
 	const [claimedDays, setClaimedDays] = useState<number>(5)
+	const [featurePage, setFeaturePage] = useState<number | null>(null)
+	const plansRef = useRef<HTMLDivElement>(null)
 
 	const { data: plans, isLoading, refetch } = useGetVipPlans()
 	const { mutate: purchasePlan, isPending } = usePurchaseVipPlan()
@@ -44,6 +69,21 @@ export function VipTab() {
 			setSelectedPlan(popular)
 		}
 	}, [plans, selectedPlan])
+
+	const openFeature = (feature: VipFeatureId) => {
+		Analytics.event('vip_feature_details_opened', { feature })
+		setFeaturePage(VIP_FEATURE_IDS.indexOf(feature))
+	}
+
+	const activateFromFeatures = () => {
+		Analytics.event('vip_feature_details_activate_clicked', {
+			feature: VIP_FEATURE_IDS[featurePage ?? 0],
+		})
+		setFeaturePage(null)
+		plansRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+	}
+
+	const monthlyPlan = plans ? findMonthlyPlan(plans) : undefined
 
 	const handlePurchase = () => {
 		if (!selectedPlan) {
@@ -93,17 +133,16 @@ export function VipTab() {
 	}
 
 	return (
-		<div className="flex flex-col w-full gap-4 text-right select-none">
-			{/* Top Hero Banner without media dependencies */}
-			<VipHeroBanner />
+		<div className="flex flex-col w-full gap-8 text-right select-none">
+			<VipHeroBanner onOpenFeature={openFeature} />
 
-			<div className="space-y-2.5 pt-1">
-				<h4 className="text-xs font-bold text-fg">
+			<div ref={plansRef} className="px-3 space-y-4">
+				<h4 className="text-sm font-bold text-fg-strong">
 					{t('setting.vip.selectPlanTitle')}
 				</h4>
 
 				{isLoading ? (
-					<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+					<div className="grid grid-cols-2 gap-4">
 						{Array.from({ length: 2 }).map((_, i) => (
 							<div
 								key={i}
@@ -118,19 +157,23 @@ export function VipTab() {
 				) : plans?.length ? (
 					<div
 						className={cn(
-							'grid gap-3',
-							VIP_GRID_LAYOUTS[plans.length] ||
-								'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+							'grid gap-4 pt-2',
+							VIP_GRID_LAYOUTS[plans.length] || 'grid-cols-2 md:grid-cols-4'
 						)}
 					>
-						{plans.map((plan) => (
-							<VipPlanCard
-								key={plan.id}
-								plan={plan}
-								isSelected={selectedPlan?.id === plan.id}
-								onSelect={(p) => setSelectedPlan(p)}
-							/>
-						))}
+						{plans.map((plan) => {
+							const note = planNote(plan, monthlyPlan)
+							return (
+								<VipPlanCard
+									key={plan.id}
+									plan={plan}
+									note={note.text}
+									highlightNote={note.highlight}
+									isSelected={selectedPlan?.id === plan.id}
+									onSelect={(p) => setSelectedPlan(p)}
+								/>
+							)
+						})}
 					</div>
 				) : (
 					<div className="flex flex-col items-center justify-center py-6 text-center border rounded-2xl border-line bg-fill">
@@ -141,74 +184,62 @@ export function VipTab() {
 				)}
 			</div>
 
-			<div className="p-3.5 rounded-2xl border border-surface-3 bg-surface-2 flex flex-col sm:flex-row items-center justify-between gap-3">
-				<div className="flex items-center gap-2.5 w-full sm:w-auto">
-					<div className="flex items-center justify-center w-10 h-10 rounded-xl text-brand shrink-0">
-						<Icon name="shoppingBag" size={20} />
-					</div>
-					<div className="flex flex-col">
-						<span className="text-xs font-bold text-fg">
-							{selectedPlan?.title || t('setting.vip.subscriptionLabel')}{' '}
-							{VIP_LABEL}
-						</span>
-						<span className="text-2xs text-fg-muted">
-							{t('setting.vip.fullAccessHint')} {VIP_LABEL}
-						</span>
-					</div>
-				</div>
-
-				<div className="flex items-center justify-between w-full gap-4 sm:justify-end sm:w-auto">
-					<div className="flex flex-col items-start sm:items-end">
-						<span className="text-2xs text-fg-muted">
-							{t('setting.vip.payableAmount')}
-						</span>
-						<div className="flex items-baseline gap-1">
-							{selectedPlan?.price === 0 ? (
-								<span className="text-base font-black sm:text-lg text-success">
-									{selectedPlan.isClaimed
-										? t('setting.vipPlan.alreadyClaimed')
-										: t('setting.vipPlan.free')}
-								</span>
-							) : (
-								<>
-									<span className="text-base font-black sm:text-lg text-fg tabular-nums">
-										{selectedPlan
-											? fmt(selectedPlan.price)
-											: t('setting.vip.zeroAmount')}
-									</span>
-									<span className="text-xs text-fg-muted">
-										{t('setting.vipPlan.currencyToman')}
-									</span>
-								</>
-							)}
-						</div>
-					</div>
-
-					<div className="flex flex-col items-center gap-1">
-						<Button
-							size="md"
-							rounded="2xl"
-							disabled={
-								!selectedPlan ||
-								isPending ||
-								Boolean(selectedPlan?.isClaimed)
-							}
-							loading={isPending}
-							loadingText={t('setting.vip.transferring')}
-							onClick={handlePurchase}
-							className="font-bold transition-ui px-6 h-10 shadow-sm"
-							color="vip"
-						>
-							<Icon name="diamond" size={14} />
-							<span>
-								{selectedPlan?.isClaimed
-									? t('setting.vip.received')
-									: t('setting.vip.activatePlan', { p0: VIP_LABEL })}
+			<section className="flex flex-wrap items-center justify-between gap-4 p-4 border ps-6 rounded-2xl border-surface-3 bg-surface-2">
+				<div className="flex flex-col">
+					<span className="text-xs text-fg-muted">
+						{t('setting.vip.payableAmount')}
+					</span>
+					<div className="flex items-baseline gap-1">
+						{selectedPlan?.price === 0 ? (
+							<span className="text-xl font-black text-fg-strong">
+								{selectedPlan.isClaimed
+									? t('setting.vipPlan.alreadyClaimed')
+									: t('setting.vipPlan.free')}
 							</span>
-						</Button>
+						) : (
+							<>
+								<span className="text-xl font-black text-fg-strong tabular-nums">
+									{selectedPlan
+										? fmt(selectedPlan.price)
+										: t('setting.vip.zeroAmount')}
+								</span>
+								<span className="text-xs text-fg-muted">
+									{t('setting.vipPlan.currencyToman')}
+								</span>
+							</>
+						)}
 					</div>
 				</div>
-			</div>
+
+				<Button
+					size="md"
+					rounded="xl"
+					color="brand"
+					disabled={
+						!selectedPlan || isPending || Boolean(selectedPlan?.isClaimed)
+					}
+					loading={isPending}
+					loadingText={t('setting.vip.transferring')}
+					onClick={handlePurchase}
+					className="px-6 font-bold shadow-sm"
+				>
+					<Icon name="diamond" size={14} />
+					<span>
+						{selectedPlan?.isClaimed
+							? t('setting.vip.received')
+							: t('setting.vip.activatePlan', { p0: VIP_LABEL })}
+					</span>
+				</Button>
+			</section>
+
+			<VipFeaturesModal
+				isOpen={featurePage !== null}
+				page={featurePage ?? 0}
+				onPageChange={setFeaturePage}
+				onClose={() => setFeaturePage(null)}
+				onActivate={activateFromFeatures}
+				activateLabel={t('setting.vip.activatePlan', { p0: VIP_LABEL })}
+			/>
 
 			<FreeVipSuccessModal
 				isOpen={showSuccessModal}

@@ -27,11 +27,12 @@ Breaking one means the work is rejected.
 | **Root cause, not symptom** | Trace a bug to where it starts. A patch that hides the symptom is rejected even if it looks fixed. |
 | **Every feature sends analytics events** | A new feature or a new user action ships with `Analytics.event` calls: opening it, the main action, and its failure. Name them `<feature>_<what_happened>` and add each to `ANALYTICS_EVENTS` in `data-names.test.ts`. Full rules in `src/common/README.md`. |
 | **No opportunistic changes** | Touch only what the task needs. Mention anything else you saw; do not fix it unless asked. |
+| **Design before UI** | A new feature that has UI starts with a design, and the owner approves it before you write any UI code. Put the approved boards in `design/<feature>/` (`design/README.md`) and build what they show. No approval, no UI code. |
 
 ## 3. The workflow
 
 1. **Branch from `dev`.** Start from an up to date `dev` and create `<type>/<what-it-does>`, lowercase with hyphens. Types: `feat`, `fix`, `refactor`, `perf`, `docs`, `test`, `chore`. Example: `fix/calendar-date-selection`. If the owner tells you to stay on the current branch, stay there for the whole session and do not ask again.
-2. **Find the cause.** Read the READMEs. Measure before you name a cause: grep `src`, grep the built CSS, time it.
+2. **Find the cause.** For a new feature with UI, get the design approved first (section 2). Read the READMEs. Measure before you name a cause: grep `src`, grep the built CSS, time it.
 3. **Change the least that fixes it**, following section 4.
 4. **Verify** with section 5. Everything green before you report.
 5. **Report and stop.** Do not commit. Give the cause, the proof, what you did not verify, and a short **visual checklist** for the owner: the few screens and states worth opening, including the hard ones (signed out, a light theme with no wallpaper).
@@ -123,6 +124,7 @@ Every contributor's machine is different. Do not assume an operating system, a s
 | Icons | `src/icons/README.md` |
 | Features | `src/features/README.md` |
 | Widgets: states, storage, premium, canvas | `src/features/widgets/README.md` |
+| Approved designs for UI work | `design/README.md` |
 | Manifest, build, browsers, what breaks a release | `entrypoints/README.md` |
 | Hooks, context, pages, shared components | `src/hooks/README.md`, `src/context/README.md`, `src/pages/README.md`, `src/components/README.md` |
 

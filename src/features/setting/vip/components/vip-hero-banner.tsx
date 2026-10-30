@@ -1,68 +1,102 @@
-import { t } from '@/common/i18n'
+import type { ComponentType } from 'react'
+import { type MessageKey, t } from '@/common/i18n'
+import { VipBadge } from '@/components/ui'
 import { Icon } from '@/icons'
-import type { IconName } from '@/icons'
+import heroArt from '@/assets/images/pro/hero-pro.webp'
+import {
+	GalleryCardArt,
+	LayoutCardArt,
+	WallpaperCardArt,
+	WidgetsCardArt,
+} from './vip-feature-art'
+import type { VipFeatureId } from './vip-features-modal'
 
-interface VipFeatureItem {
-	id: string
-	icon: IconName
-	title: string
-	description: string
+interface BenefitCard {
+	id: VipFeatureId
+	title: MessageKey
+	body: MessageKey
+	Art: ComponentType
 }
 
-const VIP_FEATURES: VipFeatureItem[] = [
+const BENEFITS: BenefitCard[] = [
 	{
-		id: 'unlimited_widgets',
-		icon: 'outlineSquares2X2',
-		title: t('setting.vipHero.layoutFreedomTitle'),
-		description: t('setting.vipHero.layoutFreedomBody'),
+		id: 'layout',
+		title: 'setting.vipHero.layoutFreedomTitle',
+		body: 'setting.vipHero.layoutFreedomBody',
+		Art: LayoutCardArt,
 	},
 	{
-		id: 'exclusive_widgets',
-		icon: 'diamond',
-		title: t('setting.vipHero.widgetsAccessTitle'),
-		description: t('setting.vipHero.widgetsAccessBody'),
+		id: 'widgets',
+		title: 'setting.vipHero.widgetsAccessTitle',
+		body: 'setting.vipHero.widgetsAccessBody',
+		Art: WidgetsCardArt,
 	},
 	{
-		id: 'custom_wallpapers',
-		icon: 'videoCamera',
-		title: t('setting.vipHero.videoWallpaperTitle'),
-		description: t('setting.vipHero.videoWallpaperBody'),
+		id: 'wallpaper',
+		title: 'setting.vipHero.videoWallpaperTitle',
+		body: 'setting.vipHero.videoWallpaperBody',
+		Art: WallpaperCardArt,
 	},
 	{
-		id: 'gallery_assets',
-		icon: 'shoppingBag',
-		title: t('setting.vipHero.galleryAccessTitle'),
-		description: t('setting.vipHero.galleryAccessBody'),
+		id: 'gallery',
+		title: 'setting.vipHero.galleryAccessTitle',
+		body: 'setting.vipHero.galleryAccessBody',
+		Art: GalleryCardArt,
 	},
 ]
 
-export function VipHeroBanner() {
-	return (
-		<div className="relative overflow-hidden rounded-widget border border-vip-fill bg-gradient-to-br from-vip-fill via-fill to-fill p-5 sm:p-6 shadow-sm">
-			<div className="absolute -top-12 -left-12 w-48 h-48 rounded-full bg-vip-fill-2 blur-3xl pointer-events-none" />
-			<div className="absolute -bottom-12 -right-12 w-48 h-48 rounded-full bg-vip-fill blur-3xl pointer-events-none" />
+interface VipHeroBannerProps {
+	onOpenFeature: (feature: VipFeatureId) => void
+}
 
-			<div className="relative z-10">
-				<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-					{VIP_FEATURES.map((feature) => (
-						<div
-							key={feature.id}
-							className="flex items-start gap-3 p-3.5 rounded-2xl bg-surface-veil border border-line backdrop-blur-xs hover:bg-surface hover:border-vip-fill-2 transition-ui duration-200 shadow-sm"
-						>
-							<div className="flex items-center justify-center w-8 h-8 rounded-xl bg-vip-fill text-vip shrink-0 mt-0.5">
-								<Icon name={feature.icon} size={16} />
-							</div>
-							<div className="flex flex-col gap-1 min-w-0">
-								<h4 className="text-xs font-bold text-fg leading-tight">
-									{feature.title}
-								</h4>
-								<p className="text-2xs text-fg-muted leading-relaxed">
-									{feature.description}
-								</p>
-							</div>
-						</div>
-					))}
+export function VipHeroBanner({ onOpenFeature }: VipHeroBannerProps) {
+	return (
+		<div>
+			<section className="relative overflow-hidden h-62 rounded-2xl bg-brand">
+				<img
+					src={heroArt}
+					alt=""
+					className="absolute inset-0 object-cover object-left w-full h-full"
+				/>
+				<div className="absolute top-0 bottom-16 start-0 flex w-full flex-col justify-center gap-3 px-8 sm:w-3/5">
+					<VipBadge text={t('setting.vip.proLabel')} className="self-start" />
+					<h2 className="text-3xl font-black text-image-fg">
+						{t('setting.vipHero.title')}
+					</h2>
+					<p className="text-sm text-image-fg">
+						{t('setting.vipHero.subtitle')}
+					</p>
 				</div>
+			</section>
+			<div className="relative grid grid-cols-2 gap-4 mx-6 -mt-16 md:grid-cols-4">
+				{BENEFITS.map(({ id, title, body, Art }) => (
+					<button
+						key={id}
+						type="button"
+						aria-haspopup="dialog"
+						onClick={() => onOpenFeature(id)}
+						className="flex flex-col gap-3 p-4 text-start border cursor-pointer rounded-2xl border-surface-3 bg-surface-2 shadow-md transition-ui hover:border-brand-muted focus-visible:focus-ring"
+					>
+						<span
+							aria-hidden="true"
+							className="relative flex items-center justify-center gap-1.5 overflow-hidden border h-14 rounded-xl border-surface-3 bg-surface"
+						>
+							<Art />
+						</span>
+						<span className="flex flex-col gap-0.5">
+							<span className="text-sm font-bold text-fg-strong">
+								{t(title)}
+							</span>
+							<span className="text-xs min-h-9 text-fg-muted">
+								{t(body)}
+							</span>
+						</span>
+						<span className="inline-flex items-center gap-0.5 mt-auto text-xs font-bold text-brand">
+							{t('setting.vipHero.details')}
+							<Icon name="chevronLeft" size={14} />
+						</span>
+					</button>
+				))}
 			</div>
 		</div>
 	)

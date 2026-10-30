@@ -231,6 +231,8 @@ const ANALYTICS_EVENTS = [
 	'transparent_clock_vip_required',
 	'update_notes',
 	'view_request_notification_modal',
+	'vip_feature_details_activate_clicked',
+	'vip_feature_details_opened',
 	'vip_plan_purchase_failed',
 	'vip_plan_purchase_unauthenticated',
 	'vip_plan_purchased',
