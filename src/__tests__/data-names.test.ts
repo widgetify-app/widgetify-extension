@@ -202,7 +202,6 @@ const ANALYTICS_EVENTS = [
 	'profile_progressbar_remove',
 	'refresh_network_data',
 	'release_notes_closed',
-	'release_notes_link_clicked',
 	'release_notes_opened',
 	'rss_default_news_toggled',
 	'rss_feed_toggled',
