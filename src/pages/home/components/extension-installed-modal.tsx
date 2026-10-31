@@ -1,4 +1,4 @@
-import keepItImage from '@/assets/images/keep-it.png'
+import welcomeArt from '@/assets/images/onboarding/welcome.webp'
 import { t } from '@/common/i18n'
 import { Button } from '@/components/ui'
 import { Modal } from '@/components/ui'
@@ -41,20 +41,11 @@ const StepOne = ({ onGetStarted }: StepOneProps) => {
 				</h3>
 			</div>
 
-			<div
-				className={
-					'relative p-1 mt-1 mb-3 border rounded-xl border-surface-3 bg-surface-2'
-				}
-			>
-				<div className="flex items-center justify-center">
-					<img
-						src={keepItImage}
-						alt={t('home.installed.howToEnable')}
-						className="h-auto max-w-full rounded-lg shadow-xl"
-						style={{ maxHeight: '220px' }}
-					/>
-				</div>
-			</div>
+			<img
+				src={welcomeArt}
+				alt={t('home.installed.howToEnable')}
+				className="object-cover w-full mt-1 mb-3 aspect-2/1 rounded-2xl"
+			/>
 
 			<div
 				className={
