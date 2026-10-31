@@ -5,6 +5,7 @@ import { Motion, Presence } from '@/common/motion'
 import { cn } from '@/common/utils/cn'
 import { Button, Portal } from '@/components/ui'
 import { useGeneralSetting } from '@/context/general-setting.context'
+import browserPreviewArt from '@/assets/images/bookmark/browser-preview.webp'
 import { BookmarkPanel } from './bookmark-panel'
 
 interface BookmarkPopoverProps {
@@ -14,8 +15,6 @@ interface BookmarkPopoverProps {
 	folderId: string | null
 	onFolderChange: (id: string) => void
 }
-
-const PREVIEW_ROWS = ['w-3/4', 'w-1/2', 'w-2/3']
 
 export function BookmarkPopover({
 	isOpen,
@@ -80,25 +79,11 @@ export function BookmarkPopover({
 							/>
 						) : (
 							<div className="flex flex-col gap-3.5 p-4">
-								<div
-									aria-hidden="true"
-									className="flex flex-col gap-2.5 p-3.5 border rounded-xl border-surface-3 bg-surface-2"
-								>
-									{PREVIEW_ROWS.map((width) => (
-										<span
-											key={width}
-											className="flex items-center gap-2"
-										>
-											<span className="w-4 h-4 rounded-sm bg-fill-2" />
-											<span
-												className={cn(
-													'h-2 rounded-sm bg-fill-2',
-													width
-												)}
-											/>
-										</span>
-									))}
-								</div>
+								<img
+									src={browserPreviewArt}
+									alt=""
+									className="object-cover w-full aspect-2/1 rounded-xl"
+								/>
 								<div>
 									<p className="text-sm font-bold text-fg-strong">
 										{t('widgets.search.bookmark.permissionTitle')}
