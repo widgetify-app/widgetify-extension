@@ -17,7 +17,7 @@ The old popover was hard to use:
 
 | File | Shows |
 |---|---|
-| `boards/FirstRun.dc.html` | Before the permission: a faded preview of the list, one title, one line, «اجازه بده» and «فعلا نه» |
+| `boards/FirstRun.dc.html` | Before the permission: a preview of the list, one title, one line, «اجازه بده» and «فعلا نه». The board still draws the preview as faded rows; the owner later approved `assets/browser-preview.webp` in their place |
 | `boards/Panel.dc.html` | The panel: search on top, the folder tree on one side, the open folder's sites as tiles with its path above |
 | `boards/PanelSearch.dc.html` | Typing replaces the tiles with results from every folder, each with its folder path and address |
 | `boards/PanelEmpty.dc.html` | A folder with nothing in it |
@@ -34,3 +34,7 @@ The panel is 620px wide and anchors under the chip.
 ## Not drawn
 
 The dark and glass themes. The boards use the light theme's tokens.
+
+## Art
+
+`assets/browser-preview.webp` shows a bookmarks panel with four made-up sites, so the first-run card shows what it unlocks. It comes from `art/browser_preview.py`, a PhotoCraft script that uses the helpers in `../pro-tab/art/common.py`; see `../pro-tab/README.md` for how to run it. The same file is in `src/assets/images/bookmark/`.
