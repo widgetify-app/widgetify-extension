@@ -63,7 +63,7 @@ function FriendRequests() {
 		return (
 			<div className="space-y-1.5" aria-busy="true">
 				{Array.from({ length: 3 }).map((_, index) => (
-					<div key={index} className="h-14 rounded-xl skeleton" />
+					<div key={index} className="h-14 rounded-xl skeleton bg-fill-2" />
 				))}
 			</div>
 		)

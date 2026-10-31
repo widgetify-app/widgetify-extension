@@ -30,7 +30,7 @@ export function FriendRequestsButton({ size, pendingCount }: Prop) {
 				<button
 					type="button"
 					onClick={() => setIsRequestsOpen(true)}
-					className="flex relative items-center justify-center w-8 h-8 transition-ui rounded-xl bg-fill hover:bg-fill-2 active:scale-90 cursor-pointer border border-line text-fg-muted hover:text-fg-strong"
+					className="flex relative items-center justify-center w-8 h-8 transition-ui rounded-xl bg-surface-2 hover:bg-fill active:scale-90 cursor-pointer border border-surface-3 text-fg-muted hover:text-fg-strong"
 					aria-label={t('friends.requests.title')}
 				>
 					<Icon
