@@ -1,32 +1,41 @@
 import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
+import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { Modal, TextInput } from '@/components/ui'
+import { useAuth } from '@/context/auth.context'
 import { Icon } from '@/icons'
 import type { FetchedCurrency } from '@/services/currency/get-currency-by-code.hook'
-import { useCurrencyColorMode } from '../hooks/use-currency-color-mode'
-import { getChangeColorClass } from '../utils/currency-color-mode'
-import { formatChangeAmount } from '../utils/get-price-change'
+import type { CurrencyHistoryRange } from '@/services/currency/get-currency-history.hook'
 import { getPrice } from '../utils/get-price'
-import { CurrencyHistory } from './currency-history'
-import { t } from '@/common/i18n'
+import {
+	CurrencyHistory,
+	DEFAULT_HISTORY_RANGE,
+	HistoryRangeTabs,
+} from './currency-history'
+import { PriceChange } from './price-change'
 
 interface CurrencyModalComponentProps {
 	code: string
 	currency: FetchedCurrency
 	isModalOpen: boolean
-	priceChange: number
 	toggleCurrencyModal: () => void
 }
+
+const formatNumberWithCommas = (num: number) => num?.toLocaleString('en-US')
+
+const parseFormattedNumber = (str: string) =>
+	Number.parseFloat(str.replace(/,/g, '')) || 0
 
 export const CurrencyModalComponent = ({
 	code,
 	currency,
-	priceChange,
 	isModalOpen,
 	toggleCurrencyModal,
 }: CurrencyModalComponentProps) => {
-	const [showConverter, setShowConverter] = useState(false)
+	const { isVip } = useAuth()
+	const [range, setRange] = useState<CurrencyHistoryRange>(DEFAULT_HISTORY_RANGE)
+	const [isSwapped, setIsSwapped] = useState(false)
 	const [currencyAmount, setCurrencyAmount] = useState<number>(1)
 	const [tomanAmount, setTomanAmount] = useState<number>(0)
 
@@ -51,128 +60,117 @@ export const CurrencyModalComponent = ({
 		}
 	}
 
-	const formatNumberWithCommas = (num: number) => num?.toLocaleString('en-US')
-
-	const parseFormattedNumber = (str: string) =>
-		Number.parseFloat(str.replace(/,/g, '')) || 0
-
-	const onClickConverter = () => {
-		setShowConverter(!showConverter)
-		Analytics.event('toggle_currency_converter_on_modal')
+	const onSwap = () => {
+		setIsSwapped(!isSwapped)
+		Analytics.event('currency_converter_swapped')
 	}
 
-	const colorMode = useCurrencyColorMode()
-	const isPositive = priceChange > 0
-	const priceChangeColor = getChangeColorClass(isPositive ? 'up' : 'down', colorMode)
-
 	const price = getPrice(code, currency)
+
+	const fields = [
+		<div key="currency" className={FIELD_CLASS}>
+			<TextInput
+				variant="bare"
+				value={String(currencyAmount)}
+				onChange={(value) =>
+					handleCurrencyAmountChange(parseFormattedNumber(value))
+				}
+				className={INPUT_CLASS}
+				placeholder={t('widgets.wigiArz.amountPlaceholder')}
+				aria-label={code.toUpperCase()}
+			/>
+			<span className="text-2xs text-fg-muted">{code.toUpperCase()}</span>
+		</div>,
+		<div key="toman" className={cn(FIELD_CLASS, 'flex-[1.4]')}>
+			<TextInput
+				variant="bare"
+				value={formatNumberWithCommas(tomanAmount)}
+				onChange={(value) => handleTomanAmountChange(parseFormattedNumber(value))}
+				className={INPUT_CLASS}
+				placeholder={t('widgets.wigiArz.amountPlaceholder')}
+				aria-label={t('widgets.wigiArz.toman')}
+			/>
+			<span className="text-2xs text-fg-muted">{t('widgets.wigiArz.toman')}</span>
+		</div>,
+	]
 
 	return (
 		<Modal
 			isOpen={isModalOpen}
 			onClose={toggleCurrencyModal}
 			size="sm"
+			showCloseButton={false}
+			className="p-0 md:p-0"
 			closeLabel={t('ui.common.close')}
 		>
-			<section className="relative flex flex-col items-center justify-center p-8 space-y-2">
-				<img
-					src={currency?.icon}
-					alt=""
-					className="object-cover rounded-full shadow-sm w-14 h-14"
-				/>
-
-				<header className="mt-2 space-y-1 text-center">
-					<h2 className="text-xl font-bold text-fg-strong">
-						{currency?.name?.en}
-					</h2>
-					<div className="flex items-center justify-center gap-1 text-sm font-medium text-fg-muted">
-						<span>{code.toUpperCase()}</span>
-						{currency.period && <span>{currency.period}</span>}
-						{currency.type !== 'service' && (
-							<button
-								type="button"
-								onClick={onClickConverter}
-								aria-label={t('widgets.wigiArz.convertAria')}
-								aria-expanded={showConverter}
-								className="cursor-pointer hover:text-brand focus-visible:focus-ring"
-							>
-								<Icon name="arrowRightLeft" aria-hidden="true" />
-							</button>
-						)}
-					</div>
-				</header>
-
-				<div className="relative flex flex-row items-center justify-center gap-2 transition-transform duration-150 ease-out hover:scale-102">
-					<p className="text-xl font-bold text-fg-strong opacity-95">
-						<data value={price.value}>
-							{price.isDollar && '💲'}
-							{price.formatted}
-						</data>
-					</p>
-
-					{priceChange !== 0 && (
-						<div
-							className={cn(
-								'flex items-center text-sm transition-ui',
-								priceChangeColor
-							)}
-						>
-							<Icon
-								name={isPositive ? 'upLong' : 'downLong'}
-								className="mr-1"
-								aria-hidden="true"
-							/>
-							<span>{formatChangeAmount(priceChange)}</span>
+			<section className="flex flex-col">
+				<div className="flex flex-col gap-3 px-5 pt-5">
+					<header className="flex items-center gap-2.5">
+						<img
+							src={currency?.icon}
+							alt=""
+							className="object-cover rounded-full size-9 shrink-0"
+						/>
+						<div className="flex-1 min-w-0">
+							<h2 className="text-sm font-bold truncate text-fg-strong">
+								{currency?.name?.en}
+							</h2>
+							<p className="flex items-center gap-1.5 text-2xs text-fg-muted">
+								<span>{code.toUpperCase()}</span>
+								{currency.period && <span>{currency.period}</span>}
+							</p>
 						</div>
-					)}
-				</div>
+						{isVip && <HistoryRangeTabs range={range} onChange={setRange} />}
+					</header>
 
-				<CurrencyHistory
-					code={code}
-					currency={currency}
-					enabled={isModalOpen}
-					onLeave={toggleCurrencyModal}
-				/>
-
-				<div
-					className={cn(
-						'flex flex-col gap-0.5 transition-[opacity,max-height] duration-300 ease-out',
-						showConverter
-							? 'opacity-100 max-h-96'
-							: 'opacity-0 max-h-0 overflow-hidden'
-					)}
-				>
-					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-surface-2 hover:bg-surface-2 hover:border-surface-3">
-						<span className="text-sm font-medium text-fg-strong min-w-fit">
-							{code.toUpperCase()}
+					<div className="flex items-baseline gap-2">
+						<p className="text-3xl font-black tabular-nums text-fg-strong">
+							<data value={price.value}>{price.formatted}</data>
+						</p>
+						<span className="text-xs text-fg-muted">
+							{price.isDollar
+								? t('widgets.wigiArz.dollar')
+								: t('widgets.wigiArz.toman')}
 						</span>
-						<TextInput
-							type="text"
-							value={String(currencyAmount)}
-							onChange={(e) =>
-								handleCurrencyAmountChange(parseFormattedNumber(e))
-							}
-							className="rounded-2xl! px-4! border-surface-3"
-							placeholder={t('widgets.wigiArz.amountPlaceholder')}
-						/>
-					</div>
-
-					<div className="flex items-center gap-2 p-1 transition-colors duration-200 border border-transparent rounded-2xl bg-surface-2 hover:bg-surface-2 hover:border-surface-3">
-						<span className="text-sm font-medium text-fg-strong min-w-fit">
-							{t('widgets.wigiArz.toman')}
-						</span>
-						<TextInput
-							type="text"
-							value={formatNumberWithCommas(tomanAmount)}
-							onChange={(value) =>
-								handleTomanAmountChange(parseFormattedNumber(value))
-							}
-							className="rounded-2xl! px-4! border-surface-3"
-							placeholder={t('widgets.wigiArz.amountPlaceholder')}
+						<PriceChange
+							changePercentage={currency.changePercentage}
+							className="px-2 py-0.5 text-2xs rounded-full ms-auto bg-fill"
 						/>
 					</div>
 				</div>
+
+				<div className="mt-1">
+					<CurrencyHistory
+						code={code}
+						currency={currency}
+						enabled={isModalOpen}
+						range={range}
+						onLeave={toggleCurrencyModal}
+					/>
+				</div>
+
+				{currency.type !== 'service' ? (
+					<div className="flex items-center gap-2 px-4 pt-3 pb-4 mt-3 border-t border-line">
+						{isSwapped ? fields[1] : fields[0]}
+						<button
+							type="button"
+							onClick={onSwap}
+							aria-label={t('widgets.wigiArz.swapAria')}
+							className="grid cursor-pointer size-8 shrink-0 place-items-center rounded-xl bg-fill text-fg-muted hover:text-fg transition-ui focus-visible:focus-ring"
+						>
+							<Icon name="arrowRightLeft" size={16} aria-hidden="true" />
+						</button>
+						{isSwapped ? fields[0] : fields[1]}
+					</div>
+				) : (
+					<div className="h-4" />
+				)}
 			</section>
 		</Modal>
 	)
 }
+
+const FIELD_CLASS =
+	'flex flex-1 min-w-0 items-center gap-1.5 h-10 px-3 border rounded-xl border-surface-3 bg-surface-2 transition-ui focus-within:border-brand'
+
+const INPUT_CLASS = 'min-w-0 text-sm font-bold text-fg-strong'

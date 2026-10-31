@@ -129,7 +129,6 @@ export const CurrencyBox = ({ code, dragHandle }: CurrencyBoxProps) => {
 					key={code}
 					code={code}
 					currency={currency}
-					priceChange={priceChange}
 					isModalOpen={isModalOpen}
 					toggleCurrencyModal={toggleCurrencyModal}
 				/>

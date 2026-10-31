@@ -12,6 +12,14 @@ const at = (day: number, price: number) => ({
 	createdAt: `2026-10-${String(day).padStart(2, '0')}T00:00:00Z`,
 })
 
+const hourly = (prices: number[]) =>
+	prices.map((price, hour) => ({
+		price,
+		createdAt: new Date(Date.UTC(2026, 9, 1, hour)).toISOString(),
+	}))
+
+const spanOf = (values: number[]) => Math.max(...values) - Math.min(...values)
+
 describe('toDisplayValue', () => {
 	it('turns rial into toman and leaves dollars alone', () => {
 		expect(toDisplayValue(2620000, false)).toBe(262000)
@@ -38,8 +46,6 @@ describe('buildPriceChart', () => {
 		])
 		expect(chart?.points[1].y).toBeLessThan(chart?.points[0].y ?? 0)
 		expect(chart?.points[1].y).toBeLessThan(chart?.points[2].y ?? 0)
-		expect(chart?.min).toBe(100)
-		expect(chart?.max).toBe(300)
 	})
 
 	it('sorts points that arrive out of order', () => {
@@ -69,67 +75,68 @@ describe('buildPriceChart', () => {
 		expect(chart?.points.map((point) => point.x)).toEqual([0, CHART_WIDTH])
 	})
 
-	it('closes the area under the line down to the bottom edge', () => {
-		const chart = buildPriceChart([at(1, 1), at(2, 2)], true)
+	it('draws the line as curves and closes the area down to the bottom edge', () => {
+		const chart = buildPriceChart([at(1, 1), at(2, 2), at(3, 1)], true)
 
 		expect(chart?.linePath.startsWith('M0.0,')).toBe(true)
+		expect(chart?.linePath).toContain(' C')
 		expect(chart?.areaPath).toBe(
 			`${chart?.linePath} L${CHART_WIDTH},${CHART_HEIGHT} L0,${CHART_HEIGHT} Z`
 		)
 	})
 
-	it('marks the price axis with round ticks that enclose every price', () => {
-		const chart = buildPriceChart(
-			[at(1, 2611000), at(2, 2646000), at(3, 2628000)],
-			false
+	it('evens out a price that flips between two levels', () => {
+		const flipping = hourly(
+			Array.from({ length: 30 }, (_, hour) => (hour % 4 < 2 ? 5510000 : 5421200))
 		)
+		const chart = buildPriceChart(flipping, false)
+		const ys = chart?.points.map((point) => point.y) ?? []
 
-		expect(chart?.ticks.map((tick) => tick.value)).toEqual([
-			260000, 262000, 264000, 266000,
-		])
-		expect(chart?.ticks[0].y).toBeGreaterThan(chart?.ticks[3].y ?? 0)
-		for (const point of chart?.points ?? []) {
-			expect(point.y).toBeLessThanOrEqual(chart?.ticks[0].y ?? 0)
-			expect(point.y).toBeGreaterThanOrEqual(chart?.ticks[3].y ?? 0)
-		}
+		expect(spanOf(ys)).toBeLessThan(CHART_HEIGHT / 10)
+		expect(chart?.points[0].value).toBe(551000)
 	})
 
-	it('scales by the ticks, so a small move stays small next to the axis', () => {
-		const chart = buildPriceChart([at(1, 256900), at(2, 267900)], true)
-		const [low, high] = [chart?.ticks[0], chart?.ticks.at(-1)]
-		const tickSpan = (low?.y ?? 0) - (high?.y ?? 0)
-		const pointSpan = (chart?.points[0].y ?? 0) - (chart?.points[1].y ?? 0)
+	it('keeps a short history as it is', () => {
+		const chart = buildPriceChart([at(1, 100), at(2, 300), at(3, 100)], true)
+		const [first, middle] = chart?.points ?? []
 
-		expect(chart?.ticks.map((tick) => tick.value)).toEqual([
-			255000, 260000, 265000, 270000,
-		])
-		expect(pointSpan / tickSpan).toBeCloseTo(11000 / 15000, 5)
+		expect(first.y - middle.y).toBeGreaterThan(CHART_HEIGHT / 2)
 	})
 
-	it('draws a tiny move as a small step, not a fall to the bottom', () => {
-		const chart = buildPriceChart([at(1, 53780000), at(2, 53700000)], false)
-		const drop = (chart?.points[1].y ?? 0) - (chart?.points[0].y ?? 0)
+	it('draws a move of one percent as a small step, not the full height', () => {
+		const chart = buildPriceChart([at(1, 5000000), at(2, 5050000)], false)
+		const rise = (chart?.points[0].y ?? 0) - (chart?.points[1].y ?? 0)
 
-		expect(drop).toBeGreaterThan(0)
-		expect(drop).toBeLessThan(CHART_HEIGHT / 10)
+		expect(rise).toBeGreaterThan(0)
+		expect(rise).toBeLessThan(CHART_HEIGHT / 6)
 	})
 
-	it('keeps small dollar ticks free of float noise', () => {
-		const chart = buildPriceChart([at(1, 0.11), at(2, 0.39)], true)
+	it('lets a big move fill the chart', () => {
+		const chart = buildPriceChart([at(1, 100), at(2, 200)], true)
+		const rise = (chart?.points[0].y ?? 0) - (chart?.points[1].y ?? 0)
 
-		expect(chart?.ticks.map((tick) => tick.value)).toEqual([0.1, 0.2, 0.3, 0.4])
-	})
-
-	it('gives a flat price one tick through the middle', () => {
-		const chart = buildPriceChart([at(1, 100), at(2, 100)], true)
-
-		expect(chart?.ticks).toEqual([{ value: 100, y: CHART_HEIGHT / 2 }])
+		expect(rise).toBeGreaterThan(CHART_HEIGHT * 0.7)
 	})
 
 	it('converts rial history to toman', () => {
 		const chart = buildPriceChart([at(1, 1000), at(2, 2000)], false)
 
 		expect(chart?.points.map((point) => point.value)).toEqual([100, 200])
+	})
+
+	it('marks five evenly spaced moments on the time axis, ending at the last price', () => {
+		const chart = buildPriceChart([at(1, 1), at(5, 2)], true)
+		const first = Date.parse('2026-10-01T00:00:00Z')
+		const last = Date.parse('2026-10-05T00:00:00Z')
+		const day = 24 * 60 * 60 * 1000
+
+		expect(chart?.timeTicks).toEqual([
+			first,
+			first + day,
+			first + 2 * day,
+			first + 3 * day,
+			last,
+		])
 	})
 })
 

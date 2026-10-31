@@ -9,7 +9,6 @@ import {
 } from '../utils/build-price-chart'
 import { useCurrencyColorMode } from '../hooks/use-currency-color-mode'
 import { getChangeColorClass } from '../utils/currency-color-mode'
-import { PriceChange } from './price-change'
 
 interface PriceChartProps {
 	chart: PriceChartShape
@@ -30,7 +29,6 @@ export function PriceChart({ chart, name, showTime }: PriceChartProps) {
 	const gradientId = useId()
 	const [activeIndex, setActiveIndex] = useState<number | null>(null)
 	const active = activeIndex === null ? null : chart.points[activeIndex]
-	const last = chart.points[chart.points.length - 1]
 
 	const colorMode = useCurrencyColorMode()
 	const trendClass =
@@ -45,44 +43,21 @@ export function PriceChart({ chart, name, showTime }: PriceChartProps) {
 		setActiveIndex(nearestPointIndex(chart.points, x))
 	}
 
-	return (
-		<div dir="ltr" className={cn('flex flex-col w-full gap-1.5', trendClass)}>
-			<div className="flex items-center justify-between gap-2 text-3xs text-fg-faint">
-				<span>
-					{t('widgets.wigiArz.chart.high')}{' '}
-					<span className="font-bold tabular-nums text-fg-muted">
-						{chart.max.toLocaleString()}
-					</span>
-				</span>
-				<PriceChange changePercentage={chart.changePercentage} />
-				<span>
-					{t('widgets.wigiArz.chart.low')}{' '}
-					<span className="font-bold tabular-nums text-fg-muted">
-						{chart.min.toLocaleString()}
-					</span>
-				</span>
-			</div>
+	const lastTick = chart.timeTicks.length - 1
 
+	return (
+		<div dir="ltr" className="flex flex-col w-full gap-1.5">
 			<div
 				role="img"
 				aria-label={t('widgets.wigiArz.chart.aria', { name })}
-				className="relative w-full touch-none select-none h-30"
+				className={cn('relative w-full touch-none select-none h-33', trendClass)}
 				onPointerMove={onPointerMove}
 				onPointerLeave={() => setActiveIndex(null)}
 			>
-				{chart.ticks.map((tick) => (
-					<span
-						key={tick.value}
-						aria-hidden="true"
-						className="absolute inset-x-0 block h-px bg-line"
-						style={{ top: `${(tick.y / CHART_HEIGHT) * 100}%` }}
-					/>
-				))}
-
 				<svg
 					viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
 					preserveAspectRatio="none"
-					className="absolute inset-0 w-full h-full overflow-visible"
+					className="absolute inset-0 w-full h-full"
 					aria-hidden="true"
 				>
 					<defs>
@@ -90,7 +65,7 @@ export function PriceChart({ chart, name, showTime }: PriceChartProps) {
 							<stop
 								offset="0"
 								stopColor="currentColor"
-								stopOpacity="0.28"
+								stopOpacity="0.16"
 							/>
 							<stop offset="1" stopColor="currentColor" stopOpacity="0" />
 						</linearGradient>
@@ -107,15 +82,6 @@ export function PriceChart({ chart, name, showTime }: PriceChartProps) {
 					/>
 				</svg>
 
-				<span
-					aria-hidden="true"
-					className="absolute block -translate-x-1/2 -translate-y-1/2 rounded-full size-2 bg-current ring-2 ring-surface"
-					style={{
-						left: `${((active ?? last).x / CHART_WIDTH) * 100}%`,
-						top: `${((active ?? last).y / CHART_HEIGHT) * 100}%`,
-					}}
-				/>
-
 				{active && (
 					<>
 						<span
@@ -123,9 +89,17 @@ export function PriceChart({ chart, name, showTime }: PriceChartProps) {
 							className="absolute inset-y-0 w-px bg-fg-ghost"
 							style={{ left: `${(active.x / CHART_WIDTH) * 100}%` }}
 						/>
+						<span
+							aria-hidden="true"
+							className="absolute block -translate-x-1/2 -translate-y-1/2 rounded-full size-2 bg-current ring-2 ring-surface"
+							style={{
+								left: `${(active.x / CHART_WIDTH) * 100}%`,
+								top: `${(active.y / CHART_HEIGHT) * 100}%`,
+							}}
+						/>
 						<output
 							className={cn(
-								'absolute px-2 py-1 text-center rounded-lg pointer-events-none -top-1 -translate-y-full bg-surface-3 text-fg-strong text-3xs whitespace-nowrap',
+								'absolute top-1 px-2 py-1 text-center rounded-lg pointer-events-none bg-surface-3 text-fg-strong text-3xs whitespace-nowrap',
 								(active.x / CHART_WIDTH) * 100 < TOOLTIP_EDGE_PERCENT
 									? 'translate-x-0'
 									: (active.x / CHART_WIDTH) * 100 >
@@ -143,6 +117,23 @@ export function PriceChart({ chart, name, showTime }: PriceChartProps) {
 							</span>
 						</output>
 					</>
+				)}
+			</div>
+
+			<div
+				aria-hidden="true"
+				className="flex justify-between px-4 text-3xs text-fg-faint"
+			>
+				{chart.timeTicks.map((time, index) =>
+					index === lastTick ? (
+						<span key={time} className={cn('font-bold', trendClass)}>
+							{t('widgets.wigiArz.chart.now')}
+						</span>
+					) : (
+						<span key={time} className="tabular-nums">
+							{formatMoment(time, showTime)}
+						</span>
+					)
 				)}
 			</div>
 		</div>

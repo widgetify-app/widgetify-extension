@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { type MessageKey, t } from '@/common/i18n'
 import { Icon } from '@/icons'
 import { Button, TabNavigation } from '@/components/ui'
@@ -19,10 +19,11 @@ interface CurrencyHistoryProps {
 	code: string
 	currency: FetchedCurrency
 	enabled: boolean
+	range: CurrencyHistoryRange
 	onLeave: () => void
 }
 
-const DEFAULT_RANGE: CurrencyHistoryRange = '7d'
+export const DEFAULT_HISTORY_RANGE: CurrencyHistoryRange = '7d'
 
 const RANGE_LABEL_KEYS: Record<CurrencyHistoryRange, MessageKey> = {
 	'24h': 'widgets.wigiArz.chart.range.24h',
@@ -30,14 +31,34 @@ const RANGE_LABEL_KEYS: Record<CurrencyHistoryRange, MessageKey> = {
 	'30d': 'widgets.wigiArz.chart.range.30d',
 }
 
+interface HistoryRangeTabsProps {
+	range: CurrencyHistoryRange
+	onChange: (range: CurrencyHistoryRange) => void
+}
+
+export function HistoryRangeTabs({ range, onChange }: HistoryRangeTabsProps) {
+	return (
+		<TabNavigation
+			tabMode="simple"
+			size="sm"
+			activeTab={range}
+			onTabClick={onChange}
+			tabs={CURRENCY_HISTORY_RANGES.map((id) => ({
+				id,
+				label: t(RANGE_LABEL_KEYS[id]),
+			}))}
+		/>
+	)
+}
+
 export function CurrencyHistory({
 	code,
 	currency,
 	enabled,
+	range,
 	onLeave,
 }: CurrencyHistoryProps) {
 	const { isAuthenticated, isVip } = useAuth()
-	const [range, setRange] = useState<CurrencyHistoryRange>(DEFAULT_RANGE)
 	const { data, error, isPending, isError, refetch } = useGetCurrencyHistory(
 		code,
 		range,
@@ -57,7 +78,7 @@ export function CurrencyHistory({
 		}
 
 		return (
-			<div className="flex flex-col items-center gap-3 py-4 text-center">
+			<div className="flex flex-col items-center gap-3 px-5 py-4 text-center">
 				<span
 					aria-hidden="true"
 					className="grid size-12 place-items-center rounded-2xl bg-vip text-on-vip shadow-sm shadow-vip-fill-2"
@@ -82,48 +103,35 @@ export function CurrencyHistory({
 	}
 
 	return (
-		<div className="flex flex-col items-center w-full gap-3 mt-2">
-			<TabNavigation
-				tabMode="simple"
-				size="sm"
-				activeTab={range}
-				onTabClick={setRange}
-				tabs={CURRENCY_HISTORY_RANGES.map((id) => ({
-					id,
-					label: t(RANGE_LABEL_KEYS[id]),
-				}))}
-			/>
-
-			<div className="flex items-center justify-center w-full min-h-30">
-				{isPending && enabled ? (
-					<span
-						aria-hidden="true"
-						className="block w-full h-30 rounded-2xl skeleton"
-					/>
-				) : isError ? (
-					<div className="flex flex-col items-center gap-2 text-xs text-fg-muted">
-						<p>{t('widgets.wigiArz.chart.loadError')}</p>
-						<button
-							type="button"
-							onClick={() => refetch()}
-							className="cursor-pointer text-brand hover:text-brand-hover focus-visible:focus-ring"
-						>
-							{t('widgets.wigiArz.retry')}
-						</button>
-					</div>
-				) : chart ? (
-					<PriceChart
-						key={range}
-						chart={chart}
-						name={currency.name.fa}
-						showTime={range === '24h'}
-					/>
-				) : (
-					<p className="text-xs text-center text-fg-faint">
-						{t('widgets.wigiArz.chart.empty')}
-					</p>
-				)}
-			</div>
+		<div className="flex items-center justify-center w-full min-h-38">
+			{isPending && enabled ? (
+				<span
+					aria-hidden="true"
+					className="block h-33 mx-5 grow rounded-2xl skeleton"
+				/>
+			) : isError ? (
+				<div className="flex flex-col items-center gap-2 text-xs text-fg-muted">
+					<p>{t('widgets.wigiArz.chart.loadError')}</p>
+					<button
+						type="button"
+						onClick={() => refetch()}
+						className="cursor-pointer text-brand hover:text-brand-hover focus-visible:focus-ring"
+					>
+						{t('widgets.wigiArz.retry')}
+					</button>
+				</div>
+			) : chart ? (
+				<PriceChart
+					key={range}
+					chart={chart}
+					name={currency.name.fa}
+					showTime={range === '24h'}
+				/>
+			) : (
+				<p className="px-5 text-xs text-center text-fg-faint">
+					{t('widgets.wigiArz.chart.empty')}
+				</p>
+			)}
 		</div>
 	)
 }
