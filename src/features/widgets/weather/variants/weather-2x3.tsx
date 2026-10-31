@@ -65,28 +65,30 @@ export function Weather2x3({
 				<WeatherIcon src={weather?.icon?.url} className="size-16" />
 			</div>
 
-			<dl className="grid grid-cols-3 px-1 py-2 rounded-xl bg-fill">
-				{getWeatherMetrics(reading).map((metric) => (
-					<div
-						key={metric.label}
-						className="flex flex-col-reverse items-center gap-px not-first:border-s border-line"
-					>
-						<dt className="flex items-center gap-0.5 text-3xs text-fg-faint">
-							<Icon name={metric.icon} size={12} aria-hidden="true" />
-							{metric.label}
-						</dt>
-						<dd className="text-xs font-bold tabular-nums text-fg-strong">
-							{metric.value}
-						</dd>
-					</div>
-				))}
-			</dl>
+			<div className="flex flex-col gap-3 mt-auto">
+				<dl className="grid grid-cols-3 text-center">
+					{getWeatherMetrics(reading).map((metric) => (
+						<div
+							key={metric.label}
+							className="flex flex-col-reverse items-center gap-0.5"
+						>
+							<dt className="flex items-center gap-0.5 text-3xs text-fg-faint">
+								<Icon name={metric.icon} size={12} aria-hidden="true" />
+								{metric.label}
+							</dt>
+							<dd className="text-xs font-bold tabular-nums text-fg-strong">
+								{metric.value}
+							</dd>
+						</div>
+					))}
+				</dl>
 
-			<Forecast
-				forecast={fetchedWeather?.forecast?.slice(0, FORECAST_SLOTS) ?? []}
-				temperatureUnit={temperatureUnit}
-				iconClassName="size-5"
-			/>
+				<Forecast
+					forecast={fetchedWeather?.forecast?.slice(0, FORECAST_SLOTS) ?? []}
+					temperatureUnit={temperatureUnit}
+					iconClassName="size-5"
+				/>
+			</div>
 		</section>
 	)
 }

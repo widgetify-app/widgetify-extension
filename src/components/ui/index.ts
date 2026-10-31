@@ -17,6 +17,8 @@ export * from './button/button.variants'
 export * from './chip/chip'
 export * from './chip/chip.variants'
 
+export * from './coachmark/coachmark'
+
 export * from './color-picker/color-picker'
 
 export * from './date-picker/date-picker'

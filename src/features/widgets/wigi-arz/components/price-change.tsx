@@ -13,9 +13,10 @@ const DIRECTION_LABEL_KEY: Record<'up' | 'down', MessageKey> = {
 interface PriceChangeProps {
 	changePercentage?: number
 	amount?: number
+	className?: string
 }
 
-export function PriceChange({ changePercentage, amount }: PriceChangeProps) {
+export function PriceChange({ changePercentage, amount, className }: PriceChangeProps) {
 	const colorMode = useCurrencyColorMode()
 	const change = getPriceChange(changePercentage)
 	if (change.direction === 'flat') return null
@@ -24,7 +25,8 @@ export function PriceChange({ changePercentage, amount }: PriceChangeProps) {
 		<span
 			className={cn(
 				'inline-flex items-center gap-0.5 font-semibold text-3xs tabular-nums',
-				getChangeColorClass(change.direction, colorMode)
+				getChangeColorClass(change.direction, colorMode),
+				className
 			)}
 		>
 			<Icon

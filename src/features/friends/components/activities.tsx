@@ -30,9 +30,9 @@ export const ActiveFriendsHorizontal = ({ trailing }: { trailing?: ReactNode }) 
 							key={`skeleton-${i}`}
 							className="flex flex-col items-center shrink-0"
 						>
-							<div className="z-10 w-24 h-12 bg-surface-3 rounded-xl skeleton" />
-							<div className="w-16 h-16 -mt-3 rounded-full bg-surface-3 skeleton" />
-							<div className="w-20 h-3 mt-2 rounded-sm bg-surface-3 skeleton" />
+							<div className="z-10 w-24 h-12 bg-fill-2 rounded-xl skeleton" />
+							<div className="w-16 h-16 -mt-3 rounded-full bg-fill-2 skeleton" />
+							<div className="w-20 h-3 mt-2 rounded-sm bg-fill-2 skeleton" />
 						</div>
 					))}
 				</div>

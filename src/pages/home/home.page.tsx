@@ -9,12 +9,23 @@ import Analytics from '@/analytics'
 import { DialogChecker } from './components/dialog'
 import { TourTooltip } from './components/tour-tooltip'
 import { useEffect, useState } from 'react'
+import footerArt from '@/assets/images/onboarding/footer.webp'
+import widgetArt from '@/assets/images/onboarding/widget.webp'
+import layoutArt from '@/assets/images/onboarding/layout.webp'
+import profileArt from '@/assets/images/onboarding/profile.webp'
+
+function TourArt({ src, alt = '' }: { src: string; alt?: string }) {
+	return (
+		<img src={src} alt={alt} className="object-cover w-full aspect-2/1 rounded-xl" />
+	)
+}
 
 const steps: Step[] = [
 	{
 		target: '#chrome-footer',
 		content: (
 			<div className="flex flex-col gap-2 text-center">
+				<TourArt src={footerArt} alt={t('home.tour.step1.imageAlt')} />
 				<h4 className="text-sm font-black text-brand">
 					{t('home.tour.step1.title')}
 				</h4>
@@ -26,14 +37,6 @@ const steps: Step[] = [
 					</span>{' '}
 					{t('home.tour.step1.bodyAfter')}
 				</p>
-
-				<div className="relative overflow-hidden border rounded-xl border-line">
-					<img
-						src="https://cdn.widgetify.ir/extension/how-to-disable-footer.png"
-						alt={t('home.tour.step1.imageAlt')}
-						className="object-cover w-full shadow-md rounded-xl"
-					/>
-				</div>
 
 				<div className="p-1.5 border border-dashed rounded-lg bg-fill border-line">
 					<code className="text-2xs font-bold text-fg-muted">
@@ -47,16 +50,7 @@ const steps: Step[] = [
 		target: '[data-tour="widget"]',
 		content: (
 			<div className="flex flex-col gap-2.5">
-				<div className="relative overflow-hidden border shadow-sm aspect-video rounded-xl border-line bg-fill">
-					<video
-						src="https://cdn.widgetify.ir/extension/help_videos/WIDGET-STYLES.webm"
-						autoPlay
-						loop
-						muted
-						playsInline
-						className="object-cover w-full h-full"
-					/>
-				</div>
+				<TourArt src={widgetArt} />
 				<p className="text-xs leading-relaxed text-fg font-medium">
 					{t('home.tour.step2.body')}
 				</p>
@@ -65,11 +59,25 @@ const steps: Step[] = [
 	},
 	{
 		target: '#layout-menu-button',
-		content: t('home.tour.step3.body'),
+		content: (
+			<div className="flex flex-col gap-2.5">
+				<TourArt src={layoutArt} />
+				<p className="text-xs leading-relaxed text-fg font-medium">
+					{t('home.tour.step3.body')}
+				</p>
+			</div>
+		),
 	},
 	{
 		target: '#profile-button',
-		content: t('home.tour.step4.body'),
+		content: (
+			<div className="flex flex-col gap-2.5">
+				<TourArt src={profileArt} />
+				<p className="text-xs leading-relaxed text-fg font-medium">
+					{t('home.tour.step4.body')}
+				</p>
+			</div>
+		),
 	},
 ]
 

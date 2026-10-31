@@ -91,8 +91,9 @@ export function FriendsDirectView() {
 			)}
 
 			<div
+				ref={containerRef}
 				className={cn(
-					'flex flex-col flex-1 min-h-0',
+					'flex flex-col flex-1 min-h-0 overflow-y-auto scrollbar-none',
 					showSuggestions && 'hidden'
 				)}
 			>
@@ -128,7 +129,7 @@ export function FriendsDirectView() {
 						<button
 							type="button"
 							onClick={() => setIsAddFriendOpen(true)}
-							className="flex items-center justify-center w-8 h-8 transition-ui rounded-xl bg-fill hover:bg-fill-2 active:scale-90 cursor-pointer border border-line text-fg-muted hover:text-fg-strong"
+							className="flex items-center justify-center w-8 h-8 transition-ui rounded-xl bg-surface-2 hover:bg-fill active:scale-90 cursor-pointer border border-surface-3 text-fg-muted hover:text-fg-strong"
 							aria-label={t('friends.direct.add')}
 						>
 							<Icon name="usersPlus" size={16} />
@@ -136,22 +137,19 @@ export function FriendsDirectView() {
 					</div>
 				</div>
 
-				<div
-					ref={containerRef}
-					className="flex-1 px-1 pb-2 overflow-y-auto space-y-1 scrollbar-none"
-				>
+				<div className="px-1 pb-2 space-y-1 shrink-0">
 					{isLoading ? (
 						<div className="space-y-1.5 pt-1">
 							{Array.from({ length: 4 }).map((_, i) => (
 								<div
 									key={i}
-									className="flex items-center justify-between p-2 rounded-xl border border-line bg-fill animate-pulse"
+									className="flex items-center justify-between p-2 rounded-xl"
 								>
 									<div className="flex items-center gap-2.5">
-										<div className="w-8 h-8 rounded-full skeleton" />
+										<div className="w-8 h-8 rounded-full skeleton bg-fill-2" />
 										<div className="space-y-1">
-											<div className="w-20 h-3 rounded-sm skeleton" />
-											<div className="w-14 h-2 rounded-sm skeleton" />
+											<div className="w-20 h-3 rounded-sm skeleton bg-fill-2" />
+											<div className="w-14 h-2 rounded-sm skeleton bg-fill-2" />
 										</div>
 									</div>
 								</div>

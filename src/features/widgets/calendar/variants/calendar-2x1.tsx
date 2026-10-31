@@ -1,5 +1,4 @@
 import { useRef } from 'react'
-import { moodOptions } from '@/common/constants/moods'
 import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { ClickableTooltip } from '@/components/ui'
@@ -39,7 +38,6 @@ export function Calendar2x1({ display }: Calendar2x1Props) {
 	)
 
 	const eventsForCalendar = events || EMPTY_EVENTS
-	const moods = moodsData?.moods ?? []
 
 	return (
 		<>
@@ -55,13 +53,6 @@ export function Calendar2x1({ display }: Calendar2x1Props) {
 					const { isHoliday, isHolidayEvent, hasEvent, eventCount } =
 						getDayMarks(eventsForCalendar, day)
 					const isoDate = toIsoDateKey(day)
-					const dayMood = display.showMoods
-						? moodOptions.find(
-								(option) =>
-									option.value ===
-									moods.find((mood) => mood.date === isoDate)?.mood
-							)
-						: undefined
 					const showEventDot = display.showEvents && hasEvent
 					const dayLabel = [
 						day.format('dddd jD jMMMM jYYYY'),
@@ -69,8 +60,6 @@ export function Calendar2x1({ display }: Calendar2x1Props) {
 						display.showEvents &&
 							eventCount > 0 &&
 							t('widgets.calendar.eventCount', { count: eventCount }),
-						dayMood &&
-							t('widgets.calendar.moodDay', { mood: t(dayMood.labelKey) }),
 					]
 						.filter(Boolean)
 						.join(t('ui.date.headingSep'))
@@ -84,8 +73,7 @@ export function Calendar2x1({ display }: Calendar2x1Props) {
 								aria-current={isToday ? 'date' : undefined}
 								onClick={(e) => openFor(day, e.currentTarget)}
 								className={cn(
-									'flex flex-col items-center justify-center w-full h-full gap-0.5 rounded-xl border-2 cursor-pointer tabular-nums transition-ui focus-visible:focus-ring',
-									dayMood ? dayMood.borderClass : 'border-transparent',
+									'flex flex-col items-center justify-center w-full h-full gap-0.5 rounded-xl border-2 cursor-pointer tabular-nums transition-ui focus-visible:focus-ring border-transparent',
 									isToday
 										? 'bg-brand text-on-brand'
 										: isSelected

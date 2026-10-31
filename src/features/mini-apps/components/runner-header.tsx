@@ -46,7 +46,7 @@ export function MiniAppRunnerHeader({
 					<Button
 						type="button"
 						size={'md'}
-						className="bg-fill-2 px-3! py-0!"
+						className="px-3! py-0!"
 						color={'base'}
 						aria-label={t('miniApps.header.back')}
 						onClick={onClickToBack}
@@ -92,7 +92,6 @@ export function MiniAppRunnerHeader({
 						<Button
 							type="button"
 							size={'md'}
-							className="bg-fill-2"
 							color={'base'}
 							aria-label={t('miniApps.header.reload')}
 							onClick={handleReload}
@@ -111,7 +110,6 @@ export function MiniAppRunnerHeader({
 						type="button"
 						size={'md'}
 						color={'base'}
-						className="bg-fill-2"
 						aria-label={t('miniApps.header.more')}
 						aria-expanded={menuOpen}
 						onClick={() => setMenuOpen((open) => !open)}

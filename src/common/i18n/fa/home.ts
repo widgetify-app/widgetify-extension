@@ -3,7 +3,7 @@ export const home = {
 	'home.dialog.close': 'بستن',
 	'home.installed.welcome': 'به ویجتیفای خوش اومدی!',
 	'home.installed.howToEnable': 'نحوه فعالسازی افزونه',
-	'home.installed.keepItWarning': '⚠️ برای فعال شدن افزونه، دکمه‌ی "Keep It" رو بزن',
+	'home.installed.keepItWarning': 'برای فعال شدن افزونه، دکمه‌ی "Keep It" رو بزن',
 	'home.installed.start': 'شروع کنیم',
 	'home.firefox.uninstallConfirm':
 		'برای کارکرد کامل افزونه به این دسترسی‌ها نیاز داریم، میخوای افزونه رو حذف کنی؟',

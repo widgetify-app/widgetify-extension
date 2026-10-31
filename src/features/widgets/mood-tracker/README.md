@@ -10,7 +10,7 @@ Log today's mood in one click: sad, tired, okay or great. 1x1 and 2x1. Needs an 
 | `variants/mood-tracker-2x1.tsx` | A small header («امروز چه حسی داری؟», or «حال امروز» and «ثبت شد») with the ⋯, then four labelled tiles. |
 | `variants/mood-tracker-1x1.tsx` | Today's mood or «حس امروزت؟», its picture, and a strip of four small buttons. |
 | `constants.ts` | The colours of a selected tile. |
-| `components/mood-share-modal.tsx`, `utils/render-mood-share-canvas.ts` | The monthly share image. |
+| `components/mood-share-modal.tsx`, `utils/render-mood-share-canvas.ts`, `utils/share-month.ts` | The monthly share image. The modal opens on this Jalali month and its arrows step back up to 11 months (`year` and `month` go to `GET /users/@me/moods/stats`). |
 
 ## Data
 

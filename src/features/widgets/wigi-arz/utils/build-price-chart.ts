@@ -4,8 +4,9 @@ export const CHART_WIDTH = 300
 export const CHART_HEIGHT = 120
 const CHART_PADDING_Y = 10
 const RIAL_PER_TOMAN = 10
-const TICK_INTERVALS = 3
-const NICE_STEPS = [1, 2, 2.5, 5, 10]
+const MIN_SPAN_RATIO = 0.08
+const POINTS_PER_SMOOTHING_STEP = 12
+const TIME_TICK_COUNT = 5
 
 interface ChartPoint {
 	x: number
@@ -14,18 +15,11 @@ interface ChartPoint {
 	time: number
 }
 
-interface ChartTick {
-	value: number
-	y: number
-}
-
 export interface PriceChart {
 	points: ChartPoint[]
-	ticks: ChartTick[]
+	timeTicks: number[]
 	linePath: string
 	areaPath: string
-	min: number
-	max: number
 	changePercentage: number
 }
 
@@ -33,30 +27,32 @@ export function toDisplayValue(price: number, isDollar: boolean): number {
 	return isDollar ? price : price / RIAL_PER_TOMAN
 }
 
-function toPath(points: ChartPoint[]): string {
-	return points
-		.map(
-			(point, index) =>
-				`${index === 0 ? 'M' : 'L'}${point.x.toFixed(1)},${point.y.toFixed(1)}`
-		)
-		.join(' ')
+function rollingAverage(values: number[]): number[] {
+	const radius = Math.round(values.length / POINTS_PER_SMOOTHING_STEP)
+	if (radius === 0) return values
+	return values.map((_, index) => {
+		const window = values.slice(Math.max(0, index - radius), index + radius + 1)
+		return window.reduce((sum, value) => sum + value, 0) / window.length
+	})
 }
 
-function niceStep(span: number): number {
-	const raw = span / TICK_INTERVALS
-	const magnitude = 10 ** Math.floor(Math.log10(raw))
-	const step = NICE_STEPS.find((nice) => nice * magnitude >= raw) ?? 10
-	return step * magnitude
-}
-
-function tickValues(min: number, max: number): number[] {
-	if (max === min) return [min]
-	const step = niceStep(max - min)
-	const first = Math.floor(min / step)
-	const last = Math.ceil(max / step)
-	return Array.from({ length: last - first + 1 }, (_, index) =>
-		Number(((first + index) * step).toPrecision(12))
-	)
+function toCurvePath(points: ChartPoint[]): string {
+	const coord = (point: { x: number; y: number }) =>
+		`${point.x.toFixed(1)},${point.y.toFixed(1)}`
+	let path = `M${coord(points[0])}`
+	for (let index = 0; index < points.length - 1; index++) {
+		const before = points[index - 1] ?? points[index]
+		const from = points[index]
+		const to = points[index + 1]
+		const after = points[index + 2] ?? to
+		const start = {
+			x: from.x + (to.x - before.x) / 6,
+			y: from.y + (to.y - before.y) / 6,
+		}
+		const end = { x: to.x - (after.x - from.x) / 6, y: to.y - (after.y - from.y) / 6 }
+		path += ` C${coord(start)} ${coord(end)} ${coord(to)}`
+	}
+	return path
 }
 
 export function buildPriceChart(
@@ -74,20 +70,22 @@ export function buildPriceChart(
 	if (samples.length < 2) return null
 
 	const values = samples.map((sample) => sample.value)
-	const min = Math.min(...values)
-	const max = Math.max(...values)
-	const tickList = tickValues(min, max)
-	const low = tickList[0]
-	const valueSpan = tickList[tickList.length - 1] - low
+	const smoothed = rollingAverage(values)
+	const middle = (Math.min(...smoothed) + Math.max(...smoothed)) / 2
+	const span = Math.max(
+		Math.max(...smoothed) - Math.min(...smoothed),
+		Math.abs(middle) * MIN_SPAN_RATIO
+	)
+	const low = middle - span / 2
 	const first = samples[0]
 	const last = samples[samples.length - 1]
 	const timeSpan = last.time - first.time
 	const drawableHeight = CHART_HEIGHT - CHART_PADDING_Y * 2
 
 	const toY = (value: number) =>
-		valueSpan === 0
+		span === 0
 			? CHART_HEIGHT / 2
-			: CHART_PADDING_Y + (1 - (value - low) / valueSpan) * drawableHeight
+			: CHART_PADDING_Y + (1 - (value - low) / span) * drawableHeight
 
 	const points = samples.map((sample, index) => ({
 		...sample,
@@ -95,18 +93,19 @@ export function buildPriceChart(
 			timeSpan === 0
 				? (index / (samples.length - 1)) * CHART_WIDTH
 				: ((sample.time - first.time) / timeSpan) * CHART_WIDTH,
-		y: toY(sample.value),
+		y: toY(smoothed[index]),
 	}))
 
-	const linePath = toPath(points)
+	const linePath = toCurvePath(points)
 
 	return {
 		points,
-		ticks: tickList.map((value) => ({ value, y: toY(value) })),
+		timeTicks: Array.from(
+			{ length: TIME_TICK_COUNT },
+			(_, index) => first.time + (timeSpan * index) / (TIME_TICK_COUNT - 1)
+		),
 		linePath,
 		areaPath: `${linePath} L${CHART_WIDTH},${CHART_HEIGHT} L0,${CHART_HEIGHT} Z`,
-		min,
-		max,
 		changePercentage:
 			first.value === 0 ? 0 : ((last.value - first.value) / first.value) * 100,
 	}

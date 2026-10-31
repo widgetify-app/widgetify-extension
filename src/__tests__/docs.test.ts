@@ -31,6 +31,7 @@ const OTHER_DOCS = [
 const UNCHECKED_DOCS = ['AGENTS.local.md', 'SOCIAL_ROADMAP.md', '.agents/TYPOGRAPHY.md']
 
 const WIDGET_README = /^src\/features\/widgets\/[a-z0-9-]+\/README\.md$/
+const DESIGN_README = /^design\/(?:[a-z0-9-]+\/)?README\.md$/
 const LONG_READMES: Record<string, number> = {
 	'AGENTS.md': 200,
 	'src/styles/README.md': 320,
@@ -68,9 +69,13 @@ const everyFile = walk('.')
 const everyName = new Set(everyFile.map((path) => path.split('/').pop()))
 const markdown = everyFile.filter((path) => path.endsWith('.md'))
 const widgetReadmes = markdown.filter((path) => WIDGET_README.test(path))
-const readDocs = [...SECTION_READMES, ...OTHER_DOCS, ...widgetReadmes].filter((path) =>
-	existsSync(path)
-)
+const designReadmes = markdown.filter((path) => DESIGN_README.test(path))
+const readDocs = [
+	...SECTION_READMES,
+	...OTHER_DOCS,
+	...widgetReadmes,
+	...designReadmes,
+].filter((path) => existsSync(path))
 
 function exists(token: string, from: string): boolean {
 	const clean = token.replace(/^\.\//, '').replace(/:\d+$/, '')
@@ -184,10 +189,11 @@ describe('docs', () => {
 		expect(missing).toEqual([])
 	})
 
-	it('allow a README only at the root of a widget, besides the sections', () => {
+	it('allow a README only at the root of a widget or a design, besides the sections', () => {
 		const known = new Set([...SECTION_READMES, ...OTHER_DOCS, ...UNCHECKED_DOCS])
 		const stray = markdown.filter(
-			(path) => !known.has(path) && !WIDGET_README.test(path)
+			(path) =>
+				!known.has(path) && !WIDGET_README.test(path) && !DESIGN_README.test(path)
 		)
 		expect(stray).toEqual([])
 	})

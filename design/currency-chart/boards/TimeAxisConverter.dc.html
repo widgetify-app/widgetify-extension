@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Currency modal, option C with time axis and converter</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>@font-face{font-family:"Vazir";src:url(../../../src/assets/fonts/vazir/Vazirmatn-FD-Regular.woff2) format("woff2");font-weight:400;font-display:swap}@font-face{font-family:"Vazir";src:url(../../../src/assets/fonts/vazir/Vazirmatn-FD-Medium.woff2) format("woff2");font-weight:500;font-display:swap}@font-face{font-family:"Vazir";src:url(../../../src/assets/fonts/vazir/Vazirmatn-FD-Bold.woff2) format("woff2");font-weight:700;font-display:swap}@font-face{font-family:"Vazir";src:url(../../../src/assets/fonts/vazir/Vazirmatn-FD-Black.woff2) format("woff2");font-weight:900;font-display:swap}
+body{margin:0}
+.s{position:relative;width:720px;height:640px;box-sizing:border-box;overflow:hidden;background:#3b2a7a url(../../pro-tab/assets/wallpaper.webp) center/cover;font-family:Vazir,Tahoma,sans-serif;color:rgba(70,70,71,.9);line-height:1.5625}
+.s *{box-sizing:border-box}
+</style>
+</helmet>
+<div class="s" dir="rtl">
+<div style="position:absolute;inset:0;background:rgba(0,0,0,.35)"></div>
+<section role="dialog" aria-label="طلای ۱۸ عیار" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:384px;border-radius:24px;background:#fff;box-shadow:0 20px 25px -5px rgba(23,23,23,.17),0 8px 10px -6px rgba(23,23,23,.17);overflow:hidden;display:flex;flex-direction:column">
+<div style="padding:20px 20px 0;display:flex;flex-direction:column;gap:12px">
+<header style="display:flex;align-items:center;gap:10px">
+<span aria-hidden="true" style="display:grid;place-items:center;width:36px;height:36px;border-radius:999px;background:#fcb700;color:#fff;font-weight:900;font-size:13px;flex-shrink:0">Au</span>
+<div style="flex:1;min-width:0">
+<h2 style="margin:0;font-size:14px;font-weight:700;color:#464647">Gold 18K</h2>
+<p style="margin:0;display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(70,70,71,.7)"><span>GOLD18</span><span aria-hidden="true" style="width:5px;height:5px;border-radius:999px;background:#22c55e"></span><span>۲ دقیقه پیش</span></p>
+</div>
+<div style="display:flex;gap:2px;padding:3px;border-radius:10px;background:rgba(70,70,71,.05)">
+<button type="button" style="all:unset;padding:2px 8px;border-radius:7px;background:#fff;box-shadow:0 1px 2px rgba(23,23,23,.08);font-size:11px;font-weight:700;color:#464647">روز</button>
+<button type="button" style="all:unset;padding:2px 8px;border-radius:7px;font-size:11px;color:rgba(70,70,71,.7)">هفته</button>
+<button type="button" style="all:unset;padding:2px 8px;border-radius:7px;font-size:11px;color:rgba(70,70,71,.7)">ماه</button>
+</div>
+</header>
+<div style="display:flex;align-items:baseline;gap:8px">
+<p style="margin:0;font-size:28px;font-weight:900;color:#464647">۵,۵۱۰,۰۰۰</p>
+<span style="font-size:12px;color:rgba(70,70,71,.6)">تومان</span>
+<span style="margin-inline-start:auto;padding:2px 8px;border-radius:999px;background:rgba(244,63,94,.1);font-size:11px;font-weight:700;color:#e11d48">↑ ۱٫۳٪</span>
+</div>
+</div>
+<div dir="ltr" style="position:relative;width:100%;height:132px;margin-top:4px">
+<svg viewBox="0 0 300 120" preserveAspectRatio="none" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%">
+<defs><linearGradient id="gh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f43f5e" stop-opacity=".16"></stop><stop offset="1" stop-color="#f43f5e" stop-opacity="0"></stop></linearGradient></defs>
+<path d="M0.0,56.8 C1.2,57.3 4.7,60.0 7.0,60.3 C9.3,60.6 11.6,59.1 14.0,58.7 C16.3,58.2 18.6,57.7 20.9,57.5 C23.3,57.3 25.6,57.5 27.9,57.5 C30.2,57.5 32.6,56.9 34.9,57.5 C37.2,58.0 39.5,60.3 41.9,60.9 C44.2,61.5 46.5,60.9 48.8,61.0 C51.2,61.0 53.5,61.0 55.8,61.0 C58.1,61.1 60.5,61.1 62.8,61.1 C65.1,61.2 67.4,61.2 69.8,61.2 C72.1,61.3 74.4,61.3 76.7,61.3 C79.1,61.4 81.4,61.4 83.7,61.4 C86.0,61.5 88.4,61.5 90.7,61.5 C93.0,61.5 95.3,62.1 97.7,61.5 C100.0,60.9 102.3,58.7 104.7,58.1 C107.0,57.5 109.3,58.1 111.6,58.0 C114.0,58.0 116.3,57.4 118.6,58.0 C120.9,58.5 123.3,60.2 125.6,61.3 C127.9,62.4 130.2,64.0 132.6,64.6 C134.9,65.1 137.2,65.1 139.5,64.5 C141.9,63.9 144.2,61.6 146.5,61.0 C148.8,60.4 151.2,60.9 153.5,60.9 C155.8,60.9 158.1,60.9 160.5,60.9 C162.8,60.9 165.1,61.4 167.4,60.9 C169.8,60.3 172.1,58.1 174.4,57.5 C176.7,57.0 179.1,57.5 181.4,57.6 C183.7,57.6 186.0,57.6 188.4,57.7 C190.7,57.7 193.0,57.7 195.3,57.8 C197.7,57.8 200.0,57.8 202.3,57.9 C204.7,57.9 207.0,57.9 209.3,58.0 C211.6,58.0 214.0,58.0 216.3,58.0 C218.6,58.1 220.9,58.1 223.3,58.1 C225.6,58.1 227.9,58.1 230.2,58.1 C232.6,58.1 234.9,57.5 237.2,58.1 C239.5,58.6 241.9,60.9 244.2,61.4 C246.5,62.0 248.8,61.4 251.2,61.4 C253.5,61.3 255.8,61.3 258.1,61.3 C260.5,61.2 262.8,61.2 265.1,61.2 C267.4,61.1 269.8,61.1 272.1,61.1 C274.4,61.0 276.7,61.4 279.1,61.0 C281.4,60.6 283.7,59.6 286.0,58.6 C288.4,57.7 290.7,55.8 293.0,55.4 C295.3,55.1 298.8,56.4 300.0,56.6 L300,120 L0,120 Z" fill="url(#gh)"></path>
+<path d="M0.0,56.8 C1.2,57.3 4.7,60.0 7.0,60.3 C9.3,60.6 11.6,59.1 14.0,58.7 C16.3,58.2 18.6,57.7 20.9,57.5 C23.3,57.3 25.6,57.5 27.9,57.5 C30.2,57.5 32.6,56.9 34.9,57.5 C37.2,58.0 39.5,60.3 41.9,60.9 C44.2,61.5 46.5,60.9 48.8,61.0 C51.2,61.0 53.5,61.0 55.8,61.0 C58.1,61.1 60.5,61.1 62.8,61.1 C65.1,61.2 67.4,61.2 69.8,61.2 C72.1,61.3 74.4,61.3 76.7,61.3 C79.1,61.4 81.4,61.4 83.7,61.4 C86.0,61.5 88.4,61.5 90.7,61.5 C93.0,61.5 95.3,62.1 97.7,61.5 C100.0,60.9 102.3,58.7 104.7,58.1 C107.0,57.5 109.3,58.1 111.6,58.0 C114.0,58.0 116.3,57.4 118.6,58.0 C120.9,58.5 123.3,60.2 125.6,61.3 C127.9,62.4 130.2,64.0 132.6,64.6 C134.9,65.1 137.2,65.1 139.5,64.5 C141.9,63.9 144.2,61.6 146.5,61.0 C148.8,60.4 151.2,60.9 153.5,60.9 C155.8,60.9 158.1,60.9 160.5,60.9 C162.8,60.9 165.1,61.4 167.4,60.9 C169.8,60.3 172.1,58.1 174.4,57.5 C176.7,57.0 179.1,57.5 181.4,57.6 C183.7,57.6 186.0,57.6 188.4,57.7 C190.7,57.7 193.0,57.7 195.3,57.8 C197.7,57.8 200.0,57.8 202.3,57.9 C204.7,57.9 207.0,57.9 209.3,58.0 C211.6,58.0 214.0,58.0 216.3,58.0 C218.6,58.1 220.9,58.1 223.3,58.1 C225.6,58.1 227.9,58.1 230.2,58.1 C232.6,58.1 234.9,57.5 237.2,58.1 C239.5,58.6 241.9,60.9 244.2,61.4 C246.5,62.0 248.8,61.4 251.2,61.4 C253.5,61.3 255.8,61.3 258.1,61.3 C260.5,61.2 262.8,61.2 265.1,61.2 C267.4,61.1 269.8,61.1 272.1,61.1 C274.4,61.0 276.7,61.4 279.1,61.0 C281.4,60.6 283.7,59.6 286.0,58.6 C288.4,57.7 290.7,55.8 293.0,55.4 C295.3,55.1 298.8,56.4 300.0,56.6" fill="none" stroke="#f43f5e" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+</svg>
+</div>
+<div dir="ltr" style="display:flex;justify-content:space-between;padding:6px 16px 0;font-size:10px;color:rgba(70,70,71,.45)">
+<span>۰۸:۰۰</span><span>۱۴:۰۰</span><span>۲۰:۰۰</span><span>۰۲:۰۰</span><span style="color:#f43f5e;font-weight:700">الان</span>
+</div>
+<div style="margin-top:12px;padding:12px 16px 16px;border-top:1px solid rgba(70,70,71,.1);display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:center;gap:8px">
+<label style="flex:1;min-width:0;display:flex;align-items:center;gap:6px;height:40px;padding:0 12px;border-radius:12px;border:1px solid #f1f5f9;background:#f8fafc">
+<input type="text" value="۱" aria-label="مقدار" style="all:unset;flex:1;min-width:0;width:100%;font-family:inherit;font-size:13px;font-weight:700;color:#464647">
+<span style="font-size:11px;color:rgba(70,70,71,.6)">GOLD18</span>
+</label>
+<button type="button" aria-label="جابه‌جا کردن" style="all:unset;display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:rgba(70,70,71,.05);color:rgba(70,70,71,.7);cursor:pointer">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4 3 8l4 4"></path><path d="M3 8h18"></path><path d="m17 20 4-4-4-4"></path><path d="M21 16H3"></path></svg>
+</button>
+<label style="flex:1.4;min-width:0;display:flex;align-items:center;gap:6px;height:40px;padding:0 12px;border-radius:12px;border:1px solid #f1f5f9;background:#f8fafc">
+<input type="text" value="۵,۵۱۰,۰۰۰" aria-label="تومان" style="all:unset;flex:1;min-width:0;width:100%;font-family:inherit;font-size:13px;font-weight:700;color:#464647">
+<span style="font-size:11px;color:rgba(70,70,71,.6)">تومان</span>
+</label>
+</div></div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":720,"height":640}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

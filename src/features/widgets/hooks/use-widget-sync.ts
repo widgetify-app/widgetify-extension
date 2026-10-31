@@ -140,32 +140,57 @@ export function useWidgetSync({
 		[isAuthenticated, isEditingRef, holdLayout, sendLayout]
 	)
 
+	const sendLayoutWithStatus = useCallback(
+		async (layout: StoredWidget[]): Promise<boolean> => {
+			if (savedStatusTimerRef.current) clearTimeout(savedStatusTimerRef.current)
+			setSyncStatus('saving')
+
+			const isSaved = await sendLayout(layout).catch(() => false)
+
+			if (!isSaved) {
+				setSyncStatus('failed')
+				Analytics.event('widget_layout_sync_failed')
+				return false
+			}
+
+			if (heldLayoutRef.current === layout) {
+				heldLayoutRef.current = null
+				setToStorage('widgetLayoutUnsynced', false)
+			}
+			setSyncStatus('saved')
+			Analytics.event('widget_layout_sync_saved')
+			savedStatusTimerRef.current = setTimeout(
+				() => setSyncStatus('idle'),
+				SAVED_STATUS_MS
+			)
+			return true
+		},
+		[sendLayout]
+	)
+
 	const flushHeldLayout = useCallback(async () => {
 		const layout = heldLayoutRef.current
 		if (!isAuthenticated || !layout) return
 
-		if (savedStatusTimerRef.current) clearTimeout(savedStatusTimerRef.current)
-		setSyncStatus('saving')
+		await sendLayoutWithStatus(layout)
+	}, [isAuthenticated, sendLayoutWithStatus])
 
-		const isSaved = await sendLayout(layout).catch(() => false)
+	const syncLayoutNow = useCallback(
+		async (layout: StoredWidget[]) => {
+			if (!isAuthenticated) return
 
-		if (!isSaved) {
-			setSyncStatus('failed')
-			Analytics.event('widget_layout_sync_failed')
-			return
-		}
+			if (syncTimerRef.current) {
+				clearTimeout(syncTimerRef.current)
+				syncTimerRef.current = null
+			}
 
-		if (heldLayoutRef.current === layout) {
-			heldLayoutRef.current = null
-			setToStorage('widgetLayoutUnsynced', false)
-		}
-		setSyncStatus('saved')
-		Analytics.event('widget_layout_sync_saved')
-		savedStatusTimerRef.current = setTimeout(
-			() => setSyncStatus('idle'),
-			SAVED_STATUS_MS
-		)
-	}, [isAuthenticated, sendLayout])
+			holdLayout(layout)
+			if (isEditingRef.current) return
+
+			await sendLayoutWithStatus(layout)
+		},
+		[isAuthenticated, isEditingRef, holdLayout, sendLayoutWithStatus]
+	)
 
 	const markLocalEdit = useCallback(() => {
 		hasLocalEditRef.current = true
@@ -292,6 +317,7 @@ export function useWidgetSync({
 	return {
 		persistLayout,
 		triggerServerSync,
+		syncLayoutNow,
 		markLocalEdit,
 		flushHeldLayout,
 		syncStatus,
