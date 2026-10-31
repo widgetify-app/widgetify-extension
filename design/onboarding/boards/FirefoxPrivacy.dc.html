@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Onboarding, Firefox privacy</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>@font-face{font-family:"Vazir";src:url(../../../src/assets/fonts/vazir/Vazirmatn-FD-Regular.woff2) format("woff2");font-weight:400;font-display:swap}@font-face{font-family:"Vazir";src:url(../../../src/assets/fonts/vazir/Vazirmatn-FD-Medium.woff2) format("woff2");font-weight:500;font-display:swap}@font-face{font-family:"Vazir";src:url(../../../src/assets/fonts/vazir/Vazirmatn-FD-Bold.woff2) format("woff2");font-weight:700;font-display:swap}@font-face{font-family:"Vazir";src:url(../../../src/assets/fonts/vazir/Vazirmatn-FD-Black.woff2) format("woff2");font-weight:900;font-display:swap}
+body{margin:0}
+.s{--fg-strong:#464647;--fg:rgba(70,70,71,.9);--fg-muted:rgba(70,70,71,.7);--fg-faint:rgba(70,70,71,.5);--surface:#fff;--surface-2:#f8fafc;--surface-3:#f1f5f9;--fill:rgba(70,70,71,.05);--fill-2:rgba(70,70,71,.1);--line:rgba(70,70,71,.15);--brand:#536dfe;--sh-xl:0 20px 25px -5px rgba(23,23,23,.17),0 8px 10px -6px rgba(23,23,23,.17);
+position:relative;width:1080px;height:640px;box-sizing:border-box;overflow:hidden;background:#3b2a7a url(../../pro-tab/assets/wallpaper.webp) center/cover;font-family:Vazir,Tahoma,sans-serif;color:var(--fg);line-height:1.5625}
+.s *{box-sizing:border-box}
+.btn{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 18px;border-radius:12px;font-family:inherit;font-size:13px;font-weight:700}
+.primary{background:var(--brand);color:#fff}
+.ghost{background:var(--fill);color:var(--fg-muted)}
+.art{display:block;width:100%;aspect-ratio:2/1;object-fit:cover;border-radius:16px}
+</style>
+</helmet>
+<div class="s" dir="rtl">
+<div style="position:absolute;inset:0;background:rgba(0,0,0,.35)"></div>
+<div role="dialog" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:420px;padding:16px;border-radius:24px;background:var(--surface);box-shadow:var(--sh-xl);display:flex;flex-direction:column;gap:14px"><img class="art" src="../assets/privacy.webp" alt="">
+<div><h2 style="margin:0;font-size:20px;font-weight:700;color:var(--fg)">حریم خصوصی</h2>
+<p style="margin:4px 0 0;font-size:12px;line-height:1.75;color:var(--fg-muted)">تمام تنظیمات در مرورگر خودت ذخیره میشن، انتخاب کن کدوم موارد فعال باشن</p></div>
+<div style="display:flex;flex-direction:column;gap:8px"><label style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;border:1px solid var(--surface-3);background:var(--surface-2)"><span style="flex:1;display:flex;flex-direction:column"><b style="font-size:13px;color:var(--fg)">دریافت آیکون سایت‌ها (Google Favicon)</b><span style="font-size:11px;color:var(--fg-muted)">ارسال دامنه سایت به سرویس رسمی گوگل برای نمایش آیکون بوکمارک‌ها</span></span><span aria-hidden="true" style="flex-shrink:0;width:40px;height:22px;border-radius:999px;background:var(--brand);position:relative"><span style="position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:999px;background:#fff"></span></span></label><label style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;border:1px solid var(--surface-3);background:var(--surface-2)"><span style="flex:1;display:flex;flex-direction:column"><b style="font-size:13px;color:var(--fg)">ارسال آمار فنی و کارایی (Google Analytics)</b><span style="font-size:11px;color:var(--fg-muted)">ارسال داده‌های کاملا ناشناس و بدون اطلاعات هویتی برای رفع باگ‌ها</span></span><span aria-hidden="true" style="flex-shrink:0;width:40px;height:22px;border-radius:999px;background:var(--brand);position:relative"><span style="position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:999px;background:#fff"></span></span></label></div>
+<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--fg-muted)"><span>میتونی بعدا توی تنظیمات این موارد رو تغییر بدی</span><a href="#" style="color:var(--brand);text-decoration:none">سیاست حریم خصوصی</a></div>
+<div style="display:flex;gap:8px;padding-top:10px;border-top:1px solid var(--line)"><button type="button" class="btn ghost">حذف افزونه</button><button type="button" class="btn primary" style="flex:1">تایید و ادامه</button></div></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1080,"height":640}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

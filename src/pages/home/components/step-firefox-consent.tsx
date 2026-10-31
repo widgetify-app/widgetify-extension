@@ -3,6 +3,7 @@ import { t } from '@/common/i18n'
 import { Button, ItemSelector } from '@/components/ui'
 import { Icon } from '@/icons'
 import { getFromStorage, setFaviconConsent, setToStorage } from '@/common/storage'
+import privacyArt from '@/assets/images/onboarding/privacy.webp'
 
 interface StepFirefoxConsentProps {
 	onGetStarted: () => void
@@ -35,6 +36,11 @@ export const StepFirefoxConsent = ({ onGetStarted }: StepFirefoxConsentProps) =>
 
 	return (
 		<div className="flex flex-col gap-3 text-right">
+			<img
+				src={privacyArt}
+				alt=""
+				className="object-cover w-full aspect-2/1 rounded-2xl"
+			/>
 			<div className="space-y-1">
 				<div className="flex items-center justify-between">
 					<h3 className="text-xl font-bold text-fg">

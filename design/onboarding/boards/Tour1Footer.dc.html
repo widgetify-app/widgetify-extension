@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Onboarding, tour step 1</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>@font-face{font-family:"Vazir";src:url(../../../src/assets/fonts/vazir/Vazirmatn-FD-Regular.woff2) format("woff2");font-weight:400;font-display:swap}@font-face{font-family:"Vazir";src:url(../../../src/assets/fonts/vazir/Vazirmatn-FD-Medium.woff2) format("woff2");font-weight:500;font-display:swap}@font-face{font-family:"Vazir";src:url(../../../src/assets/fonts/vazir/Vazirmatn-FD-Bold.woff2) format("woff2");font-weight:700;font-display:swap}@font-face{font-family:"Vazir";src:url(../../../src/assets/fonts/vazir/Vazirmatn-FD-Black.woff2) format("woff2");font-weight:900;font-display:swap}
+body{margin:0}
+.s{--fg-strong:#464647;--fg:rgba(70,70,71,.9);--fg-muted:rgba(70,70,71,.7);--fg-faint:rgba(70,70,71,.5);--surface:#fff;--surface-2:#f8fafc;--surface-3:#f1f5f9;--fill:rgba(70,70,71,.05);--fill-2:rgba(70,70,71,.1);--line:rgba(70,70,71,.15);--brand:#536dfe;--sh-xl:0 20px 25px -5px rgba(23,23,23,.17),0 8px 10px -6px rgba(23,23,23,.17);
+position:relative;width:1080px;height:640px;box-sizing:border-box;overflow:hidden;background:#3b2a7a url(../../pro-tab/assets/wallpaper.webp) center/cover;font-family:Vazir,Tahoma,sans-serif;color:var(--fg);line-height:1.5625}
+.s *{box-sizing:border-box}
+.btn{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 18px;border-radius:12px;font-family:inherit;font-size:13px;font-weight:700}
+.primary{background:var(--brand);color:#fff}
+.ghost{background:var(--fill);color:var(--fg-muted)}
+.art{display:block;width:100%;aspect-ratio:2/1;object-fit:cover;border-radius:16px}
+</style>
+</helmet>
+<div class="s" dir="rtl">
+<div style="position:absolute;inset:0;background:rgba(0,0,0,.35)"></div>
+<div role="dialog" style="position:absolute;bottom:110px;left:50%;transform:translateX(-50%);width:340px;padding:16px;border-radius:16px;background:var(--surface-2);border:1px solid var(--line);box-shadow:var(--sh-xl);display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:10px;border-bottom:1px solid var(--line)"><span style="display:flex;align-items:center;gap:8px"><span style="display:flex;gap:4px"><span style="height:6px;width:18px;border-radius:999px;background:var(--brand)"></span><span style="height:6px;width:6px;border-radius:999px;background:var(--fill-2)"></span><span style="height:6px;width:6px;border-radius:999px;background:var(--fill-2)"></span><span style="height:6px;width:6px;border-radius:999px;background:var(--fill-2)"></span></span><span style="font-size:11px;font-weight:700;color:var(--fg-muted)">۱ از ۴</span></span><button type="button" aria-label="بستن" style="all:unset;cursor:pointer;font-size:11px;color:var(--fg-faint)">رد کردن</button></div>
+<img class="art" src="../assets/footer.webp" alt="">
+<h3 style="margin:0;text-align:center;font-size:14px;font-weight:900;color:var(--brand)">خلوت کردن فضای مرورگر</h3><p style="margin:0;font-size:12px;line-height:1.8;color:var(--fg)">برای مخفی کردن این نوار، کافیه روش <b style="color:#e11d48">راست‌کلیک</b> کنی و این گزینه رو بزنی:</p><code style="display:block;padding:6px;border:1px dashed var(--line);border-radius:8px;background:var(--fill);font-size:11px;font-weight:700;color:var(--fg-muted);text-align:center;direction:ltr">"Hide footer on New Tab page"</code>
+<div style="display:flex;gap:8px"><button type="button" class="btn primary" style="flex:1">بعدی</button></div></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1080,"height":640}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>
