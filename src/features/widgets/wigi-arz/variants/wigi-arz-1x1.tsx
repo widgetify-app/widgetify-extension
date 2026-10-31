@@ -150,7 +150,6 @@ export function CurrencyCompactSquare({
 				key={activeCode}
 				code={activeCode}
 				currency={currency}
-				priceChange={priceChange}
 				isModalOpen={isModalOpen}
 				toggleCurrencyModal={toggleModal}
 			/>

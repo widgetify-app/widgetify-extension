@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Currency modal, as built</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>@font-face{font-family:"Vazir";src:url(../../../src/assets/fonts/vazir/Vazirmatn-FD-Regular.woff2) format("woff2");font-weight:400;font-display:swap}@font-face{font-family:"Vazir";src:url(../../../src/assets/fonts/vazir/Vazirmatn-FD-Medium.woff2) format("woff2");font-weight:500;font-display:swap}@font-face{font-family:"Vazir";src:url(../../../src/assets/fonts/vazir/Vazirmatn-FD-Bold.woff2) format("woff2");font-weight:700;font-display:swap}@font-face{font-family:"Vazir";src:url(../../../src/assets/fonts/vazir/Vazirmatn-FD-Black.woff2) format("woff2");font-weight:900;font-display:swap}
+body{margin:0}
+.s{position:relative;width:720px;height:640px;box-sizing:border-box;overflow:hidden;background:#3b2a7a url(../../pro-tab/assets/wallpaper.webp) center/cover;font-family:Vazir,Tahoma,sans-serif;color:rgba(70,70,71,.9);line-height:1.5625}
+.s *{box-sizing:border-box}
+</style>
+</helmet>
+<div class="s" dir="rtl">
+<div style="position:absolute;inset:0;background:rgba(0,0,0,.35)"></div>
+<section role="dialog" aria-label="اشتراک Claude" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:384px;border-radius:24px;background:#fff;box-shadow:0 10px 15px -3px rgba(23,23,23,.12),0 4px 6px -4px rgba(23,23,23,.12);overflow:hidden;display:flex;flex-direction:column">
+<div style="padding:20px 20px 0;display:flex;flex-direction:column;gap:12px">
+<header style="display:flex;align-items:center;gap:10px">
+<img src="../assets/claude.png" alt="" style="width:36px;height:36px;border-radius:999px;object-fit:cover;flex-shrink:0">
+<div style="flex:1;min-width:0">
+<h2 style="margin:0;font-size:14px;font-weight:700;color:#464647;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">اشتراک Claude</h2>
+<p style="margin:0;font-size:10px;color:rgba(70,70,71,.7)">CLAUDE</p>
+</div>
+<div style="display:flex;gap:2px;padding:3px;border-radius:10px;background:rgba(70,70,71,.05)">
+<button type="button" style="all:unset;padding:2px 8px;border-radius:7px;font-size:11px;color:rgba(70,70,71,.7)">روز</button>
+<button type="button" style="all:unset;padding:2px 8px;border-radius:7px;font-size:11px;color:rgba(70,70,71,.7)">هفته</button>
+<button type="button" style="all:unset;padding:2px 8px;border-radius:7px;background:#fff;box-shadow:0 1px 2px rgba(23,23,23,.08);font-size:11px;font-weight:700;color:#464647">ماه</button>
+</div>
+</header>
+<div style="display:flex;align-items:baseline;gap:8px">
+<p style="margin:0;font-size:30px;font-weight:900;color:#464647">۵,۴۸۷,۰۰۰</p>
+<span style="font-size:12px;color:rgba(70,70,71,.7)">تومان</span>
+<span style="margin-inline-start:auto;padding:2px 8px;border-radius:999px;background:rgba(70,70,71,.05);font-size:10px;font-weight:700;color:#00a96e">↓ ۰٫۴٪</span>
+</div>
+</div>
+<div dir="ltr" style="margin-top:4px">
+<div style="position:relative;width:100%;height:132px">
+<svg viewBox="0 0 300 120" preserveAspectRatio="none" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%">
+<defs><linearGradient id="gh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f43f5e" stop-opacity=".16"></stop><stop offset="1" stop-color="#f43f5e" stop-opacity="0"></stop></linearGradient></defs>
+<path d="M0.0,79.1 C3.5,79.7 14.1,81.8 21.1,82.9 C28.0,84.0 34.9,85.5 41.8,85.8 C48.8,86.2 55.7,86.9 62.8,85.0 C69.8,83.2 76.9,79.1 83.9,74.8 C90.9,70.6 97.7,64.1 104.7,59.5 C111.7,54.9 118.8,49.1 125.8,47.3 C132.8,45.5 139.6,47.0 146.6,48.7 C153.6,50.4 160.7,55.7 167.7,57.5 C174.7,59.3 181.5,59.3 188.5,59.4 C195.5,59.4 202.6,58.3 209.5,57.8 C216.5,57.3 223.4,56.6 230.4,56.3 C237.3,55.9 244.2,57.3 251.2,55.6 C258.2,54.0 265.2,49.2 272.2,46.4 C279.3,43.6 288.7,40.9 293.3,38.9 C297.9,36.8 298.9,35.0 300.0,34.2 L300,120 L0,120 Z" fill="url(#gh)"></path>
+<path d="M0.0,79.1 C3.5,79.7 14.1,81.8 21.1,82.9 C28.0,84.0 34.9,85.5 41.8,85.8 C48.8,86.2 55.7,86.9 62.8,85.0 C69.8,83.2 76.9,79.1 83.9,74.8 C90.9,70.6 97.7,64.1 104.7,59.5 C111.7,54.9 118.8,49.1 125.8,47.3 C132.8,45.5 139.6,47.0 146.6,48.7 C153.6,50.4 160.7,55.7 167.7,57.5 C174.7,59.3 181.5,59.3 188.5,59.4 C195.5,59.4 202.6,58.3 209.5,57.8 C216.5,57.3 223.4,56.6 230.4,56.3 C237.3,55.9 244.2,57.3 251.2,55.6 C258.2,54.0 265.2,49.2 272.2,46.4 C279.3,43.6 288.7,40.9 293.3,38.9 C297.9,36.8 298.9,35.0 300.0,34.2" fill="none" stroke="#f43f5e" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+</svg>
+</div>
+<div style="display:flex;justify-content:space-between;padding:6px 16px 0;font-size:10px;color:rgba(70,70,71,.5)">
+<span>۲۵ مهر</span><span>۲۸ مهر</span><span>۲ آبان</span><span>۵ آبان</span><span style="color:#f43f5e;font-weight:700">الان</span>
+</div>
+</div>
+<div style="height:16px"></div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":720,"height":640}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

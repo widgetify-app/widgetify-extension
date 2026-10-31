@@ -11,16 +11,16 @@ Live prices of currencies, gold, coins, crypto and services (subscriptions and c
 | `variants/wigi-arz-1x1.tsx` | One currency, centred like the other 1x1 widgets: `WidgetCenteredHeader` with the flag and the code, then the price, sized to fit, over the unit and the change. «انتخاب ارز» when none is set, «نتونستیم قیمت رو بیاریم» with «دوباره» when the price fails. |
 | `components/currency-list.tsx`, `components/sortable-currency-box.tsx` | Drag to reorder. |
 | `components/currency-box.tsx` | One row, padded like a task row: icon, code, name, price and change. The drag handle sits outside the row, in the card's margin beside it, and fades in on hover; the list reaches into that margin (`-ms-2.5 ps-2.5`) so its `overflow-x-hidden` does not clip the handle. |
-| `components/price-change.tsx` | The change with its arrow and colour: in percent by default, or as an amount when `amount` is given (the list rows, the 1x1 and the modal show the amount; the chart header shows the percent). Draws nothing when the percent rounds to zero, so a row never says «۰٪». |
-| `components/currency-modal.tsx` | Details, the price chart and the converter. Each row keeps its own modal mounted and only toggles it, so it opens and closes with the animation. |
-| `components/currency-history.tsx` | The chart section of the modal: range tabs (یک روز، یک هفته، یک ماه), then the chart, a skeleton while loading, a retry on failure, or «هنوز داده‌ی کافی برای نمودار جمع نشده» when the server has fewer than two points. Only fetches while the modal is open. |
-| `components/price-chart.tsx` | The SVG area chart: highest and lowest price and the change over the range above it, faint gridlines at round prices behind the line, no axis labels. Moving the pointer over it shows the nearest point with its price and time. Always `dir="ltr"`, time runs left to right. |
+| `components/price-change.tsx` | The change with its arrow and colour: in percent by default, or as an amount when `amount` is given (the list rows and the 1x1 show the amount; the modal header shows the day's percent in a pill). Draws nothing when the percent rounds to zero, so a row never says «۰٪». |
+| `components/currency-modal.tsx` | The approved design in `design/currency-chart/`: a header with the icon, the name, the code and, for pro, the range control; the large price with «تومان» or «دلار» and the day's change; the chart from edge to edge; the converter as the footer, with a swap button (`currency_converter_swapped`), hidden for services. No close button: the backdrop and Escape close it. Each row keeps its own modal mounted and only toggles it, so it opens and closes with the animation. |
+| `components/currency-history.tsx` | The chart section of the modal and `HistoryRangeTabs` (روز، هفته، ماه), which the modal puts in its header. The range lives in the modal. It shows the chart, a skeleton while loading, a retry on failure, or «هنوز داده‌ی کافی برای نمودار جمع نشده» when the server has fewer than two points. Only fetches while the modal is open. |
+| `components/price-chart.tsx` | The SVG area chart: a smooth line with a light fill, no gridlines, and five time labels under it, the last one «الان». Moving the pointer over it shows the nearest point with its real price and time. Always `dir="ltr"`, time runs left to right. |
 | `components/currency-empty.tsx` | The empty list: the coin icon, a line and «افزودن ارز». |
 | `wigi-arz-setting.tsx` | Settings: the colour of a price change (top), then choose the currencies. |
 | `hooks/use-currency-color-mode.ts` | The colour mode, read from storage key `currencyColorMode` into a small shared store, so every row, the modal and the chart agree and a change shows at once (`saveCurrencyColorMode` writes it; `watchStorage` carries it across tabs). |
 | `utils/currency-color-mode.ts` | `normalizeCurrencyColorMode` (anything but `reverse` reads as `normal`) and `getChangeColorClass`. Tested. |
 | `hooks/use-currency-price.ts` | One price, cached in storage under `currency:<code>`. |
-| `utils/build-price-chart.ts` | Turns `priceHistory` into the chart: sorted points, round price ticks, line and area paths, min, max and the change from the first price to the last. Tested. |
+| `utils/build-price-chart.ts` | Turns `priceHistory` into the chart: sorted points drawn at a rolling average, a curved line and its area, five evenly spaced moments for the time axis, and the change from the first price to the last. Tested. |
 | `utils/` | Price, change, the settings options and who owns a list. Tested. |
 
 ## Data
@@ -36,7 +36,7 @@ Live prices of currencies, gold, coins, crypto and services (subscriptions and c
 The server adds entries of `type: 'service'` to `/currencies/supported-list` for every pegged item in price-track (a base price in dollars times the live rate; see the API's currency README). They are a fourth group in the picker, «☁️ اشتراک و سرویس‌ها», and a fourth filter.
 
 - A service row, the 1x1 and the modal work like a currency: price in toman, the change, the chart. The row's second line ends with the plan's period (` · ماهانه`), and the modal shows it beside the code.
-- The converter button is hidden for a service: converting a plan to toman is not a conversion.
+- The converter is hidden for a service: converting a plan to toman is not a conversion.
 - The converter tool (`src/features/widgets/tools/components/currency-converter.tsx`) leaves services out of its list.
 - An old extension ignores a type it does not know, so it never offers a service.
 
@@ -46,7 +46,8 @@ The server adds entries of `type: 'service'` to `/currencies/supported-list` for
 - Data: `useGetCurrencyHistory` in `src/services/currency` asks `/currencies/<code>?history=24h|7d|30d` and keeps `priceHistory`. The API sends `[]` without `history`, so the list rows never ask for it. The service worker caches each range apart (the key is the full URL).
 - Units: history `price` is in the same unit as the API's `price`: rial for currencies and coins, dollars for crypto. The chart shows what the modal shows, so `toDisplayValue` divides rial by 10 and leaves dollars (`getPrice(...).isDollar` decides).
 - Colour: follows the colour mode, like `PriceChange`; a range that rounds to 0.0 is neutral.
-- Scale: the price axis runs between round ticks (steps of 1, 2, 2.5 or 5 times a power of ten, about three intervals) that enclose every price, with a faint gridline at each. The range is never narrower than 2% of the middle price, centred on the data: a subscription that went from 5,378,000 to 5,370,000 (0.15%) used to fall from the top to the bottom, and now drops a few pixels. A wider range keeps its own size; the round domain leaves some air above and below, and the high and low in the header give the size of the move. Price and time labels on the axes were tried and dropped: the header and the tooltip already say both.
+- Smoothing: the line is drawn at a rolling average over about a twelfth of the points (none under eight points). price-track's history can flip between two prices about 1.6% apart for hours at a time; drawn raw, that was a square wave. The tooltip still shows each point's real price.
+- Scale: the price axis is never narrower than 8% of the middle price, centred on the line. A wider move keeps its own size. The old 2% floor turned each flip into a fall from the top to the bottom.
 - The server only started recording history on 2026-10-13, so a short range can have one point. One point or none draws nothing and shows the empty line.
 
 ## Menu
@@ -64,6 +65,6 @@ Settings comes first, with "۶ ارز انتخاب شده" or "ارز: USD" unde
 
 ## Not checked on screen
 
-The chart in the modal: the locked card signed out and signed in without pro, its two buttons, the three ranges, the skeleton, the failed and the empty states, the tooltip near both edges, touch, the line colour in a light and a dark theme, the gradient under the line, and the gridlines.
+The redesigned modal: the header with a long name, the range control in the header, the price row with a long coin price, the chart from edge to edge and its time labels on all three ranges, the locked card signed out and signed in without pro, the skeleton, the failed and the empty states, the tooltip near both edges, touch, the line colour in a light and a dark theme, the converter and its swap button, and a service without the converter.
 
 The rows in the list and in the combo widget, the drag handle fading in and while dragging, the header time and «به‌روز می‌شه…», the 1x1 with a long price at the narrowest 1x1, the 1x1 change amount beside «تومان» for a large one such as a coin, the 1x1 empty and failed states, the empty list.
