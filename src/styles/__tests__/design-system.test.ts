@@ -1096,6 +1096,30 @@ describe('classes', () => {
 	})
 })
 
+describe('surfaces over other content', () => {
+	const LAID_OVER = /^(?:absolute|fixed|sticky|-m[a-z]?-.+)$/
+	const PLAIN_SURFACE = /^bg-surface(?:-2|-3)?$/
+	const FROSTED = /^(?:bg-glass-.+|backdrop-.+|theme-scope)$/
+	const FLIP_FLAPS_LAST_A_MOMENT = 'src/features/widgets/clock/variants/clock-flip.tsx'
+
+	it('are frosted, because glass and icy surfaces are nearly clear', () => {
+		const lists = new Map<string, string[]>()
+		for (const { token, at } of writtenClasses()) {
+			lists.set(at, [...(lists.get(at) ?? []), token])
+		}
+		const seeThrough = [...lists]
+			.filter(([at]) => !at.startsWith(FLIP_FLAPS_LAST_A_MOMENT))
+			.filter(
+				([, tokens]) =>
+					tokens.some((token) => LAID_OVER.test(token)) &&
+					tokens.some((token) => PLAIN_SURFACE.test(token)) &&
+					!tokens.some((token) => FROSTED.test(token))
+			)
+			.map(([at]) => at)
+		expect(seeThrough).toEqual([])
+	})
+})
+
 describe('tooltips', () => {
 	it('come from Tooltip, never from a native title on a button or link', () => {
 		const titled: string[] = []

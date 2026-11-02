@@ -83,7 +83,7 @@ export const CurrencyConverter: React.FC<CurrencyConverterProps> = ({ tabs }) =>
 						type="button"
 						onClick={handleSwap}
 						aria-label={t('widgets.tools.currency.swap')}
-						className="relative z-10 grid self-center -my-3.5 rounded-full shadow-sm cursor-pointer size-7.5 place-items-center bg-surface ring-1 ring-line text-fg-muted transition-ui hover:text-fg-strong active:scale-95 focus-visible:focus-ring"
+						className="relative z-10 grid self-center -my-3.5 rounded-full shadow-sm cursor-pointer size-7.5 place-items-center bg-glass-modal ring-1 ring-line text-fg-muted transition-ui hover:text-fg-strong active:scale-95 focus-visible:focus-ring"
 					>
 						<Icon name="upDown" size={14} aria-hidden="true" />
 					</button>

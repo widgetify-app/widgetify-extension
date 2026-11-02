@@ -59,7 +59,7 @@ export function VipPlanCard({
 			)}
 
 			{isClaimed && (
-				<span className="absolute -top-2.5 end-4 px-2 py-0.5 text-2xs font-bold rounded-full bg-surface text-fg-muted">
+				<span className="absolute -top-2.5 end-4 px-2 py-0.5 text-2xs font-bold rounded-full bg-glass-modal text-fg-muted">
 					{t('setting.vipPlan.used')}
 				</span>
 			)}

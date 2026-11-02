@@ -46,7 +46,7 @@ function ProfileCardSkeleton() {
 		<div className="flex flex-col" aria-busy="true">
 			<div className="h-21 bg-brand-fill" />
 			<div className="px-4 -mt-9">
-				<div className="border-4 rounded-full size-16 border-surface-2 skeleton" />
+				<div className="border-4 rounded-full size-16 border-surface skeleton" />
 			</div>
 			<div className="flex flex-col gap-3 px-4 pt-2.5 pb-4">
 				<div className="space-y-1.5">
@@ -113,7 +113,7 @@ function ProfileCardView({
 						placeholder={user.name}
 						size="xl"
 						isPro={Boolean(friend?.isPro)}
-						className="border-4 rounded-full border-surface-2"
+						className="border-4 rounded-full border-surface"
 					/>
 					{friend?.mood && <MoodBadge mood={friend.mood} />}
 				</span>
@@ -190,7 +190,7 @@ function MutualFriends({ mutual }: { mutual: FriendCard['mutual'] }) {
 						placeholder={person.name}
 						size="xs"
 						className={cn(
-							'rounded-full border-2 border-surface-2',
+							'rounded-full border-2 border-surface',
 							index > 0 && '-ms-2'
 						)}
 					/>

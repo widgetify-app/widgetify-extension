@@ -45,7 +45,7 @@ export function ActivityBubble({
 			<div className="relative">
 				<div
 					className={cn(
-						'leading-tight text-center bg-surface-3 shadow-sm text-fg transition-ui',
+						'leading-tight text-center bg-glass-modal shadow-sm text-fg transition-ui',
 						sizes.bubble,
 						isInteractive && 'cursor-pointer group-hover:scale-95'
 					)}
@@ -55,14 +55,14 @@ export function ActivityBubble({
 				</div>
 				<span
 					className={cn(
-						'absolute block rounded-full left-1/2 bg-surface-3',
+						'absolute block rounded-full left-1/2 bg-glass-modal',
 						sizes.tailBig
 					)}
 					style={tint}
 				/>
 				<span
 					className={cn(
-						'absolute block rounded-full left-1/2 bg-surface-3',
+						'absolute block rounded-full left-1/2 bg-glass-modal',
 						sizes.tailSmall
 					)}
 					style={tint}
