@@ -49,7 +49,7 @@ export function ScrollRow({ children, gap = 'sm', className }: ScrollRowProps) {
 	}
 
 	const edgeButton =
-		'absolute top-1/2 -translate-y-1/2 grid size-7 place-items-center rounded-full border border-surface-3 bg-surface-2 text-fg-muted shadow-sm cursor-pointer hover:text-fg transition-ui focus-visible:focus-ring'
+		'absolute top-1/2 -translate-y-1/2 grid size-7 place-items-center rounded-full border border-surface-3 bg-glass-modal text-fg-muted shadow-sm cursor-pointer hover:text-fg transition-ui focus-visible:focus-ring'
 
 	return (
 		<div className={cn('relative min-w-0', className)}>

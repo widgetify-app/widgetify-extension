@@ -45,6 +45,7 @@ Breaking one means the work is rejected.
 - **Semantic elements.** `button`, `a`, `label`, `nav`, `section` before `div`. Never a `button` inside an `a`. Biome rejects a click handler on a static element.
 - **`src/components/ui` first.** Look there before building any UI, and import from `@/components/ui`. Do not hand roll a dialog, popover, spinner or alert. A reusable piece that is missing goes into `ui`.
 - **Theme tokens.** Colour comes from `src/styles/tokens.css` names. No hex, no numeric `rgba()`, no palette name, no opacity modifier, no `dark:`.
+- **Overlaps are frosted.** Surfaces are nearly clear in glass and icy, so one on top of other content uses `bg-glass-modal` or `bg-glass-<token>`, never plain `bg-surface*`. See "Glass" in `src/styles/README.md`, and put every overlap on the visual checklist.
 - **Utilities.** `cn()` from `@/common/utils/cn` for classes, `@utility` for new classes, `transition-ui` for state changes. Variants live beside a component as `*.variants.ts`.
 - **Icons** only through `Icon` from `@/icons`. **Storage** only through `@/common/storage`. **Server calls** only in `src/services`. **Animation** only through `@/common/motion`.
 - **Responsive down to 500px.** This is a desktop new tab. Do not spend effort below 500px.

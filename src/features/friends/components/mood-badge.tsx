@@ -27,7 +27,7 @@ export function MoodBadge({ mood, size = 'md' }: MoodBadgeProps) {
 				role="img"
 				aria-label={label}
 				className={cn(
-					'grid rounded-full place-items-center bg-surface-2',
+					'grid rounded-full place-items-center bg-glass-modal',
 					size === 'md' ? 'size-7' : 'size-5'
 				)}
 			>

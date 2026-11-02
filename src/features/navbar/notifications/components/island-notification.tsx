@@ -116,7 +116,7 @@ export function IslandNotification() {
 							type="button"
 							onClick={close}
 							aria-label={t('ui.common.close')}
-							className="absolute grid border rounded-full opacity-0 cursor-pointer -top-2 -end-2 size-6 place-items-center border-line bg-surface-3 text-fg-muted transition-ui group-hover:opacity-100 hover:text-fg-strong focus-visible:opacity-100 focus-visible:focus-ring"
+							className="absolute grid border rounded-full opacity-0 cursor-pointer -top-2 -end-2 size-6 place-items-center border-line bg-glass-modal text-fg-muted transition-ui group-hover:opacity-100 hover:text-fg-strong focus-visible:opacity-100 focus-visible:focus-ring"
 						>
 							<Icon name="close" size={12} aria-hidden="true" />
 						</button>

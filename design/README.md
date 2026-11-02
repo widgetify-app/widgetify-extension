@@ -41,7 +41,9 @@ A board is a promise about the code. Anything it shows has to be something the c
 - A tint is a `*-fill` token, never a colour at a made-up opacity. If a board needs a colour that is not on this list, it is either content (see below) or a missing token. A missing token is the owner's call, not yours: ask before you draw it.
 - Content keeps its own colours: artwork, a currency or site icon, a wallpaper, a palette the user picks from. Everything else is chrome.
 - No gradients on chrome, no glows, no coloured shadows, no glass unless the component is glass in the code (`bg-glass-*`).
-- Draw the light theme. Say in the feature README which states also need checking in a dark theme; the code must not assume either.
+- Draw the light theme, but the values above are only solid there. In glass and icy, surfaces are nearly clear (`surface-2` is 8 to 10%).
+- A surface on top of other content (an overlap, a floating card, a tooltip, a badge on an edge) is drawn as frosted and built with `bg-glass-modal`, or `bg-glass-<token>` over the wallpaper alone. Never hide something by painting a surface over it. See "Glass" in `src/styles/README.md`.
+- Say in the feature README which states also need checking in a dark theme; the code must not assume either.
 
 ### Shape and depth
 
@@ -88,6 +90,7 @@ A board is a promise about the code. Anything it shows has to be something the c
 - Every component is one `ui` has, at its real size, or the README says it is new.
 - The copy is real, or marked as a draft.
 - Nothing overflows its container at the component's real width.
+- Every overlap is named in the README, to be checked in glass and icy over a busy wallpaper.
 - No emoji, no icon tiles, no gradients on chrome.
 
 ## Folders

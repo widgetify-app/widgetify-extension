@@ -24,13 +24,13 @@ export function Coachmark({
 		<section
 			aria-label={title}
 			className={cn(
-				'relative flex flex-col gap-2.5 p-3 border shadow-xl w-82 max-w-full rounded-2xl border-line bg-surface',
+				'relative flex flex-col gap-2.5 p-3 border shadow-xl w-82 max-w-full rounded-2xl border-line bg-glass-modal',
 				className
 			)}
 		>
 			<span
 				aria-hidden="true"
-				className="absolute w-3 h-3 rotate-45 border-t border-l -top-1.75 start-10 border-line bg-surface"
+				className="absolute w-3 h-3 rotate-45 border-t border-l -top-1.75 start-10 border-line bg-glass-modal [clip-path:polygon(0_0,100%_0,0_100%)]"
 			/>
 			{image && (
 				<img
