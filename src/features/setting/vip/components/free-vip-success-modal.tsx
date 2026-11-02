@@ -45,7 +45,7 @@ export function FreeVipSuccessModal({
 			<div className="flex flex-col items-center text-center p-2 space-y-4 select-none">
 				<div className="flex justify-center">
 					<img
-						src={'https://cdn.widgetify.ir/extension/success_vip.jpg'}
+						src={'https://cdn.widgetify.ir/extension/success_vip.png'}
 						alt="Pro access unlocked"
 						className="w-32 h-32 object-contain"
 					/>
