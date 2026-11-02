@@ -122,7 +122,7 @@ export function PriceChart({ chart, name, showTime }: PriceChartProps) {
 
 			<div
 				aria-hidden="true"
-				className="flex justify-between px-4 text-3xs text-fg-faint"
+				className="flex justify-between px-5 text-3xs text-fg-faint"
 			>
 				{chart.timeTicks.map((time, index) =>
 					index === lastTick ? (
