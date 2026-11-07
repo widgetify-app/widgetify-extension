@@ -16,6 +16,8 @@ import { parseTodoDate } from '../utils/parse-date'
 import { useUpdateTodo } from '@/services/todo/update-todo.hook'
 import { playAlarm } from '@/common/utils/play-alarm'
 import jalaliMoment from 'jalali-moment'
+import { isRichText, toggleChecklistItem } from '@/features/widgets/utils/rich-text'
+import { RichText } from './rich-text'
 import { TodoCheck } from './todo-check'
 import { Icon, type IconName } from '@/icons'
 import { PRIORITY_LABELS } from '../constants'
@@ -95,6 +97,23 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 		}
 	}
 
+	const handleToggleChecklistItem = async (position: number) => {
+		if (isPending || isTemp || !currentTodo.description) return
+		try {
+			const updatedTodo = await updateMutation({
+				id: currentTodo.id,
+				input: {
+					description: toggleChecklistItem(currentTodo.description, position),
+				},
+			})
+			setCurrentTodo(updatedTodo)
+			Analytics.event('todo_checklist_toggled')
+		} catch (error) {
+			showToast(translateError(error) as string, 'error')
+			Analytics.event('todo_checklist_toggle_failed')
+		}
+	}
+
 	useEffect(() => {
 		setCurrentTodo(todo)
 	}, [todo])
@@ -171,9 +190,16 @@ export function TodoItem({ todo, blurMode = false, onEdit, onUpdated }: Prop) {
 
 			{expanded && (
 				<div className="flex flex-col gap-1.5 pt-0.5 pb-2 leading-relaxed ps-8.5 pe-2 text-2xs text-fg-muted">
-					{currentTodo.description && (
-						<NoteLinkRenderer note={currentTodo.description} />
-					)}
+					{currentTodo.description &&
+						(isRichText(currentTodo.description) ? (
+							<RichText
+								text={currentTodo.description}
+								disabled={isPending}
+								onToggleItem={handleToggleChecklistItem}
+							/>
+						) : (
+							<NoteLinkRenderer note={currentTodo.description} />
+						))}
 					<span className="flex flex-wrap gap-1">
 						<TodoDetail icon="calendar">
 							<time dateTime={isoDate}>

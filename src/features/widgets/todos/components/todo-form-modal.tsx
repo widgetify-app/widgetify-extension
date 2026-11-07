@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { showToast } from '@/common/toast'
 import { translateError } from '@/common/utils/translate-error'
-import { Button, Modal, TextArea, TextInput } from '@/components/ui'
+import { Button, Modal, TextInput } from '@/components/ui'
+import { RichTextField } from '@/features/widgets/components/rich-text-field'
 import { useAuth } from '@/context/auth.context'
 import { Icon } from '@/icons'
 import { safeAwait } from '@/services/api'
@@ -149,19 +150,17 @@ export function TodoFormModal({ isOpen, todo, onClose, onChanged }: TodoFormModa
 					</div>
 
 					<div className="flex flex-col gap-1.5">
-						<label
-							htmlFor="todo-form-description"
-							className="text-xs text-fg-muted"
-						>
+						<span className="text-xs text-fg-muted">
 							{t('widgets.todos.form.notesLabel')}
-						</label>
-						<TextArea
-							id="todo-form-description"
-							value={description}
-							onChange={(e) => setDescription(e.target.value)}
-							placeholder={t('widgets.todos.input.notesPlaceholder')}
-							rows={5}
-						/>
+						</span>
+						<div className="flex h-36 px-3 py-2 border rounded-xl bg-surface-2 border-surface-3 transition-ui focus-within:border-brand focus-within:ring-1 focus-within:ring-brand-fill-2">
+							<RichTextField
+								value={description}
+								onChange={setDescription}
+								placeholder={t('widgets.todos.input.notesPlaceholder')}
+								ariaLabel={t('widgets.todos.form.notesLabel')}
+							/>
+						</div>
 					</div>
 
 					<div className="flex flex-wrap items-center gap-1">

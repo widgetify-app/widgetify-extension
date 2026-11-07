@@ -2,6 +2,7 @@ import moment from 'jalali-moment'
 import type React from 'react'
 import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
+import { richTextToPlain } from '@/features/widgets/utils/rich-text'
 import { useKeyboardFocusWithin } from '@/features/widgets/hooks/use-keyboard-focus-within'
 import { Icon, type IconName } from '@/icons'
 import type { FetchedNote } from '@/services/note/note.interface'
@@ -66,7 +67,7 @@ export const NoteItem: React.FC<NoteItemProps> = ({
 					</span>
 					{note.body && (
 						<span className="truncate text-2xs text-fg-muted">
-							{note.body}
+							{richTextToPlain(note.body)}
 						</span>
 					)}
 				</span>

@@ -15,6 +15,7 @@ import { showToast } from '@/common/toast'
 import { callEvent } from '@/common/utils/call-event'
 import { cn } from '@/common/utils/cn'
 import { Icon } from '@/icons'
+import { RichTextField } from '@/features/widgets/components/rich-text-field'
 import { toTodoDueDate } from '../utils/todo-due-date'
 import { TodoCategoryDropdown, TodoDateDropdown } from './todo-form-tools'
 interface ExpandableTodoInputProps {
@@ -44,7 +45,7 @@ export function ExpandableTodoInput({
 	)
 
 	const inputRef = useRef<HTMLInputElement | null>(null)
-	const notesRef = useRef<HTMLTextAreaElement>(null)
+	const [notes, setNotes] = useState('')
 	const containerRef = useRef<HTMLDivElement>(null)
 	const notesInputRef = useRef<HTMLInputElement | null>(null)
 
@@ -79,17 +80,11 @@ export function ExpandableTodoInput({
 				}
 			}
 			setIsExpanded(true)
-			setTimeout(() => {
-				if (notesRef.current) notesRef.current.value = editTodo.description || ''
-			}, 2)
+			setNotes(editTodo.description || '')
 		} else {
 			resetForm()
 		}
 	}, [editTodo])
-
-	const handleNotesChange = useCallback((value: string) => {
-		if (notesRef.current) notesRef.current.value = value
-	}, [])
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -123,7 +118,7 @@ export function ExpandableTodoInput({
 	}, [])
 
 	const resetForm = useCallback(() => {
-		if (notesRef.current) notesRef.current.value = ''
+		setNotes('')
 		if (inputRef.current) {
 			inputRef.current.value = ''
 		}
@@ -146,7 +141,7 @@ export function ExpandableTodoInput({
 			try {
 				const fields = {
 					text,
-					description: notesRef.current?.value.trim(),
+					description: notes.trim(),
 					priority,
 					date: toTodoDueDate(selectedDate),
 				}
@@ -226,13 +221,14 @@ export function ExpandableTodoInput({
 			</div>
 			{isExpanded && (
 				<>
-					<textarea
-						ref={notesRef}
-						onChange={(e) => handleNotesChange(e.target.value)}
-						placeholder={t('widgets.todos.input.notesPlaceholder')}
-						rows={2}
-						className="w-full p-0 leading-relaxed bg-transparent outline-none resize-none text-2xs text-fg-muted placeholder:text-fg-faint"
-					/>
+					<div className="flex h-20">
+						<RichTextField
+							value={notes}
+							onChange={setNotes}
+							placeholder={t('widgets.todos.input.notesPlaceholder')}
+							ariaLabel={t('widgets.todos.form.notesLabel')}
+						/>
+					</div>
 					<div className="flex flex-wrap items-center gap-1">
 						<TodoDateDropdown
 							date={selectedDate}
