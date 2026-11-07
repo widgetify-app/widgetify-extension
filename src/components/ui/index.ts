@@ -35,7 +35,6 @@ export * from './image-slider/use-image-slider'
 
 export * from './input/input'
 export * from './input/input.variants'
-export * from './input/text-area'
 
 export * from './item-selector/item-selector'
 

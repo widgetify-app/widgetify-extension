@@ -33,11 +33,6 @@ export const textInputVariants = cva(['w-full inline-flex items-center', ...FIEL
 	},
 })
 
-export const textAreaVariants = cva([
-	'w-full px-3 py-2 text-xs leading-relaxed resize-none',
-	...FIELD_BASE,
-])
-
 type TextInputVariantProps = VariantProps<typeof textInputVariants>
 
 /**

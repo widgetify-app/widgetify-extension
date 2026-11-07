@@ -229,6 +229,8 @@ const ANALYTICS_EVENTS = [
 	'todo_removed',
 	'todo_tag_change',
 	'todo_toggle_complete',
+	'todo_checklist_toggled',
+	'todo_checklist_toggle_failed',
 	'toggle_can_reorder_widget',
 	'toggle_optimalMode',
 	'transparent_clock_settings_opened',

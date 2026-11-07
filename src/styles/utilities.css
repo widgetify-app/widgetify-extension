@@ -154,3 +154,54 @@
 		mask-position: 0 100%;
 	}
 }
+
+@utility rich-text {
+	& p {
+		margin: 0;
+	}
+
+	& ul,
+	& ol {
+		margin: 0;
+		padding-inline-start: 1.25rem;
+	}
+
+	& ul {
+		list-style: disc;
+	}
+
+	& ol {
+		list-style: decimal;
+	}
+
+	& ul[data-type="taskList"] {
+		list-style: none;
+		padding-inline-start: 0;
+	}
+
+	& ul[data-type="taskList"] li {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.5rem;
+	}
+
+	& ul[data-type="taskList"] li > label {
+		flex-shrink: 0;
+		margin-top: 0.3rem;
+	}
+
+	& ul[data-type="taskList"] li > div {
+		flex: 1;
+	}
+
+	& ul[data-type="taskList"] li[data-checked="true"] > div {
+		text-decoration: line-through;
+		opacity: 0.6;
+	}
+
+	& input[type="checkbox"] {
+		accent-color: var(--color-brand);
+		width: 0.875rem;
+		height: 0.875rem;
+	}
+}

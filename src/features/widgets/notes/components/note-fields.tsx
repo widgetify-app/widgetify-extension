@@ -2,6 +2,7 @@ import type { RefObject } from 'react'
 import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { TextInput } from '@/components/ui'
+import { RichTextField } from '@/features/widgets/components/rich-text-field'
 import type { WidgetControlTone } from '@/features/widgets/components/widget-menu-button'
 
 interface NoteFieldsProps {
@@ -50,18 +51,13 @@ export function NoteFields({
 					placeholderClass
 				)}
 			/>
-			<textarea
+			<RichTextField
 				value={body}
-				onChange={(e) => onBodyChange(e.target.value)}
+				onChange={onBodyChange}
 				placeholder={t('widgets.notes.field.bodyPlaceholder')}
-				aria-label={t('widgets.notes.field.bodyAria')}
-				dir="rtl"
-				className={cn(
-					'flex-1 w-full min-h-0 text-xs leading-loose bg-transparent outline-none resize-none scrollbar-none',
-					isOnColor ? 'text-current' : 'text-fg',
-					placeholderClass,
-					bodyClassName
-				)}
+				ariaLabel={t('widgets.notes.field.bodyAria')}
+				isOnColor={isOnColor}
+				className={bodyClassName}
 			/>
 		</div>
 	)
