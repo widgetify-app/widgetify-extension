@@ -67,20 +67,23 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 		: null
 
 	return (
-		<NotificationCard isInteractive={!isText} className={prop.className}>
-			{icon && (
-				<div className="grid self-start rounded-xl shrink-0 size-9 place-items-center bg-fill">
-					{icon.startsWith('http') ? (
-						<img
-							src={icon}
-							alt=""
-							className="object-contain rounded-sm size-5"
-						/>
-					) : (
-						<span className="text-lg leading-none">{icon}</span>
-					)}
-				</div>
-			)}
+		<NotificationCard
+			isInteractive={!isText}
+			isUnread={Boolean(closeable)}
+			className={prop.className}
+		>
+			{icon &&
+				(icon.startsWith('http') ? (
+					<img
+						src={icon}
+						alt=""
+						className="object-contain self-start rounded-sm shrink-0 size-6 mt-0.5"
+					/>
+				) : (
+					<span className="self-start text-xl leading-none shrink-0 mt-0.5">
+						{icon}
+					</span>
+				))}
 
 			<div className="flex-1 min-w-0 space-y-1">
 				<h4 className="text-sm font-bold text-fg-strong" style={headTitleStyle}>
