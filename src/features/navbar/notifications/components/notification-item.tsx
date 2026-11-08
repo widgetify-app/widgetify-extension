@@ -1,9 +1,11 @@
-import { callEvent } from '@/common/utils/call-event'
 import { useState } from 'react'
 import Analytics from '@/analytics'
+import { callEvent } from '@/common/utils/call-event'
 import type { NotificationItem } from '@/services/extension/get-notifications.hook'
 import { Icon } from '@/icons'
 import { t } from '@/common/i18n'
+import { openResolvedLink } from '@/common/utils/open-link'
+import { resolveLink } from '@/common/utils/resolve-link'
 import { NotificationCard, NotificationCloseButton } from './notification-card'
 
 const CHARACTER_LIMIT = 85
@@ -21,9 +23,6 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 		closeable,
 		id,
 		description,
-		target,
-		goTo,
-		type,
 		titleDecoration,
 		groupCount,
 		createdAt,
@@ -39,17 +38,14 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 	}
 
 	const shouldShowReadMore = description && description.length > CHARACTER_LIMIT
-	const isText = type === 'text'
-	const isAction = !link && (type === 'page' || type === 'action')
+	const resolved = resolveLink(link)
+	const isText = !resolved
 
 	const handleAction = () => {
-		if (type === 'page' && goTo) {
-			callEvent('go_to_page', goTo as any)
-			Analytics.event('notifications_page')
-		} else if (type === 'action') {
-			callEvent(goTo as any, target as any)
-			Analytics.event('notifications_action')
-		}
+		if (resolved?.kind !== 'internal') return
+
+		openResolvedLink(resolved)
+		Analytics.event('notifications_link_open')
 		callEvent('closeAllDropdowns')
 	}
 
@@ -84,16 +80,16 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 
 			<div className="flex-1 min-w-0 space-y-1">
 				<h4 className="text-sm font-bold text-fg-strong" style={headTitleStyle}>
-					{link ? (
+					{resolved?.kind === 'external' ? (
 						<a
-							href={link}
+							href={resolved.url}
 							target="_blank"
 							rel="noopener noreferrer"
 							className="after:absolute after:inset-0 after:rounded-2xl focus-visible:focus-ring"
 						>
 							{title}
 						</a>
-					) : isAction ? (
+					) : resolved ? (
 						<button
 							type="button"
 							onClick={handleAction}

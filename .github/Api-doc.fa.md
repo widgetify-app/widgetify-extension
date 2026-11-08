@@ -93,7 +93,7 @@
 | `GET /extension/@me/ip` | بله | | `{ ip, country, countryIcon, city, isp }` |
 | `GET /` | خیر | | هرچیزی. ویجت شبکه زمانش را می‌سنجد تا پینگ را نشان بدهد |
 | `POST /users/@me/upload/search` | بله | فرم multipart با `image` (فایل) | `{ url }` |
-| `GET /v2/notifications/inbox` | بله | | `{ data: { items: [{ id, kind, title, body, icon, action: { type, goTo?, target?, url? }, groupCount, createdAt, readAt }], nextCursor } }`، ببینید `src/services/extension/get-notifications.hook.ts` |
+| `GET /v2/notifications/inbox` | بله | | `{ data: { items: [{ id, kind, title, body, icon, action: { link? }, groupCount, createdAt, readAt }], nextCursor } }`، ببینید `src/services/extension/get-notifications.hook.ts` |
 | `GET /v2/notifications/surfaces` | خیر | | `{ data: { inbox: [], island, dialog } }`، کارت‌ها، جزیره و دیالوگ اطلاعیه‌ها |
 | `POST /v2/notifications/read` | بله | `{ ids: string[] }` | |
 | `POST /v2/notifications/surfaces/{id}/dismiss` | بله | | |

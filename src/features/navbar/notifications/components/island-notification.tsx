@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { t } from '@/common/i18n'
 import { Motion as motion, Presence } from '@/common/motion'
-import { callEvent } from '@/common/utils/call-event'
 import { useAuth } from '@/context/auth.context'
 import { Icon } from '@/icons'
 import { safeAwait } from '@/services/api'
@@ -10,7 +9,7 @@ import {
 	useGetNotifications,
 	useNotifyAsSeen,
 } from '@/services/extension/get-notifications.hook'
-import { resolveIslandAction } from '../../utils/island-action'
+import { openLink } from '@/common/utils/open-link'
 
 const SHOW_DELAY_MS = 1000
 const VISIBLE_MS = 10_000
@@ -47,15 +46,7 @@ export function IslandNotification() {
 	}
 
 	const open = () => {
-		const action = resolveIslandAction(island)
-
-		if (action?.kind === 'link') {
-			window.open(action.url, '_blank', 'noopener,noreferrer')
-		} else if (action?.kind === 'page') {
-			callEvent('go_to_page', action.goTo as any)
-		} else if (action?.kind === 'action') {
-			callEvent(action.goTo as any, action.target as any)
-		}
+		openLink(island.link)
 
 		Analytics.event('island_open')
 		finish()

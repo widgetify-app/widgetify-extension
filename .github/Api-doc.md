@@ -93,7 +93,7 @@ Source: `src/services/user`, `src/services/extension`, `src/services/profile`, `
 | `GET /extension/@me/ip` | yes | | `{ ip, country, countryIcon, city, isp }` |
 | `GET /` | no | | anything. The network widget times it to show the ping |
 | `POST /users/@me/upload/search` | yes | multipart form with `image` (a file) | `{ url }` |
-| `GET /v2/notifications/inbox` | yes | | `{ data: { items: [{ id, kind, title, body, icon, action: { type, goTo?, target?, url? }, groupCount, createdAt, readAt }], nextCursor } }`, see `src/services/extension/get-notifications.hook.ts` |
+| `GET /v2/notifications/inbox` | yes | | `{ data: { items: [{ id, kind, title, body, icon, action: { link? }, groupCount, createdAt, readAt }], nextCursor } }`, see `src/services/extension/get-notifications.hook.ts` |
 | `GET /v2/notifications/surfaces` | no | | `{ data: { inbox: [], island, dialog } }`, broadcast cards, one island and one dialog |
 | `POST /v2/notifications/read` | yes | `{ ids: string[] }` | |
 | `POST /v2/notifications/surfaces/{id}/dismiss` | yes | | |

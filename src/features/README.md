@@ -44,7 +44,7 @@ Statuses: your own status says who reacted («سارا و ۲ نفر دیگه و�
 
 ## Notifications that open a mini-app
 
-A notification (the navbar card or the home dialog) can open one mini-app. In the panel the item is `type` action, `goTo` `openMiniApp` and `target` the mini-app's `appId`. The click calls `callEvent('openMiniApp', appId)`; `pages/root.tsx` moves to the mini-apps page and hands the id to `MiniAppsLayout` (`focusAppId`), which runs the app in the page, brings its window forward when it already runs in one, and scrolls its card into view. An id that is not shaped like an app id (`mini-apps/utils/focus-app.ts`, letters, digits, `_`, `.` and `-`, at most 100) is ignored, and an id with no app shows the runner's own error. An extension from before this event shows a card that does nothing, so publish such a notification after the release has rolled out.
+A notification, island or dialog opens one mini-app with the link `/mini-apps/<appId>` (see Notification links in `common/README.md`). The click calls `callEvent('openMiniApp', appId)`; `pages/root.tsx` moves to the mini-apps page and hands the id to `MiniAppsLayout` (`focusAppId`), which runs the app in the page, brings its window forward when it already runs in one, and scrolls its card into view. An id that is not shaped like an app id (`mini-apps/utils/focus-app.ts`, letters, digits, `_`, `.` and `-`, at most 100) is ignored, and an id with no app shows the runner's own error.
 
 ## Settings: storage
 

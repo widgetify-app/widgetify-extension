@@ -2,9 +2,7 @@ import { t } from '@/common/i18n'
 import type {
 	DialogNotificationItem,
 	IslandNotificationItem,
-	NotificationGoTo,
 	NotificationItem,
-	NotificationType,
 	NotificationsData,
 	RawBroadcast,
 	RawInboxItem,
@@ -12,11 +10,6 @@ import type {
 } from './notification.interface'
 
 const DEFAULT_DIALOG_BUTTON_COLOR = '#dc9909'
-const DIALOG_ACTION_TYPES = ['page', 'action']
-
-function cardType(type: string): NotificationType {
-	return (type === 'banner' ? 'text' : type) as NotificationType
-}
 
 function mapInboxItem(item: RawInboxItem): NotificationItem {
 	return {
@@ -24,10 +17,7 @@ function mapInboxItem(item: RawInboxItem): NotificationItem {
 		title: item.title,
 		description: item.body ?? undefined,
 		icon: item.icon ?? undefined,
-		link: item.action.url ?? undefined,
-		type: cardType(item.action.type),
-		goTo: (item.action.goTo ?? undefined) as NotificationGoTo | undefined,
-		target: item.action.target ?? undefined,
+		link: item.action.link ?? undefined,
 		closeable: true,
 		groupCount: item.groupCount,
 		source: 'inbox',
@@ -41,10 +31,7 @@ function mapBroadcastCard(broadcast: RawBroadcast): NotificationItem {
 		title: broadcast.title,
 		description: broadcast.body ?? undefined,
 		icon: broadcast.media ?? undefined,
-		link: broadcast.action.url ?? undefined,
-		type: cardType(broadcast.action.type),
-		goTo: (broadcast.action.goTo ?? undefined) as NotificationGoTo | undefined,
-		target: broadcast.action.target ?? undefined,
+		link: broadcast.action.link ?? undefined,
 		closeable: broadcast.closeable,
 		source: 'broadcast',
 	}
@@ -56,10 +43,7 @@ function mapIsland(broadcast: RawBroadcast): IslandNotificationItem {
 		title: broadcast.title,
 		description: broadcast.body,
 		icon: broadcast.media,
-		link: broadcast.action.url,
-		type: cardType(broadcast.action.type),
-		goTo: broadcast.action.goTo,
-		target: broadcast.action.target,
+		link: broadcast.action.link,
 	}
 }
 
@@ -72,12 +56,7 @@ function mapDialog(broadcast: RawBroadcast): DialogNotificationItem {
 		dialogTitle: settings.dialogTitle || null,
 		description: broadcast.body ?? '',
 		media: broadcast.media ?? '',
-		link: broadcast.action.url ?? '',
-		type: DIALOG_ACTION_TYPES.includes(broadcast.action.type)
-			? (broadcast.action.type as NotificationType)
-			: 'url',
-		target: broadcast.action.target ?? '',
-		goTo: (broadcast.action.goTo ?? '') as NotificationGoTo,
+		link: broadcast.action.link ?? '',
 		buttonColor: settings.buttonColor || DEFAULT_DIALOG_BUTTON_COLOR,
 		buttonLabel: settings.buttonLabel || t('navbar.notifications.dialogButton'),
 	}

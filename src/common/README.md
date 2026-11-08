@@ -12,6 +12,7 @@ Shared code with no UI of its own, except `motion.tsx` and `toast.tsx`, which ar
 | `motion.tsx` | `Motion`, `Presence`, `MotionPreferences`: the only door to framer-motion |
 | `toast.tsx` | `showToast`: the only door to react-hot-toast |
 | `utils/trusted-time.ts` | `nowMs()` and `nowDate()`: the system clock plus the gap to the server clock. Any widget that shows the date or time reads these instead of `Date.now()` and `new Date()`, so a wrong system clock does not show. `onClockCorrected` tells a component to redraw. The gap is set by `useSyncClock` (`services/date/sync-clock.hook.ts`): one `GET /date/now`, kept in storage as `clockSync` for 3 days, applied only when it is 10 seconds or more |
+| `utils/resolve-link.ts`, `utils/open-link.ts` | `resolveLink(link)` turns a notification link into an external address or an internal event; `openLink(link)` runs it. The only code that reads a link, see Notification links below |
 | `utils/cn.ts` | `cn()`, class merging (clsx and tailwind-merge) |
 | `utils/` | Small helpers: colour, dates, error translation, timeouts |
 	| `i18n/` | Persian message catalog and `t()`; the only place UI copy lives |
@@ -42,6 +43,20 @@ Storage keys, analytics event names and widget ids live in places you do not con
 ## Events
 
 `callEvent` and `listenEvent` are typed on the `EventName` interface. App wide events are declared in `utils/call-event.ts`, a feature's own events in its `types.ts`, the same way as storage keys.
+
+## Notification links
+
+A notification, island or dialog opens something through one string, `action.link`. No link means a text card that does nothing. `common/utils/resolve-link.ts` is the one place that reads it (pure, tested in `common/__tests__/resolve-link.test.ts`) and `common/utils/open-link.ts` runs the result. An unknown path or tab opens nothing.
+
+| `link` | Opens |
+|---|---|
+| `https://...` or `http://...` | a new browser tab |
+| `/home`, `/explorer`, `/mini-apps` | that page |
+| `/mini-apps/<appId>` | one mini-app, on the mini-apps page |
+| `/widgets` | the widget catalog |
+| `/widgets/<key>` | the catalog on one widget (`widget:<slug>` or a native key such as `clock`) |
+| `/profile`, `/profile/<tab>` | the profile, tab `friends`, `platforms`, `vip` or `pro` |
+| `/settings`, `/settings/<tab>` | the settings, tab as listed in `SETTINGS_TABS` in `common/utils/call-event.ts` |
 
 ## Analytics
 

@@ -1,8 +1,9 @@
 import Analytics from '@/analytics'
 import { t } from '@/common/i18n'
 import { getContrastingTextColor } from '@/common/utils/color'
-import { callEvent } from '@/common/utils/call-event'
 import { Button, Modal } from '@/components/ui'
+import { openLink } from '@/common/utils/open-link'
+import { resolveLink } from '@/common/utils/resolve-link'
 import { useAuth } from '@/context/auth.context'
 import { safeAwait } from '@/services/api'
 import {
@@ -42,17 +43,8 @@ export function DialogChecker() {
 
 	const onButtonClick = async () => {
 		if (!data?.dialog?.id) return
-		const { type, goTo, target, link } = data.dialog
-
-		if (type === 'page' && goTo) {
-			callEvent('go_to_page', goTo as any)
-			Analytics.event('dialog_page')
-		} else if (type === 'action') {
-			callEvent(goTo as any, target as any)
-			Analytics.event('dialog_action')
-		} else if (type === 'url') {
-			window.open(link, '_blank')
-		}
+		openLink(data.dialog.link)
+		Analytics.event('dialog_link_open')
 
 		setShow(false)
 		if (isAuthenticated) safeAwait(asSeen(data?.dialog?.id))
@@ -60,9 +52,7 @@ export function DialogChecker() {
 
 	if (!data?.dialog) return null
 	const dialog = data.dialog
-	const hasButton =
-		Boolean(dialog.link) ||
-		((dialog.type === 'page' || dialog.type === 'action') && Boolean(dialog.goTo))
+	const hasButton = resolveLink(dialog.link) !== null
 
 	return (
 		<Modal

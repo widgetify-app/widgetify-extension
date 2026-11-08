@@ -11,7 +11,7 @@ function inbox(overrides: Partial<RawInboxItem> = {}): RawInboxItem {
 		title: 'Title',
 		body: 'Body',
 		icon: null,
-		action: { type: 'action', goTo: 'openProfile', target: 'friends' },
+		action: { link: '/profile/friends' },
 		groupCount: 1,
 		createdAt: '2026-03-01T00:00:00.000Z',
 		readAt: null,
@@ -25,7 +25,7 @@ function broadcast(overrides: Partial<RawBroadcast> = {}): RawBroadcast {
 		title: 'Broadcast',
 		body: null,
 		media: null,
-		action: { type: 'text' },
+		action: {},
 		dialog: null,
 		closeable: true,
 		...overrides,
@@ -44,10 +44,7 @@ describe('buildNotifications', () => {
 				title: 'Title',
 				description: 'Body',
 				icon: undefined,
-				link: undefined,
-				type: 'action',
-				goTo: 'openProfile',
-				target: 'friends',
+				link: '/profile/friends',
 				closeable: true,
 				groupCount: 1,
 				source: 'inbox',
@@ -75,17 +72,17 @@ describe('buildNotifications', () => {
 		expect(cards[1]).toMatchObject({ closeable: false, source: 'broadcast' })
 	})
 
-	it('shows a banner as a text card and a url as a link', () => {
+	it('keeps the link of a broadcast card and leaves it out when there is none', () => {
 		const { cards } = buildNotifications([], {
 			...NO_SURFACES,
 			inbox: [
-				broadcast({ id: 'a', action: { type: 'banner' } }),
-				broadcast({ id: 'b', action: { type: 'url', url: 'https://x.test' } }),
+				broadcast({ id: 'a' }),
+				broadcast({ id: 'b', action: { link: 'https://x.test' } }),
 			],
 		})
 
-		expect(cards[0].type).toBe('text')
-		expect(cards[1]).toMatchObject({ type: 'url', link: 'https://x.test' })
+		expect(cards[0].link).toBeUndefined()
+		expect(cards[1].link).toBe('https://x.test')
 	})
 
 	it('hides the broadcasts that were closed on this browser', () => {
@@ -111,7 +108,7 @@ describe('buildNotifications', () => {
 				id: 'i1',
 				body: 'Text',
 				media: 'https://x.test/a.png',
-				action: { type: 'page', goTo: 'explorer' },
+				action: { link: '/explorer' },
 			}),
 		})
 
@@ -120,20 +117,17 @@ describe('buildNotifications', () => {
 			title: 'Broadcast',
 			description: 'Text',
 			icon: 'https://x.test/a.png',
-			link: undefined,
-			type: 'page',
-			goTo: 'explorer',
-			target: undefined,
+			link: '/explorer',
 		})
 	})
 
-	it('maps the dialog with its own title and button, and a url type for any other action', () => {
+	it('maps the dialog with its own title, button and link', () => {
 		const { dialog } = buildNotifications([], {
 			...NO_SURFACES,
 			dialog: broadcast({
 				id: 'd1',
 				body: 'Text',
-				action: { type: 'url', url: 'https://x.test/buy' },
+				action: { link: 'https://x.test/buy' },
 				dialog: {
 					dialogTitle: 'Big news',
 					buttonLabel: 'Go',
@@ -147,7 +141,6 @@ describe('buildNotifications', () => {
 			dialogTitle: 'Big news',
 			description: 'Text',
 			link: 'https://x.test/buy',
-			type: 'url',
 			buttonLabel: 'Go',
 			buttonColor: '#111111',
 		})

@@ -1,13 +1,3 @@
-export type NotificationType = 'text' | 'url' | 'action' | 'page' | 'banner'
-
-export enum NotificationGoTo {
-	Explorer = 'explorer',
-	Profile = 'openProfile',
-	Settings = 'openSettings',
-	WidgetCatalog = 'openWidgetCatalog',
-	MiniApp = 'openMiniApp',
-}
-
 export interface NotificationItem {
 	id?: string
 	title: string
@@ -15,9 +5,6 @@ export interface NotificationItem {
 	link?: string
 	icon?: string
 	closeable: boolean | null
-	type?: NotificationType
-	goTo?: NotificationGoTo
-	target?: string
 	titleDecoration?: string
 	groupCount?: number
 	source?: 'inbox' | 'broadcast'
@@ -31,9 +18,6 @@ export interface DialogNotificationItem {
 	description: string
 	media: string
 	link: string
-	type: NotificationType
-	target: string
-	goTo: NotificationGoTo
 	buttonColor: string
 	buttonLabel: string
 }
@@ -44,9 +28,6 @@ export interface IslandNotificationItem {
 	description?: string | null
 	icon?: string | null
 	link?: string | null
-	type?: NotificationType
-	goTo?: string | null
-	target?: string | null
 }
 
 export interface NotificationsData {
@@ -56,10 +37,7 @@ export interface NotificationsData {
 }
 
 interface RawAction {
-	type: string
-	goTo?: string | null
-	target?: string | null
-	url?: string | null
+	link?: string | null
 }
 
 export interface RawInboxItem {
