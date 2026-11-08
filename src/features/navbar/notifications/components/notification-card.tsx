@@ -6,21 +6,18 @@ import { Icon } from '@/icons'
 interface NotificationCardProps {
 	children: ReactNode
 	isInteractive?: boolean
-	isUnread?: boolean
 	className?: string
 }
 
 export function NotificationCard({
 	children,
 	isInteractive,
-	isUnread,
 	className,
 }: NotificationCardProps) {
 	return (
 		<div
 			className={cn(
-				'relative flex gap-3 p-3 border rounded-2xl transition-ui',
-				isUnread ? 'border-brand-fill-2 bg-brand-fill' : 'border-line',
+				'relative flex gap-3 p-3 border rounded-2xl border-line transition-ui',
 				isInteractive && 'cursor-pointer hover:bg-fill active:scale-[0.99]',
 				className
 			)}

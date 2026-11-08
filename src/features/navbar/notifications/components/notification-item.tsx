@@ -68,11 +68,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 		: null
 
 	const card = (
-		<NotificationCard
-			isInteractive={!isText}
-			isUnread={Boolean(closeable)}
-			className={prop.className}
-		>
+		<NotificationCard isInteractive={!isText} className={prop.className}>
 			{icon &&
 				(icon.startsWith('http') ? (
 					<img
