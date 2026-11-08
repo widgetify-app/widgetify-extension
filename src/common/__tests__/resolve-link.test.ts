@@ -89,6 +89,56 @@ describe('resolveLink', () => {
 		expect(resolveLink('/settings/nope')).toBeNull()
 	})
 
+	it('opens the friends sheet, on the requests when the tab says so', () => {
+		expect(resolveLink('/friends')).toEqual({
+			kind: 'internal',
+			event: 'openFriends',
+		})
+		expect(resolveLink('/friends?tab=requests')).toEqual({
+			kind: 'internal',
+			event: 'openFriends',
+			payload: { tab: 'requests' },
+		})
+		expect(resolveLink('/friends/x')).toBeNull()
+		expect(resolveLink('/friends?tab=nope')).toBeNull()
+		expect(resolveLink('/friends?tab=requests&x=1')).toBeNull()
+		expect(resolveLink('/friends?x=1')).toBeNull()
+	})
+
+	it('refuses a query on a path that takes none', () => {
+		expect(resolveLink('/explorer?tab=requests')).toBeNull()
+		expect(resolveLink('/settings/vip?tab=x')).toBeNull()
+		expect(resolveLink('/market?tab=coins')).toBeNull()
+	})
+
+	it('opens the market, on one view when it is a known one', () => {
+		expect(resolveLink('/market')).toEqual({
+			kind: 'internal',
+			event: 'openMarketModal',
+			payload: {},
+		})
+
+		const views: Record<string, object> = {
+			coins: { tab: 'coins' },
+			wallpapers: { filter: 'wallpapers' },
+			themes: { filter: 'THEME' },
+			fonts: { filter: 'FONT' },
+			pets: { filter: 'PET' },
+			titles: { filter: 'BROWSER_TITLE' },
+		}
+
+		for (const [view, payload] of Object.entries(views)) {
+			expect(resolveLink(`/market/${view}`)).toEqual({
+				kind: 'internal',
+				event: 'openMarketModal',
+				payload,
+			})
+		}
+
+		expect(resolveLink('/market/nope')).toBeNull()
+		expect(resolveLink('/market/coins/x')).toBeNull()
+	})
+
 	it('refuses a path it does not know', () => {
 		for (const link of [
 			'/',

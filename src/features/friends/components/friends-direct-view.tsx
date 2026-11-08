@@ -33,7 +33,7 @@ import {
 } from './friend-suggestions'
 import { ProfileCardTrigger } from './profile-card/profile-card-trigger'
 
-export function FriendsDirectView() {
+export function FriendsDirectView({ openRequests = false }: { openRequests?: boolean }) {
 	const { user } = useAuth()
 	const [selectedUserToDelete, setSelectedUserToDelete] = useState<Friend | null>(null)
 	const [isAddFriendOpen, setIsAddFriendOpen] = useState(false)
@@ -124,6 +124,7 @@ export function FriendsDirectView() {
 					<div className="flex items-center gap-1.5">
 						<FriendRequestsButton
 							size="small"
+							defaultOpen={openRequests}
 							pendingCount={user?.friendshipStats?.pending || 0}
 						/>
 						<button

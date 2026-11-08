@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '@/context/auth.context'
 import { BottomSheet } from '@/components/ui'
 import { FriendsDirectView } from '@/features/friends/friends'
-import { listenEvent } from '@/common/utils/call-event'
+import { callEvent, listenEvent } from '@/common/utils/call-event'
 import Analytics from '@/analytics'
 import { NavIconButton } from './nav-icon-button'
 import { t } from '@/common/i18n'
@@ -11,6 +11,8 @@ export function FriendsListNavbar() {
 	const { user, isAuthenticated } = useAuth()
 
 	const [isOpen, setIsOpen] = useState(false)
+	const [openRequests, setOpenRequests] = useState(false)
+	const [openCount, setOpenCount] = useState(0)
 
 	const clickToOpenSheet = () => {
 		if (!isOpen) {
@@ -21,11 +23,24 @@ export function FriendsListNavbar() {
 	}
 
 	useEffect(() => {
-		const event = listenEvent('close_friends_bottomSheet', () => setIsOpen(false))
+		const closeEvent = listenEvent('close_friends_bottomSheet', () =>
+			setIsOpen(false)
+		)
+		const openEvent = listenEvent('openFriends', (target) => {
+			if (!isAuthenticated) {
+				callEvent('open_require_auth_modal')
+				return
+			}
+
+			setOpenRequests(target?.tab === 'requests')
+			setOpenCount((count) => count + 1)
+			setIsOpen(true)
+		})
 		return () => {
-			event()
+			closeEvent()
+			openEvent()
 		}
-	}, [])
+	}, [isAuthenticated])
 
 	if (!isAuthenticated) {
 		return null
@@ -54,7 +69,7 @@ export function FriendsListNavbar() {
 
 			<BottomSheet isOpen={isOpen} onClose={() => setIsOpen(false)}>
 				<div className="h-full">
-					<FriendsDirectView />
+					<FriendsDirectView key={openCount} openRequests={openRequests} />
 				</div>
 			</BottomSheet>
 		</>

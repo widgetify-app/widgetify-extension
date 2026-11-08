@@ -66,6 +66,7 @@ export interface EventName {
 	open_require_auth_modal: null
 	toggle_miniApp_fullScreen: boolean
 	close_friends_bottomSheet: null
+	openFriends: { tab?: 'requests' } | null
 	openFriendLook: { username: string; name: string }
 	resetWallpaper: null
 	openAddCustomWidgetModal:

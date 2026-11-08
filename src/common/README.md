@@ -56,6 +56,8 @@ A notification, island or dialog opens something through one string, `action.lin
 | `/widgets` | the widget catalog |
 | `/widgets/<key>` | the catalog on one widget (`widget:<slug>` or a native key such as `clock`) |
 | `/profile`, `/profile/<tab>` | the profile, tab `friends`, `platforms`, `vip` or `pro` |
+| `/friends`, `/friends?tab=requests` | the friends bottom sheet, with the friend requests open when `tab=requests` (a signed out visitor gets the sign-in prompt). `tab` is the only query any link takes; other values or other keys open nothing |
+| `/market`, `/market/<view>` | the store, on `coins`, `wallpapers`, `themes`, `fonts`, `pets` or `titles` |
 | `/settings`, `/settings/<tab>` | the settings, tab as listed in `SETTINGS_TABS` in `common/utils/call-event.ts` |
 
 ## Analytics
