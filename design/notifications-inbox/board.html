@@ -1,0 +1,452 @@
+<title>بازطراحی اعلان‌های افزونه</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;900&display=swap">
+<style>
+/* Layout concept: the real 384px notification panel drawn twice on a flat wallpaper stand-in, direction A (an inbox with history) beside direction B (refined cards), then one tab for states, one for the bell badge and one for settings. */
+:root {
+  --ink: 70, 70, 71;
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+  --surface-3: #f1f5f9;
+  --fg-strong: #464647;
+  --fg: rgba(var(--ink), .9);
+  --fg-muted: rgba(var(--ink), .7);
+  --fg-faint: rgba(var(--ink), .5);
+  --fill: rgba(var(--ink), .05);
+  --fill-2: rgba(var(--ink), .1);
+  --line: rgba(var(--ink), .15);
+  --brand: #536dfe;
+  --brand-fill: rgba(83, 109, 254, .1);
+  --brand-fill-2: rgba(83, 109, 254, .2);
+  --danger: #ff627d;
+  --danger-fill: rgba(255, 98, 125, .1);
+  --stage: #aebbd6;
+  --board: #eef1f6;
+  --font: "Vazirmatn", "Vazir", Tahoma, system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink: 240, 240, 245;
+    --surface: #1c1f27; --surface-2: #232733; --surface-3: #2b3040;
+    --fg-strong: #f1f1f4; --stage: #3b4560; --board: #14161c;
+    --brand: #8da0ff; --brand-fill: rgba(141, 160, 255, .14); --brand-fill-2: rgba(141, 160, 255, .24);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ink: 240, 240, 245;
+  --surface: #1c1f27; --surface-2: #232733; --surface-3: #2b3040;
+  --fg-strong: #f1f1f4; --stage: #3b4560; --board: #14161c;
+  --brand: #8da0ff; --brand-fill: rgba(141, 160, 255, .14); --brand-fill-2: rgba(141, 160, 255, .24);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--board); color: var(--fg); font-family: var(--font); font-size: 14px; line-height: 1.7;
+  padding-block: 20px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+h1, h2, h3, h4, p { margin: 0; }
+button { font: inherit; color: inherit; }
+.wrap { max-width: 1120px; margin-inline: auto; display: grid; gap: 16px; }
+.intro { display: grid; gap: 6px; }
+.intro h1 { font-size: 20px; font-weight: 700; color: var(--fg-strong); }
+.intro p { color: var(--fg-muted); max-width: 74ch; }
+.tabs { display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 1px solid var(--line); }
+.tab { border: 0; background: none; padding: 10px 14px; cursor: pointer; color: var(--fg-muted); font-weight: 600; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tab[aria-selected="true"] { color: var(--brand); border-bottom-color: var(--brand); }
+:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.screen[hidden], [hidden] { display: none !important; }
+svg { display: block; flex: none; }
+
+.stage { background: var(--stage); border-radius: 24px; padding: 24px; display: flex; flex-wrap: wrap; gap: 28px; justify-content: center; align-items: flex-start; }
+.col { display: grid; gap: 10px; justify-items: center; min-width: 0; max-width: 100%; }
+.cap { font-size: 12px; font-weight: 700; color: var(--fg-strong); background: var(--surface); border-radius: 999px; padding: 2px 14px; }
+
+.panel { width: 384px; max-width: 100%; background: var(--surface-2); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 12px 32px rgba(0,0,0,.18); display: grid; overflow: hidden; }
+.p-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 12px 14px 8px; }
+.p-title { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--fg-strong); }
+.p-actions { display: flex; align-items: center; gap: 2px; }
+.text-btn { border: 0; background: none; cursor: pointer; font-size: 11px; font-weight: 600; color: var(--fg-muted); border-radius: 8px; padding: 4px 8px; min-height: 28px; }
+.text-btn:hover { background: var(--fill); color: var(--brand); }
+.icon-btn { border: 0; background: none; cursor: pointer; width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; color: var(--fg-muted); }
+.icon-btn:hover { background: var(--fill); color: var(--fg-strong); }
+.seg { display: flex; gap: 4px; padding: 0 14px 8px; }
+.seg button { border: 0; background: none; cursor: pointer; font-size: 12px; font-weight: 600; color: var(--fg-muted); border-radius: 999px; padding: 4px 12px; min-height: 28px; }
+.seg button[aria-selected="true"] { background: var(--brand-fill); color: var(--brand); }
+.scroll { max-height: 440px; overflow-y: auto; padding: 0 8px 8px; display: grid; gap: 2px; align-content: start; }
+.sec { font-size: 10px; font-weight: 700; color: var(--fg-faint); padding: 10px 8px 4px; }
+
+.promo { position: relative; margin: 0 0 6px; padding: 12px 14px; border-radius: 14px; background: var(--brand-fill); display: grid; gap: 2px; }
+.promo h4 { font-size: 13px; font-weight: 700; color: var(--fg-strong); padding-inline-end: 24px; }
+.promo p { font-size: 11px; color: var(--fg-muted); }
+.promo .x { position: absolute; top: 8px; inset-inline-end: 8px; }
+
+.row { position: relative; display: flex; gap: 10px; padding: 10px 8px; border-radius: 12px; cursor: pointer; }
+.row:hover { background: var(--fill); }
+.dotcol { width: 10px; padding-top: 7px; flex: none; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--brand); }
+.row.read .dot { background: transparent; }
+.row .main { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.row h4 { font-size: 13px; font-weight: 700; color: var(--fg-strong); }
+.row.read h4 { font-weight: 500; color: var(--fg); }
+.row p { font-size: 11px; color: var(--fg-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.row .time { font-size: 10px; color: var(--fg-faint); white-space: nowrap; padding-top: 4px; }
+.row .more { border: 0; background: none; cursor: pointer; font-size: 10px; color: var(--fg-muted); padding: 0; text-align: start; width: fit-content; }
+.row .more:hover { color: var(--brand); }
+.stack-line { position: relative; margin-bottom: 8px; }
+.stack-line::before, .stack-line::after { content: ""; position: absolute; height: 5px; border: 1px solid var(--line); border-top: 0; background: var(--surface-3); }
+.stack-line::before { inset-inline: 14px; bottom: -4px; border-radius: 0 0 10px 10px; }
+.stack-line::after { inset-inline: 24px; bottom: -8px; border-radius: 0 0 8px 8px; opacity: .7; }
+
+.cards { padding: 4px 12px 14px; display: grid; gap: 8px; }
+.cardb { position: relative; display: flex; gap: 10px; padding: 12px; border: 1px solid var(--line); border-radius: 16px; cursor: pointer; background: var(--surface-2); }
+.cardb.unread { background: var(--brand-fill); border-color: var(--brand-fill-2); }
+.cardb .main { flex: 1; min-width: 0; display: grid; gap: 3px; }
+.cardb h4 { font-size: 13px; font-weight: 700; color: var(--fg-strong); }
+.cardb p { font-size: 11px; color: var(--fg-muted); }
+.cardb .time { font-size: 10px; color: var(--fg-faint); }
+.cardb .x { width: 24px; height: 24px; border-radius: 8px; border: 0; background: var(--fill); color: var(--fg-faint); display: grid; place-items: center; cursor: pointer; align-self: flex-start; flex: none; }
+.cardb .x:hover { background: var(--danger-fill); color: var(--danger); }
+.stack { position: relative; margin-bottom: 12px; }
+.stack::before, .stack::after { content: ""; position: absolute; border: 1px solid var(--line); border-top: 0; background: var(--surface-3); }
+.stack::before { inset-inline: 10px; bottom: -6px; height: 14px; border-radius: 0 0 14px 14px; }
+.stack::after { inset-inline: 20px; bottom: -12px; height: 14px; border-radius: 0 0 12px 12px; z-index: -1; opacity: .7; }
+.stack > .cardb { position: relative; z-index: 1; }
+
+.empty { display: grid; gap: 4px; justify-items: center; padding: 44px 12px; text-align: center; }
+.empty strong { font-size: 13px; color: var(--fg-strong); }
+.empty span { font-size: 11px; color: var(--fg-muted); }
+.skel { height: 12px; border-radius: 6px; background: var(--fill-2); }
+.skel-row { display: flex; gap: 10px; padding: 10px 8px; }
+.err { display: grid; gap: 8px; justify-items: center; padding: 36px 12px; text-align: center; }
+.err strong { font-size: 13px; color: var(--fg-strong); }
+.btn { border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 6px 14px; min-height: 32px; cursor: pointer; font-size: 12px; font-weight: 600; }
+.btn:hover { background: var(--fill); }
+
+.bell-row { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+.bell { position: relative; width: 40px; height: 40px; border-radius: 12px; background: var(--surface-2); border: 1px solid var(--line); display: grid; place-items: center; color: var(--fg); }
+.dotb { position: absolute; top: 4px; right: 4px; width: 9px; height: 9px; border-radius: 50%; background: var(--danger); border: 2px solid var(--surface-2); }
+.count { position: absolute; top: -6px; right: -6px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: var(--danger); color: #fff; font-size: 10px; font-weight: 700; display: grid; place-items: center; border: 2px solid var(--surface-2); }
+.opt { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px; display: grid; gap: 10px; justify-items: center; width: 220px; max-width: 100%; text-align: center; }
+.opt.pick { border-color: var(--brand); box-shadow: 0 0 0 2px var(--brand-fill); }
+.opt h3 { font-size: 13px; color: var(--fg-strong); }
+.opt p { font-size: 11px; color: var(--fg-muted); }
+
+.settings { width: 520px; max-width: 100%; background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 20px; display: grid; gap: 14px; }
+.settings h3 { font-size: 15px; font-weight: 700; color: var(--fg-strong); }
+.settings > p { font-size: 12px; color: var(--fg-muted); }
+.rows { display: grid; border: 1px solid var(--line); border-radius: 16px; background: var(--surface-2); overflow: hidden; }
+.setting-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; min-height: 56px; }
+.setting-row + .setting-row { border-top: 1px solid var(--line); }
+.setting-row .t { font-size: 13px; font-weight: 600; color: var(--fg-strong); }
+.setting-row .s { font-size: 11px; color: var(--fg-muted); }
+.toggle { width: 40px; height: 24px; border-radius: 999px; background: var(--fill-2); border: 0; position: relative; cursor: pointer; padding: 0; flex: none; transition: background .15s; }
+.toggle::after { content: ""; position: absolute; top: 3px; inset-inline-start: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3); transition: inset-inline-start .15s; }
+.toggle[aria-pressed="true"] { background: var(--brand); }
+.toggle[aria-pressed="true"]::after { inset-inline-start: 19px; }
+@media (prefers-reduced-motion: reduce) { .toggle, .toggle::after { transition: none; } }
+.tabs-mock { display: flex; gap: 4px; flex-wrap: wrap; }
+.tabs-mock span { font-size: 12px; padding: 6px 12px; border-radius: 10px; color: var(--fg-muted); }
+.tabs-mock .on { background: var(--brand-fill); color: var(--brand); font-weight: 600; }
+
+.notes { display: grid; gap: 6px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; }
+.notes h3 { font-size: 13px; font-weight: 700; color: var(--brand); }
+.notes ul { margin: 0; padding-inline-start: 18px; color: var(--fg-muted); display: grid; gap: 3px; }
+.mono { font-family: ui-monospace, Consolas, monospace; font-size: 12px; direction: ltr; unicode-bidi: isolate; }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"/><path d="M10 19a2 2 0 0 0 4 0"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 0 0-2-1.2L14.2 3h-4l-.4 2.6a7 7 0 0 0-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2l.4 2.6h4l.4-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></symbol>
+</svg>
+
+<div class="wrap">
+  <div class="intro">
+    <h1>بازطراحی اعلان‌های افزونه</h1>
+    <p>کل بخش اعلان‌ها دوباره طراحی شده: پنل، ردیف‌ها، حالت‌ها، نشان زنگ و تنظیمات. دو جهت برای پنل کشیده‌ام تا یکی را انتخاب کنی. جزیره و دیالوگ اعلان همان‌طور که هستند می‌مانند. تم روشن کشیده شده است و هر سطح روی تصویر پس‌زمینه می‌نشیند.</p>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="بخش‌ها">
+    <button class="tab" role="tab" id="tab-panel" aria-selected="true" data-screen="panel">پنل: دو جهت</button>
+    <button class="tab" role="tab" id="tab-states" aria-selected="false" data-screen="states">حالت‌ها</button>
+    <button class="tab" role="tab" id="tab-badge" aria-selected="false" data-screen="badge">نشان زنگ</button>
+    <button class="tab" role="tab" id="tab-settings" aria-selected="false" data-screen="settings">تنظیمات</button>
+  </div>
+
+  <section class="screen" id="screen-panel">
+    <div class="stage">
+      <div class="col">
+        <span class="cap">الف) صندوق با تاریخچه (پیشنهاد من)</span>
+        <div class="panel" dir="rtl">
+          <div class="p-head">
+            <div class="p-title"><svg width="16" height="16"><use href="#i-bell"/></svg>اعلان‌ها</div>
+            <div class="p-actions">
+              <button class="text-btn" id="markAll">خواندن همه</button>
+              <button class="icon-btn" aria-label="تنظیمات اعلان‌ها"><svg width="16" height="16"><use href="#i-gear"/></svg></button>
+            </div>
+          </div>
+          <div class="seg" role="tablist" aria-label="فیلتر">
+            <button role="tab" aria-selected="true" data-f="all">همه</button>
+            <button role="tab" aria-selected="false" data-f="unread">خوانده‌نشده ۳</button>
+          </div>
+          <div class="scroll" id="scrollA">
+            <div class="promo" id="promo">
+              <h4>نسخه ۲.۰.۱۸ منتشر شد</h4>
+              <p>مرکز اعلان‌ها تازه شده است</p>
+              <button class="icon-btn x" aria-label="بستن" data-close="promo"><svg width="14" height="14"><use href="#i-x"/></svg></button>
+            </div>
+            <div class="sec">امروز</div>
+            <div class="stack-line" data-state="unread">
+              <div class="row">
+                <div class="dotcol"><span class="dot"></span></div>
+                <div class="main"><h4>چند تا از دوستات نوشته جدید گذاشتن</h4><p>از قسمت دوستان میتونی بهش واکنش نشون بدی!</p></div>
+                <span class="time">۱۷:۴۲</span>
+              </div>
+            </div>
+            <div class="row" data-state="unread">
+              <div class="dotcol"><span class="dot"></span></div>
+              <div class="main"><h4>شما یک درخواست دوستی جدید دارید</h4><p>کاربر سارا یک درخواست دوستی برای شما ارسال کرده است</p></div>
+              <span class="time">۱۷:۱۵</span>
+            </div>
+            <div class="row" data-state="unread">
+              <div class="dotcol"><span class="dot"></span></div>
+              <div class="main"><h4>هوورا! یه جایزه جدید رسید</h4><p>۵۰ ویج‌کوین بابت تکمیل پروفایل بهت تعلق گرفت</p></div>
+              <span class="time">۱۶:۵۰</span>
+            </div>
+            <div class="sec">دیروز</div>
+            <div class="row read" data-state="read">
+              <div class="dotcol"><span class="dot"></span></div>
+              <div class="main"><h4>تولدت مبارک 🎂</h4><p>مینا جان، تولدت مبارک. یه سال دیگه یعنی یه آپدیت جدید برای خودت؛ امیدواریم تب جدیدت هم همیشه مرتب و پر انرژی باشه</p></div>
+              <span class="time">۰۹:۰۰</span>
+            </div>
+            <div class="row read" data-state="read">
+              <div class="dotcol"><span class="dot"></span></div>
+              <div class="main"><h4>وضعیت دوستی تغییر کرد</h4><p>تبریک! درخواست دوستی توسط سارا پذیرفته شد</p></div>
+              <span class="time">۱۴:۲۰</span>
+            </div>
+            <div class="sec">قبل‌تر</div>
+            <div class="row read" data-state="read">
+              <div class="dotcol"><span class="dot"></span></div>
+              <div class="main"><h4>اشتراک پرو فعال شد</h4><p>اشتراک پرو ۳۰ روزه شما با موفقیت فعال شد</p></div>
+              <span class="time">۱۲ آبان</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <span class="cap">ب) کارت‌های پاک‌تر</span>
+        <div class="panel" dir="rtl">
+          <div class="p-head">
+            <div class="p-title"><svg width="16" height="16"><use href="#i-bell"/></svg>اعلان‌ها</div>
+            <div class="p-actions">
+              <button class="text-btn">خواندن همه</button>
+              <button class="icon-btn" aria-label="تنظیمات اعلان‌ها"><svg width="16" height="16"><use href="#i-gear"/></svg></button>
+            </div>
+          </div>
+          <div class="cards">
+            <div class="stack">
+              <div class="cardb unread">
+                <div class="main"><h4>چند تا از دوستات نوشته جدید گذاشتن</h4><p>از قسمت دوستان میتونی بهش واکنش نشون بدی!</p><span class="time">امروز ۱۷:۴۲</span></div>
+                <button class="x" aria-label="بستن"><svg width="14" height="14"><use href="#i-x"/></svg></button>
+              </div>
+            </div>
+            <div class="cardb unread">
+              <div class="main"><h4>شما یک درخواست دوستی جدید دارید</h4><p>کاربر سارا یک درخواست دوستی برای شما ارسال کرده است</p><span class="time">امروز ۱۷:۱۵</span></div>
+              <button class="x" aria-label="بستن"><svg width="14" height="14"><use href="#i-x"/></svg></button>
+            </div>
+            <div class="cardb">
+              <div class="main"><h4>نسخه ۲.۰.۱۸ منتشر شد</h4><p>مرکز اعلان‌ها تازه شده است</p></div>
+              <button class="x" aria-label="بستن"><svg width="14" height="14"><use href="#i-x"/></svg></button>
+            </div>
+            <div class="cardb">
+              <div class="main"><h4>هوورا! یه جایزه جدید رسید</h4><p>۵۰ ویج‌کوین بابت تکمیل پروفایل بهت تعلق گرفت</p><span class="time">دیروز ۱۶:۵۰</span></div>
+              <button class="x" aria-label="بستن"><svg width="14" height="14"><use href="#i-x"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="notes">
+      <h3>تفاوت دو جهت</h3>
+      <ul>
+        <li><b>الف) صندوق:</b> فهرست بدون قاب، مثل صندوق ایمیل. هر ردیف یک نقطه خوانده‌نشدن دارد که با باز شدن ردیف محو می‌شود، عنوان خوانده‌نشده‌ها پررنگ‌تر است و ساعت آخر ردیف می‌آید. ردیف‌ها با «امروز»، «دیروز» و «قبل‌تر» دسته‌بندی می‌شوند. اطلاعیه‌های ویجتیفای (مثل نسخه تازه) بالای فهرست در یک کارت برند می‌نشینند و بسته می‌شوند. سطر بالا دو دکمه دارد: «خواندن همه» و تنظیمات اعلان‌ها. دو زبانه «همه» و «خوانده‌نشده».</li>
+        <li><b>ب) کارت‌ها:</b> همان قاب‌های گرد فعلی، فقط پاک‌تر. بدون مربع آیکن، خوانده‌نشده‌ها با زمینه برند کم‌رنگ، دکمه بستن مثل الان.</li>
+        <li><b>هر دو:</b> مربع آیکن حذف شده (در افزونه ممنوع است). کارت تجمیع‌شده به شکل پشته کشیده می‌شود. هر دو روی <span class="mono">bg-glass-surface-2</span> و با اجزای <span class="mono">ui</span> ساخته می‌شوند.</li>
+        <li><b>داده:</b> الف از مسیر <span class="mono">/v2</span> می‌خواند (تاریخچه ۳۰ روزه، وضعیت خوانده‌شدن و شمارش خوانده‌نشده‌ها) و کار بیشتری در افزونه می‌خواهد. ب با مسیر قدیمی هم کار می‌کند و فقط خوانده‌نشده‌ها را می‌بیند: با بستن، اعلان می‌رود و تاریخچه‌ای نیست.</li>
+        <li>روی الف بزن: ردیف خوانده می‌شود، «خواندن همه» همه را خوانده می‌کند و فیلتر «خوانده‌نشده» ردیف‌های خوانده را پنهان می‌کند.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="screen" id="screen-states" hidden>
+    <div class="stage">
+      <div class="col">
+        <span class="cap">همه خوانده شده</span>
+        <div class="panel" dir="rtl">
+          <div class="p-head"><div class="p-title"><svg width="16" height="16"><use href="#i-bell"/></svg>اعلان‌ها</div><div class="p-actions"><button class="icon-btn" aria-label="تنظیمات اعلان‌ها"><svg width="16" height="16"><use href="#i-gear"/></svg></button></div></div>
+          <div class="seg"><button aria-selected="false">همه</button><button aria-selected="true">خوانده‌نشده</button></div>
+          <div class="empty"><svg width="40" height="40" style="color:var(--fg-faint)"><use href="#i-check"/></svg><strong>اعلان جدیدی نداری</strong><span>همه چیز به‌روز و مرتبه</span></div>
+        </div>
+      </div>
+      <div class="col">
+        <span class="cap">هنوز اعلانی نیامده</span>
+        <div class="panel" dir="rtl">
+          <div class="p-head"><div class="p-title"><svg width="16" height="16"><use href="#i-bell"/></svg>اعلان‌ها</div><div class="p-actions"><button class="icon-btn" aria-label="تنظیمات اعلان‌ها"><svg width="16" height="16"><use href="#i-gear"/></svg></button></div></div>
+          <div class="empty"><svg width="40" height="40" style="color:var(--fg-faint)"><use href="#i-bell"/></svg><strong>هنوز اعلانی نداری</strong><span>وقتی چیزی برات بیاد، اینجا می‌بینی</span></div>
+        </div>
+      </div>
+      <div class="col">
+        <span class="cap">در حال بارگذاری</span>
+        <div class="panel" dir="rtl">
+          <div class="p-head"><div class="p-title"><svg width="16" height="16"><use href="#i-bell"/></svg>اعلان‌ها</div></div>
+          <div class="scroll">
+            <div class="skel-row"><div style="width:10px"></div><div style="flex:1;display:grid;gap:8px"><div class="skel" style="width:60%"></div><div class="skel" style="width:90%"></div></div><div class="skel" style="width:30px"></div></div>
+            <div class="skel-row"><div style="width:10px"></div><div style="flex:1;display:grid;gap:8px"><div class="skel" style="width:50%"></div><div class="skel" style="width:80%"></div></div><div class="skel" style="width:30px"></div></div>
+            <div class="skel-row"><div style="width:10px"></div><div style="flex:1;display:grid;gap:8px"><div class="skel" style="width:65%"></div><div class="skel" style="width:70%"></div></div><div class="skel" style="width:30px"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <span class="cap">خطا در دریافت</span>
+        <div class="panel" dir="rtl">
+          <div class="p-head"><div class="p-title"><svg width="16" height="16"><use href="#i-bell"/></svg>اعلان‌ها</div></div>
+          <div class="err"><strong>اعلان‌ها خوانده نشد</strong><button class="btn">دوباره امتحان کن</button></div>
+        </div>
+      </div>
+      <div class="col">
+        <span class="cap">متن بلند باز شده</span>
+        <div class="panel" dir="rtl">
+          <div class="p-head"><div class="p-title"><svg width="16" height="16"><use href="#i-bell"/></svg>اعلان‌ها</div></div>
+          <div class="scroll">
+            <div class="row">
+              <div class="dotcol"><span class="dot"></span></div>
+              <div class="main"><h4>تولدت مبارک 🎂</h4><p style="display:block">مینا جان، امروز روز توئه. ۵۰ ویج‌کوین هدیه‌ی تولدت رو توی حسابت گذاشتیم؛ یه سر به فروشگاه بزن و به تب جدیدت یه تم، فونت یا پت باحال اضافه کن</p><button class="more">نمایش کمتر <svg width="10" height="10" style="display:inline;transform:rotate(180deg)"><use href="#i-chev"/></svg></button></div>
+              <span class="time">۰۹:۰۰</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="notes">
+      <h3>حالت‌ها</h3>
+      <ul>
+        <li>«همه خوانده شده» و «هنوز اعلانی نیامده» دو حالت جدا هستند، چون با تاریخچه فرق دارند.</li>
+        <li>بارگذاری: سه سطر اسکلت با همان ارتفاع ردیف. خطا: یک پیام و یک دکمه، بدون خطای فنی.</li>
+        <li>متن بیشتر از دو خط با «مشاهده بیشتر» باز می‌شود (همان رفتار فعلی). متن‌ها کوچک‌تر از ۱۰ پیکسل نیستند.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="screen" id="screen-badge" hidden>
+    <div class="stage" style="flex-direction:column;align-items:center">
+      <div class="bell-row">
+        <div class="opt pick"><div class="bell"><svg width="20" height="20"><use href="#i-bell"/></svg><span class="dotb"></span></div><h3>الف) نقطه، مثل الان</h3><p>اگر دست‌کم یک اعلان خوانده‌نشده باشد</p></div>
+        <div class="opt"><div class="bell"><svg width="20" height="20"><use href="#i-bell"/></svg><span class="count">۳</span></div><h3>ب) عدد</h3><p>تعداد خوانده‌نشده‌ها، تا «۹+»</p></div>
+        <div class="opt"><div class="bell"><svg width="20" height="20"><use href="#i-bell"/></svg></div><h3>بدون اعلان</h3><p>نشان برداشته می‌شود</p></div>
+      </div>
+    </div>
+    <div class="notes">
+      <h3>پیشنهاد و دلیل</h3>
+      <ul>
+        <li>اگر جهت الف (صندوق) را بپذیری، شمارش خوانده‌نشده‌ها از <span class="mono">GET /v2/notifications/unread-count</span> می‌آید و عدد با زبانه «خوانده‌نشده ۳» هم‌خوان است. در این حالت گزینه «عدد» منطقی است.</li>
+        <li>اگر جهت ب را بپذیری، همان نقطه فعلی بهتر است و کدی تغییر نمی‌کند.</li>
+        <li>متن خوانندگان صفحه: «اعلان‌ها، اعلان جدید داری» (همان متن فعلی). برای عدد: «اعلان‌ها، ۳ اعلان جدید».</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="screen" id="screen-settings" hidden>
+    <div class="stage">
+      <div class="settings" dir="rtl">
+        <div class="tabs-mock"><span>عمومی</span><span>ظاهر</span><span class="on">اعلان‌ها</span><span>حساب</span></div>
+        <h3>اعلان‌ها</h3>
+        <p>انتخاب کن کدوم اعلان‌ها برات بیاد</p>
+        <div class="rows">
+          <div class="setting-row"><div><div class="t">دوستان</div><div class="s">درخواست دوستی و نوشته‌های جدید دوستان</div></div><button class="toggle" aria-pressed="true" aria-label="اعلان دوستان"></button></div>
+          <div class="setting-row"><div><div class="t">تولد</div><div class="s">تبریک تولد و یادآوری تولد دوستان</div></div><button class="toggle" aria-pressed="true" aria-label="اعلان تولد"></button></div>
+          <div class="setting-row"><div><div class="t">جایزه‌ها</div><div class="s">جایزه‌ها و هدیه‌هایی که می‌گیری</div></div><button class="toggle" aria-pressed="true" aria-label="اعلان جایزه‌ها"></button></div>
+          <div class="setting-row"><div><div class="t">اشتراک پرو</div><div class="s">فعال‌شدن اشتراک</div></div><button class="toggle" aria-pressed="false" aria-label="اعلان اشتراک پرو"></button></div>
+        </div>
+        <p>اطلاعیه‌های ویجتیفای (مثل خبر نسخه تازه) همیشه می‌آیند</p>
+      </div>
+    </div>
+    <div class="notes">
+      <h3>تصمیم‌ها</h3>
+      <ul>
+        <li>یک زیربخش تازه در تنظیمات با چهار کلید <span class="mono">Toggle</span>، هرکدام چند نوع اعلان را بی‌صدا می‌کند. پوش و ساعت سکوت اینجا نیست چون افزونه پوش نمی‌گیرد.</li>
+        <li>دکمه چرخ‌دنده در پنل مستقیم همین بخش را باز می‌کند. فقط برای کاربر واردشده.</li>
+        <li>گزینه ساده‌تر: این بخش را در ۲.۰.۱۸ نساز و بعد اضافه کن.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="notes">
+    <h3>متن‌های پیش‌نویس برای تایید</h3>
+    <ul>
+      <li>پنل: «خواندن همه» (متن خوانندگان صفحه «علامت‌گذاری همه به‌عنوان خوانده‌شده»)، «همه»، «خوانده‌نشده»، «امروز»، «دیروز»، «قبل‌تر»، «تنظیمات اعلان‌ها»</li>
+      <li>حالت‌ها: «اعلان جدیدی نداری» و «همه چیز به‌روز و مرتبه» (فعلی)، «هنوز اعلانی نداری» و «وقتی چیزی برات بیاد، اینجا می‌بینی»، «اعلان‌ها خوانده نشد» و «دوباره امتحان کن»</li>
+      <li>تنظیمات: «اعلان‌ها»، «انتخاب کن کدوم اعلان‌ها برات بیاد»، «دوستان»، «تولد»، «جایزه‌ها»، «اشتراک پرو» با توضیح هر سطر، «اطلاعیه‌های ویجتیفای (مثل خبر نسخه تازه) همیشه می‌آیند»، پیام خطا «تنظیم اعلان‌ها ذخیره نشد، دوباره امتحان کن»</li>
+      <li>همه بعد از تایید وارد <span class="mono">src/common/i18n</span> می‌شوند، بدون نقطه پایان جمله و بدون ایموجی. ایموجی در عنوان تولد از قالب سرور می‌آید و در طرح فقط نمونه است.</li>
+    </ul>
+    <h3>رویدادهای آمار (بعد از تایید)</h3>
+    <ul>
+      <li><span class="mono">notifications_mark_all_read</span>، <span class="mono">notifications_mark_all_read_failed</span>، <span class="mono">notifications_filter_changed</span>، <span class="mono">notifications_settings_opened</span>، <span class="mono">notifications_settings_changed</span>، <span class="mono">notifications_settings_failed</span>، <span class="mono">notifications_inbox_failed</span></li>
+    </ul>
+  </div>
+</div>
+
+<script>
+var screens = ['panel', 'states', 'badge', 'settings'];
+function show(name) {
+  if (screens.indexOf(name) < 0) name = 'panel';
+  screens.forEach(function (s) {
+    document.getElementById('screen-' + s).hidden = s !== name;
+    document.getElementById('tab-' + s).setAttribute('aria-selected', String(s === name));
+  });
+}
+document.querySelectorAll('.tab').forEach(function (b) {
+  b.addEventListener('click', function () { location.hash = b.dataset.screen; });
+});
+window.addEventListener('hashchange', function () { show(location.hash.slice(1)); });
+show(location.hash.slice(1));
+
+var filter = 'all';
+function applyFilter() {
+  document.querySelectorAll('#scrollA [data-state]').forEach(function (el) {
+    var row = el.classList.contains('row') ? el : el.querySelector('.row');
+    el.hidden = filter === 'unread' && row.classList.contains('read');
+  });
+  document.querySelectorAll('#scrollA .sec').forEach(function (sec) {
+    var next = sec.nextElementSibling, any = false;
+    while (next && !next.classList.contains('sec')) { if (!next.hidden) any = true; next = next.nextElementSibling; }
+    sec.hidden = !any;
+  });
+}
+document.querySelectorAll('.seg [data-f]').forEach(function (b) {
+  b.addEventListener('click', function () {
+    filter = b.dataset.f;
+    document.querySelectorAll('.seg [data-f]').forEach(function (o) { o.setAttribute('aria-selected', String(o === b)); });
+    applyFilter();
+  });
+});
+document.addEventListener('click', function (e) {
+  var toggle = e.target.closest('.toggle');
+  if (toggle) toggle.setAttribute('aria-pressed', String(toggle.getAttribute('aria-pressed') !== 'true'));
+  var row = e.target.closest('#scrollA .row');
+  if (row) { row.classList.add('read'); applyFilter(); }
+  if (e.target.id === 'markAll') {
+    document.querySelectorAll('#scrollA .row').forEach(function (r) { r.classList.add('read'); });
+    applyFilter();
+  }
+  var close = e.target.closest('[data-close]');
+  if (close) document.getElementById(close.dataset.close).hidden = true;
+  var x = e.target.closest('.cardb .x');
+  if (x) { var c = x.closest('.stack') || x.closest('.cardb'); c.remove(); }
+});
+</script>
