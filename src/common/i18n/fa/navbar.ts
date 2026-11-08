@@ -34,6 +34,7 @@ export const navbar = {
 	'navbar.notifications.showMore': 'مشاهده بیشتر',
 	'navbar.notifications.close': 'بستن',
 	'navbar.notifications.markAllRead': 'خواندن همه',
+	'navbar.notifications.dialogButton': 'مشاهده',
 	'navbar.notifications.completeProfile': 'پروفایلت رو کامل کن و پاداش بگیر',
 	'navbar.notifications.new': 'اعلان‌ها، اعلان جدید داری',
 	'navbar.notifications.label': 'اعلان‌ها',

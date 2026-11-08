@@ -17,14 +17,14 @@ export function NotificationNavbar() {
 	const { data: notificationsData } = useGetNotifications()
 
 	const hasCloseableNotifications = useMemo(() => {
-		const cardItems = notificationsData?.widgetifyCard || []
+		const cardItems = notificationsData?.cards || []
 		return cardItems.some((item) => item.closeable)
 	}, [notificationsData])
 
 	const { mutateAsync: notifyAsSeen } = useNotifyAsSeen()
 
 	const handleMarkAllRead = async () => {
-		const ids = (notificationsData?.widgetifyCard || [])
+		const ids = (notificationsData?.cards || [])
 			.filter((item) => item.closeable && item.id)
 			.map((item) => item.id as string)
 

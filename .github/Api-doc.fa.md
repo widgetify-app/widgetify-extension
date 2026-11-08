@@ -37,7 +37,7 @@
 - هرکدوم از API ها دارای Cache و Rate Limit هستند.
 - تعداد Rate Limit درحال حاضر private هست.
 - Cache هر API به صورت رندوم بین 1 تا 10 دقیقه و 1 ساعت هست.
-- افزونه برای درخواست‌های `GET` توی service worker هم cache خودش را دارد (`background/cache-config.ts`): stale-while-revalidate برای `/searchbox`، `/currencies`، `/weather` و `/contents`؛ اول شبکه، با ۳ ثانیه صبر، برای `/date/events`، `/news/rss` و `/extension/notifications`؛ و `/searchbox/suggest-search` و `/date/now` هیچ‌وقت. فقط پاسخ‌های `200` نگه داشته می‌شوند، تا ۵۰ مورد برای ۲ روز. همه درخواست‌های کلاینت اصلی با `cache: 'no-cache'` فرستاده می‌شوند، پس cache خود مرورگر هیچ‌وقت به‌جای سرور جواب نمی‌دهد؛ یک ۳۰۱ ذخیره‌شده قبلا بعضی کاربرها را تا پاک کردن cache در حلقه ریدایرکت نگه داشته بود. درخواستی که با `cache: 'reload'` فرستاده شود (به‌روزرسانی دستی، `FRESH_REQUEST` در `src/services/api.ts`) از هر دو روش می‌گذرد: بدون صبر به شبکه می‌رود و پاسخ را در همان cache می‌نویسد، تا درخواست عادی بعدی نسخه‌ی قدیمی‌تر را برنگرداند.
+- افزونه برای درخواست‌های `GET` توی service worker هم cache خودش را دارد (`background/cache-config.ts`): stale-while-revalidate برای `/searchbox`، `/currencies`، `/weather` و `/contents`؛ اول شبکه، با ۳ ثانیه صبر، برای `/date/events`، `/news/rss` و `/v2/notifications`؛ و `/searchbox/suggest-search` و `/date/now` هیچ‌وقت. فقط پاسخ‌های `200` نگه داشته می‌شوند، تا ۵۰ مورد برای ۲ روز. همه درخواست‌های کلاینت اصلی با `cache: 'no-cache'` فرستاده می‌شوند، پس cache خود مرورگر هیچ‌وقت به‌جای سرور جواب نمی‌دهد؛ یک ۳۰۱ ذخیره‌شده قبلا بعضی کاربرها را تا پاک کردن cache در حلقه ریدایرکت نگه داشته بود. درخواستی که با `cache: 'reload'` فرستاده شود (به‌روزرسانی دستی، `FRESH_REQUEST` در `src/services/api.ts`) از هر دو روش می‌گذرد: بدون صبر به شبکه می‌رود و پاسخ را در همان cache می‌نویسد، تا درخواست عادی بعدی نسخه‌ی قدیمی‌تر را برنگرداند.
 
 ## ورود
 
@@ -93,8 +93,10 @@
 | `GET /extension/@me/ip` | بله | | `{ ip, country, countryIcon, city, isp }` |
 | `GET /` | خیر | | هرچیزی. ویجت شبکه زمانش را می‌سنجد تا پینگ را نشان بدهد |
 | `POST /users/@me/upload/search` | بله | فرم multipart با `image` (فایل) | `{ url }` |
-| `GET /extension/notifications` | بله | | `{ data: { widgetifyCard: [], dialog, island } }`، ببینید `src/services/extension/get-notifications.hook.ts` |
-| `PUT /notifications/{id}/seen` | بله | | |
+| `GET /v2/notifications/inbox` | بله | | `{ data: { items: [{ id, kind, title, body, icon, action: { type, goTo?, target?, url? }, groupCount, createdAt, readAt }], nextCursor } }`، ببینید `src/services/extension/get-notifications.hook.ts` |
+| `GET /v2/notifications/surfaces` | خیر | | `{ data: { inbox: [], island, dialog } }`، کارت‌ها، جزیره و دیالوگ اطلاعیه‌ها |
+| `POST /v2/notifications/read` | بله | `{ ids: string[] }` | |
+| `POST /v2/notifications/surfaces/{id}/dismiss` | بله | | |
 
 **پروفایل.** `GET /extension/@me` یک `UserProfile` برمی‌گرداند (`src/services/user/user-service.hook.ts`). فیلدهای اصلی: `name`، `avatar`، `username?`، `email?`، `phone?`، `verified`، `isVip?`، `vipExpiresAt?`، `coins`، `gender`، `birthDate`، `timeZone`، `font`، `theme?`، `wallpaper`، `city?` (`{ id, name }`)، `occupation`، `interests`، `connections` (شناسه‌ی پلتفرم‌ها)، `friendshipStats` (`{ accepted, pending }`)، `badges`، `isProfileCompleted`، `hasTodayMood`، `searchAutocompleteEnabled` و `isBirthdayToday`.
 

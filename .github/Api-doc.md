@@ -37,7 +37,7 @@ The backend team keeps a Swagger for the whole API, including the admin routes. 
 - Each API has a cache and a rate limit.
 - The rate limit count is private.
 - Cache for each API is set randomly between 1 to 10 minutes and 1 hour.
-- The extension adds its own cache for `GET` requests in the service worker (`background/cache-config.ts`): stale-while-revalidate for `/searchbox`, `/currencies`, `/weather` and `/contents`; network first, with a 3 second wait, for `/date/events`, `/news/rss` and `/extension/notifications`; never `/searchbox/suggest-search` or `/date/now`. Only `200` replies are kept, 50 entries for 2 days. Every request from the main client is sent with `cache: 'no-cache'`, so the browser's own HTTP cache never answers for the server; a 301 it once stored had locked some users into a redirect loop until they cleared it. A request sent with `cache: 'reload'` (an explicit refresh, `FRESH_REQUEST` in `src/services/api.ts`) skips both strategies: it goes to the network without the wait and writes the reply into the same cache, so the next ordinary request does not bring back the older copy.
+- The extension adds its own cache for `GET` requests in the service worker (`background/cache-config.ts`): stale-while-revalidate for `/searchbox`, `/currencies`, `/weather` and `/contents`; network first, with a 3 second wait, for `/date/events`, `/news/rss` and `/v2/notifications`; never `/searchbox/suggest-search` or `/date/now`. Only `200` replies are kept, 50 entries for 2 days. Every request from the main client is sent with `cache: 'no-cache'`, so the browser's own HTTP cache never answers for the server; a 301 it once stored had locked some users into a redirect loop until they cleared it. A request sent with `cache: 'reload'` (an explicit refresh, `FRESH_REQUEST` in `src/services/api.ts`) skips both strategies: it goes to the network without the wait and writes the reply into the same cache, so the next ordinary request does not bring back the older copy.
 
 ## Sign in
 
@@ -93,8 +93,10 @@ Source: `src/services/user`, `src/services/extension`, `src/services/profile`, `
 | `GET /extension/@me/ip` | yes | | `{ ip, country, countryIcon, city, isp }` |
 | `GET /` | no | | anything. The network widget times it to show the ping |
 | `POST /users/@me/upload/search` | yes | multipart form with `image` (a file) | `{ url }` |
-| `GET /extension/notifications` | yes | | `{ data: { widgetifyCard: [], dialog, island } }`, see `src/services/extension/get-notifications.hook.ts` |
-| `PUT /notifications/{id}/seen` | yes | | |
+| `GET /v2/notifications/inbox` | yes | | `{ data: { items: [{ id, kind, title, body, icon, action: { type, goTo?, target?, url? }, groupCount, createdAt, readAt }], nextCursor } }`, see `src/services/extension/get-notifications.hook.ts` |
+| `GET /v2/notifications/surfaces` | no | | `{ data: { inbox: [], island, dialog } }`, broadcast cards, one island and one dialog |
+| `POST /v2/notifications/read` | yes | `{ ids: string[] }` | |
+| `POST /v2/notifications/surfaces/{id}/dismiss` | yes | | |
 
 **The profile.** `GET /extension/@me` answers a `UserProfile` (`src/services/user/user-service.hook.ts`). The main fields: `name`, `avatar`, `username?`, `email?`, `phone?`, `verified`, `isVip?`, `vipExpiresAt?`, `coins`, `gender`, `birthDate`, `timeZone`, `font`, `theme?`, `wallpaper`, `city?` (`{ id, name }`), `occupation`, `interests`, `connections` (platform ids), `friendshipStats` (`{ accepted, pending }`), `badges`, `isProfileCompleted`, `hasTodayMood`, `searchAutocompleteEnabled` and `isBirthdayToday`.
 

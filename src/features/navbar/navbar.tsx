@@ -128,7 +128,7 @@ export function NavbarLayout(): JSX.Element {
 	const { data: notificationsData } = useGetNotifications()
 
 	const hasCloseableNotifications = useMemo(() => {
-		const cardItems = notificationsData?.widgetifyCard || []
+		const cardItems = notificationsData?.cards || []
 		return cardItems.some((item) => item.closeable)
 	}, [notificationsData])
 
