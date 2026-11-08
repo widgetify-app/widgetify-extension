@@ -35,9 +35,9 @@ export function NotificationCenter({ hasBorder }: Prop = { hasBorder: true }) {
 	const [pushed, setPushed] = useState<PushedNotification[]>([])
 
 	const notifications = useMemo(() => {
-		const items = fetchedNotifications?.widgetifyCard || []
+		const items = fetchedNotifications?.cards || []
 		return items.filter((item) => item.id && !dismissedIds.has(item.id))
-	}, [fetchedNotifications?.widgetifyCard, dismissedIds])
+	}, [fetchedNotifications?.cards, dismissedIds])
 
 	const addToNodes = useCallback(async (notif: PushedNotification) => {
 		const removedRecently = await getWithExpiry(`removed_notification_${notif.id}`)
@@ -128,7 +128,7 @@ export function NotificationCenter({ hasBorder }: Prop = { hasBorder: true }) {
 					notification={item}
 					className={`${hasBorder ? '' : 'border-none!'}`}
 					key={item.id || `no-${index}`}
-					onClose={(e) => onClose(e, item.id || '', item.ttl)}
+					onClose={(e) => onClose(e, item.id || '')}
 				/>
 			))}
 

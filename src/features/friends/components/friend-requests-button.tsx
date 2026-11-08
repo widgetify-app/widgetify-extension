@@ -6,9 +6,10 @@ import { t } from '@/common/i18n'
 interface Prop {
 	size: 'small' | 'large'
 	pendingCount?: number
+	defaultOpen?: boolean
 }
-export function FriendRequestsButton({ size, pendingCount }: Prop) {
-	const [isRequestsOpen, setIsRequestsOpen] = useState(false)
+export function FriendRequestsButton({ size, pendingCount, defaultOpen = false }: Prop) {
+	const [isRequestsOpen, setIsRequestsOpen] = useState(defaultOpen)
 
 	return (
 		<>

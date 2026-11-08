@@ -3,93 +3,56 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { extensionKeys } from '@/services/extension/extension.keys'
+import { buildNotifications } from './notification-map'
+import type {
+	NotificationsData,
+	RawInboxItem,
+	RawSurfaces,
+} from './notification.interface'
 
-type NotificationType = 'text' | 'url' | 'action' | 'page' | 'banner'
-enum NotificationGoTo {
-	Explorer = 'explorer',
-	Profile = 'openProfile',
-	Settings = 'openSettings',
-	WidgetCatalog = 'openWidgetCatalog',
-	MiniApp = 'openMiniApp',
-}
+export type {
+	DialogNotificationItem,
+	IslandNotificationItem,
+	NotificationItem,
+	NotificationsData,
+} from './notification.interface'
 
-export interface NotificationItem {
-	id?: string
-	title: string
-	description?: string
-	link?: string
-	icon?: string
-	closeable: boolean | null
-	type?: NotificationType
-	goTo?: NotificationGoTo
-	target?: string
-	backgroundColor?: string
-	borderRadius?: string
-	titleColor?: string
-	titleDecoration?: string
-	ttl?: number
-	hasBorder?: boolean
-	hight?: number
-	createdAt?: string
-}
-
-interface DialogNotificationItem {
-	id: string
-	title: string
-	dialogTitle: string | null
-	description: string
-	media: string
-	link: string
-	type: NotificationType
-	target: string
-	goTo: NotificationGoTo
-	buttonColor: string
-	buttonLabel: string
-}
-
-interface IslandNotificationItem {
-	id: string
-	title: string
-	description?: string | null
-	icon?: string | null
-	link?: string | null
-	type?: NotificationType
-	goTo?: string | null
-	target?: string | null
-}
-
-interface NotificationItemResponse {
-	widgetifyCard: Array<NotificationItem>
-	dialog: DialogNotificationItem | null
-	island?: IslandNotificationItem | null
-}
-
-async function fetchNotifications(): Promise<NotificationItemResponse> {
+async function fetchNotifications(): Promise<NotificationsData> {
 	const client = getMainClient()
-	const { data } = await client.get<{ data: NotificationItemResponse }>(
-		'/extension/notifications'
-	)
+	const token = await getFromStorage('auth_token')
 
-	return data.data
+	const [inbox, surfaces, dismissed] = await Promise.all([
+		token
+			? client
+					.get<{ data: { items: RawInboxItem[] } }>('/v2/notifications/inbox')
+					.catch(() => null)
+			: null,
+		client.get<{ data: RawSurfaces }>('/v2/notifications/surfaces'),
+		token ? [] : getFromStorage('dismissed_notifications'),
+	])
+
+	return buildNotifications(
+		inbox?.data.data.items ?? [],
+		surfaces.data.data,
+		new Set(dismissed ?? [])
+	)
 }
 
 export function useGetNotifications() {
-	const [cachedData, setCachedData] = useState<NotificationItemResponse | undefined>(
-		undefined
-	)
+	const [cachedData, setCachedData] = useState<NotificationsData | undefined>(undefined)
 
 	useEffect(() => {
-		getFromStorage('notifications').then((cached) => {
+		getFromStorage('inbox').then((cached) => {
 			if (cached) setCachedData(cached)
 		})
 	}, [])
 
-	return useQuery<NotificationItemResponse>({
+	return useQuery<NotificationsData>({
 		queryKey: extensionKeys.notifications,
 		retry: 1,
 		queryFn: async () => {
 			const response = await fetchNotifications()
-			await setToStorage('notifications', response)
+			await setToStorage('inbox', response)
 			return response
 		},
 		placeholderData: cachedData,
@@ -102,22 +65,40 @@ export function useNotifyAsSeen() {
 	return useMutation({
 		mutationFn: async (id: string) => {
 			const client = getMainClient()
-			await client.put(`/notifications/${id}/seen`)
+			const token = await getFromStorage('auth_token')
+
+			if (!token) {
+				const dismissed = (await getFromStorage('dismissed_notifications')) ?? []
+				await setToStorage('dismissed_notifications', [...dismissed, id])
+				return
+			}
+
+			const current = queryClient.getQueryData<NotificationsData>(
+				extensionKeys.notifications
+			)
+			const isInboxItem = current?.cards.some(
+				(card) => card.id === id && card.source === 'inbox'
+			)
+
+			if (isInboxItem) {
+				await client.post('/v2/notifications/read', { ids: [id] })
+			} else {
+				await client.post(`/v2/notifications/surfaces/${id}/dismiss`)
+			}
 		},
 		onMutate: async (id: string) => {
 			await queryClient.cancelQueries({ queryKey: extensionKeys.notifications })
-			const previous = queryClient.getQueryData<NotificationItemResponse>(
+			const previous = queryClient.getQueryData<NotificationsData>(
 				extensionKeys.notifications
 			)
 			if (previous) {
-				const updated: NotificationItemResponse = {
-					...previous,
-					widgetifyCard:
-						previous.widgetifyCard?.filter((item) => item.id !== id) || [],
+				const updated: NotificationsData = {
+					cards: previous.cards.filter((item) => item.id !== id),
 					island: previous.island?.id === id ? null : previous.island,
+					dialog: previous.dialog?.id === id ? null : previous.dialog,
 				}
 				queryClient.setQueryData(extensionKeys.notifications, updated)
-				await setToStorage('notifications', updated)
+				await setToStorage('inbox', updated)
 			}
 			return { previous }
 		},

@@ -62,5 +62,6 @@ export interface StorageKV {
 	[key: `removed_notification_${string}`]: string
 	selected_engine: string | null
 	widget_tab: string
-	notifications: any
+	inbox: any
+	dismissed_notifications: string[]
 }

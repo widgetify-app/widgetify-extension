@@ -3,22 +3,29 @@ import type { StoredWallpaper, Wallpaper } from '../types/wallpaper.interface'
 import type { Todo } from '@/services/todo/todo.interface'
 import type { Page } from '@/context/page.context'
 
+export const SETTINGS_TABS = [
+	'account',
+	'profile',
+	'platforms',
+	'vip',
+	'pro',
+	'tasks',
+	'friends',
+	'general',
+	'access',
+	'appearance',
+	'wallpapers',
+	'shortcuts',
+	'about',
+] as const
+
+export const PROFILE_TABS = ['friends', 'platforms', 'vip', 'pro'] as const
+
+type SettingsTab = (typeof SETTINGS_TABS)[number]
+type ProfileTab = (typeof PROFILE_TABS)[number]
+
 export interface EventName {
-	openSettings:
-		| 'account'
-		| 'profile'
-		| 'platforms'
-		| 'vip'
-		| 'pro'
-		| 'tasks'
-		| 'friends'
-		| 'general'
-		| 'access'
-		| 'appearance'
-		| 'wallpapers'
-		| 'shortcuts'
-		| 'about'
-		| null
+	openSettings: SettingsTab | null
 	todosChanged: Todo[]
 	wallpaper_change: StoredWallpaper
 	custom_wallpaper_sync: Wallpaper | null
@@ -40,7 +47,7 @@ export interface EventName {
 		currencies: string[]
 	}
 	closeAllDropdowns: null
-	openProfile?: 'friends' | 'platforms' | 'vip' | 'pro'
+	openProfile?: ProfileTab
 	openMarketModal?: {
 		tab?: string
 		filter?: string
@@ -59,6 +66,7 @@ export interface EventName {
 	open_require_auth_modal: null
 	toggle_miniApp_fullScreen: boolean
 	close_friends_bottomSheet: null
+	openFriends: { tab?: 'requests' } | null
 	openFriendLook: { username: string; name: string }
 	resetWallpaper: null
 	openAddCustomWidgetModal:
