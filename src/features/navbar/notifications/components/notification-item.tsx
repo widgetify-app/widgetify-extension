@@ -25,6 +25,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 		goTo,
 		type,
 		titleDecoration,
+		groupCount,
 		createdAt,
 	} = prop.notification
 
@@ -66,7 +67,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 			}).format(new Date(createdAt))
 		: null
 
-	return (
+	const card = (
 		<NotificationCard
 			isInteractive={!isText}
 			isUnread={Boolean(closeable)}
@@ -145,5 +146,21 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 				<NotificationCloseButton onClick={(e) => prop.onClose(e, id)} />
 			)}
 		</NotificationCard>
+	)
+
+	if (!groupCount || groupCount < 2) return card
+
+	return (
+		<div className="relative mb-3">
+			<div
+				aria-hidden="true"
+				className="absolute inset-x-2.5 -bottom-1.5 h-3.5 border border-t-0 rounded-b-2xl border-line bg-fill"
+			/>
+			<div
+				aria-hidden="true"
+				className="absolute inset-x-5 -bottom-3 h-3.5 border border-t-0 rounded-b-xl border-line bg-fill opacity-70"
+			/>
+			{card}
+		</div>
 	)
 }

@@ -30,6 +30,7 @@ export interface NotificationItem {
 	ttl?: number
 	hasBorder?: boolean
 	hight?: number
+	groupCount?: number
 	createdAt?: string
 }
 
