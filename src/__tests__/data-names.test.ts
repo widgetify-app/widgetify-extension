@@ -174,6 +174,7 @@ const ANALYTICS_EVENTS = [
 	'notifications_action',
 	'notifications_close',
 	'notifications_daily_moods',
+	'notifications_mark_all_read',
 	'notifications_page',
 	'notifications_toggle_expand',
 	'open_add_phone_modal',
