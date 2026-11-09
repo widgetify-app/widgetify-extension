@@ -268,8 +268,6 @@ export const setting = {
 		'پلتفرم‌های دیگه رو به ویجتیفای وصل کن و هر وقت خواستی قطعشون کن',
 	'setting.tab.rewards': 'ماموریت‌ها و پاداش',
 	'setting.tab.rewardsHint': 'ماموریت‌ها رو انجام بده و ویج‌کوین جایزه بگیر',
-	'setting.tab.friends': 'دوستان',
-	'setting.tab.friendsHint': 'دوستات رو اضافه کن و درخواست‌هاشون رو جواب بده',
 	'setting.tab.settingsGroup': 'تنظیمات',
 	'setting.tab.general': 'عمومی',
 	'setting.tab.generalHint': 'شهر، منطقه‌ی زمانی و سبکی ویجتیفای',
