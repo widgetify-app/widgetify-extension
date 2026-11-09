@@ -1,7 +1,7 @@
 import { t } from '@/common/i18n'
 import { useState } from 'react'
 import Analytics from '@/analytics'
-import { ToggleSwitch } from '@/components/ui'
+import { SettingRow, SettingsGroup, ToggleSwitch } from '@/components/ui'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import { SearchAutocompleteSwitch } from './components/search-autocomplete-switch'
 import { HiddenModeSwitch } from './components/hidden-mode-switch'
@@ -31,55 +31,37 @@ export function PrivacySettings() {
 	}
 
 	return (
-		<div className="flex flex-col gap-1">
-			<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-fill">
-				<div className="flex-1 space-y-1">
-					<h3 className="text-sm font-medium text-fg">
-						{t('setting.privacy.analyticsTitle')}
-					</h3>
-					<p className="text-xs font-normal leading-relaxed text-fg-muted">
-						{t('setting.privacy.analyticsHint')}
-					</p>
-				</div>
-				<div className="shrink-0 pt-0.5">
+		<div className="flex flex-col gap-5">
+			<SettingsGroup title={t('setting.privacy.groupData')}>
+				<SettingRow
+					label={t('setting.privacy.analyticsTitle')}
+					hint={t('setting.privacy.analyticsHint')}
+				>
 					<ToggleSwitch
 						label={t('setting.privacy.analyticsLabel')}
 						enabled={analyticsEnabled}
 						onToggle={handleToggleAnalytics}
 					/>
-				</div>
-			</div>
-
-			{import.meta.env.FIREFOX && (
-				<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-fill">
-					<div className="flex-1 space-y-1">
-						<h3 className="text-sm font-medium text-fg">
-							{t('setting.privacy.bookmarkIconsLabel')}
-						</h3>
-						<p className="text-xs font-normal leading-relaxed text-fg-muted">
-							{t('setting.privacy.bookmarkIconsHint')}
-						</p>
-					</div>
-					<div className="shrink-0 pt-0.5">
+				</SettingRow>
+				{import.meta.env.FIREFOX && (
+					<SettingRow
+						label={t('setting.privacy.bookmarkIconsLabel')}
+						hint={t('setting.privacy.bookmarkIconsHint')}
+					>
 						<ToggleSwitch
 							label={t('setting.privacy.bookmarkIconsLabel')}
 							enabled={allowFavicon}
 							onToggle={handleToggleFavicon}
 						/>
-					</div>
-				</div>
-			)}
-
-			<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-fill">
-				<div className="flex-1 space-y-1">
-					<h3 className="text-sm font-medium text-fg">
-						{t('setting.privacy.bookmarksAccessLabel')}
-					</h3>
-					<p className="text-xs font-normal leading-relaxed text-fg-muted">
-						{t('setting.privacy.bookmarksAccessHint')}
-					</p>
-				</div>
-				<div className="shrink-0 pt-0.5">
+					</SettingRow>
+				)}
+				<SearchAutocompleteSwitch />
+			</SettingsGroup>
+			<SettingsGroup title={t('setting.privacy.groupBrowser')}>
+				<SettingRow
+					label={t('setting.privacy.bookmarksAccessLabel')}
+					hint={t('setting.privacy.bookmarksAccessHint')}
+				>
 					<ToggleSwitch
 						label={t('setting.privacy.bookmarksAccessLabel')}
 						enabled={browserBookmarksEnabled}
@@ -87,28 +69,21 @@ export function PrivacySettings() {
 							setBrowserBookmarksEnabled(!browserBookmarksEnabled)
 						}
 					/>
-				</div>
-			</div>
-
-			<div className="flex items-start justify-between gap-4 p-3.5 transition-colors rounded-xl hover:bg-fill">
-				<div className="flex-1 space-y-1">
-					<h3 className="text-sm font-medium text-fg">
-						{t('setting.privacy.tabsAccessLabel')}
-					</h3>
-					<p className="text-xs font-normal leading-relaxed text-fg-muted">
-						{t('setting.privacy.tabsAccessHint')}
-					</p>
-				</div>
-				<div className="shrink-0 pt-0.5">
+				</SettingRow>
+				<SettingRow
+					label={t('setting.privacy.tabsAccessLabel')}
+					hint={t('setting.privacy.tabsAccessHint')}
+				>
 					<ToggleSwitch
 						label={t('setting.privacy.tabsAccessLabel')}
 						enabled={browserTabsEnabled}
 						onToggle={() => setBrowserTabsEnabled(!browserTabsEnabled)}
 					/>
-				</div>
-			</div>
-			<SearchAutocompleteSwitch />
-			<HiddenModeSwitch />
+				</SettingRow>
+			</SettingsGroup>
+			<SettingsGroup title={t('setting.privacy.groupVisibility')}>
+				<HiddenModeSwitch />
+			</SettingsGroup>
 		</div>
 	)
 }

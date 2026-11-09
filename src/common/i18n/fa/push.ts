@@ -4,5 +4,5 @@ export const push = {
 	'push.ask.accept': 'روشن کن',
 	'push.ask.later': 'بعدا',
 	'push.setting.title': 'اعلان‌ها روی این مرورگر',
-	'push.setting.hint': 'مناسبت‌ها، یادآوری‌ها و خبرهای ویجتیفای رو همون لحظه می‌گیری',
+	'push.setting.hint': 'مناسبت‌ها و یادآوری‌ها رو همون لحظه می‌گیری',
 } as const

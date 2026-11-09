@@ -1,5 +1,6 @@
 export const city = {
 	'city.select.title': 'انتخاب شهر',
+	'city.select.rowLabel': 'شهر',
 	'city.select.placeholder': 'انتخاب شهر…',
 	'city.select.loadFailedTitle': 'نتونستیم فهرست شهرها رو بیاریم',
 	'city.select.loadFailedBody': 'اینترنتت رو چک کن و دوباره امتحان کن',

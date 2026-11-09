@@ -3,14 +3,7 @@ import Analytics from '@/analytics'
 import { type MessageKey, t } from '@/common/i18n'
 import { showToast } from '@/common/toast'
 import { cn } from '@/common/utils/cn'
-import {
-	Badge,
-	Button,
-	ClickableTooltip,
-	ConfirmationModal,
-	SectionPanel,
-	Spinner,
-} from '@/components/ui'
+import { Button, ClickableTooltip, ConfirmationModal, Spinner } from '@/components/ui'
 import { Icon } from '@/icons'
 import { useStorageUsage } from '../hooks/use-storage-usage'
 import {
@@ -161,32 +154,39 @@ export function StorageUsage() {
 	}
 
 	return (
-		<SectionPanel
-			title={
-				<div className="flex items-center">
-					<p>{t('setting.storage.title')}</p>
-					<Badge className="mr-2">{t('setting.general.newBadge')}</Badge>
-				</div>
-			}
-			size="sm"
-		>
-			<div className="flex flex-col gap-3">
-				<div className="flex items-center justify-between gap-3">
-					{summary ? (
-						<p className="text-lg font-bold text-fg">
-							{sizeText(summary.total)}
+		<section className="flex flex-col gap-3 p-1">
+			<div className="flex items-center justify-between gap-3">
+				<h3 className="text-xs text-fg-muted">{t('setting.storage.title')}</h3>
+				{summary ? (
+					<p className="text-sm font-bold text-fg-strong">
+						{sizeText(summary.total)}
+					</p>
+				) : failed ? (
+					<p className="text-xs text-danger">
+						{t('setting.storage.loadError')}
+					</p>
+				) : (
+					<div className="flex items-center gap-2 text-xs text-fg-muted">
+						<Spinner size="sm" />
+						<span>{t('setting.storage.loading')}</span>
+					</div>
+				)}
+			</div>
+
+			{summary && (
+				<>
+					<UsageBar
+						categories={summary.categories}
+						total={summary.total}
+						onSelect={showDetails}
+					/>
+
+					<div className="flex items-center justify-between gap-3">
+						<p className="text-xs text-fg-muted">
+							{t('setting.storage.clearableNote', {
+								size: sizeText(summary.clearableBytes),
+							})}
 						</p>
-					) : failed ? (
-						<p className="text-sm text-danger">
-							{t('setting.storage.loadError')}
-						</p>
-					) : (
-						<div className="flex items-center gap-2 text-sm text-fg-muted">
-							<Spinner size="sm" />
-							<span>{t('setting.storage.loading')}</span>
-						</div>
-					)}
-					{summary && (
 						<Button
 							variant="soft"
 							color="danger"
@@ -197,40 +197,19 @@ export function StorageUsage() {
 						>
 							{t('setting.storage.clear')}
 						</Button>
-					)}
-				</div>
+					</div>
 
-				{summary && (
-					<>
-						<UsageBar
-							categories={summary.categories}
-							total={summary.total}
-							onSelect={showDetails}
+					{selected && (
+						<ClickableTooltip
+							triggerRef={{ current: selected.anchor }}
+							content={<CategoryDetails category={selected.category} />}
+							contentClassName="w-64 p-3"
+							isOpen={tooltipOpen}
+							setIsOpen={setTooltipOpen}
 						/>
-
-						<div className="flex items-center justify-between gap-2">
-							<p className="text-sm text-fg-muted">
-								{t('setting.storage.clearableNote', {
-									size: sizeText(summary.clearableBytes),
-								})}
-							</p>
-							<p className="text-xs text-fg-muted">
-								{t('setting.storage.barHint')}
-							</p>
-						</div>
-
-						{selected && (
-							<ClickableTooltip
-								triggerRef={{ current: selected.anchor }}
-								content={<CategoryDetails category={selected.category} />}
-								contentClassName="w-64 p-3"
-								isOpen={tooltipOpen}
-								setIsOpen={setTooltipOpen}
-							/>
-						)}
-					</>
-				)}
-			</div>
+					)}
+				</>
+			)}
 
 			<ConfirmationModal
 				isOpen={confirmOpen}
@@ -243,6 +222,6 @@ export function StorageUsage() {
 				confirmText={t('setting.storage.confirm')}
 				cancelText={t('setting.storage.cancel')}
 			/>
-		</SectionPanel>
+		</section>
 	)
 }

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { t } from '@/common/i18n'
-import { SectionPanel, ToggleSwitch } from '@/components/ui'
+import { SettingRow, ToggleSwitch } from '@/components/ui'
 import { pushAvailable } from './utils/push'
 import { usePushActions } from './hooks/use-push-actions'
 import { usePushState } from './hooks/use-push-state'
@@ -23,18 +23,13 @@ export function PushSetting() {
 	}
 
 	return (
-		<SectionPanel title={t('push.setting.title')} size="sm">
-			<div className="flex">
-				<p className="flex-1 ml-1 text-sm font-light leading-relaxed text-fg-muted">
-					{t('push.setting.hint')}
-				</p>
-				<ToggleSwitch
-					label={t('push.setting.title')}
-					enabled={enabled}
-					loading={busy || !state.ready}
-					onToggle={toggle}
-				/>
-			</div>
-		</SectionPanel>
+		<SettingRow label={t('push.setting.title')} hint={t('push.setting.hint')}>
+			<ToggleSwitch
+				label={t('push.setting.title')}
+				enabled={enabled}
+				loading={busy || !state.ready}
+				onToggle={toggle}
+			/>
+		</SettingRow>
 	)
 }

@@ -1,7 +1,7 @@
 import { useState, useMemo, useRef } from 'react'
 import Analytics from '@/analytics'
 import { t } from '@/common/i18n'
-import { Alert, Spinner } from '@/components/ui'
+import { Alert, SettingRow, Spinner } from '@/components/ui'
 import { Modal } from '@/components/ui'
 import { SectionPanel } from '@/components/ui'
 import { useGetCitiesList } from '@/services/cities/get-cities-list.hook'
@@ -20,9 +20,10 @@ interface SelectedCity {
 
 interface Prop {
 	size?: 'xs'
+	variant?: 'panel' | 'row'
 	onSave?: () => void
 }
-export function SelectCity({ size }: Prop) {
+export function SelectCity({ size, variant = 'panel' }: Prop) {
 	const [searchTerm, setSearchTerm] = useState('')
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [showAuthModal, setShowAuthModal] = useState(false)
@@ -81,35 +82,8 @@ export function SelectCity({ size }: Prop) {
 		? filteredCities.find((c) => c.cityId === user.city?.id)
 		: null
 
-	return (
-		<SectionPanel title={t('city.select.title')} size={size ? size : 'sm'}>
-			<div className="space-y-2">
-				<button
-					type="button"
-					onClick={onModalOpen}
-					disabled={isSettingCity}
-					className="flex items-center justify-between w-full p-3 text-right transition-colors border cursor-pointer rounded-2xl bg-surface border-surface-3 hover:bg-surface-2 disabled:opacity-50 disabled:cursor-not-allowed"
-				>
-					{isLoadingUser ? (
-						<Spinner size="sm" className="mx-auto" />
-					) : selected ? (
-						selected.city
-					) : (
-						t('city.select.placeholder')
-					)}
-					{isSettingCity ? (
-						<Spinner size="sm" />
-					) : (
-						<Icon name="location" className="w-5 h-5 text-brand" />
-					)}
-				</button>
-
-				{error && (
-					<Alert tone="danger" title={t('city.select.loadFailedTitle')}>
-						{t('city.select.loadFailedBody')}
-					</Alert>
-				)}
-			</div>
+	const dialogs = (
+		<>
 			<AuthRequiredModal
 				isOpen={showAuthModal}
 				onClose={() => setShowAuthModal(!showAuthModal)}
@@ -185,6 +159,64 @@ export function SelectCity({ size }: Prop) {
 					</div>
 				</div>
 			</Modal>
+		</>
+	)
+
+	const label = isLoadingUser ? (
+		<Spinner size="sm" className="mx-auto" />
+	) : selected ? (
+		selected.city
+	) : (
+		t('city.select.placeholder')
+	)
+
+	const icon = isSettingCity ? (
+		<Spinner size="sm" />
+	) : (
+		<Icon name="location" className="w-5 h-5 text-brand" />
+	)
+
+	const loadError = error && (
+		<Alert tone="danger" title={t('city.select.loadFailedTitle')}>
+			{t('city.select.loadFailedBody')}
+		</Alert>
+	)
+
+	if (variant === 'row') {
+		return (
+			<>
+				<SettingRow label={t('city.select.rowLabel')}>
+					<button
+						type="button"
+						onClick={onModalOpen}
+						disabled={isSettingCity}
+						className="flex items-center gap-2 min-w-0 px-2.5 py-1.5 text-xs text-right transition-ui border cursor-pointer rounded-xl text-fg bg-surface-3 border-line hover:bg-fill-2 focus-visible:focus-ring disabled:opacity-50 disabled:cursor-not-allowed"
+					>
+						<span className="truncate">{label}</span>
+						{icon}
+					</button>
+				</SettingRow>
+				{loadError}
+				{dialogs}
+			</>
+		)
+	}
+
+	return (
+		<SectionPanel title={t('city.select.title')} size={size ? size : 'sm'}>
+			<div className="space-y-2">
+				<button
+					type="button"
+					onClick={onModalOpen}
+					disabled={isSettingCity}
+					className="flex items-center justify-between w-full p-3 text-right transition-colors border cursor-pointer rounded-2xl bg-surface border-surface-3 hover:bg-surface-2 disabled:opacity-50 disabled:cursor-not-allowed"
+				>
+					{label}
+					{icon}
+				</button>
+				{loadError}
+			</div>
+			{dialogs}
 		</SectionPanel>
 	)
 }

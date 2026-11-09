@@ -57,6 +57,7 @@ export * from './scroll-row/scroll-row'
 
 export * from './section-panel/section-panel'
 export * from './section-panel/section-panel.variants'
+export * from './settings-group/settings-group'
 
 export * from './select/select'
 
