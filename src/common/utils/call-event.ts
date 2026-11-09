@@ -10,7 +10,6 @@ export const SETTINGS_TABS = [
 	'vip',
 	'pro',
 	'tasks',
-	'friends',
 	'general',
 	'access',
 	'appearance',
