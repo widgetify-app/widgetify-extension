@@ -35,6 +35,7 @@
     "canvas-confetti": "1.9.4",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
+    "firebase": "13.2.0",
     "framer-motion": "14.1.0",
     "jalali-moment": "3.3.11",
     "moment": "2.31.0",

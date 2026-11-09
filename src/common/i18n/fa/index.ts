@@ -12,6 +12,7 @@ import { miniApps } from './mini-apps'
 import { mood } from './mood'
 import { navbar } from './navbar'
 import { news } from './news'
+import { push } from './push'
 import { releaseNotes } from './release-notes'
 import { setting } from './setting'
 import { ui } from './ui'
@@ -32,6 +33,7 @@ export const fa = {
 	...mood,
 	...navbar,
 	...news,
+	...push,
 	...releaseNotes,
 	...setting,
 	...ui,
