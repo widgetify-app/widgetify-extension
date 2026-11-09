@@ -1,3 +1,4 @@
+import { bodyPlainText } from '@/common/utils/notification-body'
 import { useEffect, useState } from 'react'
 import Analytics from '@/analytics'
 import { t } from '@/common/i18n'
@@ -98,7 +99,7 @@ export function IslandNotification() {
 										className="text-xs truncate text-fg-muted"
 										dir="auto"
 									>
-										{island.description}
+										{bodyPlainText(island.description)}
 									</span>
 								)}
 							</span>

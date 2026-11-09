@@ -6,6 +6,8 @@ import { Icon } from '@/icons'
 import { t } from '@/common/i18n'
 import { openResolvedLink } from '@/common/utils/open-link'
 import { resolveLink } from '@/common/utils/resolve-link'
+import { bodyPlainText } from '@/common/utils/notification-body'
+import { RichBody } from '@/components/rich-body'
 import { NotificationCard, NotificationCloseButton } from './notification-card'
 
 const CHARACTER_LIMIT = 85
@@ -37,7 +39,8 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 		Analytics.event('notifications_toggle_expand')
 	}
 
-	const shouldShowReadMore = description && description.length > CHARACTER_LIMIT
+	const shouldShowReadMore =
+		description && bodyPlainText(description).length > CHARACTER_LIMIT
 	const resolved = resolveLink(link)
 	const isText = !resolved
 
@@ -104,11 +107,10 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 
 				{description && (
 					<div>
-						<p
-							className={`text-2xs font-medium text-fg-muted leading-relaxed whitespace-pre-wrap wrap-break-word ${!isExpanded && shouldShowReadMore ? 'line-clamp-2' : ''}`}
-						>
-							{description}
-						</p>
+						<RichBody
+							text={description}
+							className={`text-2xs font-medium text-fg-muted leading-relaxed ${!isExpanded && shouldShowReadMore ? 'line-clamp-2' : ''}`}
+						/>
 
 						{shouldShowReadMore && (
 							<button

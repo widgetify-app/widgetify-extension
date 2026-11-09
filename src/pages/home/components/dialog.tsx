@@ -2,6 +2,7 @@ import Analytics from '@/analytics'
 import { t } from '@/common/i18n'
 import { getContrastingTextColor } from '@/common/utils/color'
 import { Button, Modal } from '@/components/ui'
+import { RichBody } from '@/components/rich-body'
 import { openLink } from '@/common/utils/open-link'
 import { resolveLink } from '@/common/utils/resolve-link'
 import { useAuth } from '@/context/auth.context'
@@ -67,7 +68,7 @@ export function DialogChecker() {
 					<div className="w-full h-40">{renderMedia(dialog.media)}</div>
 				) : null}
 				<h2 className="text-lg font-bold text-start">{dialog.title}</h2>
-				<p className="text-start">{dialog.description}</p>
+				<RichBody text={dialog.description} className="text-start" />
 
 				<div className="flex flex-col gap-2">
 					{hasButton && (

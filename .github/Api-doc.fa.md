@@ -37,7 +37,7 @@
 - هرکدوم از API ها دارای Cache و Rate Limit هستند.
 - تعداد Rate Limit درحال حاضر private هست.
 - Cache هر API به صورت رندوم بین 1 تا 10 دقیقه و 1 ساعت هست.
-- افزونه برای درخواست‌های `GET` توی service worker هم cache خودش را دارد (`background/cache-config.ts`): stale-while-revalidate برای `/searchbox`، `/currencies`، `/weather` و `/contents`؛ اول شبکه، با ۳ ثانیه صبر، برای `/date/events`، `/news/rss` و `/v2/notifications`؛ و `/searchbox/suggest-search` و `/date/now` هیچ‌وقت. فقط پاسخ‌های `200` نگه داشته می‌شوند، تا ۵۰ مورد برای ۲ روز. همه درخواست‌های کلاینت اصلی با `cache: 'no-cache'` فرستاده می‌شوند، پس cache خود مرورگر هیچ‌وقت به‌جای سرور جواب نمی‌دهد؛ یک ۳۰۱ ذخیره‌شده قبلا بعضی کاربرها را تا پاک کردن cache در حلقه ریدایرکت نگه داشته بود. درخواستی که با `cache: 'reload'` فرستاده شود (به‌روزرسانی دستی، `FRESH_REQUEST` در `src/services/api.ts`) از هر دو روش می‌گذرد: بدون صبر به شبکه می‌رود و پاسخ را در همان cache می‌نویسد، تا درخواست عادی بعدی نسخه‌ی قدیمی‌تر را برنگرداند.
+- افزونه برای درخواست‌های `GET` توی service worker هم cache خودش را دارد (`background/cache-config.ts`): stale-while-revalidate برای `/searchbox`، `/currencies`، `/weather` و `/contents`؛ اول شبکه، با ۳ ثانیه صبر، برای `/date/events` و `/news/rss`؛ و `/v2/notifications` هیچ‌وقت ذخیره نمی‌شود و همیشه از شبکه می‌آید؛ و `/searchbox/suggest-search` و `/date/now` هیچ‌وقت. فقط پاسخ‌های `200` نگه داشته می‌شوند، تا ۵۰ مورد برای ۲ روز. همه درخواست‌های کلاینت اصلی با `cache: 'no-cache'` فرستاده می‌شوند، پس cache خود مرورگر هیچ‌وقت به‌جای سرور جواب نمی‌دهد؛ یک ۳۰۱ ذخیره‌شده قبلا بعضی کاربرها را تا پاک کردن cache در حلقه ریدایرکت نگه داشته بود. درخواستی که با `cache: 'reload'` فرستاده شود (به‌روزرسانی دستی، `FRESH_REQUEST` در `src/services/api.ts`) از هر دو روش می‌گذرد: بدون صبر به شبکه می‌رود و پاسخ را در همان cache می‌نویسد، تا درخواست عادی بعدی نسخه‌ی قدیمی‌تر را برنگرداند.
 
 ## ورود
 
@@ -93,8 +93,7 @@
 | `GET /extension/@me/ip` | بله | | `{ ip, country, countryIcon, city, isp }` |
 | `GET /` | خیر | | هرچیزی. ویجت شبکه زمانش را می‌سنجد تا پینگ را نشان بدهد |
 | `POST /users/@me/upload/search` | بله | فرم multipart با `image` (فایل) | `{ url }` |
-| `GET /v2/notifications/inbox` | بله | | `{ data: { items: [{ id, kind, title, body, icon, action: { link? }, groupCount, createdAt, readAt }], nextCursor } }`، ببینید `src/services/extension/get-notifications.hook.ts` |
-| `GET /v2/notifications/surfaces` | خیر | | `{ data: { inbox: [], island, dialog } }`، کارت‌ها، جزیره و دیالوگ اطلاعیه‌ها |
+| `GET /v2/notifications/feed` | خیر | | کاربر واردشده صندوق خودش را هم می‌گیرد. `{ data: { items: [{ id, kind, title, body, icon, action: { link? }, groupCount, createdAt, readAt }], nextCursor, surfaces: { inbox: [], island, dialog } } }`: صندوق و کارت‌ها، جزیره و دیالوگ اطلاعیه‌ها در یک درخواست، ببینید `src/services/extension/get-notifications.hook.ts` |
 | `POST /v2/notifications/read` | بله | `{ ids: string[] }` | |
 | `POST /v2/notifications/surfaces/{id}/dismiss` | بله | | |
 | `POST /v2/notifications/surfaces/dismiss` | بله | `{ ids: string[] }` (۱ تا ۱۰۰) | `{ data: { dismissed } }`، برای «خواندن همه» |

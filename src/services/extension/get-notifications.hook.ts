@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
-import { getFromStorage, setToStorage } from '@/common/storage'
+import { getFromStorage } from '@/common/storage'
 import { extensionKeys } from '@/services/extension/extension.keys'
 import { buildNotifications, planMarkAll } from './notification-map'
 import type {
@@ -18,47 +17,36 @@ export type {
 	NotificationsData,
 } from './notification.interface'
 
+const closedThisSession = new Set<string>()
+
 async function fetchNotifications(): Promise<NotificationsData> {
 	const client = getMainClient()
 	const token = await getFromStorage('auth_token')
 
-	const [inbox, surfaces, dismissed] = await Promise.all([
-		token
-			? client
-					.get<{ data: { items: RawInboxItem[] } }>('/v2/notifications/inbox')
-					.catch(() => null)
-			: null,
-		client.get<{ data: RawSurfaces }>('/v2/notifications/surfaces'),
-		token ? [] : getFromStorage('dismissed_notifications'),
-	])
+	const response = await client.get<{
+		data: { items: RawInboxItem[]; surfaces: RawSurfaces }
+	}>('/v2/notifications/feed')
 
-	return buildNotifications(
-		inbox?.data.data.items ?? [],
-		surfaces.data.data,
-		new Set(dismissed ?? [])
-	)
+	const { items, surfaces } = response.data.data
+
+	return buildNotifications(items, surfaces, token ? new Set() : closedThisSession)
 }
 
 export function useGetNotifications() {
-	const [cachedData, setCachedData] = useState<NotificationsData | undefined>(undefined)
-
-	useEffect(() => {
-		getFromStorage('inbox').then((cached) => {
-			if (cached) setCachedData(cached)
-		})
-	}, [])
-
 	return useQuery<NotificationsData>({
 		queryKey: extensionKeys.notifications,
 		retry: 1,
-		queryFn: async () => {
-			const response = await fetchNotifications()
-			await setToStorage('inbox', response)
-			return response
-		},
-		placeholderData: cachedData,
+		queryFn: fetchNotifications,
 		staleTime: 5 * 60 * 1000, // 5 minutes
 	})
+}
+
+function without(data: NotificationsData, ids: ReadonlySet<string>): NotificationsData {
+	return {
+		cards: data.cards.filter((item) => !ids.has(item.id as string)),
+		island: data.island && ids.has(data.island.id) ? null : data.island,
+		dialog: data.dialog && ids.has(data.dialog.id) ? null : data.dialog,
+	}
 }
 
 export function useNotifyAsSeen() {
@@ -69,8 +57,7 @@ export function useNotifyAsSeen() {
 			const token = await getFromStorage('auth_token')
 
 			if (!token) {
-				const dismissed = (await getFromStorage('dismissed_notifications')) ?? []
-				await setToStorage('dismissed_notifications', [...dismissed, id])
+				closedThisSession.add(id)
 				return
 			}
 
@@ -93,13 +80,10 @@ export function useNotifyAsSeen() {
 				extensionKeys.notifications
 			)
 			if (previous) {
-				const updated: NotificationsData = {
-					cards: previous.cards.filter((item) => item.id !== id),
-					island: previous.island?.id === id ? null : previous.island,
-					dialog: previous.dialog?.id === id ? null : previous.dialog,
-				}
-				queryClient.setQueryData(extensionKeys.notifications, updated)
-				await setToStorage('inbox', updated)
+				queryClient.setQueryData(
+					extensionKeys.notifications,
+					without(previous, new Set([id]))
+				)
 			}
 			return { previous }
 		},
@@ -127,10 +111,10 @@ export function useMarkAllAsSeen() {
 			const plan = planMarkAll(cards)
 
 			if (!token) {
-				const ids = [...plan.inbox, ...plan.broadcasts].flat()
-				const dismissed = (await getFromStorage('dismissed_notifications')) ?? []
+				for (const id of [...plan.inbox, ...plan.broadcasts].flat()) {
+					closedThisSession.add(id)
+				}
 
-				await setToStorage('dismissed_notifications', [...dismissed, ...ids])
 				return
 			}
 
@@ -153,15 +137,10 @@ export function useMarkAllAsSeen() {
 				const plan = planMarkAll(cards)
 				const marked = new Set([...plan.inbox, ...plan.broadcasts].flat())
 
-				const updated: NotificationsData = {
-					...previous,
-					cards: previous.cards.filter(
-						(item) => !marked.has(item.id as string)
-					),
-				}
-
-				queryClient.setQueryData(extensionKeys.notifications, updated)
-				await setToStorage('inbox', updated)
+				queryClient.setQueryData(
+					extensionKeys.notifications,
+					without(previous, marked)
+				)
 			}
 
 			return { previous }

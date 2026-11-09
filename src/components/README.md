@@ -10,6 +10,7 @@ Components that know the app but belong to no single feature. Primitives with no
 | `gallery/` | Wallpaper, photo and icon pickers, behind the `@/components/gallery` barrel |
 | `auth/` | The "sign in first" modal |
 | `user-coin.tsx`, `mood-image.tsx`, `select-city.tsx` | Small shared pieces |
+| `rich-body.tsx` | The text of a notification: plain, or formatted text (bold, italic, underline, six colours, https links, lists), read by `common/utils/notification-body.ts`; used by the notification card and the dialog |
 
 ## Rules
 
