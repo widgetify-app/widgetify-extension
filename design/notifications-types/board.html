@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>انواع اعلان‌ها</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;900&display=swap">
+<style>
+/* Layout concept: every notification kind drawn once, in the real 384px extension panel and in the mobile app list side by side, plus a tab that lists the data each kind carries (avatar, icon, decoration). */
+:root {
+  --ink: 70, 70, 71;
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+  --surface-3: #f1f5f9;
+  --fg-strong: #464647;
+  --fg: rgba(var(--ink), .9);
+  --fg-muted: rgba(var(--ink), .7);
+  --fg-faint: rgba(var(--ink), .5);
+  --fill: rgba(var(--ink), .05);
+  --fill-2: rgba(var(--ink), .1);
+  --line: rgba(var(--ink), .15);
+  --brand: #536dfe;
+  --brand-fill: rgba(83, 109, 254, .1);
+  --brand-fill-2: rgba(83, 109, 254, .2);
+  --success: #00d390;
+  --warning: #fcb700;
+  --stage: #aebbd6;
+  --board: #eef1f6;
+  --font: "Vazirmatn", "Vazir", Tahoma, system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink: 240, 240, 245;
+    --surface: #1c1f27; --surface-2: #232733; --surface-3: #2b3040;
+    --fg-strong: #f1f1f4; --stage: #3b4560; --board: #14161c;
+    --brand: #8da0ff; --brand-fill: rgba(141, 160, 255, .14); --brand-fill-2: rgba(141, 160, 255, .24);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ink: 240, 240, 245;
+  --surface: #1c1f27; --surface-2: #232733; --surface-3: #2b3040;
+  --fg-strong: #f1f1f4; --stage: #3b4560; --board: #14161c;
+  --brand: #8da0ff; --brand-fill: rgba(141, 160, 255, .14); --brand-fill-2: rgba(141, 160, 255, .24);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--board); color: var(--fg); font-family: var(--font); font-size: 14px; line-height: 1.7;
+  padding-block: 20px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+h1, h2, h3, h4, p { margin: 0; }
+button { font: inherit; color: inherit; }
+svg { display: block; flex: none; }
+:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+[hidden] { display: none !important; }
+.wrap { max-width: 1120px; margin-inline: auto; display: grid; gap: 16px; }
+.intro { display: grid; gap: 6px; }
+.intro h1 { font-size: 20px; font-weight: 700; color: var(--fg-strong); }
+.intro p { color: var(--fg-muted); max-width: 78ch; }
+.tabs { display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 1px solid var(--line); }
+.tab { border: 0; background: none; padding: 10px 14px; cursor: pointer; color: var(--fg-muted); font-weight: 600; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tab[aria-selected="true"] { color: var(--brand); border-bottom-color: var(--brand); }
+
+.stage { background: var(--stage); border-radius: 24px; padding: 24px; display: flex; flex-wrap: wrap; gap: 28px; justify-content: center; align-items: flex-start; }
+.col { display: grid; gap: 10px; justify-items: center; min-width: 0; max-width: 100%; }
+.cap { font-size: 12px; font-weight: 700; color: var(--fg-strong); background: var(--surface); border-radius: 999px; padding: 2px 14px; }
+
+.panel { width: 384px; max-width: 100%; background: var(--surface-2); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 12px 32px rgba(0,0,0,.18); display: grid; overflow: hidden; }
+.p-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 12px 14px 8px; }
+.p-title { font-size: 14px; font-weight: 700; color: var(--fg-strong); }
+.text-btn { border: 0; background: none; cursor: pointer; font-size: 11px; font-weight: 600; color: var(--fg-muted); border-radius: 8px; padding: 4px 8px; min-height: 28px; }
+.sec { font-size: 10px; font-weight: 700; color: var(--fg-faint); padding: 10px 8px 4px; }
+.list { padding: 0 8px 10px; display: grid; gap: 6px; align-content: start; }
+
+.card { position: relative; display: flex; gap: 10px; align-items: flex-start; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 10px 12px; }
+.card.unread { background: var(--brand-fill); border-color: var(--brand-fill-2); }
+.card .txt { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.card h4 { font-size: 13px; font-weight: 700; color: var(--fg-strong); }
+.card .body { font-size: 11px; font-weight: 500; color: var(--fg-muted); line-height: 1.8; }
+.card .body b { color: var(--fg-strong); font-weight: 700; }
+.card .time { font-size: 10px; color: var(--fg-faint); }
+.card .x { border: 0; background: none; color: var(--fg-faint); width: 24px; height: 24px; border-radius: 8px; display: grid; place-items: center; cursor: pointer; }
+
+.lead { position: relative; flex: none; display: grid; place-items: center; }
+.av { border-radius: 50%; display: grid; place-items: center; font-weight: 700; color: #fff; flex: none; }
+.av.a { background: linear-gradient(135deg, #7c8cff, #536dfe); }
+.av.b { background: linear-gradient(135deg, #ff9db0, #ff627d); }
+.av.c { background: linear-gradient(135deg, #5fe3b6, #00b57a); }
+.stack { position: relative; }
+.stack .av { position: absolute; border: 2px solid var(--surface); }
+.card.unread .stack .av { border-color: var(--surface-2); }
+.deco { position: absolute; pointer-events: none; }
+.cake .flame { transform-origin: 50% 100%; animation: flick 1.1s ease-in-out infinite alternate; }
+.cake .spark { animation: twinkle 1.6s ease-in-out infinite; }
+.cake .spark.s2 { animation-delay: .5s; }
+.cake .spark.s3 { animation-delay: 1s; }
+@keyframes flick { from { transform: scaleY(1) scaleX(1); } to { transform: scaleY(1.18) scaleX(.86); } }
+@keyframes twinkle { 0%, 100% { opacity: .2; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .cake .flame, .cake .spark { animation: none; } }
+.bare { color: var(--brand); }
+.bare.pro { color: var(--warning); }
+
+.m-wrap { width: 360px; max-width: 100%; background: var(--surface-2); border-radius: 28px; border: 1px solid var(--line); box-shadow: 0 12px 32px rgba(0,0,0,.18); overflow: hidden; display: grid; }
+.m-top { display: flex; align-items: center; justify-content: space-between; padding: 16px 16px 8px; }
+.m-top h2 { font-size: 17px; font-weight: 700; color: var(--fg-strong); }
+.m-row { position: relative; display: flex; gap: 12px; align-items: flex-start; padding: 12px 16px; border-top: 1px solid var(--line); background: var(--surface); }
+.m-row.unread { background: var(--brand-fill); }
+.m-row .txt { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.m-row h4 { font-size: 14px; font-weight: 700; color: var(--fg-strong); }
+.m-row .body { font-size: 12px; color: var(--fg-muted); line-height: 1.8; }
+.m-row .body b { color: var(--fg-strong); font-weight: 700; }
+.m-row .time { font-size: 11px; color: var(--fg-faint); }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--brand); margin-top: 8px; flex: none; }
+
+.spec { display: grid; gap: 10px; }
+.spec-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px; display: grid; gap: 10px; }
+.spec-card h3 { font-size: 15px; font-weight: 700; color: var(--fg-strong); }
+.table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.table th { text-align: start; font-size: 11px; color: var(--fg-faint); font-weight: 700; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.table td { padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--fg); }
+.table td:first-child { font-weight: 600; color: var(--fg-strong); }
+.mono { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 11px; direction: ltr; unicode-bidi: embed; color: var(--fg-muted); }
+.notes { display: grid; gap: 6px; padding-inline-start: 18px; margin: 0; color: var(--fg-muted); }
+.scroll-x { overflow-x: auto; }
+.cake .bob { transform-box: fill-box; transform-origin: 50% 100%; animation: bob 1.5s ease-in-out infinite; }
+.cake .shadow { transform-box: fill-box; transform-origin: 50% 50%; animation: shadow 1.5s ease-in-out infinite; }
+.cake .glow { animation: glow 1.1s ease-in-out infinite alternate; }
+.cake .flame { transform-box: fill-box; transform-origin: 50% 100%; }
+@keyframes bob { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1.06, .93); } }
+@keyframes shadow { 0%, 100% { transform: scaleX(1); opacity: 1; } 50% { transform: scaleX(1.08); opacity: .8; } }
+@keyframes glow { from { opacity: .08; } to { opacity: .35; } }
+@media (prefers-reduced-motion: reduce) { .cake .bob, .cake .shadow, .cake .glow { animation: none; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="g-vip" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a9acff"/><stop offset=".55" stop-color="#6366f1"/><stop offset="1" stop-color="#4548d6"/></linearGradient>
+    <linearGradient id="g-pink" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8b8ef5"/><stop offset="1" stop-color="#4f52e0"/></linearGradient>
+    <linearGradient id="g-pink2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b4b6fa"/><stop offset="1" stop-color="#7f82f2"/></linearGradient>
+    <linearGradient id="g-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#c9cfff"/></linearGradient>
+    <linearGradient id="g-orange" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a9b6ff"/><stop offset="1" stop-color="#536dfe"/></linearGradient>
+    <linearGradient id="g-blue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fa2ff"/><stop offset="1" stop-color="#4b63f2"/></linearGradient>
+    <linearGradient id="g-blue2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b5c1ff"/><stop offset="1" stop-color="#7388fb"/></linearGradient>
+    <linearGradient id="g-cream" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2f3ff"/><stop offset="1" stop-color="#c3c9ff"/></linearGradient>
+  </defs>
+  <filter id="puff" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="2.6" result="b"/>
+    <feSpecularLighting in="b" surfaceScale="6" specularConstant="1.3" specularExponent="18" lighting-color="#fff" result="s"><fePointLight x="10" y="-40" z="120"/></feSpecularLighting>
+    <feComposite in="s" in2="SourceAlpha" operator="in" result="sh"/>
+    <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="sh"/></feMerge>
+  </filter>
+  <symbol id="i-gem" viewBox="-8 -6 156 124">
+    <ellipse cx="70" cy="113" rx="46" ry="4" fill="rgba(0,0,0,.14)"/>
+    <path d="M 17,11 L 10,18 L 1,24 L 5,29 L 10,41 L 12,38 L 17,34 L 25,30 L 21,24 L 18,17 Z M 26,11 L 27,15 L 30,21 L 33,24 L 35,28 L 35,31 L 33,35 L 30,38 L 23,41 L 19,44 L 18,46 L 20,48 L 24,57 L 33,71 L 36,78 L 50,102 L 53,105 L 60,108 L 66,108 L 69,107 L 86,97 L 89,94 L 114,80 L 122,74 L 130,70 L 136,65 L 139,58 L 139,51 L 136,44 L 134,42 L 131,33 L 126,24 L 118,19 L 93,12 L 89,12 L 74,8 L 67,5 L 48,0 L 40,1 L 32,6 Z M 121,58 L 118,61 L 78,88 L 75,87 L 91,64 L 98,57 L 104,55 L 112,55 Z M 69,47 L 82,51 L 86,55 L 86,60 L 68,86 L 64,90 L 61,89 L 60,84 L 58,64 L 58,51 L 62,47 Z M 103,26 L 106,25 L 117,28 L 119,30 L 122,35 L 126,45 L 123,49 L 110,49 L 106,48 L 102,45 L 101,43 L 101,29 Z M 70,16 L 73,16 L 85,19 L 93,22 L 95,26 L 94,39 L 90,44 L 87,45 L 70,41 L 65,39 L 61,35 L 61,30 L 67,19 Z" fill="url(#g-vip)" fill-rule="evenodd" stroke="url(#g-vip)" stroke-width="1.2" stroke-linejoin="round" filter="url(#puff)"/>
+  </symbol>
+  <symbol id="i-gift" viewBox="0 0 48 48">
+    <ellipse cx="24" cy="44" rx="14" ry="2.4" fill="rgba(0,0,0,.14)"/>
+    <ellipse cx="17" cy="11" rx="8" ry="5.6" transform="rotate(-24 17 11)" fill="url(#g-gold)"/>
+    <ellipse cx="31" cy="11" rx="8" ry="5.6" transform="rotate(24 31 11)" fill="url(#g-gold)"/>
+    <rect x="8" y="22" width="32" height="21" rx="9" fill="url(#g-pink)"/>
+    <rect x="4.5" y="14.5" width="39" height="12" rx="6" fill="url(#g-pink2)"/>
+    <rect x="20.5" y="14.5" width="7" height="28.5" rx="3.5" fill="url(#g-gold)"/>
+    <circle cx="24" cy="13" r="4.6" fill="url(#g-gold)"/>
+    <ellipse cx="13" cy="18.4" rx="5" ry="1.6" fill="#fff" opacity=".55"/>
+    <ellipse cx="13.5" cy="29" rx="2.2" ry="4" fill="#fff" opacity=".35"/>
+  </symbol>
+    <symbol id="i-mega" viewBox="0 0 48 48">
+    <ellipse cx="22" cy="44" rx="14" ry="2.4" fill="rgba(0,0,0,.14)"/>
+    <rect x="12" y="29" width="9" height="13" rx="4.5" fill="url(#g-blue2)"/>
+    <path d="M12 19L31 10v26L12 28z" fill="url(#g-blue)" stroke="url(#g-blue)" stroke-width="6" stroke-linejoin="round"/>
+    <rect x="6" y="17" width="12" height="13" rx="6" fill="url(#g-blue2)"/>
+    <rect x="31" y="8" width="7" height="30" rx="3.5" fill="url(#g-gold)"/>
+    <path d="M43 18q4 6 0 12" fill="none" stroke="#8da0ff" stroke-width="3.2" stroke-linecap="round"/>
+    <ellipse cx="19" cy="17" rx="2" ry="4" fill="#fff" opacity=".45" transform="rotate(25 19 17)"/>
+  </symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="cake" viewBox="0 0 48 48">
+    <g class="spark"><circle cx="6" cy="12" r="2" fill="#8da0ff"/></g>
+    <g class="spark s2"><circle cx="42" cy="9" r="2" fill="#6366f1"/></g>
+    <g class="spark s3"><circle cx="43" cy="27" r="1.8" fill="#4b63f2"/></g>
+    <ellipse class="shadow" cx="24" cy="44.5" rx="18" ry="2.4" fill="rgba(0,0,0,.14)"/>
+    <g class="bob">
+    <circle class="glow" cx="24" cy="6.5" r="7" fill="#8da0ff" opacity=".0"/>
+    <rect x="6" y="29" width="36" height="14" rx="7" fill="url(#g-pink)"/>
+    <rect x="11" y="19" width="26" height="14" rx="7" fill="url(#g-cream)"/>
+    <path d="M9 31q3 4 6 0t6 0 6 0 6 0 6 0" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="21.8" y="10" width="4.4" height="11" rx="2.2" fill="url(#g-blue)"/>
+    <path class="flame" d="M24 2.5c3 3.4 3 6 0 8.4-3-2.4-3-5 0-8.4z" fill="url(#g-orange)"/>
+    <ellipse cx="14" cy="35" rx="3" ry="1.6" fill="#fff" opacity=".5"/>
+    <ellipse cx="17" cy="23" rx="3" ry="1.5" fill="#fff" opacity=".6"/>
+    </g>
+  </symbol>
+</svg>
+
+<div class="wrap">
+  <div class="intro">
+    <h1>انواع اعلان‌ها</h1>
+    <p>هر نوع اعلان یک «ظاهر» داره که کلاینت از روی <span class="mono">kind</span> اون رو می‌کشه: آواتار کاربر، آیکون پفی بدون قاب، و یک تزیین کوچیک کنار آواتار (مثل کیک تولد). تزیین‌ها توی خود کلاینت هستن، سرور فقط آدرس آواتار رو می‌فرسته. آواتارها اینجا با دایره‌ی رنگی نشون داده شدن.</p>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-tab="ext">افزونه</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="app">اپ موبایل</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="data">داده‌ی هر نوع</button>
+  </div>
+
+  <section id="ext" class="stage"></section>
+  <section id="app" class="stage" hidden></section>
+  <section id="data" class="spec" hidden></section>
+</div>
+
+<script>
+const NAMES = { sara: 'سارا', mehdi: 'مهدی', niloo: 'نیلوفر', me: 'تو' }
+const AV = { sara: ['b', 'س'], mehdi: ['a', 'م'], niloo: ['c', 'ن'], me: ['a', 'ت'] }
+
+const ITEMS = [
+  { kind: 'birthday.self', group: 'امروز', unread: true, time: 'امروز، ۰۸:۰۰',
+    lead: { avatar: 'me', deco: 'cake' }, title: 'تولدت مبارک',
+    body: '<b>سجاد</b> جان، تولدت مبارک. یه سال دیگه یعنی یه آپدیت جدید برای خودت؛ امیدواریم تب جدیدت هم همیشه مرتب و پر انرژی باشه' },
+  { kind: 'birthday.self_gift', group: 'امروز', unread: true, time: 'امروز، ۰۸:۰۰',
+    lead: { avatar: 'me', deco: 'cake' }, title: 'تولدت مبارک',
+    body: '<b>سجاد</b> جان، امروز روز توئه. ۵۰۰ ویج‌کوین هدیه‌ی تولدت رو توی حسابت گذاشتیم؛ یه سر به فروشگاه بزن' },
+  { kind: 'birthday.friend_reminder', group: 'امروز', unread: true, time: 'امروز، ۰۷:۵۰',
+    lead: { avatar: 'sara', deco: 'cake' }, title: 'یادت نره',
+    body: '<b>سارا</b> امروز تولدشه!' },
+  { kind: 'birthday.congratulation', group: 'امروز', unread: false, time: 'امروز، ۰۹:۱۰',
+    lead: { avatar: 'mehdi', deco: 'cake' }, title: 'تولدت مبارک',
+    body: '<b>مهدی</b> تولدت رو تبریک گفت' },
+  { kind: 'friend.request.received', group: 'امروز', unread: true, time: 'امروز، ۰۹:۳۰',
+    lead: { avatar: 'niloo' }, title: 'یه درخواست دوستی جدید داری',
+    body: '<b>نیلوفر</b> برات درخواست دوستی فرستاده' },
+  { kind: 'friend.request.accepted', group: 'امروز', unread: false, time: 'امروز، ۰۹:۵۰',
+    lead: { avatar: 'mehdi' }, title: 'درخواست دوستیت قبول شد',
+    body: '<b>مهدی</b> درخواست دوستیت رو پذیرفت' },
+  { kind: 'friend.request.rejected', group: 'دیروز', unread: false, time: 'دیروز، ۱۸:۲۰',
+    lead: { avatar: 'sara' }, title: 'درخواست دوستی',
+    body: '<b>سارا</b> درخواستت رو رد کرد' },
+  { kind: 'friend.activity.new', group: 'دیروز', unread: false, time: 'دیروز، ۱۷:۰۰',
+    lead: { avatar: 'niloo' }, title: 'دوستت نیلوفر، یه نوشته جدید گذاشت',
+    body: 'از قسمت دوستان می‌تونی بهش واکنش نشون بدی' },
+  { kind: 'friend.activity.new (گروهی)', group: 'دیروز', unread: false, time: 'دیروز، ۱۶:۰۰',
+    lead: { stack: ['sara', 'mehdi', 'niloo'] }, title: 'چند تا از دوستات نوشته جدید گذاشتن',
+    body: 'از قسمت دوستان می‌تونی بهشون واکنش نشون بدی' },
+  { kind: 'reward.granted', group: 'دیروز', unread: false, time: 'دیروز، ۱۲:۰۰',
+    lead: { icon: 'i-gift', cls: 'bare' }, title: 'هوورا! یه جایزه جدید رسید',
+    body: '۲۰۰ ویج‌کوین بابت دعوت دوستت به حسابت اضافه شد' },
+  { kind: 'vip.activated', group: 'دیروز', unread: false, time: 'دیروز، ۱۰:۰۰',
+    lead: { icon: 'i-gem' }, title: 'اشتراک پرو فعال شد',
+    body: 'اشتراک پرو <b>۳ ماهه</b> فعال شد؛ از امکانات ویژه‌ی ویجتیفای لذت ببر' },
+  { kind: 'admin.message', group: 'دیروز', unread: false, time: 'دیروز، ۰۹:۰۰',
+    lead: { icon: 'i-mega', cls: 'bare' }, title: 'نسخه‌ی جدید ویجتیفای اومد',
+    body: 'تم‌های جدید و یه ویجت تازه به فروشگاه اضافه شد' },
+]
+
+const num = (n) => String(n)
+
+function avatar(key, size, fs) {
+  const [c, ch] = AV[key]
+  return `<span class="av ${c}" style="width:${size}px;height:${size}px;font-size:${fs}px">${ch}</span>`
+}
+
+function lead(l, size) {
+  const fs = Math.round(size * 0.4)
+  if (l.icon) return `<span class="lead" style="width:${size}px;height:${size}px"><svg width="${Math.round(size * 1.05)}" height="${Math.round(size * 1.05)}"><use href="#${l.icon}"/></svg></span>`
+  if (l.stack) {
+    const s = Math.round(size * .66)
+    const parts = l.stack.map((k, i) => `<span style="position:absolute;inset-inline-start:${i * Math.round(size * .26)}px;top:${i === 1 ? 0 : Math.round(size * .3)}px;z-index:${3 - i}">${avatar(k, s, Math.round(s * .4))}</span>`).join('')
+    return `<span class="lead stack" style="width:${size + Math.round(size * .4)}px;height:${size}px">${parts}</span>`
+  }
+  const cakeSize = Math.round(size * .95)
+  const deco = l.deco === 'cake'
+    ? `<svg class="deco cake" width="${cakeSize}" height="${cakeSize}" style="inset-inline-start:-${Math.round(size * .5)}px;bottom:-${Math.round(size * .3)}px" aria-hidden="true"><use href="#cake"/></svg>`
+    : ''
+  return `<span class="lead" style="width:${size}px;height:${size}px;${l.deco ? `margin-inline-start:${Math.round(size * .5)}px` : ''}">${avatar(l.avatar, size, fs)}${deco}</span>`
+}
+
+function extCard(it) {
+  return `<div class="card${it.unread ? ' unread' : ''}">
+    ${lead(it.lead, 40)}
+    <div class="txt"><h4>${it.title}</h4><p class="body">${it.body}</p><p class="time">${it.time}</p></div>
+    <button class="x" aria-label="بستن"><svg width="12" height="12"><use href="#i-x"/></svg></button>
+  </div>`
+}
+
+function mobRow(it) {
+  return `<div class="m-row${it.unread ? ' unread' : ''}">
+    ${lead(it.lead, 46)}
+    <div class="txt"><h4>${it.title}</h4><p class="body">${it.body}</p><p class="time">${it.time}</p></div>
+    ${it.unread ? '<span class="dot" aria-label="خوانده نشده"></span>' : ''}
+  </div>`
+}
+
+function groups(fn, wrapOpen, wrapClose) {
+  let html = '', cur = ''
+  for (const it of ITEMS) {
+    if (it.group !== cur) { cur = it.group; html += `<p class="sec">${cur}</p>` }
+    html += fn(it)
+  }
+  return html
+}
+
+document.getElementById('ext').innerHTML = `
+  <div class="col"><span class="cap">پنل اعلان‌ها، ۳۸۴ پیکسل</span>
+    <div class="panel"><div class="p-head"><span class="p-title">اعلان‌ها</span><button class="text-btn">خواندن همه</button></div>
+    <div class="list">${groups(extCard)}</div></div></div>`
+
+document.getElementById('app').innerHTML = `
+  <div class="col"><span class="cap">لیست اعلان‌های اپ</span>
+    <div class="m-wrap"><div class="m-top"><h2>اعلان‌ها</h2><button class="text-btn">همه رو خوندم</button></div>
+    ${groups(mobRow)}</div></div>`
+
+const ROWS = [
+  ['birthday.self', 'آواتار خود کاربر', 'کیک متحرک کنار آواتار', 'نام کاربر'],
+  ['birthday.self_gift', 'آواتار خود کاربر', 'کیک متحرک کنار آواتار', 'نام کاربر، تعداد ویج‌کوین'],
+  ['birthday.friend_reminder', 'آواتار دوستی که تولدشه', 'کیک متحرک کنار آواتار', 'نام دوست'],
+  ['birthday.congratulation', 'آواتار تبریک‌دهنده', 'کیک متحرک کنار آواتار', 'نام تبریک‌دهنده'],
+  ['friend.request.received', 'آواتار درخواست‌دهنده', 'ندارد', 'نام درخواست‌دهنده'],
+  ['friend.request.accepted / rejected', 'آواتار طرف مقابل', 'ندارد', 'نام طرف مقابل'],
+  ['friend.activity.new', 'آواتار دوست (در حالت گروهی چند آواتار روی هم)', 'ندارد', 'نام دوست'],
+  ['reward.granted', 'ندارد، آیکون پفی هدیه', 'ندارد', 'متن جایزه'],
+  ['vip.activated', 'ندارد، آیکون رسمی پرو (الماس)', 'ندارد', 'مدت اشتراک'],
+  ['admin.message', 'ندارد، آیکون پفی بلندگو (یا آدرس آیکون دلخواه)', 'ندارد', 'عنوان، متن'],
+]
+
+document.getElementById('data').innerHTML = `
+  <div class="spec-card"><h3>آیکون‌های پفی، بزرگ</h3>
+    <div style="display:flex;flex-wrap:wrap;gap:28px;justify-content:center;padding:12px">
+    ${[['cake','کیک تولد'],['i-gift','جایزه'],['i-gem','پرو'],['i-mega','پیام مدیر']].map(([id,n]) => `<div style="display:grid;gap:6px;justify-items:center"><svg width="112" height="112"><use href="#${id}"/></svg><span class="body" style="font-size:12px;color:var(--fg-muted)">${n}</span></div>`).join('')}
+    </div></div>
+  <div class="spec-card"><h3>ظاهر هر نوع</h3>
+    <div class="scroll-x"><table class="table"><thead><tr><th>نوع</th><th>سمت شروع کارت</th><th>تزیین</th><th>پارامترهای متن</th></tr></thead><tbody>
+    ${ROWS.map(r => `<tr><td class="mono">${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}
+    </tbody></table></div></div>
+  <div class="spec-card"><h3>چی به سرور اضافه میشه</h3>
+    <ol class="notes">
+      <li>هر اعلان یک فیلد اختیاری <span class="mono">avatar</span> (آدرس عکس) می‌گیره. API وقتی اعلان رو می‌فرسته آواتار کاربر مربوط رو هم می‌ده؛ برای تولد، آواتار خود کاربر یا دوست.</li>
+      <li>فیلد <span class="mono">icon</span> که الان هست برای نوع‌های بدون آواتار می‌مونه (هدیه، تاج، بلندگو) و برای اعلان‌های دستی می‌تونه آدرس دلخواه باشه.</li>
+      <li>تزیین (کیک متحرک) توی سرور ذخیره نمیشه. کلاینت از روی <span class="mono">kind</span> انتخابش می‌کنه، پس بدون آپدیت سرور هم می‌شه تزیین جدید اضافه کرد.</li>
+      <li>کلاینتی که آواتار نداره یا بار نشد، حرف اول اسم یا آیکون نوع رو نشون میده؛ کیک بازم دیده میشه.</li>
+      <li>کیک و جرقه‌ها با <span class="mono">prefers-reduced-motion</span> ثابت می‌مونن.</li>
+      <li>پوش اندروید و ایمیل همون آیکون و تصویر بزرگ خودشون رو دارن؛ این برد فقط لیست داخل افزونه و اپ هست.</li>
+    </ol></div>
+  <div class="spec-card"><h3>برای تصمیم تو</h3>
+    <ol class="notes">
+      <li>کیک به شکل SVG متحرک (سبک، تم‌پذیر) یا فایل گیف؟ پیشنهاد من SVG هست.</li>
+      <li>ایموجی داخل عنوان «یادت نره» و «تولدت مبارک» توی قالب‌ها هست. با وجود کیک تزیینی لازم نیست، و قانون پروژه ایموجی رو توی متن نمی‌خواد؛ تو برد بدون ایموجی کشیدم.</li>
+      <li>متن «تولدت مبارک» برای هدیه و غیرهدیه یکیه؛ لازمه یکی‌شون عنوان متفاوت بگیره؟</li>
+    </ol></div>`
+
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+  document.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', String(x === t)))
+  for (const id of ['ext', 'app', 'data']) document.getElementById(id).hidden = id !== t.dataset.tab
+}))
+</script>
+</body>
+</html>

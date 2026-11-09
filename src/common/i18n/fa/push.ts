@@ -1,6 +1,6 @@
 export const push = {
 	'push.ask.title': 'اعلان‌ها رو روشن کنیم؟',
-	'push.ask.text': 'تا مناسبت‌ها و یادآوری‌ها یادت نره، بدون اینکه برنامه رو باز کنی',
+	'push.ask.text': 'تا مناسبت‌ها و یادآوری‌ها یادت نره',
 	'push.ask.accept': 'روشن کن',
 	'push.ask.later': 'بعدا',
 	'push.setting.title': 'اعلان‌ها روی این مرورگر',

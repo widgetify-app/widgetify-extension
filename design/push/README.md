@@ -12,6 +12,7 @@ Chrome and Edge only (Web Push through Firebase); Firefox gets nothing and shows
 
 ## Notes
 
+- The island is at most 448px wide (the hint wraps to two lines) and its icon is the puffy bell (`src/assets/images/push/bell.svg`, brand colours), not a bell in a tinted circle.
 - The island is a prompt, so it does not hide by itself: it stays until «روشن کن» or «بعدا» is pressed. «روشن کن» is the tap that asks for the browser permissions and registers the token. «بعدا» is remembered and the island comes back after two days; the switch in settings is always available.
 - It shows for every signed in user on Chrome or Edge who has no push subscription from this browser, including people who already allowed notifications for the Pomodoro: nothing is stored about that, so they are asked once as well.
 - The card sits in the general settings tab, built like the lite mode card (`SectionPanel`, hint and `ToggleSwitch`). It is hidden where push is not available (Firefox).
