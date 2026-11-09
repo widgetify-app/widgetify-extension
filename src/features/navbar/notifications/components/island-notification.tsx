@@ -11,6 +11,7 @@ import {
 	useNotifyAsSeen,
 } from '@/services/extension/get-notifications.hook'
 import { openLink } from '@/common/utils/open-link'
+import { playAlarm } from '@/common/utils/play-alarm'
 
 const SHOW_DELAY_MS = 1000
 const VISIBLE_MS = 10_000
@@ -38,6 +39,10 @@ export function IslandNotification() {
 			clearTimeout(hide)
 		}
 	}, [id])
+
+	useEffect(() => {
+		if (visible) playAlarm('island').catch(() => {})
+	}, [visible])
 
 	if (!island) return null
 

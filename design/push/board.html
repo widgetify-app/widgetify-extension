@@ -47,11 +47,11 @@
 body{margin:0;background:var(--board);font-family:var(--font);color:var(--fg-strong);padding:32px;display:flex;flex-direction:column;gap:40px}
 h2{margin:0 0 12px;font-size:14px;font-weight:700;color:var(--fg-muted)}
 .stage{background:var(--stage);border-radius:24px;padding:32px;position:relative}
-.island{display:flex;align-items:center;gap:16px;max-width:560px;margin:0 auto;border:1px solid var(--line);border-radius:9999px;background:rgba(255,255,255,.55);backdrop-filter:blur(24px);box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);padding:8px 8px 8px 24px}
-.island .icon{width:40px;height:40px;border-radius:9999px;background:var(--brand-fill);color:var(--brand);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.island{display:flex;align-items:center;gap:12px;max-width:448px;margin:0 auto;border:1px solid var(--line);border-radius:9999px;background:rgba(255,255,255,.82);backdrop-filter:blur(24px);box-shadow:0 16px 40px -8px rgba(23,23,23,.17);padding:8px 16px 8px 12px}
+.island .icon{width:40px;height:40px;flex-shrink:0;display:block}
 .island .text{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
 .island .title{font-size:14px;font-weight:700;color:var(--fg-strong)}
-.island .hint{font-size:12px;color:var(--fg-muted);line-height:1.6}
+.island .hint{font-size:12px;color:var(--fg);line-height:1.6}
 .island .actions{display:flex;gap:8px;flex-shrink:0}
 .btn{height:36px;padding:0 16px;border-radius:9999px;border:0;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer}
 .btn.primary{background:var(--brand);color:#fff}
@@ -71,8 +71,8 @@ h2{margin:0 0 12px;font-size:14px;font-weight:700;color:var(--fg-muted)}
 <h2>P1 · جزیره بعد از ورود، روی صفحه تب جدید، تا وقتی دکمه‌ای زده نشه می‌مونه؛ با «بعدا» بعد از ۲ روز دوباره میاد</h2>
 <div class="stage">
 <div class="island" role="status">
-<span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span>
-<span class="text"><span class="title">اعلان‌ها رو روشن کنیم؟</span><span class="hint">تا مناسبت‌ها و یادآوری‌ها یادت نره، بدون اینکه برنامه رو باز کنی</span></span>
+<span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 48 48"><defs><linearGradient id="bellb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a9b6ff"/><stop offset="1" stop-color="#536dfe"/></linearGradient><linearGradient id="bellc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9d1ff"/><stop offset="1" stop-color="#7388fb"/></linearGradient></defs><ellipse cx="24" cy="44.5" rx="12" ry="2.2" fill="rgba(0,0,0,.14)"/><circle cx="24" cy="6" r="3.4" fill="url(#bellb)"/><path d="M24 9c-6.6 0-10.5 5-10.5 11.5V28l-3.5 5.5h28L34.5 28v-7.5C34.5 14 30.6 9 24 9z" fill="url(#bellb)" stroke="url(#bellb)" stroke-width="4" stroke-linejoin="round"/><circle cx="24" cy="38.5" r="4.4" fill="url(#bellc)"/><ellipse cx="18.5" cy="19" rx="2.4" ry="5.5" fill="#fff" opacity=".55" transform="rotate(14 18.5 19)"/></svg></span>
+<span class="text"><span class="title">اعلان‌ها رو روشن کنیم؟</span><span class="hint">تا مناسبت‌ها و یادآوری‌ها یادت نره</span></span>
 <span class="actions"><button class="btn primary">روشن کن</button><button class="btn ghost">بعدا</button></span>
 </div>
 </div>

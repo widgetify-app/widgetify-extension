@@ -3,8 +3,9 @@ import Analytics from '@/analytics'
 import { t } from '@/common/i18n'
 import { Motion as motion } from '@/common/motion'
 import { setToStorage } from '@/common/storage'
+import { playAlarm } from '@/common/utils/play-alarm'
+import bellArt from '@/assets/images/push/bell.svg'
 import { Button } from '@/components/ui'
-import { Icon } from '@/icons'
 
 interface Props {
 	onAccept: () => void
@@ -14,6 +15,7 @@ interface Props {
 export function PushAsk({ onAccept, onLater }: Props) {
 	useEffect(() => {
 		Analytics.event('push_ask_view')
+		playAlarm('island').catch(() => {})
 	}, [])
 
 	const remember = () => setToStorage('pushAskedAt', Date.now())
@@ -39,16 +41,16 @@ export function PushAsk({ onAccept, onLater }: Props) {
 		>
 			<div
 				role="status"
-				className="flex items-center max-w-full gap-4 py-2 border rounded-full shadow-lg pointer-events-auto ps-2 pe-6 border-line bg-glass-surface-2"
+				className="flex items-center max-w-md gap-3 py-2 border shadow-xl pointer-events-auto rounded-full ps-3 pe-4 border-line bg-glass-modal"
 			>
-				<span className="grid rounded-full size-10 shrink-0 place-items-center bg-brand-fill text-brand">
-					<Icon name="notification" size={20} aria-hidden="true" />
-				</span>
+				<img src={bellArt} alt="" className="size-10 shrink-0" />
 				<span className="flex flex-col min-w-0">
 					<span className="text-sm font-bold text-fg-strong">
 						{t('push.ask.title')}
 					</span>
-					<span className="text-xs text-fg-muted">{t('push.ask.text')}</span>
+					<span className="text-xs leading-control text-fg">
+						{t('push.ask.text')}
+					</span>
 				</span>
 				<span className="flex gap-2 shrink-0">
 					<Button size="sm" color="brand" rounded="full" onClick={accept}>
