@@ -23,6 +23,7 @@ interface DropdownProps {
 	position?: 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right' | 'bottom-center'
 	width?: 'auto' | 'full' | string
 	maxHeight?: string
+	offset?: number
 	onOptionSelect?: (option: DropdownOption) => void
 	disabled?: boolean
 	id?: string
@@ -39,6 +40,7 @@ export function Dropdown({
 	position = 'bottom-left',
 	width = 'auto',
 	maxHeight = '300px',
+	offset = 4,
 	onOptionSelect,
 	disabled = false,
 	placeholder,
@@ -125,14 +127,14 @@ export function Dropdown({
 			}
 
 			if (position.startsWith('bottom')) {
-				top = triggerRect.bottom + 4
+				top = triggerRect.bottom + offset
 				if (top + dropdownHeight > viewportHeight - 16) {
-					top = triggerRect.top - dropdownHeight - 4
+					top = triggerRect.top - dropdownHeight - offset
 				}
 			} else {
-				top = triggerRect.top - dropdownHeight - 4
+				top = triggerRect.top - dropdownHeight - offset
 				if (top < 16) {
-					top = triggerRect.bottom + 4
+					top = triggerRect.bottom + offset
 				}
 			}
 
@@ -187,7 +189,7 @@ export function Dropdown({
 			window.removeEventListener('scroll', handleUpdate, true)
 			resizeObserver.disconnect()
 		}
-	}, [isOpen, position, width, maxHeight])
+	}, [isOpen, position, width, maxHeight, offset])
 
 	const dropdownContent = children || (
 		<>

@@ -1,19 +1,157 @@
-import type { ReactElement } from 'react'
+import { createContext, createElement, type ReactElement, useContext, useId } from 'react'
 import { cn } from '@/common/utils/cn'
+
+type Tone = 'brand' | 'soft' | 'paper' | 'deep' | 'danger' | 'onDanger'
+
+const FILL: Record<Tone, string> = {
+	brand: 'fill-brand',
+	soft: 'fill-brand-muted',
+	paper: 'fill-on-brand',
+	deep: 'fill-brand-hover',
+	danger: 'fill-danger',
+	onDanger: 'fill-on-danger',
+}
+
+const STROKE: Record<Tone, string> = {
+	brand: 'stroke-brand',
+	soft: 'stroke-brand-muted',
+	paper: 'stroke-on-brand',
+	deep: 'stroke-brand-hover',
+	danger: 'stroke-danger',
+	onDanger: 'stroke-on-danger',
+}
+
+const GlossContext = createContext('art-gloss')
+
+type BlobProps = {
+	as: 'path' | 'rect' | 'circle' | 'ellipse'
+	tone?: Tone
+	round?: number
+	ring?: boolean
+} & Record<string, string | number | boolean | undefined>
+
+function Blob({ as, tone = 'brand', round = 3, ring = false, ...geometry }: BlobProps) {
+	const gloss = useContext(GlossContext)
+	return (
+		<>
+			{createElement(as, {
+				...geometry,
+				strokeWidth: ring ? 3 : round,
+				strokeLinejoin: 'round',
+				className: cn(FILL[tone], ring ? 'stroke-surface' : STROKE[tone]),
+			})}
+			{createElement(as, {
+				...geometry,
+				fill: `url(#${gloss})`,
+				stroke: ring ? 'none' : `url(#${gloss})`,
+				strokeWidth: round,
+				strokeLinejoin: 'round',
+			})}
+		</>
+	)
+}
+
+function Spark({ x, y, scale = 1 }: { x: number; y: number; scale?: number }) {
+	return (
+		<path
+			className="fill-brand-muted"
+			transform={`translate(${x} ${y}) scale(${scale})`}
+			d="M0-5 1.8-1.8 5 0 1.8 1.8 0 5-1.8 1.8-5 0-1.8-1.8z"
+		/>
+	)
+}
+
+function Shine({ cx, cy, rx = 2, ry = 5, rotate = 0 }: Record<string, number>) {
+	return (
+		<ellipse
+			fill="white"
+			opacity="0.55"
+			cx={cx}
+			cy={cy}
+			rx={rx}
+			ry={ry}
+			transform={`rotate(${rotate} ${cx} ${cy})`}
+		/>
+	)
+}
+
+function Badge({ cx, cy, children }: { cx: number; cy: number; children: ReactElement }) {
+	return (
+		<>
+			<circle
+				className="fill-brand-hover stroke-surface"
+				strokeWidth="3"
+				cx={cx}
+				cy={cy}
+				r="10"
+			/>
+			{children}
+		</>
+	)
+}
+
+const newspaper = (
+	<>
+		<Spark x={53} y={9} />
+		<Blob as="rect" x="12" y="12" width="40" height="40" rx="7" />
+		<rect className="fill-on-brand" x="17" y="17" width="30" height="30" rx="3.5" />
+		<rect className="fill-brand" x="21" y="21" width="22" height="5" rx="2.5" />
+		<rect
+			className="fill-brand-muted"
+			x="21"
+			y="30"
+			width="10"
+			height="10"
+			rx="2.5"
+		/>
+		<rect
+			className="fill-brand-muted"
+			x="34"
+			y="30"
+			width="9"
+			height="2.6"
+			rx="1.3"
+		/>
+		<rect
+			className="fill-brand-muted"
+			x="34"
+			y="35"
+			width="9"
+			height="2.6"
+			rx="1.3"
+		/>
+		<rect
+			className="fill-brand-muted"
+			x="34"
+			y="40"
+			width="6"
+			height="2.6"
+			rx="1.3"
+		/>
+	</>
+)
 
 const arts = {
 	tasks: (
 		<>
-			<path
-				className="fill-brand-muted"
-				d="M13 7.5 15 12l4.5 2L15 16l-2 4.5L11 16l-4.5-2L11 12z"
+			<Spark x={54} y={14} />
+			<Spark x={9} y={50} scale={0.7} />
+			<Blob as="rect" x="14" y="10" width="36" height="44" rx="8" round={4} />
+			<rect className="fill-on-brand" x="19" y="17" width="26" height="33" rx="4" />
+			<Blob
+				as="rect"
+				tone="deep"
+				x="24"
+				y="4"
+				width="16"
+				height="8"
+				rx="4"
+				round={3}
 			/>
-			<rect className="fill-brand" x="14" y="6" width="38" height="50" rx="7" />
-			<rect className="fill-on-brand" x="18" y="10" width="30" height="42" rx="4" />
-			<circle className="fill-brand" cx="25" cy="20" r="3.6" />
+			<circle className="fill-brand" cx="25" cy="25" r="3.4" />
 			<path
 				className="stroke-on-brand"
-				d="m23.2 20 1.3 1.4 2.4-2.8"
+				d="m23.3 25 1.3 1.4 2.3-2.7"
 				fill="none"
 				strokeWidth="1.5"
 				strokeLinecap="round"
@@ -22,677 +160,504 @@ const arts = {
 			<rect
 				className="fill-brand-muted"
 				x="32"
-				y="18.5"
-				width="11"
-				height="3"
-				rx="1.5"
+				y="23"
+				width="10"
+				height="4"
+				rx="2"
+			/>
+			<circle className="fill-brand" cx="25" cy="34" r="3.4" />
+			<path
+				className="stroke-on-brand"
+				d="m23.3 34 1.3 1.4 2.3-2.7"
+				fill="none"
+				strokeWidth="1.5"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			/>
+			<rect
+				className="fill-brand-muted"
+				x="32"
+				y="32"
+				width="10"
+				height="4"
+				rx="2"
 			/>
 			<circle
 				className="stroke-brand-muted"
 				cx="25"
-				cy="31"
-				r="3.2"
+				cy="43"
+				r="3"
 				fill="none"
 				strokeWidth="1.6"
 			/>
 			<rect
 				className="fill-brand-muted"
 				x="32"
-				y="29.5"
-				width="11"
-				height="3"
-				rx="1.5"
-			/>
-			<circle
-				className="stroke-brand-muted"
-				cx="25"
-				cy="42"
-				r="3.2"
-				fill="none"
-				strokeWidth="1.6"
-			/>
-			<rect
-				className="fill-brand-muted"
-				x="32"
-				y="40.5"
-				width="8"
-				height="3"
-				rx="1.5"
-			/>
-			<rect
-				className="fill-brand-muted"
-				x="48"
-				y="14"
-				width="9"
-				height="5"
-				rx="2.5"
-			/>
-			<rect
-				className="fill-brand-muted"
-				x="48"
-				y="27"
-				width="9"
-				height="5"
-				rx="2.5"
-			/>
-			<rect
-				className="fill-brand-muted"
-				x="48"
-				y="40"
-				width="9"
-				height="5"
-				rx="2.5"
+				y="41"
+				width="7"
+				height="4"
+				rx="2"
 			/>
 		</>
 	),
 	habits: (
 		<>
+			<Spark x={53} y={20} />
 			<path
-				className="fill-brand-muted"
-				d="M32 30C21 30 15 23 15 13c11 0 17 6 17 17Z"
-			/>
-			<path
-				className="fill-brand-hover"
-				d="M32 24c0-9 5-15 16-15 0 9-5 15-16 15Z"
-			/>
-			<path
-				className="stroke-brand"
-				d="M32 40V22"
+				className="stroke-brand-hover"
+				d="M32 40V26"
 				fill="none"
-				strokeWidth="3.2"
+				strokeWidth="3.4"
 				strokeLinecap="round"
 			/>
-			<path
-				className="fill-brand"
-				d="M17 39h30l-3.4 16.2A4 4 0 0 1 39.7 58H24.3a4 4 0 0 1-3.9-2.8z"
+			<Blob as="path" tone="soft" d="M32 31C23 31 18 26 18 17c9 0 14 5 14 14Z" />
+			<Blob as="path" tone="deep" d="M32 26c0-8 4-13 13-13 0 8-4 13-13 13Z" />
+			<Blob
+				as="path"
+				d="M19 41h26l-2.6 11.2a4 4 0 0 1-3.9 3.1H25.5a4 4 0 0 1-3.9-3.1Z"
+				round={3}
 			/>
-			<rect className="fill-brand" x="14" y="35" width="36" height="7" rx="3.5" />
-			<path
-				className="fill-brand-muted"
-				d="M54 14c0 0-5 5.8-5 9.2a5 5 0 0 0 10 0C59 19.8 54 14 54 14Z"
-			/>
+			<Blob as="rect" tone="deep" x="16" y="37" width="32" height="6" rx="3" />
+			<Shine cx={24} cy={49} rx={1.6} ry={3.4} rotate={8} />
 		</>
 	),
 	notes: (
 		<>
-			<path
-				className="fill-brand"
-				d="M12 13a6 6 0 0 1 6-6h24a6 6 0 0 1 6 6v28L36 53H18a6 6 0 0 1-6-6Z"
+			<Spark x={53} y={12} />
+			<Blob
+				as="path"
+				d="M15 14a6 6 0 0 1 6-6h20a6 6 0 0 1 6 6v25L35 52H21a6 6 0 0 1-6-6Z"
+				round={4}
 			/>
 			<path
 				className="fill-on-brand"
-				opacity="0.3"
-				d="M48 41 36 53v-6a6 6 0 0 1 6-6Z"
+				opacity="0.4"
+				d="M47 39 35 52v-6a7 7 0 0 1 7-7Z"
 			/>
 			<rect
 				className="fill-on-brand"
-				opacity="0.55"
-				x="19"
-				y="16"
-				width="22"
-				height="3.4"
-				rx="1.7"
+				opacity="0.75"
+				x="21"
+				y="17"
+				width="20"
+				height="4"
+				rx="2"
 			/>
 			<rect
 				className="fill-on-brand"
-				opacity="0.55"
-				x="19"
-				y="26"
-				width="22"
-				height="3.4"
-				rx="1.7"
+				opacity="0.75"
+				x="21"
+				y="27"
+				width="20"
+				height="4"
+				rx="2"
 			/>
 			<rect
 				className="fill-on-brand"
-				opacity="0.55"
-				x="19"
-				y="36"
-				width="12"
-				height="3.4"
-				rx="1.7"
+				opacity="0.75"
+				x="21"
+				y="37"
+				width="11"
+				height="4"
+				rx="2"
 			/>
-			<g transform="rotate(32 49 40)">
+			<g transform="rotate(30 50 40)">
 				<rect
-					className="fill-brand-hover"
-					x="44.5"
-					y="20"
-					width="9"
+					className="fill-danger stroke-surface"
+					strokeWidth="2.5"
+					x="45"
+					y="21"
+					width="10"
 					height="6"
-					rx="2.5"
+					rx="3"
 				/>
 				<rect
-					className="fill-brand-muted"
-					x="44.5"
-					y="26"
-					width="9"
-					height="26"
+					className="fill-brand-hover stroke-surface"
+					strokeWidth="2.5"
+					x="45"
+					y="27"
+					width="10"
+					height="20"
 				/>
-				<path className="fill-fg-muted" d="M44.5 52h9L49 61Z" />
+				<path className="fill-brand-muted" d="M45 47h10l-5 9z" />
+				<path className="fill-fg-muted" d="M48 52.5h4L50 56Z" />
 			</g>
 		</>
 	),
 	account: (
 		<>
-			<path
-				className="fill-brand-muted"
-				d="M52 4.5 53.8 8.5 57.8 10.3 53.8 12.1 52 16.1 50.2 12.1 46.2 10.3 50.2 8.5z"
+			<Spark x={53} y={9} />
+			<Blob as="circle" cx="28" cy="20" r="10" />
+			<Blob
+				as="path"
+				d="M11 52c0-10 7-17 17-17s17 7 17 17a3 3 0 0 1-3 3H14a3 3 0 0 1-3-3Z"
+				round={4}
 			/>
-			<circle className="fill-brand" cx="28" cy="20" r="11" />
+			<Shine cx={23} cy={17} rx={1.8} ry={3.4} rotate={18} />
+			<Badge cx={49} cy={46}>
+				<path
+					className="stroke-on-brand"
+					d="M49 41v10M44 46h10"
+					fill="none"
+					strokeWidth="2.8"
+					strokeLinecap="round"
+				/>
+			</Badge>
+		</>
+	),
+	lock: (
+		<>
+			<Spark x={54} y={10} />
+			<Spark x={9} y={22} scale={0.7} />
 			<path
-				className="fill-brand"
-				d="M8 54c0-12 9-20 20-20s20 8 20 20a3 3 0 0 1-3 3H11a3 3 0 0 1-3-3Z"
-			/>
-			<circle
-				className="fill-brand-hover stroke-surface"
-				strokeWidth="3"
-				cx="50"
-				cy="46"
-				r="10"
-			/>
-			<path
-				className="stroke-on-brand"
-				d="M50 41v10M45 46h10"
+				className="stroke-brand-hover"
+				d="M21 28V21a11 11 0 0 1 22 0v7"
 				fill="none"
-				strokeWidth="2.6"
+				strokeWidth="6.5"
 				strokeLinecap="round"
 			/>
+			<Blob as="rect" x="14" y="29" width="36" height="24" rx="8" round={4} />
+			<circle className="fill-on-brand" cx="32" cy="39" r="4.2" />
+			<path
+				className="stroke-on-brand"
+				d="M32 41v6"
+				fill="none"
+				strokeWidth="3.6"
+				strokeLinecap="round"
+			/>
+			<Shine cx={20} cy={37} rx={1.6} ry={4} />
 		</>
 	),
 	allCaughtUp: (
 		<>
-			<path
-				className="fill-brand"
-				d="M32 6a3.5 3.5 0 0 1 3.5 3.5v1.3c8.3 1.5 13.5 8.3 13.5 16.7v8.5l4.8 7.9a2.2 2.2 0 0 1-1.9 3.3H12.1a2.2 2.2 0 0 1-1.9-3.3L15 36v-8.5c0-8.4 5.2-15.2 13.5-16.7V9.5A3.5 3.5 0 0 1 32 6Z"
+			<circle className="fill-brand-hover" cx="30" cy="7" r="3.4" />
+			<Blob
+				as="path"
+				d="M30 12c-8 0-13 6-13 14v9l-4 7h34l-4-7v-9c0-8-5-14-13-14Z"
+				round={4}
 			/>
-			<path className="fill-brand-muted" d="M25.5 51.5a6.5 6.5 0 0 0 13 0Z" />
-			<circle
-				className="fill-brand-hover stroke-surface"
-				strokeWidth="3"
-				cx="49"
-				cy="17"
-				r="10"
-			/>
-			<path
-				className="stroke-on-brand"
-				d="m44.5 17 3.2 3.3 6-6.8"
-				fill="none"
-				strokeWidth="2.6"
-				strokeLinecap="round"
-				strokeLinejoin="round"
-			/>
+			<Blob as="circle" tone="soft" cx="30" cy="48" r="4.6" round={2} />
+			<Shine cx={23} cy={25} rx={2.4} ry={6} rotate={14} />
+			<Badge cx={49} cy={15}>
+				<path
+					className="stroke-on-brand"
+					d="m44.5 15 3.2 3.3 5.8-6.6"
+					fill="none"
+					strokeWidth="2.6"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+				/>
+			</Badge>
 		</>
 	),
 	photo: (
 		<>
-			<path
-				className="fill-brand-muted"
-				d="M54 5.5 55.8 9.5 59.8 11.3 55.8 13.1 54 17.1 52.2 13.1 48.2 11.3 52.2 9.5z"
-			/>
-			<rect className="fill-brand" x="6" y="14" width="46" height="40" rx="7" />
-			<rect className="fill-on-brand" x="10" y="18" width="38" height="32" rx="4" />
-			<circle className="fill-brand-muted" cx="38" cy="27" r="5" />
-			<path
-				className="fill-brand"
-				d="M10 42 22 29l9 10 6-6 11 10v4a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4Z"
+			<Spark x={54} y={9} />
+			<Blob as="rect" x="8" y="14" width="44" height="38" rx="8" round={4} />
+			<rect className="fill-on-brand" x="13" y="19" width="34" height="28" rx="4" />
+			<circle className="fill-brand-muted" cx="38" cy="27" r="4.6" />
+			<Blob
+				as="path"
+				d="M14 43 24 32l8 9 5-5 8 8v1a2 2 0 0 1-2 2H16a2 2 0 0 1-2-2Z"
+				round={2}
 			/>
 		</>
 	),
 	photoError: (
 		<>
-			<rect className="fill-danger" x="8" y="10" width="48" height="44" rx="7" />
+			<Blob
+				as="rect"
+				tone="danger"
+				x="8"
+				y="12"
+				width="48"
+				height="42"
+				rx="8"
+				round={4}
+			/>
 			<rect
 				className="fill-on-danger"
-				x="12"
-				y="14"
-				width="40"
-				height="36"
+				x="13"
+				y="17"
+				width="38"
+				height="32"
 				rx="4"
 			/>
 			<rect
 				className="fill-danger"
-				x="30.5"
-				y="21"
-				width="3"
-				height="14"
-				rx="1.5"
+				x="30.4"
+				y="22"
+				width="3.2"
+				height="13"
+				rx="1.6"
 			/>
-			<circle className="fill-danger" cx="32" cy="41" r="2.2" />
+			<circle className="fill-danger" cx="32" cy="41" r="2.4" />
 		</>
 	),
 	target: (
 		<>
-			<path
-				className="fill-brand-muted"
-				d="M12 7.5 13.8 11.5 17.8 13.3 13.8 15.1 12 19.1 10.2 15.1 6.2 13.3 10.2 11.5z"
-			/>
+			<Spark x={10} y={12} />
 			<path
 				className="stroke-brand-muted"
 				d="M23 49 17 58M41 49 47 58"
 				fill="none"
-				strokeWidth="3"
+				strokeWidth="3.6"
 				strokeLinecap="round"
 			/>
-			<circle className="fill-brand" cx="32" cy="31" r="20" />
-			<circle className="fill-on-brand" cx="32" cy="31" r="15" />
-			<circle className="fill-brand" cx="32" cy="31" r="10" />
+			<Blob as="circle" cx="32" cy="31" r="19" round={3} />
+			<circle className="fill-on-brand" cx="32" cy="31" r="14" />
+			<circle className="fill-brand" cx="32" cy="31" r="9.5" />
 			<circle className="fill-on-brand" cx="32" cy="31" r="5" />
 			<circle className="fill-brand-hover" cx="32" cy="31" r="2.2" />
 			<path
 				className="stroke-brand-hover"
 				d="m51 12-18 18"
 				fill="none"
-				strokeWidth="2.8"
+				strokeWidth="3"
 				strokeLinecap="round"
 			/>
-			<path className="fill-brand" d="M48 15 44 9l5-2 3 4Z" />
-			<path className="fill-brand-muted" d="M48 15 54 19l2-5-4-3Z" />
+			<Blob as="path" tone="soft" d="M48 15 44 9l5-2 3 4Z" round={2} />
+			<Blob as="path" tone="deep" d="M48 15 54 19l2-5-4-3Z" round={2} />
 		</>
 	),
 	calendar: (
 		<>
-			<path
-				className="fill-brand-muted"
-				d="M9 13.5 10.8 17.5 14.8 19.3 10.8 21.1 9 25.1 7.2 21.1 3.2 19.3 7.2 17.5z"
-			/>
-			<rect className="fill-brand-muted" x="21" y="6" width="4" height="8" rx="2" />
-			<rect className="fill-brand-muted" x="39" y="6" width="4" height="8" rx="2" />
-			<rect className="fill-brand" x="13" y="10" width="40" height="46" rx="7" />
-			<circle className="fill-on-brand" cx="23" cy="16.5" r="2" />
-			<circle className="fill-on-brand" cx="41" cy="16.5" r="2" />
-			<rect className="fill-on-brand" x="17" y="23" width="32" height="29" rx="4" />
+			<Spark x={9} y={16} />
+			<Blob as="rect" x="13" y="12" width="38" height="42" rx="8" round={4} />
 			<rect
-				className="fill-brand-muted"
+				className="fill-brand-hover"
 				x="21"
-				y="28"
-				width="24"
-				height="2.5"
-				rx="1.2"
+				y="5"
+				width="5"
+				height="11"
+				rx="2.5"
 			/>
-			<circle className="fill-brand-muted" cx="22" cy="35" r="1.8" />
-			<circle className="fill-brand-muted" cx="28" cy="35" r="1.8" />
-			<circle className="fill-brand-muted" cx="34" cy="35" r="1.8" />
-			<circle className="fill-brand-muted" cx="40" cy="35" r="1.8" />
-			<circle className="fill-brand-muted" cx="22" cy="43" r="1.8" />
-			<circle className="fill-brand-muted" cx="28" cy="43" r="1.8" />
-			<circle className="fill-brand" cx="34" cy="43" r="3.2" />
-			<circle className="fill-brand-muted" cx="40" cy="43" r="1.8" />
+			<rect
+				className="fill-brand-hover"
+				x="38"
+				y="5"
+				width="5"
+				height="11"
+				rx="2.5"
+			/>
+			<rect className="fill-on-brand" x="18" y="22" width="28" height="26" rx="4" />
+			<circle className="fill-brand-muted" cx="24" cy="29" r="2" />
+			<circle className="fill-brand-muted" cx="32" cy="29" r="2" />
+			<circle className="fill-brand-muted" cx="40" cy="29" r="2" />
+			<circle className="fill-brand-muted" cx="24" cy="37" r="2" />
+			<circle className="fill-brand" cx="32" cy="37" r="4" />
+			<circle className="fill-brand-muted" cx="40" cy="37" r="2" />
+			<circle className="fill-brand-muted" cx="24" cy="44" r="2" />
+			<circle className="fill-brand-muted" cx="32" cy="44" r="2" />
 		</>
 	),
 	coin: (
 		<>
-			<path
-				className="fill-brand-muted"
-				d="M52 9.5 53.8 13.5 57.8 15.3 53.8 17.1 52 21.1 50.2 17.1 46.2 15.3 50.2 13.5z"
-			/>
-			<path
-				className="fill-brand-muted"
-				d="M53 38.5 54.2 41 56.7 42.2 54.2 43.4 53 45.9 51.8 43.4 49.3 42.2 51.8 41z"
-			/>
-			<circle className="fill-brand-hover" cx="31" cy="33" r="16" />
-			<circle className="fill-brand" cx="34" cy="30" r="16" />
+			<Spark x={54} y={10} />
+			<Spark x={55} y={42} scale={0.7} />
+			<Blob as="circle" cx="35" cy="28" r="17" round={3} />
 			<circle
 				className="stroke-on-brand"
-				cx="34"
-				cy="30"
-				r="13"
+				cx="35"
+				cy="28"
+				r="12.5"
 				fill="none"
 				strokeWidth="1.6"
 				opacity="0.45"
 			/>
 			<path
 				className="stroke-on-brand"
-				d="M34 20.5v19"
+				d="M35 19v18"
+				fill="none"
 				strokeWidth="2.2"
 				strokeLinecap="round"
 			/>
 			<path
 				className="stroke-on-brand"
-				d="M38 24.5c-.8-1.5-2.5-2.2-4.5-2.2-2.8 0-4.5 1.5-4.5 3.5 0 2.8 3.5 3.3 5.5 4.2 2.5 1.2 4 2.5 4 5 0 2.5-2 4.2-4.5 4.2-2.5 0-4.5-1.2-5.5-3"
+				d="M39 22.5c-.8-1.5-2.4-2.2-4.2-2.2-2.7 0-4.3 1.4-4.3 3.3 0 2.7 3.3 3.2 5.2 4 2.4 1.1 3.8 2.4 3.8 4.7 0 2.4-1.9 4-4.3 4-2.4 0-4.3-1.1-5.2-2.9"
 				fill="none"
-				strokeWidth="2.6"
+				strokeWidth="2.4"
 				strokeLinecap="round"
 			/>
-			<path
-				className="fill-brand-hover"
-				d="M8 48v5c0 3 6.3 5.5 14 5.5s14-2.5 14-5.5v-5Z"
+			<Blob
+				as="path"
+				tone="deep"
+				d="M9 47v5c0 3 5.4 5 12 5s12-2 12-5v-5Z"
+				round={2}
 			/>
-			<ellipse className="fill-brand-muted" cx="22" cy="48" rx="14" ry="5.5" />
+			<Blob as="ellipse" cx="21" cy="47" rx="12" ry="4.6" round={2} />
 			<ellipse
-				className="stroke-surface"
-				cx="22"
-				cy="48"
-				rx="10.5"
-				ry="3.8"
+				className="stroke-on-brand"
+				cx="21"
+				cy="47"
+				rx="7"
+				ry="2.4"
 				fill="none"
-				strokeWidth="1.2"
+				strokeWidth="1.4"
 				opacity="0.5"
 			/>
 		</>
 	),
-	news: (
-		<>
-			<path
-				className="fill-brand-muted"
-				d="M51 6.5 52.8 10.5 56.8 12.3 52.8 14.1 51 18.1 49.2 14.1 45.2 12.3 49.2 10.5z"
-			/>
-			<rect className="fill-brand" x="11" y="11" width="42" height="44" rx="6" />
-			<path
-				className="stroke-brand-muted"
-				d="M49 16v38a4 4 0 0 1-4 4H16"
-				fill="none"
-				strokeWidth="2.5"
-			/>
-			<rect className="fill-on-brand" x="15" y="15" width="34" height="36" rx="4" />
-			<rect className="fill-brand" x="19" y="19" width="26" height="5" rx="1.5" />
-			<rect
-				className="fill-brand-muted"
-				x="19"
-				y="27"
-				width="12"
-				height="11"
-				rx="2"
-			/>
-			<rect className="fill-brand" x="33" y="27" width="12" height="2.8" rx="1.4" />
-			<rect
-				className="fill-brand-muted"
-				x="33"
-				y="32"
-				width="10"
-				height="2.2"
-				rx="1.1"
-			/>
-			<rect
-				className="fill-brand-muted"
-				x="33"
-				y="36"
-				width="8"
-				height="2.2"
-				rx="1.1"
-			/>
-			<rect
-				className="fill-brand-muted"
-				x="19"
-				y="41"
-				width="11"
-				height="2"
-				rx="1"
-			/>
-			<rect
-				className="fill-brand-muted"
-				x="19"
-				y="45"
-				width="8"
-				height="2"
-				rx="1"
-			/>
-			<rect
-				className="fill-brand-muted"
-				x="33"
-				y="41"
-				width="12"
-				height="2"
-				rx="1"
-			/>
-			<rect
-				className="fill-brand-muted"
-				x="33"
-				y="45"
-				width="9"
-				height="2"
-				rx="1"
-			/>
-		</>
-	),
-	outlineNewspaper: (
-		<>
-			<path
-				className="fill-brand-muted"
-				d="M51 6.5 52.8 10.5 56.8 12.3 52.8 14.1 51 18.1 49.2 14.1 45.2 12.3 49.2 10.5z"
-			/>
-			<rect className="fill-brand" x="11" y="11" width="42" height="44" rx="6" />
-			<path
-				className="stroke-brand-muted"
-				d="M49 16v38a4 4 0 0 1-4 4H16"
-				fill="none"
-				strokeWidth="2.5"
-			/>
-			<rect className="fill-on-brand" x="15" y="15" width="34" height="36" rx="4" />
-			<rect className="fill-brand" x="19" y="19" width="26" height="5" rx="1.5" />
-			<rect
-				className="fill-brand-muted"
-				x="19"
-				y="27"
-				width="12"
-				height="11"
-				rx="2"
-			/>
-			<rect className="fill-brand" x="33" y="27" width="12" height="2.8" rx="1.4" />
-			<rect
-				className="fill-brand-muted"
-				x="33"
-				y="32"
-				width="10"
-				height="2.2"
-				rx="1.1"
-			/>
-			<rect
-				className="fill-brand-muted"
-				x="33"
-				y="36"
-				width="8"
-				height="2.2"
-				rx="1.1"
-			/>
-			<rect
-				className="fill-brand-muted"
-				x="19"
-				y="41"
-				width="11"
-				height="2"
-				rx="1"
-			/>
-			<rect
-				className="fill-brand-muted"
-				x="19"
-				y="45"
-				width="8"
-				height="2"
-				rx="1"
-			/>
-			<rect
-				className="fill-brand-muted"
-				x="33"
-				y="41"
-				width="12"
-				height="2"
-				rx="1"
-			/>
-			<rect
-				className="fill-brand-muted"
-				x="33"
-				y="45"
-				width="9"
-				height="2"
-				rx="1"
-			/>
-		</>
-	),
+	news: newspaper,
+	outlineNewspaper: newspaper,
 	users: (
 		<>
-			<path
-				className="fill-brand-muted"
-				d="M53 7.5 54.8 11.5 58.8 13.3 54.8 15.1 53 19.1 51.2 15.1 47.2 13.3 51.2 11.5z"
+			<Spark x={53} y={11} />
+			<Spark x={10} y={16} scale={0.7} />
+			<Blob as="circle" tone="soft" cx="17" cy="27" r="6.5" round={2} />
+			<Blob
+				as="path"
+				tone="soft"
+				d="M5 54c0-8 5-13 12-13 2.8 0 5 .8 7 2.6-1.8 2.8-3 6.4-3 10.4v1H7a2 2 0 0 1-2-2Z"
+				round={2}
 			/>
-			<path
-				className="fill-brand-muted"
-				d="M11 13.5 12.2 16 14.7 17.2 12.2 18.4 11 20.9 9.8 18.4 7.3 17.2 9.8 16z"
+			<Blob as="circle" tone="soft" cx="47" cy="27" r="6.5" round={2} />
+			<Blob
+				as="path"
+				tone="soft"
+				d="M59 54c0-8-5-13-12-13-2.8 0-5 .8-7 2.6 1.8 2.8 3 6.4 3 10.4v1h16a2 2 0 0 0 2-2Z"
+				round={2}
 			/>
-			<circle className="fill-brand-muted" cx="19" cy="24" r="7.5" />
-			<path
-				className="fill-brand-muted"
-				d="M6 53c0-9 6-15 14-15 3.5 0 6.5 1.2 8.8 3.5-2.2 3.2-3.8 7.3-3.8 12.5v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2Z"
+			<Blob as="circle" ring cx="32" cy="21" r="9" />
+			<Blob
+				as="path"
+				ring
+				d="M15 54c0-10 7-17 17-17s17 7 17 17a3 3 0 0 1-3 3H18a3 3 0 0 1-3-3Z"
 			/>
-			<circle className="fill-brand-muted" cx="45" cy="24" r="7.5" />
-			<path
-				className="fill-brand-muted"
-				d="M58 53c0-9-6-15-14-15-3.5 0-6.5 1.2-8.8 3.5 2.2 3.2 3.8 7.3 3.8 12.5v1a2 2 0 0 0 2 2h15a2 2 0 0 0 2-2Z"
-			/>
-			<circle
-				className="fill-brand stroke-surface"
-				strokeWidth="3"
-				cx="32"
-				cy="19"
-				r="10"
-			/>
-			<path
-				className="fill-brand stroke-surface"
-				strokeWidth="3"
-				d="M14 55c0-10.5 8-18 18-18s18 7.5 18 18a3 3 0 0 1-3 3H17a3 3 0 0 1-3-3Z"
-			/>
-			<path
-				className="stroke-on-brand"
-				d="M28 42c1.5 2 2.5 3 4 3s2.5-1 4-3"
-				fill="none"
-				strokeWidth="2.2"
-				strokeLinecap="round"
-			/>
+			<Shine cx={28} cy={18} rx={1.6} ry={3} rotate={18} />
 		</>
 	),
 	consent: (
 		<>
-			<path
-				className="fill-brand-muted"
-				d="M53 6.5 54.8 10.5 58.8 12.3 54.8 14.1 53 18.1 51.2 14.1 47.2 12.3 51.2 10.5z"
+			<Spark x={54} y={9} />
+			<Blob
+				as="path"
+				d="M30 7 48 13v14c0 11-7 20-18 25C19 47 12 38 12 27V13Z"
+				round={4}
 			/>
-			<path
-				className="fill-brand"
-				d="M28 6 47 12.5V28c0 12.5-8 21.5-19 27C17 49.5 9 40.5 9 28V12.5Z"
-			/>
-			<path className="fill-brand-muted" d="M28 6v49C17 49.5 9 40.5 9 28V12.5Z" />
-			<circle
-				className="fill-brand-hover stroke-surface"
-				strokeWidth="3"
-				cx="47"
-				cy="46"
-				r="11"
-			/>
-			<path
-				className="stroke-on-brand"
-				d="m42 46 3.6 3.7 6.6-7.4"
-				fill="none"
-				strokeWidth="2.6"
-				strokeLinecap="round"
-				strokeLinejoin="round"
-			/>
+			<Shine cx={20} cy={22} rx={2} ry={6} rotate={8} />
+			<Badge cx={47} cy={46}>
+				<path
+					className="stroke-on-brand"
+					d="m42.2 46 3.4 3.5 6.2-7"
+					fill="none"
+					strokeWidth="2.6"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+				/>
+			</Badge>
 		</>
 	),
 	unavailable: (
 		<>
-			<path
-				className="fill-brand-muted"
-				d="M54 5.5 55.8 9.5 59.8 11.3 55.8 13.1 54 17.1 52.2 13.1 48.2 11.3 52.2 9.5z"
-			/>
-			<rect className="fill-brand" x="6" y="14" width="46" height="40" rx="7" />
-			<rect className="fill-on-brand" x="10" y="18" width="38" height="32" rx="4" />
+			<Spark x={54} y={9} />
+			<Blob as="rect" x="8" y="14" width="44" height="38" rx="8" round={4} />
+			<rect className="fill-on-brand" x="13" y="19" width="34" height="28" rx="4" />
 			<rect
 				className="fill-brand-muted"
-				x="16"
-				y="25"
-				width="26"
+				x="18"
+				y="26"
+				width="24"
 				height="4"
 				rx="2"
 			/>
 			<rect
 				className="fill-brand-muted"
-				x="16"
-				y="34"
-				width="18"
+				x="18"
+				y="35"
+				width="15"
 				height="4"
 				rx="2"
 			/>
-			<circle
-				className="fill-brand-hover stroke-surface"
-				strokeWidth="3"
-				cx="49"
-				cy="47"
-				r="10"
-			/>
-			<path
-				className="stroke-on-brand"
-				d="M44.5 47h9"
-				fill="none"
-				strokeWidth="2.6"
-				strokeLinecap="round"
-			/>
+			<Badge cx={49} cy={46}>
+				<path
+					className="stroke-on-brand"
+					d="M44.5 46h9"
+					fill="none"
+					strokeWidth="2.8"
+					strokeLinecap="round"
+				/>
+			</Badge>
 		</>
 	),
 	folder: (
 		<>
-			<path
-				className="fill-brand-muted"
-				d="M54 5.5 55.8 9.5 59.8 11.3 55.8 13.1 54 17.1 52.2 13.1 48.2 11.3 52.2 9.5z"
+			<Spark x={54} y={10} />
+			<Blob
+				as="path"
+				tone="deep"
+				d="M9 21a5 5 0 0 1 5-5h10l5 5h21a5 5 0 0 1 5 5v21H9Z"
+				round={3}
 			/>
-			<path
-				className="fill-brand"
-				d="M6 19a5 5 0 0 1 5-5h12l5 5h21a5 5 0 0 1 5 5v23a5 5 0 0 1-5 5H11a5 5 0 0 1-5-5Z"
-			/>
-			<rect className="fill-on-brand" x="10" y="25" width="40" height="23" rx="3" />
+			<rect className="fill-on-brand" x="15" y="24" width="34" height="18" rx="3" />
 			<rect
 				className="fill-brand-muted"
-				x="16"
-				y="31"
-				width="20"
-				height="3"
-				rx="1.5"
-			/>
-			<rect
-				className="fill-brand-muted"
-				x="16"
-				y="38"
-				width="13"
-				height="3"
-				rx="1.5"
-			/>
-		</>
-	),
-	search: (
-		<>
-			<path
-				className="fill-brand-muted"
-				d="M13 5.5 14.8 9.5 18.8 11.3 14.8 13.1 13 17.1 11.2 13.1 7.2 11.3 11.2 9.5z"
-			/>
-			<rect className="fill-brand" x="12" y="14" width="34" height="42" rx="6" />
-			<rect className="fill-on-brand" x="16" y="18" width="26" height="34" rx="3" />
-			<rect
-				className="fill-brand-muted"
-				x="21"
-				y="24"
+				x="20"
+				y="29"
 				width="16"
 				height="3"
 				rx="1.5"
 			/>
 			<rect
 				className="fill-brand-muted"
-				x="21"
-				y="31"
+				x="20"
+				y="35"
 				width="10"
 				height="3"
 				rx="1.5"
 			/>
-			<circle
-				className="fill-on-brand stroke-brand"
-				cx="42"
-				cy="40"
-				r="9"
-				strokeWidth="4"
+			<Blob
+				as="path"
+				d="M8 32a5 5 0 0 1 5-5h38a5 5 0 0 1 5 5v16a5 5 0 0 1-5 5H13a5 5 0 0 1-5-5Z"
+				round={3}
+			/>
+			<Shine cx={15} cy={39} rx={1.6} ry={4.5} />
+		</>
+	),
+	search: (
+		<>
+			<Spark x={10} y={9} />
+			<Blob as="rect" x="12" y="12" width="32" height="40" rx="7" round={4} />
+			<rect className="fill-on-brand" x="17" y="17" width="22" height="30" rx="3" />
+			<rect
+				className="fill-brand-muted"
+				x="21"
+				y="23"
+				width="14"
+				height="3"
+				rx="1.5"
+			/>
+			<rect
+				className="fill-brand-muted"
+				x="21"
+				y="30"
+				width="14"
+				height="3"
+				rx="1.5"
+			/>
+			<rect
+				className="fill-brand-muted"
+				x="21"
+				y="37"
+				width="8"
+				height="3"
+				rx="1.5"
 			/>
 			<path
-				className="stroke-brand"
-				d="m48.5 46.5 7 7"
+				className="stroke-brand-hover"
+				d="m50 47 7 7"
 				fill="none"
-				strokeWidth="5"
+				strokeWidth="6.5"
 				strokeLinecap="round"
 			/>
+			<circle
+				className="fill-on-brand stroke-brand-hover"
+				cx="44"
+				cy="41"
+				r="9"
+				strokeWidth="5"
+			/>
+			<Shine cx={40} cy={38} rx={1.4} ry={3} rotate={30} />
 		</>
 	),
 } satisfies Record<string, ReactElement>
@@ -709,13 +674,29 @@ interface EmptyArtProps {
 }
 
 export function EmptyArt({ name, className }: EmptyArtProps) {
+	const glossId = `art-gloss-${useId().replace(/:/g, '')}`
+
 	return (
 		<svg
 			viewBox="0 0 64 64"
 			aria-hidden="true"
 			className={cn('size-14 shrink-0', className)}
 		>
-			{arts[name]}
+			<defs>
+				<linearGradient id={glossId} x1="0" y1="0" x2="0" y2="1">
+					<stop offset="0" stopColor="white" stopOpacity="0.5" />
+					<stop offset="0.7" stopColor="white" stopOpacity="0" />
+				</linearGradient>
+			</defs>
+			<ellipse
+				className="fill-fg-muted"
+				opacity="0.16"
+				cx="32"
+				cy="60"
+				rx="17"
+				ry="2.6"
+			/>
+			<GlossContext.Provider value={glossId}>{arts[name]}</GlossContext.Provider>
 		</svg>
 	)
 }

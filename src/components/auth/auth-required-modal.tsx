@@ -1,8 +1,6 @@
 import { callEvent } from '@/common/utils/call-event'
 import { t } from '@/common/i18n'
-import { Modal } from '@/components/ui'
-import { Button } from '@/components/ui'
-import { Icon } from '@/icons'
+import { Button, EmptyArt, Modal } from '@/components/ui'
 
 interface AuthRequiredModalProps {
 	isOpen: boolean
@@ -41,9 +39,7 @@ export function AuthRequiredModal({
 			closeLabel={t('ui.common.close')}
 		>
 			<div className="flex flex-col items-center justify-between w-full h-56 pt-2 text-center">
-				<div className="relative flex items-center justify-center w-16 h-16 border shadow-sm rounded-2xl bg-surface-2 border-surface-3">
-					<Icon name="lock" className="relative text-2xl text-brand" />
-				</div>
+				<EmptyArt name="lock" className="size-20" />
 
 				<div className="flex flex-col items-center gap-1.5 px-2">
 					<h3 className="text-base font-semibold text-fg">{resolvedTitle}</h3>

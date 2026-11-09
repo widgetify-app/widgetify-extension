@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
 import { getFromStorage } from '@/common/storage'
@@ -39,6 +40,14 @@ export function useGetNotifications() {
 		queryFn: fetchNotifications,
 		staleTime: 5 * 60 * 1000, // 5 minutes
 	})
+}
+
+export function useCloseableNotificationCount(): number {
+	const { data } = useGetNotifications()
+	return useMemo(
+		() => (data?.cards || []).filter((item) => item.closeable).length,
+		[data]
+	)
 }
 
 function without(data: NotificationsData, ids: ReadonlySet<string>): NotificationsData {

@@ -110,7 +110,7 @@ export function NotificationCenter({ hasBorder }: Prop = { hasBorder: true }) {
 	}
 
 	return (
-		<div className="flex flex-col gap-2">
+		<div className="flex flex-col gap-2.5">
 			{notifications.map((item, index) => (
 				<NotificationCardItem
 					notification={item}

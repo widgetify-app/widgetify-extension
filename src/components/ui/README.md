@@ -15,13 +15,13 @@ Presentational primitives. They know nothing about the app, the server or a feat
 | Form | `TextInput` (`variant="bare"` drops the field chrome for an input set inside a card of its own), `SelectBox`, `ToggleSwitch`, `Slider`, `DatePicker`, `ColorPicker` (`className` and `style` restyle its trigger, such as a round swatch) |
 | Menu | `Dropdown` with `DropdownItem` and `DropdownDivider`; `PopoverMenu` with `PopoverMenuItem` (an optional `description` adds a second line), `PopoverMenuHeader` and `PopoverMenuDivider`. `PopoverMenu` measures itself and opens above its anchor when there is no room below (`utils/menu-position.ts`); arrow keys move between its buttons and Escape returns focus to the trigger. A `Dropdown` closes on a click outside it, including a click elsewhere in the modal it sits in; it stays open only for a click in a layer opened above it (`use-dropdown.ts`). |
 | Overlays | `BottomSheet`, `Portal`, `StackedToaster` |
-| Small marks | `Badge`, `NewBadge` (a pulsing dot for something new), `VipBadge`, `FloatingBadge` (a sticker on a corner), `AvatarComponent`, `Kbd`, `ProgressRing` |
+| Small marks | `Badge`, `NewBadge` (a pulsing dot for something new), `CountBadge` (a red pill with a count, `+۱۰` from ten up), `VipBadge`, `FloatingBadge` (a sticker on a corner), `AvatarComponent`, `Kbd`, `ProgressRing` |
 | Layout helpers | `SectionPanel` (an optional `action` sits at the end of its header), `SettingsGroup` (a small title over a card) with `SettingRow` (label, short hint and a control on one line, no dividers), `TabNavigation`, `ItemSelector`, `ImageSlider` |
 | Picking from a grid | `Tile`: a card with a picture on top and a title row (`bare` drops the row). `aspect` is `video`, `wide` or `short`; `selected` rings it; `actions` show on hover |
 | A row that scrolls sideways | `ScrollRow`, with previous and next buttons that appear only when there is more to see |
 | A one-time intro card | `Coachmark`: an optional 5:2 picture, a title, a line, then one footer row with optional step dots, optional short content (such as key hints) and the actions. Keep it short: it often sits in a modal with a fixed height. It has a pointer at its top start edge; the caller positions it. Pair it with `useFeatureIntro` |
 | Nothing to show | `EmptyState`: an icon, a line, an optional second line and an optional action |
-| A coloured picture for an empty widget | `EmptyArt` (`tasks`, `habits`, `notes`, `photo`, `photoError`, `account`, `allCaughtUp`, `target`, `calendar`, `coin`, `news`, `users`, `consent`, `unavailable`, `folder`, `search`): a 64 by 64 SVG with no background, drawn only with token classes so it follows the theme. `isEmptyArtName` tells it apart from an icon name; the widget empty state takes either as `art` |
+| A coloured picture for an empty widget | `EmptyArt` (`lock`, `tasks`, `habits`, `notes`, `photo`, `photoError`, `account`, `allCaughtUp`, `target`, `calendar`, `coin`, `news`, `users`, `consent`, `unavailable`, `folder`, `search`): a 64 by 64 SVG in the soft style of the push bell: chubby rounded shapes, a white gloss gradient, a highlight and a ground shadow. Colours are token classes only, so it follows the theme. `isEmptyArtName` tells it apart from an icon name; the widget empty state takes either as `art` |
 
 Look here before writing any UI. If a component other areas would reuse is missing, build it here, not inside a feature.
 
@@ -35,6 +35,7 @@ Look here before writing any UI. If a component other areas would reuse is missi
 - **A decorative icon** takes `aria-hidden`. `Spinner` announces itself as a status, so pass `aria-hidden` when the text beside it already says "loading".
 - **Focus** uses `focus-visible:focus-ring`.
 - **Loading** is `Spinner` only. `animate-spin` appears nowhere else.
+- **Illustrations are cute.** A coloured picture is always in the soft style of `src/assets/images/push/bell.svg`: chubby rounded shapes, gloss, a highlight and a ground shadow. Build new ones in `illustrations/illustrations.tsx` with `Blob`, `Shine` and `Spark`.
 - **No app knowledge.** A primitive never imports `@/services` and never reads a feature type.
 - Tests: `architecture.test.ts` ("name each components/ui folder after its entry file") and `design-system.test.ts` ("spins only through Spinner or Icon spin").
 

@@ -17,7 +17,7 @@ export function NotificationCard({
 	return (
 		<div
 			className={cn(
-				'relative flex gap-3 p-3 border rounded-2xl border-line transition-ui',
+				'relative flex gap-3 p-3.5 border rounded-2xl border-line transition-ui',
 				isInteractive && 'cursor-pointer hover:bg-fill active:scale-[0.99]',
 				className
 			)}

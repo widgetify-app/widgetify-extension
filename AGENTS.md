@@ -28,6 +28,7 @@ Breaking one means the work is rejected.
 | **Every feature sends analytics events** | A new feature or a new user action ships with `Analytics.event` calls: opening it, the main action, and its failure. Name them `<feature>_<what_happened>` and add each to `ANALYTICS_EVENTS` in `data-names.test.ts`. Full rules in `src/common/README.md`. |
 | **No opportunistic changes** | Touch only what the task needs. Mention anything else you saw; do not fix it unless asked. |
 | **Design before UI** | A new feature that has UI starts with a design, and the owner approves it before you write any UI code. Put the approved boards in `design/<feature>/` (`design/README.md`) and build what they show. No approval, no UI code. |
+| **Cute illustrations** | Every coloured picture follows the soft style of `src/assets/images/push/bell.svg`: chubby rounded shapes, a white gloss on top, a highlight spot, a ground shadow, and a sparkle or two. A new `EmptyArt` goes in `src/components/ui/illustrations` through its `Blob`, `Shine` and `Spark` helpers, with token colours only. Never a flat, sharp or outline picture where a coloured one is wanted. |
 
 ## 3. The workflow
 

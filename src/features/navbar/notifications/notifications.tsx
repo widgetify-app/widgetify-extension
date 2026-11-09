@@ -1,7 +1,7 @@
-import { useMemo } from 'react'
-import { Button, Dropdown, NewBadge } from '@/components/ui'
+import { Button, CountBadge, Dropdown } from '@/components/ui'
 import { Icon } from '@/icons'
 import {
+	useCloseableNotificationCount,
 	useGetNotifications,
 	useMarkAllAsSeen,
 } from '@/services/extension/get-notifications.hook'
@@ -16,10 +16,8 @@ export { IslandNotification } from './components/island-notification'
 export function NotificationNavbar() {
 	const { data: notificationsData } = useGetNotifications()
 
-	const hasCloseableNotifications = useMemo(() => {
-		const cardItems = notificationsData?.cards || []
-		return cardItems.some((item) => item.closeable)
-	}, [notificationsData])
+	const closeableCount = useCloseableNotificationCount()
+	const hasCloseableNotifications = closeableCount > 0
 
 	const { mutateAsync: markAllAsSeen } = useMarkAllAsSeen()
 
@@ -35,6 +33,7 @@ export function NotificationNavbar() {
 	return (
 		<Dropdown
 			maxHeight="420px"
+			offset={16}
 			dropdownClassName="w-80 sm:w-96 rounded-2xl"
 			trigger={
 				<NavIconButton
@@ -47,12 +46,14 @@ export function NotificationNavbar() {
 					}
 					onClick={handleOpen}
 				>
-					{hasCloseableNotifications && <NewBadge className="top-1 right-1" />}
+					{hasCloseableNotifications && (
+						<CountBadge count={closeableCount} className="top-0 right-0" />
+					)}
 				</NavIconButton>
 			}
 		>
 			<div className="flex flex-col w-80 sm:w-96 bg-glass-surface-2" dir="rtl">
-				<div className="sticky top-0 z-10 flex items-center justify-between px-3.5 pt-3 pb-2 shrink-0">
+				<div className="sticky top-0 z-10 flex items-center justify-between px-4 pt-4 pb-2.5 shrink-0">
 					<div className="flex items-center gap-2 text-fg-strong">
 						<Icon name="notification" size={16} />
 						<span className="text-sm font-bold">
@@ -72,7 +73,7 @@ export function NotificationNavbar() {
 					)}
 				</div>
 
-				<div className="flex-1 px-3 pt-1 pb-3 overflow-y-auto min-h-48 max-h-80 overscroll-contain">
+				<div className="flex-1 px-4 pt-1 pb-4 overflow-y-auto min-h-48 max-h-80 overscroll-contain">
 					<NotificationCenter hasBorder={true} />
 				</div>
 			</div>
