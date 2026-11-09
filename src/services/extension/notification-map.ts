@@ -86,3 +86,33 @@ export function buildNotifications(
 				: null,
 	}
 }
+
+export const MARK_ALL_BATCH = 100
+
+interface MarkAllPlan {
+	inbox: string[][]
+	broadcasts: string[][]
+}
+
+function batches(ids: string[]): string[][] {
+	const result: string[][] = []
+
+	for (let start = 0; start < ids.length; start += MARK_ALL_BATCH) {
+		result.push(ids.slice(start, start + MARK_ALL_BATCH))
+	}
+
+	return result
+}
+
+export function planMarkAll(cards: NotificationItem[]): MarkAllPlan {
+	const closeable = cards.filter((card) => card.closeable && card.id)
+	const idsOf = (source: 'inbox' | 'broadcast') =>
+		closeable
+			.filter((card) => (card.source === 'inbox') === (source === 'inbox'))
+			.map((card) => card.id as string)
+
+	return {
+		inbox: batches(idsOf('inbox')),
+		broadcasts: batches(idsOf('broadcast')),
+	}
+}

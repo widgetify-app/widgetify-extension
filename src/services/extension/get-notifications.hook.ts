@@ -3,8 +3,9 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { extensionKeys } from '@/services/extension/extension.keys'
-import { buildNotifications } from './notification-map'
+import { buildNotifications, planMarkAll } from './notification-map'
 import type {
+	NotificationItem,
 	NotificationsData,
 	RawInboxItem,
 	RawSurfaces,
@@ -111,6 +112,67 @@ export function useNotifyAsSeen() {
 			queryClient.invalidateQueries({
 				queryKey: extensionKeys.notifications,
 			})
+		},
+		mutationKey: extensionKeys.seenNotification,
+	})
+}
+
+export function useMarkAllAsSeen() {
+	const queryClient = useQueryClient()
+
+	return useMutation({
+		mutationFn: async (cards: NotificationItem[]) => {
+			const client = getMainClient()
+			const token = await getFromStorage('auth_token')
+			const plan = planMarkAll(cards)
+
+			if (!token) {
+				const ids = [...plan.inbox, ...plan.broadcasts].flat()
+				const dismissed = (await getFromStorage('dismissed_notifications')) ?? []
+
+				await setToStorage('dismissed_notifications', [...dismissed, ...ids])
+				return
+			}
+
+			await Promise.all([
+				...plan.inbox.map((ids) =>
+					client.post('/v2/notifications/read', { ids })
+				),
+				...plan.broadcasts.map((ids) =>
+					client.post('/v2/notifications/surfaces/dismiss', { ids })
+				),
+			])
+		},
+		onMutate: async (cards: NotificationItem[]) => {
+			await queryClient.cancelQueries({ queryKey: extensionKeys.notifications })
+			const previous = queryClient.getQueryData<NotificationsData>(
+				extensionKeys.notifications
+			)
+
+			if (previous) {
+				const plan = planMarkAll(cards)
+				const marked = new Set([...plan.inbox, ...plan.broadcasts].flat())
+
+				const updated: NotificationsData = {
+					...previous,
+					cards: previous.cards.filter(
+						(item) => !marked.has(item.id as string)
+					),
+				}
+
+				queryClient.setQueryData(extensionKeys.notifications, updated)
+				await setToStorage('inbox', updated)
+			}
+
+			return { previous }
+		},
+		onError: (_err, _cards, context) => {
+			if (context?.previous) {
+				queryClient.setQueryData(extensionKeys.notifications, context.previous)
+			}
+		},
+		onSettled: () => {
+			queryClient.invalidateQueries({ queryKey: extensionKeys.notifications })
 		},
 		mutationKey: extensionKeys.seenNotification,
 	})

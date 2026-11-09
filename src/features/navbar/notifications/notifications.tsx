@@ -3,7 +3,7 @@ import { Button, Dropdown, NewBadge } from '@/components/ui'
 import { Icon } from '@/icons'
 import {
 	useGetNotifications,
-	useNotifyAsSeen,
+	useMarkAllAsSeen,
 } from '@/services/extension/get-notifications.hook'
 import { NotificationCenter } from '@/features/navbar/notifications/components/notification-center'
 import Analytics from '@/analytics'
@@ -21,15 +21,11 @@ export function NotificationNavbar() {
 		return cardItems.some((item) => item.closeable)
 	}, [notificationsData])
 
-	const { mutateAsync: notifyAsSeen } = useNotifyAsSeen()
+	const { mutateAsync: markAllAsSeen } = useMarkAllAsSeen()
 
 	const handleMarkAllRead = async () => {
-		const ids = (notificationsData?.cards || [])
-			.filter((item) => item.closeable && item.id)
-			.map((item) => item.id as string)
-
 		Analytics.event('notifications_mark_all_read')
-		await safeAwait(Promise.all(ids.map((id) => notifyAsSeen(id))))
+		await safeAwait(markAllAsSeen(notificationsData?.cards || []))
 	}
 
 	const handleOpen = () => {

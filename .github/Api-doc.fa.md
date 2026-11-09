@@ -97,6 +97,7 @@
 | `GET /v2/notifications/surfaces` | خیر | | `{ data: { inbox: [], island, dialog } }`، کارت‌ها، جزیره و دیالوگ اطلاعیه‌ها |
 | `POST /v2/notifications/read` | بله | `{ ids: string[] }` | |
 | `POST /v2/notifications/surfaces/{id}/dismiss` | بله | | |
+| `POST /v2/notifications/surfaces/dismiss` | بله | `{ ids: string[] }` (۱ تا ۱۰۰) | `{ data: { dismissed } }`، برای «خواندن همه» |
 
 **پروفایل.** `GET /extension/@me` یک `UserProfile` برمی‌گرداند (`src/services/user/user-service.hook.ts`). فیلدهای اصلی: `name`، `avatar`، `username?`، `email?`، `phone?`، `verified`، `isVip?`، `vipExpiresAt?`، `coins`، `gender`، `birthDate`، `timeZone`، `font`، `theme?`، `wallpaper`، `city?` (`{ id, name }`)، `occupation`، `interests`، `connections` (شناسه‌ی پلتفرم‌ها)، `friendshipStats` (`{ accepted, pending }`)، `badges`، `isProfileCompleted`، `hasTodayMood`، `searchAutocompleteEnabled` و `isBirthdayToday`.
 

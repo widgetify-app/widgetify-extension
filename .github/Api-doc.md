@@ -97,6 +97,7 @@ Source: `src/services/user`, `src/services/extension`, `src/services/profile`, `
 | `GET /v2/notifications/surfaces` | no | | `{ data: { inbox: [], island, dialog } }`, broadcast cards, one island and one dialog |
 | `POST /v2/notifications/read` | yes | `{ ids: string[] }` | |
 | `POST /v2/notifications/surfaces/{id}/dismiss` | yes | | |
+| `POST /v2/notifications/surfaces/dismiss` | yes | `{ ids: string[] }` (1 to 100) | `{ data: { dismissed } }`, used by «mark all as read» |
 
 **The profile.** `GET /extension/@me` answers a `UserProfile` (`src/services/user/user-service.hook.ts`). The main fields: `name`, `avatar`, `username?`, `email?`, `phone?`, `verified`, `isVip?`, `vipExpiresAt?`, `coins`, `gender`, `birthDate`, `timeZone`, `font`, `theme?`, `wallpaper`, `city?` (`{ id, name }`), `occupation`, `interests`, `connections` (platform ids), `friendshipStats` (`{ accepted, pending }`), `badges`, `isProfileCompleted`, `hasTodayMood`, `searchAutocompleteEnabled` and `isBirthdayToday`.
 
