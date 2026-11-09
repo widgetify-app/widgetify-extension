@@ -58,7 +58,7 @@ export function ProfileCardTrigger({
 				width={CARD_WIDTH}
 				reserveHeight={CARD_HEIGHT}
 				bottomGap={CARD_BOTTOM_GAP}
-				className="p-0 overflow-hidden"
+				className="p-0 overflow-hidden bg-glass-modal"
 			>
 				{isOpen && (
 					<ProfileCard

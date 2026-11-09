@@ -1,9 +1,13 @@
-import { callEvent } from '@/common/utils/call-event'
 import { useState } from 'react'
 import Analytics from '@/analytics'
+import { callEvent } from '@/common/utils/call-event'
 import type { NotificationItem } from '@/services/extension/get-notifications.hook'
 import { Icon } from '@/icons'
 import { t } from '@/common/i18n'
+import { openResolvedLink } from '@/common/utils/open-link'
+import { resolveLink } from '@/common/utils/resolve-link'
+import { bodyPlainText } from '@/common/utils/notification-body'
+import { RichBody } from '@/components/rich-body'
 import { NotificationCard, NotificationCloseButton } from './notification-card'
 
 const CHARACTER_LIMIT = 85
@@ -21,10 +25,8 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 		closeable,
 		id,
 		description,
-		target,
-		goTo,
-		type,
 		titleDecoration,
+		groupCount,
 		createdAt,
 	} = prop.notification
 
@@ -37,18 +39,16 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 		Analytics.event('notifications_toggle_expand')
 	}
 
-	const shouldShowReadMore = description && description.length > CHARACTER_LIMIT
-	const isText = type === 'text'
-	const isAction = !link && (type === 'page' || type === 'action')
+	const shouldShowReadMore =
+		description && bodyPlainText(description).length > CHARACTER_LIMIT
+	const resolved = resolveLink(link)
+	const isText = !resolved
 
 	const handleAction = () => {
-		if (type === 'page' && goTo) {
-			callEvent('go_to_page', goTo as any)
-			Analytics.event('notifications_page')
-		} else if (type === 'action') {
-			callEvent(goTo as any, target as any)
-			Analytics.event('notifications_action')
-		}
+		if (resolved?.kind !== 'internal') return
+
+		openResolvedLink(resolved)
+		Analytics.event('notifications_link_open')
 		callEvent('closeAllDropdowns')
 	}
 
@@ -66,34 +66,33 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 			}).format(new Date(createdAt))
 		: null
 
-	return (
+	const card = (
 		<NotificationCard isInteractive={!isText} className={prop.className}>
-			{icon && (
-				<div className="grid self-start rounded-xl shrink-0 size-9 place-items-center bg-fill">
-					{icon.startsWith('http') ? (
-						<img
-							src={icon}
-							alt=""
-							className="object-contain rounded-sm size-5"
-						/>
-					) : (
-						<span className="text-lg leading-none">{icon}</span>
-					)}
-				</div>
-			)}
+			{icon &&
+				(icon.startsWith('http') ? (
+					<img
+						src={icon}
+						alt=""
+						className="object-contain self-start rounded-sm shrink-0 size-6 mt-0.5"
+					/>
+				) : (
+					<span className="self-start text-xl leading-none shrink-0 mt-0.5">
+						{icon}
+					</span>
+				))}
 
 			<div className="flex-1 min-w-0 space-y-1">
 				<h4 className="text-sm font-bold text-fg-strong" style={headTitleStyle}>
-					{link ? (
+					{resolved?.kind === 'external' ? (
 						<a
-							href={link}
+							href={resolved.url}
 							target="_blank"
 							rel="noopener noreferrer"
 							className="after:absolute after:inset-0 after:rounded-2xl focus-visible:focus-ring"
 						>
 							{title}
 						</a>
-					) : isAction ? (
+					) : resolved ? (
 						<button
 							type="button"
 							onClick={handleAction}
@@ -108,11 +107,10 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 
 				{description && (
 					<div>
-						<p
-							className={`text-2xs font-medium text-fg-muted leading-relaxed whitespace-pre-wrap wrap-break-word ${!isExpanded && shouldShowReadMore ? 'line-clamp-2' : ''}`}
-						>
-							{description}
-						</p>
+						<RichBody
+							text={description}
+							className={`text-2xs font-medium text-fg-muted leading-relaxed ${!isExpanded && shouldShowReadMore ? 'line-clamp-2' : ''}`}
+						/>
 
 						{shouldShowReadMore && (
 							<button
@@ -142,5 +140,21 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 				<NotificationCloseButton onClick={(e) => prop.onClose(e, id)} />
 			)}
 		</NotificationCard>
+	)
+
+	if (!groupCount || groupCount < 2) return card
+
+	return (
+		<div className="relative mb-3">
+			<div
+				aria-hidden="true"
+				className="absolute inset-x-2.5 -bottom-1.5 h-3.5 border border-t-0 rounded-b-2xl border-line bg-fill"
+			/>
+			<div
+				aria-hidden="true"
+				className="absolute inset-x-5 -bottom-3 h-3.5 border border-t-0 rounded-b-xl border-line bg-fill opacity-70"
+			/>
+			{card}
+		</div>
 	)
 }

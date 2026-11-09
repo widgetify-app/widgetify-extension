@@ -1,5 +1,5 @@
 import { t } from '@/common/i18n'
-import { Kbd, SectionPanel } from '@/components/ui'
+import { Kbd, SettingRow, SettingsGroup } from '@/components/ui'
 import React from 'react'
 import { useEffect, useState } from 'react'
 
@@ -70,27 +70,19 @@ export function ShortcutsTab() {
 		{} as Record<string, Shortcut[]>
 	)
 	return (
-		<div className="flex flex-col gap-4" dir="rtl">
+		<div className="flex flex-col gap-5" dir="rtl">
 			{Object.entries(categories).map(([category, categoryShortcuts]) => (
-				<SectionPanel key={category} title={category} size="sm">
-					<div className="space-y-2">
-						{categoryShortcuts.map((shortcut) => (
-							<div
-								key={shortcut.id}
-								className="flex items-center justify-between gap-3 p-3 border rounded-xl border-surface-3"
-							>
-								<span className="text-sm text-fg">
-									{shortcut.description}
-								</span>
-								<div className="text-sm shrink-0" dir="ltr">
-									{formatShortcut(
-										isMac ? shortcut.macKey : shortcut.windowsKey
-									)}
-								</div>
+				<SettingsGroup key={category} title={category}>
+					{categoryShortcuts.map((shortcut) => (
+						<SettingRow key={shortcut.id} label={shortcut.description}>
+							<div className="text-sm shrink-0" dir="ltr">
+								{formatShortcut(
+									isMac ? shortcut.macKey : shortcut.windowsKey
+								)}
 							</div>
-						))}
-					</div>
-				</SectionPanel>
+						</SettingRow>
+					))}
+				</SettingsGroup>
 			))}
 		</div>
 	)

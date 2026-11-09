@@ -1,10 +1,11 @@
 import { t } from '@/common/i18n'
-import { SectionPanel, ToggleSwitch } from '@/components/ui'
+import { SettingRow, SettingsGroup, ToggleSwitch } from '@/components/ui'
 import { SelectCity } from '@/components/select-city'
 import { TimezoneSettings } from './components/timezone-settings'
 import { StorageUsage } from './components/storage-usage'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import Analytics from '@/analytics'
+import { PushSetting } from '@/features/push/push-setting'
 
 export function GeneralSettingTab() {
 	const { isOptimalMode, updateSetting } = useGeneralSetting()
@@ -15,28 +16,24 @@ export function GeneralSettingTab() {
 	}
 
 	return (
-		<div className="flex flex-col gap-4">
-			<SelectCity key={'selectCity'} />
-			<TimezoneSettings key="timezone" />
-			<SectionPanel
-				title={
-					<div className="flex items-center">
-						<p>{t('setting.general.liteModeLabel')}</p>
-					</div>
-				}
-				size="sm"
-			>
-				<div className="flex">
-					<p className="flex-1 ml-1 text-sm font-light leading-relaxed text-fg-muted">
-						{t('setting.general.liteModeHint')}
-					</p>
+		<div className="flex flex-col gap-5">
+			<SettingsGroup title={t('setting.general.groupPlace')}>
+				<SelectCity variant="row" />
+				<TimezoneSettings />
+			</SettingsGroup>
+			<SettingsGroup title={t('setting.general.groupBehavior')}>
+				<SettingRow
+					label={t('setting.general.liteModeLabel')}
+					hint={t('setting.general.liteModeHint')}
+				>
 					<ToggleSwitch
 						label={t('setting.general.liteModeLabel')}
 						enabled={isOptimalMode}
-						onToggle={() => toggleOptimal()}
+						onToggle={toggleOptimal}
 					/>
-				</div>
-			</SectionPanel>
+				</SettingRow>
+				<PushSetting />
+			</SettingsGroup>
 			<StorageUsage />
 		</div>
 	)

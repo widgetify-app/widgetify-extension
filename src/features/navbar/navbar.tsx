@@ -1,17 +1,10 @@
-import {
-	type JSX,
-	lazy,
-	Suspense,
-	useCallback,
-	useEffect,
-	useMemo,
-	useState,
-} from 'react'
+import { type JSX, lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { FriendsListNavbar } from './components/friends-navbar'
 import { LayoutDropdown } from './components/layout-dropdown'
 import { ProfileNav } from './profile/profile'
+import { PushHost } from '@/features/push/push'
 import { IslandNotification, NotificationNavbar } from './notifications/notifications'
 import { MarketModalListener } from './components/market-modal-listener'
 import { FriendLookModalListener } from '@/features/friends/friends'
@@ -22,13 +15,13 @@ import { useAuth } from '@/context/auth.context'
 import { useAppearance } from '@/context/appearance.context'
 import { BlurModeButton } from './components/blur-mode-button'
 import type { UserProfile } from '@/services/user/user-service.hook'
-import { NewBadge } from '@/components/ui'
+import { CountBadge } from '@/components/ui'
 import { useSyncAccount } from './hooks/use-sync-account'
 import { getCurrentDate } from '@/common/utils/date-events'
 import { useBirthdayConfetti } from './hooks/use-birthday-confetti'
 import { Icon } from '@/icons'
 import { GetUserFirstName } from './utils/get-firstname'
-import { useGetNotifications } from '@/services/extension/get-notifications.hook'
+import { useCloseableNotificationCount } from '@/services/extension/get-notifications.hook'
 import { t } from '@/common/i18n'
 
 const WIDGETIFY_URLS = {
@@ -125,12 +118,7 @@ export function NavbarLayout(): JSX.Element {
 		setHasOpenedSettings(true)
 	}, [])
 
-	const { data: notificationsData } = useGetNotifications()
-
-	const hasCloseableNotifications = useMemo(() => {
-		const cardItems = notificationsData?.widgetifyCard || []
-		return cardItems.some((item) => item.closeable)
-	}, [notificationsData])
+	const closeableCount = useCloseableNotificationCount()
 
 	const onToggleNavbar = () => {
 		if (isVisible) {
@@ -165,6 +153,7 @@ export function NavbarLayout(): JSX.Element {
 	return (
 		<>
 			<IslandNotification />
+			<PushHost />
 			<button
 				type="button"
 				onClick={() => onToggleNavbar()}
@@ -177,7 +166,9 @@ export function NavbarLayout(): JSX.Element {
 				}`}
 			>
 				<div className="w-10 h-1 mx-auto transition-[width] duration-200 rounded-full bg-fill-3 group-hover:w-12" />
-				{hasCloseableNotifications && <NewBadge className="-top-1 left-3" />}
+				{closeableCount > 0 && (
+					<CountBadge count={closeableCount} className="-top-2 left-2" />
+				)}
 			</button>
 
 			<div

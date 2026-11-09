@@ -81,7 +81,7 @@ export function GalleryBookmarkIconItem({
 			{loaded && !error && (
 				<>
 					{asset.title && (
-						<div className="absolute inset-x-1 bottom-1 px-1 py-0.5 rounded-lg bg-surface text-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-30 shadow-sm border border-line">
+						<div className="absolute inset-x-1 bottom-1 px-1 py-0.5 rounded-lg bg-glass-modal text-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-30 shadow-sm border border-line">
 							<span className="text-3xs font-medium text-fg truncate block">
 								{asset.title}
 							</span>

@@ -75,11 +75,11 @@ export function VipHeroBanner({ onOpenFeature }: VipHeroBannerProps) {
 						type="button"
 						aria-haspopup="dialog"
 						onClick={() => onOpenFeature(id)}
-						className="flex flex-col gap-3 p-4 text-start border cursor-pointer rounded-2xl border-surface-3 bg-surface-2 shadow-md transition-ui hover:border-brand-muted focus-visible:focus-ring"
+						className="flex flex-col gap-3 p-4 text-start border cursor-pointer rounded-2xl border-surface-3 bg-glass-modal shadow-md transition-ui hover:border-brand-muted focus-visible:focus-ring"
 					>
 						<span
 							aria-hidden="true"
-							className="relative flex items-center justify-center gap-1.5 overflow-hidden border h-14 rounded-xl border-surface-3 bg-surface"
+							className="relative flex items-center justify-center gap-1.5 overflow-hidden border h-14 rounded-xl border-surface-3 bg-surface-2"
 						>
 							<Art />
 						</span>

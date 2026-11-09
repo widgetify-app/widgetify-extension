@@ -24,6 +24,7 @@ whether it is opaque. Every rule below follows from that.
 | Colour classes use names `tokens.css` declares | "names only colours that tokens.css or the theme declare" |
 | No Tailwind palette colour (`bg-blue-500`) | "never uses a Tailwind palette colour" |
 | No opacity modifier on a colour (`bg-fill/50`) | "never puts an opacity modifier on a colour utility" |
+| A surface laid over other content is frosted | "are frosted, because glass and icy surfaces are nearly clear" |
 | No hex and no numeric `rgba()` in a class | "never writes a colour literal into a class", "never writes a numeric rgb() or rgba() into a class" |
 | `white` and `black` only where they depict something | "are written only where they depict something" |
 | No `dark:` or `light:` variants | "never uses the OS-keyed dark:/light: variants" |
@@ -104,7 +105,7 @@ are of the theme's own colour.
 **Text** — `fg-strong` 100 · `fg` 90 · `fg-muted` 70 · `fg-faint` 50 · `fg-ghost` 20.
 `fg-ghost` is for decoration and inactive icons, never for text someone has to read.
 
-**Surfaces** — what a thing sits on, all opaque except the veil.
+**Surfaces** — what a thing sits on. Opaque in the solid themes, and nearly clear in glass and icy (`surface-2` is 8 to 10% there). Never count on one to hide what is behind it; see "Glass".
 
 | token | for |
 |---|---|
@@ -167,6 +168,8 @@ theme's glass tint and blur in one that does: `bg-glass-surface-2` is a panel,
 same family (`hover:bg-glass-surface-3`), or glass themes swap the frost for the
 plain token on hover. `backdrop-glass` is the blur alone, for a surface whose
 children draw the background, and `bg-glass-modal` is the modal's heavier one.
+
+**A surface on top of other content is frosted.** Anything that overlaps another element or an image (a negative margin, `absolute`, `fixed`, a floating card, a tooltip, a badge on an edge) uses `bg-glass-modal`, or `bg-glass-<token>` when the thing behind it is only the wallpaper. Plain `bg-surface*` is for something sitting on a flat background. Do not hide a line or an element by painting a surface over it either: lay it out so the two never meet, like the «یا» row in `auth-form.tsx`, which is a line, the word and a line. The test catches `bg-surface*` in the same class list as `absolute`, `fixed`, `sticky` or a negative margin. It cannot see an overlap made by a parent, so check every overlap in glass and icy by eye. The flip clock's flaps are exempt: they last a moment and a backdrop filter is not safe on a 3D flap.
 
 A theme opts in with four variables: `--glass-bg` and `--glass-filter`, and
 `--glass-modal-bg` and `--glass-modal-filter`. Leave out any of them and that

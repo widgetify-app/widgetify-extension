@@ -12,6 +12,7 @@ The signed-in user's tasks from the server. Four sizes: 2x1, 2x3, and two PRO si
 | `variants/todo-4x3.tsx` | `TodoBoard`: `TodoListColumn` and `BoardSummary` (percent ring, done, pending, important). `layout="board"` (4x3) puts the summary beside the list; `layout="panel"` (2x6) stacks it above. Yadkar shows both, so two boards can share a page; the composer's input carries no fixed `id`. |
 | `components/todo-check.tsx` | The round check every size uses: the priority ring, filled when done. A button with `aria-pressed` and a label naming the task. |
 | `components/todo-item.tsx` | One row. `TodoCheck`, text, due label. Edit and delete replace the due label on row hover or focus. Clicking the text expands description, date, category and priority. |
+| `components/rich-text.tsx` | `RichText`: a description written with the phone's formatting (parsed by `../utils/rich-text.ts` in `widgets`), as React elements. Bold, italic, bullets, numbers and checklists; a checklist item shows a box that ticks in place: `todo-item.tsx` flips that line with `toggleChecklistItem` and saves the description through the same update as the check (`todo_checklist_toggled`). Links stay links. `dir="auto"` on paragraphs and items. `todo-item.tsx` uses it only when `isRichText` is true; a plain description keeps `NoteLinkRenderer`. |
 | `components/todo-filter-menu.tsx` | `TodoFilterMenu`, the header filter button and its popover (time, label, order). `TodoFilterChips`, one chip for each filter that is on, beside the board's title; a chip's × turns its filter off. |
 | `components/todo-form-modal.tsx` | The 2x1's modal: add, edit or delete a task with title, description, date, category and priority. |
 | `components/todo-form-tools.tsx` | The date and category dropdowns, shared by the modal and the composer. The category one searches, creates a new label, clears the task's label, and removes a label from every task after a confirmation. |
@@ -78,3 +79,7 @@ Loading, error and empty are separate screens. Only the 2x1 has a signed-out scr
 ## Not checked on screen
 
 Everything visual: the hover reveal, the filter popover position, the 2x1 modal and its dropdowns over the modal, the 2x1 header with four buttons, the 2x1 arrows and edit and delete. The composer on the 2x3, the board and the panel: growing into its card, save wrapping to a second line, editing a row in it, and a signed-out user saving. The board's chips with three filters on, under yadkar's tabs, and at the narrowest 4x3. On the panel: the summary strip at the narrowest canvas and a long list scrolling under it.
+
+## Description
+
+The description is edited with `RichTextField` in the form modal and in the composer, and saved as Markdown in the same `description` string. The row shows it through `RichText` (boxes tick in place); a plain description keeps `NoteLinkRenderer`.

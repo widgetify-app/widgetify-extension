@@ -40,6 +40,13 @@ export const widgets = {
 	'widgets.notes.field.bodyPlaceholder': 'هرچی میخوای اینجا بنویس',
 	'widgets.notes.field.bodyAria': 'متن یادداشت',
 
+	'widgets.richText.bold': 'پررنگ',
+	'widgets.richText.italic': 'کج',
+	'widgets.richText.bullets': 'فهرست نقطه‌ای',
+	'widgets.richText.numbers': 'فهرست شماره‌دار',
+	'widgets.richText.checklist': 'فهرست تیک‌دار',
+	'widgets.richText.toolbar': 'قالب‌بندی متن',
+
 	'widgets.pet.feed': 'غذا دادن',
 	'widgets.pet.aria': 'حیوان خانگی',
 	'widgets.pet.tip.feed': 'واسه غذا دادن، هر جای محیطش کلیک کن',

@@ -2,7 +2,6 @@
 export const NETWORK_FIRST_API_PATHS = [
 	'/date/events',
 	'/news/rss',
-	'/extension/notifications',
 	'/extension/searchbox',
 ]
 

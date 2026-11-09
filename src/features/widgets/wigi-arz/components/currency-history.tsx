@@ -121,12 +121,14 @@ export function CurrencyHistory({
 					</button>
 				</div>
 			) : chart ? (
-				<PriceChart
-					key={range}
-					chart={chart}
-					name={currency.name.fa}
-					showTime={range === '24h'}
-				/>
+				<div className="flex-1 min-w-0 -mx-0.5 md:-mx-1">
+					<PriceChart
+						key={range}
+						chart={chart}
+						name={currency.name.fa}
+						showTime={range === '24h'}
+					/>
+				</div>
 			) : (
 				<p className="px-5 text-xs text-center text-fg-faint">
 					{t('widgets.wigiArz.chart.empty')}

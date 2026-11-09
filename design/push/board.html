@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>پوش اعلان در افزونه</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;900&display=swap">
+<style>
+:root {
+  --ink: 70, 70, 71;
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+  --surface-3: #f1f5f9;
+  --fg-strong: #464647;
+  --fg: rgba(var(--ink), .9);
+  --fg-muted: rgba(var(--ink), .7);
+  --fg-faint: rgba(var(--ink), .5);
+  --fill: rgba(var(--ink), .05);
+  --fill-2: rgba(var(--ink), .1);
+  --line: rgba(var(--ink), .15);
+  --brand: #536dfe;
+  --brand-fill: rgba(83, 109, 254, .1);
+  --brand-fill-2: rgba(83, 109, 254, .2);
+  --danger: #ff627d;
+  --danger-fill: rgba(255, 98, 125, .1);
+  --stage: #aebbd6;
+  --board: #eef1f6;
+  --font: "Vazirmatn", "Vazir", Tahoma, system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink: 240, 240, 245;
+    --surface: #1c1f27; --surface-2: #232733; --surface-3: #2b3040;
+    --fg-strong: #f1f1f4; --stage: #3b4560; --board: #14161c;
+    --brand: #8da0ff; --brand-fill: rgba(141, 160, 255, .14); --brand-fill-2: rgba(141, 160, 255, .24);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ink: 240, 240, 245;
+  --surface: #1c1f27; --surface-2: #232733; --surface-3: #2b3040;
+  --fg-strong: #f1f1f4; --stage: #3b4560; --board: #14161c;
+  --brand: #8da0ff; --brand-fill: rgba(141, 160, 255, .14); --brand-fill-2: rgba(141, 160, 255, .24);
+  color-scheme: dark;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--board);font-family:var(--font);color:var(--fg-strong);padding:32px;display:flex;flex-direction:column;gap:40px}
+h2{margin:0 0 12px;font-size:14px;font-weight:700;color:var(--fg-muted)}
+.stage{background:var(--stage);border-radius:24px;padding:32px;position:relative}
+.island{display:flex;align-items:center;gap:12px;max-width:448px;margin:0 auto;border:1px solid var(--line);border-radius:9999px;background:rgba(255,255,255,.82);backdrop-filter:blur(24px);box-shadow:0 16px 40px -8px rgba(23,23,23,.17);padding:8px 16px 8px 12px}
+.island .icon{width:40px;height:40px;flex-shrink:0;display:block}
+.island .text{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.island .title{font-size:14px;font-weight:700;color:var(--fg-strong)}
+.island .hint{font-size:12px;color:var(--fg);line-height:1.6}
+.island .actions{display:flex;gap:8px;flex-shrink:0}
+.btn{height:36px;padding:0 16px;border-radius:9999px;border:0;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer}
+.btn.primary{background:var(--brand);color:#fff}
+.btn.ghost{background:var(--fill);color:var(--fg-strong)}
+.panel{width:384px;background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.panel .title{font-size:14px;font-weight:700}
+.row{display:flex;align-items:center;gap:12px}
+.row p{margin:0;flex:1;font-size:14px;font-weight:300;line-height:1.7;color:var(--fg-muted)}
+.toggle{width:44px;height:24px;border-radius:9999px;background:var(--brand);position:relative;flex-shrink:0}
+.toggle::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:9999px;background:#fff}
+.toggle.off{background:var(--fill-3,rgba(var(--ink),.2))}
+.toggle.off::after{left:auto;right:2px}
+</style>
+</head>
+<body>
+<section>
+<h2>P1 · جزیره بعد از ورود، روی صفحه تب جدید، تا وقتی دکمه‌ای زده نشه می‌مونه؛ با «بعدا» بعد از ۲ روز دوباره میاد</h2>
+<div class="stage">
+<div class="island" role="status">
+<span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 48 48"><defs><linearGradient id="bellb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a9b6ff"/><stop offset="1" stop-color="#536dfe"/></linearGradient><linearGradient id="bellc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9d1ff"/><stop offset="1" stop-color="#7388fb"/></linearGradient></defs><ellipse cx="24" cy="44.5" rx="12" ry="2.2" fill="rgba(0,0,0,.14)"/><circle cx="24" cy="6" r="3.4" fill="url(#bellb)"/><path d="M24 9c-6.6 0-10.5 5-10.5 11.5V28l-3.5 5.5h28L34.5 28v-7.5C34.5 14 30.6 9 24 9z" fill="url(#bellb)" stroke="url(#bellb)" stroke-width="4" stroke-linejoin="round"/><circle cx="24" cy="38.5" r="4.4" fill="url(#bellc)"/><ellipse cx="18.5" cy="19" rx="2.4" ry="5.5" fill="#fff" opacity=".55" transform="rotate(14 18.5 19)"/></svg></span>
+<span class="text"><span class="title">اعلان‌ها رو روشن کنیم؟</span><span class="hint">تا مناسبت‌ها و یادآوری‌ها یادت نره</span></span>
+<span class="actions"><button class="btn primary">روشن کن</button><button class="btn ghost">بعدا</button></span>
+</div>
+</div>
+</section>
+<section>
+<h2>P2 · تنظیمات، تب عمومی، زیر حالت سبک (روشن)</h2>
+<div class="stage"><div class="panel">
+<div class="title">اعلان‌ها روی این مرورگر</div>
+<div class="row"><p>مناسبت‌ها، یادآوری‌ها و خبرهای ویجتیفای رو همون لحظه می‌گیری</p><span class="toggle"></span></div>
+</div></div>
+</section>
+<section>
+<h2>P2b · همون کارت وقتی اجازه مرورگر بسته است (کلید خاموش برمی‌گرده، بدون پیام)</h2>
+<div class="stage"><div class="panel">
+<div class="title">اعلان‌ها روی این مرورگر</div>
+<div class="row"><p>مناسبت‌ها، یادآوری‌ها و خبرهای ویجتیفای رو همون لحظه می‌گیری</p><span class="toggle off"></span></div>
+</div></div>
+</section>
+</body>
+</html>

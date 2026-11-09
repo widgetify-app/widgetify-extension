@@ -3,7 +3,6 @@ import Analytics from '@/analytics'
 import { callEvent } from '@/common/utils/call-event'
 import { Modal } from '@/components/ui'
 import { type TabItem, TabManager } from './components/tab-manager'
-import { FriendsActions } from '@/features/friends/friends'
 import { UpdateReleaseNotesModal } from '@/features/release-notes/release-notes'
 import { StoreTryOnProvider } from '@/features/market/store-try-on.context'
 import { AboutUsTab } from './about-us/about-us'
@@ -13,7 +12,6 @@ import { PrivacySettings } from './privacy/privacy'
 import { ShortcutsTab } from './shortcuts/shortcuts'
 import { WallpaperSetting } from './wallpapers/wallpapers'
 import { AccountTab } from './account/account'
-import { AllFriendsTab } from './components/friends-tab'
 import { RewardsTab } from './account/rewards/rewards'
 import { ConnectionPlatformsTab } from './components/connections-tab'
 import { VipTab } from './vip/vip'
@@ -58,15 +56,6 @@ const tabs: TabItem[] = [
 				needAuth: true,
 				icon: <Icon name="gift" size={20} />,
 				element: <RewardsTab />,
-			},
-			{
-				label: t('setting.tab.friends'),
-				value: 'friends',
-				description: t('setting.tab.friendsHint'),
-				needAuth: true,
-				icon: <Icon name="friends" size={20} />,
-				element: <AllFriendsTab />,
-				actions: <FriendsActions />,
 			},
 		],
 	},

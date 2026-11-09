@@ -3,10 +3,13 @@ import Analytics from '../src/analytics'
 import { removeFromStorage, setToStorage } from '../src/common/storage'
 import { enforceCacheBudget, purgeStaleCaches } from './utils'
 import { resolveCacheName } from './cache-names'
+import { setupPush } from './push'
 import { initActiveWallpaper, setActiveWallpaper } from './wallpaper-cache'
 import { type SwEvent, SwEventType } from '../src/common/types/sw-events.interface'
 
 export function setupEventListeners() {
+	setupPush()
+
 	if (!import.meta.env.FIREFOX) {
 		browser.action.onClicked?.addListener(() => {
 			browser.tabs.create({ url: browser.runtime.getURL('/newtab.html') })

@@ -9,13 +9,12 @@ import {
 } from '@/services/extension/get-notifications.hook'
 import Analytics from '@/analytics'
 import { useAuth } from '@/context/auth.context'
-import { DailyMoodNotification } from './daily-mood'
 import { ProfileProgressNotification } from './profile-progress'
 import { safeAwait } from '@/services/api'
 import { EmptyState } from '@/components/ui'
 import { t } from '@/common/i18n'
 
-const localIds = ['notificationMood', 'update_profile']
+const localIds = ['update_profile']
 
 interface PushedNotification {
 	id: string
@@ -35,9 +34,9 @@ export function NotificationCenter({ hasBorder }: Prop = { hasBorder: true }) {
 	const [pushed, setPushed] = useState<PushedNotification[]>([])
 
 	const notifications = useMemo(() => {
-		const items = fetchedNotifications?.widgetifyCard || []
+		const items = fetchedNotifications?.cards || []
 		return items.filter((item) => item.id && !dismissedIds.has(item.id))
-	}, [fetchedNotifications?.widgetifyCard, dismissedIds])
+	}, [fetchedNotifications?.cards, dismissedIds])
 
 	const addToNodes = useCallback(async (notif: PushedNotification) => {
 		const removedRecently = await getWithExpiry(`removed_notification_${notif.id}`)
@@ -58,17 +57,6 @@ export function NotificationCenter({ hasBorder }: Prop = { hasBorder: true }) {
 
 	useEffect(() => {
 		if (isAuthenticated && !isLoadingUser) {
-			if (user?.hasTodayMood === false && !user?.inCache) {
-				addToNodes({
-					id: 'notificationMood',
-					node: (
-						<DailyMoodNotification
-							className={`${hasBorder ? '' : 'border-none!'}`}
-						/>
-					),
-				})
-			}
-
 			if (
 				user?.progressbar?.length &&
 				!user.isProfileCompleted &&
@@ -122,13 +110,13 @@ export function NotificationCenter({ hasBorder }: Prop = { hasBorder: true }) {
 	}
 
 	return (
-		<div className="flex flex-col gap-2">
+		<div className="flex flex-col gap-2.5">
 			{notifications.map((item, index) => (
 				<NotificationCardItem
 					notification={item}
 					className={`${hasBorder ? '' : 'border-none!'}`}
 					key={item.id || `no-${index}`}
-					onClose={(e) => onClose(e, item.id || '', item.ttl)}
+					onClose={(e) => onClose(e, item.id || '')}
 				/>
 			))}
 

@@ -171,7 +171,7 @@ export function ImageSearchPortal({
 								</span>
 							</p>
 							{isUploading && (
-								<div className="absolute inset-0 z-10 flex flex-col items-center justify-center overflow-hidden rounded-2xl bg-surface">
+								<div className="absolute inset-0 z-10 flex flex-col items-center justify-center overflow-hidden rounded-2xl bg-glass-modal">
 									{previewUrl && (
 										<img
 											src={previewUrl}

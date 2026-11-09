@@ -1,100 +1,61 @@
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
-import { getFromStorage, setToStorage } from '@/common/storage'
+import { getFromStorage } from '@/common/storage'
 import { extensionKeys } from '@/services/extension/extension.keys'
+import { buildNotifications, planMarkAll } from './notification-map'
+import type {
+	NotificationItem,
+	NotificationsData,
+	RawInboxItem,
+	RawSurfaces,
+} from './notification.interface'
 
-type NotificationType = 'text' | 'url' | 'action' | 'page' | 'banner'
-enum NotificationGoTo {
-	Explorer = 'explorer',
-	Profile = 'openProfile',
-	Settings = 'openSettings',
-	WidgetCatalog = 'openWidgetCatalog',
-	MiniApp = 'openMiniApp',
-}
+export type {
+	DialogNotificationItem,
+	IslandNotificationItem,
+	NotificationItem,
+	NotificationsData,
+} from './notification.interface'
 
-export interface NotificationItem {
-	id?: string
-	title: string
-	description?: string
-	link?: string
-	icon?: string
-	closeable: boolean | null
-	type?: NotificationType
-	goTo?: NotificationGoTo
-	target?: string
-	backgroundColor?: string
-	borderRadius?: string
-	titleColor?: string
-	titleDecoration?: string
-	ttl?: number
-	hasBorder?: boolean
-	hight?: number
-	createdAt?: string
-}
+const closedThisSession = new Set<string>()
 
-interface DialogNotificationItem {
-	id: string
-	title: string
-	dialogTitle: string | null
-	description: string
-	media: string
-	link: string
-	type: NotificationType
-	target: string
-	goTo: NotificationGoTo
-	buttonColor: string
-	buttonLabel: string
-}
-
-interface IslandNotificationItem {
-	id: string
-	title: string
-	description?: string | null
-	icon?: string | null
-	link?: string | null
-	type?: NotificationType
-	goTo?: string | null
-	target?: string | null
-}
-
-interface NotificationItemResponse {
-	widgetifyCard: Array<NotificationItem>
-	dialog: DialogNotificationItem | null
-	island?: IslandNotificationItem | null
-}
-
-async function fetchNotifications(): Promise<NotificationItemResponse> {
+async function fetchNotifications(): Promise<NotificationsData> {
 	const client = getMainClient()
-	const { data } = await client.get<{ data: NotificationItemResponse }>(
-		'/extension/notifications'
-	)
+	const token = await getFromStorage('auth_token')
 
-	return data.data
+	const response = await client.get<{
+		data: { items: RawInboxItem[]; surfaces: RawSurfaces }
+	}>('/v2/notifications/feed')
+
+	const { items, surfaces } = response.data.data
+
+	return buildNotifications(items, surfaces, token ? new Set() : closedThisSession)
 }
 
 export function useGetNotifications() {
-	const [cachedData, setCachedData] = useState<NotificationItemResponse | undefined>(
-		undefined
-	)
-
-	useEffect(() => {
-		getFromStorage('notifications').then((cached) => {
-			if (cached) setCachedData(cached)
-		})
-	}, [])
-
-	return useQuery<NotificationItemResponse>({
+	return useQuery<NotificationsData>({
 		queryKey: extensionKeys.notifications,
 		retry: 1,
-		queryFn: async () => {
-			const response = await fetchNotifications()
-			await setToStorage('notifications', response)
-			return response
-		},
-		placeholderData: cachedData,
+		queryFn: fetchNotifications,
 		staleTime: 5 * 60 * 1000, // 5 minutes
 	})
+}
+
+export function useCloseableNotificationCount(): number {
+	const { data } = useGetNotifications()
+	return useMemo(
+		() => (data?.cards || []).filter((item) => item.closeable).length,
+		[data]
+	)
+}
+
+function without(data: NotificationsData, ids: ReadonlySet<string>): NotificationsData {
+	return {
+		cards: data.cards.filter((item) => !ids.has(item.id as string)),
+		island: data.island && ids.has(data.island.id) ? null : data.island,
+		dialog: data.dialog && ids.has(data.dialog.id) ? null : data.dialog,
+	}
 }
 
 export function useNotifyAsSeen() {
@@ -102,22 +63,36 @@ export function useNotifyAsSeen() {
 	return useMutation({
 		mutationFn: async (id: string) => {
 			const client = getMainClient()
-			await client.put(`/notifications/${id}/seen`)
+			const token = await getFromStorage('auth_token')
+
+			if (!token) {
+				closedThisSession.add(id)
+				return
+			}
+
+			const current = queryClient.getQueryData<NotificationsData>(
+				extensionKeys.notifications
+			)
+			const isInboxItem = current?.cards.some(
+				(card) => card.id === id && card.source === 'inbox'
+			)
+
+			if (isInboxItem) {
+				await client.post('/v2/notifications/read', { ids: [id] })
+			} else {
+				await client.post(`/v2/notifications/surfaces/${id}/dismiss`)
+			}
 		},
 		onMutate: async (id: string) => {
 			await queryClient.cancelQueries({ queryKey: extensionKeys.notifications })
-			const previous = queryClient.getQueryData<NotificationItemResponse>(
+			const previous = queryClient.getQueryData<NotificationsData>(
 				extensionKeys.notifications
 			)
 			if (previous) {
-				const updated: NotificationItemResponse = {
-					...previous,
-					widgetifyCard:
-						previous.widgetifyCard?.filter((item) => item.id !== id) || [],
-					island: previous.island?.id === id ? null : previous.island,
-				}
-				queryClient.setQueryData(extensionKeys.notifications, updated)
-				await setToStorage('notifications', updated)
+				queryClient.setQueryData(
+					extensionKeys.notifications,
+					without(previous, new Set([id]))
+				)
 			}
 			return { previous }
 		},
@@ -130,6 +105,62 @@ export function useNotifyAsSeen() {
 			queryClient.invalidateQueries({
 				queryKey: extensionKeys.notifications,
 			})
+		},
+		mutationKey: extensionKeys.seenNotification,
+	})
+}
+
+export function useMarkAllAsSeen() {
+	const queryClient = useQueryClient()
+
+	return useMutation({
+		mutationFn: async (cards: NotificationItem[]) => {
+			const client = getMainClient()
+			const token = await getFromStorage('auth_token')
+			const plan = planMarkAll(cards)
+
+			if (!token) {
+				for (const id of [...plan.inbox, ...plan.broadcasts].flat()) {
+					closedThisSession.add(id)
+				}
+
+				return
+			}
+
+			await Promise.all([
+				...plan.inbox.map((ids) =>
+					client.post('/v2/notifications/read', { ids })
+				),
+				...plan.broadcasts.map((ids) =>
+					client.post('/v2/notifications/surfaces/dismiss', { ids })
+				),
+			])
+		},
+		onMutate: async (cards: NotificationItem[]) => {
+			await queryClient.cancelQueries({ queryKey: extensionKeys.notifications })
+			const previous = queryClient.getQueryData<NotificationsData>(
+				extensionKeys.notifications
+			)
+
+			if (previous) {
+				const plan = planMarkAll(cards)
+				const marked = new Set([...plan.inbox, ...plan.broadcasts].flat())
+
+				queryClient.setQueryData(
+					extensionKeys.notifications,
+					without(previous, marked)
+				)
+			}
+
+			return { previous }
+		},
+		onError: (_err, _cards, context) => {
+			if (context?.previous) {
+				queryClient.setQueryData(extensionKeys.notifications, context.previous)
+			}
+		},
+		onSettled: () => {
+			queryClient.invalidateQueries({ queryKey: extensionKeys.notifications })
 		},
 		mutationKey: extensionKeys.seenNotification,
 	})

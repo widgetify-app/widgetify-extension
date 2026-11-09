@@ -99,7 +99,7 @@ export function PriceChart({ chart, name, showTime }: PriceChartProps) {
 						/>
 						<output
 							className={cn(
-								'absolute top-1 px-2 py-1 text-center rounded-lg pointer-events-none bg-surface-3 text-fg-strong text-3xs whitespace-nowrap',
+								'absolute top-1 px-2 py-1 text-center rounded-lg pointer-events-none bg-glass-modal text-fg-strong text-3xs whitespace-nowrap',
 								(active.x / CHART_WIDTH) * 100 < TOOLTIP_EDGE_PERCENT
 									? 'translate-x-0'
 									: (active.x / CHART_WIDTH) * 100 >
@@ -122,7 +122,7 @@ export function PriceChart({ chart, name, showTime }: PriceChartProps) {
 
 			<div
 				aria-hidden="true"
-				className="flex justify-between px-4 text-3xs text-fg-faint"
+				className="flex justify-between px-5 text-3xs text-fg-faint"
 			>
 				{chart.timeTicks.map((time, index) =>
 					index === lastTick ? (

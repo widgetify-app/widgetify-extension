@@ -6,6 +6,7 @@ import { useAuth } from '@/context/auth.context'
 import { ProfileDropdownMenu } from './components/profile-dropdown-menu'
 import { ProfileTrigger } from './components/profile-trigger'
 import { t } from '@/common/i18n'
+import { forgetPushSubscription } from '@/services/push/push-subscription'
 
 const AuthForm = lazy(() => import('@/features/setting/account/auth-form/auth-form'))
 
@@ -24,6 +25,7 @@ export function ProfileNav() {
 	const handleConfirmLogout = async () => {
 		Analytics.event('navbar_logout')
 		setShowLogoutModal(false)
+		await forgetPushSubscription()
 		await logout()
 		location.reload()
 	}

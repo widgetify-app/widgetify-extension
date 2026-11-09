@@ -15,6 +15,7 @@ import { translateError } from '@/common/utils/translate-error'
 import { ConfirmationModal } from '@/components/ui'
 import { VipBannerCard } from './components/vip-banner-card'
 import { Icon } from '@/icons'
+import { forgetPushSubscription } from '@/services/push/push-subscription'
 
 export const UserProfile = () => {
 	const { logout } = useAuth()
@@ -34,6 +35,7 @@ export const UserProfile = () => {
 	}, [])
 
 	const onClickLogout = async () => {
+		await forgetPushSubscription()
 		await logout()
 		location.reload()
 	}

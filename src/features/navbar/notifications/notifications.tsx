@@ -1,21 +1,30 @@
-import { useMemo } from 'react'
-import { Dropdown, NewBadge } from '@/components/ui'
+import { Button, CountBadge, Dropdown } from '@/components/ui'
 import { Icon } from '@/icons'
-import { useGetNotifications } from '@/services/extension/get-notifications.hook'
+import {
+	useCloseableNotificationCount,
+	useGetNotifications,
+	useMarkAllAsSeen,
+} from '@/services/extension/get-notifications.hook'
 import { NotificationCenter } from '@/features/navbar/notifications/components/notification-center'
 import Analytics from '@/analytics'
 import { NavIconButton } from '../components/nav-icon-button'
 import { t } from '@/common/i18n'
+import { safeAwait } from '@/services/api'
 
 export { IslandNotification } from './components/island-notification'
 
 export function NotificationNavbar() {
 	const { data: notificationsData } = useGetNotifications()
 
-	const hasCloseableNotifications = useMemo(() => {
-		const cardItems = notificationsData?.widgetifyCard || []
-		return cardItems.some((item) => item.closeable)
-	}, [notificationsData])
+	const closeableCount = useCloseableNotificationCount()
+	const hasCloseableNotifications = closeableCount > 0
+
+	const { mutateAsync: markAllAsSeen } = useMarkAllAsSeen()
+
+	const handleMarkAllRead = async () => {
+		Analytics.event('notifications_mark_all_read')
+		await safeAwait(markAllAsSeen(notificationsData?.cards || []))
+	}
 
 	const handleOpen = () => {
 		Analytics.event('notification_navbar_opened')
@@ -24,6 +33,7 @@ export function NotificationNavbar() {
 	return (
 		<Dropdown
 			maxHeight="420px"
+			offset={16}
 			dropdownClassName="w-80 sm:w-96 rounded-2xl"
 			trigger={
 				<NavIconButton
@@ -36,21 +46,34 @@ export function NotificationNavbar() {
 					}
 					onClick={handleOpen}
 				>
-					{hasCloseableNotifications && <NewBadge className="top-1 right-1" />}
+					{hasCloseableNotifications && (
+						<CountBadge count={closeableCount} className="top-0 right-0" />
+					)}
 				</NavIconButton>
 			}
 		>
-			<div className="flex flex-col p-3 w-80 sm:w-96 bg-glass-surface-2" dir="rtl">
-				<div className="sticky top-0 z-10 flex items-center justify-between pb-2 mb-3 border-b border-line shrink-0">
-					<div className="flex items-center gap-1.5 text-fg">
-						<Icon name="notification" size={14} />
-						<span className="text-xs font-bold">
+			<div className="flex flex-col w-80 sm:w-96 bg-glass-surface-2" dir="rtl">
+				<div className="sticky top-0 z-10 flex items-center justify-between px-4 pt-4 pb-2.5 shrink-0">
+					<div className="flex items-center gap-2 text-fg-strong">
+						<Icon name="notification" size={16} />
+						<span className="text-sm font-bold">
 							{t('navbar.notifications.label')}
 						</span>
 					</div>
+
+					{hasCloseableNotifications && (
+						<Button
+							variant="ghost"
+							size="xs"
+							rounded="lg"
+							onClick={handleMarkAllRead}
+						>
+							{t('navbar.notifications.markAllRead')}
+						</Button>
+					)}
 				</div>
 
-				<div className="flex-1 pe-1 overflow-y-auto min-h-48 max-h-80 overscroll-contain">
+				<div className="flex-1 px-4 pt-1 pb-4 overflow-y-auto min-h-48 max-h-80 overscroll-contain">
 					<NotificationCenter hasBorder={true} />
 				</div>
 			</div>

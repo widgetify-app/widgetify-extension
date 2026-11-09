@@ -293,16 +293,18 @@ const AuthForm = () => {
 
 					{!import.meta.env.FIREFOX && (
 						<>
-							<div className="relative my-4">
+							<div className="flex items-center gap-3 my-4">
 								<span
 									aria-hidden="true"
-									className="absolute inset-0 flex items-center w-full translate-y-1/2 border-t border-surface-3"
+									className="flex-1 h-px bg-line"
 								/>
-								<div className="relative z-10 flex justify-center">
-									<span className="px-3 py-0.5 text-xs font-medium text-fg-muted bg-surface rounded-full">
-										{t('setting.auth.orDivider')}
-									</span>
-								</div>
+								<span className="text-xs font-medium text-fg-muted">
+									{t('setting.auth.orDivider')}
+								</span>
+								<span
+									aria-hidden="true"
+									className="flex-1 h-px bg-line"
+								/>
 							</div>
 
 							<LoginGoogleButton />
