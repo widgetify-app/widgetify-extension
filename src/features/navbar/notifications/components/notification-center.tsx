@@ -9,13 +9,12 @@ import {
 } from '@/services/extension/get-notifications.hook'
 import Analytics from '@/analytics'
 import { useAuth } from '@/context/auth.context'
-import { DailyMoodNotification } from './daily-mood'
 import { ProfileProgressNotification } from './profile-progress'
 import { safeAwait } from '@/services/api'
 import { EmptyState } from '@/components/ui'
 import { t } from '@/common/i18n'
 
-const localIds = ['notificationMood', 'update_profile']
+const localIds = ['update_profile']
 
 interface PushedNotification {
 	id: string
@@ -58,17 +57,6 @@ export function NotificationCenter({ hasBorder }: Prop = { hasBorder: true }) {
 
 	useEffect(() => {
 		if (isAuthenticated && !isLoadingUser) {
-			if (user?.hasTodayMood === false && !user?.inCache) {
-				addToNodes({
-					id: 'notificationMood',
-					node: (
-						<DailyMoodNotification
-							className={`${hasBorder ? '' : 'border-none!'}`}
-						/>
-					),
-				})
-			}
-
 			if (
 				user?.progressbar?.length &&
 				!user.isProfileCompleted &&
