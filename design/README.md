@@ -101,3 +101,4 @@ A board is a promise about the code. Anything it shows has to be something the c
 - [onboarding](onboarding/README.md): the pictures for the welcome modal and the first-run tour
 - [currency-chart](currency-chart/README.md): the currency modal, its price chart and converter
 - [release-notes](release-notes/README.md): the «آبنبات چوبی» release notes window
+- [push](push/README.md): the push ask island and its settings card
