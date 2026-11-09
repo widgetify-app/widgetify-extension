@@ -28,8 +28,6 @@ const STORAGE_KEYS = [
 	'lastVersion',
 	'navbarVisible',
 	'notes_data',
-	'inbox',
-	'dismissed_notifications',
 	'pendingOrders',
 	'pets',
 	'pomodoro_session',
