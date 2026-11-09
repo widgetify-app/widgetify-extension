@@ -25,6 +25,7 @@ const STORAGE_KEYS = [
 	'hasSeenFooterDisableHint',
 	'hasSeenTour',
 	'hasShownPwaModal',
+	'installationId',
 	'lastVersion',
 	'navbarVisible',
 	'notes_data',
@@ -33,6 +34,7 @@ const STORAGE_KEYS = [
 	'pomodoro_session',
 	'pomodoro_settings',
 	'profile',
+	'pushAskedAt',
 	'recent_searches',
 	'recommended_sites',
 	'refresh_token',
@@ -58,6 +60,13 @@ const STORAGE_KEYS = [
 ]
 
 const ANALYTICS_EVENTS = [
+	'push_ask_view',
+	'push_ask_accept',
+	'push_ask_later',
+	'push_turned_on',
+	'push_turned_off',
+	'push_denied',
+	'push_tap',
 	'IconClicked',
 	'Installed',
 	'Startup',

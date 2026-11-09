@@ -4,7 +4,7 @@ One folder per product feature. Widgets are features too and live in `widgets/` 
 
 ## What is here
 
-`explorer`, `friends`, `market`, `mini-apps`, `navbar`, `release-notes`, `setting`, `widgets`. `src/features/` holds only feature folders, nothing loose.
+`explorer`, `friends`, `market`, `mini-apps`, `navbar`, `push`, `release-notes`, `setting`, `widgets`. `src/features/` holds only feature folders, nothing loose.
 
 ## Rules
 
@@ -63,3 +63,14 @@ A notification, island or dialog opens one mini-app with the link `/mini-apps/<a
 - A cache file is counted by its `content-length`, or by reading its body when the header is missing. An opaque response reads as 0 bytes, which is why the browser row exists.
 - On Firefox the browser row is skipped: the background there has no service worker, and `browser.storage.local` lives inside the same origin quota, so the estimate would count your data twice.
 - The cache names come from `src/common/types/sw-events.interface.ts`, shared with `background/cache-names.ts`. A new cache needs a category here, or it shows as leftovers.
+
+## Push (`push/`)
+
+Push notifications in Chrome and Edge, none on Firefox. Design: `design/push/`.
+
+- `push/push.tsx` is `PushHost`, mounted in the navbar. Once push is allowed here and wanted, it gets a Firebase token (`getToken` with the VAPID key and the registration of the extension's own service worker, `firebase/messaging` loaded on demand) and sends `PUT /v2/push/subscriptions` (platform `EXTENSION`). It reads `?pushTap=&pushLink=` when a notification click opened the page (marks it read, opens the link), and shows the ask island (`push/components/push-ask.tsx`). `push/push-setting.tsx` is the switch card in the general settings tab.
+- «روشن کن» on the island is the tap that requests the notification permission, which is all it needs (no manifest permission). «بعدا» asks again after two days (`push/utils/push-ask.ts`, `pushAskedAt`). A refusal by the browser stops the island, the card stays. Everyone who has not turned push on is asked, including people who allowed notifications for the Pomodoro, because nothing about that is stored.
+- The notification service sends an `EXTENSION` token the same data only web message as a PWA. `background/push.ts` handles the `push` event, draws it with `registration.showNotification`, and a click opens `newtab.html?pushTap=<id>&pushLink=<link>`. `chrome.gcm` is not used: its registration for our sender answers `UNKNOWN_ERROR`.
+- The build needs `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_APP_ID`, `VITE_FIREBASE_PROJECT_ID`, `VITE_FIREBASE_SENDER_ID` and `VITE_VAPID_KEY` (public values of the Firebase web app, in `.env.example`). Without them push is off.
+- `push/utils/push.ts` is the only door to the token and the permission. Sign out calls `forgetPushSubscription` first (3 seconds at most). The install id is `installationId()` in `src/common/utils/installation-id.ts`.
+- Tests: `push/__tests__/push-ask.test.ts`, `push/__tests__/cold-tap.test.ts`, `background/__tests__/push-notification.test.ts`.

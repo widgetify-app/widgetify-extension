@@ -5,6 +5,7 @@ import { TimezoneSettings } from './components/timezone-settings'
 import { StorageUsage } from './components/storage-usage'
 import { useGeneralSetting } from '@/context/general-setting.context'
 import Analytics from '@/analytics'
+import { PushSetting } from '@/features/push/push-setting'
 
 export function GeneralSettingTab() {
 	const { isOptimalMode, updateSetting } = useGeneralSetting()
@@ -37,6 +38,7 @@ export function GeneralSettingTab() {
 					/>
 				</div>
 			</SectionPanel>
+			<PushSetting />
 			<StorageUsage />
 		</div>
 	)

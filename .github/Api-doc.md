@@ -97,6 +97,10 @@ Source: `src/services/user`, `src/services/extension`, `src/services/profile`, `
 | `POST /v2/notifications/read` | yes | `{ ids: string[] }` | |
 | `POST /v2/notifications/surfaces/{id}/dismiss` | yes | | |
 | `POST /v2/notifications/surfaces/dismiss` | yes | `{ ids: string[] }` (1 to 100) | `{ data: { dismissed } }`, used by «mark all as read» |
+| `GET /v2/notifications/preferences` | yes | | `{ data: { pushEnabled, mutedKinds, quietFrom, quietTo } }`, the extension reads `pushEnabled` (`src/services/push/push-preferences.hook.ts`) |
+| `PATCH /v2/notifications/preferences` | yes | `{ pushEnabled: boolean }` | the same shape |
+| `PUT /v2/push/subscriptions` | yes | `{ installationId, token, platform: 'EXTENSION', appVersion }` | the Firebase web token of this browser |
+| `DELETE /v2/push/subscriptions/{installationId}` | yes | | |
 
 **The profile.** `GET /extension/@me` answers a `UserProfile` (`src/services/user/user-service.hook.ts`). The main fields: `name`, `avatar`, `username?`, `email?`, `phone?`, `verified`, `isVip?`, `vipExpiresAt?`, `coins`, `gender`, `birthDate`, `timeZone`, `font`, `theme?`, `wallpaper`, `city?` (`{ id, name }`), `occupation`, `interests`, `connections` (platform ids), `friendshipStats` (`{ accepted, pending }`), `badges`, `isProfileCompleted`, `hasTodayMood`, `searchAutocompleteEnabled` and `isBirthdayToday`.
 
