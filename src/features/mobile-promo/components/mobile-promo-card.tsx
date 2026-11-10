@@ -1,3 +1,4 @@
+import Analytics from '@/analytics'
 import phonesArt from '@/assets/images/mobile-promo/phones.webp'
 import { t } from '@/common/i18n'
 import { Motion as motion } from '@/common/motion'
@@ -46,6 +47,16 @@ export function MobilePromoCard({ onClose }: MobilePromoCardProps) {
 						<span className="text-xs leading-loose text-fg-muted">
 							{t('mobilePromo.text')}
 						</span>
+						<a
+							href={MOBILE_PROMO_URL}
+							target="_blank"
+							rel="noopener noreferrer"
+							onClick={() => Analytics.event('mobile_promo_link_opened')}
+							className="flex items-center gap-1 text-xs font-bold rounded-sm w-fit text-brand transition-ui hover:underline focus-visible:focus-ring"
+						>
+							{t('mobilePromo.link')}
+							<Icon name="externalLink" size={12} aria-hidden="true" />
+						</a>
 					</div>
 					<QrCode
 						text={MOBILE_PROMO_URL}
