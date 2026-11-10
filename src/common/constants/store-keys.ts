@@ -59,6 +59,7 @@ export interface StorageKV {
 	navbarVisible: boolean
 	installationId: string
 	pushAskedAt: number
+	pushPreference: boolean
 	mobilePromoClosedAt: number
 	todoFilter: string
 	todoSort: string

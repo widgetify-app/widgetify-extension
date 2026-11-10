@@ -98,6 +98,7 @@ async function fetchUserProfile(): Promise<UserProfile> {
 		if (error.response?.status === 401) {
 			await removeFromStorage('auth_token')
 			await removeFromStorage('profile')
+			await removeFromStorage('pushPreference')
 		}
 
 		throw error
