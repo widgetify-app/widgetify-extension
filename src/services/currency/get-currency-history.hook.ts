@@ -9,6 +9,8 @@ export const CURRENCY_HISTORY_RANGES = ['24h', '7d', '30d'] as const
 
 export type CurrencyHistoryRange = (typeof CURRENCY_HISTORY_RANGES)[number]
 
+export const FREE_HISTORY_RANGE: CurrencyHistoryRange = '24h'
+
 const LOCKED_STATUSES = [401, 403]
 
 export function isHistoryLocked(error: unknown): boolean {

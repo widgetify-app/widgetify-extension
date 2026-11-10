@@ -793,9 +793,9 @@ export const widgets = {
 	'widgets.wigiArz.chart.aria': 'نمودار قیمت {name}',
 	'widgets.wigiArz.chart.empty': 'هنوز داده‌ی کافی برای نمودار جمع نشده',
 	'widgets.wigiArz.chart.loadError': 'نمودار رو نتونستیم بیاریم',
-	'widgets.wigiArz.chart.proTitle': 'نمودار قیمت واسه کاربران پرو هست',
+	'widgets.wigiArz.chart.proTitle': 'نمودار هفته و ماه واسه کاربران پرو هست',
 	'widgets.wigiArz.chart.proDescription':
-		'با اشتراک پرو تاریخچه‌ی قیمت رو روی نمودار ببین',
+		'با اشتراک پرو تاریخچه‌ی هفتگی و ماهانه‌ی قیمت رو ببین',
 	'widgets.wigiArz.chart.proAction': 'دیدن اشتراک پرو',
 	'widgets.wigiArz.chart.loginAction': 'ورود به حساب',
 	'widgets.wigiArz.chart.now': 'الان',

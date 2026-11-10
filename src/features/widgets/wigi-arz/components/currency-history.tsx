@@ -7,6 +7,7 @@ import { useAuth } from '@/context/auth.context'
 import type { FetchedCurrency } from '@/services/currency/get-currency-by-code.hook'
 import {
 	CURRENCY_HISTORY_RANGES,
+	FREE_HISTORY_RANGE,
 	type CurrencyHistoryRange,
 	isHistoryLocked,
 	useGetCurrencyHistory,
@@ -59,10 +60,11 @@ export function CurrencyHistory({
 	onLeave,
 }: CurrencyHistoryProps) {
 	const { isAuthenticated, isVip } = useAuth()
+	const isRangeLocked = !isVip && range !== FREE_HISTORY_RANGE
 	const { data, error, isPending, isError, refetch } = useGetCurrencyHistory(
 		code,
 		range,
-		enabled && isVip
+		enabled && !isRangeLocked
 	)
 	const isDollar = getPrice(code, currency).isDollar
 	const chart = useMemo(
@@ -70,7 +72,7 @@ export function CurrencyHistory({
 		[data, isDollar]
 	)
 
-	if (!isVip || isHistoryLocked(error)) {
+	if (isRangeLocked || isHistoryLocked(error)) {
 		const openAccount = () => {
 			onLeave()
 			if (isAuthenticated) callEvent('openSettings', 'vip')

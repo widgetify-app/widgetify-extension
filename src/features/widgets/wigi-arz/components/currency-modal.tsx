@@ -6,7 +6,10 @@ import { Modal, TextInput } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
 import { Icon } from '@/icons'
 import type { FetchedCurrency } from '@/services/currency/get-currency-by-code.hook'
-import type { CurrencyHistoryRange } from '@/services/currency/get-currency-history.hook'
+import {
+	type CurrencyHistoryRange,
+	FREE_HISTORY_RANGE,
+} from '@/services/currency/get-currency-history.hook'
 import { getPrice } from '../utils/get-price'
 import {
 	CurrencyHistory,
@@ -34,7 +37,8 @@ export const CurrencyModalComponent = ({
 	toggleCurrencyModal,
 }: CurrencyModalComponentProps) => {
 	const { isVip } = useAuth()
-	const [range, setRange] = useState<CurrencyHistoryRange>(DEFAULT_HISTORY_RANGE)
+	const [pickedRange, setRange] = useState<CurrencyHistoryRange | null>(null)
+	const range = pickedRange ?? (isVip ? DEFAULT_HISTORY_RANGE : FREE_HISTORY_RANGE)
 	const [isSwapped, setIsSwapped] = useState(false)
 	const [currencyAmount, setCurrencyAmount] = useState<number>(1)
 	const [tomanAmount, setTomanAmount] = useState<number>(0)
@@ -120,7 +124,7 @@ export const CurrencyModalComponent = ({
 								{currency.period && <span>{currency.period}</span>}
 							</p>
 						</div>
-						{isVip && <HistoryRangeTabs range={range} onChange={setRange} />}
+						<HistoryRangeTabs range={range} onChange={setRange} />
 					</header>
 
 					<div className="flex items-baseline gap-2">
