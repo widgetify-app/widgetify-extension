@@ -27,6 +27,7 @@ const STORAGE_KEYS = [
 	'hasShownPwaModal',
 	'installationId',
 	'lastVersion',
+	'mobilePromoClosedAt',
 	'navbarVisible',
 	'notes_data',
 	'pendingOrders',
@@ -60,6 +61,8 @@ const STORAGE_KEYS = [
 ]
 
 const ANALYTICS_EVENTS = [
+	'mobile_promo_shown',
+	'mobile_promo_closed',
 	'push_ask_view',
 	'push_ask_accept',
 	'push_ask_later',

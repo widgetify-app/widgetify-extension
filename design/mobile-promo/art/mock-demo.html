@@ -1,0 +1,158 @@
+<script>
+localStorage.setItem('widgetify-session', JSON.stringify({ accessToken: 'demo', refreshToken: 'demo' }))
+localStorage.setItem('widgetify-theme', JSON.stringify('light'))
+window.__calls = []
+
+const iconUrl = (glyph, from, to) => 'https://icons.mock/' + encodeURIComponent(glyph) + '/' + from.slice(1) + '/' + to.slice(1)
+const iconSvg = (glyph, from, to) => 'data:image/svg+xml;utf8,' + encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + from + '"/><stop offset="1" stop-color="' + to + '"/></linearGradient></defs><rect width="64" height="64" rx="16" fill="url(#g)"/><text x="32" y="43" font-size="32" text-anchor="middle">' + glyph + '</text></svg>')
+const rewriteSrc = (value) => {
+  const m = typeof value === 'string' && value.match(/^https:\/\/icons\.mock\/([^/]+)\/([0-9a-f]+)\/([0-9a-f]+)$/i)
+  return m ? iconSvg(decodeURIComponent(m[1]), '#' + m[2], '#' + m[3]) : value
+}
+const nativeSetAttribute = Element.prototype.setAttribute
+Element.prototype.setAttribute = function (name, value) {
+  return nativeSetAttribute.call(this, name, name === 'src' && this instanceof HTMLImageElement ? rewriteSrc(value) : value)
+}
+const srcDescriptor = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, 'src')
+Object.defineProperty(HTMLImageElement.prototype, 'src', {
+  get: srcDescriptor.get,
+  set(value) { srcDescriptor.set.call(this, rewriteSrc(value)) },
+})
+
+const iso = (offset) => {
+  const d = new Date()
+  d.setDate(d.getDate() + offset)
+  return d.toISOString().slice(0, 10)
+}
+
+const todos = [
+  { id: 't1', text: 'آب دادن به کاکتوس کوچولو', completed: true, date: iso(0), priority: 'low', category: 'خونه' },
+  { id: 't2', text: 'پیاده‌روی با میمی', completed: false, date: iso(0), priority: 'medium', category: 'سلامتی' },
+  { id: 't3', text: 'پیدا کردن کلیدِ گم‌شده', completed: false, date: iso(0), priority: 'high', category: 'خونه' },
+  { id: 't4', text: 'خرید نون و پنیر برای صبحونه', completed: true, date: iso(0), priority: 'low', category: 'خرید' },
+  { id: 't5', text: 'زنگ زدن به مامان‌بزرگ', completed: false, date: iso(0), priority: 'medium', category: 'خانواده' },
+  { id: 't6', text: 'یه بستنی حسابی خوردن', completed: false, date: iso(0), priority: 'low', category: 'خوشمزه' },
+]
+
+const day = (offset, value, isDone) => ({ date: iso(offset), value, isDone })
+const habit = (id, title, emoji, color, target, unit, doneDays) => ({
+  id, title, emoji, color, target, comparison: 'AT_LEAST', unit, frequency: 'DAILY', frequencyCount: 1,
+  today: day(0, doneDays[0] ? target : 0, !!doneDays[0]),
+  history: doneDays.map((done, i) => day(-i, done ? target : 0, !!done)),
+  progressThisPeriod: { done: doneDays.filter(Boolean).length, required: doneDays.length },
+})
+
+const habits = [
+  habit('h1', 'آب خوردن', '💧', '#38bdf8', 8, 'GLASSES', [1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1]),
+  habit('h2', 'کتاب خوندن', '📚', '#a78bfa', 10, 'PAGES', [1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1]),
+  habit('h3', 'نرمش صبحگاهی', '🧘', '#34d399', 15, 'MINUTES', [0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1]),
+]
+
+const notes = [
+  { id: 'n1', title: 'لیست خرید آخر هفته', body: 'شیر، تخم‌مرغ، هندونه، شکلات تلخ', priority: 'medium', createdAt: Date.now() - 86400000, updatedAt: Date.now() - 3600000 },
+  { id: 'n2', title: 'ایده برای تولد نیلو', body: 'کیک شکلاتی و بادکنک‌های رنگی', priority: 'high', createdAt: Date.now() - 172800000, updatedAt: Date.now() - 7200000 },
+]
+
+const profile = {
+  name: 'ملیسا', username: 'melisa_sun', avatar: '', email: 'melisa@example.com', phone: '09120000000',
+  verified: true, coins: 120, isVip: true, vipExpiresAt: null, city: { id: 'c1', name: 'تهران' }, gender: 'FEMALE',
+  birthDate: '1380-05-12', isBirthDateEditable: false, occupation: null,
+  interests: [], joinedAt: '2025-01-02T00:00:00.000Z',
+  progressbar: [{ field: 'username', isDone: true }, { field: 'email', isDone: true }],
+  isProfileCompleted: true, hasTodayMood: true,
+}
+
+const friend = (id, name, username, mood, activity) => ({
+  id, status: 'ACCEPTED', sendByMe: true,
+  user: { name, username, avatar: '', isPro: id === 'f2', mood, extras: { activity } },
+})
+
+const friends = [
+  friend('f1', 'نیلوفر', 'nilo_far', 'happy', 'در حال خوردن چای'),
+  friend('f2', 'آرمان', 'arman_k', 'excited', 'مشغول قهرمان شدن'),
+  friend('f3', 'سارا', 'sara_moon', 'normal', 'کتاب می‌خونم'),
+  friend('f4', 'کیان', 'kian_ok', 'happy', 'تو راه کافه'),
+]
+
+const activities = [
+  { activityId: 'a1', name: 'نیلوفر', username: 'nilo_far', avatar: '', content: 'امروز بالاخره یه روز آفتابیه', color: '#fef08a', isSelf: false, reactionCount: 4 },
+  { activityId: 'a2', name: 'آرمان', username: 'arman_k', avatar: '', content: 'قهوه‌م رو خوردم و آماده‌م', color: '#bbf7d0', isSelf: false, reactionCount: 2 },
+  { activityId: 'a3', name: 'سارا', username: 'sara_moon', avatar: '', content: 'کتاب جدید رسید، ذوق دارم', color: '#fbcfe8', isSelf: false, reactionCount: 7 },
+  { activityId: 'a4', name: 'ملیسا', username: 'melisa_sun', avatar: '', content: 'پیاده‌روی با میمی عالی بود', color: '#bae6fd', isSelf: true, reactionCount: 5 },
+]
+
+const app = (id, name, description, glyph, from, to, isNew, badge) => ({ appId: id, name, description, icon: iconUrl(glyph, from, to), isNew, badge, badgeColor: badge ? '#536dfe' : '', scopes: ['PROFILE'], allowPermission: [], sandboxPermission: [], timeout: 8000 })
+const miniApps = [
+  app('app1', 'فال حافظ', 'یه فال کوچولو برای امروزت', '🔮', '#c4b5fd', '#7c3aed', true, 'جدید'),
+  app('app2', 'تایمر پومودورو', 'تمرکز کن و استراحت کن', '🍅', '#fca5a5', '#ef4444', false, ''),
+  app('app3', 'پیدا کن گربه رو', 'گربه کجا قایم شده؟', '🐱', '#fde68a', '#f59e0b', true, 'جدید'),
+  app('app4', 'آب‌وهوای فضا', 'هوای مریخ امروز چطوره', '🪐', '#a5b4fc', '#4f46e5', false, ''),
+  app('app5', 'بستنی‌ساز', 'طعم امروزت رو بساز', '🍦', '#fbcfe8', '#ec4899', false, ''),
+  app('app6', 'شمارش ستاره‌ها', 'امشب چند تا ستاره‌ست؟', '⭐', '#bae6fd', '#0ea5e9', false, ''),
+]
+
+const moodDays = []
+;['happy', 'excited', 'normal', 'happy', 'happy', 'sad', 'excited', 'happy'].forEach((mood, i) => moodDays.push({ date: iso(-i), mood }))
+
+const parts = (locale) => {
+  const out = {}
+  new Intl.DateTimeFormat(locale, { month: 'numeric', day: 'numeric' }).formatToParts(new Date()).forEach((p) => { out[p.type] = Number(p.value) })
+  return out
+}
+const shamsi = parts('en-u-ca-persian-nu-latn')
+const hijri = parts('en-u-ca-islamic-nu-latn')
+const dateEvents = {
+  shamsiEvents: [
+    { title: 'روز جهانی بستنی خوردن', month: shamsi.month, day: shamsi.day, isHoliday: true, icon: '' },
+    { title: 'روز نوازش گربه‌ها', month: shamsi.month, day: shamsi.day, isHoliday: false, icon: '' },
+  ],
+  gregorianEvents: [],
+  hijriEvents: [{ title: 'جشن بزرگ کاکتوس‌ها', month: hijri.month, day: hijri.day, isHoliday: false, icon: '' }],
+}
+
+const site = (name, url, glyph, from, to) => ({ type: 'SITE', name, url, icon: iconUrl(glyph, from, to), description: '', badge: '', badgeColor: '', isNew: false })
+const contents = [
+  { id: 'c1', category: 'سرگرمی', icon: iconUrl('🎮', '#a5b4fc', '#6366f1'), links: [site('بازی مار', 'https://example.com/snake', '🐍', '#bbf7d0', '#22c55e')] },
+  { id: 'c2', category: 'آشپزی', icon: iconUrl('🍳', '#fde68a', '#f59e0b'), links: [site('دستور کیک', 'https://example.com/cake', '🍰', '#fbcfe8', '#ec4899')] },
+  { id: 'c3', category: 'سفر', icon: iconUrl('✈️', '#bae6fd', '#0ea5e9'), links: [site('بلیت مریخ', 'https://example.com/mars', '🚀', '#c4b5fd', '#7c3aed')] },
+  { id: 'c4', category: 'موسیقی', icon: iconUrl('🎧', '#fca5a5', '#ef4444'), links: [site('رادیو ستاره', 'https://example.com/radio', '📻', '#fed7aa', '#f97316')] },
+  { id: 'c5', category: 'کتاب', icon: iconUrl('📖', '#99f6e4', '#14b8a6'), links: [site('قصه‌های شب', 'https://example.com/stories', '🌙', '#c7d2fe', '#6366f1')] },
+]
+
+const reply = (path) => {
+  const p = path.split('?')[0]
+  if (p === '/extension/@me') return profile
+  if (p.startsWith('/todos/v2/@me')) return { todos, totalPages: 1, totals: todos.length }
+  if (p === '/todos/tags' || p.startsWith('/todos/tags')) return ['خونه', 'سلامتی', 'خرید']
+  if (p === '/widgets/habits') return { data: { items: habits } }
+  if (p === '/notes') return { notes }
+  if (p === '/weather/current') {
+    return { city: { fa: 'تهران' }, weather: { icon: { url: '' }, description: { text: 'آفتابی و دلپذیر' }, temperature: { temp: 22, temp_max: 25, temp_min: 14, wind_speed: 3, humidity: 41, clouds: 8 } },
+      forecast: [{ temp: 23, icon: '', date: new Date(Date.now() + 3 * 3600000).toISOString() }, { temp: 20, icon: '', date: new Date(Date.now() + 6 * 3600000).toISOString() }, { temp: 17, icon: '', date: new Date(Date.now() + 9 * 3600000).toISOString() }] }
+  }
+  if (p === '/currencies/USD') return { name: { fa: 'دلار', en: 'USD' }, icon: '', price: 71250, rialPrice: 712500, changePercentage: 0.4, url: '', useDollar: false, isPartnerShip: false, partnershipLogo: '' }
+  if (p === '/currencies/EUR') return { name: { fa: 'یورو', en: 'EUR' }, icon: '', price: 77900, rialPrice: 779000, changePercentage: -0.2, url: '', useDollar: false, isPartnerShip: false, partnershipLogo: '' }
+  if (p === '/users/@me/moods') return moodDays
+  if (p === '/friends') return { data: { friends: path.includes('PENDING') ? [] : friends, totalPages: 1 } }
+  if (p === '/friends/activities/beta') return { data: { activities, currentUser: 'melisa_sun', attachments: { reactions: [{ id: 'r1', isEmoji: true, content: '❤️' }, { id: 'r2', isEmoji: true, content: '😂' }], templates: [] } } }
+  if (p === '/friends/suggestions') return { data: { suggestions: [] } }
+  if (p === '/mini-apps/beta/list') return { data: { miniApps, totalPages: 1 } }
+  if (p === '/contents') return { contents }
+  if (p === '/date/events') return dateEvents
+  if (p === '/v2/notifications/feed') return { data: { items: [], nextCursor: null, surfaces: { inbox: [], island: null, dialog: null } } }
+  if (p === '/v2/notifications/unread-count') return { data: { count: 3 } }
+  return {}
+}
+
+const realFetch = window.fetch.bind(window)
+window.fetch = (input, init) => {
+  const url = typeof input === 'string' ? input : input.url
+  if (url.startsWith('http://localhost:4001')) {
+    const path = url.replace('http://localhost:4001', '')
+    window.__calls.push((init && init.method ? init.method : 'GET') + ' ' + path)
+    return Promise.resolve(new Response(JSON.stringify(reply(path)), { status: 200, headers: { 'Content-Type': 'application/json' } }))
+  }
+  return realFetch(input, init)
+}
+</script>

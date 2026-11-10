@@ -59,6 +59,7 @@ export interface StorageKV {
 	navbarVisible: boolean
 	installationId: string
 	pushAskedAt: number
+	mobilePromoClosedAt: number
 	todoFilter: string
 	todoSort: string
 	[key: `removed_notification_${string}`]: string
