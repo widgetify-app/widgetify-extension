@@ -17,7 +17,8 @@ A card with a QR code for signed-in people who have not linked the mobile versio
 - **Modals:** while any modal is open the card is hidden, and it comes back when the modal closes.
 - **When it returns:** it comes back 2 days after the person closes it. The close time is stored; nothing is stored when it is only shown.
 - **Picture:** three real screens of the v2 app (habits, today, friends) in phone frames, fanned and cut off by the bottom of the picture, 328 by 200. Everything on the screens is fake and cute data. It is made with PhotoCraft (`assets/phones.webp`, 2x, transparent, so the brand tint behind it follows the theme; the scripts and the fake data are in `art/`). The picture is content, so it keeps its own colours in every theme.
-- **Close:** a round 32px button on the picture, top end. There is no second button: the card's job is to be scanned.
+- **Link:** under the text, a small brand coloured link with the external link icon, «بدون اسکن، بازش کن», opens `https://widgetify.ir/apps` in a new tab for people who cannot scan (on the same computer, for example).
+- **Close:** a round 32px button on the picture, top end. There is no button: the card's job is to be scanned, and the link is the other way in.
 - **QR:** drawn locally from `https://widgetify.ir/apps` with high error correction, 33 modules, 124px. It always sits on a white tile with a 4 module quiet zone, in every theme, or phones will not read it.
 - **Surface:** `bg-glass-modal`, `rounded-widget`, `shadow-xl`, over the wallpaper. Check it in glass and icy over a busy wallpaper.
 - **Width:** 352px (`w-88`). Fits down to the 500px minimum.

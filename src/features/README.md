@@ -84,4 +84,5 @@ A card with a QR code that asks signed in people to install the mobile version (
 - It waits 2 days after the person closes it (`MOBILE_PROMO_COOLDOWN_MS`). The close time is saved as `mobilePromoClosedAt`. Nothing is saved when it is only shown, and a close time in the future counts as never closed.
 - The QR code opens `https://widgetify.ir/apps`, drawn with `qrcode-generator` at the highest error correction, always black on a white tile with a 4 module quiet zone, in every theme, or phones cannot read it.
 - The picture is content, not chrome: `src/assets/images/mobile-promo/phones.webp`, three screens of the v2 app with fake data. How it is made is in `design/mobile-promo/README.md`.
-- Events: `mobile_promo_shown` and `mobile_promo_closed`. Tests: `mobile-promo/__tests__/` (the show rule, and the QR matrix).
+- A link under the text, «بدون اسکن، بازش کن», opens the same address in a new tab for people who cannot scan.
+- Events: `mobile_promo_shown`, `mobile_promo_closed` and `mobile_promo_link_opened`. Tests: `mobile-promo/__tests__/` (the show rule, and the QR matrix).

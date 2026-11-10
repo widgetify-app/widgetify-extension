@@ -63,6 +63,7 @@ const STORAGE_KEYS = [
 const ANALYTICS_EVENTS = [
 	'mobile_promo_shown',
 	'mobile_promo_closed',
+	'mobile_promo_link_opened',
 	'push_ask_view',
 	'push_ask_accept',
 	'push_ask_later',
