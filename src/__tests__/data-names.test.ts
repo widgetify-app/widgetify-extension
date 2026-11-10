@@ -36,6 +36,7 @@ const STORAGE_KEYS = [
 	'pomodoro_settings',
 	'profile',
 	'pushAskedAt',
+	'pushPreference',
 	'recent_searches',
 	'recommended_sites',
 	'refresh_token',
