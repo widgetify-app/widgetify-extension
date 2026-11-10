@@ -9,6 +9,7 @@ import { gallery } from './gallery'
 import { home } from './home'
 import { market } from './market'
 import { miniApps } from './mini-apps'
+import { mobilePromo } from './mobile-promo'
 import { mood } from './mood'
 import { navbar } from './navbar'
 import { news } from './news'
@@ -30,6 +31,7 @@ export const fa = {
 	...home,
 	...market,
 	...miniApps,
+	...mobilePromo,
 	...mood,
 	...navbar,
 	...news,

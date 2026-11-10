@@ -4,7 +4,7 @@ One folder per product feature. Widgets are features too and live in `widgets/` 
 
 ## What is here
 
-`explorer`, `friends`, `market`, `mini-apps`, `navbar`, `push`, `release-notes`, `setting`, `widgets`. `src/features/` holds only feature folders, nothing loose.
+`explorer`, `friends`, `market`, `mini-apps`, `mobile-promo`, `navbar`, `push`, `release-notes`, `setting`, `widgets`. `src/features/` holds only feature folders, nothing loose.
 
 ## Rules
 
@@ -74,3 +74,14 @@ Push notifications in Chrome and Edge, none on Firefox. Design: `design/push/`.
 - The build needs `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_APP_ID`, `VITE_FIREBASE_PROJECT_ID`, `VITE_FIREBASE_SENDER_ID` and `VITE_VAPID_KEY` (public values of the Firebase web app, in `.env.example`). Without them push is off.
 - `push/utils/push.ts` is the only door to the token and the permission. Sign out calls `forgetPushSubscription` first (3 seconds at most). The install id is `installationId()` in `src/common/utils/installation-id.ts`.
 - Tests: `push/__tests__/push-ask.test.ts`, `push/__tests__/cold-tap.test.ts`, `background/__tests__/push-notification.test.ts`.
+
+## Mobile promo: the download card
+
+A card with a QR code that asks signed in people to install the mobile version (the Android app or its PWA). The design is `design/mobile-promo/`. The entry is `src/features/mobile-promo/mobile-promo.tsx` (`MobilePromo`, mounted by the navbar), with `src/features/mobile-promo/components/mobile-promo-card.tsx`, `src/features/mobile-promo/components/qr-code.tsx` and, in `utils/`, `src/features/mobile-promo/utils/show-rule.ts`, `src/features/mobile-promo/utils/qr.ts` and `src/features/mobile-promo/utils/mobile-promo-url.ts`.
+
+- It shows only to a signed in person whose profile says `mobileV2.linked` is false. The Android app and the PWA count the same, so either one hides it for good. A profile without `mobileV2` (an older server or an old cache) counts as not linked.
+- It hides while any modal is open (an open `dialog`, found by `src/features/mobile-promo/hooks/use-modal-open.ts` and `src/features/mobile-promo/utils/modal-open.ts`) and comes back when the last one closes. `mobile_promo_shown` is sent once per page load, not on every return.
+- It waits 2 days after the person closes it (`MOBILE_PROMO_COOLDOWN_MS`). The close time is saved as `mobilePromoClosedAt`. Nothing is saved when it is only shown, and a close time in the future counts as never closed.
+- The QR code opens `https://widgetify.ir/apps`, drawn with `qrcode-generator` at the highest error correction, always black on a white tile with a 4 module quiet zone, in every theme, or phones cannot read it.
+- The picture is content, not chrome: `src/assets/images/mobile-promo/phones.webp`, three screens of the v2 app with fake data. How it is made is in `design/mobile-promo/README.md`.
+- Events: `mobile_promo_shown` and `mobile_promo_closed`. Tests: `mobile-promo/__tests__/` (the show rule, and the QR matrix).

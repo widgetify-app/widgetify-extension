@@ -66,6 +66,12 @@ interface FetchedProfile {
 	isBirthdayToday: boolean
 	birthDateUrl: string
 	badges: Badge[]
+	mobileV2?: {
+		linked: boolean
+		linkedAt: string | null
+		lastSeenAt: string | null
+		clients: Array<'ANDROID' | 'PWA'>
+	}
 }
 
 export interface UserProfile extends FetchedProfile {
