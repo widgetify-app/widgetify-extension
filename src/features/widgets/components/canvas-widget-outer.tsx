@@ -374,8 +374,9 @@ function CanvasWidgetOuterImpl({
 				data-menu-open={isMenuOpen || undefined}
 				data-editing={canvasMode === 'edit' || undefined}
 				className={cn(
-					'absolute top-0 left-0 select-none rounded-widget',
+					'absolute top-0 left-0 select-none rounded-widget isolate',
 					isDragging ? 'z-50 shadow-xl cursor-grabbing' : 'z-10 cursor-default',
+					!isDragging && canvasMode !== 'edit' && 'contain-paint',
 					!isDragging &&
 						'transition-[transform,width,height] duration-200 ease-out'
 				)}

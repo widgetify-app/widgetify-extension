@@ -173,7 +173,7 @@ children draw the background, and `bg-glass-modal` is the modal's heavier one.
 
 A theme opts in with four variables: `--glass-bg` and `--glass-filter`, and
 `--glass-modal-bg` and `--glass-modal-filter`. Leave out any of them and that
-part falls back to the plain token.
+part falls back to the plain token. Optional `--glass-sheen` and `--glass-edge` add icy's gradient and rim, and `--color-raised` lifts a pill.
 
 ## Showing another theme inside the page
 

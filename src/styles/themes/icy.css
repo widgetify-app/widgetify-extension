@@ -59,8 +59,20 @@
 	--elevation-md-color: rgba(0, 0, 0, 0.4);
 	--elevation-lg-color: rgba(0, 0, 0, 0.48);
 	--elevation-xl-color: rgba(0, 0, 0, 0.56);
-	--glass-bg: rgba(23, 23, 23, 0.12);
-	--glass-filter: blur(3px) saturate(150%) brightness(108%);
-	--glass-modal-bg: rgba(23, 23, 23, 0.18);
-	--glass-modal-filter: blur(32px) saturate(180%) brightness(115%);
+	--glass-bg: rgba(20, 20, 24, 0.26);
+	--glass-filter: blur(22px) saturate(190%) brightness(95%);
+	--glass-modal-bg: rgba(20, 20, 24, 0.4);
+	--glass-modal-filter: blur(36px) saturate(190%);
+	--color-raised: rgba(255, 255, 255, 0.26);
+	--glass-sheen: linear-gradient(
+		135deg,
+		rgba(255, 255, 255, 0.22) 0%,
+		rgba(255, 255, 255, 0.05) 35%,
+		rgba(255, 255, 255, 0) 60%,
+		rgba(255, 255, 255, 0.1) 100%
+	);
+	--glass-edge:
+		inset 0 1px 0 rgba(255, 255, 255, 0.55), inset 0 -1px 0 rgba(255, 255, 255, 0.12),
+		inset 1px 0 0 rgba(255, 255, 255, 0.25), inset -1px 0 0 rgba(255, 255, 255, 0.25),
+		0 8px 24px rgba(0, 0, 0, 0.18);
 }

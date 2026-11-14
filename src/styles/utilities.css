@@ -35,11 +35,21 @@
 @utility bg-glass-* {
 	background-color: var(--glass-bg, --value(--color-*));
 	backdrop-filter: var(--glass-filter, none);
+	background-image: var(--glass-sheen, none);
+	box-shadow:
+		var(--glass-edge, 0 0 #0000), var(--tw-inset-shadow, 0 0 #0000),
+		var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000),
+		var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow, 0 0 #0000);
 }
 
 @utility bg-glass-modal {
 	background-color: var(--glass-modal-bg, var(--color-surface));
 	backdrop-filter: var(--glass-modal-filter, none);
+	background-image: var(--glass-sheen, none);
+	box-shadow:
+		var(--glass-edge, 0 0 #0000), var(--tw-inset-shadow, 0 0 #0000),
+		var(--tw-inset-ring-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000),
+		var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow, 0 0 #0000);
 }
 
 @utility backdrop-glass {

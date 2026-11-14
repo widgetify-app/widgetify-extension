@@ -321,7 +321,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ tabs, onComplete }
 				]}
 				size="sm"
 				className="h-7 p-0.5 border-none rounded-xl w-37.5 bg-fill"
-				activeBgClass="bg-surface rounded-lg shadow-sm"
+				activeBgClass="bg-raised rounded-lg shadow-sm"
 				activeTextClass="text-fg-strong"
 			/>
 
@@ -405,7 +405,7 @@ export const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ tabs, onComplete }
 						]}
 						size="sm"
 						className="h-7 p-0.5 border-none rounded-xl shrink-0 bg-fill"
-						activeBgClass="bg-surface rounded-lg shadow-sm"
+						activeBgClass="bg-raised rounded-lg shadow-sm"
 						activeTextClass="text-fg-strong"
 					/>
 					<TopUsersTab type={topUsersType} />
