@@ -4,6 +4,8 @@ import { cn } from '@/common/utils/cn'
 import {
 	CHART_HEIGHT,
 	CHART_WIDTH,
+	type ActivePoint,
+	describePoint,
 	type PriceChart as PriceChartShape,
 	nearestPointIndex,
 } from '../utils/build-price-chart'
@@ -14,9 +16,10 @@ interface PriceChartProps {
 	chart: PriceChartShape
 	name: string
 	showTime: boolean
+	onActiveChange: (point: ActivePoint | null) => void
 }
 
-const TOOLTIP_EDGE_PERCENT = 22
+const LABEL_EDGE_PERCENT = 12
 
 function formatMoment(time: number, showTime: boolean): string {
 	const date = new Date(time)
@@ -25,10 +28,11 @@ function formatMoment(time: number, showTime: boolean): string {
 		: date.toLocaleDateString('fa-IR', { month: 'short', day: 'numeric' })
 }
 
-export function PriceChart({ chart, name, showTime }: PriceChartProps) {
+export function PriceChart({ chart, name, showTime, onActiveChange }: PriceChartProps) {
 	const gradientId = useId()
 	const [activeIndex, setActiveIndex] = useState<number | null>(null)
 	const active = activeIndex === null ? null : chart.points[activeIndex]
+	const activePercent = active ? (active.x / CHART_WIDTH) * 100 : 0
 
 	const colorMode = useCurrencyColorMode()
 	const trendClass =
@@ -40,7 +44,14 @@ export function PriceChart({ chart, name, showTime }: PriceChartProps) {
 		const box = event.currentTarget.getBoundingClientRect()
 		if (box.width === 0) return
 		const x = ((event.clientX - box.left) / box.width) * CHART_WIDTH
-		setActiveIndex(nearestPointIndex(chart.points, x))
+		const index = nearestPointIndex(chart.points, x)
+		setActiveIndex(index)
+		onActiveChange(describePoint(chart, index))
+	}
+
+	function release() {
+		setActiveIndex(null)
+		onActiveChange(null)
 	}
 
 	const lastTick = chart.timeTicks.length - 1
@@ -48,11 +59,32 @@ export function PriceChart({ chart, name, showTime }: PriceChartProps) {
 	return (
 		<div dir="ltr" className="flex flex-col w-full gap-1.5">
 			<div
+				aria-hidden="true"
+				className="relative h-4 px-5 text-3xs font-bold tabular-nums text-fg-strong"
+			>
+				{active && (
+					<span
+						className={cn(
+							'absolute top-0 whitespace-nowrap',
+							activePercent < LABEL_EDGE_PERCENT
+								? 'translate-x-0'
+								: activePercent > 100 - LABEL_EDGE_PERCENT
+									? '-translate-x-full'
+									: '-translate-x-1/2'
+						)}
+						style={{ left: `${activePercent}%` }}
+					>
+						{formatMoment(active.time, showTime)}
+					</span>
+				)}
+			</div>
+
+			<div
 				role="img"
 				aria-label={t('widgets.wigiArz.chart.aria', { name })}
 				className={cn('relative w-full touch-none select-none h-33', trendClass)}
 				onPointerMove={onPointerMove}
-				onPointerLeave={() => setActiveIndex(null)}
+				onPointerLeave={release}
 			>
 				<svg
 					viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
@@ -87,35 +119,16 @@ export function PriceChart({ chart, name, showTime }: PriceChartProps) {
 						<span
 							aria-hidden="true"
 							className="absolute inset-y-0 w-px bg-fg-ghost"
-							style={{ left: `${(active.x / CHART_WIDTH) * 100}%` }}
+							style={{ left: `${activePercent}%` }}
 						/>
 						<span
 							aria-hidden="true"
 							className="absolute block -translate-x-1/2 -translate-y-1/2 rounded-full size-2 bg-current ring-2 ring-surface"
 							style={{
-								left: `${(active.x / CHART_WIDTH) * 100}%`,
+								left: `${activePercent}%`,
 								top: `${(active.y / CHART_HEIGHT) * 100}%`,
 							}}
 						/>
-						<output
-							className={cn(
-								'absolute top-1 px-2 py-1 text-center rounded-lg pointer-events-none bg-glass-modal text-fg-strong text-3xs whitespace-nowrap',
-								(active.x / CHART_WIDTH) * 100 < TOOLTIP_EDGE_PERCENT
-									? 'translate-x-0'
-									: (active.x / CHART_WIDTH) * 100 >
-											100 - TOOLTIP_EDGE_PERCENT
-										? '-translate-x-full'
-										: '-translate-x-1/2'
-							)}
-							style={{ left: `${(active.x / CHART_WIDTH) * 100}%` }}
-						>
-							<span className="block font-bold tabular-nums">
-								{active.value.toLocaleString()}
-							</span>
-							<span className="block text-fg-muted">
-								{formatMoment(active.time, showTime)}
-							</span>
-						</output>
 					</>
 				)}
 			</div>

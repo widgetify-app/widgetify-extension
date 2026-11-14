@@ -1,4 +1,5 @@
-import { memo } from 'react'
+import { memo, Suspense } from 'react'
+import { WidgetSkeleton } from './widget-skeleton'
 import type { WidgetDefinition, WidgetSize } from '../utils/layout-engine/types'
 
 interface WidgetSlotProps {
@@ -9,7 +10,11 @@ interface WidgetSlotProps {
 }
 
 function WidgetSlotImpl({ definition, instanceId, size, meta }: WidgetSlotProps) {
-	return <>{definition.node(instanceId, size, meta)}</>
+	return (
+		<Suspense fallback={<WidgetSkeleton />}>
+			{definition.node(instanceId, size, meta)}
+		</Suspense>
+	)
 }
 
 export const WidgetSlot = memo(

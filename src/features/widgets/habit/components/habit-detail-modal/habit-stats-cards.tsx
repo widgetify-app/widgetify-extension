@@ -1,6 +1,6 @@
 import { t } from '@/common/i18n'
 import React, { useMemo } from 'react'
-import moment from 'moment'
+import { toIsoDateKey } from '@/features/widgets/utils/jalali-date'
 import type { WidgetifyDate } from '@/common/utils/date-events'
 import type { Habit } from '@/services/habit/habit.interface'
 import { computeHabitStats, type HabitDay } from '../../utils/habit-stats'
@@ -28,7 +28,7 @@ export const HabitStatsCards: React.FC<HabitStatsCardsProps> = React.memo(
 
 				if (date.isAfter(today, 'day')) continue
 
-				const gregorianDate = moment(date.toDate()).format('YYYY-MM-DD')
+				const gregorianDate = toIsoDateKey(date)
 				const [year, month] = gregorianDate.split('-')
 				const record = habit.calendarData?.[`${year}-${month}`]?.[gregorianDate]
 				const value = record?.value ?? 0
