@@ -10,7 +10,7 @@ The Jalali calendar with holidays, events and the day's mood. 2x3 month view wit
 | `calendar-setting.tsx` | The settings modal: two switches, events and moods, each beside a live preview of a day that gains or loses its dot or mood ring as you switch. At 1x1 it says the options show at 2x1 and 2x3. |
 | `variants/calendar-2x3.tsx` | Tabs in the header, month arrows on hover, the month title with "برو به امروز", the month grid and the day popover. Adds "برو به امروز" to the widget menu while another month is open. |
 | `variants/calendar-2x1.tsx` | This week, Saturday first. `WidgetHeader` with the month and year, then seven day tiles with the same event dot and mood ring as the month view. |
-| `variants/calendar-1x1.tsx` | Today: the month in `WidgetCenteredHeader`, then the day and the weekday, red on a holiday. |
+| `variants/calendar-1x1.tsx` | Today: the month in `WidgetCenteredHeader`, then the day and the weekday; on a holiday only the day number is red. |
 | `components/day/day.tsx` | One day of the month: a 28 px circle, filled on today, red on a holiday, ringed when selected, bordered with the mood colour, a dot for an event. |
 | `components/day/day-details.tsx` | The popover of a day: date in three calendars, every event with a holiday tag, mood picker for the last seven days. It always shows everything; the display options only change the faces of the days. |
 | `hooks/use-day-details-popup.ts` | Which day the popover belongs to. |

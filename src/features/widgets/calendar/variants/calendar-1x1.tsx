@@ -27,10 +27,7 @@ export function Calendar1x1() {
 
 				<span
 					aria-hidden="true"
-					className={cn(
-						'font-semibold leading-none text-2xs',
-						todayIsHoliday ? 'text-danger' : 'text-fg-muted'
-					)}
+					className="font-semibold leading-none text-2xs text-fg-muted"
 				>
 					{today.format('jMMMM')}
 				</span>
