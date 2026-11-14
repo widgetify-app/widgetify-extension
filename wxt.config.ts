@@ -49,6 +49,21 @@ export default defineConfig({
 		},
 	}),
 
+	zip: {
+		excludeSources: [
+			'web-clone/**',
+			'design/**',
+			'docs/**',
+			'graphify-out/**',
+			'scripts/**',
+			'src/**/*.md',
+			'AGENTS.md',
+			'AGENTS.local.md',
+			'SOCIAL_ROADMAP.md',
+			'diff.txt',
+		],
+	},
+
 	alias: {
 		'@/common': './src/common',
 		'@/analytics': './src/analytics',
