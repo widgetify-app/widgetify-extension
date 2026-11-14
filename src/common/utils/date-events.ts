@@ -173,3 +173,16 @@ export function getCurrentDate(timeZone: string) {
 	const tzMoment = momentTz.tz(nowDate(), timeZone)
 	return jalaliMoment(tzMoment.toDate()).locale('fa')
 }
+
+export function getHourInZone(date: Date, timeZone?: string) {
+	try {
+		const hour = new Intl.DateTimeFormat('en-US', {
+			timeZone: timeZone || undefined,
+			hour: 'numeric',
+			hourCycle: 'h23',
+		}).format(date)
+		return Number(hour)
+	} catch {
+		return date.getHours()
+	}
+}
