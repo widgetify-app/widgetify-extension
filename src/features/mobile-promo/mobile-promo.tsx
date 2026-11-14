@@ -23,6 +23,7 @@ export function MobilePromo() {
 		open &&
 		closedAt !== undefined &&
 		shouldShowMobilePromo({
+			released: profile?.mobilePromoReleased === true,
 			signedIn: isAuthenticated,
 			profileLoaded: profile !== undefined,
 			linked: profile?.mobileV2?.linked === true,

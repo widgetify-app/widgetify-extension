@@ -72,6 +72,7 @@ interface FetchedProfile {
 		lastSeenAt: string | null
 		clients: Array<'ANDROID' | 'PWA'>
 	}
+	mobilePromoReleased?: boolean
 }
 
 export interface UserProfile extends FetchedProfile {

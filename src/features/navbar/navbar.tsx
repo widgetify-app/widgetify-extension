@@ -5,7 +5,7 @@ import { FriendsListNavbar } from './components/friends-navbar'
 import { LayoutDropdown } from './components/layout-dropdown'
 import { ProfileNav } from './profile/profile'
 import { PushHost } from '@/features/push/push'
-// import { MobilePromo } from '@/features/mobile-promo/mobile-promo'
+import { MobilePromo } from '@/features/mobile-promo/mobile-promo'
 import { IslandNotification, NotificationNavbar } from './notifications/notifications'
 import { MarketModalListener } from './components/market-modal-listener'
 import { FriendLookModalListener } from '@/features/friends/friends'
@@ -156,7 +156,7 @@ export function NavbarLayout(): JSX.Element {
 		<>
 			<IslandNotification />
 			<PushHost />
-			{/* <MobilePromo /> */}
+			<MobilePromo />
 			<button
 				type="button"
 				onClick={() => onToggleNavbar()}

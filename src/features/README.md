@@ -81,6 +81,7 @@ A card with a QR code that asks signed in people to install the mobile version (
 
 - It shows only to a signed in person whose profile says `mobileV2.linked` is false. The Android app and the PWA count the same, so either one hides it for good. A profile without `mobileV2` (an older server or an old cache) counts as not linked.
 - It hides while any modal is open (an open `dialog`, found by `src/features/mobile-promo/hooks/use-modal-open.ts` and `src/features/mobile-promo/utils/modal-open.ts`) and comes back when the last one closes. `mobile_promo_shown` is sent once per page load, not on every return.
+- **The server decides when it is live.** The profile carries `mobilePromoReleased` (`GET /extension/@me`, the switch is the `MOBILE_PROMO_RELEASED` constant in the API's extension module). Anything but `true`, including a profile without the field, hides the card. No extra request.
 - It waits 2 days after the person closes it (`MOBILE_PROMO_COOLDOWN_MS`). The close time is saved as `mobilePromoClosedAt`. Nothing is saved when it is only shown, and a close time in the future counts as never closed.
 - The QR code opens `https://widgetify.ir/apps`, drawn with `qrcode-generator` at the highest error correction, always black on a white tile with a 4 module quiet zone, in every theme, or phones cannot read it.
 - The picture is content, not chrome: `src/assets/images/mobile-promo/phones.webp`, three screens of the v2 app with fake data. How it is made is in `design/mobile-promo/README.md`.

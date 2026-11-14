@@ -1,6 +1,7 @@
 export const MOBILE_PROMO_COOLDOWN_MS = 2 * 24 * 60 * 60 * 1000
 
 interface MobilePromoState {
+	released: boolean
 	signedIn: boolean
 	profileLoaded: boolean
 	linked: boolean
@@ -10,6 +11,7 @@ interface MobilePromoState {
 }
 
 export function shouldShowMobilePromo(state: MobilePromoState): boolean {
+	if (!state.released) return false
 	if (!state.signedIn || !state.profileLoaded || state.linked) return false
 	if (state.modalOpen) return false
 	if (state.closedAt === undefined || state.closedAt > state.now) return true
