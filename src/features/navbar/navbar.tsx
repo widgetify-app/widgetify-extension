@@ -14,7 +14,11 @@ import Analytics from '@/analytics'
 import { Page, usePage } from '@/context/page.context'
 import { useAuth } from '@/context/auth.context'
 import { useAppearance } from '@/context/appearance.context'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import { BlurModeButton } from './components/blur-mode-button'
+import { LogoDecoration } from './components/logo-decoration'
+import { NavbarSnow } from './components/navbar-snow'
+import { shouldShowSnow } from './utils/snow-rule'
 import type { UserProfile } from '@/services/user/user-service.hook'
 import { CountBadge } from '@/components/ui'
 import { useSyncAccount } from './hooks/use-sync-account'
@@ -113,6 +117,13 @@ export function NavbarLayout(): JSX.Element {
 	const isEditingCanvas = canvasMode === 'edit'
 	const showNavbar = isVisible && !isEditingCanvas
 	const showHandle = !isVisible && !isEditingCanvas
+	const { isOptimalMode } = useGeneralSetting()
+	const showSnow = shouldShowSnow({
+		enabled: user?.christmasSnow,
+		signedIn: user !== null,
+		barOpen: showNavbar,
+		reducedMotion: isOptimalMode,
+	})
 	const [tab, setTab] = useState<string | null>(null)
 	const handleOpenSettings = useCallback((tabName: string | null) => {
 		setTab(tabName)
@@ -188,13 +199,14 @@ export function NavbarLayout(): JSX.Element {
 					id="chrome-footer"
 				></div>
 
-				<div className="relative flex items-center p-1.5 sm:p-2 justify-between gap-1 sm:gap-2 bg-glass-surface-2 rounded-2xl sm:rounded-widget h-12 sm:h-14">
+				<div className="relative flex items-center p-1.5 sm:p-2 justify-between gap-1 sm:gap-2 bg-glass-surface-2 rounded-2xl sm:rounded-widget h-12 sm:h-14 isolate">
+					{showSnow && <NavbarSnow />}
 					<div className="relative z-10 flex items-center gap-1.5 sm:gap-2 pr-1 ml-0.5 sm:flex-1">
 						<a
 							href={WIDGETIFY_URLS.website}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="flex items-center justify-center border rounded-full border-image-line bg-scrim-soft outline-2 outline-surface-3"
+							className="relative flex items-center justify-center border rounded-full border-image-line bg-scrim-soft outline-2 outline-surface-3"
 						>
 							<img
 								src={LOGO_URL}
@@ -204,6 +216,7 @@ export function NavbarLayout(): JSX.Element {
 								decoding="async"
 								className="object-contain w-7 h-7 sm:w-8 sm:h-8"
 							/>
+							{user?.christmasSnow === true && <LogoDecoration />}
 						</a>
 						<p className="hidden text-xs font-semibold sm:block sm:text-sm text-fg">
 							{getUserLabel(user)}

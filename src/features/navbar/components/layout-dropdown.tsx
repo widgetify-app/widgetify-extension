@@ -47,7 +47,7 @@ export function LayoutDropdown() {
 				/>
 			}
 		>
-			<div className="bg-glass-surface-2 py-2 min-w-48 px-1" dir="rtl">
+			<div className="py-2 min-w-48 px-1" dir="rtl">
 				<DropdownItem
 					icon={<Icon name="outlineSquares2X2" size={14} />}
 					label={t('navbar.layout.manage')}

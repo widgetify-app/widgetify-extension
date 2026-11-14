@@ -66,6 +66,7 @@ interface FetchedProfile {
 	isBirthdayToday: boolean
 	birthDateUrl: string
 	badges: Badge[]
+	christmasSnow?: boolean
 	mobileV2?: {
 		linked: boolean
 		linkedAt: string | null

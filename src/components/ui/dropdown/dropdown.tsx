@@ -231,7 +231,7 @@ export function Dropdown({
 					>
 						<Motion.div
 							ref={dropdownContentRef}
-							className={`fixed shadow-xl overflow-hidden rounded-2xl bg-surface-2 backdrop-blur-xl ${isReady ? 'pointer-events-auto' : 'pointer-events-none'} ${dropdownClassName}`}
+							className={`fixed shadow-xl overflow-hidden rounded-2xl border border-line bg-glass-modal ${isReady ? 'pointer-events-auto' : 'pointer-events-none'} ${dropdownClassName}`}
 							initial={{ opacity: 0, scale: 0.95 }}
 							animate={{
 								opacity: isReady ? 1 : 0,

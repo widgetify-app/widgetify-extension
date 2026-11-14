@@ -41,7 +41,7 @@ export function ProfileDropdownMenu({
 	}
 
 	return (
-		<div className="bg-glass-surface-2 py-2 min-w-52 px-1" dir="rtl">
+		<div className="py-2 min-w-52 px-1" dir="rtl">
 			{isAuthenticated ? (
 				<button
 					type="button"
