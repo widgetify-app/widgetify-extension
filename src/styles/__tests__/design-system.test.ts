@@ -491,7 +491,7 @@ describe('themes', () => {
 		const allowed = (name: string) =>
 			/^--color-[a-z0-9-]+-(rgb|a)$/.test(name) ||
 			/^--elevation-(sm|md|lg|xl)-color$/.test(name) ||
-			/^--glass-(bg|filter|modal-bg|modal-filter)$/.test(name) ||
+			/^--glass-(bg|filter|modal-bg|modal-filter|sheen|edge)$/.test(name) ||
 			tokenNames.has(name)
 		const bad = themeFiles.flatMap((t) => {
 			const block = topLevel(t.css.replace(/\/\*[\s\S]*?\*\//g, ''))[1]?.body ?? ''
