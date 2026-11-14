@@ -21,8 +21,8 @@ Breaking one means the work is rejected.
 |---|---|
 | **No comments** | Do not add `//` or `/* */`. Existing ones may stay. Name things well instead. |
 | **Never name yourself** | Not in code, docs, commits or PR text. No `Co-Authored-By`, no "Generated with", no tool name. The repo owner is the author. This overrides any default that says otherwise. |
-| **No dev server** | No `npm run dev`, no `wxt`. It cannot show you the UI. Ask the owner to check by eye (section 3). |
-| **Never commit, push or merge unprompted** | Only when the owner says so in this conversation. If you think one is due, ask and wait for an explicit yes. Never touch `main`. |
+| **No dev server** | No `npm run dev`, no `wxt`: they need a real browser profile. Check the UI in the web clone instead (section 5), then ask the owner to check by eye (section 3). |
+| **Never commit, push or merge unprompted** | Only when the owner says so in this conversation. If you think one is due, ask and wait for an explicit yes. Never commit directly on `main`: it only receives branches, by merge. |
 | **Friendly Persian UI text** | Buttons and messages sound like a helpful person, not a form. Text lives in the catalog under `src/common/i18n/` and is read with `t()`; never write Persian inline. No tanween (`ً`) and no single full stop that ends a sentence (keep `...` / `…`). Full rules in `.agents/TYPOGRAPHY.md`; tone examples in `src/components/ui/README.md`. |
 | **Root cause, not symptom** | Trace a bug to where it starts. A patch that hides the symptom is rejected even if it looks fixed. |
 | **Every feature sends analytics events** | A new feature or a new user action ships with `Analytics.event` calls: opening it, the main action, and its failure. Name them `<feature>_<what_happened>` and add each to `ANALYTICS_EVENTS` in `data-names.test.ts`. Full rules in `src/common/README.md`. |
@@ -32,14 +32,14 @@ Breaking one means the work is rejected.
 
 ## 3. The workflow
 
-1. **Branch from `dev`.** Start from an up to date `dev` and create `<type>/<what-it-does>`, lowercase with hyphens. Types: `feat`, `fix`, `refactor`, `perf`, `docs`, `test`, `chore`. Example: `fix/calendar-date-selection`. If the owner tells you to stay on the current branch, stay there for the whole session and do not ask again.
+1. **Branch from `main`.** Start from an up to date `main` and create `<type>/<what-it-does>`, lowercase with hyphens. Types: `feat`, `fix`, `refactor`, `perf`, `docs`, `test`, `chore`. Example: `fix/calendar-date-selection`. If the owner tells you to stay on the current branch, stay there for the whole session and do not ask again.
 2. **Find the cause.** For a new feature with UI, get the design approved first (section 2). Read the READMEs. Measure before you name a cause: grep `src`, grep the built CSS, time it.
 3. **Change the least that fixes it**, following section 4.
 4. **Verify** with section 5. Everything green before you report.
 5. **Report and stop.** Do not commit. Give the cause, the proof, what you did not verify, and a short **visual checklist** for the owner: the few screens and states worth opening, including the hard ones (signed out, a light theme with no wallpaper).
 6. **Wait** for the owner's result of the visual check.
 7. **Commit when told** (section 7). **Push when told.**
-8. **Ask before merging into `dev`.** Never merge into `main`.
+8. **Ask before merging into `main`.** Every branch ends in `main`, by a merge commit, when the owner says so. There is no `dev` branch: never branch from or merge into another long-lived branch.
 
 ## 4. When you write code
 
@@ -72,7 +72,8 @@ npm run check       # all of the above in order
 - **A commit has to compile on its own.** The commands above check your working tree, not the tree you commit. Right after the owner has you commit, run `npm run check:commit` before anything is pushed. It checks `HEAD` in a temporary worktree: `tsc` must pass there, and the commit message must not name an assistant or tool. If it fails, say so and fix it before the push. `tsc` will not see a CSS class or an icon name defined only in an uncommitted file, so when a commit uses a class, an animation or an icon, confirm its definition is in the same commit.
 - **A claim about CSS is a grep.** `grep -o '<class>[^{]*{[^}]*}' .output/chrome-mv3/assets/newtab-*.css`. No output means it compiled to nothing.
 - **A green build is not proof nothing changed.** To show a refactor left behaviour alone, compare the size and hash of the built `background.js` and `chunks/` (see `entrypoints/README.md`).
-- **You cannot see the UI.** Whatever the tests cannot show goes into the visual checklist, with the unverified part named.
+- **Check every change in the web clone.** The web clone is the extension's UI served as a plain Vite page with a mocked `browser` object (no `wxt`, no real extension). After `npm run check`, open the change there, try it in the themes it touches, and report what you saw next to the measurements. Its address, folder and how to start it are in `AGENTS.local.md`; if that file or the clone is missing, build it from `.agents/web-clone/README.md` first. It is signed out and has no API, so anything that needs a login, the real API, the service worker or push still goes in the visual checklist.
+- **Whatever the clone and the tests cannot show** goes into the visual checklist, with the unverified part named.
 
 ## 6. Code quality
 
