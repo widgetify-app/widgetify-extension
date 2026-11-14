@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>برف کریسمس توی نوار پایین</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;900&display=swap">
+<style>
+:root {
+  --ink: 70, 70, 71;
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+  --surface-3: #f1f5f9;
+  --fg-strong: #464647;
+  --fg: rgba(var(--ink), .9);
+  --fg-muted: rgba(var(--ink), .7);
+  --fill: rgba(var(--ink), .05);
+  --fill-2: rgba(var(--ink), .1);
+  --fill-3: rgba(var(--ink), .2);
+  --line: rgba(var(--ink), .15);
+  --brand: #536dfe;
+  --board: #eef1f6;
+  --font: "Vazirmatn", "Vazir", Tahoma, system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--board);font-family:var(--font);color:var(--fg-strong);padding:32px;display:flex;flex-direction:column;gap:40px}
+h2{margin:0 0 12px;font-size:14px;font-weight:700;color:var(--fg-muted)}
+.stage{border-radius:24px;padding:48px 32px 24px;position:relative;min-height:200px;display:flex;align-items:flex-end;justify-content:center}
+.wall{background:#2d3a5c;--ink:255,255,255}
+.wall-light{background:#c9d6ee}
+.bar{position:relative;width:100%;max-width:1080px;height:56px;border-radius:24px;background:rgba(255,255,255,.14);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:space-between;padding:0 16px;color:#fff;overflow:hidden}
+.bar.light{background:var(--surface-2);border-color:var(--line);color:var(--fg-strong)}
+.bar .label{font-size:14px;font-weight:600}
+.bar .tabs{display:flex;gap:16px}
+.bar .tabs b{width:20px;height:20px;border-radius:6px;border:2px solid currentColor;opacity:.7;display:block}
+.bar .tabs b.on{border-color:var(--brand);opacity:1}
+.snow{position:absolute;inset:0;pointer-events:none}
+.snow i{position:absolute;border-radius:9999px;background:rgba(var(--ink),.5);display:block}
+.panel{width:384px;background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.panel .title{font-size:14px;font-weight:700}
+.row{display:flex;align-items:center;gap:12px}
+.row p{margin:0;flex:1;font-size:14px;font-weight:300;line-height:1.7;color:var(--fg-muted)}
+.toggle{width:44px;height:24px;border-radius:9999px;background:var(--brand);position:relative;flex-shrink:0}
+.toggle::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:9999px;background:#fff}
+.toggle.off{background:var(--fill-3)}
+.toggle.off::after{left:auto;right:2px}
+.logo{position:relative;display:flex;width:34px;height:34px;border-radius:9999px;background:var(--brand);color:#fff;align-items:center;justify-content:center;font-weight:700;font-size:14px;outline:2px solid var(--surface-3)}
+.logo img{position:absolute;left:50%;top:50%;width:48px;height:48px;transform:translate(-50%,-50%);pointer-events:none}
+.stage.plain{background:#aebbd6;align-items:flex-start;padding:32px}
+</style>
+</head>
+<body>
+<section>
+<h2>S1 · نوار پایین توی تم شیشه‌ای/یخی یا تیره، برف فقط تو محدوده خود نوار می‌باره و نوار بیرون نمی‌زنه</h2>
+<div class="stage wall"><div class="bar"><span class="label">سلام سجاد</span><span class="tabs"><b class="on"></b><b></b><b></b></span><span class="label">&nbsp;</span><span class="snow"><i style="left:325px;top:10px;width:3.0px;height:3.0px;opacity:0.55"></i><i style="left:820px;top:7px;width:6px;height:6px;opacity:0.55"></i><i style="left:908px;top:13px;width:3.0px;height:3.0px;opacity:0.95"></i><i style="left:418px;top:15px;width:6px;height:6px;opacity:0.95"></i><i style="left:61px;top:31px;width:4px;height:4px;opacity:0.55"></i><i style="left:577px;top:23px;width:4px;height:4px;opacity:0.55"></i><i style="left:556px;top:9px;width:5.0px;height:5.0px;opacity:0.7"></i><i style="left:541px;top:32px;width:6px;height:6px;opacity:0.7"></i><i style="left:105px;top:32px;width:4px;height:4px;opacity:0.85"></i><i style="left:99px;top:39px;width:6px;height:6px;opacity:0.55"></i><i style="left:619px;top:28px;width:6px;height:6px;opacity:0.95"></i><i style="left:776px;top:26px;width:5.0px;height:5.0px;opacity:0.85"></i><i style="left:301px;top:43px;width:4px;height:4px;opacity:0.55"></i><i style="left:574px;top:29px;width:4px;height:4px;opacity:0.95"></i><i style="left:289px;top:53px;width:3.0px;height:3.0px;opacity:0.95"></i><i style="left:166px;top:20px;width:5.0px;height:5.0px;opacity:0.95"></i><i style="left:41px;top:37px;width:6px;height:6px;opacity:0.85"></i><i style="left:341px;top:20px;width:5.0px;height:5.0px;opacity:0.95"></i><i style="left:70px;top:7px;width:4px;height:4px;opacity:0.95"></i><i style="left:696px;top:5px;width:4px;height:4px;opacity:0.95"></i><i style="left:285px;top:22px;width:4px;height:4px;opacity:0.55"></i><i style="left:939px;top:20px;width:6px;height:6px;opacity:0.55"></i><i style="left:494px;top:13px;width:4px;height:4px;opacity:0.7"></i><i style="left:737px;top:23px;width:5.0px;height:5.0px;opacity:0.55"></i><i style="left:168px;top:23px;width:4px;height:4px;opacity:0.7"></i><i style="left:818px;top:47px;width:4px;height:4px;opacity:0.95"></i></span></div></div>
+</section>
+<section>
+<h2>S2 · همون نوار توی تم روشن، دونه‌ها همون رنگ fg-faint هستن (توی تم روشن خاکستری میشن)</h2>
+<div class="stage wall-light"><div class="bar light"><span class="label">سلام سجاد</span><span class="tabs"><b class="on"></b><b></b><b></b></span><span class="label">&nbsp;</span><span class="snow"><i style="left:985px;top:38px;width:5.0px;height:5.0px;opacity:0.7"></i><i style="left:152px;top:11px;width:4px;height:4px;opacity:0.7"></i><i style="left:14px;top:45px;width:4px;height:4px;opacity:0.85"></i><i style="left:283px;top:10px;width:6px;height:6px;opacity:0.85"></i><i style="left:609px;top:19px;width:4px;height:4px;opacity:0.55"></i><i style="left:457px;top:47px;width:6px;height:6px;opacity:0.95"></i><i style="left:398px;top:22px;width:5.0px;height:5.0px;opacity:0.95"></i><i style="left:64px;top:6px;width:4px;height:4px;opacity:0.95"></i><i style="left:164px;top:20px;width:3.0px;height:3.0px;opacity:0.55"></i><i style="left:2px;top:10px;width:3.0px;height:3.0px;opacity:0.85"></i><i style="left:613px;top:6px;width:4px;height:4px;opacity:0.95"></i><i style="left:150px;top:15px;width:4px;height:4px;opacity:0.85"></i><i style="left:474px;top:8px;width:5.0px;height:5.0px;opacity:0.95"></i><i style="left:480px;top:18px;width:4px;height:4px;opacity:0.55"></i><i style="left:749px;top:40px;width:5.0px;height:5.0px;opacity:0.7"></i><i style="left:516px;top:13px;width:6px;height:6px;opacity:0.85"></i><i style="left:148px;top:30px;width:3.0px;height:3.0px;opacity:0.85"></i><i style="left:977px;top:47px;width:4px;height:4px;opacity:0.85"></i><i style="left:907px;top:20px;width:4px;height:4px;opacity:0.85"></i><i style="left:636px;top:34px;width:4px;height:4px;opacity:0.7"></i><i style="left:817px;top:40px;width:4px;height:4px;opacity:0.7"></i><i style="left:518px;top:20px;width:3.0px;height:3.0px;opacity:0.55"></i><i style="left:789px;top:27px;width:4px;height:4px;opacity:0.85"></i><i style="left:447px;top:51px;width:4px;height:4px;opacity:0.85"></i><i style="left:82px;top:7px;width:5.0px;height:5.0px;opacity:0.7"></i><i style="left:338px;top:27px;width:6px;height:6px;opacity:0.55"></i></span></div></div>
+</section>
+<section>
+<h2>S3 · دور لوگو، یک تصویر ثابت ۴۸ پیکسلی دور لوگوی ۳۲ پیکسلی، خود لوگو دست نمی‌خوره و کلاه فقط روی لبه‌اش میشینه</h2>
+<div class="stage wall-light" style="align-items:center"><span class="logo"><b>W</b><img src="assets/logo-decoration.webp" alt=""></span></div>
+</section>
+</body>
+</html>

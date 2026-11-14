@@ -102,3 +102,4 @@ A board is a promise about the code. Anything it shows has to be something the c
 - [currency-chart](currency-chart/README.md): the currency modal, its price chart and converter
 - [release-notes](release-notes/README.md): the «آبنبات چوبی» release notes window
 - [push](push/README.md): the push ask island and its settings card
+- [christmas-snow](christmas-snow/README.md): snow in the navbar, switched on and off from the server
