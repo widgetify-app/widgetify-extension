@@ -6,6 +6,7 @@ import {
 	formatDateStr,
 	getGregorianEvents,
 	getHijriEvents,
+	getHourInZone,
 	getShamsiEvents,
 } from '../utils/date-events'
 
@@ -91,5 +92,24 @@ describe('events of a day', () => {
 	it('picks the Gregorian events that fall on the same day', () => {
 		const date = jalaliMoment('2024-07-28', 'YYYY-MM-DD')
 		expect(getGregorianEvents(events, date).map((e) => e.title)).toEqual(['c'])
+	})
+})
+
+describe('getHourInZone', () => {
+	const instant = new Date('2026-03-21T20:30:00Z')
+
+	it('reads the hour in the given zone, not the machine zone', () => {
+		expect(getHourInZone(instant, 'Asia/Tehran')).toBe(0)
+		expect(getHourInZone(instant, 'UTC')).toBe(20)
+		expect(getHourInZone(instant, 'America/New_York')).toBe(16)
+	})
+
+	it('counts midnight as 0, never 24', () => {
+		expect(getHourInZone(new Date('2026-03-21T00:10:00Z'), 'UTC')).toBe(0)
+	})
+
+	it('falls back to the machine hour for a missing or invalid zone', () => {
+		expect(getHourInZone(instant)).toBe(instant.getHours())
+		expect(getHourInZone(instant, 'Not/AZone')).toBe(instant.getHours())
 	})
 })

@@ -18,7 +18,8 @@ import { BlurModeButton } from './components/blur-mode-button'
 import type { UserProfile } from '@/services/user/user-service.hook'
 import { CountBadge } from '@/components/ui'
 import { useSyncAccount } from './hooks/use-sync-account'
-import { getCurrentDate } from '@/common/utils/date-events'
+import { getHourInZone } from '@/common/utils/date-events'
+import { nowDate } from '@/common/utils/trusted-time'
 import { useBirthdayConfetti } from './hooks/use-birthday-confetti'
 import { Icon } from '@/icons'
 import { GetUserFirstName } from './utils/get-firstname'
@@ -251,7 +252,7 @@ function getUserLabel(user: UserProfile | null) {
 		return t('navbar.birthday', { name: firstName })
 	}
 
-	const hour = getCurrentDate(user.timeZone).hours()
+	const hour = getHourInZone(nowDate(), user.timeZone)
 
 	let greeting = t('navbar.greeting.hello')
 
