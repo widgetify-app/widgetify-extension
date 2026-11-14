@@ -3,43 +3,19 @@ import React, { useMemo } from 'react'
 import { toIsoDateKey } from '@/features/widgets/utils/jalali-date'
 import type { WidgetifyDate } from '@/common/utils/date-events'
 import type { Habit } from '@/services/habit/habit.interface'
-import { computeHabitStats, type HabitDay } from '../../utils/habit-stats'
+import { habitStats } from '../../utils/habit-calendar'
 
 interface HabitStatsCardsProps {
 	habit: Habit
 	today: WidgetifyDate
 }
 
-const NUM_WEEKS = 26
-
 export const HabitStatsCards: React.FC<HabitStatsCardsProps> = React.memo(
 	({ habit, today }) => {
-		const stats = useMemo(() => {
-			const cursor = today
-				.clone()
-				.startOf('day')
-				.subtract(NUM_WEEKS - 1, 'weeks')
-				.startOf('week')
-			const days: HabitDay[] = []
-
-			for (let day = 0; day < NUM_WEEKS * 7; day++) {
-				const date = cursor.clone()
-				cursor.add(1, 'day')
-
-				if (date.isAfter(today, 'day')) continue
-
-				const gregorianDate = toIsoDateKey(date)
-				const [year, month] = gregorianDate.split('-')
-				const record = habit.calendarData?.[`${year}-${month}`]?.[gregorianDate]
-				const value = record?.value ?? 0
-
-				days.push({
-					isDone: record?.isDone || (habit.target > 0 && value >= habit.target),
-				})
-			}
-
-			return computeHabitStats(days)
-		}, [habit, today])
+		const stats = useMemo(
+			() => habitStats(habit, toIsoDateKey(today)),
+			[habit, today]
+		)
 
 		return (
 			<dl className="grid grid-cols-3 p-1 rounded-2xl bg-fill">

@@ -9,6 +9,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { safeAwait } from '@/services/api'
 import type { Habit } from '@/services/habit/habit.interface'
 import { useLogHabitProgress } from '@/services/habit/log-habit-progress.hook'
+import { habitDayReader } from '../../utils/habit-calendar'
 import { getHabitUnitLabel } from '../../utils/habit-goal'
 import { resolveHabitStep } from '../../utils/habit-step'
 import { habitKeys } from '@/services/habit/habit.keys'
@@ -58,13 +59,6 @@ export function HabitContributionChart({
 	const scrollContainerRef = useRef<HTMLDivElement>(null)
 	const todayCellRef = useRef<HTMLButtonElement>(null)
 
-	const getHabitData = (gregorianDate: string) => {
-		const [year, month] = gregorianDate.split('-')
-		const monthKey = `${year}-${month}`
-		const monthData = habit.calendarData?.[monthKey] || {}
-		return monthData[gregorianDate] || { value: 0, isDone: false }
-	}
-
 	const weeks = useMemo(() => {
 		const start = today
 			.clone()
@@ -73,6 +67,7 @@ export function HabitContributionChart({
 			.subtract(NUM_WEEKS - 1, 'weeks')
 			.startOf('week')
 		const current = start.clone()
+		const { outcomeOn } = habitDayReader(habit, toIsoDateKey(today))
 		const weeksList: WeekColumn[] = []
 
 		let lastMonthName = ''
@@ -84,26 +79,9 @@ export function HabitContributionChart({
 			for (let d = 0; d < 7; d++) {
 				const dayDate = current.clone()
 				const gregorianDate = toIsoDateKey(dayDate)
-				const habitData = getHabitData(gregorianDate)
+				const { value, isDone, level } = outcomeOn(gregorianDate)
 				const isDayToday = dayDate.isSame(today, 'day')
 				const isFuture = dayDate.isAfter(today, 'day')
-
-				const value = habitData.value
-				const isDone =
-					habitData.isDone || (habit.target > 0 && value >= habit.target)
-
-				let level = 0
-				if (value > 0) {
-					if (habit.target > 0) {
-						const ratio = value / habit.target
-						if (ratio >= 1.5) level = 4
-						else if (ratio >= 1) level = 3
-						else if (ratio >= 0.5) level = 2
-						else level = 1
-					} else {
-						level = 3
-					}
-				}
 
 				weekDays.push({
 					gregorianDate,

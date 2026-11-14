@@ -109,3 +109,73 @@ export function downloadCanvasAsImage(
 		return false
 	}
 }
+
+export function mixColor(from: string, to: string, amount: number) {
+	const start = hexToRgb(from)
+	const end = hexToRgb(to)
+
+	const channel = (first: number, second: number) =>
+		Math.round(first + (second - first) * amount)
+			.toString(16)
+			.padStart(2, '0')
+
+	return `#${channel(start.r, end.r)}${channel(start.g, end.g)}${channel(start.b, end.b)}`
+}
+
+function hueChannel(p: number, q: number, hue: number) {
+	const wrapped = ((hue % 1) + 1) % 1
+
+	if (wrapped < 1 / 6) return p + (q - p) * 6 * wrapped
+	if (wrapped < 1 / 2) return q
+	if (wrapped < 2 / 3) return p + (q - p) * (2 / 3 - wrapped) * 6
+
+	return p
+}
+
+export function tintColor(
+	hex: string,
+	hueShift: number,
+	lightnessShift: number,
+	saturationScale: number
+) {
+	const { r, g, b } = hexToRgb(hex)
+	const red = r / 255
+	const green = g / 255
+	const blue = b / 255
+	const max = Math.max(red, green, blue)
+	const min = Math.min(red, green, blue)
+	const delta = max - min
+	let hue = 0
+
+	if (delta !== 0) {
+		if (max === red) hue = ((green - blue) / delta) % 6
+		else if (max === green) hue = (blue - red) / delta + 2
+		else hue = (red - green) / delta + 4
+	}
+
+	const baseLightness = (max + min) / 2
+	const baseSaturation = delta === 0 ? 0 : delta / (1 - Math.abs(2 * baseLightness - 1))
+	const lightness = Math.min(Math.max(baseLightness + lightnessShift, 0), 1)
+	const saturation = Math.min(Math.max(baseSaturation * saturationScale, 0), 1)
+	const newHue = (hue * 60 + hueShift) / 360
+
+	const q =
+		lightness < 0.5
+			? lightness * (1 + saturation)
+			: lightness + saturation - lightness * saturation
+
+	const p = 2 * lightness - q
+
+	const channel = (offset: number) =>
+		Math.round(hueChannel(p, q, newHue + offset) * 255)
+			.toString(16)
+			.padStart(2, '0')
+
+	return `#${channel(1 / 3)}${channel(0)}${channel(-1 / 3)}`
+}
+
+export function isLightColor(hex: string) {
+	const { r, g, b } = hexToRgb(hex)
+
+	return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.62
+}

@@ -1,29 +1,244 @@
 import { t } from '@/common/i18n'
-import jalaliMoment from 'jalali-moment'
-import { toIsoDateKey } from '@/features/widgets/utils/jalali-date'
-import type { Habit } from '@/services/habit/habit.interface'
-import { drawRoundedRect, fitText, rgba } from '@/features/widgets/utils/canvas'
-import { formatHabitGoal } from './habit-goal'
+import {
+	drawRoundedRect,
+	fitText,
+	isLightColor,
+	mixColor,
+	rgba,
+	tintColor,
+} from '@/features/widgets/utils/canvas'
 import { DEFAULT_HABIT_COLOR } from '../constants'
+import type { HabitShareData } from './habit-share'
 
-const W = 1080
-const H = 1350
-const BG_BASE = '#05050a'
-const TEXT_LIGHT = '#f8fafc'
-const TEXT_MUTED = 'rgba(255, 255, 255, 0.55)'
-const TEXT_FAINT = 'rgba(255, 255, 255, 0.35)'
-const EMPTY_CELL = 'rgba(255, 255, 255, 0.07)'
+const WIDTH = 540
+const HEIGHT = 960
+const OUTPUT_SCALE = 2
+const MARGIN = 40
+const LIGHT_INK = '#ffffff'
+const DARK_INK = '#1b1e3b'
 const FONT_STACK = 'Vazir, Tahoma, Arial, sans-serif'
-const DIGIT_STACK = 'Arad, Vazir, Tahoma, sans-serif'
 const EMOJI_STACK =
 	'"Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif'
-const MARGIN = 80
-const CELL_SIZE = 28
-const CELL_GAP = 6
+const CELL_SIZE = 12
+const CELL_STEP = 15.2
+const EMPTY_CELL = 0.16
+const CELL_LEVELS = [0.35, 0.55, 0.78, 1]
+const SOFT_TEXT = 0.82
+const GRID_RIGHT = 476
+const GRID_TOP = 690
+const FLAME_OUTER =
+	'M50 4 C54 20 64 28 66 38 C70 30 72 24 70 18 C84 30 90 50 90 70 C90 96 72 114 50 114 C28 114 10 96 10 70 C10 52 20 38 30 28 C30 38 34 44 40 46 C36 32 40 16 50 4 Z'
+const FLAME_INNER =
+	'M50 64 C54 74 64 78 64 91 C64 102 58 108 50 108 C42 108 36 102 36 91 C36 80 44 76 50 64 Z'
+const FLAME_SCALE = 1.8
+const FLAME_LEFT = 180
+const FLAME_TOP = 190
+
+interface Palette {
+	ink: string
+	top: string
+	bottom: string
+	flameTop: string
+	flameBottom: string
+}
 
 interface RenderHabitShareCanvasOptions {
-	habit: Habit
-	color: string
+	title: string
+	emoji: string | null
+	goal: string
+	color: string | undefined
+	data: HabitShareData
+}
+
+function paletteFor(accent: string): Palette {
+	const isLight = isLightColor(accent)
+
+	return {
+		ink: isLight ? DARK_INK : LIGHT_INK,
+		top: tintColor(accent, 24, 0, 0.95),
+		bottom: tintColor(accent, -5, -0.1, 0.87),
+		flameTop: isLight
+			? accent
+			: mixColor(tintColor(accent, 24, 0, 0.95), '#ffffff', 0.7),
+		flameBottom: isLight ? mixColor(accent, '#000000', 0.4) : accent,
+	}
+}
+
+function drawGlow(
+	ctx: CanvasRenderingContext2D,
+	x: number,
+	y: number,
+	radius: number,
+	alpha: number
+) {
+	const glow = ctx.createRadialGradient(x, y, 0, x, y, radius)
+
+	glow.addColorStop(0, rgba(LIGHT_INK, alpha))
+	glow.addColorStop(1, rgba(LIGHT_INK, 0))
+	ctx.fillStyle = glow
+	ctx.beginPath()
+	ctx.arc(x, y, radius, 0, Math.PI * 2)
+	ctx.fill()
+}
+
+function drawBackground(ctx: CanvasRenderingContext2D, palette: Palette) {
+	const base = ctx.createLinearGradient(WIDTH * 0.2, 0, WIDTH * 0.8, HEIGHT)
+
+	base.addColorStop(0, palette.top)
+	base.addColorStop(1, palette.bottom)
+	ctx.fillStyle = base
+	ctx.fillRect(0, 0, WIDTH, HEIGHT)
+}
+
+function drawChip(
+	ctx: CanvasRenderingContext2D,
+	palette: Palette,
+	options: RenderHabitShareCanvasOptions
+) {
+	const emojiWidth = 32
+	const gap = 10
+	const padding = 24
+
+	ctx.font = `bold 22px ${FONT_STACK}`
+
+	const title = fitText(
+		ctx,
+		options.title || t('widgets.habit.share.canvas.myHabit'),
+		WIDTH - 2 * MARGIN - emojiWidth - gap - 2 * padding
+	)
+
+	const titleWidth = ctx.measureText(title).width
+	const chipWidth = padding + titleWidth + gap + emojiWidth + padding
+	const chipLeft = (WIDTH - chipWidth) / 2
+
+	ctx.fillStyle = rgba(palette.ink, 0.18)
+	drawRoundedRect(ctx, chipLeft, 52, chipWidth, 52, 26)
+	ctx.fill()
+
+	ctx.textBaseline = 'middle'
+	ctx.textAlign = 'center'
+	ctx.font = `28px ${EMOJI_STACK}`
+	ctx.fillStyle = LIGHT_INK
+
+	ctx.fillText(
+		options.emoji || '🎯',
+		chipLeft + chipWidth - padding - emojiWidth / 2,
+		80
+	)
+
+	ctx.textAlign = 'right'
+	ctx.font = `bold 22px ${FONT_STACK}`
+	ctx.fillStyle = palette.ink
+	ctx.fillText(title, chipLeft + chipWidth - padding - emojiWidth - gap, 80)
+
+	ctx.textAlign = 'center'
+	ctx.font = `15px ${FONT_STACK}`
+	ctx.fillStyle = rgba(palette.ink, SOFT_TEXT)
+	ctx.fillText(fitText(ctx, options.goal, WIDTH - 2 * MARGIN), 270, 134)
+}
+
+function drawFlame(ctx: CanvasRenderingContext2D, palette: Palette, alpha: number) {
+	ctx.save()
+	ctx.globalAlpha = alpha
+
+	drawGlow(ctx, 270, 300, 190, 0.3)
+
+	ctx.translate(FLAME_LEFT, FLAME_TOP)
+	ctx.scale(FLAME_SCALE, FLAME_SCALE)
+
+	const body = ctx.createLinearGradient(0, 4, 0, 114)
+
+	body.addColorStop(0, palette.flameTop)
+	body.addColorStop(1, palette.flameBottom)
+	ctx.fillStyle = body
+	ctx.fill(new Path2D(FLAME_OUTER))
+
+	ctx.fillStyle = LIGHT_INK
+	ctx.fill(new Path2D(FLAME_INNER))
+	ctx.restore()
+}
+
+function drawStreak(ctx: CanvasRenderingContext2D, palette: Palette, streak: number) {
+	ctx.textAlign = 'center'
+	ctx.textBaseline = 'alphabetic'
+
+	if (streak <= 0) {
+		drawFlame(ctx, palette, 0.45)
+		ctx.font = `bold 34px ${FONT_STACK}`
+		ctx.fillStyle = palette.ink
+		ctx.fillText(t('widgets.habit.share.canvas.streakZero'), 270, 520)
+
+		return
+	}
+
+	drawFlame(ctx, palette, 1)
+
+	const text = String(streak)
+	const maxWidth = WIDTH - 2 * MARGIN
+
+	ctx.font = `bold 150px ${FONT_STACK}`
+
+	const fontSize = Math.min(150, (150 * maxWidth) / ctx.measureText(text).width)
+
+	ctx.font = `bold ${fontSize}px ${FONT_STACK}`
+	ctx.fillStyle = palette.ink
+	ctx.fillText(text, 270, 520)
+
+	ctx.font = `bold 26px ${FONT_STACK}`
+	ctx.fillStyle = rgba(palette.ink, SOFT_TEXT)
+	ctx.fillText(t('widgets.habit.share.canvas.streakDays'), 270, 566)
+}
+
+function drawHeatmap(
+	ctx: CanvasRenderingContext2D,
+	palette: Palette,
+	data: HabitShareData
+) {
+	ctx.fillStyle = rgba(palette.ink, 0.14)
+	drawRoundedRect(ctx, MARGIN, 640, WIDTH - 2 * MARGIN, 168, 24)
+	ctx.fill()
+
+	ctx.textBaseline = 'middle'
+	ctx.font = `bold 14px ${FONT_STACK}`
+	ctx.textAlign = 'right'
+	ctx.fillStyle = palette.ink
+	ctx.fillText(t('widgets.habit.share.canvas.recentActivity'), WIDTH - MARGIN - 20, 672)
+
+	ctx.font = `13px ${FONT_STACK}`
+	ctx.textAlign = 'left'
+	ctx.fillStyle = rgba(palette.ink, SOFT_TEXT)
+
+	ctx.fillText(
+		t('widgets.habit.share.canvas.successDays', { p0: data.doneDays }),
+		MARGIN + 20,
+		672
+	)
+
+	data.weeks.forEach((week, weekIndex) => {
+		const x = GRID_RIGHT - weekIndex * CELL_STEP - CELL_SIZE
+
+		week.forEach((day, row) => {
+			if (day.isFuture) return
+
+			const alpha = day.level === 0 ? EMPTY_CELL : CELL_LEVELS[day.level - 1]
+
+			ctx.fillStyle = rgba(palette.ink, alpha)
+			drawRoundedRect(ctx, x, GRID_TOP + row * CELL_STEP, CELL_SIZE, CELL_SIZE, 3.5)
+			ctx.fill()
+		})
+	})
+}
+
+function drawFooter(ctx: CanvasRenderingContext2D, palette: Palette) {
+	ctx.textAlign = 'center'
+	ctx.textBaseline = 'alphabetic'
+	ctx.font = `15px ${FONT_STACK}`
+	ctx.fillStyle = rgba(palette.ink, SOFT_TEXT)
+	ctx.fillText(t('widgets.habit.share.canvas.tagline'), 270, 880)
+
+	ctx.font = `bold 20px ${FONT_STACK}`
+	ctx.fillStyle = palette.ink
+	ctx.fillText(t('widgets.habit.share.canvas.brand'), 270, 912)
 }
 
 export function renderHabitShareCanvas(
@@ -32,341 +247,19 @@ export function renderHabitShareCanvas(
 ) {
 	if (!canvas) return
 
-	const { habit, color } = options
 	const ctx = canvas.getContext('2d')
+
 	if (!ctx) return
 
-	canvas.width = W
-	canvas.height = H
+	canvas.width = WIDTH * OUTPUT_SCALE
+	canvas.height = HEIGHT * OUTPUT_SCALE
+	ctx.scale(OUTPUT_SCALE, OUTPUT_SCALE)
 
-	const accent = color || DEFAULT_HABIT_COLOR
+	const palette = paletteFor(options.color || DEFAULT_HABIT_COLOR)
 
-	const today = jalaliMoment().locale('fa').startOf('day')
-	const numWeeks = 26
-	const start = today
-		.clone()
-		.subtract(numWeeks - 1, 'weeks')
-		.startOf('week')
-
-	const current = start.clone()
-
-	let currentStreak = 0
-	let longestStreak = 0
-	let tempStreak = 0
-	let totalCompleted = 0
-
-	const allDaysChronological: {
-		gregorianDate: string
-		isDone: boolean
-		level: number
-		jalaliDate: jalaliMoment.Moment
-	}[] = []
-
-	const weeksGrid: {
-		days: {
-			level: number
-			isFuture: boolean
-		}[]
-	}[] = []
-
-	const monthMarkers: {
-		name: string
-		weekIndex: number
-	}[] = []
-
-	let currentMonth = ''
-
-	for (let w = 0; w < numWeeks; w++) {
-		const daysInWeek: {
-			level: number
-			isFuture: boolean
-		}[] = []
-
-		for (let d = 0; d < 7; d++) {
-			const dayDate = current.clone()
-			const gregorianDate = toIsoDateKey(dayDate)
-			const [year, month] = gregorianDate.split('-')
-			const monthData = habit.calendarData?.[`${year}-${month}`] || {}
-			const dayData = monthData[gregorianDate] || {
-				value: 0,
-				isDone: false,
-			}
-
-			const isFuture = dayDate.isAfter(today, 'day')
-			const value = dayData.value
-			const isDone = dayData.isDone || (habit.target > 0 && value >= habit.target)
-
-			let level = 0
-			if (value > 0) {
-				if (habit.target > 0) {
-					const ratio = value / habit.target
-					if (ratio >= 1.5) {
-						level = 4
-					} else if (ratio >= 1) {
-						level = 3
-					} else if (ratio >= 0.5) {
-						level = 2
-					} else {
-						level = 1
-					}
-				} else {
-					level = 3
-				}
-			}
-
-			daysInWeek.push({
-				level,
-				isFuture,
-			})
-
-			if (!isFuture) {
-				allDaysChronological.push({
-					gregorianDate,
-					isDone,
-					level,
-					jalaliDate: dayDate,
-				})
-
-				if (isDone) {
-					totalCompleted++
-				}
-			}
-
-			const monthName = dayDate.format('jMMMM')
-			if (monthName !== currentMonth) {
-				currentMonth = monthName
-				monthMarkers.push({
-					name: monthName,
-					weekIndex: w,
-				})
-			}
-
-			current.add(1, 'day')
-		}
-
-		weeksGrid.push({
-			days: daysInWeek,
-		})
-	}
-
-	for (const day of allDaysChronological) {
-		if (day.isDone) {
-			tempStreak++
-			if (tempStreak > longestStreak) {
-				longestStreak = tempStreak
-			}
-		} else {
-			tempStreak = 0
-		}
-	}
-
-	const lastIdx = allDaysChronological.length - 1
-	if (lastIdx >= 0) {
-		let checkIdx = lastIdx
-		if (
-			!allDaysChronological[checkIdx].isDone &&
-			checkIdx > 0 &&
-			allDaysChronological[checkIdx - 1].isDone
-		) {
-			checkIdx--
-		}
-
-		while (checkIdx >= 0 && allDaysChronological[checkIdx].isDone) {
-			currentStreak++
-			checkIdx--
-		}
-	}
-
-	ctx.fillStyle = BG_BASE
-	ctx.fillRect(0, 0, W, H)
-
-	const glow = ctx.createRadialGradient(W / 2, 360, 20, W / 2, 360, 640)
-	glow.addColorStop(0, rgba(accent, 0.18))
-	glow.addColorStop(1, rgba(accent, 0))
-	ctx.fillStyle = glow
-	ctx.fillRect(0, 0, W, H)
-
-	ctx.textAlign = 'center'
-	ctx.textBaseline = 'middle'
-	ctx.font = `600 26px ${FONT_STACK}`
-	ctx.fillStyle = TEXT_FAINT
-	const brand = t('widgets.habit.share.canvas.brand')
-	ctx.fillText(brand, W / 2, 84)
-	ctx.fillStyle = accent
-	ctx.beginPath()
-	ctx.arc(W / 2 + ctx.measureText(brand).width / 2 + 22, 84, 5, 0, Math.PI * 2)
-	ctx.fill()
-
-	ctx.font = `190px ${EMOJI_STACK}`
-	ctx.fillStyle = TEXT_LIGHT
-	ctx.fillText(habit.emoji || '🎯', W / 2, 250)
-
-	ctx.fillStyle = accent
-	drawRoundedRect(ctx, W / 2 - 36, 366, 72, 8, 4)
-	ctx.fill()
-
-	ctx.font = `bold 64px ${FONT_STACK}`
-	ctx.fillStyle = TEXT_LIGHT
-	ctx.fillText(
-		fitText(
-			ctx,
-			habit.title || t('widgets.habit.share.canvas.myHabit'),
-			W - 2 * MARGIN
-		),
-		W / 2,
-		440
-	)
-
-	ctx.font = `32px ${FONT_STACK}`
-	ctx.fillStyle = TEXT_MUTED
-	ctx.fillText(fitText(ctx, formatHabitGoal(habit), W - 2 * MARGIN), W / 2, 500)
-
-	drawRoundedRect(ctx, MARGIN, 560, W - 2 * MARGIN, 220, 36)
-	ctx.fillStyle = 'rgba(255, 255, 255, 0.04)'
-	ctx.fill()
-	ctx.strokeStyle = rgba(accent, 0.28)
-	ctx.lineWidth = 2
-	ctx.stroke()
-
-	const streakText = String(currentStreak)
-	ctx.font = `bold 150px ${FONT_STACK}`
-	const numberWidth = ctx.measureText(streakText).width
-	const fireWidth = currentStreak > 0 ? 96 : 0
-	const fireGap = currentStreak > 0 ? 24 : 0
-	const rowStart = W / 2 - (fireWidth + fireGap + numberWidth) / 2
-	const numberCenter = rowStart + fireWidth + fireGap + numberWidth / 2
-
-	ctx.textBaseline = 'alphabetic'
-	ctx.fillStyle = TEXT_LIGHT
-	ctx.fillText(streakText, numberCenter, 694)
-
-	ctx.fillStyle = accent
-	drawRoundedRect(ctx, numberCenter - numberWidth / 2, 710, numberWidth, 6, 3)
-	ctx.fill()
-
-	if (currentStreak > 0) {
-		ctx.textBaseline = 'middle'
-		ctx.font = `84px ${EMOJI_STACK}`
-		ctx.fillText('🔥', rowStart + fireWidth / 2, 640)
-	}
-
-	ctx.textBaseline = 'middle'
-	ctx.font = `30px ${FONT_STACK}`
-	ctx.fillStyle = TEXT_MUTED
-	ctx.fillText(t('widgets.habit.share.canvas.streakDays'), W / 2, 748)
-
-	ctx.textBaseline = 'middle'
-	ctx.textAlign = 'right'
-	ctx.font = `bold 30px ${FONT_STACK}`
-	ctx.fillStyle = TEXT_LIGHT
-	ctx.fillText(t('widgets.habit.share.canvas.recentActivity'), W - MARGIN, 846)
-
-	ctx.textAlign = 'left'
-	ctx.font = `24px ${FONT_STACK}`
-	ctx.fillStyle = TEXT_MUTED
-	ctx.fillText(
-		t('widgets.habit.share.canvas.successDays', { p0: totalCompleted }),
-		MARGIN,
-		848
-	)
-
-	const gridTop = 930
-	const gridRight = W - MARGIN - 36
-	const dayLabels = [
-		t('ui.date.weekday.sat'),
-		t('ui.date.weekday.sun'),
-		t('ui.date.weekday.mon'),
-		t('ui.date.weekday.tue'),
-		t('ui.date.weekday.wed'),
-		t('ui.date.weekday.thu'),
-		t('ui.date.weekday.fri'),
-	]
-
-	ctx.font = `20px ${DIGIT_STACK}`
-	ctx.fillStyle = TEXT_FAINT
-	ctx.textBaseline = 'middle'
-
-	const visibleMarkers = monthMarkers.filter(
-		(marker, index) =>
-			!(marker.weekIndex === 0 && (monthMarkers[index + 1]?.weekIndex ?? 99) < 3)
-	)
-
-	for (const marker of visibleMarkers) {
-		const colX = gridRight - marker.weekIndex * (CELL_SIZE + CELL_GAP) - CELL_SIZE
-		let textX = colX + CELL_SIZE / 2
-		let align: CanvasTextAlign = 'center'
-
-		if (marker.weekIndex === 0) {
-			align = 'right'
-			textX = colX + CELL_SIZE
-		}
-
-		if (marker.weekIndex >= numWeeks - 2) {
-			align = 'left'
-			textX = colX
-		}
-
-		ctx.textAlign = align
-		ctx.fillText(marker.name, textX, gridTop - 24)
-	}
-
-	ctx.textAlign = 'center'
-	for (let d = 0; d < 7; d++) {
-		const y = gridTop + d * (CELL_SIZE + CELL_GAP) + CELL_SIZE / 2
-		ctx.fillText(dayLabels[d], gridRight + 36, y)
-	}
-
-	const levelColors = [
-		EMPTY_CELL,
-		rgba(accent, 0.22),
-		rgba(accent, 0.43),
-		rgba(accent, 0.7),
-		accent,
-	]
-
-	weeksGrid.forEach((week, w) => {
-		const colX = gridRight - w * (CELL_SIZE + CELL_GAP) - CELL_SIZE
-
-		week.days.forEach((day, d) => {
-			if (day.isFuture) return
-
-			ctx.fillStyle = levelColors[day.level]
-			drawRoundedRect(
-				ctx,
-				colX,
-				gridTop + d * (CELL_SIZE + CELL_GAP),
-				CELL_SIZE,
-				CELL_SIZE,
-				7
-			)
-			ctx.fill()
-		})
-	})
-
-	const bottomY = 1200
-
-	ctx.textAlign = 'left'
-	ctx.textBaseline = 'middle'
-	ctx.font = `24px ${FONT_STACK}`
-	ctx.fillStyle = TEXT_MUTED
-	ctx.fillText(
-		t('widgets.habit.share.canvas.bestRecord', { p0: longestStreak }),
-		MARGIN,
-		bottomY
-	)
-
-	const legendSize = 22
-	const legendGap = 8
-	let legendX = W - MARGIN - (legendSize * 5 + legendGap * 4)
-	for (const legendColor of levelColors) {
-		ctx.fillStyle = legendColor
-		drawRoundedRect(ctx, legendX, bottomY - legendSize / 2, legendSize, legendSize, 6)
-		ctx.fill()
-		legendX += legendSize + legendGap
-	}
-
-	ctx.textAlign = 'center'
-	ctx.font = `22px ${FONT_STACK}`
-	ctx.fillStyle = TEXT_FAINT
-	ctx.fillText(t('widgets.habit.share.canvas.tagline'), W / 2, H - 45)
+	drawBackground(ctx, palette)
+	drawChip(ctx, palette, options)
+	drawStreak(ctx, palette, options.data.streak)
+	drawHeatmap(ctx, palette, options.data)
+	drawFooter(ctx, palette)
 }

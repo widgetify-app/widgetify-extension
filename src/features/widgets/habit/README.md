@@ -23,7 +23,9 @@ Daily, weekly and monthly habits with a one-click log. Sizes 2x1 and 2x3, and tw
 | `utils/habit-goal.ts` | Goal text, today's text (`formatHabitToday`), `isHabitDoneToday`. Tested. |
 | `utils/habit-week.ts` | `weekOf` (this week's dates from Saturday), `habitWeek` (each of those days for a habit: today from `habit.today`, the rest from `history` by date, later days marked ahead), `dayKey` and `weekdayInitial`. Tested. |
 | `utils/habit-step.ts`, `utils/habit-stats.ts` | Log step size and the detail statistics (streak, best streak, successful days). Tested. |
-| `utils/render-habit-share-canvas.ts` | Draws the share image at 1080×1350 (4:5), the size of the mood tracker's. The modal scales it down. |
+| `utils/render-habit-share-canvas.ts` | Draws the share image exactly like the mobile app's (`widgetify-mobile-v2`, `features/habits`): a 9:16 portrait, 540×960 drawn at 2x, on a gradient tinted from the habit colour, with the title chip, the streak flame and number, the six-month heatmap and the footer. Ink turns dark on a light colour. The modal scales it down. |
+| `utils/habit-calendar.ts` | The one place that decides how a day counts, copied from the mobile app's habit chart and progress code: the goal is `max(target, 1)`; a day takes its mark from `calendarData`, today from `habit.today` when the calendar has none (and only when `habit.today.date` is today or empty); a day is done when flagged or at the goal, and an at-most day is done only when flagged and not before the first logged day; levels 0 to 4 by share of the goal (an at-most kept day is 3). `habitStats` counts streak, best run and successful days over every day from the first logged one to today, not only the six months drawn. The chart, the stats strip and the share image all read it. Tested. |
+| `utils/habit-share.ts` | `habitShareData`: the 26 weeks of cells, Saturday first, with the streak and successful days from `habitStats`. Tested. |
 
 ## Layout
 
@@ -50,7 +52,7 @@ Built like the task modal: `size="lg"`, the habit's name as the modal title, the
 3. "۶ ماه اخیر" with its legend, the day grid, and a line that names the hovered day or says how to log.
 4. Delete on the start side, then edit and "اشتراک‌گذاری تصویر" as the main button. Delete asks in place, like a task.
 
-The share modal is `md`, like the mood tracker's: the portrait image scaled to fit 60vh and centred, then "کپی تصویر" and "دانلود تصویر".
+The share modal is `md`, like the mood tracker's: the 9:16 image scaled to fit the modal body, so the buttons stay in view, and centred, then "کپی تصویر" and "دانلود تصویر".
 
 Both modals stay mounted and only toggle `isOpen`; the detail keeps its last habit id after closing (`isDetailOpen` is separate), and closing the form keeps `editingHabit`. Mounting the detail only while a habit was chosen skipped daisyUI's open and close animation, and clearing the habit on close turned the edit form into «عادت جدید» while it faded out. The share modal mounts once the habit has loaded, for the same reason.
 
@@ -68,7 +70,7 @@ Loading, error and empty are separate screens. The board and the panel have a si
 - The detail modal lost its title dropdown; edit and delete sit in the footer where the task modal has them.
 - The success rate is gone. It divided the successful days by every day since the first log, which says little, least of all for a habit that is not daily.
 - The form's subtitle «از یه الگو شروع کن یا خودت بساز» shows only when adding, since editing has no templates.
-- The share modal was 4xl wide for an 800px image. It is now `md`, and the image is a 1080×1350 portrait like the mood tracker's, so it fits a story or a post.
+- The share modal was 4xl wide for an 800px image. It is now `md`, and the image is the mobile app's 9:16 design, so it fits a story.
 - The board shows the calendar week, Saturday first, not the last seven days: a Persian reader expects the week to start on Saturday. Each day is found in `history` by its date, so the order the server sends does not matter; `dayKey` takes the first ten characters, which covers `2026-10-05` and a full timestamp alike. Days the history does not hold count as nothing logged. The 2x3 reads the same week through `habitWeek` and keeps its small 6px squares, Saturday on the right. It used to draw `history` in the server's order under `dir="ltr"`, so its week ran from the left.
 - The board's summary counts today only (done and not done). A rate over several days would repeat the success rate's problem.
 - The panel is the board turned upright, with the same states, summary and week. The week cannot sit at a row's end at 2 columns: 136px of cells would leave the title about 28px. Under the title it has the full text column, and the cells stretch so the week reaches the row's end at every canvas width.

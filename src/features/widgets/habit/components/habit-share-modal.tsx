@@ -1,11 +1,15 @@
+import jalaliMoment from 'jalali-moment'
 import { useEffect, useRef, useState } from 'react'
 import { Button, Modal } from '@/components/ui'
 import {
 	copyCanvasToClipboard,
 	downloadCanvasAsImage,
 } from '@/features/widgets/utils/canvas'
+import { toIsoDateKey } from '@/features/widgets/utils/jalali-date'
 import { Icon } from '@/icons'
 import type { Habit } from '@/services/habit/habit.interface'
+import { formatHabitGoal } from '../utils/habit-goal'
+import { habitShareData } from '../utils/habit-share'
 import { renderHabitShareCanvas } from '../utils/render-habit-share-canvas'
 import { t } from '@/common/i18n'
 
@@ -22,7 +26,13 @@ export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareMod
 
 	useEffect(() => {
 		if (!isOpen) return
-		renderHabitShareCanvas(canvasRef.current, { habit, color })
+		renderHabitShareCanvas(canvasRef.current, {
+			title: habit.title,
+			emoji: habit.emoji,
+			goal: formatHabitGoal(habit),
+			color,
+			data: habitShareData(habit, toIsoDateKey(jalaliMoment())),
+		})
 	}, [isOpen, habit, color])
 
 	const handleCopy = async () => {
@@ -53,7 +63,7 @@ export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareMod
 					aria-label={t('widgets.habit.share.imageAria', {
 						p0: habit.title,
 					})}
-					className="self-center w-auto h-auto max-w-full max-h-[60vh] rounded-2xl"
+					className="self-center w-auto h-auto max-w-full max-h-[calc(100dvh-12rem)] md:max-h-[calc(min(640px,100dvh-8rem)-6rem)] rounded-2xl"
 				/>
 				<div className="flex items-center gap-1.5 pt-1">
 					<Button
