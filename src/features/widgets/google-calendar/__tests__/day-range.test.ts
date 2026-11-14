@@ -37,4 +37,18 @@ describe('day-range', () => {
 			'2026-07-14T00:00:00+03:30'
 		)
 	})
+
+	it('uses the offset in force at each edge on a daylight saving switch day', () => {
+		expect(toZonedDayStart('2026-03-08', 'America/New_York')).toBe(
+			'2026-03-08T00:00:00-05:00'
+		)
+		expect(toZonedDayEnd('2026-03-08', 'America/New_York')).toBe(
+			'2026-03-08T23:59:59-04:00'
+		)
+	})
+
+	it('prints a zero offset as Z', () => {
+		expect(toZonedDayStart('2026-07-01', 'UTC')).toBe('2026-07-01T00:00:00Z')
+		expect(toZonedDayEnd('2026-03-21', 'Europe/London')).toBe('2026-03-21T23:59:59Z')
+	})
 })

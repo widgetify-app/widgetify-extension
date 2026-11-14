@@ -1,7 +1,7 @@
 import { t } from '@/common/i18n'
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import type jalaliMoment from 'jalali-moment'
-import moment from 'moment'
+import { toIsoDateKey } from '@/features/widgets/utils/jalali-date'
 import { autoFormatErrorToast, showToast } from '@/common/toast'
 import { cn } from '@/common/utils/cn'
 import type { WidgetifyDate } from '@/common/utils/date-events'
@@ -83,7 +83,7 @@ export function HabitContributionChart({
 
 			for (let d = 0; d < 7; d++) {
 				const dayDate = current.clone()
-				const gregorianDate = moment(dayDate.toDate()).format('YYYY-MM-DD')
+				const gregorianDate = toIsoDateKey(dayDate)
 				const habitData = getHabitData(gregorianDate)
 				const isDayToday = dayDate.isSame(today, 'day')
 				const isFuture = dayDate.isAfter(today, 'day')
