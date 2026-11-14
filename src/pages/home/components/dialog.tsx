@@ -39,7 +39,8 @@ export function DialogChecker() {
 		if (!data?.dialog?.id) return
 
 		setShow(false)
-		if (isAuthenticated) await safeAwait(asSeen(data.dialog.id))
+		if (isAuthenticated)
+			await safeAwait(asSeen({ id: data.dialog.id, source: 'broadcast' }))
 	}
 
 	const onButtonClick = async () => {
@@ -48,7 +49,8 @@ export function DialogChecker() {
 		Analytics.event('dialog_link_open')
 
 		setShow(false)
-		if (isAuthenticated) safeAwait(asSeen(data?.dialog?.id))
+		if (isAuthenticated)
+			safeAwait(asSeen({ id: data.dialog.id, source: 'broadcast' }))
 	}
 
 	if (!data?.dialog) return null

@@ -87,6 +87,17 @@ export function buildNotifications(
 	}
 }
 
+export function dismissRequest(
+	id: string,
+	source: 'inbox' | 'broadcast'
+): { url: string; body?: { ids: string[] } } {
+	if (source === 'inbox') {
+		return { url: '/v2/notifications/read', body: { ids: [id] } }
+	}
+
+	return { url: `/v2/notifications/surfaces/${id}/dismiss` }
+}
+
 export const MARK_ALL_BATCH = 100
 
 interface MarkAllPlan {

@@ -97,13 +97,18 @@ export function NotificationCenter({ hasBorder }: Prop = { hasBorder: true }) {
 		}
 	}, [addToNodes, removeFromNodes])
 
-	const onClose = async (e: any, id: string, ttl = 1200) => {
+	const onClose = async (
+		e: any,
+		id: string,
+		source: 'inbox' | 'broadcast' = 'broadcast',
+		ttl = 1200
+	) => {
 		e.preventDefault()
 		setDismissedIds((prev) => new Set([...prev, id]))
 		Analytics.event('notifications_close')
 
 		if (!localIds.includes(id)) {
-			await safeAwait(notifyAsSeen(id))
+			await safeAwait(notifyAsSeen({ id, source }))
 		} else {
 			await setWithExpiry(`removed_notification_${id}`, 'true', ttl)
 		}
@@ -116,7 +121,7 @@ export function NotificationCenter({ hasBorder }: Prop = { hasBorder: true }) {
 					notification={item}
 					className={`${hasBorder ? '' : 'border-none!'}`}
 					key={item.id || `no-${index}`}
-					onClose={(e) => onClose(e, item.id || '')}
+					onClose={(e) => onClose(e, item.id || '', item.source)}
 				/>
 			))}
 

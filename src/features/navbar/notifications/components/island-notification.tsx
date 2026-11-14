@@ -48,7 +48,7 @@ export function IslandNotification() {
 
 	const finish = () => {
 		setVisible(false)
-		safeAwait(asSeen(island.id))
+		safeAwait(asSeen({ id: island.id, source: 'broadcast' }))
 	}
 
 	const open = () => {

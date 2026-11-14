@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
 import { getFromStorage } from '@/common/storage'
 import { extensionKeys } from '@/services/extension/extension.keys'
-import { buildNotifications, planMarkAll } from './notification-map'
+import { buildNotifications, dismissRequest, planMarkAll } from './notification-map'
 import type {
 	NotificationItem,
 	NotificationsData,
@@ -17,6 +17,11 @@ export type {
 	NotificationItem,
 	NotificationsData,
 } from './notification.interface'
+
+interface SeenTarget {
+	id: string
+	source: 'inbox' | 'broadcast'
+}
 
 const closedThisSession = new Set<string>()
 
@@ -61,7 +66,7 @@ function without(data: NotificationsData, ids: ReadonlySet<string>): Notificatio
 export function useNotifyAsSeen() {
 	const queryClient = useQueryClient()
 	return useMutation({
-		mutationFn: async (id: string) => {
+		mutationFn: async ({ id, source }: SeenTarget) => {
 			const client = getMainClient()
 			const token = await getFromStorage('auth_token')
 
@@ -70,20 +75,10 @@ export function useNotifyAsSeen() {
 				return
 			}
 
-			const current = queryClient.getQueryData<NotificationsData>(
-				extensionKeys.notifications
-			)
-			const isInboxItem = current?.cards.some(
-				(card) => card.id === id && card.source === 'inbox'
-			)
-
-			if (isInboxItem) {
-				await client.post('/v2/notifications/read', { ids: [id] })
-			} else {
-				await client.post(`/v2/notifications/surfaces/${id}/dismiss`)
-			}
+			const { url, body } = dismissRequest(id, source)
+			await client.post(url, body)
 		},
-		onMutate: async (id: string) => {
+		onMutate: async ({ id }: SeenTarget) => {
 			await queryClient.cancelQueries({ queryKey: extensionKeys.notifications })
 			const previous = queryClient.getQueryData<NotificationsData>(
 				extensionKeys.notifications
