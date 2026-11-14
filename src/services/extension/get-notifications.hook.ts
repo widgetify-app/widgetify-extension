@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getMainClient } from '@/services/api'
 import { getFromStorage } from '@/common/storage'
 import { extensionKeys } from '@/services/extension/extension.keys'
-import { buildNotifications, dismissRequest, planMarkAll } from './notification-map'
+import { buildNotifications, planMarkAll } from './notification-map'
 import type {
 	NotificationItem,
 	NotificationsData,
@@ -75,8 +75,12 @@ export function useNotifyAsSeen() {
 				return
 			}
 
-			const { url, body } = dismissRequest(id, source)
-			await client.post(url, body)
+			if (source === 'inbox') {
+				await client.post('/v2/notifications/read', { ids: [id] })
+				return
+			}
+
+			await client.post(`/v2/notifications/surfaces/${id}/dismiss`)
 		},
 		onMutate: async ({ id }: SeenTarget) => {
 			await queryClient.cancelQueries({ queryKey: extensionKeys.notifications })

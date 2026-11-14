@@ -4,6 +4,7 @@ import { MOBILE_PROMO_COOLDOWN_MS, shouldShowMobilePromo } from '../utils/show-r
 const NOW = 1_800_000_000_000
 
 const ready = {
+	released: true,
 	signedIn: true,
 	profileLoaded: true,
 	linked: false,
@@ -15,6 +16,10 @@ const ready = {
 describe('shouldShowMobilePromo', () => {
 	it('shows to a signed in person who never closed it', () => {
 		expect(shouldShowMobilePromo(ready)).toBe(true)
+	})
+
+	it('stays hidden until the server releases it', () => {
+		expect(shouldShowMobilePromo({ ...ready, released: false })).toBe(false)
 	})
 
 	it('stays hidden while signed out or while the profile is loading', () => {
