@@ -18,8 +18,10 @@ The old chart jumped between two levels like a square wave. The history from pri
 ## What changed from the old modal
 
 - The chart line follows a rolling average of the history, so a price that flips back and forth draws as one calm line. The tooltip still shows the real price at each point.
-- The price axis never spans less than 8% of the price, so a small move stays small.
-- The line is a smooth curve with a light fill and no gridlines. High, low and the range's change are no longer shown above the chart.
+- The price axis never spans less than 2% of the price, so a 1% move reads as a clear step. The rolling average keeps a flipping price calm.
+- The line is a smooth curve with a light fill and no gridlines. The range's highest and lowest price sit in one small row above the chart.
+- Moving the pointer over the chart moves the big price and the change in the header to that point, and the time shows over the line instead of a dark tooltip. Only the digits that change slide one step (140 ms) in the direction of the change; the rest stay still.
+- The change shows as an amount, like the rows (`↑ ۷۱,۶۰۰`), not a percent, and is hidden when it is zero.
 - The range control moved into the header, with short labels (روز، هفته، ماه). It shows only for pro users.
 - The converter is always visible in the footer, with a swap button, instead of hidden behind an icon. It is still hidden for services.
 - The board drew an update time next to the code («۲ دقیقه پیش»). The owner dropped it after seeing «همین الان» there every time the modal opened.
