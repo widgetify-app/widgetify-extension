@@ -4,7 +4,7 @@ export const CHART_WIDTH = 300
 export const CHART_HEIGHT = 120
 const CHART_PADDING_Y = 10
 const RIAL_PER_TOMAN = 10
-const MIN_SPAN_RATIO = 0.08
+const MIN_SPAN_RATIO = 0.02
 const POINTS_PER_SMOOTHING_STEP = 12
 const TIME_TICK_COUNT = 5
 
@@ -21,6 +21,8 @@ export interface PriceChart {
 	linePath: string
 	areaPath: string
 	changePercentage: number
+	high: number
+	low: number
 }
 
 export function toDisplayValue(price: number, isDollar: boolean): number {
@@ -106,9 +108,27 @@ export function buildPriceChart(
 		),
 		linePath,
 		areaPath: `${linePath} L${CHART_WIDTH},${CHART_HEIGHT} L0,${CHART_HEIGHT} Z`,
-		changePercentage:
-			first.value === 0 ? 0 : ((last.value - first.value) / first.value) * 100,
+		changePercentage: percentChange(first.value, last.value),
+		high: Math.max(...values),
+		low: Math.min(...values),
 	}
+}
+
+function percentChange(from: number, to: number): number {
+	return from === 0 ? 0 : ((to - from) / from) * 100
+}
+
+export interface ActivePoint {
+	value: number
+	moved: number
+	changePercentage: number
+}
+
+export function describePoint(chart: PriceChart, index: number): ActivePoint {
+	const first = chart.points[0].value
+	const value = chart.points[index].value
+
+	return { value, moved: value - first, changePercentage: percentChange(first, value) }
 }
 
 export function nearestPointIndex(points: ChartPoint[], x: number): number {

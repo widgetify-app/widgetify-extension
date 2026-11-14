@@ -10,12 +10,14 @@ import {
 	type CurrencyHistoryRange,
 	FREE_HISTORY_RANGE,
 } from '@/services/currency/get-currency-history.hook'
-import { getPrice } from '../utils/get-price'
+import type { ActivePoint } from '../utils/build-price-chart'
+import { calculatePriceChange, getPrice } from '../utils/get-price'
 import {
 	CurrencyHistory,
 	DEFAULT_HISTORY_RANGE,
 	HistoryRangeTabs,
 } from './currency-history'
+import { CountingNumber } from './counting-number'
 import { PriceChange } from './price-change'
 
 interface CurrencyModalComponentProps {
@@ -39,11 +41,14 @@ export const CurrencyModalComponent = ({
 	const { isVip } = useAuth()
 	const [pickedRange, setRange] = useState<CurrencyHistoryRange | null>(null)
 	const range = pickedRange ?? (isVip ? DEFAULT_HISTORY_RANGE : FREE_HISTORY_RANGE)
+	const [hovered, setHovered] = useState<ActivePoint | null>(null)
 	const [isSwapped, setIsSwapped] = useState(false)
 	const [currencyAmount, setCurrencyAmount] = useState<number>(1)
 	const [tomanAmount, setTomanAmount] = useState<number>(0)
 
 	useEffect(() => {
+		if (!isModalOpen) setHovered(null)
+
 		if (isModalOpen && currency?.rialPrice) {
 			setCurrencyAmount(1)
 			setTomanAmount(currency.rialPrice)
@@ -70,6 +75,15 @@ export const CurrencyModalComponent = ({
 	}
 
 	const price = getPrice(code, currency)
+	const shownValue = hovered ? hovered.value : price.value
+	const shownText = hovered ? hovered.value.toLocaleString() : price.formatted
+	const shownAmount = hovered ? hovered.moved : calculatePriceChange(code, currency)
+	const shownPercentage = hovered ? hovered.changePercentage : currency.changePercentage
+
+	function pickRange(next: CurrencyHistoryRange) {
+		setHovered(null)
+		setRange(next)
+	}
 
 	const fields = [
 		<div key="currency" className={FIELD_CLASS}>
@@ -124,12 +138,18 @@ export const CurrencyModalComponent = ({
 								{currency.period && <span>{currency.period}</span>}
 							</p>
 						</div>
-						<HistoryRangeTabs range={range} onChange={setRange} />
+						<HistoryRangeTabs range={range} onChange={pickRange} />
 					</header>
 
 					<div className="flex items-baseline gap-2">
 						<p className="text-3xl font-black tabular-nums text-fg-strong">
-							<data value={price.value}>{price.formatted}</data>
+							<data value={shownValue}>
+								{typeof shownValue === 'number' ? (
+									<CountingNumber value={shownValue} text={shownText} />
+								) : (
+									shownText
+								)}
+							</data>
 						</p>
 						<span className="text-xs text-fg-muted">
 							{price.isDollar
@@ -137,7 +157,8 @@ export const CurrencyModalComponent = ({
 								: t('widgets.wigiArz.toman')}
 						</span>
 						<PriceChange
-							changePercentage={currency.changePercentage}
+							changePercentage={shownPercentage}
+							amount={shownAmount}
 							className="px-2 py-0.5 text-2xs rounded-full ms-auto bg-fill"
 						/>
 					</div>
@@ -150,6 +171,7 @@ export const CurrencyModalComponent = ({
 						enabled={isModalOpen}
 						range={range}
 						onLeave={toggleCurrencyModal}
+						onActiveChange={setHovered}
 					/>
 				</div>
 

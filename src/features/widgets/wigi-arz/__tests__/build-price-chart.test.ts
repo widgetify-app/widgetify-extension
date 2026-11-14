@@ -3,6 +3,7 @@ import {
 	CHART_HEIGHT,
 	CHART_WIDTH,
 	buildPriceChart,
+	describePoint,
 	nearestPointIndex,
 	toDisplayValue,
 } from '../utils/build-price-chart'
@@ -92,7 +93,7 @@ describe('buildPriceChart', () => {
 		const chart = buildPriceChart(flipping, false)
 		const ys = chart?.points.map((point) => point.y) ?? []
 
-		expect(spanOf(ys)).toBeLessThan(CHART_HEIGHT / 10)
+		expect(spanOf(ys)).toBeLessThan(CHART_HEIGHT / 5)
 		expect(chart?.points[0].value).toBe(551000)
 	})
 
@@ -103,12 +104,26 @@ describe('buildPriceChart', () => {
 		expect(first.y - middle.y).toBeGreaterThan(CHART_HEIGHT / 2)
 	})
 
-	it('draws a move of one percent as a small step, not the full height', () => {
+	it('draws a move of one percent as a clear step, not a flat line', () => {
 		const chart = buildPriceChart([at(1, 5000000), at(2, 5050000)], false)
 		const rise = (chart?.points[0].y ?? 0) - (chart?.points[1].y ?? 0)
 
-		expect(rise).toBeGreaterThan(0)
+		expect(rise).toBeGreaterThan(CHART_HEIGHT / 3)
+		expect(rise).toBeLessThan(CHART_HEIGHT * 0.7)
+	})
+
+	it('keeps a move far below one percent small', () => {
+		const chart = buildPriceChart([at(1, 5000000), at(2, 5005000)], false)
+		const rise = (chart?.points[0].y ?? 0) - (chart?.points[1].y ?? 0)
+
 		expect(rise).toBeLessThan(CHART_HEIGHT / 6)
+	})
+
+	it('reports the highest and lowest price of the period', () => {
+		const chart = buildPriceChart([at(1, 100), at(2, 300), at(3, 200)], true)
+
+		expect(chart?.high).toBe(300)
+		expect(chart?.low).toBe(100)
 	})
 
 	it('lets a big move fill the chart', () => {
@@ -116,6 +131,14 @@ describe('buildPriceChart', () => {
 		const rise = (chart?.points[0].y ?? 0) - (chart?.points[1].y ?? 0)
 
 		expect(rise).toBeGreaterThan(CHART_HEIGHT * 0.7)
+	})
+
+	it('fits the line between the top and bottom edges without touching them', () => {
+		const chart = buildPriceChart([at(1, 100), at(2, 200), at(3, 100)], true)
+		const ys = chart?.points.map((point) => point.y) ?? []
+
+		expect(Math.min(...ys)).toBeGreaterThan(0)
+		expect(Math.max(...ys)).toBeLessThan(CHART_HEIGHT)
 	})
 
 	it('converts rial history to toman', () => {
@@ -137,6 +160,26 @@ describe('buildPriceChart', () => {
 			first + 3 * day,
 			last,
 		])
+	})
+})
+
+describe('describePoint', () => {
+	it('measures how far a point moved from the first price', () => {
+		const chart = buildPriceChart([at(1, 100), at(2, 150), at(3, 80)], true)
+
+		if (!chart) throw new Error('no chart')
+
+		expect(describePoint(chart, 0)).toEqual({
+			value: 100,
+			moved: 0,
+			changePercentage: 0,
+		})
+		expect(describePoint(chart, 1)).toEqual({
+			value: 150,
+			moved: 50,
+			changePercentage: 50,
+		})
+		expect(describePoint(chart, 2).moved).toBe(-20)
 	})
 })
 
