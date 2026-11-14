@@ -22,6 +22,7 @@ const SECTION_READMES = [
 const OTHER_DOCS = [
 	'AGENTS.md',
 	'src/styles/themes/HOW_TO_ADD_THEME.md',
+	'web-clone/SETUP.md',
 	'.github/CONTRIBUTING.md',
 	'.github/CONTRIBUTING.fa.md',
 	'.github/Api-doc.md',
