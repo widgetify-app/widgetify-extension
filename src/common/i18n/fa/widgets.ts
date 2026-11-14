@@ -799,6 +799,8 @@ export const widgets = {
 	'widgets.wigiArz.chart.proAction': 'دیدن اشتراک پرو',
 	'widgets.wigiArz.chart.loginAction': 'ورود به حساب',
 	'widgets.wigiArz.chart.now': 'الان',
+	'widgets.wigiArz.chart.high': 'بیشترین',
+	'widgets.wigiArz.chart.low': 'کمترین',
 	'widgets.registry.search.label': 'جستجو',
 	'widgets.registry.bookmarks.label': 'بوکمارک‌ها',
 	'widgets.registry.pet.label': 'پت (حیوان خانگی)',

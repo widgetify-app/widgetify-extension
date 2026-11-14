@@ -12,7 +12,7 @@ import {
 	isHistoryLocked,
 	useGetCurrencyHistory,
 } from '@/services/currency/get-currency-history.hook'
-import { buildPriceChart } from '../utils/build-price-chart'
+import { type ActivePoint, buildPriceChart } from '../utils/build-price-chart'
 import { getPrice } from '../utils/get-price'
 import { PriceChart } from './price-chart'
 
@@ -22,6 +22,7 @@ interface CurrencyHistoryProps {
 	enabled: boolean
 	range: CurrencyHistoryRange
 	onLeave: () => void
+	onActiveChange: (point: ActivePoint | null) => void
 }
 
 export const DEFAULT_HISTORY_RANGE: CurrencyHistoryRange = '7d'
@@ -58,6 +59,7 @@ export function CurrencyHistory({
 	enabled,
 	range,
 	onLeave,
+	onActiveChange,
 }: CurrencyHistoryProps) {
 	const { isAuthenticated, isVip } = useAuth()
 	const isRangeLocked = !isVip && range !== FREE_HISTORY_RANGE
@@ -124,11 +126,22 @@ export function CurrencyHistory({
 				</div>
 			) : chart ? (
 				<div className="flex-1 min-w-0 -mx-0.5 md:-mx-1">
+					<p className="flex h-5 gap-3 px-5 text-2xs tabular-nums text-fg-muted">
+						<span>
+							{t('widgets.wigiArz.chart.high')}{' '}
+							<bdi>{chart.high.toLocaleString()}</bdi>
+						</span>
+						<span>
+							{t('widgets.wigiArz.chart.low')}{' '}
+							<bdi>{chart.low.toLocaleString()}</bdi>
+						</span>
+					</p>
 					<PriceChart
 						key={range}
 						chart={chart}
 						name={currency.name.fa}
 						showTime={range === '24h'}
+						onActiveChange={onActiveChange}
 					/>
 				</div>
 			) : (
