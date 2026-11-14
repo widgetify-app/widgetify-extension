@@ -1,7 +1,6 @@
 import { nowDate } from '@/common/utils/trusted-time'
 import jalaliMoment from 'jalali-moment'
 import hijriMoment from 'moment-hijri'
-import momentTz from 'moment-timezone'
 import type { FetchedAllEvents, FetchedEvent } from '@/services/date/get-events.hook'
 export const formatDateStr = (date: jalaliMoment.Moment) => {
 	return `${date.jYear()}-${(date.jMonth() + 1).toString().padStart(2, '0')}-${date.jDate().toString().padStart(2, '0')}`
@@ -169,9 +168,8 @@ export function getGregorianEvents(
 	)
 }
 
-export function getCurrentDate(timeZone: string) {
-	const tzMoment = momentTz.tz(nowDate(), timeZone)
-	return jalaliMoment(tzMoment.toDate()).locale('fa')
+export function getCurrentDate(_timeZone: string) {
+	return jalaliMoment(nowDate()).locale('fa')
 }
 
 export function getHourInZone(date: Date, timeZone?: string) {

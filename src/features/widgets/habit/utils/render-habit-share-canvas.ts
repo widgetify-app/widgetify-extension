@@ -1,6 +1,6 @@
 import { t } from '@/common/i18n'
 import jalaliMoment from 'jalali-moment'
-import moment from 'moment'
+import { toIsoDateKey } from '@/features/widgets/utils/jalali-date'
 import type { Habit } from '@/services/habit/habit.interface'
 import { drawRoundedRect, fitText, rgba } from '@/features/widgets/utils/canvas'
 import { formatHabitGoal } from './habit-goal'
@@ -84,7 +84,7 @@ export function renderHabitShareCanvas(
 
 		for (let d = 0; d < 7; d++) {
 			const dayDate = current.clone()
-			const gregorianDate = moment(dayDate.toDate()).format('YYYY-MM-DD')
+			const gregorianDate = toIsoDateKey(dayDate)
 			const [year, month] = gregorianDate.split('-')
 			const monthData = habit.calendarData?.[`${year}-${month}`] || {}
 			const dayData = monthData[gregorianDate] || {
