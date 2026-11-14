@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
+import { WidgetSkeleton } from '@/features/widgets/components/widget-skeleton'
 import { t } from '@/common/i18n'
 import type {
 	WidgetDefinition,
@@ -84,11 +85,13 @@ export function AddWidgetPreview({
 					className="absolute top-0 left-0 flex items-center justify-center overflow-hidden"
 				>
 					<div className="w-full h-full flex items-center justify-center">
-						{(definition.previewNode ?? definition.node)(
-							'preview-sample',
-							previewSize,
-							selectedVariant?.meta
-						)}
+						<Suspense fallback={<WidgetSkeleton />}>
+							{(definition.previewNode ?? definition.node)(
+								'preview-sample',
+								previewSize,
+								selectedVariant?.meta
+							)}
+						</Suspense>
 					</div>
 				</div>
 			</div>

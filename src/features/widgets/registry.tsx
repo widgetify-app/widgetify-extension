@@ -1,33 +1,9 @@
 import { BookmarkProvider } from '@/features/widgets/bookmark/bookmark.context'
-import { BookmarksList } from '@/features/widgets/bookmark/bookmark.widget'
-import { SearchLayout } from '@/features/widgets/search/search.widget'
-import CalendarLayout from '@/features/widgets/calendar/calendar.widget'
-import { ComboWidget } from '@/features/widgets/combo-widget/combo-widget.widget'
-import { NetworkLayout } from '@/features/widgets/network/network.widget'
-import { NewsLayout } from '@/features/widgets/news/news.widget'
-import { ToolsLayout } from '@/features/widgets/tools/tools.widget'
-import { WeatherLayout } from '@/features/widgets/weather/weather.widget'
-import { WigiArzLayout } from '@/features/widgets/wigi-arz/wigi-arz.widget'
-import { YadkarWidget } from '@/features/widgets/yadkar/yadkar.widget'
-import { HabitsLayout } from '@/features/widgets/habit/habit.widget'
 import { CurrencyProvider } from '@/features/widgets/currency.context'
 import { DateProvider } from '@/features/widgets/date.context'
-import { ClockWidget } from './clock/clock.widget'
-import { PetWidget } from './pet/pet.widget'
-import { TransparentClockWidget } from './transparent-clock/transparent-clock.widget'
-import { MoodTrackerWidget } from './mood-tracker/mood-tracker.widget'
-import { PhotoWidget } from './photo/photo.widget'
-import {
-	DotCalendarWidget,
-	normalizeDotCalendarMeta,
-} from './dot-calendar/dot-calendar.widget'
-import { GoogleCalendarWidget } from './google-calendar/google-calendar.widget'
-import { TodosLayout } from './todos/todos.widget'
-import { NotesLayout, resolveNotesVariant } from './notes/notes.widget'
 import { WidgetContainer } from './components/widget-container'
 import { WidgetTabKeys } from '@/features/widgets/types'
-import { useSyncExternalStore } from 'react'
-import { PartnerWidget } from './partner-widget/partner-widget.widget'
+import { type ComponentType, lazy, useSyncExternalStore } from 'react'
 import { PartnerPreview } from './components/partner-preview'
 import { WidgetUnavailableTile } from './components/widget-unavailable'
 import { partnerCatalogStore } from './utils/partner-catalog/partner-catalog-store'
@@ -41,6 +17,83 @@ import {
 	type WidgetDefinition,
 	WidgetKeys,
 } from './utils/layout-engine/types'
+
+function lazyNamed<T extends ComponentType<any>>(
+	load: () => Promise<Record<string, any>>,
+	name: string
+) {
+	return lazy(() => load().then((m) => ({ default: m[name] as T })))
+}
+
+const BookmarksList = lazyNamed(
+	() => import('@/features/widgets/bookmark/bookmark.widget'),
+	'BookmarksList'
+)
+const SearchLayout = lazyNamed(
+	() => import('@/features/widgets/search/search.widget'),
+	'SearchLayout'
+)
+const ComboWidget = lazyNamed(
+	() => import('@/features/widgets/combo-widget/combo-widget.widget'),
+	'ComboWidget'
+)
+const NetworkLayout = lazyNamed(
+	() => import('@/features/widgets/network/network.widget'),
+	'NetworkLayout'
+)
+const NewsLayout = lazyNamed(
+	() => import('@/features/widgets/news/news.widget'),
+	'NewsLayout'
+)
+const ToolsLayout = lazyNamed(
+	() => import('@/features/widgets/tools/tools.widget'),
+	'ToolsLayout'
+)
+const WeatherLayout = lazyNamed(
+	() => import('@/features/widgets/weather/weather.widget'),
+	'WeatherLayout'
+)
+const WigiArzLayout = lazyNamed(
+	() => import('@/features/widgets/wigi-arz/wigi-arz.widget'),
+	'WigiArzLayout'
+)
+const YadkarWidget = lazyNamed(
+	() => import('@/features/widgets/yadkar/yadkar.widget'),
+	'YadkarWidget'
+)
+const HabitsLayout = lazyNamed(
+	() => import('@/features/widgets/habit/habit.widget'),
+	'HabitsLayout'
+)
+const ClockWidget = lazyNamed(() => import('./clock/clock.widget'), 'ClockWidget')
+const PetWidget = lazyNamed(() => import('./pet/pet.widget'), 'PetWidget')
+const TransparentClockWidget = lazyNamed(
+	() => import('./transparent-clock/transparent-clock.widget'),
+	'TransparentClockWidget'
+)
+const MoodTrackerWidget = lazyNamed(
+	() => import('./mood-tracker/mood-tracker.widget'),
+	'MoodTrackerWidget'
+)
+const PhotoWidget = lazyNamed(() => import('./photo/photo.widget'), 'PhotoWidget')
+const GoogleCalendarWidget = lazyNamed(
+	() => import('./google-calendar/google-calendar.widget'),
+	'GoogleCalendarWidget'
+)
+const TodosLayout = lazyNamed(() => import('./todos/todos.widget'), 'TodosLayout')
+const PartnerWidget = lazyNamed(
+	() => import('./partner-widget/partner-widget.widget'),
+	'PartnerWidget'
+)
+const CalendarLayout = lazy(() => import('@/features/widgets/calendar/calendar.widget'))
+const DotCalendarWidget = lazyNamed(
+	() => import('./dot-calendar/dot-calendar.widget'),
+	'DotCalendarWidget'
+)
+const NotesCanvasWidget = lazyNamed(
+	() => import('./notes/notes.widget'),
+	'NotesCanvasWidget'
+)
 
 const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 	[WidgetKeys.search]: {
@@ -475,19 +528,9 @@ const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 			},
 		],
 		canDuplicate: true,
-		node: (instanceId, size, meta) => {
-			const isSticky = resolveNotesVariant(size, meta) === 'sticky'
-
-			return (
-				<WidgetContainer
-					padding={!isSticky}
-					background={!isSticky}
-					contentClassName={isSticky ? undefined : 'p-3 gap-2'}
-				>
-					<NotesLayout size={size} meta={meta} instanceId={instanceId} />
-				</WidgetContainer>
-			)
-		},
+		node: (instanceId, size, meta) => (
+			<NotesCanvasWidget size={size} meta={meta} instanceId={instanceId} />
+		),
 	},
 	[WidgetKeys.transparentClock]: {
 		id: WidgetKeys.transparentClock,
@@ -611,7 +654,10 @@ const WIDGET_DEFINITIONS: Record<WidgetKeys, WidgetDefinition> = {
 		],
 		canResize: true,
 		settingsTab: WidgetTabKeys.dot_calendar_settings,
-		hasSettings: (meta) => normalizeDotCalendarMeta(meta).variant === 'goal',
+		hasSettings: (meta) =>
+			typeof meta === 'object' &&
+			meta !== null &&
+			(meta as { variant?: unknown }).variant === 'goal',
 		canDuplicate: true,
 		node: (instanceId, size, meta) => (
 			<DotCalendarWidget instanceId={instanceId} size={size} meta={meta} />

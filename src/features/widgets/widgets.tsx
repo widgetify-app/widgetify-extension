@@ -7,6 +7,7 @@ import { callEvent, listenEvent } from '@/common/utils/call-event'
 import { useFreeWidgets } from '@/features/widgets/widgets.context'
 import { useContainerSize } from '@/features/widgets/hooks/use-container-size'
 import { getCanvasHeight } from './utils/grid-geometry'
+import { WidgetSlot } from './components/widget-slot'
 import { useKeyboardFocusWithin } from './hooks/use-keyboard-focus-within'
 import { MIN_CANVAS_ROWS } from './utils/layout-engine/constants'
 import { rowCapFor } from './utils/layout-engine/row-cap'
@@ -184,7 +185,12 @@ export function FreeWidgetCanvas() {
 								</button>
 							</div>
 							<div className="w-full">
-								{def.node(widget.instanceId, widget.size, widget.meta)}
+								<WidgetSlot
+									definition={def}
+									instanceId={widget.instanceId}
+									size={widget.size}
+									meta={widget.meta}
+								/>
 							</div>
 						</ListWidgetFrame>
 					)
