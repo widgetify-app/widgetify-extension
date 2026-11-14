@@ -1,3 +1,5 @@
+import { getCurrentDate } from '@/common/utils/date-events'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { AvatarComponent, Button, Tooltip, VipBadge } from '@/components/ui'
@@ -218,11 +220,13 @@ interface FriendDetail {
 }
 
 function FriendDetails({ friend }: { friend: NonNullable<FriendCard['friend']> }) {
+	const { selected_timezone: timezone } = useGeneralSetting()
 	const now = new Date()
+	const today = getCurrentDate(timezone.value).toDate()
 	const since = friend.friendsSince
 		? friendsSincePeriod(friend.friendsSince, now)
 		: null
-	const birthday = friend.birthday ? birthdayParts(friend.birthday, now) : null
+	const birthday = friend.birthday ? birthdayParts(friend.birthday, today) : null
 
 	const items = [
 		since && {

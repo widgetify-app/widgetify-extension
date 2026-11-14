@@ -1,5 +1,6 @@
-import jalaliMoment from 'jalali-moment'
 import { useEffect, useRef, useState } from 'react'
+import { getCurrentDate } from '@/common/utils/date-events'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import { Button, Modal } from '@/components/ui'
 import {
 	copyCanvasToClipboard,
@@ -21,6 +22,7 @@ interface HabitShareModalProps {
 }
 
 export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareModalProps) {
+	const { selected_timezone: timezone } = useGeneralSetting()
 	const canvasRef = useRef<HTMLCanvasElement | null>(null)
 	const [isCopying, setIsCopying] = useState(false)
 
@@ -31,9 +33,9 @@ export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareMod
 			emoji: habit.emoji,
 			goal: formatHabitGoal(habit),
 			color,
-			data: habitShareData(habit, toIsoDateKey(jalaliMoment())),
+			data: habitShareData(habit, toIsoDateKey(getCurrentDate(timezone.value))),
 		})
-	}, [isOpen, habit, color])
+	}, [isOpen, habit, color, timezone.value])
 
 	const handleCopy = async () => {
 		setIsCopying(true)

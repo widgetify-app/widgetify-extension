@@ -1,6 +1,7 @@
 import { type PointerEvent, useId, useState } from 'react'
 import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import {
 	CHART_HEIGHT,
 	CHART_WIDTH,
@@ -21,15 +22,21 @@ interface PriceChartProps {
 
 const LABEL_EDGE_PERCENT = 12
 
-function formatMoment(time: number, showTime: boolean): string {
+function formatMoment(time: number, showTime: boolean, timeZone: string): string {
 	const date = new Date(time)
 	return showTime
-		? date.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' })
-		: date.toLocaleDateString('fa-IR', { month: 'short', day: 'numeric' })
+		? date.toLocaleTimeString('fa-IR', {
+				hour: '2-digit',
+				minute: '2-digit',
+				timeZone,
+			})
+		: date.toLocaleDateString('fa-IR', { month: 'short', day: 'numeric', timeZone })
 }
 
 export function PriceChart({ chart, name, showTime, onActiveChange }: PriceChartProps) {
 	const gradientId = useId()
+	const { selected_timezone: timezone } = useGeneralSetting()
+	const timeZone = timezone.value
 	const [activeIndex, setActiveIndex] = useState<number | null>(null)
 	const active = activeIndex === null ? null : chart.points[activeIndex]
 	const activePercent = active ? (active.x / CHART_WIDTH) * 100 : 0
@@ -74,7 +81,7 @@ export function PriceChart({ chart, name, showTime, onActiveChange }: PriceChart
 						)}
 						style={{ left: `${activePercent}%` }}
 					>
-						{formatMoment(active.time, showTime)}
+						{formatMoment(active.time, showTime, timeZone)}
 					</span>
 				)}
 			</div>
@@ -144,7 +151,7 @@ export function PriceChart({ chart, name, showTime, onActiveChange }: PriceChart
 						</span>
 					) : (
 						<span key={time} className="tabular-nums">
-							{formatMoment(time, showTime)}
+							{formatMoment(time, showTime, timeZone)}
 						</span>
 					)
 				)}

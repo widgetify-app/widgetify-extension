@@ -1,4 +1,6 @@
 import { useEffect } from 'react'
+import { getCurrentDate } from '@/common/utils/date-events'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import { getFromStorage, setToStorage } from '@/common/storage'
 import type { BirthdayConfettiKey } from '../types'
 
@@ -9,6 +11,9 @@ function birthdayConfettiKey(date: Date): BirthdayConfettiKey {
 }
 
 export function useBirthdayConfetti(isBirthday: boolean) {
+	const { selected_timezone: timezone } = useGeneralSetting()
+	const timeZone = timezone.value
+
 	useEffect(() => {
 		if (!isBirthday) return
 
@@ -16,7 +21,7 @@ export function useBirthdayConfetti(isBirthday: boolean) {
 		let cancelled = false
 
 		const run = async () => {
-			const storageKey = birthdayConfettiKey(new Date())
+			const storageKey = birthdayConfettiKey(getCurrentDate(timeZone).toDate())
 			if (await getFromStorage(storageKey)) return
 			if (cancelled) return
 
@@ -37,5 +42,5 @@ export function useBirthdayConfetti(isBirthday: boolean) {
 			cancelled = true
 			clearTimeout(timer)
 		}
-	}, [isBirthday])
+	}, [isBirthday, timeZone])
 }

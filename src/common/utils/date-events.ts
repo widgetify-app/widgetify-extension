@@ -168,8 +168,12 @@ export function getGregorianEvents(
 	)
 }
 
-export function getCurrentDate(_timeZone: string) {
-	return jalaliMoment(nowDate()).locale('fa')
+export function getCurrentDate(timeZone: string) {
+	const zoned = new Date(
+		nowDate().toLocaleString('en-US', { timeZone: timeZone || undefined })
+	)
+
+	return jalaliMoment(zoned).locale('fa')
 }
 
 export function getHourInZone(date: Date, timeZone?: string) {
