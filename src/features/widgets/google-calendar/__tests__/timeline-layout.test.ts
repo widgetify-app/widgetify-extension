@@ -55,3 +55,13 @@ describe('minuteOfDay', () => {
 		expect(minuteOfDay(new Date('2026-10-01T13:25:00'))).toBe(13 * 60 + 25)
 	})
 })
+
+describe('minuteOfDay in a time zone', () => {
+	it('reads the clock of the given zone, not the system one', () => {
+		const instant = new Date('2026-11-14T10:30:00Z')
+
+		expect(minuteOfDay(instant, 'UTC')).toBe(10 * 60 + 30)
+		expect(minuteOfDay(instant, 'Asia/Tehran')).toBe(14 * 60 + 0)
+		expect(minuteOfDay(instant, 'Pacific/Kiritimati')).toBe(0 * 60 + 30)
+	})
+})

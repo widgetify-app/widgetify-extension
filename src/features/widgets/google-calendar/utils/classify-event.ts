@@ -4,12 +4,13 @@ import type { ClassifiedCalendarEvent } from '../types'
 
 const UNKNOWN_TIME = '—'
 
-export function formatPersianTime(date: Date): string {
+export function formatPersianTime(date: Date, timeZone?: string): string {
 	if (Number.isNaN(date.getTime())) return UNKNOWN_TIME
 
 	return date.toLocaleTimeString('fa-IR', {
 		hour: '2-digit',
 		minute: '2-digit',
+		timeZone,
 	})
 }
 
@@ -62,7 +63,8 @@ export function classifyEvent(
 	event: GoogleCalendarEvent,
 	currentTime: Date,
 	isDayToday: boolean,
-	isDayPast: boolean
+	isDayPast: boolean,
+	timeZone?: string
 ): ClassifiedCalendarEvent {
 	const start = new Date(event.start?.dateTime || event.start?.date || '')
 	const end = new Date(event.end?.dateTime || event.end?.date || '')
@@ -96,8 +98,8 @@ export function classifyEvent(
 		isPast,
 		start,
 		end,
-		startTimeStr: formatPersianTime(start),
-		endTimeStr: formatPersianTime(end),
+		startTimeStr: formatPersianTime(start, timeZone),
+		endTimeStr: formatPersianTime(end, timeZone),
 		durationLabel: isAllDay
 			? t('widgets.googleCalendar.allDay')
 			: getDurationLabel(start, end),

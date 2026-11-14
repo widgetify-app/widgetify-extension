@@ -13,6 +13,7 @@ import { GoogleCalendarEmpty } from '../components/google-calendar-empty'
 import { GoogleCalendarEventList } from '../components/google-calendar-event-list'
 import { TodayChip } from '@/features/widgets/components/today-chip'
 import type { ClassifiedCalendarEvent } from '../types'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import { layoutTimeline, minuteOfDay } from '../utils/timeline-layout'
 import { isSameJalaliDay, toIsoDateKey } from '@/features/widgets/utils/jalali-date'
 
@@ -47,12 +48,13 @@ export const GoogleCalendarTimeline: React.FC<GoogleCalendarTimelineProps> = ({
 	onEventClick,
 	onRetry,
 }) => {
+	const { selected_timezone: timezone } = useGeneralSetting()
 	const scrollRef = useRef<HTMLDivElement>(null)
 	const isSelectedToday = isSameJalaliDay(selectedDay, today)
 	const allDayEvents = classifiedEvents.filter((item) => item.isAllDay)
 	const timedEvents = classifiedEvents.filter((item) => !item.isAllDay)
-	const slots = layoutTimeline(timedEvents)
-	const nowMinute = minuteOfDay(currentTime)
+	const slots = layoutTimeline(timedEvents, timezone.value)
+	const nowMinute = minuteOfDay(currentTime, timezone.value)
 	const selectedDayKey = toIsoDateKey(selectedDay)
 	const firstMinute = slots.length ? Math.min(...slots.map((s) => s.startMinute)) : 0
 

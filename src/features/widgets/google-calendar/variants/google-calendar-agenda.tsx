@@ -9,6 +9,7 @@ import { GoogleCalendarEmpty } from '../components/google-calendar-empty'
 import { GoogleCalendarEventList } from '../components/google-calendar-event-list'
 import { GoogleCalendarEventRow } from '../components/google-calendar-event-row'
 import type { ClassifiedCalendarEvent } from '../types'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import { classifyEvent } from '../utils/classify-event'
 import { toIsoDateKey } from '@/features/widgets/utils/jalali-date'
 
@@ -37,6 +38,7 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 	onEventClick,
 	onRetry,
 }) => {
+	const { selected_timezone: timezone } = useGeneralSetting()
 	const groupedEvents = useMemo<AgendaGroup[]>(() => {
 		if (!rawEvents || rawEvents.length === 0) return []
 
@@ -60,7 +62,8 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 				event,
 				currentTime,
 				dateStr === todayIso,
-				dateStr < todayIso
+				dateStr < todayIso,
+				timezone.value
 			)
 			if (classified.isPast) continue
 
@@ -87,7 +90,7 @@ export const GoogleCalendarAgenda: React.FC<GoogleCalendarAgendaProps> = ({
 
 				return { dateStr, dayLabel, items }
 			})
-	}, [rawEvents, today, currentTime])
+	}, [rawEvents, today, currentTime, timezone.value])
 
 	return (
 		<>

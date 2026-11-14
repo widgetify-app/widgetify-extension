@@ -74,9 +74,22 @@ export function useGoogleCalendarSchedule() {
 					new Date(b.start?.dateTime || b.start?.date || 0).getTime()
 			)
 			.map((event) =>
-				classifyEvent(event, currentTime, isSelectedToday, isSelectedPast)
+				classifyEvent(
+					event,
+					currentTime,
+					isSelectedToday,
+					isSelectedPast,
+					timezone.value
+				)
 			)
-	}, [eventsByDate, selectedDayKey, currentTime, isSelectedToday, isSelectedPast])
+	}, [
+		eventsByDate,
+		selectedDayKey,
+		currentTime,
+		isSelectedToday,
+		isSelectedPast,
+		timezone.value,
+	])
 
 	const openEvent = (event: GoogleCalendarEvent) => {
 		Analytics.event('google_calendar_event_click')

@@ -216,3 +216,16 @@ describe('currentOrNextEvent', () => {
 		expect(currentOrNextEvent([finished])).toBeUndefined()
 	})
 })
+
+describe('formatPersianTime in a time zone', () => {
+	it('shows the time of the given zone', () => {
+		const instant = new Date('2026-11-14T10:30:00Z')
+
+		expect(formatPersianTime(instant, 'UTC')).toBe(
+			formatPersianTime(new Date('2026-11-14T10:30:00Z'), 'UTC')
+		)
+		expect(formatPersianTime(instant, 'Asia/Tehran')).not.toBe(
+			formatPersianTime(instant, 'UTC')
+		)
+	})
+})

@@ -1,3 +1,5 @@
+import { getCurrentDate } from '@/common/utils/date-events'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useRef, useState } from 'react'
 import Analytics from '@/analytics'
@@ -126,6 +128,7 @@ export function ProfileCardActions({ card }: { card: FriendCard }) {
 	const sendRequest = useSendFriendRequest()
 	const answerRequest = useHandleFriendRequest()
 	const removeFriend = useRemoveFriend()
+	const { selected_timezone: timezone } = useGeneralSetting()
 	const { relation, requestId, user } = card
 
 	const refreshCard = () =>
@@ -221,7 +224,8 @@ export function ProfileCardActions({ card }: { card: FriendCard }) {
 	}
 
 	const isBirthday = card.friend?.birthday
-		? birthdayParts(card.friend.birthday, new Date()).isToday
+		? birthdayParts(card.friend.birthday, getCurrentDate(timezone.value).toDate())
+				.isToday
 		: false
 
 	if (!isBirthday) return null
