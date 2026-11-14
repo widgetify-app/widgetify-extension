@@ -8,6 +8,7 @@ import { openResolvedLink } from '@/common/utils/open-link'
 import { resolveLink } from '@/common/utils/resolve-link'
 import { bodyPlainText } from '@/common/utils/notification-body'
 import { RichBody } from '@/components/rich-body'
+import { useGeneralSetting } from '@/context/general-setting.context'
 import { NotificationCard, NotificationCloseButton } from './notification-card'
 
 const CHARACTER_LIMIT = 85
@@ -18,6 +19,8 @@ interface NotificationItemProps {
 }
 
 export function NotificationCardItem(prop: NotificationItemProps) {
+	const { selected_timezone: timezone } = useGeneralSetting()
+	const timeZone = timezone.value
 	const {
 		link,
 		icon,
@@ -63,6 +66,7 @@ export function NotificationCardItem(prop: NotificationItemProps) {
 				day: 'numeric',
 				hour: '2-digit',
 				minute: '2-digit',
+				timeZone,
 			}).format(new Date(createdAt))
 		: null
 
