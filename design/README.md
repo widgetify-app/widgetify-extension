@@ -103,3 +103,4 @@ A board is a promise about the code. Anything it shows has to be something the c
 - [release-notes](release-notes/README.md): the «آبنبات چوبی» release notes window
 - [push](push/README.md): the push ask island and its settings card
 - [christmas-snow](christmas-snow/README.md): snow in the navbar, switched on and off from the server
+- [share-images](share-images/README.md): the mood and habit share pictures, to redraw like the mobile app (reference and task list)
