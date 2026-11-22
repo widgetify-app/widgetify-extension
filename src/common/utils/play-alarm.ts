@@ -30,5 +30,6 @@ export async function playAlarm(type: infoAlarmType) {
 	}
 	const audio = audioCache[type]
 	audio.currentTime = 0
+	audio.volume = 0.2
 	await audio.play()
 }
