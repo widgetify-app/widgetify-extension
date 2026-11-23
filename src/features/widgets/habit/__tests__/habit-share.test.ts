@@ -28,6 +28,24 @@ function habit(
 }
 
 describe('habitShareData', () => {
+	it('exports the preceding Jalali month with its own end-of-month streak', () => {
+		const data = habitShareData(
+			habit([
+				[23, 4, true],
+				[24, 4, true],
+				[0, 4, true],
+			]),
+			TODAY,
+			1
+		)
+		expect(data.month).toHaveLength(30)
+		expect(data.daysSoFar).toBe(30)
+		expect(data.month.slice(-2)).toEqual(['done', 'done'])
+		expect(data.streak).toBe(2)
+		expect(data.isCurrentMonth).toBe(false)
+		expect(data.monthLabel).toContain('مهر')
+	})
+
 	it('shows each day of the current Jalali month and marks future days', () => {
 		const data = habitShareData(habit([]), TODAY)
 

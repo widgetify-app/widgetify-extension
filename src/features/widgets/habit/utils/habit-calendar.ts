@@ -66,9 +66,7 @@ function loggingStart(habit: Habit, marks: Record<string, Mark>, todayKey: strin
 	return start
 }
 
-function levelOf(habit: Habit, value: number, isDone: boolean): HabitLevel {
-	if (habit.comparison === HabitComparison.AT_MOST) return isDone ? 3 : 0
-
+function levelOf(habit: Habit, value: number): HabitLevel {
 	if (value <= 0) return 0
 
 	const share = value / habitGoal(habit)
@@ -100,15 +98,15 @@ export function habitDayReader(habit: Habit, todayKey: string) {
 			isDone = flaggedDone && key >= start
 		}
 
-		return { value, isDone, level: levelOf(habit, value, isDone) }
+		return { value, isDone, level: levelOf(habit, value) }
 	}
 
 	return { outcomeOn, marks }
 }
 
-export function habitStats(habit: Habit, todayKey: string) {
+export function habitStats(habit: Habit, todayKey: string, endKey = todayKey) {
 	const { outcomeOn, marks } = habitDayReader(habit, todayKey)
-	let first = todayKey
+	let first = endKey
 
 	for (const key of Object.keys(marks)) {
 		if (key < first) first = key
@@ -116,7 +114,7 @@ export function habitStats(habit: Habit, todayKey: string) {
 
 	const days: { isDone: boolean }[] = []
 
-	for (let key = first; key <= todayKey; key = shiftDay(key, 1)) {
+	for (let key = first; key <= endKey; key = shiftDay(key, 1)) {
 		days.push({ isDone: outcomeOn(key).isDone })
 	}
 

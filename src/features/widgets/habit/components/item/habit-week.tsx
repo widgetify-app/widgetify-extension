@@ -64,7 +64,7 @@ export function HabitWeek({
 								style={{
 									backgroundColor: color,
 									color: getContrastingTextColor(color),
-									opacity: day.isDone ? 1 : 0.35 + progress * 0.65,
+									opacity: 0.35 + progress * 0.65,
 								}}
 							>
 								{day.isDone && (

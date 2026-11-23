@@ -152,6 +152,7 @@ const ANALYTICS_EVENTS = [
 	'habit_open_detail_model',
 	'habit_quick_log',
 	'habit_quick_log_wide',
+	'habit_share_month_changed',
 	'habit_refetch',
 	'import_browser_bookmarks',
 	'island_close',

@@ -1,4 +1,6 @@
 import { useCallback, useState } from 'react'
+import jalaliMoment from 'jalali-moment'
+import Analytics from '@/analytics'
 import { getCurrentDate } from '@/common/utils/date-events'
 import { Button, Modal, Spinner } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
@@ -27,6 +29,26 @@ export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareMod
 	const { selected_timezone: timezone } = useGeneralSetting()
 	const { user } = useAuth()
 	const [isCopying, setIsCopying] = useState(false)
+	const [monthsBack, setMonthsBack] = useState(0)
+	const todayKey = toIsoDateKey(getCurrentDate(timezone.value))
+	const shareData = habitShareData(habit, todayKey, monthsBack)
+	const earliest = Object.values(habit.calendarData ?? {})
+		.flatMap((month) => Object.keys(month))
+		.sort()[0]
+	const currentMonth = jalaliMoment(todayKey, 'YYYY-MM-DD', 'en')
+	const earliestMonth = earliest
+		? jalaliMoment(earliest, 'YYYY-MM-DD', 'en')
+		: currentMonth
+	const maxMonthsBack = Math.max(
+		11,
+		(currentMonth.jYear() - earliestMonth.jYear()) * 12 +
+			currentMonth.jMonth() -
+			earliestMonth.jMonth()
+	)
+	const changeMonth = (step: number) => {
+		Analytics.event('habit_share_month_changed')
+		setMonthsBack((value) => value + step)
+	}
 	const name = user?.name
 	const avatar = user?.avatar || undefined
 	const render = useCallback(
@@ -37,9 +59,9 @@ export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareMod
 				color,
 				userName: name,
 				userAvatar: avatar,
-				data: habitShareData(habit, toIsoDateKey(getCurrentDate(timezone.value))),
+				data: habitShareData(habit, todayKey, monthsBack),
 			}),
-		[habit, color, name, avatar, timezone.value]
+		[habit, color, name, avatar, todayKey, monthsBack]
 	)
 	const { image, previewRef, failed, retry } = useShareCanvas(render, isOpen)
 	const isReady = Boolean(image)
@@ -66,6 +88,36 @@ export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareMod
 			closeLabel={t('ui.common.close')}
 		>
 			<div className="flex flex-col gap-3.5">
+				<div className="flex items-center justify-between gap-2">
+					<Button
+						size="sm"
+						rounded="xl"
+						variant="ghost"
+						color="base"
+						aria-label={t('widgets.moodTracker.shareOlderMonth')}
+						disabled={monthsBack >= maxMonthsBack}
+						onClick={() => changeMonth(1)}
+					>
+						<Icon name="chevronRight" size={16} />
+					</Button>
+					<span
+						aria-live="polite"
+						className="text-sm font-semibold text-fg-strong"
+					>
+						{shareData.monthLabel}
+					</span>
+					<Button
+						size="sm"
+						rounded="xl"
+						variant="ghost"
+						color="base"
+						aria-label={t('widgets.moodTracker.shareNewerMonth')}
+						disabled={monthsBack === 0}
+						onClick={() => changeMonth(-1)}
+					>
+						<Icon name="chevronLeft" size={16} />
+					</Button>
+				</div>
 				{!isReady && !failed && <Spinner size="lg" className="self-center" />}
 				{failed && (
 					<WidgetError
@@ -80,7 +132,7 @@ export function HabitShareModal({ isOpen, onClose, habit, color }: HabitShareMod
 					aria-label={t('widgets.habit.share.imageAria', {
 						p0: habit.title,
 					})}
-					className="self-center w-auto h-auto max-w-full max-h-[calc(100dvh-12rem)] md:max-h-[calc(min(640px,100dvh-8rem)-6rem)] rounded-2xl"
+					className="self-center w-auto h-auto max-w-full max-h-[calc(100dvh-13rem)] md:max-h-[calc(min(640px,100dvh-8rem)-7rem)] rounded-2xl"
 				/>
 				<div className="flex items-center gap-1.5 pt-1">
 					<Button

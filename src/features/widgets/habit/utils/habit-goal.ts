@@ -1,5 +1,10 @@
 import { t } from '@/common/i18n'
-import { HabitFrequency, HabitUnit, type Habit } from '@/services/habit/habit.interface'
+import {
+	HabitComparison,
+	HabitFrequency,
+	HabitUnit,
+	type Habit,
+} from '@/services/habit/habit.interface'
 
 const unitLabels: Record<HabitUnit, string> = {
 	[HabitUnit.TIMES]: t('widgets.habit.unit.times'),
@@ -53,6 +58,14 @@ export function isHabitDoneToday(habit: Habit): boolean {
 export function formatHabitToday(habit: Habit): string {
 	const target = habit.target || 1
 	const unitLabel = getHabitUnitLabel(habit)
+
+	if (habit.comparison === HabitComparison.AT_MOST) {
+		return t('widgets.habit.item.progressOf', {
+			p0: habit.today.value,
+			p1: target,
+			p2: unitLabel,
+		}).trim()
+	}
 
 	if (isHabitDoneToday(habit)) {
 		const amount = `${target} ${unitLabel}`.trim()

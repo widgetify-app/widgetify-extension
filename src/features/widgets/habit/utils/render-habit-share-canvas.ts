@@ -167,7 +167,8 @@ function drawStreak(
 	ctx: CanvasRenderingContext2D,
 	accent: string,
 	flame: HTMLImageElement,
-	streak: number
+	streak: number,
+	isCurrentMonth: boolean
 ) {
 	const hasStreak = streak > 0
 
@@ -191,9 +192,10 @@ function drawStreak(
 		align: 'center',
 	})
 
-	const label = hasStreak
-		? t('widgets.habit.share.canvas.streakLine')
-		: t('widgets.habit.share.canvas.startToday')
+	const label =
+		hasStreak || !isCurrentMonth
+			? t('widgets.habit.share.canvas.streakLine')
+			: t('widgets.habit.share.canvas.startToday')
 
 	drawShareText(ctx, label, SHARE_CENTER_X, LABEL.centerY, {
 		weight: 900,
@@ -267,6 +269,7 @@ function drawMonth(
 	})
 
 	const line = t('widgets.habit.share.canvas.monthLine', {
+		month: data.monthLabel,
 		count: toPersianDigits(data.doneThisMonth),
 		total: toPersianDigits(data.daysSoFar),
 	})
@@ -302,7 +305,7 @@ export async function renderHabitShareCanvas(
 	drawCard(ctx, accent)
 	await drawPerson(ctx, options.userName ?? '', options.userAvatar ?? '', accent)
 	drawTitle(ctx, title, emoji)
-	drawStreak(ctx, accent, flame, options.data.streak)
+	drawStreak(ctx, accent, flame, options.data.streak, options.data.isCurrentMonth)
 	drawMonth(ctx, options.data, accent, gloss)
 	await drawShareFooter(ctx, SHARE_LIGHT_INK)
 }
