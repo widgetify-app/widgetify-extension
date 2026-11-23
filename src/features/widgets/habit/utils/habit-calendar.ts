@@ -32,10 +32,6 @@ export function shiftDay(key: string, days: number): string {
 	return fromUtc(toUtc(key) + days * DAY_MS)
 }
 
-export function daysSinceSaturday(key: string): number {
-	return (new Date(toUtc(key)).getUTCDay() + 1) % 7
-}
-
 function habitGoal(habit: Habit): number {
 	return Math.max(habit.target, 1)
 }

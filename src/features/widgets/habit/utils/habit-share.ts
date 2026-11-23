@@ -1,32 +1,31 @@
+import jalaliMoment from 'jalali-moment'
+import { jalaliMonthDays } from '@/features/widgets/utils/jalali-month-days'
 import type { Habit } from '@/services/habit/habit.interface'
-import { daysSinceSaturday, habitDayReader, habitStats, shiftDay } from './habit-calendar'
+import { habitDayReader, habitStats } from './habit-calendar'
 
-const SHARE_WEEKS = 26
-
-interface ShareCell {
-	level: number
-	isFuture: boolean
-}
+export type ShareDayState = 'done' | 'open' | 'future'
 
 export interface HabitShareData {
-	weeks: ShareCell[][]
+	month: ShareDayState[]
+	doneThisMonth: number
+	daysSoFar: number
 	streak: number
-	doneDays: number
 }
 
 export function habitShareData(habit: Habit, todayKey: string): HabitShareData {
+	const today = jalaliMoment(todayKey, 'YYYY-MM-DD', 'en')
+	const days = jalaliMonthDays(today.jYear(), today.jMonth() + 1)
 	const { outcomeOn } = habitDayReader(habit, todayKey)
-	const first = shiftDay(todayKey, -daysSinceSaturday(todayKey) - (SHARE_WEEKS - 1) * 7)
 
-	const weeks = Array.from({ length: SHARE_WEEKS }, (_, week) =>
-		Array.from({ length: 7 }, (_, offset) => {
-			const key = shiftDay(first, week * 7 + offset)
+	const month = days.map((key): ShareDayState => {
+		if (key > todayKey) return 'future'
+		return outcomeOn(key).isDone ? 'done' : 'open'
+	})
 
-			return { level: outcomeOn(key).level, isFuture: key > todayKey }
-		})
-	)
-
-	const stats = habitStats(habit, todayKey)
-
-	return { weeks, streak: stats.currentStreak, doneDays: stats.totalCompleted }
+	return {
+		month,
+		doneThisMonth: month.filter((state) => state === 'done').length,
+		daysSoFar: today.jDate(),
+		streak: habitStats(habit, todayKey).currentStreak,
+	}
 }

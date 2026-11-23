@@ -28,13 +28,13 @@ function habit(
 }
 
 describe('habitShareData', () => {
-	it('draws 26 weeks of 7 days, Saturday first', () => {
+	it('shows each day of the current Jalali month and marks future days', () => {
 		const data = habitShareData(habit([]), TODAY)
 
-		expect(data.weeks).toHaveLength(26)
-		expect(data.weeks.every((week) => week.length === 7)).toBe(true)
-		expect(data.weeks[25][0].isFuture).toBe(false)
-		expect(data.weeks[25][1].isFuture).toBe(true)
+		expect(data.month).toHaveLength(30)
+		expect(data.daysSoFar).toBe(23)
+		expect(data.month.slice(21, 24)).toEqual(['open', 'open', 'future'])
+		expect(data.streak).toBe(0)
 	})
 
 	it('counts the streak and the successful days', () => {
@@ -44,15 +44,17 @@ describe('habitShareData', () => {
 				[1, 4, true],
 				[2, 4, true],
 				[5, 4, true],
+				[23, 4, true],
+				[-1, 4, true],
 			]),
 			TODAY
 		)
 
 		expect(data.streak).toBe(3)
-		expect(data.doneDays).toBe(4)
+		expect(data.doneThisMonth).toBe(4)
 	})
 
-	it('shades a day by how much of the target was reached', () => {
+	it('marks only days that met the target or were flagged done', () => {
 		const data = habitShareData(
 			habit([
 				[0, 1, false],
@@ -63,12 +65,6 @@ describe('habitShareData', () => {
 			TODAY
 		)
 
-		const levels = data.weeks
-			.flat()
-			.filter((cell) => !cell.isFuture)
-			.slice(-4)
-			.map((cell) => cell.level)
-
-		expect(levels).toEqual([4, 3, 2, 1])
+		expect(data.month.slice(19, 23)).toEqual(['done', 'done', 'open', 'open'])
 	})
 })

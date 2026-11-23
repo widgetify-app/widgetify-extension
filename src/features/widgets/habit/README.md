@@ -23,9 +23,9 @@ Daily, weekly and monthly habits with a one-click log. Sizes 2x1 and 2x3, and tw
 | `utils/habit-goal.ts` | Goal text, today's text (`formatHabitToday`), `isHabitDoneToday`. Tested. |
 | `utils/habit-week.ts` | `weekOf` (this week's dates from Saturday), `habitWeek` (each of those days for a habit: today from `habit.today`, the rest from `history` by date, later days marked ahead), `dayKey` and `weekdayInitial`. Tested. |
 | `utils/habit-step.ts`, `utils/habit-stats.ts` | Log step size and the detail statistics (streak, best streak, successful days). Tested. |
-| `utils/render-habit-share-canvas.ts` | Draws the share image exactly like the mobile app's (`widgetify-mobile-v2`, `features/habits`): a 9:16 portrait, 540×960 drawn at 2x, on a gradient tinted from the habit colour, with the title chip, the streak flame and number, the six-month heatmap and the footer. Ink turns dark on a light colour. The modal scales it down. |
+| `utils/render-habit-share-canvas.ts` | Draws the mobile v2 D11f story at 1080×1920: a dark card with the profile and habit title, the streak flame and number, and this month's glossy day beads. The preview, copy and download use the same finished drawing. |
 | `utils/habit-calendar.ts` | The one place that decides how a day counts, copied from the mobile app's habit chart and progress code: the goal is `max(target, 1)`; a day takes its mark from `calendarData`, today from `habit.today` when the calendar has none (and only when `habit.today.date` is today or empty); a day is done when flagged or at the goal, and an at-most day is done only when flagged and not before the first logged day; levels 0 to 4 by share of the goal (an at-most kept day is 3). `habitStats` counts streak, best run and successful days over every day from the first logged one to today, not only the six months drawn. The chart, the stats strip and the share image all read it. Tested. |
-| `utils/habit-share.ts` | `habitShareData`: the 26 weeks of cells, Saturday first, with the streak and successful days from `habitStats`. Tested. |
+| `utils/habit-share.ts` | `habitShareData`: the days of the current Jalali month in order, marked done, open or future. Uses the selected time zone's date and the same streak as the detail modal. Tested. |
 
 ## Layout
 
@@ -48,7 +48,7 @@ The same as tasks and notes. The frame is `p-3 gap-2` (`px-3 py-2.5 gap-1.5` at 
 Built like the task modal: `size="lg"`, the habit's name as the modal title, then:
 
 1. The emoji on a tint of the habit colour, the goal, and today's progress.
-2. Three stats in one strip: «پشت‌سرهم» (the current streak), «بهترین رکورد» and «روزهای موفق», the same words as the share image.
+2. Three stats in one strip: «پشت‌سرهم» (the current streak), «بهترین رکورد» and «روزهای موفق».
 3. "۶ ماه اخیر" with its legend, the day grid, and a line that names the hovered day or says how to log.
 4. Delete on the start side, then edit and "اشتراک‌گذاری تصویر" as the main button. Delete asks in place, like a task.
 
