@@ -1,359 +1,370 @@
-import excited from '@/assets/images/moods/excited.webp'
-import happy from '@/assets/images/moods/happy.webp'
-import normal from '@/assets/images/moods/normal.webp'
-import sad from '@/assets/images/moods/sad.webp'
-import { t } from '@/common/i18n'
+import excitedMascot from '@/assets/images/share/mascot-excited.webp'
+import happyMascot from '@/assets/images/share/mascot-happy.webp'
+import sleepMascot from '@/assets/images/share/mascot-sleep.webp'
+import tiredMascot from '@/assets/images/share/mascot-tired.webp'
+import { type MessageKey, t } from '@/common/i18n'
+import { nowDate } from '@/common/utils/trusted-time'
+import { drawRoundedRect, fitText, mixColor } from '@/features/widgets/utils/canvas'
+import {
+	drawShareBackground,
+	drawShareFooter,
+	drawShareGlow,
+	drawShareText,
+	loadShareAvatar,
+	loadShareFonts,
+	prepareShareCanvas,
+	SHARE_CENTER_X,
+	SHARE_DARK_INK,
+	SHARE_LIGHT_INK,
+	shareFont,
+	loadImage,
+	toPersianDigits,
+} from '@/features/widgets/utils/share-card'
 import type { MoodStatsResponse } from '@/services/mood-log/get-mood-stats.hook'
-import { drawRoundedRect, fitText } from '@/features/widgets/utils/canvas'
+import {
+	MOOD_ORDER,
+	type Mood,
+	type MonthDay,
+	moodShareMonth,
+	tehranDay,
+} from './mood-share-month'
+import { JALALI_MONTH_KEYS } from './share-month'
 
-const W = 1080
-const H = 1350
-const BG_BASE = '#05050a'
-const TEXT_LIGHT = '#f8fafc'
-const FONT_STACK = 'Vazir, Tahoma, Arial, sans-serif'
-
-const moodConfig: Record<string, { label: string; image: string; colors: string[] }> = {
-	excited: {
-		label: t('widgets.moodTracker.share.short.excited'),
-		image: excited,
-		colors: ['#00ff87', '#60efff'],
-	},
-	happy: {
-		label: t('widgets.moodTracker.share.short.happy'),
-		image: happy,
-		colors: ['#00f2fe', '#4facfe'],
-	},
-	normal: {
-		label: t('widgets.moodTracker.share.short.normal'),
-		image: normal,
-		colors: ['#ffb020', '#e69500'],
-	},
-	tired: {
-		label: t('widgets.moodTracker.share.short.normal'),
-		image: normal,
-		colors: ['#ffb020', '#e69500'],
-	},
-	sad: {
-		label: t('widgets.moodTracker.share.short.sad'),
-		image: sad,
-		colors: ['#ff4a5a', '#ff1f36'],
-	},
+const MOOD_LOOKS: Record<Mood, { mascot: string; color: string }> = {
+	excited: { mascot: excitedMascot, color: '#00d390' },
+	happy: { mascot: happyMascot, color: '#7c8df0' },
+	normal: { mascot: sleepMascot, color: '#fcb700' },
+	sad: { mascot: tiredMascot, color: '#ff627d' },
 }
 
-function getPersianDate(date: Date): { year: number; month: number; day: number } {
-	const parts = new Intl.DateTimeFormat('en-US-u-ca-persian', {
-		timeZone: 'Asia/Tehran',
-		year: 'numeric',
-		month: 'numeric',
-		day: 'numeric',
-	}).formatToParts(date)
+const SOFT_INK = '#6b6b76'
+const HINT_INK = '#a6a6b0'
+const MISSED_DAY = '#f0f0f4'
+const FUTURE_DAY = '#e3e3ea'
+const CARD = { left: 48, top: 64, width: 336, height: 420, radius: 26 }
+const AVATAR = { centerY: 64, ring: 26.4, white: 23.2, picture: 20 }
+const NAME_CENTER_Y = 109
+const MAP = { top: 134, square: 36.8, gap: 5.6, radius: 12.8, columns: 7 }
+const LEGEND = { centerY: 354, dot: 3.2, dotGap: 4, itemGap: 24, size: 10.4 }
+const MASCOT = { left: 64, centerY: 390, width: 64 }
+const TEXT_RIGHT = 360
+const LABEL_WIDTH = 224
+const LABEL_LARGEST = 32
+const LABEL_SMALLEST = 22
+const EYEBROW_CENTER_Y = 388
+const LABEL_CENTER_Y = 419
+const LINE_CENTER_Y = 453
 
-	const pMap = Object.fromEntries(parts.map((p) => [p.type, p.value]))
-	return {
-		year: Number.parseInt(pMap.year, 10),
-		month: Number.parseInt(pMap.month, 10),
-		day: Number.parseInt(pMap.day, 10),
-	}
+const LABELS: Record<Mood, MessageKey> = {
+	excited: 'widgets.moodTracker.share.canvas.label.excited',
+	happy: 'widgets.moodTracker.share.canvas.label.happy',
+	normal: 'widgets.moodTracker.share.canvas.label.normal',
+	sad: 'widgets.moodTracker.share.canvas.label.sad',
 }
 
-function getPersianMonthName(date: Date): string {
-	return new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
-		timeZone: 'Asia/Tehran',
-		month: 'long',
-	}).format(date)
+const WORDS: Record<Mood, MessageKey> = {
+	excited: 'widgets.moodTracker.share.canvas.word.excited',
+	happy: 'widgets.moodTracker.share.canvas.word.happy',
+	normal: 'widgets.moodTracker.share.canvas.word.normal',
+	sad: 'widgets.moodTracker.share.canvas.word.sad',
 }
 
-function wrapText(
+interface RenderMoodShareCanvasOptions {
+	stats: MoodStatsResponse
+	year: number
+	month: number
+	userName: string | undefined
+	userAvatar: string | undefined
+}
+
+function deviceScale(ctx: CanvasRenderingContext2D): number {
+	return ctx.getTransform().a
+}
+
+function fillCircle(
 	ctx: CanvasRenderingContext2D,
-	text: string,
-	maxWidth: number
-): string[] {
-	const words = text.split(' ')
-	const lines: string[] = []
-	let currentLine = words[0] || ''
-
-	for (let i = 1; i < words.length; i++) {
-		const word = words[i]
-		const testLine = `${currentLine} ${word}`
-		const width = ctx.measureText(testLine).width
-		if (width < maxWidth) {
-			currentLine = testLine
-		} else {
-			lines.push(currentLine)
-			currentLine = word
-		}
-	}
-	if (currentLine) {
-		lines.push(currentLine)
-	}
-	return lines
+	centerX: number,
+	centerY: number,
+	radius: number,
+	color: string
+) {
+	ctx.fillStyle = color
+	ctx.beginPath()
+	ctx.arc(centerX, centerY, radius, 0, Math.PI * 2)
+	ctx.fill()
 }
 
-function loadImageAsync(src: string): Promise<HTMLImageElement> {
-	return new Promise((resolve, reject) => {
-		const img = new Image()
-		img.crossOrigin = 'anonymous'
-		img.onload = () => resolve(img)
-		img.onerror = () => reject(new Error(`Failed to load image: ${src}`))
-		img.src = src
+function drawCard(ctx: CanvasRenderingContext2D) {
+	const scale = deviceScale(ctx)
+
+	ctx.save()
+	ctx.shadowColor = '#00000033'
+	ctx.shadowBlur = 20 * scale
+	ctx.shadowOffsetY = 12 * scale
+	ctx.fillStyle = SHARE_LIGHT_INK
+	drawRoundedRect(ctx, CARD.left, CARD.top, CARD.width, CARD.height, CARD.radius)
+	ctx.fill()
+	ctx.restore()
+}
+
+async function drawPerson(
+	ctx: CanvasRenderingContext2D,
+	name: string,
+	avatar: string,
+	accent: string
+) {
+	const person = name.trim() || t('widgets.canvas.userFallback')
+	const picture = await loadShareAvatar(avatar, person)
+
+	fillCircle(ctx, SHARE_CENTER_X, AVATAR.centerY, AVATAR.ring, accent)
+	fillCircle(ctx, SHARE_CENTER_X, AVATAR.centerY, AVATAR.white, SHARE_LIGHT_INK)
+
+	ctx.save()
+	ctx.beginPath()
+	ctx.arc(SHARE_CENTER_X, AVATAR.centerY, AVATAR.picture, 0, Math.PI * 2)
+	ctx.clip()
+
+	ctx.drawImage(
+		picture,
+		SHARE_CENTER_X - AVATAR.picture,
+		AVATAR.centerY - AVATAR.picture,
+		AVATAR.picture * 2,
+		AVATAR.picture * 2
+	)
+
+	ctx.restore()
+
+	ctx.font = shareFont(700, 14.4)
+
+	drawShareText(
+		ctx,
+		fitText(ctx, person, CARD.width - 48),
+		SHARE_CENTER_X,
+		NAME_CENTER_Y,
+		{
+			weight: 700,
+			size: 14.4,
+			color: SOFT_INK,
+			align: 'center',
+		}
+	)
+}
+
+function drawLoggedTile(
+	ctx: CanvasRenderingContext2D,
+	x: number,
+	y: number,
+	color: string
+) {
+	const { square, radius } = MAP
+	const scale = deviceScale(ctx)
+	const shade = ctx.createLinearGradient(0, y, 0, y + square)
+
+	shade.addColorStop(0, mixColor(color, SHARE_LIGHT_INK, 0.22))
+	shade.addColorStop(1, color)
+
+	ctx.save()
+	ctx.shadowColor = `${color}73`
+	ctx.shadowBlur = 8 * scale
+	ctx.shadowOffsetY = 3 * scale
+	ctx.fillStyle = shade
+	drawRoundedRect(ctx, x, y, square, square, radius)
+	ctx.fill()
+	ctx.restore()
+
+	ctx.save()
+	ctx.globalAlpha = 0.35
+	ctx.fillStyle = SHARE_LIGHT_INK
+	drawRoundedRect(ctx, x + 6.4, y + 4, square - 12.8, 5.6, 2.8)
+	ctx.fill()
+	ctx.restore()
+}
+
+function drawTile(ctx: CanvasRenderingContext2D, day: MonthDay, x: number, y: number) {
+	const { square, radius } = MAP
+
+	if (day.mood) {
+		drawLoggedTile(ctx, x, y, MOOD_LOOKS[day.mood].color)
+
+		return
+	}
+
+	if (day.state === 'future') {
+		ctx.strokeStyle = FUTURE_DAY
+		ctx.lineWidth = 1.2
+		ctx.setLineDash([3.6, 2.4])
+		drawRoundedRect(ctx, x + 0.6, y + 0.6, square - 1.2, square - 1.2, radius - 0.6)
+		ctx.stroke()
+		ctx.setLineDash([])
+
+		return
+	}
+
+	ctx.fillStyle = MISSED_DAY
+	drawRoundedRect(ctx, x, y, square, square, radius)
+	ctx.fill()
+}
+
+function drawMap(ctx: CanvasRenderingContext2D, days: MonthDay[]) {
+	const { square, gap, columns, top } = MAP
+	const width = columns * square + (columns - 1) * gap
+	const right = SHARE_CENTER_X + width / 2
+
+	days.forEach((day, index) => {
+		const column = index % columns
+		const row = Math.floor(index / columns)
+		const x = right - column * (square + gap) - square
+		const y = top + row * (square + gap)
+
+		drawTile(ctx, day, x, y)
+	})
+}
+
+function drawLegend(ctx: CanvasRenderingContext2D) {
+	ctx.font = shareFont(700, LEGEND.size)
+
+	const items = MOOD_ORDER.map((mood) => {
+		const word = t(WORDS[mood])
+		const width = LEGEND.dot * 2 + LEGEND.dotGap + ctx.measureText(word).width
+
+		return { mood, word, width }
+	})
+
+	const total =
+		items.reduce((sum, item) => sum + item.width, 0) +
+		(items.length - 1) * LEGEND.itemGap
+
+	let right = SHARE_CENTER_X + total / 2
+
+	for (const item of items) {
+		fillCircle(
+			ctx,
+			right - LEGEND.dot,
+			LEGEND.centerY,
+			LEGEND.dot,
+			MOOD_LOOKS[item.mood].color
+		)
+
+		drawShareText(
+			ctx,
+			item.word,
+			right - LEGEND.dot * 2 - LEGEND.dotGap,
+			LEGEND.centerY,
+			{ weight: 700, size: LEGEND.size, color: HINT_INK, align: 'right' }
+		)
+
+		right -= item.width + LEGEND.itemGap
+	}
+}
+
+async function drawMascot(ctx: CanvasRenderingContext2D, mood: Mood) {
+	const mascot = await loadImage(MOOD_LOOKS[mood].mascot)
+	const height = (MASCOT.width * mascot.height) / mascot.width
+
+	ctx.drawImage(mascot, MASCOT.left, MASCOT.centerY - height / 2, MASCOT.width, height)
+}
+
+function fittingSize(ctx: CanvasRenderingContext2D, label: string): number {
+	let size = LABEL_LARGEST
+
+	ctx.font = shareFont(900, size)
+
+	while (size > LABEL_SMALLEST && ctx.measureText(label).width > LABEL_WIDTH) {
+		size -= 1
+		ctx.font = shareFont(900, size)
+	}
+
+	return size
+}
+
+function drawWords(
+	ctx: CanvasRenderingContext2D,
+	monthNumber: number,
+	accent: Mood,
+	count: number,
+	logged: number
+) {
+	const eyebrow = t('widgets.moodTracker.share.canvas.heading', {
+		month: t(JALALI_MONTH_KEYS[monthNumber - 1]),
+	})
+
+	drawShareText(ctx, eyebrow, TEXT_RIGHT, EYEBROW_CENTER_Y, {
+		weight: 700,
+		size: 12.8,
+		color: SOFT_INK,
+		align: 'right',
+	})
+
+	const label =
+		logged > 0 ? t(LABELS[accent]) : t('widgets.moodTracker.share.canvas.empty')
+
+	const labelSize = fittingSize(ctx, label)
+
+	ctx.font = shareFont(900, labelSize)
+
+	drawShareText(ctx, fitText(ctx, label, LABEL_WIDTH), TEXT_RIGHT, LABEL_CENTER_Y, {
+		weight: 900,
+		size: labelSize,
+		color: SHARE_DARK_INK,
+		align: 'right',
+	})
+
+	if (logged === 0) return
+
+	const line = t('widgets.moodTracker.share.canvas.line', {
+		count: toPersianDigits(count),
+		total: toPersianDigits(logged),
+		mood: t(WORDS[accent]),
+	})
+
+	drawShareText(ctx, line, TEXT_RIGHT, LINE_CENTER_Y, {
+		weight: 700,
+		size: 13.6,
+		color: mixColor(MOOD_LOOKS[accent].color, SHARE_DARK_INK, 0.4),
+		align: 'right',
 	})
 }
 
 export async function renderMoodShareCanvas(
-	canvas: HTMLCanvasElement | null,
-	data: MoodStatsResponse,
-	userNameDefault?: string
+	canvas: HTMLCanvasElement,
+	options: RenderMoodShareCanvasOptions
 ) {
-	if (!canvas) return
+	const ctx = prepareShareCanvas(canvas)
 
-	const ctx = canvas.getContext('2d')
-	if (!ctx) return
+	if (!ctx) throw new Error('Canvas is unavailable')
 
-	canvas.width = W
-	canvas.height = H
-
-	const logs = data.logs || []
-	const counts: Record<string, number> = {
-		excited: 0,
-		happy: 0,
-		normal: 0,
-		sad: 0,
-	}
-
-	for (const log of logs) {
-		const key = log.mood === 'tired' ? 'normal' : log.mood
-		if (counts[key] !== undefined) {
-			counts[key]++
-		}
-	}
-
-	const dominant = Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] || 'happy'
-
-	const dominantMoodConfig = moodConfig[dominant] || moodConfig.happy
-	const dominantColor = dominantMoodConfig.colors[0]
-
-	const now = new Date()
-	const currentPersian = getPersianDate(now)
-	const monthNumber = data.currentJalaliMonth || currentPersian.month
-	const monthName = data.currentJalaliMonthName || getPersianMonthName(now)
-	const daysInMonth = monthNumber <= 6 ? 31 : monthNumber <= 11 ? 30 : 29
-	const total = logs.length
-	const progress = Math.min(total / daysInMonth, 1)
-
-	ctx.fillStyle = BG_BASE
-	ctx.fillRect(0, 0, W, H)
-
-	ctx.save()
-	const glow = ctx.createRadialGradient(W / 2, H / 3, 20, W / 2, H / 3, 520)
-	glow.addColorStop(0, `${dominantColor}24`)
-	glow.addColorStop(1, 'rgba(0,0,0,0)')
-	ctx.fillStyle = glow
-	ctx.fillRect(0, 0, W, H)
-	ctx.restore()
-
-	ctx.save()
-	ctx.textAlign = 'center'
-	ctx.textBaseline = 'middle'
-	ctx.font = `bold 280px ${FONT_STACK}`
-	ctx.fillStyle = 'rgba(255, 255, 255, 0.02)'
-	ctx.fillText(monthName, W / 2, 400)
-	ctx.restore()
-
-	const avatarX = W - 185
-	const centerX = avatarX + 45
-	const centerY = 140
-
-	ctx.save()
-	ctx.beginPath()
-	ctx.arc(centerX, centerY, 46, -Math.PI / 2, -Math.PI / 2 + 2 * Math.PI * progress)
-	ctx.strokeStyle = `${dominantColor}B3`
-	ctx.lineWidth = 4
-	ctx.shadowColor = dominantColor
-	ctx.shadowBlur = 6
-	ctx.stroke()
-	ctx.restore()
-
-	if (data.userAvatar) {
-		try {
-			const avatarImg = await loadImageAsync(data.userAvatar)
-			ctx.save()
-			ctx.beginPath()
-			ctx.arc(centerX, centerY, 45, 0, Math.PI * 2)
-			ctx.clip()
-			ctx.drawImage(avatarImg, avatarX, 95, 90, 90)
-			ctx.restore()
-		} catch {
-			drawDefaultAvatar(ctx, centerX, centerY, dominantColor)
-		}
-	} else {
-		drawDefaultAvatar(ctx, centerX, centerY, dominantColor)
-	}
-
-	const userFallback = t('widgets.moodTracker.share.userFallback')
-	const userName =
-		(data.userName || userNameDefault || userFallback).trim() || userFallback
-
-	ctx.save()
-	ctx.textAlign = 'right'
-	ctx.fillStyle = TEXT_LIGHT
-	ctx.font = `bold 38px ${FONT_STACK}`
-	ctx.fillText(fitText(ctx, userName, 450), avatarX - 25, 135)
-	ctx.fillStyle = 'rgba(255, 255, 255, 0.55)'
-	ctx.font = `24px ${FONT_STACK}`
-	ctx.fillText(
-		t('widgets.moodTracker.share.monthSubtitle', { month: monthName }),
-		avatarX - 25,
-		175
+	const { stats, year, month: monthNumber } = options
+	const summary = moodShareMonth(
+		stats.logs,
+		{ year, month: monthNumber },
+		tehranDay(nowDate())
 	)
-	ctx.restore()
+	const accent = MOOD_LOOKS[summary.accent].color
 
-	const moodImage = await loadImageAsync(dominantMoodConfig.image)
-	ctx.drawImage(moodImage, W / 2 - 70, 355, 140, 140)
+	await loadShareFonts()
 
-	ctx.save()
-	ctx.textAlign = 'center'
-	ctx.font = `bold 54px ${FONT_STACK}`
-	ctx.fillStyle = TEXT_LIGHT
-	ctx.fillText(dominantMoodConfig.label, W / 2, 530)
-	ctx.restore()
+	drawShareBackground(ctx, accent)
+	await drawShareGlow(ctx)
+	drawCard(ctx)
 
-	const badge = data.badge || {
-		label:
-			dominant === 'excited'
-				? t('widgets.moodTracker.share.badgeExcited')
-				: t('widgets.moodTracker.share.badgeCalm'),
-		color: dominant === 'excited' ? '#00ff87' : '#00f2fe',
-	}
-
-	ctx.save()
-	ctx.strokeStyle = `${badge.color}30`
-	ctx.lineWidth = 2
-	const badgeX = 120
-	const badgeY = 115
-	const badgeW = 280
-	const badgeH = 50
-	drawRoundedRect(ctx, badgeX, badgeY, badgeW, badgeH, 25)
-	ctx.fillStyle = 'rgba(255, 255, 255, 0.04)'
-	ctx.fill()
-	ctx.stroke()
-	ctx.fillStyle = `${badge.color}CC`
-	ctx.textAlign = 'center'
-	ctx.font = `20px ${FONT_STACK}`
-	ctx.fillText(badge.label, badgeX + badgeW / 2, badgeY + 32)
-	ctx.restore()
-
-	const chartX = 160
-	const chartY = 640
-	const chartW = W - 320
-
-	ctx.save()
-	ctx.textAlign = 'center'
-	ctx.font = `20px ${FONT_STACK}`
-	const legendEntries = [
-		moodConfig.excited,
-		moodConfig.happy,
-		moodConfig.normal,
-		moodConfig.sad,
-	]
-	const itemW = 150
-	const totalW = legendEntries.length * itemW
-	const startLegendX = (W - totalW) / 2
-
-	legendEntries.forEach((value, idx) => {
-		const x = startLegendX + idx * itemW + 75
-		ctx.fillStyle = `${value.colors[0]}CC`
-		ctx.beginPath()
-		ctx.arc(x - 10, chartY - 38, 6, 0, Math.PI * 2)
-		ctx.fill()
-		ctx.fillStyle = 'rgba(255, 255, 255, 0.45)'
-		ctx.fillText(value.label, x - 50, chartY - 33)
-	})
-	ctx.restore()
-
-	const dayMoodMap = new Map<number, string>()
-	for (const log of logs) {
-		const logDate = log.date instanceof Date ? log.date : new Date(log.date)
-		const p = getPersianDate(logDate)
-		if (p.month === monthNumber) {
-			dayMoodMap.set(p.day, log.mood === 'tired' ? 'normal' : log.mood)
-		}
-	}
-
-	const gridCols = 7
-	const gridRows = Math.ceil(daysInMonth / gridCols)
-	const gridGap = 14
-	const maxGridHeight = 360
-
-	const cellByWidth = (chartW - gridGap * (gridCols - 1)) / gridCols
-	const cellByHeight = (maxGridHeight - gridGap * (gridRows - 1)) / gridRows
-	const cellSize = Math.min(cellByWidth, cellByHeight)
-	const gridWidthUsed = gridCols * cellSize + gridGap * (gridCols - 1)
-	const gridStartX = chartX + (chartW - gridWidthUsed) / 2
-	const gridStartY = chartY
-
-	ctx.save()
-	for (let day = 1; day <= daysInMonth; day++) {
-		const idx = day - 1
-		const col = idx % gridCols
-		const row = Math.floor(idx / gridCols)
-
-		const x = gridStartX + (gridCols - 1 - col) * (cellSize + gridGap)
-		const y = gridStartY + row * (cellSize + gridGap)
-
-		const mood = dayMoodMap.get(day)
-		drawRoundedRect(ctx, x, y, cellSize, cellSize, 18)
-
-		if (mood) {
-			const color = (moodConfig[mood] || moodConfig.happy).colors[0]
-			ctx.shadowColor = `${color}80`
-			ctx.shadowBlur = 12
-			ctx.fillStyle = `${color}CC`
-			ctx.fill()
-			ctx.shadowBlur = 0
-		} else {
-			ctx.fillStyle = 'rgba(255, 255, 255, 0.05)'
-			ctx.fill()
-		}
-	}
-	ctx.restore()
-
-	const insightText =
-		data.insightText && data.insightText.trim().length > 0
-			? data.insightText.trim()
-			: t('widgets.moodTracker.share.insightDefault', { userName })
-
-	ctx.save()
-	ctx.textAlign = 'center'
-	ctx.font = `italic 32px ${FONT_STACK}`
-	ctx.fillStyle = 'rgba(255, 255, 255, 0.88)'
-	wrapText(ctx, insightText, W - 260).forEach((line, i) =>
-		ctx.fillText(line, W / 2, 1120 + i * 48)
+	await drawPerson(
+		ctx,
+		options.userName || stats.userName || '',
+		options.userAvatar || stats.userAvatar || '',
+		accent
 	)
-	ctx.restore()
 
-	ctx.save()
-	ctx.textAlign = 'center'
-	ctx.fillStyle = 'rgba(255, 255, 255, 0.35)'
-	ctx.font = `22px ${FONT_STACK}`
-	ctx.fillText(t('widgets.moodTracker.share.footer'), W / 2, H - 45)
-	ctx.restore()
-}
+	drawMap(ctx, summary.days)
+	drawLegend(ctx)
+	await drawMascot(ctx, summary.accent)
 
-function drawDefaultAvatar(
-	ctx: CanvasRenderingContext2D,
-	cx: number,
-	cy: number,
-	accentColor: string
-) {
-	ctx.save()
-	ctx.beginPath()
-	ctx.arc(cx, cy, 45, 0, Math.PI * 2)
-	ctx.fillStyle = `${accentColor}30`
-	ctx.fill()
-	ctx.fillStyle = '#ffffff'
-	ctx.font = '28px sans-serif'
-	ctx.textAlign = 'center'
-	ctx.textBaseline = 'middle'
-	ctx.fillText('👤', cx, cy)
-	ctx.restore()
+	drawWords(
+		ctx,
+		monthNumber,
+		summary.accent,
+		summary.counts[summary.accent],
+		summary.logged
+	)
+
+	await drawShareFooter(ctx, SHARE_LIGHT_INK)
 }

@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useState } from 'react'
+import { useShareCanvas } from '@/features/widgets/hooks/use-share-canvas'
 import Analytics from '@/analytics'
 import { Button, Modal, Spinner } from '@/components/ui'
 import { useAuth } from '@/context/auth.context'
@@ -25,7 +26,6 @@ interface MoodShareModalProps {
 
 export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 	const { user, isAuthenticated } = useAuth()
-	const canvasRef = useRef<HTMLCanvasElement | null>(null)
 	const [isCopying, setIsCopying] = useState(false)
 	const [monthsBack, setMonthsBack] = useState(0)
 	const [thisMonth] = useState(() => currentJalaliMonth(new Date()))
@@ -43,27 +43,42 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 		setMonthsBack(monthsBack + step)
 	}
 
-	useEffect(() => {
-		if (!isOpen || !statsData) return
-		renderMoodShareCanvas(canvasRef.current, statsData, user?.name)
-	}, [isOpen, statsData, user?.name])
+	const name = user?.name
+	const avatar = user?.avatar || undefined
+	const render = useCallback(
+		async (canvas: HTMLCanvasElement) => {
+			if (!statsData) return
+			await renderMoodShareCanvas(canvas, {
+				stats: statsData,
+				year: period.year,
+				month: period.month,
+				userName: name,
+				userAvatar: avatar,
+			})
+		},
+		[statsData, period.year, period.month, name, avatar]
+	)
+	const canRender = Boolean(isAuthenticated && statsData && !isError)
+	const { image, previewRef, failed, retry } = useShareCanvas(
+		render,
+		isOpen && canRender
+	)
 
 	const handleCopy = async () => {
 		setIsCopying(true)
-		await copyCanvasToClipboard(canvasRef.current)
+		await copyCanvasToClipboard(image)
 		setIsCopying(false)
 	}
 
 	const handleDownload = () => {
-		const monthName =
-			statsData?.currentJalaliMonthName || t('widgets.moodTracker.monthFallback')
+		const monthName = t(JALALI_MONTH_KEYS[period.month - 1])
 		downloadCanvasAsImage(
-			canvasRef.current,
+			image,
 			t('widgets.moodTracker.downloadFilename', { month: monthName })
 		)
 	}
 
-	const isReady = isAuthenticated && Boolean(statsData)
+	const isReady = canRender && Boolean(image)
 
 	return (
 		<Modal
@@ -117,23 +132,27 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 							{t('widgets.moodTracker.shareNeedAuth')}
 						</span>
 					</div>
-				) : isLoading ? (
+				) : isLoading || (!isError && !failed && !isReady) ? (
 					<div className="flex flex-col items-center justify-center h-64 gap-2 text-fg-muted">
 						<Spinner size="lg" aria-hidden="true" />
 						<span className="text-xs">
 							{t('widgets.moodTracker.sharePreparing')}
 						</span>
 					</div>
-				) : isError ? (
+				) : isError || failed ? (
 					<div className="h-64">
 						<WidgetError
-							message={t('widgets.moodTracker.shareLoadError')}
-							onRetry={() => refetch()}
+							message={
+								isError
+									? t('widgets.moodTracker.shareLoadError')
+									: t('widgets.canvas.imageBuildFailed')
+							}
+							onRetry={isError ? () => refetch() : retry}
 						/>
 					</div>
 				) : (
 					<canvas
-						ref={canvasRef}
+						ref={previewRef}
 						role="img"
 						aria-label={t('widgets.moodTracker.shareImageAria')}
 						className="self-center w-auto h-auto max-w-full max-h-[60vh] rounded-2xl"

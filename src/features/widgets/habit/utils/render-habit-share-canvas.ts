@@ -1,265 +1,308 @@
+import flameImage from '@/assets/images/share/flame.webp'
 import { t } from '@/common/i18n'
+import { drawRoundedRect, fitText, mixColor } from '@/features/widgets/utils/canvas'
 import {
-	drawRoundedRect,
-	fitText,
-	isLightColor,
-	mixColor,
-	rgba,
-	tintColor,
-} from '@/features/widgets/utils/canvas'
+	drawShareBackground,
+	drawShareFooter,
+	drawShareGloss,
+	drawShareGlow,
+	drawShareText,
+	loadImage,
+	loadShareAvatar,
+	loadShareFonts,
+	loadShareGloss,
+	prepareShareCanvas,
+	SHARE_CENTER_X,
+	SHARE_LIGHT_INK,
+	shareEmojiFont,
+	shareFont,
+	toPersianDigits,
+} from '@/features/widgets/utils/share-card'
 import { DEFAULT_HABIT_COLOR } from '../constants'
-import type { HabitShareData } from './habit-share'
+import type { HabitShareData, ShareDayState } from './habit-share'
 
-const WIDTH = 540
-const HEIGHT = 960
-const OUTPUT_SCALE = 2
-const MARGIN = 40
-const LIGHT_INK = '#ffffff'
-const DARK_INK = '#1b1e3b'
-const FONT_STACK = 'Vazir, Tahoma, Arial, sans-serif'
-const EMOJI_STACK =
-	'"Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif'
-const CELL_SIZE = 12
-const CELL_STEP = 15.2
-const EMPTY_CELL = 0.16
-const CELL_LEVELS = [0.35, 0.55, 0.78, 1]
-const SOFT_TEXT = 0.82
-const GRID_RIGHT = 476
-const GRID_TOP = 690
-const FLAME_OUTER =
-	'M50 4 C54 20 64 28 66 38 C70 30 72 24 70 18 C84 30 90 50 90 70 C90 96 72 114 50 114 C28 114 10 96 10 70 C10 52 20 38 30 28 C30 38 34 44 40 46 C36 32 40 16 50 4 Z'
-const FLAME_INNER =
-	'M50 64 C54 74 64 78 64 91 C64 102 58 108 50 108 C42 108 36 102 36 91 C36 80 44 76 50 64 Z'
-const FLAME_SCALE = 1.8
-const FLAME_LEFT = 180
-const FLAME_TOP = 190
-
-interface Palette {
-	ink: string
-	top: string
-	bottom: string
-	flameTop: string
-	flameBottom: string
+const NIGHT = '#15151c'
+const QUIET_INK = '#9a9aa5'
+const OPEN_DAY = '#24242e'
+const FUTURE_DAY = '#2e2e3a'
+const GLOW_STRENGTH = 0.55
+const NUMBER_LIGHTNESS = 0.25
+const CARD = { left: 48, top: 48, width: 336, height: 448, radius: 26 }
+const CARD_GLOW = { centerY: 180, radius: 180 }
+const HEADER_CENTER_Y = 84.2
+const PERSON = {
+	avatarCenterX: 84.2,
+	ring: 15.2,
+	white: 13.2,
+	picture: 11,
+	nameLeft: 107.4,
 }
+const TITLE_RIGHT = 356
+const HEADER_SIZE = 13.6
+const FLAME = { top: 128, size: 80, faded: 0.4 }
+const STREAK = { centerY: 258, size: 80 }
+const LABEL = { centerY: 316, size: 21.6 }
+const BEADS = { top: 351, right: 329.2, radius: 8.8, step: 23.2, perRow: 10 }
+const MONTH_LINE_CENTER_Y = 464
+const DEFAULT_EMOJI = '🎯'
 
 interface RenderHabitShareCanvasOptions {
 	title: string
 	emoji: string | null
-	goal: string
 	color: string | undefined
+	userName: string | undefined
+	userAvatar: string | undefined
 	data: HabitShareData
 }
 
-function paletteFor(accent: string): Palette {
-	const isLight = isLightColor(accent)
-
-	return {
-		ink: isLight ? DARK_INK : LIGHT_INK,
-		top: tintColor(accent, 24, 0, 0.95),
-		bottom: tintColor(accent, -5, -0.1, 0.87),
-		flameTop: isLight
-			? accent
-			: mixColor(tintColor(accent, 24, 0, 0.95), '#ffffff', 0.7),
-		flameBottom: isLight ? mixColor(accent, '#000000', 0.4) : accent,
-	}
+function deviceScale(ctx: CanvasRenderingContext2D): number {
+	return ctx.getTransform().a
 }
 
-function drawGlow(
+function fillCircle(
 	ctx: CanvasRenderingContext2D,
-	x: number,
-	y: number,
+	centerX: number,
+	centerY: number,
 	radius: number,
-	alpha: number
+	color: string
 ) {
-	const glow = ctx.createRadialGradient(x, y, 0, x, y, radius)
-
-	glow.addColorStop(0, rgba(LIGHT_INK, alpha))
-	glow.addColorStop(1, rgba(LIGHT_INK, 0))
-	ctx.fillStyle = glow
+	ctx.fillStyle = color
 	ctx.beginPath()
-	ctx.arc(x, y, radius, 0, Math.PI * 2)
+	ctx.arc(centerX, centerY, radius, 0, Math.PI * 2)
 	ctx.fill()
 }
 
-function drawBackground(ctx: CanvasRenderingContext2D, palette: Palette) {
-	const base = ctx.createLinearGradient(WIDTH * 0.2, 0, WIDTH * 0.8, HEIGHT)
+function drawCard(ctx: CanvasRenderingContext2D, accent: string) {
+	const scale = deviceScale(ctx)
 
-	base.addColorStop(0, palette.top)
-	base.addColorStop(1, palette.bottom)
-	ctx.fillStyle = base
-	ctx.fillRect(0, 0, WIDTH, HEIGHT)
-}
-
-function drawChip(
-	ctx: CanvasRenderingContext2D,
-	palette: Palette,
-	options: RenderHabitShareCanvasOptions
-) {
-	const emojiWidth = 32
-	const gap = 10
-	const padding = 24
-
-	ctx.font = `bold 22px ${FONT_STACK}`
-
-	const title = fitText(
-		ctx,
-		options.title || t('widgets.habit.share.canvas.myHabit'),
-		WIDTH - 2 * MARGIN - emojiWidth - gap - 2 * padding
-	)
-
-	const titleWidth = ctx.measureText(title).width
-	const chipWidth = padding + titleWidth + gap + emojiWidth + padding
-	const chipLeft = (WIDTH - chipWidth) / 2
-
-	ctx.fillStyle = rgba(palette.ink, 0.18)
-	drawRoundedRect(ctx, chipLeft, 52, chipWidth, 52, 26)
-	ctx.fill()
-
-	ctx.textBaseline = 'middle'
-	ctx.textAlign = 'center'
-	ctx.font = `28px ${EMOJI_STACK}`
-	ctx.fillStyle = LIGHT_INK
-
-	ctx.fillText(
-		options.emoji || '🎯',
-		chipLeft + chipWidth - padding - emojiWidth / 2,
-		80
-	)
-
-	ctx.textAlign = 'right'
-	ctx.font = `bold 22px ${FONT_STACK}`
-	ctx.fillStyle = palette.ink
-	ctx.fillText(title, chipLeft + chipWidth - padding - emojiWidth - gap, 80)
-
-	ctx.textAlign = 'center'
-	ctx.font = `15px ${FONT_STACK}`
-	ctx.fillStyle = rgba(palette.ink, SOFT_TEXT)
-	ctx.fillText(fitText(ctx, options.goal, WIDTH - 2 * MARGIN), 270, 134)
-}
-
-function drawFlame(ctx: CanvasRenderingContext2D, palette: Palette, alpha: number) {
 	ctx.save()
-	ctx.globalAlpha = alpha
+	ctx.shadowColor = '#00000040'
+	ctx.shadowBlur = 20 * scale
+	ctx.shadowOffsetY = 12 * scale
+	ctx.fillStyle = NIGHT
+	drawRoundedRect(ctx, CARD.left, CARD.top, CARD.width, CARD.height, CARD.radius)
+	ctx.fill()
+	ctx.restore()
 
-	drawGlow(ctx, 270, 300, 190, 0.3)
+	const glow = ctx.createRadialGradient(
+		SHARE_CENTER_X,
+		CARD_GLOW.centerY,
+		0,
+		SHARE_CENTER_X,
+		CARD_GLOW.centerY,
+		CARD_GLOW.radius
+	)
 
-	ctx.translate(FLAME_LEFT, FLAME_TOP)
-	ctx.scale(FLAME_SCALE, FLAME_SCALE)
+	glow.addColorStop(0, `${mixColor(accent, NIGHT, GLOW_STRENGTH)}cc`)
+	glow.addColorStop(0.7, `${NIGHT}00`)
 
-	const body = ctx.createLinearGradient(0, 4, 0, 114)
-
-	body.addColorStop(0, palette.flameTop)
-	body.addColorStop(1, palette.flameBottom)
-	ctx.fillStyle = body
-	ctx.fill(new Path2D(FLAME_OUTER))
-
-	ctx.fillStyle = LIGHT_INK
-	ctx.fill(new Path2D(FLAME_INNER))
+	ctx.save()
+	drawRoundedRect(ctx, CARD.left, CARD.top, CARD.width, CARD.height, CARD.radius)
+	ctx.clip()
+	ctx.fillStyle = glow
+	ctx.fillRect(CARD.left, CARD.top, CARD.width, CARD.height)
 	ctx.restore()
 }
 
-function drawStreak(ctx: CanvasRenderingContext2D, palette: Palette, streak: number) {
-	ctx.textAlign = 'center'
-	ctx.textBaseline = 'alphabetic'
+async function drawPerson(
+	ctx: CanvasRenderingContext2D,
+	name: string,
+	avatar: string,
+	accent: string
+) {
+	const person = name.trim() || t('widgets.canvas.userFallback')
+	const picture = await loadShareAvatar(avatar, person)
+	const centerX = PERSON.avatarCenterX
 
-	if (streak <= 0) {
-		drawFlame(ctx, palette, 0.45)
-		ctx.font = `bold 34px ${FONT_STACK}`
-		ctx.fillStyle = palette.ink
-		ctx.fillText(t('widgets.habit.share.canvas.streakZero'), 270, 520)
+	fillCircle(ctx, centerX, HEADER_CENTER_Y, PERSON.ring, accent)
+	fillCircle(ctx, centerX, HEADER_CENTER_Y, PERSON.white, SHARE_LIGHT_INK)
+
+	ctx.save()
+	ctx.beginPath()
+	ctx.arc(centerX, HEADER_CENTER_Y, PERSON.picture, 0, Math.PI * 2)
+	ctx.clip()
+
+	ctx.drawImage(
+		picture,
+		centerX - PERSON.picture,
+		HEADER_CENTER_Y - PERSON.picture,
+		PERSON.picture * 2,
+		PERSON.picture * 2
+	)
+
+	ctx.restore()
+
+	ctx.font = shareFont(700, HEADER_SIZE)
+
+	drawShareText(
+		ctx,
+		fitText(ctx, person, SHARE_CENTER_X - PERSON.nameLeft - 8),
+		PERSON.nameLeft,
+		HEADER_CENTER_Y,
+		{ weight: 700, size: HEADER_SIZE, color: SHARE_LIGHT_INK, align: 'left' }
+	)
+}
+
+function drawTitle(ctx: CanvasRenderingContext2D, title: string, emoji: string) {
+	ctx.font = shareFont(700, HEADER_SIZE)
+
+	const name = fitText(ctx, title, TITLE_RIGHT - SHARE_CENTER_X - 28)
+
+	drawShareText(ctx, name, TITLE_RIGHT, HEADER_CENTER_Y, {
+		weight: 700,
+		size: HEADER_SIZE,
+		color: QUIET_INK,
+		align: 'right',
+	})
+
+	const nameWidth = ctx.measureText(name).width
+
+	ctx.font = shareEmojiFont(HEADER_SIZE)
+	ctx.textAlign = 'right'
+	ctx.textBaseline = 'middle'
+	ctx.fillText(emoji, TITLE_RIGHT - nameWidth - 5, HEADER_CENTER_Y)
+}
+
+function drawStreak(
+	ctx: CanvasRenderingContext2D,
+	accent: string,
+	flame: HTMLImageElement,
+	streak: number
+) {
+	const hasStreak = streak > 0
+
+	ctx.save()
+	ctx.globalAlpha = hasStreak ? 1 : FLAME.faded
+
+	ctx.drawImage(
+		flame,
+		SHARE_CENTER_X - FLAME.size / 2,
+		FLAME.top,
+		FLAME.size,
+		FLAME.size
+	)
+
+	ctx.restore()
+
+	drawShareText(ctx, toPersianDigits(streak), SHARE_CENTER_X, STREAK.centerY, {
+		weight: 900,
+		size: STREAK.size,
+		color: mixColor(accent, SHARE_LIGHT_INK, NUMBER_LIGHTNESS),
+		align: 'center',
+	})
+
+	const label = hasStreak
+		? t('widgets.habit.share.canvas.streakLine')
+		: t('widgets.habit.share.canvas.startToday')
+
+	drawShareText(ctx, label, SHARE_CENTER_X, LABEL.centerY, {
+		weight: 900,
+		size: LABEL.size,
+		color: SHARE_LIGHT_INK,
+		align: 'center',
+	})
+}
+
+function drawDoneBead(
+	ctx: CanvasRenderingContext2D,
+	centerX: number,
+	centerY: number,
+	accent: string,
+	gloss: HTMLImageElement
+) {
+	const scale = deviceScale(ctx)
+
+	ctx.save()
+	ctx.shadowColor = `${accent}73`
+	ctx.shadowBlur = 8 * scale
+	ctx.shadowOffsetY = 2 * scale
+	fillCircle(ctx, centerX, centerY, BEADS.radius, accent)
+	ctx.restore()
+
+	drawShareGloss(ctx, gloss, centerX, centerY, BEADS.radius)
+}
+
+function drawBead(
+	ctx: CanvasRenderingContext2D,
+	state: ShareDayState,
+	centerX: number,
+	centerY: number,
+	accent: string,
+	gloss: HTMLImageElement
+) {
+	if (state === 'done') {
+		drawDoneBead(ctx, centerX, centerY, accent, gloss)
 
 		return
 	}
 
-	drawFlame(ctx, palette, 1)
+	if (state === 'future') {
+		ctx.strokeStyle = FUTURE_DAY
+		ctx.lineWidth = 1.2
+		ctx.setLineDash([2.4, 2.4])
+		ctx.beginPath()
+		ctx.arc(centerX, centerY, BEADS.radius - 0.6, 0, Math.PI * 2)
+		ctx.stroke()
+		ctx.setLineDash([])
 
-	const text = String(streak)
-	const maxWidth = WIDTH - 2 * MARGIN
+		return
+	}
 
-	ctx.font = `bold 150px ${FONT_STACK}`
-
-	const fontSize = Math.min(150, (150 * maxWidth) / ctx.measureText(text).width)
-
-	ctx.font = `bold ${fontSize}px ${FONT_STACK}`
-	ctx.fillStyle = palette.ink
-	ctx.fillText(text, 270, 520)
-
-	ctx.font = `bold 26px ${FONT_STACK}`
-	ctx.fillStyle = rgba(palette.ink, SOFT_TEXT)
-	ctx.fillText(t('widgets.habit.share.canvas.streakDays'), 270, 566)
+	fillCircle(ctx, centerX, centerY, BEADS.radius, OPEN_DAY)
 }
 
-function drawHeatmap(
+function drawMonth(
 	ctx: CanvasRenderingContext2D,
-	palette: Palette,
-	data: HabitShareData
+	data: HabitShareData,
+	accent: string,
+	gloss: HTMLImageElement
 ) {
-	ctx.fillStyle = rgba(palette.ink, 0.14)
-	drawRoundedRect(ctx, MARGIN, 640, WIDTH - 2 * MARGIN, 168, 24)
-	ctx.fill()
+	data.month.forEach((state, index) => {
+		const column = index % BEADS.perRow
+		const row = Math.floor(index / BEADS.perRow)
+		const centerX = BEADS.right - column * BEADS.step - BEADS.radius
+		const centerY = BEADS.top + row * BEADS.step + BEADS.radius
 
-	ctx.textBaseline = 'middle'
-	ctx.font = `bold 14px ${FONT_STACK}`
-	ctx.textAlign = 'right'
-	ctx.fillStyle = palette.ink
-	ctx.fillText(t('widgets.habit.share.canvas.recentActivity'), WIDTH - MARGIN - 20, 672)
+		drawBead(ctx, state, centerX, centerY, accent, gloss)
+	})
 
-	ctx.font = `13px ${FONT_STACK}`
-	ctx.textAlign = 'left'
-	ctx.fillStyle = rgba(palette.ink, SOFT_TEXT)
+	const line = t('widgets.habit.share.canvas.monthLine', {
+		count: toPersianDigits(data.doneThisMonth),
+		total: toPersianDigits(data.daysSoFar),
+	})
 
-	ctx.fillText(
-		t('widgets.habit.share.canvas.successDays', { p0: data.doneDays }),
-		MARGIN + 20,
-		672
-	)
-
-	data.weeks.forEach((week, weekIndex) => {
-		const x = GRID_RIGHT - weekIndex * CELL_STEP - CELL_SIZE
-
-		week.forEach((day, row) => {
-			if (day.isFuture) return
-
-			const alpha = day.level === 0 ? EMPTY_CELL : CELL_LEVELS[day.level - 1]
-
-			ctx.fillStyle = rgba(palette.ink, alpha)
-			drawRoundedRect(ctx, x, GRID_TOP + row * CELL_STEP, CELL_SIZE, CELL_SIZE, 3.5)
-			ctx.fill()
-		})
+	drawShareText(ctx, line, SHARE_CENTER_X, MONTH_LINE_CENTER_Y, {
+		weight: 700,
+		size: 12,
+		color: QUIET_INK,
+		align: 'center',
 	})
 }
 
-function drawFooter(ctx: CanvasRenderingContext2D, palette: Palette) {
-	ctx.textAlign = 'center'
-	ctx.textBaseline = 'alphabetic'
-	ctx.font = `15px ${FONT_STACK}`
-	ctx.fillStyle = rgba(palette.ink, SOFT_TEXT)
-	ctx.fillText(t('widgets.habit.share.canvas.tagline'), 270, 880)
-
-	ctx.font = `bold 20px ${FONT_STACK}`
-	ctx.fillStyle = palette.ink
-	ctx.fillText(t('widgets.habit.share.canvas.brand'), 270, 912)
-}
-
-export function renderHabitShareCanvas(
-	canvas: HTMLCanvasElement | null,
+export async function renderHabitShareCanvas(
+	canvas: HTMLCanvasElement,
 	options: RenderHabitShareCanvasOptions
 ) {
-	if (!canvas) return
+	const ctx = prepareShareCanvas(canvas)
 
-	const ctx = canvas.getContext('2d')
+	if (!ctx) throw new Error('Canvas is unavailable')
 
-	if (!ctx) return
+	const accent = options.color || DEFAULT_HABIT_COLOR
+	const title = options.title || t('widgets.habit.share.canvas.myHabit')
+	const emoji = options.emoji || DEFAULT_EMOJI
 
-	canvas.width = WIDTH * OUTPUT_SCALE
-	canvas.height = HEIGHT * OUTPUT_SCALE
-	ctx.scale(OUTPUT_SCALE, OUTPUT_SCALE)
+	const [flame, gloss] = await Promise.all([
+		loadImage(flameImage),
+		loadShareGloss(),
+		loadShareFonts(),
+	])
 
-	const palette = paletteFor(options.color || DEFAULT_HABIT_COLOR)
-
-	drawBackground(ctx, palette)
-	drawChip(ctx, palette, options)
-	drawStreak(ctx, palette, options.data.streak)
-	drawHeatmap(ctx, palette, options.data)
-	drawFooter(ctx, palette)
+	drawShareBackground(ctx, accent)
+	await drawShareGlow(ctx)
+	drawCard(ctx, accent)
+	await drawPerson(ctx, options.userName ?? '', options.userAvatar ?? '', accent)
+	drawTitle(ctx, title, emoji)
+	drawStreak(ctx, accent, flame, options.data.streak)
+	drawMonth(ctx, options.data, accent, gloss)
+	await drawShareFooter(ctx, SHARE_LIGHT_INK)
 }
