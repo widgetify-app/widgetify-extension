@@ -77,6 +77,25 @@ describe('habitStats', () => {
 })
 
 describe('habitDayReader', () => {
+	it('shades at-most days by the amount logged, independently of success', () => {
+		const { outcomeOn } = habitDayReader(
+			habit(
+				[
+					[4, 0, true],
+					[3, 1, true],
+					[2, 2, true],
+					[1, 4, true],
+					[0, 6, false],
+				],
+				{ comparison: HabitComparison.AT_MOST }
+			),
+			TODAY
+		)
+		expect(
+			[4, 3, 2, 1, 0].map((days) => outcomeOn(shiftDay(TODAY, -days)).level)
+		).toEqual([0, 1, 2, 3, 4])
+	})
+
 	it('treats a zero target as a goal of one', () => {
 		const { outcomeOn } = habitDayReader(habit([[1, 1, false]], { target: 0 }), TODAY)
 
@@ -106,6 +125,6 @@ describe('habitDayReader', () => {
 
 		expect(outcomeOn(shiftDay(TODAY, -10)).isDone).toBe(false)
 		expect(outcomeOn(shiftDay(TODAY, -2)).isDone).toBe(true)
-		expect(outcomeOn(shiftDay(TODAY, -2)).level).toBe(3)
+		expect(outcomeOn(shiftDay(TODAY, -2)).level).toBe(1)
 	})
 })

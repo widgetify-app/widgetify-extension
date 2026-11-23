@@ -78,6 +78,16 @@ describe('formatHabitGoal', () => {
 })
 
 describe('formatHabitToday', () => {
+	it('shows the recorded amount for an at-most habit even when it is successful', () => {
+		const limit = habit({
+			comparison: HabitComparison.AT_MOST,
+			target: 3,
+			unit: HabitUnit.GLASSES,
+			today: { date: '2026-01-01', value: 1, isDone: true },
+		})
+		expect(formatHabitToday(limit)).toBe('1 از 3 لیوان')
+	})
+
 	it('says when nothing was logged today', () => {
 		expect(formatHabitToday(habit())).toBe('امروز هنوز نه')
 	})

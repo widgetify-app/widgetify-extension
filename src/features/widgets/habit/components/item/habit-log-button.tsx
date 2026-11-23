@@ -7,7 +7,7 @@ import { translateError } from '@/common/utils/translate-error'
 import { Spinner } from '@/components/ui'
 import { Icon } from '@/icons'
 import { safeAwait } from '@/services/api'
-import type { Habit } from '@/services/habit/habit.interface'
+import { HabitComparison, type Habit } from '@/services/habit/habit.interface'
 import { useLogHabitProgress } from '@/services/habit/log-habit-progress.hook'
 import { DEFAULT_HABIT_COLOR } from '../../constants'
 import { isHabitDoneToday } from '../../utils/habit-goal'
@@ -27,7 +27,10 @@ export function HabitLogButton({ habit, today, onLogged }: HabitLogButtonProps) 
 	const color = habit.color || DEFAULT_HABIT_COLOR
 	const target = habit.target || 1
 	const value = habit.today.value
-	const isDone = isHabitDoneToday(habit)
+	const isDone =
+		habit.comparison === HabitComparison.AT_MOST
+			? value >= target
+			: isHabitDoneToday(habit)
 
 	const handleQuickLog = async (e: React.MouseEvent) => {
 		e.stopPropagation()

@@ -51,7 +51,10 @@ export function HabitItem({
 			})}
 			className="flex flex-col flex-1 min-w-0 py-1 cursor-pointer text-start leading-control focus-visible:focus-ring"
 		>
-			<span className="text-xs font-semibold truncate text-fg">{habit.title}</span>
+			<span className="text-xs font-semibold truncate text-fg">
+				{habit.emoji && <span aria-hidden="true">{habit.emoji} </span>}
+				{habit.title}
+			</span>
 			<span className="truncate text-3xs text-fg-faint">
 				{formatHabitToday(habit)}
 			</span>

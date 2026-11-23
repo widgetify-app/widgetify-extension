@@ -289,7 +289,7 @@ export const widgets = {
 	'widgets.habit.share.canvas.streakLine': 'روز پشت‌سرهم',
 	'widgets.habit.share.canvas.startToday': 'امروز شروعش کن',
 	'widgets.habit.share.canvas.monthLine':
-		'این ماه {count} روز از {total} روز انجامش دادم',
+		'{month}، {count} روز از {total} روز انجامش دادم',
 	'widgets.habit.variant2x1.loadError': 'نتونستیم عادت‌ها رو بیاریم',
 	'widgets.habit.variant2x1.emptyHint': 'مثلا روزی ۸ لیوان آب',
 	'widgets.habit.variant2x1.of': 'از',

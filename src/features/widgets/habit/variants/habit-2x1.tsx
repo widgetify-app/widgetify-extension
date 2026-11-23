@@ -114,6 +114,7 @@ function HabitCompactContent({ actions, today }: Habit2x1Props) {
 					className="flex flex-col flex-1 min-w-0 py-1 rounded-lg cursor-pointer text-start leading-control focus-visible:focus-ring"
 				>
 					<span className="text-xs font-semibold truncate text-fg">
+						{habit.emoji && <span aria-hidden="true">{habit.emoji} </span>}
 						{habit.title}
 					</span>
 					<span className="truncate text-3xs text-fg-faint">
