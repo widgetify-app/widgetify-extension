@@ -5,21 +5,13 @@ import type { VipPlan } from '@/services/market/market-vip.interface'
 
 interface VipPlanCardProps {
 	plan: VipPlan
-	note: string
-	highlightNote: boolean
 	isSelected: boolean
 	onSelect: (plan: VipPlan) => void
 }
 
 const fmt = (n: number) => new Intl.NumberFormat('fa-IR').format(n)
 
-export function VipPlanCard({
-	plan,
-	note,
-	highlightNote,
-	isSelected,
-	onSelect,
-}: VipPlanCardProps) {
+export function VipPlanCard({ plan, isSelected, onSelect }: VipPlanCardProps) {
 	const badge = plan.meta?.badge
 	const badgeColor = plan.meta?.badgeColor
 	const isClaimed = Boolean(plan.isClaimed)
@@ -90,15 +82,6 @@ export function VipPlanCard({
 					</span>
 				</span>
 			)}
-
-			<span
-				className={cn(
-					'text-xs',
-					highlightNote ? 'font-bold text-brand' : 'text-fg-muted'
-				)}
-			>
-				{note}
-			</span>
 		</button>
 	)
 }

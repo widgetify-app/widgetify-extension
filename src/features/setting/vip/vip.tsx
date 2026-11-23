@@ -18,7 +18,6 @@ import {
 	type VipFeatureId,
 	VipFeaturesModal,
 } from './components/vip-features-modal'
-import { findMonthlyPlan, monthlyPrice, savingPercent } from './utils/plan-pricing'
 
 const VIP_LABEL = t('setting.vip.proLabel')
 
@@ -29,23 +28,6 @@ const VIP_GRID_LAYOUTS: Record<number, string> = {
 	2: 'grid-cols-2',
 	3: 'grid-cols-2 md:grid-cols-3',
 	4: 'grid-cols-2 md:grid-cols-4',
-}
-
-function planNote(plan: VipPlan, monthly: VipPlan | undefined) {
-	if (plan.price === 0) {
-		return {
-			text: t('setting.vipPlan.freeOnce', { p0: fmt(plan.days) }),
-			highlight: false,
-		}
-	}
-	const saving = savingPercent(plan, monthly)
-	if (saving > 0) {
-		return { text: t('setting.vipPlan.saving', { p0: fmt(saving) }), highlight: true }
-	}
-	return {
-		text: t('setting.vipPlan.monthlyPrice', { p0: fmt(monthlyPrice(plan)) }),
-		highlight: false,
-	}
 }
 
 export function VipTab() {
@@ -82,8 +64,6 @@ export function VipTab() {
 		setFeaturePage(null)
 		plansRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
 	}
-
-	const monthlyPlan = plans ? findMonthlyPlan(plans) : undefined
 
 	const handlePurchase = () => {
 		if (!selectedPlan) {
@@ -161,19 +141,14 @@ export function VipTab() {
 							VIP_GRID_LAYOUTS[plans.length] || 'grid-cols-2 md:grid-cols-4'
 						)}
 					>
-						{plans.map((plan) => {
-							const note = planNote(plan, monthlyPlan)
-							return (
-								<VipPlanCard
-									key={plan.id}
-									plan={plan}
-									note={note.text}
-									highlightNote={note.highlight}
-									isSelected={selectedPlan?.id === plan.id}
-									onSelect={(p) => setSelectedPlan(p)}
-								/>
-							)
-						})}
+						{plans.map((plan) => (
+							<VipPlanCard
+								key={plan.id}
+								plan={plan}
+								isSelected={selectedPlan?.id === plan.id}
+								onSelect={(p) => setSelectedPlan(p)}
+							/>
+						))}
 					</div>
 				) : (
 					<div className="flex flex-col items-center justify-center py-6 text-center border rounded-2xl border-line bg-fill">

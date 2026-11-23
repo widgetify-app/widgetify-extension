@@ -16,7 +16,7 @@ The redesign of the settings tab «ویجتیفای پرو» (`src/features/sett
 
 1. **Hero.** `assets/hero-pro.webp` (option H4, approved): a brand-blue gradient with a large faint copy of the Pro icon bleeding off the edge and the icon on top. Over it sit the Pro badge, a headline and one line of text, with no dark overlay. The card radius is 16px, like any card.
 2. **Benefit cards.** Four cards that overlap the bottom of the hero by 64px, all the same height. Each card has a small picture, a title, two reserved lines of text and a «جزئیات» link pinned to the bottom. A click opens the details window on that card's page.
-3. **Plans.** Every plan in one row: the free trial first, then monthly, three months and a year. The selected plan has a brand ring, and the plan the server marks gets the «محبوب» badge. Each paid plan shows its monthly cost or its saving against monthly.
+3. **Plans.** Every plan in one row: the free trial first, then monthly, three months and a year. The selected plan has a brand ring, and the plan the server marks gets the «محبوب» badge. Plan cards show the plan title and price without supplementary pricing notes.
 4. **Payment bar.** The amount, the renewal line and «فعال‌سازی پرو». The amount follows the selected plan.
 
 The free trial has no separate link. It is one of the plans.
