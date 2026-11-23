@@ -155,7 +155,7 @@ export function MoodShareModal({ isOpen, onClose }: MoodShareModalProps) {
 						ref={previewRef}
 						role="img"
 						aria-label={t('widgets.moodTracker.shareImageAria')}
-						className="self-center w-auto h-auto max-w-full max-h-[60vh] rounded-2xl"
+						className="self-center w-auto h-auto max-w-full max-h-[calc(100dvh-13rem)] md:max-h-[calc(min(640px,100dvh-8rem)-7rem)] rounded-2xl"
 					/>
 				)}
 

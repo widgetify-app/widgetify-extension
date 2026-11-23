@@ -24,7 +24,7 @@ Log today's mood in one click: sad, tired, okay or great. 1x1 and 2x1. Needs an 
 
 - A selected tile is tinted in its mood's colour with a thin ring of the same colour. The design uses a softer ring; the theme tokens have no half-strength version of these colours, so the ring is the full colour.
 - The okay mood is brand coloured, as in the design. It was the secondary colour.
-- The share modal keeps its month picker, copy and download controls. It uses the mobile v2 C7f image: a 1080×1920 story with a white card, profile picture, month map, legend and dominant mood mascot. Tiles run from day one, right to left, without weekday padding. Legacy `tired` logs count as `normal`, and ties follow the mobile mood order. Copy and download wait for the selected month's finished drawing. A failed fetch or drawing shows a retry.
+- The share modal keeps its month picker, copy and download controls. It uses the mobile v2 C7f image: a 1080×1920 story with a white card, profile picture, month map, legend and dominant mood mascot. Tiles run from day one, right to left, without weekday padding. Legacy `tired` logs count as `normal`, and ties follow the mobile mood order. The preview fits within the modal's available height alongside the month picker and actions. Copy and download wait for the selected month's finished drawing. A failed fetch or drawing shows a retry.
 
 ## Not checked on screen
 

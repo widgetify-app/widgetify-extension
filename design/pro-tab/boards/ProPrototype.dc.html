@@ -77,7 +77,7 @@ width:1080px;height:900px;box-sizing:border-box;padding:20px;display:flex;gap:16
 <sc-if value="{{ pl.badge }}" hint-placeholder-val="{{ false }}"><span class="badge" style="position:absolute;top:-10px;left:16px">محبوب</span></sc-if>
 <span style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:14px;font-weight:700;color:var(--fg-strong)">{{ pl.title }}</span><span style="width:16px;height:16px;border-radius:999px;flex-shrink:0;background:var(--surface);{{ pl.radio }}"></span></span>
 <span style="display:flex;align-items:baseline;gap:4px"><span class="num" style="font-size:20px;font-weight:900;color:var(--fg-strong)">{{ pl.price }}</span><span style="font-size:12px;color:var(--fg-muted)">{{ pl.unit }}</span></span>
-<span style="font-size:12px;{{ pl.noteStyle }}">{{ pl.note }}</span></button></sc-for></div></section>
+</button></sc-for></div></section>
 <section aria-label="پرداخت" style="margin-top:auto;padding:16px 16px 16px 24px;border-radius:16px;background:var(--surface-2);border:1px solid var(--surface-3);display:flex;align-items:center;gap:16px">
 <span style="display:flex;flex-direction:column"><span style="font-size:12px;color:var(--fg-muted)">مبلغ قابل پرداخت</span><span style="display:flex;align-items:baseline;gap:4px"><span class="num" style="font-size:20px;font-weight:900;color:var(--fg-strong)">{{ payPrice }}</span><span style="font-size:12px;color:var(--fg-muted)">{{ payUnit }}</span></span></span>
 <span style="flex:1"></span>
@@ -135,19 +135,18 @@ const s = this.state;
 const count = 5;
 const go = (i) => this.setState({ open: true, page: i });
 const plans = [
-{ title: 'آزمایشی', price: 'رایگان', unit: '', note: '۵ روز اعتبار، یک بار', strong: false },
-{ title: 'یک ماهه', price: '۹۹٬۰۰۰', unit: 'تومان', note: 'ماهی ۹۹٬۰۰۰ تومان', strong: false },
-{ title: 'سه ماهه', price: '۲۴۹٬۰۰۰', unit: 'تومان', note: '۱۶٪ کمتر از ماهانه', strong: true, badge: true },
-{ title: 'سالانه', price: '۸۹۹٬۰۰۰', unit: 'تومان', note: '۲۴٪ کمتر از ماهانه', strong: true }
+{ title: 'آزمایشی', price: 'رایگان', unit: '' },
+{ title: 'یک ماهه', price: '۹۹٬۰۰۰', unit: 'تومان' },
+{ title: 'سه ماهه', price: '۲۴۹٬۰۰۰', unit: 'تومان', badge: true },
+{ title: 'سالانه', price: '۸۹۹٬۰۰۰', unit: 'تومان' }
 ].map((p, i) => {
 const on = i === s.plan;
 return {
-title: p.title, price: p.price, unit: p.unit, note: p.note, badge: Boolean(p.badge),
+title: p.title, price: p.price, unit: p.unit, badge: Boolean(p.badge),
 checked: on ? 'true' : 'false',
 pick: () => this.setState({ plan: i }),
 style: on ? 'background:rgba(83,109,254,.1);border:1px solid #536dfe;box-shadow:0 0 0 1px #536dfe' : 'background:#f8fafc;border:1px solid #f1f5f9',
-radio: on ? 'border:5px solid #536dfe' : 'border:1px solid rgba(70,70,71,.15)',
-noteStyle: p.strong ? 'font-weight:700;color:#536dfe' : 'color:rgba(70,70,71,.7)'
+radio: on ? 'border:5px solid #536dfe' : 'border:1px solid rgba(70,70,71,.15)'
 };
 });
 const picked = plans[s.plan];
