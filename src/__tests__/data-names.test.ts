@@ -277,6 +277,8 @@ const ANALYTICS_EVENTS = [
 	'widget_presets_applied',
 	'widget_presets_opened',
 	'widget_presets_pro_locked',
+	'widget_render_failed',
+	'widget_render_retried',
 	'widget_settings_opened',
 	'widget_style_changed',
 	'yadkar_change_tab',
