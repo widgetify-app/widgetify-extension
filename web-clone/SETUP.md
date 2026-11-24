@@ -43,6 +43,18 @@ You need the repo with `node_modules` installed (`bun install`).
 
 Never delete the folder with a recursive remove while the junctions are in it: it can follow them into the real repo. Remove the two links first (`(Get-Item src).Delete()`), then the folder.
 
+## Editor crash regression
+
+The scaffold includes `scaffold/editor-regression.html` and `scaffold/web/editor-regression.tsx`. Copy these with the rest of the scaffold, then open `http://127.0.0.1:5188/editor-regression.html`. The page runs real React StrictMode, TipTap, `RichTextEditor` and `WidgetSlot`; it reports each case and ends with `RESULT` and a PASS/FAIL page title. Reload to repeat. Run it in Chromium and Firefox when validating a release.
+
+It covers suspended/aborted commits, repeated mounting and cleanup, external Markdown and empty content, selection preservation, current callbacks, independent editors, all five toolbar actions, and factory/render/layout-effect/passive-effect/lazy failures across all five themes. Persistent failure, retry, adjacent state, separate failed instances, instance replacement and telemetry privacy/rejection are also checked. Expected React failures are recorded separately; any uncaught error fails the suite. Analytics is intercepted locally, including simulated delivery failures; synthetic events are never sent.
+
+These are browser integration checks using editor commands and dispatched DOM focus/click events, not trusted keyboard input, visual theme approval or proof of signed-in sync/service-worker behavior. TipTap adds trailing empty paragraphs after lists, so browser Markdown assertions ignore trailing whitespace; the Bun tests assert exact content and options passed to `setContent`. The Bun content-sync regression tests run in `npm run check`; the browser page must be run separately. After changing the browser suite, format it explicitly with the installed Biome binary because the regular format script does not include the scaffold:
+
+```bash
+./node_modules/.bin/biome check --write web-clone/scaffold/web/editor-regression.tsx web-clone/scaffold/editor-regression.html
+```
+
 ## Keeping it working
 
 - The clone builds with its own `vite.config.ts` (aliases, `unimport` for the auto imports WXT normally adds, `import.meta.env.FIREFOX` fixed to false). When the repo adds a new alias or an auto import, add it to `scaffold/` and to the clone.

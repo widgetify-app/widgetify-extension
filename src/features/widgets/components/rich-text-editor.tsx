@@ -7,6 +7,7 @@ import { t } from '@/common/i18n'
 import { cn } from '@/common/utils/cn'
 import { Icon, type IconName } from '@/icons'
 import type { RichTextFieldProps } from './rich-text-field'
+import { syncRichTextContent } from '../utils/rich-text-editor-content'
 
 const EXTENSIONS = [
 	StarterKit.configure({
@@ -43,6 +44,7 @@ export default function RichTextEditor({
 	className,
 }: RichTextFieldProps) {
 	const editor = useEditor({
+		immediatelyRender: false,
 		extensions: EXTENSIONS,
 		content: value,
 		contentType: 'markdown',
@@ -53,31 +55,36 @@ export default function RichTextEditor({
 				dir: 'rtl',
 			},
 		},
-		onUpdate: ({ editor: current }) => onChange(current.getMarkdown()),
+		onUpdate: ({ editor: current }) => {
+			if (!current.isDestroyed) onChange(current.getMarkdown())
+		},
 	})
 
 	const state = useEditorState({
 		editor,
-		selector: ({ editor: current }) => ({
-			empty: current?.isEmpty ?? true,
-			focused: current?.isFocused ?? false,
-			bold: current?.isActive('bold') ?? false,
-			italic: current?.isActive('italic') ?? false,
-			bulletList: current?.isActive('bulletList') ?? false,
-			orderedList: current?.isActive('orderedList') ?? false,
-			taskList: current?.isActive('taskList') ?? false,
-		}),
+		selector: ({ editor: current }) => {
+			if (!current || current.isDestroyed) return null
+			return {
+				empty: current.isEmpty,
+				focused: current.isFocused,
+				bold: current.isActive('bold'),
+				italic: current.isActive('italic'),
+				bulletList: current.isActive('bulletList'),
+				orderedList: current.isActive('orderedList'),
+				taskList: current.isActive('taskList'),
+			}
+		},
 	})
 
 	useEffect(() => {
-		if (!editor || value === editor.getMarkdown()) return
-		editor.commands.setContent(value, { contentType: 'markdown', emitUpdate: false })
+		syncRichTextContent(editor, value)
 	}, [editor, value])
 
-	if (!editor) return null
+	if (!editor || editor.isDestroyed) return null
 
 	function toggle(name: FormatName) {
-		const chain = editor?.chain().focus()
+		if (!editor || editor.isDestroyed) return
+		const chain = editor.chain().focus()
 		if (name === 'bold') chain?.toggleBold().run()
 		if (name === 'italic') chain?.toggleItalic().run()
 		if (name === 'bulletList') chain?.toggleBulletList().run()
@@ -87,7 +94,7 @@ export default function RichTextEditor({
 
 	return (
 		<div className={cn('flex flex-col flex-1 w-full min-h-0 gap-1', className)}>
-			{state.focused && (
+			{state?.focused && (
 				<div
 					role="toolbar"
 					aria-label={t('widgets.richText.toolbar')}
@@ -119,7 +126,7 @@ export default function RichTextEditor({
 					isOnColor ? 'text-current' : 'text-fg'
 				)}
 			>
-				{state.empty && placeholder && (
+				{(state?.empty ?? editor.isEmpty) && placeholder && (
 					<span
 						className={cn(
 							'absolute pointer-events-none',
